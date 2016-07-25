@@ -7,9 +7,20 @@ mainClassName = 'app.Main'
 
 repositories {
     mavenCentral()
+    maven {
+        url 'http://jade.tilab.com/maven/'
+    }
+}
+
+jar {
+    manifest {
+        attributes('Implementation-Title': rootProject.name,
+                   'Implementation-Version': version)
+    }
 }
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
+    compile 'com.tilab.jade:jade:4.4.0'
     testCompile 'junit:junit:4.12'
 }

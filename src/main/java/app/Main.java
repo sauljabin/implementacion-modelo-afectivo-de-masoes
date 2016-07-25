@@ -1,6 +1,6 @@
 /**
  *  Implementación de un Modelo Afectivo para la Arquitectura Multiagente para Sistemas Emergentes y Auto-Organizados (MASOES)
- *  Copyright (C) 2016 Saúl Piña <sauljabin@gmail.com>
+ *  Copyright (c) 2016 Saúl Piña <sauljabin@gmail.com>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

@@ -13,14 +13,32 @@ Inteligencia Artificial. Barquisimeto, Venezuela.
 
 ## Instrucciones
 
-* Crear estructura de proyecto para eclipse:
+Crear estructura de proyecto para eclipse:
 
-  ```sh
-  ./gradlew eclipse
-  ```
+```
+./gradlew eclipse
+```
 
-* Iniciar aplicación desde gradle:
+Iniciar aplicación:
 
-  ```sh
-  ./gradlew run
-  ```
+```
+./gradlew run
+```
+
+Crear empaquetado:
+
+```
+./gradlew build
+```
+
+Ejecución de pruebas:
+
+```
+./gradlew test
+```
+
+Limpiar empaquetados:
+
+```
+./gradlew clean
+```
