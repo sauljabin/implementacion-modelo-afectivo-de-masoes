@@ -41,6 +41,18 @@ Iniciar aplicación:
 ./gradlew run
 ```
 
+Iniciar aplicación limpiando dependencias:
+
+```
+./gradlew clean run --refresh-dependencies
+```
+
+Iniciar aplicación con argumentos (separandolos con espacio en blanco):
+
+```
+./gradlew run -Pargs="arg1 arg2"
+```
+
 Crear empaquetado:
 
 ```
