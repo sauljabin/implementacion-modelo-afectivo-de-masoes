@@ -1,12 +1,13 @@
-apply plugin: 'java'
+apply plugin: 'idea'
 apply plugin: 'eclipse'
+apply plugin: 'java'
 apply plugin: 'application'
 
 version = '1.0.0'
+mainClassName = 'masoes.app.Main'
 
 def gitRevision = 'git rev-parse HEAD'.execute().text.trim()
 def appName = rootProject.name
-def mainClass = 'app.Main'
 def argsProperty = 'args'
 
 repositories {
@@ -18,12 +19,19 @@ repositories {
 
 dependencies {
     compile 'org.apache.logging.log4j:log4j-api:2.6.2'
-  	compile 'org.apache.logging.log4j:log4j-core:2.6.2'
+    compile 'org.apache.logging.log4j:log4j-core:2.6.2'
     compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.6.2'
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'com.tilab.jade:jade:4.4.0'
     compile 'commons-cli:commons-cli:1.3.1'
     testCompile 'junit:junit:4.12'
+    testCompile 'org.powermock:powermock-api-mockito:1.6.5'
+}
+
+processResources {
+    filesMatching('settings.properties') {
+        expand('appName': appName, 'appVersion': version,'appRevision': gitRevision)
+    }
 }
 
 jar {
@@ -33,14 +41,14 @@ jar {
 }
 
 run {
-	main = mainClass
-	if(project.hasProperty(argsProperty)) {
-		args(project.property(argsProperty).split())
-	}
+    main = mainClassName
+    if (project.hasProperty(argsProperty)) {
+        args(project.property(argsProperty).split())
+    }
 }
 
 test {
-	testLogging {
+    testLogging {
         showExceptions true
         showCauses true
         showStackTraces true

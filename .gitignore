@@ -71,6 +71,7 @@ atlassian-ide-plugin.xml
 # Logs
 # ----
 *.log
+/log
 
 # KDE
 # ----
