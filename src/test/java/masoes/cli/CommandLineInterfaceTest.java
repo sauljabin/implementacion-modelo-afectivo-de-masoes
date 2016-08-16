@@ -41,18 +41,31 @@ public class CommandLineInterfaceTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenHasOptionHelpAndNoArgs() {
-        String expectedOption = "-h";
-        String[] args = new String[]{};
-        cli.processArgs(args);
-        assertTrue(cli.hasOption(expectedOption));
+    public void shouldInvokeHelpWhenHasOptionHelp(){
+        CommandLineInterface mockCli = Mockito.spy(CommandLineInterface.class);
+        mockCli.processArgs(new String[]{"-h"});
+        Mockito.verify(mockCli, Mockito.times(1)).execHelp();
     }
 
     @Test
-    public void shouldInvokeExecHelpWhenExecOptions(){
+    public void shouldNotInvokeHelpWhenNoHasOptionHelp(){
         CommandLineInterface mockCli = Mockito.spy(CommandLineInterface.class);
-        mockCli.execOptions();
-        Mockito.verify(mockCli, Mockito.times(1)).execHelp();
+        mockCli.processArgs(new String[]{});
+        Mockito.verify(mockCli, Mockito.times(0)).execHelp();
+    }
+
+    @Test
+    public void shouldNotInvokeVersionWhenNoHasOptionVersion(){
+        CommandLineInterface mockCli = Mockito.spy(CommandLineInterface.class);
+        mockCli.processArgs(new String[]{});
+        Mockito.verify(mockCli, Mockito.times(0)).execVersion();
+    }
+
+    @Test
+    public void shouldInvokeVersionWhenHasOptionVersion(){
+        CommandLineInterface mockCli = Mockito.spy(CommandLineInterface.class);
+        mockCli.processArgs(new String[]{"-v"});
+        Mockito.verify(mockCli, Mockito.times(1)).execVersion();
     }
 
 }

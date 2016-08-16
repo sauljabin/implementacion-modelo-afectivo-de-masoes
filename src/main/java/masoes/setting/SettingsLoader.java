@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.app;
+package masoes.setting;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,20 +12,20 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-public class Settings {
+public class SettingsLoader {
 
-    public static final String APP_NAME_KEY = "app.name";
-    private static Settings INSTANCE;
+    public static final String PROPERTIES_FILE = "settings.properties";
+    private static SettingsLoader INSTANCE;
     private Properties properties;
 
-    public synchronized static Settings getInstance() {
+    public synchronized static SettingsLoader getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new Settings();
+            INSTANCE = new SettingsLoader();
         }
         return INSTANCE;
     }
 
-    private Settings() {
+    private SettingsLoader() {
         init();
     }
 
@@ -46,7 +46,7 @@ public class Settings {
 
     public synchronized void init() {
         properties = new Properties();
-        String[] initValues = {"os.name", "os.arch", "os.version", "java.version", "java.vendor"};
+        String[] initValues = {Settings.OS_NAME.getKey(), Settings.OS_ARCH.getKey(), Settings.OS_VERSION.getKey(), Settings.JAVA_VERSION.getKey(), Settings.JAVA_VENDOR.getKey()};
         for (String value : initValues) {
             set(value, System.getProperty(value));
         }
@@ -56,17 +56,15 @@ public class Settings {
     public synchronized Map<String, String> toMap() {
         Map<String, String> values = new HashMap<String, String>();
         Set<String> keys = properties.stringPropertyNames();
-
         for (String key : keys) {
             values.put(key, get(key));
         }
-
         return values;
     }
 
     public synchronized void load() {
         try {
-            properties.load(ClassLoader.getSystemResourceAsStream("settings.properties"));
+            properties.load(ClassLoader.getSystemResourceAsStream(PROPERTIES_FILE));
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }
@@ -79,4 +77,5 @@ public class Settings {
     public String toString() {
         return toMap().toString();
     }
+
 }

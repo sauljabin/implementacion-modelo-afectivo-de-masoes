@@ -7,6 +7,7 @@
 package masoes.app;
 
 import masoes.cli.CommandLineInterface;
+import masoes.setting.SettingsLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,15 +17,13 @@ public class Main {
 
     private static int FAILURE_STATUS = -1;
     private static Logger logger = LoggerFactory.getLogger(Main.class);
-    private static CommandLineInterface cli;
+    private static SettingsLoader settingsLoader = SettingsLoader.getInstance();
+    private static CommandLineInterface cli = new CommandLineInterface();
 
     public static void main(String[] args) {
         try {
-            logger.info(String.format("Starting application with arguments: %s", Arrays.toString(args)));
-            logger.info(String.format("Settings: %s", Settings.getInstance()));
-            cli = new CommandLineInterface();
+            logger.info("Starting application with arguments: %s, and settings %s", Arrays.toString(args), settingsLoader);
             cli.processArgs(args);
-            cli.execOptions();
         } catch (Exception e) {
             logger.error("Could not start the application", e);
             System.exit(FAILURE_STATUS);

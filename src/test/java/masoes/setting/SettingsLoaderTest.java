@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.app;
+package masoes.setting;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,9 +16,9 @@ import java.util.Set;
 
 import static org.junit.Assert.*;
 
-public class SettingsTest {
+public class SettingsLoaderTest {
 
-    private Settings settings;
+    private SettingsLoader settingsLoader;
     private String key;
     private String value;
     private String defaultValue;
@@ -28,16 +28,12 @@ public class SettingsTest {
     private String osVersionKey;
     private String javaVersionKey;
     private String javaVendorKey;
-    private String keyInFile;
-    private String valueInFile;
 
     @Before
     public void setUp() throws Exception {
-        settings = Settings.getInstance();
+        settingsLoader = SettingsLoader.getInstance();
         key = "key";
         value = "value";
-        keyInFile = "keyInFile";
-        valueInFile = "valueInFile";
         defaultValue = "defaultValue";
         noKey = "noKey";
         osNameKey = "os.name";
@@ -49,41 +45,41 @@ public class SettingsTest {
 
     @Test
     public void shouldGetSameInstance() {
-        Settings expectedSettings = Settings.getInstance();
-        assertTrue(expectedSettings == settings);
+        SettingsLoader expectedSettingsLoader = SettingsLoader.getInstance();
+        assertTrue(expectedSettingsLoader == settingsLoader);
     }
 
     @Test
     public void shouldGetCorrectSetting() {
-        settings.set(key, value);
-        assertEquals(value, settings.get(key));
+        settingsLoader.set(key, value);
+        assertEquals(value, settingsLoader.get(key));
     }
 
     @Test
     public void shouldGetDefaultSettingInCaseThatNotExistKey() {
-        assertEquals(defaultValue, settings.get(noKey, defaultValue));
+        assertEquals(defaultValue, settingsLoader.get(noKey, defaultValue));
     }
 
     @Test
     public void shouldNotGetDefaultSettingInCaseThatExistKey() {
-        settings.set(key, value);
-        assertEquals(value, settings.get(key, defaultValue));
+        settingsLoader.set(key, value);
+        assertEquals(value, settingsLoader.get(key, defaultValue));
     }
 
     @Test
     public void shouldClearSettingsWhenInvokeClear() {
-        settings.set(key, value);
-        settings.clear();
-        assertNull(settings.get(key));
+        settingsLoader.set(key, value);
+        settingsLoader.clear();
+        assertNull(settingsLoader.get(key));
     }
 
     @Test
     public void shouldLoadInitValuesWhenInvokeInit() {
         Map<String, String> expectedValues = getInitValues();
         Set<String> keys = expectedValues.keySet();
-        settings.init();
+        settingsLoader.init();
         for (String key : keys) {
-            assertEquals(expectedValues.get(key), settings.get(key));
+            assertEquals(expectedValues.get(key), settingsLoader.get(key));
         }
     }
 
@@ -101,19 +97,21 @@ public class SettingsTest {
     public void shouldGetACorrectMap() {
         Map<String, String> expectedMap = new HashMap<String, String>();
         expectedMap.put(key, value);
-        settings.clear();
-        settings.set(key, value);
-        Map<String, String> actualMap = settings.toMap();
+        settingsLoader.clear();
+        settingsLoader.set(key, value);
+        Map<String, String> actualMap = settingsLoader.toMap();
         assertEquals(expectedMap, actualMap);
     }
 
     @Test
     public void shouldLoadPropertiesFromFile() throws IOException {
         Map<String, String> expectedMap = new HashMap<String, String>();
-        expectedMap.put(keyInFile, valueInFile);
-        settings.clear();
-        settings.load();
-        Map<String, String> actualMap = settings.toMap();
+        expectedMap.put("app.name", "appName");
+        expectedMap.put("app.revision", "1");
+        expectedMap.put("app.version", "1");
+        settingsLoader.clear();
+        settingsLoader.load();
+        Map<String, String> actualMap = settingsLoader.toMap();
         assertEquals(expectedMap, actualMap);
     }
 
@@ -122,9 +120,9 @@ public class SettingsTest {
         Map<String, String> expectedMap = new HashMap<String, String>();
         expectedMap.put(key, value);
         String expectedString = expectedMap.toString();
-        settings.clear();
-        settings.set(key, value);
-        assertEquals(expectedString, settings.toString());
+        settingsLoader.clear();
+        settingsLoader.set(key, value);
+        assertEquals(expectedString, settingsLoader.toString());
     }
 
 }
