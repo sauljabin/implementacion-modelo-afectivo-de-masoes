@@ -6,8 +6,6 @@
 
 package masoes.app;
 
-import masoes.cli.CommandLineInterface;
-import masoes.setting.SettingsLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

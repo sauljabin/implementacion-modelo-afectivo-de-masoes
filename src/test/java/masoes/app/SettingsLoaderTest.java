@@ -4,10 +4,12 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.setting;
+package masoes.app;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import masoes.app.SettingsLoader;
 
 import java.io.IOException;
 import java.util.HashMap;

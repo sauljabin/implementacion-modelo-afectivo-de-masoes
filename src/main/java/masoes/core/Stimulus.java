@@ -4,7 +4,8 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.behavior;
+package masoes.core;
 
-public interface Behavior {
+public interface Stimulus {
+
 }

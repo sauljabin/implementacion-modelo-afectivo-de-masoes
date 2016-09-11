@@ -4,9 +4,8 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.cli;
+package masoes.app;
 
-import masoes.setting.Settings;
 import org.apache.commons.cli.*;
 
 public class CommandLineInterface {

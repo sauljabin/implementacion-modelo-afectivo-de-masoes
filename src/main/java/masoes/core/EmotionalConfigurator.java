@@ -4,7 +4,8 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.model;
+package masoes.core;
 
-public class BehaviorManager {
+public interface EmotionalConfigurator {
+
 }

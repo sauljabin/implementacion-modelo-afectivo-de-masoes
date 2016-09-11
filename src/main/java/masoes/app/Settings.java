@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.setting;
+package masoes.app;
 
 public enum Settings {
 

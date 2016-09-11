@@ -4,13 +4,15 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.cli;
+package masoes.app;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import masoes.app.CommandLineInterface;
 
 import static org.junit.Assert.*;
 

@@ -6,5 +6,15 @@
 
 package masoes.model;
 
-public class EmotionalConfigurator {
+import org.junit.Before;
+
+import static org.junit.Assert.*;
+
+public class MasoesEmotionalConfiguratorTest {
+
+    @Before
+    public void setUp() throws Exception {
+
+    }
+
 }

@@ -4,7 +4,8 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.emotion;
+package masoes.core;
 
-public interface Emotion {
+public interface BehaviorManager {
+
 }
