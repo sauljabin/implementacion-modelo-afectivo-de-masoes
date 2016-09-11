@@ -20,7 +20,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            logger.info("Starting application with arguments: %s, and settings %s", Arrays.toString(args), settingsLoader);
+            logger.info("Starting application with arguments: {}, and settings {}", Arrays.toString(args), settingsLoader);
             cli.processArgs(args);
         } catch (Exception e) {
             logger.error("Could not start the application", e);

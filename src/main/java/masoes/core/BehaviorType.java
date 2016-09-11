@@ -6,6 +6,6 @@
 
 package masoes.core;
 
-public interface Behavior {
-	
+public enum BehaviorType {
+	IMITATIVE, REACTIVE, COGNITIVE;
 }

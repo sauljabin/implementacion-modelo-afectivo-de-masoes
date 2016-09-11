@@ -1,0 +1,22 @@
+/*
+ * Copyright (c) 2016 Saúl Piña <sauljabin@gmail.com>
+ * License GPLv3 <https://www.gnu.org/licenses/gpl-3.0.html>
+ * Please see the LICENSE.txt file
+ */
+
+package masoes.core;
+
+public enum EmotionType {
+	POSITIVE(BehaviorType.IMITATIVE), NEGATIVE_LOW(BehaviorType.COGNITIVE), NEGATIVE_HIGH(BehaviorType.REACTIVE);
+
+	private EmotionType(BehaviorType behaviorType) {
+		this.behaviorType = behaviorType;
+	}
+
+	private BehaviorType behaviorType;
+
+	public BehaviorType getBehaviorType() {
+		return behaviorType;
+	}
+
+}
