@@ -12,9 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import masoes.app.CommandLineInterface;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CommandLineInterfaceTest {
@@ -43,28 +41,28 @@ public class CommandLineInterfaceTest {
     }
 
     @Test
-    public void shouldInvokeHelpWhenHasOptionHelp(){
+    public void shouldInvokeHelpWhenHasOptionHelp() {
         CommandLineInterface mockCli = Mockito.spy(CommandLineInterface.class);
         mockCli.processArgs(new String[]{"-h"});
         Mockito.verify(mockCli, Mockito.times(1)).execHelp();
     }
 
     @Test
-    public void shouldNotInvokeHelpWhenNoHasOptionHelp(){
+    public void shouldNotInvokeHelpWhenNoHasOptionHelp() {
         CommandLineInterface mockCli = Mockito.spy(CommandLineInterface.class);
         mockCli.processArgs(new String[]{});
         Mockito.verify(mockCli, Mockito.times(0)).execHelp();
     }
 
     @Test
-    public void shouldNotInvokeVersionWhenNoHasOptionVersion(){
+    public void shouldNotInvokeVersionWhenNoHasOptionVersion() {
         CommandLineInterface mockCli = Mockito.spy(CommandLineInterface.class);
         mockCli.processArgs(new String[]{});
         Mockito.verify(mockCli, Mockito.times(0)).execVersion();
     }
 
     @Test
-    public void shouldInvokeVersionWhenHasOptionVersion(){
+    public void shouldInvokeVersionWhenHasOptionVersion() {
         CommandLineInterface mockCli = Mockito.spy(CommandLineInterface.class);
         mockCli.processArgs(new String[]{"-v"});
         Mockito.verify(mockCli, Mockito.times(1)).execVersion();

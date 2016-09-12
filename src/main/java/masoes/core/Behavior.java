@@ -7,5 +7,5 @@
 package masoes.core;
 
 public interface Behavior {
-	
+
 }

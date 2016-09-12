@@ -10,37 +10,36 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Polygon;
-
 import masoes.core.Emotion;
 import masoes.core.EmotionType;
 
 public class Admiration implements Emotion {
-	
-	private GeometryFactory geometryFactory;
-	private Coordinate[] coordinates;
-	private Polygon polygon;
 
-	public Admiration() {
-		geometryFactory = new GeometryFactory();
-		coordinates = new Coordinate[] {
-				new Coordinate(0, 0),
-				new Coordinate(0, 0.5),
-				new Coordinate(-0.5, 0.5),
-				new Coordinate(-0.5, 0),
-				new Coordinate(0, 0)
-		};
-		polygon = geometryFactory.createPolygon(coordinates);
-		
-	}
+    private GeometryFactory geometryFactory;
+    private Coordinate[] coordinates;
+    private Polygon polygon;
 
-	@Override
-	public Geometry getGeometry() {
-		return polygon;
-	}
+    public Admiration() {
+        geometryFactory = new GeometryFactory();
+        coordinates = new Coordinate[]{
+                new Coordinate(0, 0),
+                new Coordinate(0, 0.5),
+                new Coordinate(-0.5, 0.5),
+                new Coordinate(-0.5, 0),
+                new Coordinate(0, 0)
+        };
+        polygon = geometryFactory.createPolygon(coordinates);
 
-	@Override
-	public EmotionType getEmotionType() {
-		return EmotionType.POSITIVE;
-	}
+    }
+
+    @Override
+    public Geometry getGeometry() {
+        return polygon;
+    }
+
+    @Override
+    public EmotionType getEmotionType() {
+        return EmotionType.POSITIVE;
+    }
 
 }

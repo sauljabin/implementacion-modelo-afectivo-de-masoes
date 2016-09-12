@@ -6,18 +6,18 @@
 
 package masoes.core;
 
+import org.junit.Test;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-import org.junit.Test;
-
 public class EmotionTypeTest {
 
-	@Test
-	public void shouldGetCorrectBehaviorType() {
-		assertThat(EmotionType.POSITIVE.getBehaviorType(), is(BehaviorType.IMITATIVE));
-		assertThat(EmotionType.NEGATIVE_LOW.getBehaviorType(), is(BehaviorType.COGNITIVE));
-		assertThat(EmotionType.NEGATIVE_HIGH.getBehaviorType(), is(BehaviorType.REACTIVE));
-	}
+    @Test
+    public void shouldGetCorrectBehaviorType() {
+        assertThat(EmotionType.POSITIVE.getBehaviorType(), is(BehaviorType.IMITATIVE));
+        assertThat(EmotionType.NEGATIVE_LOW.getBehaviorType(), is(BehaviorType.COGNITIVE));
+        assertThat(EmotionType.NEGATIVE_HIGH.getBehaviorType(), is(BehaviorType.REACTIVE));
+    }
 
 }

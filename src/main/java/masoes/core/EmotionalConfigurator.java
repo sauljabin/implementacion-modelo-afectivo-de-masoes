@@ -6,17 +6,17 @@
 
 package masoes.core;
 
-import java.util.List;
-
 import com.vividsolutions.jts.geom.Point;
+
+import java.util.List;
 
 public interface EmotionalConfigurator {
 
-	List<Emotion> getEmotions();
+    List<Emotion> getEmotions();
 
-	Point getEmotionalPoint();
+    Point getEmotionalPoint();
 
-	Emotion getEmotionalState();
+    Emotion getEmotionalState();
 
-	void evaluateStimulus(Stimulus stimulus);
+    void evaluateStimulus(Stimulus stimulus);
 }

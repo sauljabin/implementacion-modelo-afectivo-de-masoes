@@ -10,36 +10,35 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Polygon;
-
 import masoes.core.Emotion;
 import masoes.core.EmotionType;
 
 public class Joy implements Emotion {
 
-	private GeometryFactory geometryFactory;
-	private Coordinate[] coordinates;
-	private Polygon polygon;
+    private GeometryFactory geometryFactory;
+    private Coordinate[] coordinates;
+    private Polygon polygon;
 
-	public Joy() {
-		geometryFactory = new GeometryFactory();
-		coordinates = new Coordinate[] {
-				new Coordinate(0, 0),
-				new Coordinate(0, 0.5),
-				new Coordinate(0.5, 0.5),
-				new Coordinate(0.5, 0),
-				new Coordinate(0, 0)
-		};
-		polygon = geometryFactory.createPolygon(coordinates);
-	}
+    public Joy() {
+        geometryFactory = new GeometryFactory();
+        coordinates = new Coordinate[]{
+                new Coordinate(0, 0),
+                new Coordinate(0, 0.5),
+                new Coordinate(0.5, 0.5),
+                new Coordinate(0.5, 0),
+                new Coordinate(0, 0)
+        };
+        polygon = geometryFactory.createPolygon(coordinates);
+    }
 
-	@Override
-	public Geometry getGeometry() {
-		return polygon;
-	}
-	
-	@Override
-	public EmotionType getEmotionType() {
-		return EmotionType.POSITIVE;
-	}
+    @Override
+    public Geometry getGeometry() {
+        return polygon;
+    }
+
+    @Override
+    public EmotionType getEmotionType() {
+        return EmotionType.POSITIVE;
+    }
 
 }

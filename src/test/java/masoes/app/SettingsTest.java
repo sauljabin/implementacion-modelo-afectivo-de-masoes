@@ -8,9 +8,6 @@ package masoes.app;
 
 import org.junit.Test;
 
-import masoes.app.Settings;
-import masoes.app.SettingsLoader;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 

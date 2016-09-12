@@ -7,16 +7,16 @@
 package masoes.core;
 
 public enum EmotionType {
-	POSITIVE(BehaviorType.IMITATIVE), NEGATIVE_LOW(BehaviorType.COGNITIVE), NEGATIVE_HIGH(BehaviorType.REACTIVE);
+    POSITIVE(BehaviorType.IMITATIVE), NEGATIVE_LOW(BehaviorType.COGNITIVE), NEGATIVE_HIGH(BehaviorType.REACTIVE);
 
-	private EmotionType(BehaviorType behaviorType) {
-		this.behaviorType = behaviorType;
-	}
+    private BehaviorType behaviorType;
 
-	private BehaviorType behaviorType;
+    private EmotionType(BehaviorType behaviorType) {
+        this.behaviorType = behaviorType;
+    }
 
-	public BehaviorType getBehaviorType() {
-		return behaviorType;
-	}
+    public BehaviorType getBehaviorType() {
+        return behaviorType;
+    }
 
 }

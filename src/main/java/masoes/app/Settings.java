@@ -17,11 +17,11 @@ public enum Settings {
     JAVA_VERSION("java.version"),
     JAVA_VENDOR("java.vendor");
 
+    private String key;
+
     Settings(String key) {
         this.key = key;
     }
-
-    private String key;
 
     public String getKey() {
         return key;

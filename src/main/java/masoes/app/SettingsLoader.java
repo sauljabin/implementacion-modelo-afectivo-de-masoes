@@ -18,15 +18,15 @@ public class SettingsLoader {
     private static SettingsLoader INSTANCE;
     private Properties properties;
 
+    private SettingsLoader() {
+        init();
+    }
+
     public synchronized static SettingsLoader getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new SettingsLoader();
         }
         return INSTANCE;
-    }
-
-    private SettingsLoader() {
-        init();
     }
 
     public synchronized void set(String key, String value) {
