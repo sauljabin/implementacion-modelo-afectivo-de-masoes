@@ -6,18 +6,26 @@
 
 package masoes.model;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import masoes.core.Emotion;
 import masoes.core.EmotionalConfigurator;
 import masoes.core.Stimulus;
 import masoes.emotion.*;
+import masoes.stimulus.InitialStimulus;
+import masoes.util.RandomGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MasoesEmotionalConfigurator implements EmotionalConfigurator {
 
+    private final GeometryFactory geometryFactory;
+    private final RandomGenerator randomGenerator;
     private List<Emotion> emotions;
+    private double activation;
+    private double satisfaction;
 
     public MasoesEmotionalConfigurator() {
         emotions = new ArrayList<Emotion>();
@@ -29,6 +37,9 @@ public class MasoesEmotionalConfigurator implements EmotionalConfigurator {
         emotions.add(new Sadness());
         emotions.add(new Dissatisfaction());
         emotions.add(new Rejection());
+        geometryFactory = new GeometryFactory();
+        randomGenerator = new RandomGenerator();
+        evaluateStimulus(new InitialStimulus());
     }
 
     @Override
@@ -38,7 +49,7 @@ public class MasoesEmotionalConfigurator implements EmotionalConfigurator {
 
     @Override
     public Point getEmotionalPoint() {
-        return null;
+        return geometryFactory.createPoint(new Coordinate(getActivation(), getSatisfaction()));
     }
 
     @Override
@@ -52,6 +63,19 @@ public class MasoesEmotionalConfigurator implements EmotionalConfigurator {
 
     @Override
     public void evaluateStimulus(Stimulus stimulus) {
+        if (stimulus instanceof InitialStimulus) {
+            activation = randomGenerator.random(-1, 1);
+            satisfaction = randomGenerator.random(-1, 1);
+        }
+    }
 
+    @Override
+    public double getActivation() {
+        return activation;
+    }
+
+    @Override
+    public double getSatisfaction() {
+        return satisfaction;
     }
 }

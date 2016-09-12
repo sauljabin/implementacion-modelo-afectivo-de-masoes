@@ -19,4 +19,8 @@ public interface EmotionalConfigurator {
     Emotion getEmotionalState();
 
     void evaluateStimulus(Stimulus stimulus);
+
+    double getActivation();
+
+    double getSatisfaction();
 }
