@@ -7,5 +7,7 @@
 package masoes.core;
 
 public interface EmotionalModel {
+    EmotionalConfigurator getEmotionalConfigurator();
 
+    BehaviorManager getBehaviorManager();
 }

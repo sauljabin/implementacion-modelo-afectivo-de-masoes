@@ -6,6 +6,27 @@
 
 package masoes.model;
 
-public class MasoesEmotionalModel {
+import masoes.core.BehaviorManager;
+import masoes.core.EmotionalConfigurator;
+import masoes.core.EmotionalModel;
 
+public class MasoesEmotionalModel implements EmotionalModel {
+
+    private MasoesEmotionalConfigurator masoesEmotionalConfigurator;
+    private MasoesBehaviorManager masoesBehaviorManager;
+
+    public MasoesEmotionalModel() {
+        masoesEmotionalConfigurator = new MasoesEmotionalConfigurator();
+        masoesBehaviorManager = new MasoesBehaviorManager();
+    }
+
+    @Override
+    public EmotionalConfigurator getEmotionalConfigurator() {
+        return masoesEmotionalConfigurator;
+    }
+
+    @Override
+    public BehaviorManager getBehaviorManager() {
+        return masoesBehaviorManager;
+    }
 }

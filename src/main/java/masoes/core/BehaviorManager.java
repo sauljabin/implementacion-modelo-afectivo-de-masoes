@@ -8,4 +8,6 @@ package masoes.core;
 
 public interface BehaviorManager {
 
+    BehaviorType getBehaviorAssociated(EmotionType emotionType);
+
 }
