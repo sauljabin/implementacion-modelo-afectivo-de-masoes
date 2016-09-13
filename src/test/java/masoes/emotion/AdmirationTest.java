@@ -8,6 +8,7 @@ package masoes.emotion;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 import masoes.core.EmotionType;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,15 +43,19 @@ public class AdmirationTest {
 
     @Test
     public void shouldContainsInsidePoint() {
-        assertTrue(admiration.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.1, 0.1))));
-        assertTrue(admiration.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.4, 0.4))));
+        assertTrue(admiration.getGeometry().intersects(createPoint(-0.1, 0.1)));
+        assertTrue(admiration.getGeometry().intersects(createPoint(-0.4, 0.4)));
+    }
+
+    public Point createPoint(double x, double y) {
+        return geometryFactory.createPoint(new Coordinate(x, y));
     }
 
     @Test
     public void shouldNotContainsPoint() {
-        assertFalse(admiration.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.1, 0.1))));
-        assertFalse(admiration.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(1.1, 0.1))));
-        assertFalse(admiration.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.6, 0.6))));
+        assertFalse(admiration.getGeometry().intersects(createPoint(0.1, 0.1)));
+        assertFalse(admiration.getGeometry().intersects(createPoint(1.1, 0.1)));
+        assertFalse(admiration.getGeometry().intersects(createPoint(-0.6, 0.6)));
     }
 
     @Test

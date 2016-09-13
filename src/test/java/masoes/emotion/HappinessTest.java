@@ -8,6 +8,7 @@ package masoes.emotion;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 import masoes.core.EmotionType;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,14 +46,18 @@ public class HappinessTest {
 
     @Test
     public void shouldContainsInsidePoint() {
-        assertTrue(happiness.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.7, 0.7))));
-        assertTrue(happiness.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.51, 0.51))));
+        assertTrue(happiness.getGeometry().intersects(createPoint(0.7, 0.7)));
+        assertTrue(happiness.getGeometry().intersects(createPoint(0.51, 0.51)));
+    }
+
+    public Point createPoint(double x, double y) {
+        return geometryFactory.createPoint(new Coordinate(x, y));
     }
 
     @Test
     public void shouldNotContainsPoint() {
-        assertFalse(happiness.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.1, 0.1))));
-        assertFalse(happiness.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(1.1, 0.1))));
+        assertFalse(happiness.getGeometry().intersects(createPoint(0.1, 0.1)));
+        assertFalse(happiness.getGeometry().intersects(createPoint(1.1, 0.1)));
     }
 
     @Test
