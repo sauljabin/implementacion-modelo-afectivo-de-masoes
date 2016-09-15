@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.app;
+package masoes.setting;
 
 import java.io.IOException;
 import java.util.HashMap;

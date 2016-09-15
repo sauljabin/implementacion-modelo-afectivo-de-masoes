@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.app;
+package masoes.setting;
 
 public enum Settings {
 
@@ -30,4 +30,9 @@ public enum Settings {
     public String getValue() {
         return SettingsLoader.getInstance().get(key, "");
     }
+
+    public String getValue(String defaultValue) {
+        return SettingsLoader.getInstance().get(key, defaultValue);
+    }
+
 }

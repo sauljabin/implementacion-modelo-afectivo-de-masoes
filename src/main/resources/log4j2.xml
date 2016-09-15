@@ -9,13 +9,9 @@
         </File>
     </Appenders>
     <Loggers>
-        <Logger name="log4j.test.Log4jTest" level="trace">
-            <AppenderRef ref="Console"/>
-            <AppenderRef ref="File"/>
-        </Logger>
         <Root level="trace">
-            <AppenderRef ref="Console"/>
-            <AppenderRef ref="File"/>
+            <AppenderRef ref="Console" level="warn"/>
+            <AppenderRef ref="File" level="info"/>
         </Root>
     </Loggers>
 </Configuration>

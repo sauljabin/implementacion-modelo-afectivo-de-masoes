@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.app;
+package masoes.setting;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class SettingsLoaderTest {
@@ -46,7 +47,7 @@ public class SettingsLoaderTest {
     @Test
     public void shouldGetSameInstance() {
         SettingsLoader expectedSettingsLoader = SettingsLoader.getInstance();
-        assertTrue(expectedSettingsLoader == settingsLoader);
+        assertThat(settingsLoader, is(expectedSettingsLoader));
     }
 
     @Test

@@ -21,8 +21,8 @@ public class MasoesEmotionalModelTest {
         BehaviorManager behaviorManager = masoesEmotionalModel.getBehaviorManager();
         EmotionalConfigurator emotionalConfigurator = masoesEmotionalModel.getEmotionalConfigurator();
 
-        assertThat(behaviorManager, is(masoesEmotionalModel.getBehaviorManager()));
-        assertThat(emotionalConfigurator, is(masoesEmotionalModel.getEmotionalConfigurator()));
+        assertThat(masoesEmotionalModel.getBehaviorManager(), is(behaviorManager));
+        assertThat(masoesEmotionalModel.getEmotionalConfigurator(), is(emotionalConfigurator));
     }
 
 }
