@@ -52,26 +52,26 @@ public class SettingsLoaderTest {
 
     @Test
     public void shouldGetCorrectSetting() {
-        settingsLoader.set(key, value);
-        assertEquals(value, settingsLoader.get(key));
+        settingsLoader.setSetting(key, value);
+        assertEquals(value, settingsLoader.getSetting(key));
     }
 
     @Test
     public void shouldGetDefaultSettingInCaseThatNotExistKey() {
-        assertEquals(defaultValue, settingsLoader.get(noKey, defaultValue));
+        assertEquals(defaultValue, settingsLoader.getSetting(noKey, defaultValue));
     }
 
     @Test
     public void shouldNotGetDefaultSettingInCaseThatExistKey() {
-        settingsLoader.set(key, value);
-        assertEquals(value, settingsLoader.get(key, defaultValue));
+        settingsLoader.setSetting(key, value);
+        assertEquals(value, settingsLoader.getSetting(key, defaultValue));
     }
 
     @Test
     public void shouldClearSettingsWhenInvokeClear() {
-        settingsLoader.set(key, value);
+        settingsLoader.setSetting(key, value);
         settingsLoader.clear();
-        assertNull(settingsLoader.get(key));
+        assertNull(settingsLoader.getSetting(key));
     }
 
     @Test
@@ -80,7 +80,7 @@ public class SettingsLoaderTest {
         Set<String> keys = expectedValues.keySet();
         settingsLoader.init();
         for (String key : keys) {
-            assertEquals(expectedValues.get(key), settingsLoader.get(key));
+            assertEquals(expectedValues.get(key), settingsLoader.getSetting(key));
         }
     }
 
@@ -99,7 +99,7 @@ public class SettingsLoaderTest {
         Map<String, String> expectedMap = new HashMap<String, String>();
         expectedMap.put(key, value);
         settingsLoader.clear();
-        settingsLoader.set(key, value);
+        settingsLoader.setSetting(key, value);
         Map<String, String> actualMap = settingsLoader.toMap();
         assertEquals(expectedMap, actualMap);
     }
@@ -122,7 +122,7 @@ public class SettingsLoaderTest {
         expectedMap.put(key, value);
         String expectedString = expectedMap.toString();
         settingsLoader.clear();
-        settingsLoader.set(key, value);
+        settingsLoader.setSetting(key, value);
         assertEquals(expectedString, settingsLoader.toString());
     }
 

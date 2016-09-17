@@ -6,7 +6,7 @@
 
 package masoes.app;
 
-import masoes.setting.Settings;
+import masoes.setting.Setting;
 
 public class VersionOption extends ApplicationOption {
 
@@ -16,9 +16,9 @@ public class VersionOption extends ApplicationOption {
 
     @Override
     public void exec() {
-        System.out.println(Settings.APP_NAME.getValue().toUpperCase());
-        System.out.printf("Version: %s\n", Settings.APP_VERSION.getValue());
-        System.out.printf("Revision: %s\n", Settings.APP_REVISION.getValue());
+        System.out.println(Setting.APP_NAME.getValue().toUpperCase());
+        System.out.printf("Version: %s\n", Setting.APP_VERSION.getValue());
+        System.out.printf("Revision: %s\n", Setting.APP_REVISION.getValue());
         System.out.println();
         System.out.println("JADE");
         System.out.printf("Version: %s\n", jade.core.Runtime.getVersion());

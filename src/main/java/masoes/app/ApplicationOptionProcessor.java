@@ -37,7 +37,6 @@ public class ApplicationOptionProcessor {
             ApplicationOption applicationOption = (ApplicationOption) option;
             if (commandLine.hasOption(applicationOption.getOpt())) {
                 applicationOption.exec();
-                return;
             }
         }
     }

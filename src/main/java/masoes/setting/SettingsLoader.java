@@ -29,16 +29,16 @@ public class SettingsLoader {
         return INSTANCE;
     }
 
-    public synchronized void set(String key, String value) {
+    public synchronized void setSetting(String key, String value) {
         properties.put(key, value);
     }
 
-    public synchronized String get(String key) {
+    public synchronized String getSetting(String key) {
         return properties.getProperty(key);
     }
 
-    public synchronized String get(String key, String defaultValue) {
-        String value = get(key);
+    public synchronized String getSetting(String key, String defaultValue) {
+        String value = getSetting(key);
         if (value == null)
             return defaultValue;
         return value;
@@ -46,18 +46,18 @@ public class SettingsLoader {
 
     public synchronized void init() {
         properties = new Properties();
-        String[] initValues = {Settings.OS_NAME.getKey(), Settings.OS_ARCH.getKey(), Settings.OS_VERSION.getKey(), Settings.JAVA_VERSION.getKey(), Settings.JAVA_VENDOR.getKey()};
+        String[] initValues = {Setting.OS_NAME.getKey(), Setting.OS_ARCH.getKey(), Setting.OS_VERSION.getKey(), Setting.JAVA_VERSION.getKey(), Setting.JAVA_VENDOR.getKey()};
         for (String value : initValues) {
-            set(value, System.getProperty(value));
+            setSetting(value, System.getProperty(value));
         }
         load();
     }
 
     public synchronized Map<String, String> toMap() {
-        Map<String, String> values = new HashMap<String, String>();
+        Map<String, String> values = new HashMap<>();
         Set<String> keys = properties.stringPropertyNames();
         for (String key : keys) {
-            values.put(key, get(key));
+            values.put(key, getSetting(key));
         }
         return values;
     }

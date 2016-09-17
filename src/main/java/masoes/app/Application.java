@@ -6,43 +6,43 @@
 
 package masoes.app;
 
+import masoes.logger.ApplicationLogger;
 import masoes.setting.SettingsLoader;
 import org.apache.commons.cli.Options;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
 
 public class Application {
 
     public static int FAILURE_STATUS = -1;
 
-    private Logger logger;
+    private ApplicationLogger logger;
     private SettingsLoader settingsLoader;
     private ApplicationOptionProcessor cli;
-    private Options options;
 
-    public Application(Logger logger, SettingsLoader settingsLoader, ApplicationOptionProcessor cli) {
+    public Application(ApplicationLogger logger, SettingsLoader settingsLoader, ApplicationOptionProcessor cli) {
         this.logger = logger;
         this.settingsLoader = settingsLoader;
         this.cli = cli;
     }
 
     public Application() {
-        logger = LoggerFactory.getLogger(Main.class);
+        logger = ApplicationLogger.getInstance(Main.class);
         settingsLoader = SettingsLoader.getInstance();
-        options = new Options();
+        cli = initApplicationOptionProcessor();
+    }
+
+    private ApplicationOptionProcessor initApplicationOptionProcessor() {
+        Options options = new Options();
         options.addOption(new HelpOption(options));
         options.addOption(new VersionOption());
-        cli = new ApplicationOptionProcessor(options);
+        return new ApplicationOptionProcessor(options);
     }
 
     public void run(String[] args) {
         try {
-            logger.info("Starting application with arguments: {}, and settings {}", Arrays.toString(args), settingsLoader);
+            logger.startingApplication(args, settingsLoader.toMap());
             cli.processArgs(args);
         } catch (Exception e) {
-            logger.error("Could not start the application", e);
+            logger.cantNotStartApplication(e);
             System.exit(FAILURE_STATUS);
         }
     }

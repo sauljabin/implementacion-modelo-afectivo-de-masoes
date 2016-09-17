@@ -6,7 +6,7 @@
 
 package masoes.app;
 
-import masoes.setting.Settings;
+import masoes.setting.Setting;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
@@ -28,7 +28,7 @@ public class HelpOption extends ApplicationOption {
     @Override
     public void exec() {
         try {
-            formatter.printHelp(Settings.APP_NAME.getValue(), options);
+            formatter.printHelp(Setting.APP_NAME.getValue(), options);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
