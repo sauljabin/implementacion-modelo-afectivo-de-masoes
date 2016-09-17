@@ -6,19 +6,22 @@
 
 package masoes.app;
 
-import org.apache.commons.cli.*;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
 
 public class ApplicationOptionProcessor {
 
-    private Options options;
+    private ApplicationOptions options;
     private CommandLineParser commandLineParser;
     private CommandLine commandLine;
 
-    public ApplicationOptionProcessor(Options options) {
+    public ApplicationOptionProcessor(ApplicationOptions options) {
         this(options, new DefaultParser());
     }
 
-    public ApplicationOptionProcessor(Options options, CommandLineParser commandLineParser) {
+    public ApplicationOptionProcessor(ApplicationOptions options, CommandLineParser commandLineParser) {
         this.options = options;
         this.commandLineParser = commandLineParser;
     }
@@ -36,7 +39,7 @@ public class ApplicationOptionProcessor {
         for (Option option : options.getOptions()) {
             ApplicationOption applicationOption = (ApplicationOption) option;
             if (commandLine.hasOption(applicationOption.getOpt())) {
-                applicationOption.exec();
+                applicationOption.exec(commandLine.getOptionValue(applicationOption.getOpt()));
             }
         }
     }

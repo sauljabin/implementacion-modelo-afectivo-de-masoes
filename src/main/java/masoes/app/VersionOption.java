@@ -15,7 +15,7 @@ public class VersionOption extends ApplicationOption {
     }
 
     @Override
-    public void exec() {
+    public void exec(String optionValue) {
         System.out.println(Setting.APP_NAME.getValue().toUpperCase());
         System.out.printf("Version: %s\n", Setting.APP_VERSION.getValue());
         System.out.printf("Revision: %s\n", Setting.APP_REVISION.getValue());

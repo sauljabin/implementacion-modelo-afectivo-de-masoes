@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -48,12 +49,12 @@ public class HelpOptionTest {
 
     @Test
     public void shouldGetHasArgsCommand() {
-        assertThat(helpOption.hasArgs(), is(false));
+        assertFalse(helpOption.hasArg());
     }
 
     @Test
     public void shouldPrintHelp() {
-        helpOption.exec();
+        helpOption.exec("");
         verify(mockFormatter).printHelp(any(), eq(options));
     }
 }

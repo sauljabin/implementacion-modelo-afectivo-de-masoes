@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
 public class VersionOptionTest {
@@ -42,13 +43,13 @@ public class VersionOptionTest {
 
     @Test
     public void shouldGetHasArgsCommand() {
-        assertThat(versionOption.hasArgs(), is(false));
+        assertFalse(versionOption.hasArg());
     }
 
     @Test
     public void shouldPrintVersion() {
         String expectedString = String.format("APPNAME\nVersion: 1\nRevision: 1\n\nJADE\nVersion: %s\nRevision: %s\n", jade.core.Runtime.getVersion(), jade.core.Runtime.getRevision());
-        versionOption.exec();
+        versionOption.exec("");
         assertThat(systemOutRule.getLog(), is(expectedString));
     }
 

@@ -26,7 +26,7 @@ public class HelpOption extends ApplicationOption {
     }
 
     @Override
-    public void exec() {
+    public void exec(String optionValue) {
         try {
             formatter.printHelp(Setting.APP_NAME.getValue(), options);
         } catch (Exception e) {

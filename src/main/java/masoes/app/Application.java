@@ -8,7 +8,6 @@ package masoes.app;
 
 import masoes.logger.ApplicationLogger;
 import masoes.setting.SettingsLoader;
-import org.apache.commons.cli.Options;
 
 public class Application {
 
@@ -27,14 +26,7 @@ public class Application {
     public Application() {
         logger = ApplicationLogger.getInstance(Main.class);
         settingsLoader = SettingsLoader.getInstance();
-        cli = initApplicationOptionProcessor();
-    }
-
-    private ApplicationOptionProcessor initApplicationOptionProcessor() {
-        Options options = new Options();
-        options.addOption(new HelpOption(options));
-        options.addOption(new VersionOption());
-        return new ApplicationOptionProcessor(options);
+        cli = new ApplicationOptionProcessor(new ApplicationOptions());
     }
 
     public void run(String[] args) {

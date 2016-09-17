@@ -9,7 +9,6 @@ package masoes.app;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Options;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,13 +18,13 @@ import static org.mockito.Mockito.*;
 public class ApplicationOptionProcessorTest {
 
     private ApplicationOptionProcessor cli;
-    private Options options;
+    private ApplicationOptions options;
     private CommandLineParser mockCommandLineParser;
     private CommandLine mockCommandLine;
 
     @Before
     public void setUp() {
-        options = new Options();
+        options = new ApplicationOptions();
         mockCommandLineParser = mock(DefaultParser.class);
         mockCommandLine = mock(CommandLine.class);
     }
@@ -52,7 +51,7 @@ public class ApplicationOptionProcessorTest {
 
         cli = new ApplicationOptionProcessor(options, mockCommandLineParser);
         cli.processArgs(args);
-        verify(mockOption).exec();
+        verify(mockOption).exec(any());
     }
 
 }

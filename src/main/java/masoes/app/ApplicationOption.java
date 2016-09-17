@@ -14,5 +14,5 @@ public abstract class ApplicationOption extends Option {
         super(opt, longOpt, hasArg, description);
     }
 
-    public abstract void exec();
+    public abstract void exec(String optionValue);
 }
