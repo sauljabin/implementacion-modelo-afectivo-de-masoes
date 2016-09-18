@@ -9,6 +9,7 @@ package masoes.app;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.ParseException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,10 +24,11 @@ public class ApplicationOptionProcessorTest {
     private CommandLine mockCommandLine;
 
     @Before
-    public void setUp() {
+    public void setUp() throws ParseException {
         options = new ApplicationOptions();
         mockCommandLineParser = mock(DefaultParser.class);
         mockCommandLine = mock(CommandLine.class);
+        when(mockCommandLineParser.parse(any(), any())).thenReturn(mockCommandLine);
     }
 
     @Test
@@ -39,15 +41,14 @@ public class ApplicationOptionProcessorTest {
 
     @Test
     public void shouldInvokeOption() throws Exception {
-        String opt = "h";
+        String opt = "test";
         String[] args = {"-" + opt};
 
-        ApplicationOption mockOption = mock(HelpOption.class);
+        when(mockCommandLine.hasOption(opt)).thenReturn(Boolean.TRUE);
+
+        ApplicationOption mockOption = mock(ApplicationOption.class);
         when(mockOption.getOpt()).thenReturn(opt);
         options.addOption(mockOption);
-
-        when(mockCommandLineParser.parse(any(), eq(args))).thenReturn(mockCommandLine);
-        when(mockCommandLine.hasOption(opt)).thenReturn(Boolean.TRUE);
 
         cli = new ApplicationOptionProcessor(options, mockCommandLineParser);
         cli.processArgs(args);

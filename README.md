@@ -47,10 +47,16 @@ Iniciar aplicación limpiando dependencias:
 ./gradlew clean run --refresh-dependencies
 ```
 
-Iniciar aplicación con argumentos (separandolos con espacio en blanco):
+Iniciar aplicación con argumentos separandolos con coma `,`:
 
 ```
-./gradlew run -Pargs="arg1 arg2"
+./gradlew run -Pargs="arg1,arg2"
+```
+
+En caso de argumento con espacios en blanco usar comillas simples `'` y argumento en comillas dobles `"`:
+
+```
+./gradlew run -Pargs='arg1,arg2,"texto con espacios en blanco"'
 ```
 
 Crear empaquetado:
