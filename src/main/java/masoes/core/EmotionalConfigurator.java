@@ -10,17 +10,18 @@ import com.vividsolutions.jts.geom.Point;
 
 import java.util.List;
 
-public interface EmotionalConfigurator {
+public abstract class EmotionalConfigurator {
 
-    List<Emotion> getEmotions();
+    public abstract List<Emotion> getEmotions();
 
-    Point getEmotionalPoint();
+    public abstract Point getEmotionalPoint();
 
-    Emotion getEmotionalState();
+    public abstract Emotion getEmotionalState();
 
-    void evaluateStimulus(Stimulus stimulus);
+    public abstract void evaluateStimulus(Stimulus stimulus);
 
-    double getActivation();
+    public abstract double getActivation();
 
-    double getSatisfaction();
+    public abstract double getSatisfaction();
+
 }

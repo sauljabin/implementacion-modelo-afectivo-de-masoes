@@ -13,7 +13,7 @@ import com.vividsolutions.jts.geom.Polygon;
 import masoes.core.Emotion;
 import masoes.core.EmotionType;
 
-public class Compassion implements Emotion {
+public class Compassion extends Emotion {
 
     private GeometryFactory geometryFactory;
     private Coordinate[] coordinates;

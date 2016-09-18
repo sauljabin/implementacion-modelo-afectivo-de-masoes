@@ -8,8 +8,10 @@ package masoes.core;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-public interface Emotion {
-    Geometry getGeometry();
+public abstract class Emotion {
 
-    EmotionType getEmotionType();
+    public abstract Geometry getGeometry();
+
+    public abstract EmotionType getEmotionType();
+
 }

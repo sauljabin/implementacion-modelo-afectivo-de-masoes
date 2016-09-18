@@ -6,6 +6,6 @@
 
 package masoes.core;
 
-public interface Stimulus {
+public abstract class Stimulus {
 
 }

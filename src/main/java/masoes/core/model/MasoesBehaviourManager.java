@@ -10,7 +10,7 @@ import masoes.core.BehaviourManager;
 import masoes.core.BehaviourType;
 import masoes.core.EmotionType;
 
-public class MasoesBehaviourManager implements BehaviourManager {
+public class MasoesBehaviourManager extends BehaviourManager {
 
     @Override
     public BehaviourType getBehaviourAssociated(EmotionType emotionType) {
@@ -25,4 +25,5 @@ public class MasoesBehaviourManager implements BehaviourManager {
                 return BehaviourType.IMITATIVE;
         }
     }
+
 }

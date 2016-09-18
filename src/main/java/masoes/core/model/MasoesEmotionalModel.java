@@ -10,7 +10,7 @@ import masoes.core.BehaviourManager;
 import masoes.core.EmotionalConfigurator;
 import masoes.core.EmotionalModel;
 
-public class MasoesEmotionalModel implements EmotionalModel {
+public class MasoesEmotionalModel extends EmotionalModel {
 
     private MasoesEmotionalConfigurator masoesEmotionalConfigurator;
     private MasoesBehaviourManager masoesBehaviourManager;
@@ -29,4 +29,5 @@ public class MasoesEmotionalModel implements EmotionalModel {
     public BehaviourManager getBehaviourManager() {
         return masoesBehaviourManager;
     }
+
 }

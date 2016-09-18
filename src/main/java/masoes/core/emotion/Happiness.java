@@ -13,7 +13,7 @@ import com.vividsolutions.jts.geom.Polygon;
 import masoes.core.Emotion;
 import masoes.core.EmotionType;
 
-public class Happiness implements Emotion {
+public class Happiness extends Emotion {
 
     private Polygon polygon;
     private GeometryFactory geometryFactory;

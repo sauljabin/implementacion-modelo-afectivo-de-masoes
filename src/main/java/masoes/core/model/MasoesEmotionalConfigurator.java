@@ -19,7 +19,7 @@ import masoes.util.math.RandomGenerator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MasoesEmotionalConfigurator implements EmotionalConfigurator {
+public class MasoesEmotionalConfigurator extends EmotionalConfigurator {
 
     private final GeometryFactory geometryFactory;
     private final RandomGenerator randomGenerator;
@@ -82,4 +82,5 @@ public class MasoesEmotionalConfigurator implements EmotionalConfigurator {
     public double getSatisfaction() {
         return satisfaction;
     }
+
 }

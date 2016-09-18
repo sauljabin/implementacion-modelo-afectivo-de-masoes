@@ -6,8 +6,8 @@
 
 package masoes.core;
 
-public interface BehaviourManager {
+public abstract class BehaviourManager {
 
-    BehaviourType getBehaviourAssociated(EmotionType emotionType);
+    public abstract BehaviourType getBehaviourAssociated(EmotionType emotionType);
 
 }

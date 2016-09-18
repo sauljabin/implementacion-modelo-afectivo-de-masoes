@@ -13,7 +13,7 @@ import com.vividsolutions.jts.geom.Polygon;
 import masoes.core.Emotion;
 import masoes.core.EmotionType;
 
-public class Joy implements Emotion {
+public class Joy extends Emotion {
 
     private GeometryFactory geometryFactory;
     private Coordinate[] coordinates;
