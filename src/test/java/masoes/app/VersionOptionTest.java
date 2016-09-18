@@ -47,6 +47,11 @@ public class VersionOptionTest {
     }
 
     @Test
+    public void shouldGetFirstOrder() {
+        assertThat(versionOption.getOrder(), is(1));
+    }
+
+    @Test
     public void shouldPrintVersion() {
         String expectedString = String.format("APPNAME\nVersion: 1\nRevision: 1\n\nJADE\nVersion: %s\nRevision: %s\n", jade.core.Runtime.getVersion(), jade.core.Runtime.getRevision());
         versionOption.exec("");

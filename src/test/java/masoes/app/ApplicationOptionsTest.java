@@ -6,9 +6,15 @@
 
 package masoes.app;
 
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
@@ -20,8 +26,8 @@ public class ApplicationOptionsTest {
     @Before
     public void setUp() throws Exception {
         options = new Options();
-        options.addOption(new HelpOption(options));
         options.addOption(new VersionOption());
+        options.addOption(new HelpOption(options));
         options.addOption(new JadeOption());
         applicationOptions = new ApplicationOptions();
     }
@@ -29,6 +35,17 @@ public class ApplicationOptionsTest {
     @Test
     public void shouldReturnCorrectOptions() {
         assertReflectionEquals(options, applicationOptions);
+    }
+
+    @Test
+    public void shouldReturnSortOption() {
+        List<ApplicationOption> expectedOptions = new ArrayList<>();
+        expectedOptions.add(new JadeOption());
+        expectedOptions.add(new VersionOption());
+        expectedOptions.add(new HelpOption(options));
+        Collections.sort(expectedOptions);
+        Collection<Option> options = applicationOptions.getOptions();
+        assertReflectionEquals(expectedOptions, options);
     }
 
 }

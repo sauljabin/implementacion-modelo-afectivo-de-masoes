@@ -49,6 +49,11 @@ public class JadeOptionTest {
     }
 
     @Test
+    public void shouldGetThirdOrder() {
+        assertThat(jadeOption.getOrder(), is(3));
+    }
+
+    @Test
     public void shouldStartJade() throws Exception {
         PowerMockito.mockStatic(jade.Boot.class);
         jadeOption.exec("");

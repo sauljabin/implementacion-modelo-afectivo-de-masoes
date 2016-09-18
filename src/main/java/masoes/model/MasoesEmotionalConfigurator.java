@@ -28,6 +28,13 @@ public class MasoesEmotionalConfigurator implements EmotionalConfigurator {
     private double satisfaction;
 
     public MasoesEmotionalConfigurator() {
+        geometryFactory = new GeometryFactory();
+        randomGenerator = new RandomGenerator();
+        addEmotions();
+        evaluateStimulus(new InitialStimulus());
+    }
+
+    private void addEmotions() {
         emotions = new ArrayList<Emotion>();
         emotions.add(new Happiness());
         emotions.add(new Joy());
@@ -37,9 +44,6 @@ public class MasoesEmotionalConfigurator implements EmotionalConfigurator {
         emotions.add(new Sadness());
         emotions.add(new Dissatisfaction());
         emotions.add(new Rejection());
-        geometryFactory = new GeometryFactory();
-        randomGenerator = new RandomGenerator();
-        evaluateStimulus(new InitialStimulus());
     }
 
     @Override

@@ -24,4 +24,9 @@ public class VersionOption extends ApplicationOption {
         System.out.printf("Version: %s\n", jade.core.Runtime.getVersion());
         System.out.printf("Revision: %s\n", jade.core.Runtime.getRevision());
     }
+
+    @Override
+    public int getOrder() {
+        return 1;
+    }
 }

@@ -18,4 +18,9 @@ public class JadeOption extends ApplicationOption {
     public void exec(String optionValue) {
         Boot.main(optionValue.split(" "));
     }
+
+    @Override
+    public int getOrder() {
+        return 3;
+    }
 }

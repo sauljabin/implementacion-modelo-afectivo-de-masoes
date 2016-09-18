@@ -53,6 +53,11 @@ public class HelpOptionTest {
     }
 
     @Test
+    public void shouldGetSecondOrder() {
+        assertThat(helpOption.getOrder(), is(2));
+    }
+
+    @Test
     public void shouldPrintHelp() {
         helpOption.exec("");
         verify(mockFormatter).printHelp(any(), eq(options));

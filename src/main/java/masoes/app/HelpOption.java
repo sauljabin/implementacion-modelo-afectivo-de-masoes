@@ -33,4 +33,9 @@ public class HelpOption extends ApplicationOption {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public int getOrder() {
+        return 2;
+    }
 }
