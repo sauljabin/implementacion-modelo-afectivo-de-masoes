@@ -6,7 +6,7 @@
 
 package masoes.model;
 
-import masoes.core.BehaviorManager;
+import masoes.core.BehaviourManager;
 import masoes.core.EmotionalConfigurator;
 import org.junit.Test;
 
@@ -18,10 +18,10 @@ public class MasoesEmotionalModelTest {
     @Test
     public void shouldReturnSameObjects() {
         MasoesEmotionalModel masoesEmotionalModel = new MasoesEmotionalModel();
-        BehaviorManager behaviorManager = masoesEmotionalModel.getBehaviorManager();
+        BehaviourManager behaviourManager = masoesEmotionalModel.getBehaviourManager();
         EmotionalConfigurator emotionalConfigurator = masoesEmotionalModel.getEmotionalConfigurator();
 
-        assertThat(masoesEmotionalModel.getBehaviorManager(), is(behaviorManager));
+        assertThat(masoesEmotionalModel.getBehaviourManager(), is(behaviourManager));
         assertThat(masoesEmotionalModel.getEmotionalConfigurator(), is(emotionalConfigurator));
     }
 
