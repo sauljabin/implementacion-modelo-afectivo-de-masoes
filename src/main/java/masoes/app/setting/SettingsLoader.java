@@ -7,14 +7,15 @@
 package masoes.app.setting;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
 public class SettingsLoader {
 
     public static final String PROPERTIES_FILE = "settings.properties";
+    private static final Setting[] initSettings = {Setting.OS_NAME, Setting.OS_ARCH, Setting.OS_VERSION, Setting.JAVA_VERSION, Setting.JAVA_VENDOR};
     private static SettingsLoader INSTANCE;
     private Properties properties;
 
@@ -46,19 +47,15 @@ public class SettingsLoader {
 
     public synchronized void init() {
         properties = new Properties();
-        String[] initValues = {Setting.OS_NAME.getKey(), Setting.OS_ARCH.getKey(), Setting.OS_VERSION.getKey(), Setting.JAVA_VERSION.getKey(), Setting.JAVA_VENDOR.getKey()};
-        for (String value : initValues) {
-            setSetting(value, System.getProperty(value));
-        }
+        Arrays.stream(initSettings)
+                .forEach(setting -> setSetting(setting.getKey(), System.getProperty(setting.getKey())));
         load();
     }
 
     public synchronized Map<String, String> toMap() {
         Map<String, String> values = new HashMap<>();
-        Set<String> keys = properties.stringPropertyNames();
-        for (String key : keys) {
-            values.put(key, getSetting(key));
-        }
+        properties.stringPropertyNames()
+                .forEach(key -> values.put(key, getSetting(key)));
         return values;
     }
 

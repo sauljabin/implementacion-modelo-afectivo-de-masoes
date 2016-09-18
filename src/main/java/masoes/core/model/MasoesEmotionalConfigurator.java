@@ -58,11 +58,11 @@ public class MasoesEmotionalConfigurator implements EmotionalConfigurator {
 
     @Override
     public Emotion getEmotionalState() {
-        for (Emotion emotion : getEmotions()) {
-            if (emotion.getGeometry().intersects(getEmotionalPoint()))
-                return emotion;
-        }
-        return new Happiness();
+        return getEmotions()
+                .stream()
+                .filter(emotion -> emotion.getGeometry().intersects(getEmotionalPoint()))
+                .findFirst()
+                .orElse(new Happiness());
     }
 
     @Override

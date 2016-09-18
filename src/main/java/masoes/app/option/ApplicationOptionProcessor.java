@@ -38,12 +38,13 @@ public class ApplicationOptionProcessor {
     }
 
     private void execOption() {
-        for (ApplicationOption option : options.getApplicationOptions()) {
-            if (commandLine.hasOption(option.getOpt())) {
-                logger.startingOption(option);
-                option.exec(commandLine.getOptionValue(option.getOpt()));
-            }
-        }
+        options.getApplicationOptions()
+                .stream()
+                .filter(option -> commandLine.hasOption(option.getOpt()))
+                .forEach(option -> {
+                    logger.startingOption(option);
+                    option.exec(commandLine.getOptionValue(option.getOpt()));
+                });
     }
 
 }

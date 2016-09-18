@@ -12,7 +12,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -77,11 +76,9 @@ public class SettingsLoaderTest {
     @Test
     public void shouldLoadInitValuesWhenInvokeInit() {
         Map<String, String> expectedValues = getInitValues();
-        Set<String> keys = expectedValues.keySet();
         settingsLoader.init();
-        for (String key : keys) {
-            assertEquals(expectedValues.get(key), settingsLoader.getSetting(key));
-        }
+        expectedValues.keySet()
+                .forEach(key -> assertEquals(expectedValues.get(key), settingsLoader.getSetting(key)));
     }
 
     public Map<String, String> getInitValues() {

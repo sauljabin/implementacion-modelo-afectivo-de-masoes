@@ -13,6 +13,8 @@ import masoes.core.EmotionType;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -39,9 +41,8 @@ public class DissatisfactionTest {
 
     @Test
     public void shouldIntersectsWithBoundaryPoints() {
-        for (Coordinate coordinate : coordinates) {
-            assertTrue(dissatisfaction.getGeometry().intersects(geometryFactory.createPoint(coordinate)));
-        }
+        Arrays.stream(coordinates)
+                .forEach(coordinate -> assertTrue(dissatisfaction.getGeometry().intersects(geometryFactory.createPoint(coordinate))));
     }
 
     @Test
