@@ -10,27 +10,27 @@ import masoes.logger.ApplicationLogger;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Option;
 
 public class ApplicationOptionProcessor {
 
-    private ApplicationLogger logger = ApplicationLogger.getInstance(ApplicationOptionProcessor.class);
+    private ApplicationLogger logger;
     private ApplicationOptions options;
     private CommandLineParser commandLineParser;
     private CommandLine commandLine;
 
     public ApplicationOptionProcessor(ApplicationOptions options) {
-        this(options, new DefaultParser());
+        this(options, new DefaultParser(), ApplicationLogger.getInstance(ApplicationOptionProcessor.class));
     }
 
-    public ApplicationOptionProcessor(ApplicationOptions options, CommandLineParser commandLineParser) {
+    public ApplicationOptionProcessor(ApplicationOptions options, CommandLineParser commandLineParser, ApplicationLogger logger) {
         this.options = options;
         this.commandLineParser = commandLineParser;
+        this.logger = logger;
     }
 
     public void processArgs(String[] args) {
         try {
-            commandLine = commandLineParser.parse(options, args);
+            commandLine = commandLineParser.parse(options.toOptions(), args);
             execOption();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -38,11 +38,10 @@ public class ApplicationOptionProcessor {
     }
 
     private void execOption() {
-        for (Option option : options.getOptions()) {
-            ApplicationOption applicationOption = (ApplicationOption) option;
-            if (commandLine.hasOption(applicationOption.getOpt())) {
-                logger.startingOption(applicationOption);
-                applicationOption.exec(commandLine.getOptionValue(applicationOption.getOpt()));
+        for (ApplicationOption option : options.getApplicationOptions()) {
+            if (commandLine.hasOption(option.getOpt())) {
+                logger.startingOption(option);
+                option.exec(commandLine.getOptionValue(option.getOpt()));
             }
         }
     }

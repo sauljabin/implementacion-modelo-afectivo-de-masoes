@@ -15,7 +15,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -23,13 +22,13 @@ public class HelpOptionTest {
 
     private HelpOption helpOption;
     private HelpFormatter mockFormatter;
-    private Options options;
+    private ApplicationOptions applicationOptions;
 
     @Before
     public void setUp() {
         mockFormatter = mock(HelpFormatter.class);
-        options = new Options();
-        helpOption = new HelpOption(options, mockFormatter);
+        applicationOptions = new ApplicationOptions();
+        helpOption = new HelpOption(applicationOptions, mockFormatter);
     }
 
     @Test
@@ -60,6 +59,6 @@ public class HelpOptionTest {
     @Test
     public void shouldPrintHelp() {
         helpOption.exec("");
-        verify(mockFormatter).printHelp(any(), eq(options));
+        verify(mockFormatter).printHelp(any(), any(Options.class));
     }
 }

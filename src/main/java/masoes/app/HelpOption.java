@@ -8,18 +8,17 @@ package masoes.app;
 
 import masoes.setting.Setting;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
 
 public class HelpOption extends ApplicationOption {
 
     private final HelpFormatter formatter;
-    private Options options;
+    private ApplicationOptions options;
 
-    public HelpOption(Options options) {
+    public HelpOption(ApplicationOptions options) {
         this(options, new HelpFormatter());
     }
 
-    public HelpOption(Options options, HelpFormatter formatter) {
+    public HelpOption(ApplicationOptions options, HelpFormatter formatter) {
         super("h", "help", false, "Shows the options");
         this.options = options;
         this.formatter = formatter;
@@ -28,7 +27,7 @@ public class HelpOption extends ApplicationOption {
     @Override
     public void exec(String optionValue) {
         try {
-            formatter.printHelp(Setting.APP_NAME.getValue(), options);
+            formatter.printHelp(Setting.APP_NAME.getValue(), options.toOptions());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

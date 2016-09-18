@@ -6,53 +6,60 @@
 
 package masoes.app;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.ParseException;
+import masoes.logger.ApplicationLogger;
+import org.apache.commons.cli.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 public class ApplicationOptionProcessorTest {
 
-    private ApplicationOptionProcessor cli;
+    private ApplicationOptionProcessor optionProcessor;
     private ApplicationOptions options;
     private CommandLineParser mockCommandLineParser;
     private CommandLine mockCommandLine;
+    private String expectedOpt;
+    private String[] expectedArgs;
+    private ApplicationOption mockOption;
+    private List<ApplicationOption> applicationOptions;
+    private ApplicationLogger mockLogger;
 
     @Before
     public void setUp() throws ParseException {
-        options = new ApplicationOptions();
         mockCommandLineParser = mock(DefaultParser.class);
         mockCommandLine = mock(CommandLine.class);
+        mockOption = mock(ApplicationOption.class);
+        mockLogger = mock(ApplicationLogger.class);
+
+        applicationOptions = new ArrayList<>();
+        applicationOptions.add(mockOption);
+        options = new ApplicationOptions(applicationOptions);
+        optionProcessor = new ApplicationOptionProcessor(options, mockCommandLineParser, mockLogger);
+
+        expectedOpt = "test";
+        expectedArgs = new String[]{"-" + expectedOpt};
+
+        when(mockOption.getOpt()).thenReturn(expectedOpt);
+        when(mockCommandLine.hasOption(expectedOpt)).thenReturn(Boolean.TRUE);
         when(mockCommandLineParser.parse(any(), any())).thenReturn(mockCommandLine);
     }
 
     @Test
     public void shouldParseArgs() throws Exception {
-        String[] args = {};
-        cli = new ApplicationOptionProcessor(options, mockCommandLineParser);
-        cli.processArgs(args);
-        verify(mockCommandLineParser).parse(any(), eq(args));
+        optionProcessor.processArgs(expectedArgs);
+        verify(mockCommandLineParser).parse(any(Options.class), eq(expectedArgs));
     }
 
     @Test
     public void shouldInvokeOption() throws Exception {
-        String opt = "test";
-        String[] args = {"-" + opt};
-
-        when(mockCommandLine.hasOption(opt)).thenReturn(Boolean.TRUE);
-
-        ApplicationOption mockOption = mock(ApplicationOption.class);
-        when(mockOption.getOpt()).thenReturn(opt);
-        options.addOption(mockOption);
-
-        cli = new ApplicationOptionProcessor(options, mockCommandLineParser);
-        cli.processArgs(args);
+        optionProcessor.processArgs(expectedArgs);
         verify(mockOption).exec(any());
+        verify(mockLogger).startingOption(mockOption);
     }
 
 }

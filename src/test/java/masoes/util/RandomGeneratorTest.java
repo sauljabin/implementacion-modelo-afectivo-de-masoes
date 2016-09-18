@@ -29,9 +29,7 @@ public class RandomGeneratorTest {
         double xMin = 1.2;
         double xMax = 5.6;
         for (int i = 0; i < ITERATIONS; i++) {
-            double value = randomGenerator.random(xMin, xMax);
-            assertThat(value, is(greaterThanOrEqualTo(xMin)));
-            assertThat(value, is(lessThanOrEqualTo(xMax)));
+            assertRandom(xMin, xMax);
         }
     }
 
@@ -40,10 +38,14 @@ public class RandomGeneratorTest {
         double xMin = -100;
         double xMax = -0.1;
         for (int i = 0; i < ITERATIONS; i++) {
-            double value = randomGenerator.random(xMin, xMax);
-            assertThat(value, is(greaterThanOrEqualTo(xMin)));
-            assertThat(value, is(lessThanOrEqualTo(xMax)));
+            assertRandom(xMin, xMax);
         }
+    }
+
+    private void assertRandom(double xMin, double xMax) {
+        double value = randomGenerator.random(xMin, xMax);
+        assertThat(value, is(greaterThanOrEqualTo(xMin)));
+        assertThat(value, is(lessThanOrEqualTo(xMax)));
     }
 
 }

@@ -6,36 +6,40 @@
 
 package masoes.app;
 
-import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class ApplicationOptions extends Options {
+public class ApplicationOptions {
+
+    List<ApplicationOption> applicationOptions;
+
+    public ApplicationOptions(List<ApplicationOption> applicationOptions) {
+        this.applicationOptions = applicationOptions;
+    }
 
     public ApplicationOptions() {
+        this(new ArrayList<>());
         addOptions();
     }
 
     private void addOptions() {
-        this.addOption(new HelpOption(this));
-        this.addOption(new VersionOption());
-        this.addOption(new JadeOption());
+        applicationOptions.add(new HelpOption(this));
+        applicationOptions.add(new VersionOption());
+        applicationOptions.add(new JadeOption());
     }
 
-    @Override
-    public Collection<Option> getOptions() {
-        Collection<Option> options = super.getOptions();
-        List<ApplicationOption> returnOption = new ArrayList<>();
-        for (Option option : options) {
-            ApplicationOption applicationOption = (ApplicationOption) option;
-            returnOption.add(applicationOption);
-        }
-        Collections.sort(returnOption);
-        return new ArrayList<>(returnOption);
+    public List<ApplicationOption> getApplicationOptions() {
+        Collections.sort(applicationOptions);
+        return applicationOptions;
+    }
+
+    public Options toOptions() {
+        Options options = new Options();
+        getApplicationOptions().forEach(options::addOption);
+        return options;
     }
 
 }
