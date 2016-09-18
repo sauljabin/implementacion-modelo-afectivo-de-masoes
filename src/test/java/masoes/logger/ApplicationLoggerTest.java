@@ -7,6 +7,7 @@
 package masoes.logger;
 
 import masoes.app.Main;
+import masoes.app.VersionOption;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,6 +57,13 @@ public class ApplicationLoggerTest {
         Exception expectedException = new Exception();
         applicationLogger.cantNotStartApplication(expectedException);
         verify(mockLogger).error(eq("Could not start the application"), eq(expectedException));
+    }
+
+    @Test
+    public void shouldLogStartingOption() {
+        VersionOption applicationOption = new VersionOption();
+        applicationLogger.startingOption(applicationOption);
+        verify(mockLogger).info(eq("Starting option with arguments: " + applicationOption.toString()));
     }
 
 }

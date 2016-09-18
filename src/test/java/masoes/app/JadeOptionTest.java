@@ -8,11 +8,17 @@ package masoes.app;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(jade.Boot.class)
 public class JadeOptionTest {
 
     private JadeOption jadeOption;
@@ -42,5 +48,12 @@ public class JadeOptionTest {
         assertTrue(jadeOption.hasArg());
     }
 
+    @Test
+    public void shouldStartJade() throws Exception {
+        PowerMockito.mockStatic(jade.Boot.class);
+        jadeOption.exec("");
+        PowerMockito.verifyStatic();
+        jade.Boot.main("".split(" "));
+    }
 
 }

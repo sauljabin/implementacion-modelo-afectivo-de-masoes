@@ -6,6 +6,8 @@
 
 package masoes.app;
 
+import jade.Boot;
+
 public class JadeOption extends ApplicationOption {
 
     public JadeOption() {
@@ -14,6 +16,6 @@ public class JadeOption extends ApplicationOption {
 
     @Override
     public void exec(String optionValue) {
-
+        Boot.main(optionValue.split(" "));
     }
 }

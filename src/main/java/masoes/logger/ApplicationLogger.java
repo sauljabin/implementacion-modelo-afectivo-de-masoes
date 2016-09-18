@@ -6,6 +6,7 @@
 
 package masoes.logger;
 
+import masoes.app.ApplicationOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,5 +37,12 @@ public class ApplicationLogger {
                 .message("Could not start the application")
                 .exception(exception)
                 .error(logger);
+    }
+
+    public void startingOption(ApplicationOption applicationOption) {
+        LogWriter.newInstance()
+                .message("Starting option with arguments: %s")
+                .args(applicationOption)
+                .info(logger);
     }
 }

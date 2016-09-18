@@ -6,6 +6,7 @@
 
 package masoes.app;
 
+import masoes.logger.ApplicationLogger;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -13,6 +14,7 @@ import org.apache.commons.cli.Option;
 
 public class ApplicationOptionProcessor {
 
+    private ApplicationLogger logger = ApplicationLogger.getInstance(ApplicationOptionProcessor.class);
     private ApplicationOptions options;
     private CommandLineParser commandLineParser;
     private CommandLine commandLine;
@@ -39,6 +41,7 @@ public class ApplicationOptionProcessor {
         for (Option option : options.getOptions()) {
             ApplicationOption applicationOption = (ApplicationOption) option;
             if (commandLine.hasOption(applicationOption.getOpt())) {
+                logger.startingOption(applicationOption);
                 applicationOption.exec(commandLine.getOptionValue(applicationOption.getOpt()));
             }
         }

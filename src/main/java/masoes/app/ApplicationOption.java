@@ -15,4 +15,9 @@ public abstract class ApplicationOption extends Option {
     }
 
     public abstract void exec(String optionValue);
+
+    @Override
+    public String toString() {
+        return String.format("{option=[-%s,--%s], description=%s}", getOpt(), getLongOpt(), getDescription());
+    }
 }
