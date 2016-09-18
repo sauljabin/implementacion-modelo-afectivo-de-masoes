@@ -6,8 +6,10 @@
 
 package masoes.app;
 
-import masoes.logger.ApplicationLogger;
-import masoes.setting.SettingsLoader;
+import masoes.app.logger.ApplicationLogger;
+import masoes.app.option.ApplicationOptionProcessor;
+import masoes.app.option.ApplicationOptions;
+import masoes.app.setting.SettingsLoader;
 
 public class Application {
 

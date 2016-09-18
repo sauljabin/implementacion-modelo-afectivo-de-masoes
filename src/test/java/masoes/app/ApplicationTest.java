@@ -6,8 +6,9 @@
 
 package masoes.app;
 
-import masoes.logger.ApplicationLogger;
-import masoes.setting.SettingsLoader;
+import masoes.app.logger.ApplicationLogger;
+import masoes.app.option.ApplicationOptionProcessor;
+import masoes.app.setting.SettingsLoader;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
