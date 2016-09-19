@@ -45,6 +45,7 @@ public class ApplicationOptionProcessorTest {
         expectedArgs = new String[]{"-" + expectedOpt};
 
         when(mockOption.getOpt()).thenReturn(expectedOpt);
+        when(mockOption.toOption()).thenCallRealMethod();
         when(mockCommandLine.hasOption(expectedOpt)).thenReturn(Boolean.TRUE);
         when(mockCommandLineParser.parse(any(), any())).thenReturn(mockCommandLine);
     }

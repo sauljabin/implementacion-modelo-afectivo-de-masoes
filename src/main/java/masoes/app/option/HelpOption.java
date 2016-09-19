@@ -19,7 +19,6 @@ public class HelpOption extends ApplicationOption {
     }
 
     public HelpOption(ApplicationOptions options, HelpFormatter formatter) {
-        super("h", "help", false, "Shows the options");
         this.options = options;
         this.formatter = formatter;
     }
@@ -36,5 +35,25 @@ public class HelpOption extends ApplicationOption {
     @Override
     public int getOrder() {
         return 2;
+    }
+
+    @Override
+    public String getOpt() {
+        return "h";
+    }
+
+    @Override
+    public String getLongOpt() {
+        return "help";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Shows the options";
+    }
+
+    @Override
+    public boolean hasArg() {
+        return false;
     }
 }

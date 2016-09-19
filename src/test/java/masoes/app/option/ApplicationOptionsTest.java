@@ -39,9 +39,9 @@ public class ApplicationOptionsTest {
     @Test
     public void shouldReturnOptionsObject() {
         Options expectedOptions = new Options();
-        expectedOptions.addOption(new JadeOption());
-        expectedOptions.addOption(new VersionOption());
-        expectedOptions.addOption(new HelpOption(applicationOptions));
+        expectedOptions.addOption(new JadeOption().toOption());
+        expectedOptions.addOption(new VersionOption().toOption());
+        expectedOptions.addOption(new HelpOption(applicationOptions).toOption());
         assertReflectionEquals(expectedOptions, applicationOptions.toOptions());
     }
 

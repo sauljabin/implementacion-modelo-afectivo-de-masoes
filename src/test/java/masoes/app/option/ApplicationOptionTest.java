@@ -35,7 +35,7 @@ public class ApplicationOptionTest {
     }
 
     private ApplicationOption createApplicationOption(final String opt, final String longOpt, final boolean hasArg, final String description, int order) {
-        return new ApplicationOption(opt, longOpt, hasArg, description) {
+        return new ApplicationOption() {
             @Override
             public void exec(String optionValue) {
             }
@@ -43,6 +43,26 @@ public class ApplicationOptionTest {
             @Override
             public int getOrder() {
                 return order;
+            }
+
+            @Override
+            public String getOpt() {
+                return opt;
+            }
+
+            @Override
+            public String getLongOpt() {
+                return longOpt;
+            }
+
+            @Override
+            public String getDescription() {
+                return description;
+            }
+
+            @Override
+            public boolean hasArg() {
+                return false;
             }
         };
     }

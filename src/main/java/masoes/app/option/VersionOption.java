@@ -10,10 +10,6 @@ import masoes.app.setting.Setting;
 
 public class VersionOption extends ApplicationOption {
 
-    public VersionOption() {
-        super("v", "version", false, "Shows the application version");
-    }
-
     @Override
     public void exec(String optionValue) {
         System.out.println(Setting.APP_NAME.getValue().toUpperCase());
@@ -28,5 +24,25 @@ public class VersionOption extends ApplicationOption {
     @Override
     public int getOrder() {
         return 1;
+    }
+
+    @Override
+    public String getOpt() {
+        return "v";
+    }
+
+    @Override
+    public String getLongOpt() {
+        return "version";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Shows the application version";
+    }
+
+    @Override
+    public boolean hasArg() {
+        return false;
     }
 }

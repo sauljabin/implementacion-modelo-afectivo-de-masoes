@@ -29,16 +29,16 @@ public class ApplicationOptions {
         applicationOptions.add(new HelpOption(this));
         applicationOptions.add(new VersionOption());
         applicationOptions.add(new JadeOption());
+        Collections.sort(applicationOptions);
     }
 
     public List<ApplicationOption> getApplicationOptions() {
-        Collections.sort(applicationOptions);
         return applicationOptions;
     }
 
     public Options toOptions() {
         Options options = new Options();
-        getApplicationOptions().forEach(options::addOption);
+        getApplicationOptions().forEach(option -> options.addOption(option.toOption()));
         return options;
     }
 

@@ -8,15 +8,7 @@ package masoes.app.option;
 
 import org.apache.commons.cli.Option;
 
-public abstract class ApplicationOption extends Option implements Comparable<ApplicationOption> {
-
-    public ApplicationOption(String opt, String longOpt, boolean hasArg, String description) {
-        super(opt, longOpt, hasArg, description);
-    }
-
-    public abstract void exec(String optionValue);
-
-    public abstract int getOrder();
+public abstract class ApplicationOption implements Comparable<ApplicationOption> {
 
     @Override
     public String toString() {
@@ -27,4 +19,22 @@ public abstract class ApplicationOption extends Option implements Comparable<App
     public int compareTo(ApplicationOption applicationOption) {
         return Integer.compare(this.getOrder(), applicationOption.getOrder());
     }
+
+
+    public Option toOption() {
+        return new Option(getOpt(), getLongOpt(), hasArg(), getDescription());
+    }
+
+    public abstract int getOrder();
+
+    public abstract String getOpt();
+
+    public abstract String getLongOpt();
+
+    public abstract String getDescription();
+
+    public abstract boolean hasArg();
+
+    public abstract void exec(String optionValue);
+
 }
