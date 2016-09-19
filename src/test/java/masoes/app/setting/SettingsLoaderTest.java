@@ -82,7 +82,7 @@ public class SettingsLoaderTest {
     }
 
     public Map<String, String> getInitValues() {
-        Map<String, String> initValues = new HashMap<String, String>();
+        Map<String, String> initValues = new HashMap<>();
         initValues.put(osNameKey, System.getProperty(osNameKey));
         initValues.put(osArchKey, System.getProperty(osArchKey));
         initValues.put(osVersionKey, System.getProperty(osVersionKey));
@@ -93,7 +93,7 @@ public class SettingsLoaderTest {
 
     @Test
     public void shouldGetACorrectMap() {
-        Map<String, String> expectedMap = new HashMap<String, String>();
+        Map<String, String> expectedMap = new HashMap<>();
         expectedMap.put(key, value);
         settingsLoader.clear();
         settingsLoader.setSetting(key, value);
@@ -103,7 +103,7 @@ public class SettingsLoaderTest {
 
     @Test
     public void shouldLoadPropertiesFromFile() throws IOException {
-        Map<String, String> expectedMap = new HashMap<String, String>();
+        Map<String, String> expectedMap = new HashMap<>();
         expectedMap.put("app.name", "appName");
         expectedMap.put("app.revision", "1");
         expectedMap.put("app.version", "1");
@@ -115,7 +115,7 @@ public class SettingsLoaderTest {
 
     @Test
     public void shouldToStringSameStringThatMap() {
-        Map<String, String> expectedMap = new HashMap<String, String>();
+        Map<String, String> expectedMap = new HashMap<>();
         expectedMap.put(key, value);
         String expectedString = expectedMap.toString();
         settingsLoader.clear();

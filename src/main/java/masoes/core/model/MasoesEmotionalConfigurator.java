@@ -35,7 +35,7 @@ public class MasoesEmotionalConfigurator extends EmotionalConfigurator {
     }
 
     private void addEmotions() {
-        emotions = new ArrayList<Emotion>();
+        emotions = new ArrayList<>();
         emotions.add(new Happiness());
         emotions.add(new Joy());
         emotions.add(new Compassion());

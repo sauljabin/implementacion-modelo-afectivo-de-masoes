@@ -29,7 +29,6 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @PrepareForTest(LoggerFactory.class)
 public class ApplicationLoggerTest {
 
-
     private Logger mockLogger;
     private Class<Main> expectedClass;
     private ApplicationLogger applicationLogger;
@@ -46,7 +45,7 @@ public class ApplicationLoggerTest {
     @Test
     public void shouldLogStartingApp() {
         String[] expectedArgs = {"-h"};
-        Map<String, String> expectedMap = new HashMap<String, String>();
+        Map<String, String> expectedMap = new HashMap<>();
         expectedMap.put("app", "masoes");
         applicationLogger.startingApplication(expectedArgs, expectedMap);
         verify(mockLogger).info(eq("Starting application with arguments: [-h], and settings {app=masoes}"));
