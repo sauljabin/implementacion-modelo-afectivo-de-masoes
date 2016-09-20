@@ -21,7 +21,7 @@ public class ApplicationLogger {
         this.logger = logger;
     }
 
-    public static ApplicationLogger getInstance(Class<?> classObject) {
+    public static ApplicationLogger newInstance(Class<?> classObject) {
         return new ApplicationLogger(LoggerFactory.getLogger(classObject));
     }
 

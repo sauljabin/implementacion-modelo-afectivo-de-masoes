@@ -31,7 +31,7 @@ public class ApplicationOptionTest {
 
     @Test
     public void shouldGetCorrectString() {
-        assertThat(applicationOptionA.toString(), is("{option=[-a,--testA], description=testA, order=1}"));
+        assertThat(applicationOptionA.toString(), is("{option=[-a,--testA], order=1}"));
     }
 
     private ApplicationOption createApplicationOption(final String opt, final String longOpt, final boolean hasArg, final String description, int order) {

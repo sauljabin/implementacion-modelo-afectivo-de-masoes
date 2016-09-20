@@ -12,21 +12,22 @@ import org.apache.commons.cli.HelpFormatter;
 public class HelpOption extends ApplicationOption {
 
     private final HelpFormatter formatter;
-    private ApplicationOptions options;
 
-    public HelpOption(ApplicationOptions options) {
-        this(options, new HelpFormatter());
+    public HelpOption() {
+        this(new HelpFormatter());
     }
 
-    public HelpOption(ApplicationOptions options, HelpFormatter formatter) {
-        this.options = options;
+    public HelpOption(HelpFormatter formatter) {
         this.formatter = formatter;
+        formatter.setSyntaxPrefix("Usage: ");
+        formatter.setLongOptSeparator("=");
+        formatter.setOptionComparator(OptionWrapper.comparator());
     }
 
     @Override
     public void exec(String optionValue) {
         try {
-            formatter.printHelp(Setting.APP_NAME.getValue(), options.toOptions());
+            formatter.printHelp(Setting.APP_NAME.getValue(), ApplicationOptions.getInstance().toOptions());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

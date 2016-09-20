@@ -22,13 +22,11 @@ public class HelpOptionTest {
 
     private HelpOption helpOption;
     private HelpFormatter mockFormatter;
-    private ApplicationOptions applicationOptions;
 
     @Before
     public void setUp() {
         mockFormatter = mock(HelpFormatter.class);
-        applicationOptions = new ApplicationOptions();
-        helpOption = new HelpOption(applicationOptions, mockFormatter);
+        helpOption = new HelpOption(mockFormatter);
     }
 
     @Test

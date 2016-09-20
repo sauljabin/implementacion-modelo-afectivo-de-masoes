@@ -39,7 +39,7 @@ public class ApplicationLoggerTest {
         expectedClass = Main.class;
         PowerMockito.mockStatic(LoggerFactory.class);
         when(LoggerFactory.getLogger(expectedClass)).thenReturn(mockLogger);
-        applicationLogger = ApplicationLogger.getInstance(expectedClass);
+        applicationLogger = ApplicationLogger.newInstance(expectedClass);
     }
 
     @Test

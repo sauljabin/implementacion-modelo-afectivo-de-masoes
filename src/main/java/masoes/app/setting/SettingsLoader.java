@@ -67,11 +67,11 @@ public class SettingsLoader {
         }
     }
 
-    public void clear() {
+    public synchronized void clear() {
         properties.clear();
     }
 
-    public String toString() {
+    public synchronized String toString() {
         return toMap().toString();
     }
 

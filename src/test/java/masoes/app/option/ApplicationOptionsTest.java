@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public class ApplicationOptionsTest {
@@ -23,10 +25,10 @@ public class ApplicationOptionsTest {
 
     @Before
     public void setUp() throws Exception {
-        applicationOptions = new ApplicationOptions();
+        applicationOptions = ApplicationOptions.getInstance();
         expectedOptions = new ArrayList<>();
         expectedOptions.add(new VersionOption());
-        expectedOptions.add(new HelpOption(applicationOptions));
+        expectedOptions.add(new HelpOption());
         expectedOptions.add(new JadeOption());
         Collections.sort(expectedOptions);
     }
@@ -41,8 +43,13 @@ public class ApplicationOptionsTest {
         Options expectedOptions = new Options();
         expectedOptions.addOption(new JadeOption().toOption());
         expectedOptions.addOption(new VersionOption().toOption());
-        expectedOptions.addOption(new HelpOption(applicationOptions).toOption());
+        expectedOptions.addOption(new HelpOption().toOption());
         assertReflectionEquals(expectedOptions, applicationOptions.toOptions());
+    }
+
+    @Test
+    public void shouldReturnSameObject() {
+        assertThat(ApplicationOptions.getInstance(), is(applicationOptions));
     }
 
 }

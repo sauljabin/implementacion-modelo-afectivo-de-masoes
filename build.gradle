@@ -48,7 +48,7 @@ jar {
 run {
     main = mainClassName
     if (project.hasProperty(argsProperty)) {
-        args(project.property(argsProperty).split(","))
+        args(project.property(argsProperty).split())
     }
 }
 

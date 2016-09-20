@@ -12,7 +12,7 @@ public abstract class ApplicationOption implements Comparable<ApplicationOption>
 
     @Override
     public String toString() {
-        return String.format("{option=[-%s,--%s], description=%s, order=%d}", getOpt(), getLongOpt(), getDescription(), getOrder());
+        return String.format("{option=[-%s,--%s], order=%d}", getOpt(), getLongOpt(), getOrder());
     }
 
     @Override
@@ -20,9 +20,8 @@ public abstract class ApplicationOption implements Comparable<ApplicationOption>
         return Integer.compare(this.getOrder(), applicationOption.getOrder());
     }
 
-
     public Option toOption() {
-        return new Option(getOpt(), getLongOpt(), hasArg(), getDescription());
+        return new OptionWrapper(this);
     }
 
     public abstract int getOrder();

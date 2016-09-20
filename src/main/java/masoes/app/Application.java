@@ -17,24 +17,26 @@ public class Application {
 
     private ApplicationLogger logger;
     private SettingsLoader settingsLoader;
-    private ApplicationOptionProcessor cli;
+    private ApplicationOptionProcessor applicationOptionProcessor;
+    private ApplicationOptions applicationOptions;
 
-    public Application(ApplicationLogger logger, SettingsLoader settingsLoader, ApplicationOptionProcessor cli) {
+    public Application(ApplicationLogger logger, SettingsLoader settingsLoader, ApplicationOptionProcessor applicationOptionProcessor) {
         this.logger = logger;
         this.settingsLoader = settingsLoader;
-        this.cli = cli;
+        this.applicationOptionProcessor = applicationOptionProcessor;
     }
 
     public Application() {
-        logger = ApplicationLogger.getInstance(Main.class);
+        logger = ApplicationLogger.newInstance(Main.class);
         settingsLoader = SettingsLoader.getInstance();
-        cli = new ApplicationOptionProcessor(new ApplicationOptions());
+        applicationOptions = ApplicationOptions.getInstance();
+        applicationOptionProcessor = new ApplicationOptionProcessor(applicationOptions);
     }
 
     public void run(String[] args) {
         try {
             logger.startingApplication(args, settingsLoader.toMap());
-            cli.processArgs(args);
+            applicationOptionProcessor.processArgs(args);
         } catch (Exception e) {
             logger.cantNotStartApplication(e);
             System.exit(FAILURE_STATUS);

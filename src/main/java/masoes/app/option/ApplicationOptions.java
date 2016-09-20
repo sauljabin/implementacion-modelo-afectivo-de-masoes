@@ -14,29 +14,33 @@ import java.util.List;
 
 public class ApplicationOptions {
 
-    List<ApplicationOption> applicationOptions;
+    private static ApplicationOptions INSTANCE;
+    private List<ApplicationOption> applicationOptions;
 
-    public ApplicationOptions(List<ApplicationOption> applicationOptions) {
-        this.applicationOptions = applicationOptions;
-    }
-
-    public ApplicationOptions() {
-        this(new ArrayList<>());
+    private ApplicationOptions() {
         addOptions();
     }
 
+    public synchronized static ApplicationOptions getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new ApplicationOptions();
+        }
+        return INSTANCE;
+    }
+
     private void addOptions() {
-        applicationOptions.add(new HelpOption(this));
+        applicationOptions = new ArrayList<>();
+        applicationOptions.add(new HelpOption());
         applicationOptions.add(new VersionOption());
         applicationOptions.add(new JadeOption());
         Collections.sort(applicationOptions);
     }
 
-    public List<ApplicationOption> getApplicationOptions() {
+    public synchronized List<ApplicationOption> getApplicationOptions() {
         return applicationOptions;
     }
 
-    public Options toOptions() {
+    public synchronized Options toOptions() {
         Options options = new Options();
         getApplicationOptions().forEach(option -> options.addOption(option.toOption()));
         return options;

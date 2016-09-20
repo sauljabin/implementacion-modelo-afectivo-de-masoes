@@ -19,7 +19,7 @@ public class ApplicationOptionProcessor {
     private CommandLine commandLine;
 
     public ApplicationOptionProcessor(ApplicationOptions options) {
-        this(options, new DefaultParser(), ApplicationLogger.getInstance(ApplicationOptionProcessor.class));
+        this(options, new DefaultParser(), ApplicationLogger.newInstance(ApplicationOptionProcessor.class));
     }
 
     public ApplicationOptionProcessor(ApplicationOptions options, CommandLineParser commandLineParser, ApplicationLogger logger) {
@@ -40,11 +40,15 @@ public class ApplicationOptionProcessor {
     private void execOption() {
         options.getApplicationOptions()
                 .stream()
-                .filter(option -> commandLine.hasOption(option.getOpt()))
+                .filter(option -> commandLine.hasOption(getOptionKey(option)))
                 .forEach(option -> {
                     logger.startingOption(option);
-                    option.exec(commandLine.getOptionValue(option.getOpt()));
+                    option.exec(commandLine.getOptionValue(getOptionKey(option)));
                 });
+    }
+
+    private String getOptionKey(ApplicationOption option) {
+        return option.getLongOpt() == null ? option.getOpt() : option.getLongOpt();
     }
 
 }

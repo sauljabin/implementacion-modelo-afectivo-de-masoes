@@ -10,9 +10,6 @@ import jade.Boot;
 
 public class JadeOption extends ApplicationOption {
 
-    private static final String STR_NL = "\n";
-    private static final String STR_QUOT = "\"";
-
     @Override
     public void exec(String optionValue) {
         Boot.main(optionValue.split(" "));
@@ -25,7 +22,7 @@ public class JadeOption extends ApplicationOption {
 
     @Override
     public String getOpt() {
-        return "j";
+        return null;
     }
 
     @Override
@@ -35,17 +32,13 @@ public class JadeOption extends ApplicationOption {
 
     @Override
     public String getDescription() {
-        String description = "Starts Jade framework with arguments, examples:" + STR_NL +
-                "Starts with gui: -gui" +
-                STR_NL +
-                "Adds agents (separate with ';'):" +
-                STR_NL +
-                "-agents <name>:<class>;<name>:<class>" +
-                STR_NL +
-                "Adds agents with arguments (separate with ','):" +
-                STR_NL +
-                "-agents <name>:<class>(<" + STR_QUOT + "argument 1" + STR_QUOT + ">,<" + STR_QUOT + "argument 2" + STR_QUOT + ">)" +
-                STR_NL;
+        String description = "Starts JADE framework with arguments, examples:\n" +
+                "Starts with gui: \n" +
+                "  --jade=-gui\n" +
+                "Adds agents: \n" +
+                "  --jade=\"-agents <name>:<class>;<name>:<class>\"\n" +
+                "Agent arguments: \n" +
+                "  --jade=\"-agents <name>:<class>(argument,'argument 2')\"";
         return description;
     }
 
