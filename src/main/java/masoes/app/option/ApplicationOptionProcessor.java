@@ -14,15 +14,15 @@ import org.apache.commons.cli.DefaultParser;
 public class ApplicationOptionProcessor {
 
     private ApplicationLogger logger;
-    private ApplicationOptions options;
+    private OptionsCollection options;
     private CommandLineParser commandLineParser;
     private CommandLine commandLine;
 
-    public ApplicationOptionProcessor(ApplicationOptions options) {
+    public ApplicationOptionProcessor(OptionsCollection options) {
         this(options, new DefaultParser(), ApplicationLogger.newInstance(ApplicationOptionProcessor.class));
     }
 
-    public ApplicationOptionProcessor(ApplicationOptions options, CommandLineParser commandLineParser, ApplicationLogger logger) {
+    public ApplicationOptionProcessor(OptionsCollection options, CommandLineParser commandLineParser, ApplicationLogger logger) {
         this.options = options;
         this.commandLineParser = commandLineParser;
         this.logger = logger;

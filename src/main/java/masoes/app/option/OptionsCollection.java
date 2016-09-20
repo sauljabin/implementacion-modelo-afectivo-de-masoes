@@ -12,18 +12,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ApplicationOptions {
+public class OptionsCollection {
 
-    private static ApplicationOptions INSTANCE;
+    private static OptionsCollection INSTANCE;
     private List<ApplicationOption> applicationOptions;
 
-    private ApplicationOptions() {
+    private OptionsCollection() {
         addOptions();
     }
 
-    public synchronized static ApplicationOptions getInstance() {
+    public synchronized static OptionsCollection getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new ApplicationOptions();
+            INSTANCE = new OptionsCollection();
         }
         return INSTANCE;
     }

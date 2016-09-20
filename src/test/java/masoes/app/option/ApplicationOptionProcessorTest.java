@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 public class ApplicationOptionProcessorTest {
 
     private ApplicationOptionProcessor optionProcessor;
-    private ApplicationOptions mockOptions;
+    private OptionsCollection mockOptions;
     private CommandLineParser mockCommandLineParser;
     private CommandLine mockCommandLine;
     private String expectedOpt;
@@ -38,7 +38,7 @@ public class ApplicationOptionProcessorTest {
 
         applicationOptions = new ArrayList<>();
         applicationOptions.add(mockOption);
-        mockOptions = mock(ApplicationOptions.class);
+        mockOptions = mock(OptionsCollection.class);
 
         optionProcessor = new ApplicationOptionProcessor(mockOptions, mockCommandLineParser, mockLogger);
 

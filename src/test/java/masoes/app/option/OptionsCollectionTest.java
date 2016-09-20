@@ -18,14 +18,14 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
-public class ApplicationOptionsTest {
+public class OptionsCollectionTest {
 
-    private ApplicationOptions applicationOptions;
+    private OptionsCollection optionsCollection;
     private List<ApplicationOption> expectedOptions;
 
     @Before
     public void setUp() throws Exception {
-        applicationOptions = ApplicationOptions.getInstance();
+        optionsCollection = OptionsCollection.getInstance();
         expectedOptions = new ArrayList<>();
         expectedOptions.add(new VersionOption());
         expectedOptions.add(new HelpOption());
@@ -35,7 +35,7 @@ public class ApplicationOptionsTest {
 
     @Test
     public void shouldReturnSortOption() {
-        assertReflectionEquals(expectedOptions, applicationOptions.getApplicationOptions());
+        assertReflectionEquals(expectedOptions, optionsCollection.getApplicationOptions());
     }
 
     @Test
@@ -44,12 +44,12 @@ public class ApplicationOptionsTest {
         expectedOptions.addOption(new JadeOption().toOption());
         expectedOptions.addOption(new VersionOption().toOption());
         expectedOptions.addOption(new HelpOption().toOption());
-        assertReflectionEquals(expectedOptions, applicationOptions.toOptions());
+        assertReflectionEquals(expectedOptions, optionsCollection.toOptions());
     }
 
     @Test
     public void shouldReturnSameObject() {
-        assertThat(ApplicationOptions.getInstance(), is(applicationOptions));
+        assertThat(OptionsCollection.getInstance(), is(optionsCollection));
     }
 
 }
