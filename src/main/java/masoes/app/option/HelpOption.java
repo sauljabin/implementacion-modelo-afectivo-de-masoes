@@ -35,7 +35,7 @@ public class HelpOption extends ApplicationOption {
 
     @Override
     public int getOrder() {
-        return 2;
+        return 20;
     }
 
     @Override

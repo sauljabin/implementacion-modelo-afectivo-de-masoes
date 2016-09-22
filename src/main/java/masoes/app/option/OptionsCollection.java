@@ -33,6 +33,7 @@ public class OptionsCollection {
         applicationOptions.add(new HelpOption());
         applicationOptions.add(new VersionOption());
         applicationOptions.add(new JadeOption());
+        applicationOptions.add(new SettingsOption());
         Collections.sort(applicationOptions);
     }
 

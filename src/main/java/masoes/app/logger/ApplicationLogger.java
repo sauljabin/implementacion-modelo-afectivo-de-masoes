@@ -41,8 +41,16 @@ public class ApplicationLogger {
 
     public void startingOption(ApplicationOption applicationOption) {
         LogWriter.newInstance()
-                .message("Starting option with arguments: %s")
+                .message("Starting option: %s")
                 .args(applicationOption)
                 .info(logger);
     }
+
+    public void updatedSettings(Map<String, String> settings) {
+        LogWriter.newInstance()
+                .message("Updated settings: %s")
+                .args(settings.toString())
+                .info(logger);
+    }
+
 }

@@ -50,8 +50,8 @@ public class HelpOptionTest {
     }
 
     @Test
-    public void shouldGetSecondOrder() {
-        assertThat(helpOption.getOrder(), is(2));
+    public void shouldGetOrder() {
+        assertThat(helpOption.getOrder(), is(20));
     }
 
     @Test

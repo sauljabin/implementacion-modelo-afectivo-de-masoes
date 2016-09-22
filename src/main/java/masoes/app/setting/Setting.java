@@ -6,6 +6,8 @@
 
 package masoes.app.setting;
 
+import java.util.Map;
+
 public enum Setting {
 
     APP_NAME("app.name"),
@@ -35,6 +37,10 @@ public enum Setting {
         return SettingsLoader.getInstance().getSetting(key, "");
     }
 
+    public static Map<String, String> toMap() {
+        return SettingsLoader.getInstance().toMap();
+    }
+
     public String getKey() {
         return key;
     }
@@ -50,5 +56,4 @@ public enum Setting {
     public String getValue(String defaultValue) {
         return SettingsLoader.getInstance().getSetting(key, defaultValue);
     }
-
 }

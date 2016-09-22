@@ -7,9 +7,11 @@
 package masoes.app.setting;
 
 import org.junit.Test;
+import org.unitils.reflectionassert.ReflectionAssert;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public class SettingTest {
 
@@ -43,6 +45,12 @@ public class SettingTest {
         String valueSetting = "valueSetting";
         Setting.set(keySetting, valueSetting);
         assertThat(Setting.get(keySetting), is(expectedSettingsLoader.getSetting(keySetting)));
+    }
+
+    @Test
+    public void shouldGetMap() {
+        expectedSettingsLoader.load();
+        assertReflectionEquals(SettingsLoader.getInstance().toMap(), Setting.toMap());
     }
 
 }

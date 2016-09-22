@@ -27,7 +27,7 @@ public class Application {
     }
 
     public Application() {
-        logger = ApplicationLogger.newInstance(Main.class);
+        logger = ApplicationLogger.newInstance(Application.class);
         settingsLoader = SettingsLoader.getInstance();
         optionsCollection = OptionsCollection.getInstance();
         applicationOptionProcessor = new ApplicationOptionProcessor(optionsCollection);

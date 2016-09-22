@@ -84,15 +84,19 @@ Ayuda:
 ./gradlew run -Pargs="-h"
 
 Usage: masoes
- -v,--version      Shows the application version
- -h,--help         Shows the options
-    --jade=<arg>   Starts JADE framework with arguments, examples:
-                   Starts with gui:
-                   --jade=-gui
-                   Adds agents:
-                   --jade="-agents <name>:<class>;<name>:<class>"
-                   Agent arguments:
-                   --jade="-agents <name>:<class>(argument1,argument 2)"
+
+ -v,--version          Shows the application version
+ -h,--help             Shows the options
+ -s,--settings=<arg>   Sets application settings, examples:
+                       -s "{setting1=value1,setting2=value2}"
+                       --settings="{setting1=value1,setting2=value2}"
+    --jade=<arg>       Starts JADE framework with arguments, examples:
+                       Starts with gui:
+                       --jade=-gui
+                       Adds agents:
+                       --jade="-agents <name>:<class>;<name>:<class>"
+                       Agent arguments:
+                       --jade="-agents <name>:<class>(argument1,argument2)"
 ```
 
 ## Instrucciones Empaquetado 
@@ -107,6 +111,12 @@ Versión:
 
 ```
 ./masoes -v
+```
+
+Nuevas configuraciones:
+
+```
+./masoes --settings="{setting1=value1,setting2=value2}"
 ```
 
 Ejecutar JADE manualmente:

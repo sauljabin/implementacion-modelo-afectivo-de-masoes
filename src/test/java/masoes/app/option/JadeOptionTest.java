@@ -51,8 +51,8 @@ public class JadeOptionTest {
     }
 
     @Test
-    public void shouldGetThirdOrder() {
-        assertThat(jadeOption.getOrder(), is(3));
+    public void shouldGetOrder() {
+        assertThat(jadeOption.getOrder(), is(40));
     }
 
     @Test

@@ -20,7 +20,7 @@ public class JadeOption extends ApplicationOption {
 
     @Override
     public int getOrder() {
-        return 3;
+        return 40;
     }
 
     @Override

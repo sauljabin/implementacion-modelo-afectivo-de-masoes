@@ -48,8 +48,8 @@ public class VersionOptionTest {
     }
 
     @Test
-    public void shouldGetFirstOrder() {
-        assertThat(versionOption.getOrder(), is(1));
+    public void shouldGetOrder() {
+        assertThat(versionOption.getOrder(), is(10));
     }
 
     @Test

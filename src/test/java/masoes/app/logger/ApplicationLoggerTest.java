@@ -62,7 +62,15 @@ public class ApplicationLoggerTest {
     public void shouldLogStartingOption() {
         VersionOption applicationOption = new VersionOption();
         applicationLogger.startingOption(applicationOption);
-        verify(mockLogger).info(eq("Starting option with arguments: " + applicationOption.toString()));
+        verify(mockLogger).info(eq("Starting option: " + applicationOption.toString()));
+    }
+
+    @Test
+    public void shouldLogUpdatedSettings() {
+        Map<String, String> expectedMap = new HashMap<>();
+        expectedMap.put("app", "masoes");
+        applicationLogger.updatedSettings(expectedMap);
+        verify(mockLogger).info(eq("Updated settings: {app=masoes}"));
     }
 
 }
