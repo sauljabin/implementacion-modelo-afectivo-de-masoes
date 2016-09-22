@@ -75,6 +75,13 @@ public class JadeOptionTest {
     }
 
     @Test
+    public void shouldSplitStringToJadeFormatAgentArgumentsAndGui() {
+        String stringArgs = "-agents a1:agentClass(arg1,arg2,arg3 and arg4) -gui";
+        String[] expectedSplitArguments = {"-agents", "a1:agentClass(arg1,arg2,arg3 and arg4)", "-gui"};
+        verifyInvokeJade(stringArgs, expectedSplitArguments);
+    }
+
+    @Test
     public void shouldSplitStringToJadeFormatAndMultipleAgents() {
         String stringArgs = "-gui -agents a1:agentClass(arg1,arg2,arg3 and arg4);a2:agentClass(arg1,arg2,arg3 and arg4)";
         String[] expectedSplitArguments = {"-gui", "-agents", "a1:agentClass(arg1,arg2,arg3 and arg4);a2:agentClass(arg1,arg2,arg3 and arg4)"};

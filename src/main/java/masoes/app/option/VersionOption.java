@@ -12,13 +12,16 @@ public class VersionOption extends ApplicationOption {
 
     @Override
     public void exec(String optionValue) {
+        String line = "--------------------------------------------------";
+        System.out.println(line);
         System.out.println(Setting.APP_NAME.getValue().toUpperCase());
         System.out.printf("Version: %s\n", Setting.APP_VERSION.getValue());
         System.out.printf("Revision: %s\n", Setting.APP_REVISION.getValue());
-        System.out.println();
+        System.out.println(line);
         System.out.println("JADE");
         System.out.printf("Version: %s\n", jade.core.Runtime.getVersion());
         System.out.printf("Revision: %s\n", jade.core.Runtime.getRevision());
+        System.out.println(line);
     }
 
     @Override

@@ -2,11 +2,11 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'java'
 apply plugin: 'application'
+apply from: 'util.gradle'
 
 version = '1.0.0'
 mainClassName = 'masoes.app.Main'
 
-def gitRevision = 'git rev-parse HEAD'.execute().text.trim()
 def appName = rootProject.name
 def argsProperty = 'args'
 
@@ -36,19 +36,19 @@ dependencies {
 }
 
 processResources {
-    expand('appName': appName, 'appVersion': version, 'appRevision': gitRevision)
+    expand('appName': appName, 'appVersion': version, 'appRevision': gitRevision())
 }
 
 jar {
     manifest {
-        attributes('Implementation-Title': appName, 'Implementation-Version': version, 'Implementation-Revision': gitRevision)
+        attributes('Implementation-Title': appName, 'Implementation-Version': version, 'Implementation-Revision': gitRevision())
     }
 }
 
 run {
     main = mainClassName
     if (project.hasProperty(argsProperty)) {
-        args(project.property(argsProperty).split())
+        args(processArguments(project.property(argsProperty)))
     }
 }
 

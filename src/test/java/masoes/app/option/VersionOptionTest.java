@@ -11,6 +11,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -53,9 +54,11 @@ public class VersionOptionTest {
 
     @Test
     public void shouldPrintVersion() {
-        String expectedString = String.format("APPNAME\nVersion: 1\nRevision: 1\n\nJADE\nVersion: %s\nRevision: %s\n", jade.core.Runtime.getVersion(), jade.core.Runtime.getRevision());
+        String expectedStringMasoes = "APPNAME\nVersion: 1\nRevision: 1";
+        String expectedStringJade = String.format("JADE\nVersion: %s\nRevision: %s\n", jade.core.Runtime.getVersion(), jade.core.Runtime.getRevision());
         versionOption.exec("");
-        assertThat(systemOutRule.getLog(), is(expectedString));
+        assertThat(systemOutRule.getLog(), containsString(expectedStringMasoes));
+        assertThat(systemOutRule.getLog(), containsString(expectedStringJade));
     }
 
 

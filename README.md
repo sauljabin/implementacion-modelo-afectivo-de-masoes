@@ -27,7 +27,7 @@ colectivo. Para esto, se plantea diseñar una arquitectura multiagente basada en
 el modelo afectivo anteriormente mencionado y aplicar la arquitectura sobre un
 caso de estudio.
 
-## Instrucciones
+## Instrucciones Gradle
 
 Crear estructura de proyecto para eclipse:
 
@@ -93,4 +93,24 @@ Usage: masoes
                    --jade="-agents <name>:<class>;<name>:<class>"
                    Agent arguments:
                    --jade="-agents <name>:<class>(argument1,argument 2)"
+```
+
+## Instrucciones Empaquetado 
+
+Ayuda:
+
+```
+./masoes -h
+```
+
+Versión:
+
+```
+./masoes -v
+```
+
+Ejecutar JADE manualmente:
+
+```
+./masoes --jade="-gui -agents a1:masoes.core.agent.TestAgent(arg1, arg2)"
 ```

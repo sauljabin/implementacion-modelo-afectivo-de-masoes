@@ -58,9 +58,13 @@ public class JadeOption extends ApplicationOption {
 
         for (int i = 0; i < optionValue.length(); i++) {
             char c = optionValue.charAt(i);
+
             if (c == '(') {
                 ignoreWhiteSpace = true;
+            } else if (c == ')') {
+                ignoreWhiteSpace = false;
             }
+
             if (c == ' ' && !ignoreWhiteSpace) {
                 arguments.add(tempString);
                 tempString = "";
