@@ -53,6 +53,12 @@ Iniciar aplicación con argumentos:
 ./gradlew run -Pargs="arg1 arg2"
 ```
 
+Iniciar aplicación con argumentos y espacios en blanco:
+
+```
+./gradlew run -Pargs='arg1 arg2="token token"'
+```
+
 Crear empaquetado:
 
 ```
@@ -69,4 +75,22 @@ Limpiar empaquetados:
 
 ```
 ./gradlew clean
+```
+
+
+Ayuda:
+
+```
+./gradlew run -Pargs="-h"
+
+Usage: masoes
+ -v,--version      Shows the application version
+ -h,--help         Shows the options
+    --jade=<arg>   Starts JADE framework with arguments, examples:
+                   Starts with gui:
+                   --jade=-gui
+                   Adds agents:
+                   --jade="-agents <name>:<class>;<name>:<class>"
+                   Agent arguments:
+                   --jade="-agents <name>:<class>(argument1,argument 2)"
 ```

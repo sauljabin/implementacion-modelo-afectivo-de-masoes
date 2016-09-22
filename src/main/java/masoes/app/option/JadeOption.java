@@ -8,11 +8,14 @@ package masoes.app.option;
 
 import jade.Boot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class JadeOption extends ApplicationOption {
 
     @Override
     public void exec(String optionValue) {
-        Boot.main(optionValue.split(" "));
+        Boot.main(findJadeArguments(optionValue));
     }
 
     @Override
@@ -38,12 +41,34 @@ public class JadeOption extends ApplicationOption {
                 "Adds agents: \n" +
                 "  --jade=\"-agents <name>:<class>;<name>:<class>\"\n" +
                 "Agent arguments: \n" +
-                "  --jade=\"-agents <name>:<class>(argument,'argument 2')\"";
+                "  --jade=\"-agents <name>:<class>(argument1,argument 2)\"";
         return description;
     }
 
     @Override
     public boolean hasArg() {
         return true;
+    }
+
+    private String[] findJadeArguments(String optionValue) {
+        List<String> arguments = new ArrayList<>();
+
+        String tempString = "";
+        boolean ignoreWhiteSpace = false;
+
+        for (int i = 0; i < optionValue.length(); i++) {
+            char c = optionValue.charAt(i);
+            if (c == '(') {
+                ignoreWhiteSpace = true;
+            }
+            if (c == ' ' && !ignoreWhiteSpace) {
+                arguments.add(tempString);
+                tempString = "";
+            } else {
+                tempString += c;
+            }
+        }
+        arguments.add(tempString);
+        return arguments.toArray(new String[arguments.size()]);
     }
 }

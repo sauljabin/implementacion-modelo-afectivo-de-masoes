@@ -56,11 +56,36 @@ public class JadeOptionTest {
     }
 
     @Test
-    public void shouldStartJade() throws Exception {
+    public void shouldInvokeStartJade() throws Exception {
+        verifyInvokeJade("", "".split(""));
+    }
+
+    @Test
+    public void shouldSplitStringToJadeFormat() {
+        String stringArgs = "-gui -agents a1:agentClass";
+        String[] expectedSplitArguments = {"-gui", "-agents", "a1:agentClass"};
+        verifyInvokeJade(stringArgs, expectedSplitArguments);
+    }
+
+    @Test
+    public void shouldSplitStringToJadeFormatAndAgentArguments() {
+        String stringArgs = "-gui -agents a1:agentClass(arg1,arg2,arg3 and arg4)";
+        String[] expectedSplitArguments = {"-gui", "-agents", "a1:agentClass(arg1,arg2,arg3 and arg4)"};
+        verifyInvokeJade(stringArgs, expectedSplitArguments);
+    }
+
+    @Test
+    public void shouldSplitStringToJadeFormatAndMultipleAgents() {
+        String stringArgs = "-gui -agents a1:agentClass(arg1,arg2,arg3 and arg4);a2:agentClass(arg1,arg2,arg3 and arg4)";
+        String[] expectedSplitArguments = {"-gui", "-agents", "a1:agentClass(arg1,arg2,arg3 and arg4);a2:agentClass(arg1,arg2,arg3 and arg4)"};
+        verifyInvokeJade(stringArgs, expectedSplitArguments);
+    }
+
+    private void verifyInvokeJade(String stringArgs, String[] expectedSplitArguments) {
         PowerMockito.mockStatic(jade.Boot.class);
-        jadeOption.exec("");
+        jadeOption.exec(stringArgs);
         PowerMockito.verifyStatic();
-        jade.Boot.main("".split(" "));
+        jade.Boot.main(expectedSplitArguments);
     }
 
 }
