@@ -7,7 +7,6 @@
 package masoes.app.setting;
 
 import org.junit.Test;
-import org.unitils.reflectionassert.ReflectionAssert;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

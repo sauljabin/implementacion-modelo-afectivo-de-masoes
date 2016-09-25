@@ -96,7 +96,7 @@ Usage: masoes
                        Adds agents:
                        --jade="-agents <name>:<class>;<name>:<class>"
                        Agent arguments:
-                       --jade="-agents <name>:<class>(argument1,argument2)"
+                       --jade="-agents <name>:<class>(arg1,arg2)"
 ```
 
 ## Instrucciones Empaquetado 

@@ -41,7 +41,7 @@ public class JadeOption extends ApplicationOption {
                 "Adds agents: \n" +
                 "  --jade=\"-agents <name>:<class>;<name>:<class>\"\n" +
                 "Agent arguments: \n" +
-                "  --jade=\"-agents <name>:<class>(argument1,argument 2)\"";
+                "  --jade=\"-agents <name>:<class>(arg1,arg2)\"";
         return description;
     }
 
