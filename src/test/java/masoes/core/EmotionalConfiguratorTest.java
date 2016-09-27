@@ -4,14 +4,12 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.core.model;
+package masoes.core;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
-import masoes.core.Emotion;
 import masoes.core.emotion.*;
-import masoes.core.stimulus.InitialStimulus;
 import masoes.util.math.RandomGenerator;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,20 +18,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
-public class MasoesEmotionalConfiguratorTest {
+public class EmotionalConfiguratorTest {
 
     public static final int POSITIVE_SIGN = 1;
     public static final int NEGATIVE_SIGN = -1;
     private List<Emotion> emotions;
     private GeometryFactory geometryFactory;
     private RandomGenerator random;
+    private EmotionalConfigurator configurator;
 
     @Before
     public void setUp() throws Exception {
@@ -48,11 +46,16 @@ public class MasoesEmotionalConfiguratorTest {
         emotions.add(new Rejection());
         geometryFactory = new GeometryFactory();
         random = new RandomGenerator();
+        configurator = new EmotionalConfigurator() {
+            @Override
+            public EmotionalState updateEmotionalState(Stimulus stimulus) {
+                return new EmotionalState(random.random(-1, 1), random.random(-1, 1));
+            }
+        };
     }
 
     @Test
     public void shouldReturnCorrectList() {
-        MasoesEmotionalConfigurator configurator = new MasoesEmotionalConfigurator();
         assertReflectionEquals(configurator.getEmotions(), emotions);
     }
 
@@ -102,11 +105,18 @@ public class MasoesEmotionalConfiguratorTest {
     }
 
     public void testEmotion(Class<?> emotionClass, Point randomPoint) {
-        MasoesEmotionalConfigurator fakeConfigurator = mock(MasoesEmotionalConfigurator.class);
+        EmotionalConfigurator fakeConfigurator = mock(EmotionalConfigurator.class);
         when(fakeConfigurator.getEmotionalPoint()).thenReturn(randomPoint);
-        when(fakeConfigurator.getEmotionalState()).thenCallRealMethod();
+        when(fakeConfigurator.getEmotion()).thenCallRealMethod();
         when(fakeConfigurator.getEmotions()).thenReturn(emotions);
-        assertThat(fakeConfigurator.getEmotionalState(), is(instanceOf(emotionClass)));
+        assertThat(fakeConfigurator.getEmotion(), is(instanceOf(emotionClass)));
+    }
+
+    @Test
+    public void shouldReturnTheSameActivationAndSatisfaction() {
+        configurator.evaluateStimulus(null);
+        assertThat(configurator.getEmotionalPoint().getX(), is(configurator.getEmotionalState().getActivation()));
+        assertThat(configurator.getEmotionalPoint().getY(), is(configurator.getEmotionalState().getSatisfaction()));
     }
 
     private Point getRandomPointForBasicEmotion(double xMin, double xMax, double yMin, double yMax) {
@@ -125,36 +135,6 @@ public class MasoesEmotionalConfiguratorTest {
 
     private Point createPoint(double x, double y) {
         return geometryFactory.createPoint(new Coordinate(x, y));
-    }
-
-    @Test
-    public void shouldInitRandomValues() {
-        MasoesEmotionalConfigurator configurator = new MasoesEmotionalConfigurator();
-        evaluateRandom(configurator);
-    }
-
-    public void evaluateRandom(MasoesEmotionalConfigurator configurator) {
-        assertThat(configurator.getEmotionalPoint().getX(), is(greaterThanOrEqualTo(-1.)));
-        assertThat(configurator.getEmotionalPoint().getX(), is(lessThanOrEqualTo(1.)));
-        assertThat(configurator.getEmotionalPoint().getX(), is(not(0.0)));
-
-        assertThat(configurator.getEmotionalPoint().getY(), is(greaterThanOrEqualTo(-1.)));
-        assertThat(configurator.getEmotionalPoint().getY(), is(lessThanOrEqualTo(1.)));
-        assertThat(configurator.getEmotionalPoint().getY(), is(not(0.0)));
-    }
-
-    @Test
-    public void shouldReturnTheSameActivationAndSatisfaction() {
-        MasoesEmotionalConfigurator configurator = new MasoesEmotionalConfigurator();
-        assertThat(configurator.getEmotionalPoint().getX(), is(configurator.getActivation()));
-        assertThat(configurator.getEmotionalPoint().getY(), is(configurator.getSatisfaction()));
-    }
-
-    @Test
-    public void shouldGenerateRandomStimulus() {
-        MasoesEmotionalConfigurator configurator = new MasoesEmotionalConfigurator();
-        configurator.evaluateStimulus(new InitialStimulus());
-        evaluateRandom(configurator);
     }
 
 }

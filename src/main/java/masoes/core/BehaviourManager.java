@@ -8,6 +8,17 @@ package masoes.core;
 
 public abstract class BehaviourManager {
 
-    public abstract BehaviourType getBehaviourAssociated(EmotionType emotionType);
+    public BehaviourType getBehaviourAssociated(EmotionType emotionType) {
+        switch (emotionType) {
+            case POSITIVE:
+                return BehaviourType.IMITATIVE;
+            case NEGATIVE_LOW:
+                return BehaviourType.COGNITIVE;
+            case NEGATIVE_HIGH:
+                return BehaviourType.REACTIVE;
+            default:
+                return BehaviourType.IMITATIVE;
+        }
+    }
 
 }
