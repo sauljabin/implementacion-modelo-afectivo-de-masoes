@@ -52,4 +52,9 @@ public class SettingTest {
         assertReflectionEquals(SettingsLoader.getInstance().toMap(), Setting.toMap());
     }
 
+    @Test
+    public void shouldBeEqualsKeyAndToString() {
+        assertThat(Setting.APP_NAME.getKey(), is(Setting.APP_NAME.toString()));
+    }
+
 }

@@ -31,6 +31,7 @@ public class OptionsCollectionTest {
         expectedOptions.add(new HelpOption());
         expectedOptions.add(new JadeOption());
         expectedOptions.add(new SettingsOption());
+        expectedOptions.add(new CaseOption());
         Collections.sort(expectedOptions);
     }
 
@@ -41,12 +42,14 @@ public class OptionsCollectionTest {
 
     @Test
     public void shouldReturnOptionsObject() {
-        Options expectedOptions = new Options();
-        expectedOptions.addOption(new JadeOption().toOption());
-        expectedOptions.addOption(new VersionOption().toOption());
-        expectedOptions.addOption(new HelpOption().toOption());
-        expectedOptions.addOption(new SettingsOption().toOption());
+        Options expectedOptions = createOptions();
         assertReflectionEquals(expectedOptions, optionsCollection.toOptions());
+    }
+
+    private Options createOptions() {
+        Options options = new Options();
+        expectedOptions.forEach(option -> options.addOption(option.toOption()));
+        return options;
     }
 
     @Test

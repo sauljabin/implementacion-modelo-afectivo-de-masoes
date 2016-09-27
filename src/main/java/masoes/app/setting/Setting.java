@@ -17,7 +17,8 @@ public enum Setting {
     OS_ARCH("os.arch"),
     OS_VERSION("os.version"),
     JAVA_VERSION("java.version"),
-    JAVA_VENDOR("java.vendor");
+    JAVA_VENDOR("java.vendor"),
+    MASOES_CASE("masoes.case");
 
     private String key;
 
@@ -56,4 +57,10 @@ public enum Setting {
     public String getValue(String defaultValue) {
         return SettingsLoader.getInstance().getSetting(key, defaultValue);
     }
+
+    @Override
+    public String toString() {
+        return key;
+    }
+
 }

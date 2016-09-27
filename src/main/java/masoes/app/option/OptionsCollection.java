@@ -34,6 +34,7 @@ public class OptionsCollection {
         applicationOptions.add(new VersionOption());
         applicationOptions.add(new JadeOption());
         applicationOptions.add(new SettingsOption());
+        applicationOptions.add(new CaseOption());
         Collections.sort(applicationOptions);
     }
 
