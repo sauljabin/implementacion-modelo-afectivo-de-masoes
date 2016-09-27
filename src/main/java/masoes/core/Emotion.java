@@ -6,12 +6,24 @@
 
 package masoes.core;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 public abstract class Emotion {
 
-    public abstract Geometry getGeometry();
+    private GeometryFactory geometryFactory;
+
+    public Emotion() {
+        geometryFactory = new GeometryFactory();
+    }
+
+    public Geometry getGeometry() {
+        return geometryFactory.createPolygon(getCoordinates());
+    }
 
     public abstract EmotionType getEmotionType();
+
+    public abstract Coordinate[] getCoordinates();
 
 }

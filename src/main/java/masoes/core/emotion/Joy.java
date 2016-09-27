@@ -7,20 +7,14 @@
 package masoes.core.emotion;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Polygon;
 import masoes.core.Emotion;
 import masoes.core.EmotionType;
 
 public class Joy extends Emotion {
 
-    private GeometryFactory geometryFactory;
     private Coordinate[] coordinates;
-    private Polygon polygon;
 
     public Joy() {
-        geometryFactory = new GeometryFactory();
         coordinates = new Coordinate[]{
                 new Coordinate(0, 0),
                 new Coordinate(0, 0.5),
@@ -28,12 +22,11 @@ public class Joy extends Emotion {
                 new Coordinate(0.5, 0),
                 new Coordinate(0, 0)
         };
-        polygon = geometryFactory.createPolygon(coordinates);
     }
 
     @Override
-    public Geometry getGeometry() {
-        return polygon;
+    public Coordinate[] getCoordinates() {
+        return coordinates;
     }
 
     @Override
