@@ -28,27 +28,11 @@ public class VersionOptionTest {
     }
 
     @Test
-    public void shouldGetShortCommand() {
+    public void shouldGetCorrectConfiguration() {
         assertThat(versionOption.getOpt(), is("v"));
-    }
-
-    @Test
-    public void shouldGetLongCommand() {
         assertThat(versionOption.getLongOpt(), is("version"));
-    }
-
-    @Test
-    public void shouldGetDescriptionCommand() {
         assertThat(versionOption.getDescription(), is("Shows the application version"));
-    }
-
-    @Test
-    public void shouldGetHasArgsCommand() {
         assertFalse(versionOption.hasArg());
-    }
-
-    @Test
-    public void shouldGetOrder() {
         assertThat(versionOption.getOrder(), is(10));
     }
 
@@ -60,6 +44,5 @@ public class VersionOptionTest {
         assertThat(systemOutRule.getLog(), containsString(expectedStringMasoes));
         assertThat(systemOutRule.getLog(), containsString(expectedStringJade));
     }
-
 
 }

@@ -40,27 +40,11 @@ public class SettingsOptionTest {
     }
 
     @Test
-    public void shouldGetShortCommand() {
+    public void shouldGetCorrectConfiguration() {
         assertThat(settingsOption.getOpt(), is("s"));
-    }
-
-    @Test
-    public void shouldGetLongCommand() {
         assertThat(settingsOption.getLongOpt(), is("settings"));
-    }
-
-    @Test
-    public void shouldGetDescriptionCommand() {
         assertThat(settingsOption.getDescription(), containsString("Sets application settings"));
-    }
-
-    @Test
-    public void shouldGetHasArgsCommand() {
         assertTrue(settingsOption.hasArg());
-    }
-
-    @Test
-    public void shouldGetOrder() {
         assertThat(settingsOption.getOrder(), is(30));
     }
 

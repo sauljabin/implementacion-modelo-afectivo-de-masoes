@@ -31,27 +31,11 @@ public class JadeOptionTest {
     }
 
     @Test
-    public void shouldGetShortCommand() {
+    public void shouldGetCorrectConfiguration() {
         assertThat(jadeOption.getOpt(), nullValue());
-    }
-
-    @Test
-    public void shouldGetLongCommand() {
         assertThat(jadeOption.getLongOpt(), is("jade"));
-    }
-
-    @Test
-    public void shouldGetDescriptionCommand() {
         assertThat(jadeOption.getDescription(), containsString("Starts JADE framework with arguments"));
-    }
-
-    @Test
-    public void shouldGetHasArgsCommand() {
         assertTrue(jadeOption.hasArg());
-    }
-
-    @Test
-    public void shouldGetOrder() {
         assertThat(jadeOption.getOrder(), is(40));
     }
 

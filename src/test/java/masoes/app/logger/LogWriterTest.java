@@ -8,13 +8,13 @@ package masoes.app.logger;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.slf4j.Logger;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class LogWriterTest {
@@ -28,7 +28,7 @@ public class LogWriterTest {
 
     @Before
     public void setUp() throws Exception {
-        mockLogger = Mockito.mock(Logger.class);
+        mockLogger = mock(Logger.class);
         expectedMessage = "message";
         expectedException = new Exception("exception message");
         expectedFormat = "String %s, Integer %d, Double %f";

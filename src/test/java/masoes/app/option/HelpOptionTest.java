@@ -30,27 +30,11 @@ public class HelpOptionTest {
     }
 
     @Test
-    public void shouldGetShortCommand() {
+    public void shouldGetCorrectConfiguration() {
         assertThat(helpOption.getOpt(), is("h"));
-    }
-
-    @Test
-    public void shouldGetLongCommand() {
         assertThat(helpOption.getLongOpt(), is("help"));
-    }
-
-    @Test
-    public void shouldGetDescriptionCommand() {
         assertThat(helpOption.getDescription(), is("Shows the options"));
-    }
-
-    @Test
-    public void shouldGetHasArgsCommand() {
         assertFalse(helpOption.hasArg());
-    }
-
-    @Test
-    public void shouldGetOrder() {
         assertThat(helpOption.getOrder(), is(20));
     }
 
