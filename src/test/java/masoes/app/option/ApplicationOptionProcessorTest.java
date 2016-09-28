@@ -69,6 +69,27 @@ public class ApplicationOptionProcessorTest {
     }
 
     @Test
+    public void shouldInvokeTwoOptions() throws Exception {
+        ApplicationOption mockOption2 = mock(ApplicationOption.class);
+        applicationOptions.add(mockOption2);
+
+        String expectedOpt2 = "test";
+        expectedArgs = new String[]{"-" + expectedOpt, "-" + expectedOpt2};
+
+        when(mockOptions.getApplicationOptions()).thenReturn(applicationOptions);
+        when(mockOption2.getOpt()).thenReturn(expectedOpt2);
+        when(mockOption2.getLongOpt()).thenReturn(expectedOpt2);
+        when(mockOption2.toOption()).thenCallRealMethod();
+        when(mockOption2.getKeyOpt()).thenCallRealMethod();
+        when(mockCommandLine.hasOption(expectedOpt2)).thenReturn(Boolean.TRUE);
+
+        optionProcessor.processArgs(expectedArgs);
+        verify(mockLogger).startingOption(mockOption);
+        verify(mockOption).exec(any());
+        verify(mockOption2).exec(any());
+    }
+
+    @Test
     public void shouldInvokeDefaultOption() {
         HelpOption mockHelOption = mock(HelpOption.class);
 

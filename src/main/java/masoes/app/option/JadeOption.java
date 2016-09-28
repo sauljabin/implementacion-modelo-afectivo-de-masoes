@@ -25,7 +25,7 @@ public class JadeOption extends ApplicationOption {
 
     @Override
     public String getOpt() {
-        return null;
+        return "j";
     }
 
     @Override

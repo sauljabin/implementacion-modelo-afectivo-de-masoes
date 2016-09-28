@@ -32,7 +32,7 @@ public class JadeOptionTest {
 
     @Test
     public void shouldGetCorrectConfiguration() {
-        assertThat(jadeOption.getOpt(), nullValue());
+        assertThat(jadeOption.getOpt(), is("j"));
         assertThat(jadeOption.getLongOpt(), is("jade"));
         assertThat(jadeOption.getDescription(), containsString("Starts JADE framework with arguments"));
         assertTrue(jadeOption.hasArg());

@@ -11,6 +11,9 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ApplicationOptionProcessor {
 
     private ApplicationLogger logger;
@@ -31,18 +34,26 @@ public class ApplicationOptionProcessor {
     public void processArgs(String[] args) {
         try {
             commandLine = commandLineParser.parse(options.toOptions(), args);
-            execOption();
+            execOptions();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void execOption() {
-        ApplicationOption option = options.getApplicationOptions()
+    private void execOptions() {
+        List<ApplicationOption> optionsToExec = options.getApplicationOptions()
                 .stream()
                 .filter(tempOption -> commandLine.hasOption(tempOption.getKeyOpt()))
-                .findFirst()
-                .orElse(options.getDefaultOption());
+                .collect(Collectors.toList());
+
+        if (optionsToExec.isEmpty()) {
+            execOption(options.getDefaultOption());
+        } else {
+            optionsToExec.forEach(this::execOption);
+        }
+    }
+
+    private void execOption(ApplicationOption option) {
         logger.startingOption(option);
         option.exec(commandLine.getOptionValue(option.getKeyOpt()));
     }
