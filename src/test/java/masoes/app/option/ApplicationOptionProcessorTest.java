@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 public class ApplicationOptionProcessorTest {
 
     private ApplicationOptionProcessor optionProcessor;
-    private OptionsCollection mockOptions;
+    private ApplicationOptionManager mockOptions;
     private CommandLineParser mockCommandLineParser;
     private CommandLine mockCommandLine;
     private String expectedOpt;
@@ -38,7 +38,7 @@ public class ApplicationOptionProcessorTest {
 
         applicationOptions = new ArrayList<>();
         applicationOptions.add(mockOption);
-        mockOptions = mock(OptionsCollection.class);
+        mockOptions = mock(ApplicationOptionManager.class);
 
         optionProcessor = new ApplicationOptionProcessor(mockOptions, mockCommandLineParser, mockLogger);
 
@@ -49,8 +49,10 @@ public class ApplicationOptionProcessorTest {
         when(mockOption.getOpt()).thenReturn(expectedOpt);
         when(mockOption.getLongOpt()).thenReturn(expectedOpt);
         when(mockOption.toOption()).thenCallRealMethod();
+        when(mockOption.getKeyOpt()).thenCallRealMethod();
         when(mockCommandLine.hasOption(expectedOpt)).thenReturn(Boolean.TRUE);
         when(mockCommandLineParser.parse(any(), any())).thenReturn(mockCommandLine);
+        when(mockCommandLine.getOptionValue(any())).thenReturn("");
     }
 
     @Test
@@ -64,6 +66,19 @@ public class ApplicationOptionProcessorTest {
         optionProcessor.processArgs(expectedArgs);
         verify(mockOption).exec(any());
         verify(mockLogger).startingOption(mockOption);
+    }
+
+    @Test
+    public void shouldInvokeDefaultOption() {
+        HelpOption mockHelOption = mock(HelpOption.class);
+
+        when(mockOptions.getDefaultOption()).thenReturn(mockHelOption);
+        when(mockCommandLine.hasOption(expectedOpt)).thenReturn(Boolean.FALSE);
+
+        optionProcessor.processArgs(expectedArgs);
+
+        verify(mockOptions).getDefaultOption();
+        verify(mockHelOption).exec(any());
     }
 
 }

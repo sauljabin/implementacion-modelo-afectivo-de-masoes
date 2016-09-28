@@ -18,14 +18,14 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
-public class OptionsCollectionTest {
+public class ApplicationOptionManagerTest {
 
-    private OptionsCollection optionsCollection;
+    private ApplicationOptionManager applicationOptionManager;
     private List<ApplicationOption> expectedOptions;
 
     @Before
     public void setUp() throws Exception {
-        optionsCollection = OptionsCollection.getInstance();
+        applicationOptionManager = ApplicationOptionManager.getInstance();
         expectedOptions = new ArrayList<>();
         expectedOptions.add(new VersionOption());
         expectedOptions.add(new HelpOption());
@@ -37,24 +37,30 @@ public class OptionsCollectionTest {
 
     @Test
     public void shouldReturnSortOption() {
-        assertReflectionEquals(expectedOptions, optionsCollection.getApplicationOptions());
+        assertReflectionEquals(expectedOptions, applicationOptionManager.getApplicationOptions());
     }
 
     @Test
     public void shouldReturnOptionsObject() {
         Options expectedOptions = createOptions();
-        assertReflectionEquals(expectedOptions, optionsCollection.toOptions());
+        assertReflectionEquals(expectedOptions, applicationOptionManager.toOptions());
+    }
+
+    @Test
+    public void shouldReturnSameObject() {
+        assertThat(ApplicationOptionManager.getInstance(), is(applicationOptionManager));
+    }
+
+    @Test
+    public void shouldReturnHelpDefaultOption() {
+        ApplicationOption defaultOption = applicationOptionManager.getDefaultOption();
+        assertReflectionEquals(defaultOption, new HelpOption());
     }
 
     private Options createOptions() {
         Options options = new Options();
         expectedOptions.forEach(option -> options.addOption(option.toOption()));
         return options;
-    }
-
-    @Test
-    public void shouldReturnSameObject() {
-        assertThat(OptionsCollection.getInstance(), is(optionsCollection));
     }
 
 }

@@ -14,15 +14,15 @@ import org.apache.commons.cli.DefaultParser;
 public class ApplicationOptionProcessor {
 
     private ApplicationLogger logger;
-    private OptionsCollection options;
+    private ApplicationOptionManager options;
     private CommandLineParser commandLineParser;
     private CommandLine commandLine;
 
-    public ApplicationOptionProcessor(OptionsCollection options) {
+    public ApplicationOptionProcessor(ApplicationOptionManager options) {
         this(options, new DefaultParser(), ApplicationLogger.newInstance(ApplicationOptionProcessor.class));
     }
 
-    public ApplicationOptionProcessor(OptionsCollection options, CommandLineParser commandLineParser, ApplicationLogger logger) {
+    public ApplicationOptionProcessor(ApplicationOptionManager options, CommandLineParser commandLineParser, ApplicationLogger logger) {
         this.options = options;
         this.commandLineParser = commandLineParser;
         this.logger = logger;
@@ -38,17 +38,13 @@ public class ApplicationOptionProcessor {
     }
 
     private void execOption() {
-        options.getApplicationOptions()
+        ApplicationOption option = options.getApplicationOptions()
                 .stream()
-                .filter(option -> commandLine.hasOption(getOptionKey(option)))
-                .forEach(option -> {
-                    logger.startingOption(option);
-                    option.exec(commandLine.getOptionValue(getOptionKey(option)));
-                });
-    }
-
-    private String getOptionKey(ApplicationOption option) {
-        return option.getLongOpt() == null ? option.getOpt() : option.getLongOpt();
+                .filter(tempOption -> commandLine.hasOption(tempOption.getKeyOpt()))
+                .findFirst()
+                .orElse(options.getDefaultOption());
+        logger.startingOption(option);
+        option.exec(commandLine.getOptionValue(option.getKeyOpt()));
     }
 
 }

@@ -36,4 +36,7 @@ public abstract class ApplicationOption implements Comparable<ApplicationOption>
 
     public abstract void exec(String optionValue);
 
+    public String getKeyOpt() {
+        return getLongOpt() == null ? getOpt() : getLongOpt();
+    }
 }

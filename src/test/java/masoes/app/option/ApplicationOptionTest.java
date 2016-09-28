@@ -17,11 +17,13 @@ public class ApplicationOptionTest {
 
     private ApplicationOption applicationOptionA;
     private ApplicationOption applicationOptionB;
+    private ApplicationOption applicationOptionC;
 
     @Before
     public void setUp() throws Exception {
         applicationOptionA = createApplicationOption("a", "testA", false, "testA", 1);
         applicationOptionB = createApplicationOption("b", "testB", false, "testB", 2);
+        applicationOptionC = createApplicationOption("c", null, false, "testB", 2);
     }
 
     @Test
@@ -32,6 +34,12 @@ public class ApplicationOptionTest {
     @Test
     public void shouldGetCorrectString() {
         assertThat(applicationOptionA.toString(), is("{option=[-a,--testA], order=1}"));
+    }
+
+    @Test
+    public void shouldGetCorrectKey() {
+        assertThat(applicationOptionB.getKeyOpt(), is(applicationOptionB.getLongOpt()));
+        assertThat(applicationOptionC.getKeyOpt(), is(applicationOptionC.getOpt()));
     }
 
     private ApplicationOption createApplicationOption(final String opt, final String longOpt, final boolean hasArg, final String description, int order) {

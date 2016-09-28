@@ -12,18 +12,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class OptionsCollection {
+public class ApplicationOptionManager {
 
-    private static OptionsCollection INSTANCE;
+    private static ApplicationOptionManager INSTANCE;
     private List<ApplicationOption> applicationOptions;
 
-    private OptionsCollection() {
+    private ApplicationOptionManager() {
         addOptions();
     }
 
-    public synchronized static OptionsCollection getInstance() {
+    public synchronized static ApplicationOptionManager getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new OptionsCollection();
+            INSTANCE = new ApplicationOptionManager();
         }
         return INSTANCE;
     }
@@ -48,4 +48,7 @@ public class OptionsCollection {
         return options;
     }
 
+    public ApplicationOption getDefaultOption() {
+        return new HelpOption();
+    }
 }

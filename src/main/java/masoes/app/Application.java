@@ -7,8 +7,8 @@
 package masoes.app;
 
 import masoes.app.logger.ApplicationLogger;
+import masoes.app.option.ApplicationOptionManager;
 import masoes.app.option.ApplicationOptionProcessor;
-import masoes.app.option.OptionsCollection;
 import masoes.app.setting.SettingsLoader;
 
 public class Application {
@@ -18,7 +18,7 @@ public class Application {
     private ApplicationLogger logger;
     private SettingsLoader settingsLoader;
     private ApplicationOptionProcessor applicationOptionProcessor;
-    private OptionsCollection optionsCollection;
+    private ApplicationOptionManager applicationOptionManager;
 
     public Application(ApplicationLogger logger, SettingsLoader settingsLoader, ApplicationOptionProcessor applicationOptionProcessor) {
         this.logger = logger;
@@ -29,8 +29,8 @@ public class Application {
     public Application() {
         logger = ApplicationLogger.newInstance(Application.class);
         settingsLoader = SettingsLoader.getInstance();
-        optionsCollection = OptionsCollection.getInstance();
-        applicationOptionProcessor = new ApplicationOptionProcessor(optionsCollection);
+        applicationOptionManager = ApplicationOptionManager.getInstance();
+        applicationOptionProcessor = new ApplicationOptionProcessor(applicationOptionManager);
     }
 
     public void run(String[] args) {
