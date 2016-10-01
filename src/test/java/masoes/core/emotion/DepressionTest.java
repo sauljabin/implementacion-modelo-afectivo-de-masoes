@@ -51,10 +51,6 @@ public class DepressionTest {
         assertTrue(depression.getGeometry().intersects(createPoint(-0.51, -0.51)));
     }
 
-    public Point createPoint(double x, double y) {
-        return geometryFactory.createPoint(new Coordinate(x, y));
-    }
-
     @Test
     public void shouldNotContainsPoint() {
         assertFalse(depression.getGeometry().intersects(createPoint(-0.1, -0.1)));
@@ -64,6 +60,10 @@ public class DepressionTest {
     @Test
     public void shouldReturnCorrectEmotionType() {
         assertThat(depression.getEmotionType(), is(EmotionType.NEGATIVE_HIGH));
+    }
+
+    public Point createPoint(double x, double y) {
+        return geometryFactory.createPoint(new Coordinate(x, y));
     }
 
 }

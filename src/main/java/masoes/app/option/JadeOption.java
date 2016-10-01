@@ -14,23 +14,18 @@ import java.util.List;
 public class JadeOption extends ApplicationOption {
 
     @Override
-    public void exec(String optionValue) {
-        Boot.main(findJadeArguments(optionValue));
-    }
-
-    @Override
     public int getOrder() {
         return 40;
     }
 
     @Override
-    public String getOpt() {
-        return "j";
+    public String getLongOpt() {
+        return "jade";
     }
 
     @Override
-    public String getLongOpt() {
-        return "jade";
+    public String getOpt() {
+        return "j";
     }
 
     @Override
@@ -48,6 +43,11 @@ public class JadeOption extends ApplicationOption {
     @Override
     public boolean hasArg() {
         return true;
+    }
+
+    @Override
+    public void exec(String optionValue) {
+        Boot.main(findJadeArguments(optionValue));
     }
 
     private String[] findJadeArguments(String optionValue) {
@@ -75,4 +75,5 @@ public class JadeOption extends ApplicationOption {
         arguments.add(tempString);
         return arguments.toArray(new String[arguments.size()]);
     }
+
 }

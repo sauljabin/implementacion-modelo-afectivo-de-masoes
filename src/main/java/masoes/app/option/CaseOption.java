@@ -16,13 +16,13 @@ public class CaseOption extends ApplicationOption {
     }
 
     @Override
-    public String getOpt() {
-        return "c";
+    public String getLongOpt() {
+        return "case";
     }
 
     @Override
-    public String getLongOpt() {
-        return "case";
+    public String getOpt() {
+        return "c";
     }
 
     @Override
@@ -39,4 +39,5 @@ public class CaseOption extends ApplicationOption {
     public void exec(String optionValue) {
         Setting.MASOES_CASE.setValue(optionValue);
     }
+
 }

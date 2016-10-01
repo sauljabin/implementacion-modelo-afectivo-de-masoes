@@ -36,19 +36,19 @@ public class ApplicationOptionManagerTest {
     }
 
     @Test
+    public void shouldReturnSameObject() {
+        assertThat(ApplicationOptionManager.getInstance(), is(applicationOptionManager));
+    }
+
+    @Test
     public void shouldReturnSortOption() {
         assertReflectionEquals(expectedOptions, applicationOptionManager.getApplicationOptions());
     }
 
     @Test
     public void shouldReturnOptionsObject() {
-        Options expectedOptions = createOptions();
-        assertReflectionEquals(expectedOptions, applicationOptionManager.toOptions());
-    }
-
-    @Test
-    public void shouldReturnSameObject() {
-        assertThat(ApplicationOptionManager.getInstance(), is(applicationOptionManager));
+        Options expectedObjectOptions = createOptions(expectedOptions);
+        assertReflectionEquals(expectedObjectOptions, applicationOptionManager.toOptions());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class ApplicationOptionManagerTest {
         assertReflectionEquals(defaultOption, new HelpOption());
     }
 
-    private Options createOptions() {
+    private Options createOptions(List<ApplicationOption> expectedOptions) {
         Options options = new Options();
         expectedOptions.forEach(option -> options.addOption(option.toOption()));
         return options;

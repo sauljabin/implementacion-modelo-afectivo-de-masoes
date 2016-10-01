@@ -10,25 +10,24 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.*;
 
 public class ApplicationOptionTest {
 
     private ApplicationOption applicationOptionA;
     private ApplicationOption applicationOptionB;
-    private ApplicationOption applicationOptionC;
 
     @Before
     public void setUp() throws Exception {
         applicationOptionA = createApplicationOption("a", "testA", false, "testA", 1);
-        applicationOptionB = createApplicationOption("b", "testB", false, "testB", 2);
-        applicationOptionC = createApplicationOption("c", null, false, "testB", 2);
+        applicationOptionB = createApplicationOption("b", null, false, "testB", 2);
     }
 
     @Test
     public void shouldCorrectCompareObject() {
+        assertThat(applicationOptionA.compareTo(applicationOptionA), is(0));
         assertThat(applicationOptionA.compareTo(applicationOptionB), is(lessThan(0)));
+        assertThat(applicationOptionB.compareTo(applicationOptionA), is(greaterThan(0)));
     }
 
     @Test
@@ -38,29 +37,25 @@ public class ApplicationOptionTest {
 
     @Test
     public void shouldGetCorrectKey() {
-        assertThat(applicationOptionB.getKeyOpt(), is(applicationOptionB.getLongOpt()));
-        assertThat(applicationOptionC.getKeyOpt(), is(applicationOptionC.getOpt()));
+        assertThat(applicationOptionA.getKeyOpt(), is(applicationOptionA.getLongOpt()));
+        assertThat(applicationOptionB.getKeyOpt(), is(applicationOptionB.getOpt()));
     }
 
     private ApplicationOption createApplicationOption(final String opt, final String longOpt, final boolean hasArg, final String description, int order) {
         return new ApplicationOption() {
-            @Override
-            public void exec(String optionValue) {
-            }
-
             @Override
             public int getOrder() {
                 return order;
             }
 
             @Override
-            public String getOpt() {
-                return opt;
+            public String getLongOpt() {
+                return longOpt;
             }
 
             @Override
-            public String getLongOpt() {
-                return longOpt;
+            public String getOpt() {
+                return opt;
             }
 
             @Override
@@ -70,7 +65,11 @@ public class ApplicationOptionTest {
 
             @Override
             public boolean hasArg() {
-                return false;
+                return hasArg;
+            }
+
+            @Override
+            public void exec(String optionValue) {
             }
         };
     }

@@ -19,6 +19,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class JoyTest {
+
     private Joy joy;
     private GeometryFactory geometryFactory;
     private Coordinate[] coordinates;
@@ -48,10 +49,6 @@ public class JoyTest {
         assertFalse(joy.getGeometry().intersects(createPoint(0.51, 0.51)));
     }
 
-    public Point createPoint(double x, double y) {
-        return geometryFactory.createPoint(new Coordinate(x, y));
-    }
-
     @Test
     public void shouldContainsInsidePoint() {
         assertTrue(joy.getGeometry().intersects(createPoint(0.1, 0.1)));
@@ -61,5 +58,9 @@ public class JoyTest {
     @Test
     public void shouldReturnCorrectEmotionType() {
         assertThat(joy.getEmotionType(), is(EmotionType.POSITIVE));
+    }
+
+    public Point createPoint(double x, double y) {
+        return geometryFactory.createPoint(new Coordinate(x, y));
     }
 }

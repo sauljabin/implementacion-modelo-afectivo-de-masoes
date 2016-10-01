@@ -11,6 +11,31 @@ import masoes.app.setting.Setting;
 public class VersionOption extends ApplicationOption {
 
     @Override
+    public int getOrder() {
+        return 10;
+    }
+
+    @Override
+    public String getLongOpt() {
+        return "version";
+    }
+
+    @Override
+    public String getOpt() {
+        return "v";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Shows the application version";
+    }
+
+    @Override
+    public boolean hasArg() {
+        return false;
+    }
+
+    @Override
     public void exec(String optionValue) {
         String line = "--------------------------------------------------";
         System.out.println(line);
@@ -24,28 +49,4 @@ public class VersionOption extends ApplicationOption {
         System.out.println(line);
     }
 
-    @Override
-    public int getOrder() {
-        return 10;
-    }
-
-    @Override
-    public String getOpt() {
-        return "v";
-    }
-
-    @Override
-    public String getLongOpt() {
-        return "version";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Shows the application version";
-    }
-
-    @Override
-    public boolean hasArg() {
-        return false;
-    }
 }

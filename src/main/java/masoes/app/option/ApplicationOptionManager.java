@@ -38,17 +38,18 @@ public class ApplicationOptionManager {
         Collections.sort(applicationOptions);
     }
 
-    public synchronized List<ApplicationOption> getApplicationOptions() {
-        return applicationOptions;
-    }
-
     public synchronized Options toOptions() {
         Options options = new Options();
         getApplicationOptions().forEach(option -> options.addOption(option.toOption()));
         return options;
     }
 
-    public ApplicationOption getDefaultOption() {
+    public synchronized List<ApplicationOption> getApplicationOptions() {
+        return applicationOptions;
+    }
+
+    public synchronized ApplicationOption getDefaultOption() {
         return new HelpOption();
     }
+
 }

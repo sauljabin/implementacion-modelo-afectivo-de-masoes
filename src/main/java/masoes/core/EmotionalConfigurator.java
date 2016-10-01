@@ -38,20 +38,20 @@ public abstract class EmotionalConfigurator {
         emotions.add(new Rejection());
     }
 
-    public List<Emotion> getEmotions() {
-        return emotions;
-    }
-
-    public Point getEmotionalPoint() {
-        return geometryFactory.createPoint(new Coordinate(emotionalState.getActivation(), emotionalState.getSatisfaction()));
-    }
-
     public Emotion getEmotion() {
         return getEmotions()
                 .stream()
                 .filter(emotion -> emotion.getGeometry().intersects(getEmotionalPoint()))
                 .findFirst()
                 .orElse(new Happiness());
+    }
+
+    public List<Emotion> getEmotions() {
+        return emotions;
+    }
+
+    public Point getEmotionalPoint() {
+        return geometryFactory.createPoint(new Coordinate(emotionalState.getActivation(), emotionalState.getSatisfaction()));
     }
 
     public EmotionalState getEmotionalState() {

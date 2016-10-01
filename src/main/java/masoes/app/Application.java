@@ -18,19 +18,15 @@ public class Application {
     private ApplicationLogger logger;
     private SettingsLoader settingsLoader;
     private ApplicationOptionProcessor applicationOptionProcessor;
-    private ApplicationOptionManager applicationOptionManager;
+
+    public Application() {
+        this(ApplicationLogger.newInstance(Application.class), SettingsLoader.getInstance(), new ApplicationOptionProcessor(ApplicationOptionManager.getInstance()));
+    }
 
     public Application(ApplicationLogger logger, SettingsLoader settingsLoader, ApplicationOptionProcessor applicationOptionProcessor) {
         this.logger = logger;
         this.settingsLoader = settingsLoader;
         this.applicationOptionProcessor = applicationOptionProcessor;
-    }
-
-    public Application() {
-        logger = ApplicationLogger.newInstance(Application.class);
-        settingsLoader = SettingsLoader.getInstance();
-        applicationOptionManager = ApplicationOptionManager.getInstance();
-        applicationOptionProcessor = new ApplicationOptionProcessor(applicationOptionManager);
     }
 
     public void run(String[] args) {
@@ -42,4 +38,5 @@ public class Application {
             System.exit(FAILURE_STATUS);
         }
     }
+
 }

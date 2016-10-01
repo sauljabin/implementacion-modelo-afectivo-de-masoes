@@ -40,7 +40,7 @@ public class LogWriterTest {
     public void shouldGetNewInstance() {
         LogWriter firstLog = LogWriter.newInstance();
         LogWriter secondLog = LogWriter.newInstance();
-        assertThat(firstLog, not(is(secondLog)));
+        assertThat(firstLog, is(not(secondLog)));
     }
 
     @Test

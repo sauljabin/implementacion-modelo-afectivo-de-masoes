@@ -20,7 +20,7 @@ public class SettingsOption extends ApplicationOption {
     }
 
     public SettingsOption() {
-        applicationLogger = ApplicationLogger.newInstance(SettingsOption.class);
+        this(ApplicationLogger.newInstance(SettingsOption.class));
     }
 
     @Override
@@ -29,13 +29,13 @@ public class SettingsOption extends ApplicationOption {
     }
 
     @Override
-    public String getOpt() {
-        return "s";
+    public String getLongOpt() {
+        return "settings";
     }
 
     @Override
-    public String getLongOpt() {
-        return "settings";
+    public String getOpt() {
+        return "s";
     }
 
     @Override
@@ -55,10 +55,14 @@ public class SettingsOption extends ApplicationOption {
         validateArgument(optionValue);
         String[] settings = splitArgument(optionValue);
         for (String pair : settings) {
-            String[] pairArray = pair.split("=");
-            Setting.set(pairArray[0].trim(), pairArray[1].trim());
+            setSetting(pair);
         }
         applicationLogger.updatedSettings(Setting.toMap());
+    }
+
+    private void setSetting(String pair) {
+        String[] pairArray = pair.split("=");
+        Setting.set(pairArray[0].trim(), pairArray[1].trim());
     }
 
     private void validateArgument(String optionValue) {

@@ -22,8 +22,8 @@ public abstract class Emotion {
         return geometryFactory.createPolygon(getCoordinates());
     }
 
-    public abstract EmotionType getEmotionType();
-
     public abstract Coordinate[] getCoordinates();
+
+    public abstract EmotionType getEmotionType();
 
 }

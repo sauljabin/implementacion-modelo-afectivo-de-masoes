@@ -19,6 +19,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class AdmirationTest {
+
     private Admiration admiration;
     private GeometryFactory geometryFactory;
     private Coordinate[] coordinates;
@@ -48,10 +49,6 @@ public class AdmirationTest {
         assertTrue(admiration.getGeometry().intersects(createPoint(-0.4, 0.4)));
     }
 
-    public Point createPoint(double x, double y) {
-        return geometryFactory.createPoint(new Coordinate(x, y));
-    }
-
     @Test
     public void shouldNotContainsPoint() {
         assertFalse(admiration.getGeometry().intersects(createPoint(0.1, 0.1)));
@@ -63,4 +60,9 @@ public class AdmirationTest {
     public void shouldReturnCorrectEmotionType() {
         assertThat(admiration.getEmotionType(), is(EmotionType.POSITIVE));
     }
+
+    public Point createPoint(double x, double y) {
+        return geometryFactory.createPoint(new Coordinate(x, y));
+    }
+
 }

@@ -40,13 +40,13 @@ public class OptionWrapper extends Option implements Comparable<OptionWrapper> {
         return option.getOpt() == null ? option.getLongOpt() : option.getOpt();
     }
 
-    public int getOrder() {
-        return applicationOption.getOrder();
-    }
-
     @Override
     public int compareTo(OptionWrapper optionWrapper) {
         return Integer.compare(this.getOrder(), optionWrapper.getOrder());
+    }
+
+    public int getOrder() {
+        return applicationOption.getOrder();
     }
 
 }

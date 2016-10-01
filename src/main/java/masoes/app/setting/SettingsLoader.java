@@ -30,21 +30,6 @@ public class SettingsLoader {
         return INSTANCE;
     }
 
-    public synchronized void setSetting(String key, String value) {
-        properties.put(key, value);
-    }
-
-    public synchronized String getSetting(String key) {
-        return properties.getProperty(key);
-    }
-
-    public synchronized String getSetting(String key, String defaultValue) {
-        String value = getSetting(key);
-        if (value == null)
-            return defaultValue;
-        return value;
-    }
-
     public synchronized void init() {
         properties = new Properties();
         Arrays.stream(initSettings)
@@ -52,11 +37,8 @@ public class SettingsLoader {
         load();
     }
 
-    public synchronized Map<String, String> toMap() {
-        Map<String, String> values = new HashMap<>();
-        properties.stringPropertyNames()
-                .forEach(key -> values.put(key, getSetting(key)));
-        return values;
+    public synchronized void setSetting(String key, String value) {
+        properties.put(key, value);
     }
 
     public synchronized void load() {
@@ -67,12 +49,30 @@ public class SettingsLoader {
         }
     }
 
+    public synchronized String getSetting(String key, String defaultValue) {
+        String value = getSetting(key);
+        if (value == null)
+            return defaultValue;
+        return value;
+    }
+
+    public synchronized String getSetting(String key) {
+        return properties.getProperty(key);
+    }
+
     public synchronized void clear() {
         properties.clear();
     }
 
     public synchronized String toString() {
         return toMap().toString();
+    }
+
+    public synchronized Map<String, String> toMap() {
+        Map<String, String> values = new HashMap<>();
+        properties.stringPropertyNames()
+                .forEach(key -> values.put(key, getSetting(key)));
+        return values;
     }
 
 }

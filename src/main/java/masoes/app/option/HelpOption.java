@@ -25,27 +25,18 @@ public class HelpOption extends ApplicationOption {
     }
 
     @Override
-    public void exec(String optionValue) {
-        try {
-            formatter.printHelp(Setting.APP_NAME.getValue(), ApplicationOptionManager.getInstance().toOptions());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
     public int getOrder() {
         return 20;
     }
 
     @Override
-    public String getOpt() {
-        return "h";
+    public String getLongOpt() {
+        return "help";
     }
 
     @Override
-    public String getLongOpt() {
-        return "help";
+    public String getOpt() {
+        return "h";
     }
 
     @Override
@@ -57,4 +48,14 @@ public class HelpOption extends ApplicationOption {
     public boolean hasArg() {
         return false;
     }
+
+    @Override
+    public void exec(String optionValue) {
+        try {
+            formatter.printHelp(Setting.APP_NAME.getValue(), ApplicationOptionManager.getInstance().toOptions());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

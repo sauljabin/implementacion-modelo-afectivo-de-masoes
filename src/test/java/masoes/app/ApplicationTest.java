@@ -20,34 +20,38 @@ import static org.mockito.Mockito.*;
 public class ApplicationTest {
 
     @Rule
-    public final ExpectedSystemExit exit = ExpectedSystemExit.none();
+    public final ExpectedSystemExit expectedSystemExit = ExpectedSystemExit.none();
     private ApplicationLogger mockLogger;
     private ApplicationOptionProcessor mockCli;
     private SettingsLoader mockSettings;
-    private Application application;
     private String[] args;
+    private Application application;
 
     @Before
     public void setUp() {
         mockLogger = mock(ApplicationLogger.class);
-        mockCli = mock(ApplicationOptionProcessor.class);
         mockSettings = mock(SettingsLoader.class);
+        mockCli = mock(ApplicationOptionProcessor.class);
+
         application = new Application(mockLogger, mockSettings, mockCli);
         args = new String[]{};
     }
 
     @Test
-    public void shouldInvokeLoggerErrorWhenException() {
-        RuntimeException toBeThrown = new RuntimeException();
-        doThrow(toBeThrown).when(mockCli).processArgs(args);
-        exit.expectSystemExitWithStatus(Application.FAILURE_STATUS);
+    public void shouldSystemExitWhenException() {
+        RuntimeException expectedException = new RuntimeException();
+        doThrow(expectedException).when(mockCli).processArgs(args);
+
+        expectedSystemExit.checkAssertionAfterwards(() -> verify(mockLogger).cantNotStartApplication(eq(expectedException)));
+        expectedSystemExit.expectSystemExitWithStatus(Application.FAILURE_STATUS);
+
         application.run(args);
-        verify(mockLogger).cantNotStartApplication(eq(toBeThrown));
     }
 
     @Test
     public void shouldStartApp() {
         application.run(args);
+
         verify(mockCli).processArgs(args);
         verify(mockLogger).startingApplication(any(), anyMap());
     }

@@ -81,16 +81,6 @@ public class SettingsLoaderTest {
                 .forEach(key -> assertEquals(expectedValues.get(key), settingsLoader.getSetting(key)));
     }
 
-    public Map<String, String> getInitValues() {
-        Map<String, String> initValues = new HashMap<>();
-        initValues.put(osNameKey, System.getProperty(osNameKey));
-        initValues.put(osArchKey, System.getProperty(osArchKey));
-        initValues.put(osVersionKey, System.getProperty(osVersionKey));
-        initValues.put(javaVersionKey, System.getProperty(javaVersionKey));
-        initValues.put(javaVendorKey, System.getProperty(javaVendorKey));
-        return initValues;
-    }
-
     @Test
     public void shouldGetACorrectMap() {
         Map<String, String> expectedMap = new HashMap<>();
@@ -121,6 +111,16 @@ public class SettingsLoaderTest {
         settingsLoader.clear();
         settingsLoader.setSetting(key, value);
         assertEquals(expectedString, settingsLoader.toString());
+    }
+
+    public Map<String, String> getInitValues() {
+        Map<String, String> initValues = new HashMap<>();
+        initValues.put(osNameKey, System.getProperty(osNameKey));
+        initValues.put(osArchKey, System.getProperty(osArchKey));
+        initValues.put(osVersionKey, System.getProperty(osVersionKey));
+        initValues.put(javaVersionKey, System.getProperty(javaVersionKey));
+        initValues.put(javaVendorKey, System.getProperty(javaVendorKey));
+        return initValues;
     }
 
 }

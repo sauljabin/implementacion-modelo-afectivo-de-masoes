@@ -8,7 +8,17 @@ package masoes.app.option;
 
 import org.apache.commons.cli.Option;
 
+import java.util.Optional;
+
 public abstract class ApplicationOption implements Comparable<ApplicationOption> {
+
+    public Option toOption() {
+        return new OptionWrapper(this);
+    }
+
+    public String getKeyOpt() {
+        return Optional.ofNullable(getLongOpt()).orElse(getOpt());
+    }
 
     @Override
     public String toString() {
@@ -20,15 +30,11 @@ public abstract class ApplicationOption implements Comparable<ApplicationOption>
         return Integer.compare(this.getOrder(), applicationOption.getOrder());
     }
 
-    public Option toOption() {
-        return new OptionWrapper(this);
-    }
-
     public abstract int getOrder();
 
-    public abstract String getOpt();
-
     public abstract String getLongOpt();
+
+    public abstract String getOpt();
 
     public abstract String getDescription();
 
@@ -36,7 +42,4 @@ public abstract class ApplicationOption implements Comparable<ApplicationOption>
 
     public abstract void exec(String optionValue);
 
-    public String getKeyOpt() {
-        return getLongOpt() == null ? getOpt() : getLongOpt();
-    }
 }

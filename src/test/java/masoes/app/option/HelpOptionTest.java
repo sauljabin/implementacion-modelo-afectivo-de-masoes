@@ -39,8 +39,16 @@ public class HelpOptionTest {
     }
 
     @Test
+    public void shouldConfigFormatter() {
+        verify(mockFormatter).setSyntaxPrefix("Usage: ");
+        verify(mockFormatter).setLongOptSeparator("=");
+        verify(mockFormatter).setOptionComparator(OptionWrapper.comparator());
+    }
+
+    @Test
     public void shouldPrintHelp() {
         helpOption.exec("");
         verify(mockFormatter).printHelp(any(), any(Options.class));
     }
+
 }

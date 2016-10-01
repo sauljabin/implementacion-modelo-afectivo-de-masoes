@@ -9,6 +9,7 @@ package masoes.util.math;
 import java.util.Random;
 
 public class RandomGenerator {
+
     private Random random;
 
     public RandomGenerator() {
@@ -18,4 +19,5 @@ public class RandomGenerator {
     public double random(double min, double max) {
         return (random.nextDouble() * (max - min)) + min;
     }
+
 }

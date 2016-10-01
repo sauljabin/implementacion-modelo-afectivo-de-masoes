@@ -26,6 +26,10 @@ public enum Setting {
         this.key = key;
     }
 
+    public String getKey() {
+        return key;
+    }
+
     public static void set(String key, String value) {
         SettingsLoader.getInstance().setSetting(key, value);
     }
@@ -42,20 +46,16 @@ public enum Setting {
         return SettingsLoader.getInstance().toMap();
     }
 
-    public String getKey() {
-        return key;
+    public void setValue(String value) {
+        set(key, value);
     }
 
     public String getValue() {
-        return SettingsLoader.getInstance().getSetting(key, "");
-    }
-
-    public void setValue(String value) {
-        SettingsLoader.getInstance().setSetting(key, value);
+        return get(key);
     }
 
     public String getValue(String defaultValue) {
-        return SettingsLoader.getInstance().getSetting(key, defaultValue);
+        return get(key, defaultValue);
     }
 
     @Override

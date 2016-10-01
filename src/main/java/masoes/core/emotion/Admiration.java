@@ -25,13 +25,13 @@ public class Admiration extends Emotion {
     }
 
     @Override
-    public EmotionType getEmotionType() {
-        return EmotionType.POSITIVE;
+    public Coordinate[] getCoordinates() {
+        return coordinates;
     }
 
     @Override
-    public Coordinate[] getCoordinates() {
-        return coordinates;
+    public EmotionType getEmotionType() {
+        return EmotionType.POSITIVE;
     }
 
 }

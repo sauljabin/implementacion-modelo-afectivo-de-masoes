@@ -6,7 +6,7 @@
 
 package masoes.app.logger;
 
-import masoes.app.option.VersionOption;
+import masoes.app.option.ApplicationOption;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
@@ -31,22 +30,26 @@ public class ApplicationLoggerTest {
     private Logger mockLogger;
     private Class<ApplicationLoggerTest> expectedClass;
     private ApplicationLogger applicationLogger;
+    private Map<String, String> expectedMap;
 
     @Before
     public void setUp() throws Exception {
         mockLogger = mock(Logger.class);
-        expectedClass = ApplicationLoggerTest.class;
         mockStatic(LoggerFactory.class);
+
+        expectedClass = ApplicationLoggerTest.class;
         when(LoggerFactory.getLogger(expectedClass)).thenReturn(mockLogger);
+
         applicationLogger = ApplicationLogger.newInstance(expectedClass);
+        expectedMap = new HashMap<>();
+        expectedMap.put("app", "masoes");
+
     }
 
     @Test
     public void shouldLogStartingApp() {
-        String[] expectedArgs = {"-h"};
-        Map<String, String> expectedMap = new HashMap<>();
-        expectedMap.put("app", "masoes");
-        applicationLogger.startingApplication(expectedArgs, expectedMap);
+        String[] args = {"-h"};
+        applicationLogger.startingApplication(args, expectedMap);
         verify(mockLogger).info(eq("Starting application with arguments: [-h], and settings {app=masoes}"));
     }
 
@@ -59,15 +62,16 @@ public class ApplicationLoggerTest {
 
     @Test
     public void shouldLogStartingOption() {
-        VersionOption applicationOption = new VersionOption();
+        ApplicationOption applicationOption = mock(ApplicationOption.class);
+        String expectedToString = "expectedToString";
+        when(applicationOption.toString()).thenReturn(expectedToString);
+
         applicationLogger.startingOption(applicationOption);
-        verify(mockLogger).info(eq("Starting option: " + applicationOption.toString()));
+        verify(mockLogger).info(eq("Starting option: " + expectedToString));
     }
 
     @Test
     public void shouldLogUpdatedSettings() {
-        Map<String, String> expectedMap = new HashMap<>();
-        expectedMap.put("app", "masoes");
         applicationLogger.updatedSettings(expectedMap);
         verify(mockLogger).info(eq("Updated settings: {app=masoes}"));
     }

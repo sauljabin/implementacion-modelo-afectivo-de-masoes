@@ -51,10 +51,6 @@ public class HappinessTest {
         assertTrue(happiness.getGeometry().intersects(createPoint(0.51, 0.51)));
     }
 
-    public Point createPoint(double x, double y) {
-        return geometryFactory.createPoint(new Coordinate(x, y));
-    }
-
     @Test
     public void shouldNotContainsPoint() {
         assertFalse(happiness.getGeometry().intersects(createPoint(0.1, 0.1)));
@@ -64,6 +60,10 @@ public class HappinessTest {
     @Test
     public void shouldReturnCorrectEmotionType() {
         assertThat(happiness.getEmotionType(), is(EmotionType.POSITIVE));
+    }
+
+    public Point createPoint(double x, double y) {
+        return geometryFactory.createPoint(new Coordinate(x, y));
     }
 
 }

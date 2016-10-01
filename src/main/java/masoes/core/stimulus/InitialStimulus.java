@@ -9,4 +9,5 @@ package masoes.core.stimulus;
 import masoes.core.Stimulus;
 
 public class InitialStimulus extends Stimulus {
+
 }

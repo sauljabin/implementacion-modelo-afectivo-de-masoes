@@ -19,6 +19,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class RejectionTest {
+
     private Rejection rejection;
     private GeometryFactory geometryFactory;
     private Coordinate[] coordinates;
@@ -48,10 +49,6 @@ public class RejectionTest {
         assertFalse(rejection.getGeometry().intersects(createPoint(0.51, 0.51)));
     }
 
-    public Point createPoint(double x, double y) {
-        return geometryFactory.createPoint(new Coordinate(x, y));
-    }
-
     @Test
     public void shouldContainsInsidePoint() {
         assertTrue(rejection.getGeometry().intersects(createPoint(0.1, -0.1)));
@@ -62,4 +59,9 @@ public class RejectionTest {
     public void shouldReturnCorrectEmotionType() {
         assertThat(rejection.getEmotionType(), is(EmotionType.NEGATIVE_LOW));
     }
+
+    public Point createPoint(double x, double y) {
+        return geometryFactory.createPoint(new Coordinate(x, y));
+    }
+
 }
