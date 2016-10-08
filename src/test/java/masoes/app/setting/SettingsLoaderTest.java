@@ -97,6 +97,7 @@ public class SettingsLoaderTest {
         expectedMap.put("app.name", "appName");
         expectedMap.put("app.revision", "1");
         expectedMap.put("app.version", "1");
+        expectedMap.put("masoes.env", "generic");
         settingsLoader.clear();
         settingsLoader.load();
         Map<String, String> actualMap = settingsLoader.toMap();

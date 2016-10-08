@@ -6,11 +6,11 @@
 
 package masoes.util.math;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.stream.IntStream;
 
+import static masoes.util.math.RandomGenerator.random;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
@@ -19,12 +19,6 @@ import static org.hamcrest.core.Is.is;
 public class RandomGeneratorTest {
 
     private static final int ITERATIONS = 1000;
-    private RandomGenerator randomGenerator;
-
-    @Before
-    public void setUp() throws Exception {
-        randomGenerator = new RandomGenerator();
-    }
 
     @Test
     public void shouldReturnRandomNumberInInterval() {
@@ -42,7 +36,7 @@ public class RandomGeneratorTest {
 
     private void assertRandom(double xMin, double xMax) {
         IntStream.range(0, ITERATIONS).forEach(i -> {
-            double value = randomGenerator.random(xMin, xMax);
+            double value = random(xMin, xMax);
             assertThat(value, is(greaterThanOrEqualTo(xMin)));
             assertThat(value, is(lessThanOrEqualTo(xMax)));
         });

@@ -8,13 +8,13 @@ package masoes.core.emotion;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
 import masoes.core.EmotionType;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
 
+import static masoes.util.math.GeometryGenerator.createPoint;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -60,7 +60,4 @@ public class JoyTest {
         assertThat(joy.getEmotionType(), is(EmotionType.POSITIVE));
     }
 
-    public Point createPoint(double x, double y) {
-        return geometryFactory.createPoint(new Coordinate(x, y));
-    }
 }

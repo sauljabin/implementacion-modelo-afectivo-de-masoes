@@ -10,14 +10,11 @@ import java.util.Random;
 
 public class RandomGenerator {
 
-    private Random random;
-
-    public RandomGenerator() {
-        random = new Random();
+    private RandomGenerator() {
     }
 
-    public double random(double min, double max) {
-        return (random.nextDouble() * (max - min)) + min;
+    public static double random(double min, double max) {
+        return (new Random().nextDouble() * (max - min)) + min;
     }
 
 }
