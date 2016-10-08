@@ -8,7 +8,7 @@ package masoes.app.option;
 
 import masoes.app.setting.Setting;
 
-public class CaseOption extends ApplicationOption {
+public class EnvironmentOption extends ApplicationOption {
 
     @Override
     public int getOrder() {
@@ -17,17 +17,17 @@ public class CaseOption extends ApplicationOption {
 
     @Override
     public String getLongOpt() {
-        return "case";
+        return "env";
     }
 
     @Override
     public String getOpt() {
-        return "c";
+        return "e";
     }
 
     @Override
     public String getDescription() {
-        return "Sets the case study";
+        return "Sets the environment for case study";
     }
 
     @Override
@@ -37,7 +37,7 @@ public class CaseOption extends ApplicationOption {
 
     @Override
     public void exec(String optionValue) {
-        Setting.MASOES_CASE.setValue(optionValue);
+        Setting.MASOES_ENV.setValue(optionValue);
     }
 
 }

@@ -31,7 +31,8 @@ public class ApplicationOptionManagerTest {
         expectedOptions.add(new HelpOption());
         expectedOptions.add(new JadeOption());
         expectedOptions.add(new SettingsOption());
-        expectedOptions.add(new CaseOption());
+        expectedOptions.add(new EnvironmentOption());
+        expectedOptions.add(new BootOption());
         Collections.sort(expectedOptions);
     }
 

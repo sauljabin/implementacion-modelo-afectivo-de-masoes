@@ -19,7 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
@@ -43,7 +44,6 @@ public class ApplicationLoggerTest {
         applicationLogger = ApplicationLogger.newInstance(expectedClass);
         expectedMap = new HashMap<>();
         expectedMap.put("app", "masoes");
-
     }
 
     @Test

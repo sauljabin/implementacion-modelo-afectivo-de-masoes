@@ -34,7 +34,8 @@ public class ApplicationOptionManager {
         applicationOptions.add(new VersionOption());
         applicationOptions.add(new JadeOption());
         applicationOptions.add(new SettingsOption());
-        applicationOptions.add(new CaseOption());
+        applicationOptions.add(new EnvironmentOption());
+        applicationOptions.add(new BootOption());
         Collections.sort(applicationOptions);
     }
 

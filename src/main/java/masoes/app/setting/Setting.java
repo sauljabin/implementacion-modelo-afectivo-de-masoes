@@ -18,16 +18,12 @@ public enum Setting {
     OS_VERSION("os.version"),
     JAVA_VERSION("java.version"),
     JAVA_VENDOR("java.vendor"),
-    MASOES_CASE("masoes.case");
+    MASOES_ENV("masoes.env");
 
     private String key;
 
     Setting(String key) {
         this.key = key;
-    }
-
-    public String getKey() {
-        return key;
     }
 
     public static void set(String key, String value) {
@@ -46,12 +42,16 @@ public enum Setting {
         return SettingsLoader.getInstance().toMap();
     }
 
-    public void setValue(String value) {
-        set(key, value);
+    public String getKey() {
+        return key;
     }
 
     public String getValue() {
         return get(key);
+    }
+
+    public void setValue(String value) {
+        set(key, value);
     }
 
     public String getValue(String defaultValue) {
