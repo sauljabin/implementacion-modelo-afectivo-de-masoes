@@ -8,10 +8,11 @@ package masoes.app.setting;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.unitils.reflectionassert.ReflectionAssert;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -93,15 +94,17 @@ public class SettingsLoaderTest {
 
     @Test
     public void shouldLoadPropertiesFromFile() throws IOException {
-        Map<String, String> expectedMap = new HashMap<>();
-        expectedMap.put("app.name", "appName");
-        expectedMap.put("app.revision", "1");
-        expectedMap.put("app.version", "1");
-        expectedMap.put("masoes.env", "generic");
+        List<String> keys = new ArrayList<>();
+        keys.add("app.name");
+        keys.add("app.revision");
+        keys.add("app.version");
+        keys.add("masoes.env");
         settingsLoader.clear();
         settingsLoader.load();
-        Map<String, String> actualMap = settingsLoader.toMap();
-        assertEquals(expectedMap, actualMap);
+        List<String> expected = settingsLoader.toMap().keySet().stream().collect(Collectors.toList());
+        Collections.sort(expected);
+        Collections.sort(keys);
+        ReflectionAssert.assertReflectionEquals(expected, keys);
     }
 
     @Test

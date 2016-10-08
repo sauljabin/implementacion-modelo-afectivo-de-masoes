@@ -6,6 +6,7 @@
 
 package masoes.app.option;
 
+import masoes.app.setting.Setting;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class VersionOptionTest {
 
     @Test
     public void shouldPrintVersion() {
-        String expectedStringMasoes = "APPNAME\nVersion: 1\nRevision: 1";
+        String expectedStringMasoes = String.format("%s\nVersion: %s\nRevision: %s", Setting.APP_NAME.getValue().toUpperCase(), Setting.APP_VERSION.getValue(), Setting.APP_REVISION.getValue());
         String expectedStringJade = String.format("JADE\nVersion: %s\nRevision: %s\n", jade.core.Runtime.getVersion(), jade.core.Runtime.getRevision());
         versionOption.exec("");
         assertThat(systemOutRule.getLog(), containsString(expectedStringMasoes));
