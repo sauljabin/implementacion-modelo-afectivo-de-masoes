@@ -40,7 +40,7 @@ public class VersionOptionTest {
     @Test
     public void shouldPrintVersion() {
         String expectedStringMasoes = String.format("%s\nVersion: %s\nRevision: %s", Setting.APP_NAME.getValue().toUpperCase(), Setting.APP_VERSION.getValue(), Setting.APP_REVISION.getValue());
-        String expectedStringJade = String.format("JADE\nVersion: %s\nRevision: %s\n", jade.core.Runtime.getVersion(), jade.core.Runtime.getRevision());
+        String expectedStringJade = String.format("JADE\nVersion: %s\nRevision: %s\n", Setting.JADE_VERSION.getValue(), Setting.JADE_REVISION.getValue());
         versionOption.exec("");
         assertThat(systemOutRule.getLog(), containsString(expectedStringMasoes));
         assertThat(systemOutRule.getLog(), containsString(expectedStringJade));
