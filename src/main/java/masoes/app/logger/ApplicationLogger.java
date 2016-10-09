@@ -34,7 +34,7 @@ public class ApplicationLogger {
 
     public void cantNotStartApplication(Exception exception) {
         LogWriter.newInstance()
-                .message("Could not start the application -> %s")
+                .message("Could not start the application [%s]")
                 .args(exception.getMessage())
                 .exception(exception)
                 .error(logger);
