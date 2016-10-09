@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -57,7 +58,7 @@ public class ApplicationLoggerTest {
     public void shouldLogCantNotStartApp() {
         Exception expectedException = new Exception();
         applicationLogger.cantNotStartApplication(expectedException);
-        verify(mockLogger).error(eq("Could not start the application"), eq(expectedException));
+        verify(mockLogger).error(contains("Could not start the application"), eq(expectedException));
     }
 
     @Test
