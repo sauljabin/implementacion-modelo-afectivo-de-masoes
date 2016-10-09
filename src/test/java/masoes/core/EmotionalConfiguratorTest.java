@@ -6,8 +6,6 @@
 
 package masoes.core;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import masoes.core.emotion.*;
 import org.junit.Before;
@@ -16,6 +14,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static masoes.util.math.GeometryCreator.createPoint;
 import static masoes.util.math.RandomGenerator.random;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -29,7 +28,6 @@ public class EmotionalConfiguratorTest {
     public static final int POSITIVE_SIGN = 1;
     public static final int NEGATIVE_SIGN = -1;
     private List<Emotion> emotions;
-    private GeometryFactory geometryFactory;
     private EmotionalConfigurator configurator;
 
     @Before
@@ -43,7 +41,6 @@ public class EmotionalConfiguratorTest {
         emotions.add(new Sadness());
         emotions.add(new Dissatisfaction());
         emotions.add(new Rejection());
-        geometryFactory = new GeometryFactory();
         configurator = createEmotionalConfigurator();
     }
 
@@ -110,10 +107,6 @@ public class EmotionalConfiguratorTest {
         if (xSign * x < 0.5)
             y = ySign * random(0.5, 1);
         return createPoint(x, y);
-    }
-
-    private Point createPoint(double x, double y) {
-        return geometryFactory.createPoint(new Coordinate(x, y));
     }
 
     private Point getRandomPointForBasicEmotion(double xMin, double xMax, double yMin, double yMax) {

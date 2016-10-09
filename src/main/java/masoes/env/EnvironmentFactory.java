@@ -11,12 +11,11 @@ import masoes.env.generic.GenericEnvironment;
 
 public class EnvironmentFactory {
 
-
     public Environment createEnvironment() {
         if (isContains(GenericEnvironment.class)) {
             return new GenericEnvironment();
         } else {
-            throw new InvalidEnvironmentException("Incorrect environment name: " + Setting.MASOES_ENV.getValue());
+            throw new InvalidEnvironmentException("Invalid environment name: " + Setting.MASOES_ENV.getValue());
         }
     }
 

@@ -8,10 +8,10 @@ package masoes.core;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import org.junit.Before;
 import org.junit.Test;
 
+import static masoes.util.math.GeometryCreator.createPolygon;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public class EmotionTest {
@@ -30,7 +30,7 @@ public class EmotionTest {
                 new Coordinate(0, 0)
         };
         emotion = createEmotion(expectedCoordinates, null);
-        expectedGeometry = new GeometryFactory().createPolygon(expectedCoordinates);
+        expectedGeometry = createPolygon(expectedCoordinates);
     }
 
     @Test

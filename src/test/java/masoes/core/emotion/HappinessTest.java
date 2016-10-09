@@ -7,26 +7,23 @@
 package masoes.core.emotion;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import masoes.core.EmotionType;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
 
-import static masoes.util.math.GeometryGenerator.createPoint;
+import static masoes.util.math.GeometryCreator.createPoint;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class HappinessTest {
 
     private Happiness happiness;
-    private GeometryFactory geometryFactory;
     private Coordinate[] coordinates;
 
     @Before
     public void setUp() {
-        geometryFactory = new GeometryFactory();
         happiness = new Happiness();
         coordinates = new Coordinate[]{
                 new Coordinate(0, 0.5),
@@ -42,7 +39,7 @@ public class HappinessTest {
     @Test
     public void shouldIntersectsWithBoundaryPoints() {
         Arrays.stream(coordinates)
-                .forEach(coordinate -> assertTrue(happiness.getGeometry().intersects(geometryFactory.createPoint(coordinate))));
+                .forEach(coordinate -> assertTrue(happiness.getGeometry().intersects(createPoint(coordinate.x, coordinate.y))));
     }
 
     @Test

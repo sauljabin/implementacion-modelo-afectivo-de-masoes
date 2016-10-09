@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static masoes.util.math.GeometryGenerator.createPoint;
+import static masoes.util.math.GeometryCreator.createPoint;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 

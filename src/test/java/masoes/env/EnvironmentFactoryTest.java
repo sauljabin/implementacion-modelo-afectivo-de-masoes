@@ -38,7 +38,7 @@ public class EnvironmentFactoryTest {
         String stringArg = "anything";
         Setting.MASOES_ENV.setValue(stringArg);
         expectedException.expect(InvalidEnvironmentException.class);
-        expectedException.expectMessage("Incorrect environment name: " + stringArg);
+        expectedException.expectMessage("Invalid environment name: " + stringArg);
         environmentFactory.createEnvironment();
     }
 

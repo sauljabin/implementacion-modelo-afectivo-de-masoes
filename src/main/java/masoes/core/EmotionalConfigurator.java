@@ -6,22 +6,19 @@
 
 package masoes.core;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import masoes.core.emotion.*;
+import masoes.util.math.GeometryCreator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class EmotionalConfigurator {
 
-    private GeometryFactory geometryFactory;
     private List<Emotion> emotions;
     private EmotionalState emotionalState;
 
     public EmotionalConfigurator() {
-        geometryFactory = new GeometryFactory();
         emotionalState = new EmotionalState(0, 0);
         addEmotions();
     }
@@ -51,7 +48,7 @@ public abstract class EmotionalConfigurator {
     }
 
     public Point getEmotionalPoint() {
-        return geometryFactory.createPoint(new Coordinate(emotionalState.getActivation(), emotionalState.getSatisfaction()));
+        return GeometryCreator.createPoint(emotionalState.getActivation(), emotionalState.getSatisfaction());
     }
 
     public EmotionalState getEmotionalState() {

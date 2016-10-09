@@ -6,7 +6,9 @@
 
 package masoes.env;
 
-public class InvalidEnvironmentException extends IllegalArgumentException {
+import java.security.InvalidParameterException;
+
+public class InvalidEnvironmentException extends InvalidParameterException {
 
     public InvalidEnvironmentException(String s) {
         super(s);
