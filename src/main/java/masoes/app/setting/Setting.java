@@ -10,15 +10,17 @@ import java.util.Map;
 
 public enum Setting {
 
-    APP_NAME("app.name"),
-    APP_VERSION("app.version"),
-    APP_REVISION("app.revision"),
-    OS_NAME("os.name"),
-    OS_ARCH("os.arch"),
-    OS_VERSION("os.version"),
-    JAVA_VERSION("java.version"),
-    JAVA_VENDOR("java.vendor"),
-    MASOES_ENV("masoes.env");
+    APP_NAME(SettingsLoader.APP_NAME_KEY),
+    APP_VERSION(SettingsLoader.APP_VERSION_KEY),
+    APP_REVISION(SettingsLoader.APP_REVISION_KEY),
+    OS_NAME(SettingsLoader.OS_NAME_KEY),
+    OS_ARCH(SettingsLoader.OS_ARCH_KEY),
+    OS_VERSION(SettingsLoader.OS_VERSION_KEY),
+    JAVA_VERSION(SettingsLoader.JAVA_VERSION_KEY),
+    JAVA_VENDOR(SettingsLoader.JAVA_VENDOR_KEY),
+    MASOES_ENV(SettingsLoader.MASOES_ENV_KEY),
+    JADE_REVISION(SettingsLoader.JADE_REVISION_KEY),
+    JADE_VERSION(SettingsLoader.JADE_VERSION_KEY);
 
     private String key;
 

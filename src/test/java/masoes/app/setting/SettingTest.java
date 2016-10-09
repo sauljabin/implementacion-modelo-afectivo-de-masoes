@@ -8,6 +8,10 @@ package masoes.app.setting;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
@@ -55,6 +59,19 @@ public class SettingTest {
     @Test
     public void shouldBeEqualsKeyAndToString() {
         assertThat(Setting.APP_NAME.getKey(), is(Setting.APP_NAME.toString()));
+    }
+
+    @Test
+    public void shouldHasAllEnumsValues() {
+        expectedSettingsLoader.clear();
+        expectedSettingsLoader.init();
+        List<String> actualEnumKeys = Arrays
+                .stream(Setting.values())
+                .map(setting -> setting.getKey())
+                .sorted()
+                .collect(Collectors.toList());
+        List<String> expectedEnumKeys = expectedSettingsLoader.getKeys();
+        assertReflectionEquals(actualEnumKeys, expectedEnumKeys);
     }
 
 }

@@ -44,8 +44,8 @@ public class VersionOption extends ApplicationOption {
         System.out.printf("Revision: %s\n", Setting.APP_REVISION.getValue());
         System.out.println(line);
         System.out.println("JADE");
-        System.out.printf("Version: %s\n", jade.core.Runtime.getVersion());
-        System.out.printf("Revision: %s\n", jade.core.Runtime.getRevision());
+        System.out.printf("Version: %s\n", Setting.JADE_VERSION.getValue());
+        System.out.printf("Revision: %s\n", Setting.JADE_REVISION.getValue());
         System.out.println(line);
     }
 
