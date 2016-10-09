@@ -8,18 +8,21 @@ package masoes.env;
 
 import masoes.app.setting.Setting;
 import masoes.env.generic.GenericEnvironment;
+import masoes.env.wikipedia.WikipediaEnvironment;
 
 public class EnvironmentFactory {
 
     public Environment createEnvironment() {
         if (isContains(GenericEnvironment.class)) {
             return new GenericEnvironment();
+        } else if (isContains(WikipediaEnvironment.class)) {
+            return new WikipediaEnvironment();
         } else {
             throw new InvalidEnvironmentException("Invalid environment name: " + Setting.MASOES_ENV.getValue());
         }
     }
 
-    private boolean isContains(Class<GenericEnvironment> environmentClass) {
+    private boolean isContains(Class<? extends Environment> environmentClass) {
         return environmentClass.getSimpleName().toLowerCase().contains(Setting.MASOES_ENV.getValue().toLowerCase());
     }
 

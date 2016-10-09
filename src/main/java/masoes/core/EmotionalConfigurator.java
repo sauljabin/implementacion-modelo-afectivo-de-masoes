@@ -59,6 +59,6 @@ public abstract class EmotionalConfigurator {
         emotionalState = updateEmotionalState(stimulus);
     }
 
-    public abstract EmotionalState updateEmotionalState(Stimulus stimulus);
+    protected abstract EmotionalState updateEmotionalState(Stimulus stimulus);
 
 }

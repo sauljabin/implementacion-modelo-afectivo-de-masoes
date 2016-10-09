@@ -8,6 +8,7 @@ package masoes.env;
 
 import masoes.app.setting.Setting;
 import masoes.env.generic.GenericEnvironment;
+import masoes.env.wikipedia.WikipediaEnvironment;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,6 +32,12 @@ public class EnvironmentFactoryTest {
     @Test
     public void shouldCreateGenericEnvironment() {
         assertThat(environmentFactory.createEnvironment(), instanceOf(GenericEnvironment.class));
+    }
+
+    @Test
+    public void shouldCreateWikipediaEnvironment() {
+        Setting.MASOES_ENV.setValue("wikipedia");
+        assertThat(environmentFactory.createEnvironment(), instanceOf(WikipediaEnvironment.class));
     }
 
     @Test
