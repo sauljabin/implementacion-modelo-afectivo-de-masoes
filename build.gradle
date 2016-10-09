@@ -36,7 +36,9 @@ dependencies {
 }
 
 processResources {
-    expand('appName': appName, 'appVersion': version, 'appRevision': gitRevision())
+    filesMatching('**settings.properties') {
+        expand('appName': appName, 'appVersion': version, 'appRevision': gitRevision())
+    }
 }
 
 jar {
