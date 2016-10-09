@@ -50,14 +50,14 @@ public class SettingsLoader {
         setSetting(JAVA_VENDOR_KEY, System.getProperty(JAVA_VENDOR_KEY));
         setSetting(JADE_VERSION_KEY, jade.core.Runtime.getVersion());
         setSetting(JADE_REVISION_KEY, jade.core.Runtime.getRevision());
-        load();
+        loadFromFile();
     }
 
     public synchronized void setSetting(String key, String value) {
         properties.put(key, value);
     }
 
-    public synchronized void load() {
+    public synchronized void loadFromFile() {
         try {
             properties.load(ClassLoader.getSystemResourceAsStream(SETTINGS_PROPERTIES_FILE));
         } catch (IOException ioe) {

@@ -22,13 +22,13 @@ public class SettingTest {
 
     @Test
     public void shouldReturnCorrectValue() {
-        expectedSettingsLoader.load();
+        expectedSettingsLoader.loadFromFile();
         assertThat(Setting.APP_NAME.getValue(), is(expectedSettingsLoader.getSetting("app.name")));
     }
 
     @Test
     public void shouldSetValue() {
-        expectedSettingsLoader.load();
+        expectedSettingsLoader.loadFromFile();
         String expectedValue = "testValue";
         Setting.APP_NAME.setValue(expectedValue);
         assertThat(Setting.APP_NAME.getValue(), is(expectedValue));
@@ -43,7 +43,7 @@ public class SettingTest {
 
     @Test
     public void shouldSetAndGetNewSetting() {
-        expectedSettingsLoader.load();
+        expectedSettingsLoader.loadFromFile();
         String keySetting = "newSetting";
         String valueSetting = "valueSetting";
         Setting.set(keySetting, valueSetting);
@@ -52,7 +52,7 @@ public class SettingTest {
 
     @Test
     public void shouldGetMap() {
-        expectedSettingsLoader.load();
+        expectedSettingsLoader.loadFromFile();
         assertReflectionEquals(SettingsLoader.getInstance().toMap(), Setting.toMap());
     }
 

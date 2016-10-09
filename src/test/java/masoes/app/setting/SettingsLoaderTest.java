@@ -91,7 +91,7 @@ public class SettingsLoaderTest {
         keys.add(appVersionKey);
         keys.add(masoesEnvKey);
         settingsLoader.clear();
-        settingsLoader.load();
+        settingsLoader.loadFromFile();
         List<String> expected = settingsLoader.getKeys();
         Collections.sort(keys);
         assertReflectionEquals(expected, keys);
