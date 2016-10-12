@@ -6,7 +6,7 @@
 
 package masoes.jade;
 
-import jade.BootProfileImpl;
+import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import masoes.app.setting.Setting;
 import masoes.app.setting.SettingsLoader;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 
 public class JadeBootTest {
 
-    private BootProfileImpl bootProfile;
+    private ProfileImpl bootProfile;
     private Runtime mockRuntime;
     private JadeBoot jadeBoot;
     private SettingsLoader settingsLoader = SettingsLoader.getInstance();
@@ -26,7 +26,7 @@ public class JadeBootTest {
     @Before
     public void setUp() {
         settingsLoader.load();
-        bootProfile = mock(BootProfileImpl.class);
+        bootProfile = mock(ProfileImpl.class);
         mockRuntime = mock(Runtime.class);
         jadeBoot = new JadeBoot(bootProfile, mockRuntime);
     }

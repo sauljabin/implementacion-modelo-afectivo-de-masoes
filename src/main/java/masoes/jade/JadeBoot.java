@@ -12,11 +12,11 @@ import masoes.app.setting.Setting;
 
 public class JadeBoot {
 
-    private ProfileImpl iae;
+    private ProfileImpl profile;
     private Runtime jadeRuntime;
 
-    public JadeBoot(ProfileImpl iae, Runtime jadeRuntime) {
-        this.iae = iae;
+    public JadeBoot(ProfileImpl profile, Runtime jadeRuntime) {
+        this.profile = profile;
         this.jadeRuntime = jadeRuntime;
     }
 
@@ -25,10 +25,10 @@ public class JadeBoot {
     }
 
     public void boot(String args) {
-        iae.setParameter("gui", "true");
-        iae.setParameter("agents", args);
-        iae.setParameter("port", Setting.JADE_PORT.getValue());
+        profile.setParameter("gui", "true");
+        profile.setParameter("agents", args);
+        profile.setParameter("port", Setting.JADE_PORT.getValue());
         jadeRuntime.setCloseVM(true);
-        jadeRuntime.createMainContainer(iae);
+        jadeRuntime.createMainContainer(profile);
     }
 }
