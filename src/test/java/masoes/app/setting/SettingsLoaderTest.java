@@ -9,22 +9,23 @@ package masoes.app.setting;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class SettingsLoaderTest {
 
-    private SettingsLoader settingsLoader;
+    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
     private String keyForTests;
     private String expectedValue;
 
     @Before
     public void setUp() throws Exception {
-        settingsLoader = SettingsLoader.getInstance();
+        settingsLoader.load();
         keyForTests = "keyForTests";
         expectedValue = "expectedValue";
     }
@@ -54,57 +55,23 @@ public class SettingsLoaderTest {
     }
 
     @Test
-    public void shouldClearSettingsWhenInvokeClear() {
-        settingsLoader.setSetting(keyForTests, expectedValue);
-        settingsLoader.clear();
-        assertNull(settingsLoader.getSetting(keyForTests));
-    }
-
-    @Test
     public void shouldLoadInitValuesWhenInvokeInit() {
         Map<String, String> expectedValues = getInitValues();
-        settingsLoader.init();
         expectedValues.keySet()
                 .forEach(key -> assertEquals(expectedValues.get(key), settingsLoader.getSetting(key)));
     }
 
     @Test
-    public void shouldGetACorrectMap() {
-        Map<String, String> expectedMap = new HashMap<>();
-        expectedMap.put(keyForTests, expectedValue);
-        settingsLoader.clear();
-        settingsLoader.setSetting(keyForTests, expectedValue);
-        Map<String, String> actualMap = settingsLoader.toMap();
-        assertEquals(expectedMap, actualMap);
-    }
-
-    @Test
-    public void shouldLoadPropertiesFromFile() throws IOException {
-        String appNameKey = "app.name",
-                appRevisionKey = "app.revision",
-                appVersionKey = "app.version",
-                masoesEnvKey = "masoes.env";
-
-        List<String> keys = new ArrayList<>();
-        keys.add(appNameKey);
-        keys.add(appRevisionKey);
-        keys.add(appVersionKey);
-        keys.add(masoesEnvKey);
-        settingsLoader.clear();
-        settingsLoader.loadFromFile();
-        List<String> expected = settingsLoader.getKeys();
-        Collections.sort(keys);
-        assertReflectionEquals(expected, keys);
-    }
-
-    @Test
     public void shouldToStringSameStringThatMap() {
-        Map<String, String> expectedMap = new HashMap<>();
-        expectedMap.put(keyForTests, expectedValue);
-        String expectedString = expectedMap.toString();
-        settingsLoader.clear();
+        assertEquals(settingsLoader.toMap().toString(), settingsLoader.toString());
+    }
+
+    @Test
+    public void shouldRemoveProperty() {
         settingsLoader.setSetting(keyForTests, expectedValue);
-        assertEquals(expectedString, settingsLoader.toString());
+        assertThat(settingsLoader.getSetting(keyForTests), is(expectedValue));
+        settingsLoader.setSetting(keyForTests, null);
+        assertThat(settingsLoader.getSetting(keyForTests), is(nullValue()));
     }
 
     public Map<String, String> getInitValues() {
@@ -114,7 +81,11 @@ public class SettingsLoaderTest {
                 javaVersionKey = "java.version",
                 javaVendorKey = "java.vendor",
                 jadeVersionKey = "jade.version",
-                jadeRevisionKey = "jade.revision";
+                jadeRevisionKey = "jade.revision",
+                appNameKey = "app.name",
+                appRevisionKey = "app.revision",
+                appVersionKey = "app.version",
+                masoesEnvKey = "masoes.env";
 
         Map<String, String> initValues = new HashMap<>();
         initValues.put(osNameKey, System.getProperty(osNameKey));
@@ -124,6 +95,10 @@ public class SettingsLoaderTest {
         initValues.put(javaVendorKey, System.getProperty(javaVendorKey));
         initValues.put(jadeVersionKey, jade.core.Runtime.getVersion());
         initValues.put(jadeRevisionKey, jade.core.Runtime.getRevision());
+        initValues.put(appNameKey, "${appName}");
+        initValues.put(appRevisionKey, "${appRevision}");
+        initValues.put(appVersionKey, "${appVersion}");
+        initValues.put(masoesEnvKey, "generic");
         return initValues;
     }
 

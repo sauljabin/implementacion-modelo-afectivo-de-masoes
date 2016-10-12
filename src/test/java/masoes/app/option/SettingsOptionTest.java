@@ -8,6 +8,7 @@ package masoes.app.option;
 
 import masoes.app.logger.ApplicationLogger;
 import masoes.app.setting.Setting;
+import masoes.app.setting.SettingsLoader;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,7 +22,6 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -32,9 +32,11 @@ public class SettingsOptionTest {
 
     private SettingsOption settingsOption;
     private ApplicationLogger mockLogger;
+    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        settingsLoader.load();
         mockLogger = mock(ApplicationLogger.class);
         settingsOption = new SettingsOption(mockLogger);
     }
@@ -77,7 +79,7 @@ public class SettingsOptionTest {
     public void shouldInvokeLoggerErrorWhenException() {
         String expectedArgs = "{setting1=value1,setting2=value2}";
         settingsOption.exec(expectedArgs);
-        verify(mockLogger).updatedSettings(eq(Setting.toMap()));
+        verify(mockLogger).updatedSettings();
     }
 
 }

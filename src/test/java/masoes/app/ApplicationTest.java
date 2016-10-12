@@ -53,7 +53,8 @@ public class ApplicationTest {
         application.run(args);
 
         verify(mockCli).processArgs(args);
-        verify(mockLogger).startingApplication(any(), anyMap());
+        verify(mockLogger).startingApplication(any());
+        verify(mockSettings).load();
     }
 
 }

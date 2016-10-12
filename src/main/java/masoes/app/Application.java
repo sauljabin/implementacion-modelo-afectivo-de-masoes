@@ -10,6 +10,7 @@ import masoes.app.logger.ApplicationLogger;
 import masoes.app.option.ApplicationOptionManager;
 import masoes.app.option.ApplicationOptionProcessor;
 import masoes.app.setting.SettingsLoader;
+import org.slf4j.LoggerFactory;
 
 public class Application {
 
@@ -20,7 +21,7 @@ public class Application {
     private ApplicationOptionProcessor applicationOptionProcessor;
 
     public Application() {
-        this(ApplicationLogger.newInstance(Application.class), SettingsLoader.getInstance(), new ApplicationOptionProcessor(ApplicationOptionManager.getInstance()));
+        this(new ApplicationLogger(LoggerFactory.getLogger(Application.class)), SettingsLoader.getInstance(), new ApplicationOptionProcessor(ApplicationOptionManager.getInstance()));
     }
 
     public Application(ApplicationLogger logger, SettingsLoader settingsLoader, ApplicationOptionProcessor applicationOptionProcessor) {
@@ -31,7 +32,8 @@ public class Application {
 
     public void run(String[] args) {
         try {
-            logger.startingApplication(args, settingsLoader.toMap());
+            settingsLoader.load();
+            logger.startingApplication(args);
             applicationOptionProcessor.processArgs(args);
         } catch (Exception e) {
             logger.cantNotStartApplication(e);

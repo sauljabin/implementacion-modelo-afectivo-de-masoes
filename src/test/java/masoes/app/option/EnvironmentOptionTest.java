@@ -7,6 +7,7 @@
 package masoes.app.option;
 
 import masoes.app.setting.Setting;
+import masoes.app.setting.SettingsLoader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,9 +18,11 @@ import static org.junit.Assert.assertTrue;
 public class EnvironmentOptionTest {
 
     private EnvironmentOption environmentOption;
+    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        settingsLoader.load();
         environmentOption = new EnvironmentOption();
     }
 

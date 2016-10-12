@@ -7,6 +7,7 @@
 package masoes.env;
 
 import masoes.app.setting.Setting;
+import masoes.app.setting.SettingsLoader;
 import masoes.env.generic.GenericEnvironment;
 import masoes.env.wikipedia.WikipediaEnvironment;
 import org.junit.Before;
@@ -23,9 +24,11 @@ public class EnvironmentFactoryTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     private EnvironmentFactory environmentFactory;
+    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        settingsLoader.load();
         environmentFactory = new EnvironmentFactory();
     }
 

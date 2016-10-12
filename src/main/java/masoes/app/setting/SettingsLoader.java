@@ -31,7 +31,6 @@ public class SettingsLoader {
     private Properties properties;
 
     private SettingsLoader() {
-        init();
     }
 
     public synchronized static SettingsLoader getInstance() {
@@ -41,7 +40,7 @@ public class SettingsLoader {
         return INSTANCE;
     }
 
-    public synchronized void init() {
+    public synchronized void load() {
         properties = new Properties();
         setSetting(OS_NAME_KEY, System.getProperty(OS_NAME_KEY));
         setSetting(OS_ARCH_KEY, System.getProperty(OS_ARCH_KEY));
@@ -50,19 +49,18 @@ public class SettingsLoader {
         setSetting(JAVA_VENDOR_KEY, System.getProperty(JAVA_VENDOR_KEY));
         setSetting(JADE_VERSION_KEY, jade.core.Runtime.getVersion());
         setSetting(JADE_REVISION_KEY, jade.core.Runtime.getRevision());
-        loadFromFile();
-    }
-
-    public synchronized void setSetting(String key, String value) {
-        properties.put(key, value);
-    }
-
-    public synchronized void loadFromFile() {
         try {
             properties.load(ClassLoader.getSystemResourceAsStream(SETTINGS_PROPERTIES_FILE));
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }
+    }
+
+    public synchronized void setSetting(String key, String value) {
+        if (value == null)
+            properties.remove(key);
+        else
+            properties.put(key, value);
     }
 
     public synchronized String getSetting(String key, String defaultValue) {
@@ -74,10 +72,6 @@ public class SettingsLoader {
 
     public synchronized String getSetting(String key) {
         return properties.getProperty(key);
-    }
-
-    public synchronized void clear() {
-        properties.clear();
     }
 
     public synchronized String toString() {

@@ -7,6 +7,7 @@
 package masoes.app.option;
 
 import masoes.app.setting.Setting;
+import masoes.app.setting.SettingsLoader;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,9 +23,11 @@ public class VersionOptionTest {
     @Rule
     public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
     private VersionOption versionOption;
+    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
 
     @Before
     public void setUp() {
+        settingsLoader.load();
         versionOption = new VersionOption();
     }
 

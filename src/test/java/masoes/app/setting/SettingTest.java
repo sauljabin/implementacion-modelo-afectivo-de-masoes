@@ -6,6 +6,7 @@
 
 package masoes.app.setting;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -18,17 +19,20 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 
 public class SettingTest {
 
-    private final SettingsLoader expectedSettingsLoader = SettingsLoader.getInstance();
+    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
+
+    @Before
+    public void setUp() {
+        settingsLoader.load();
+    }
 
     @Test
     public void shouldReturnCorrectValue() {
-        expectedSettingsLoader.loadFromFile();
-        assertThat(Setting.APP_NAME.getValue(), is(expectedSettingsLoader.getSetting("app.name")));
+        assertThat(Setting.APP_NAME.getValue(), is(settingsLoader.getSetting("app.name")));
     }
 
     @Test
     public void shouldSetValue() {
-        expectedSettingsLoader.loadFromFile();
         String expectedValue = "testValue";
         Setting.APP_NAME.setValue(expectedValue);
         assertThat(Setting.APP_NAME.getValue(), is(expectedValue));
@@ -36,23 +40,21 @@ public class SettingTest {
 
     @Test
     public void shouldReturnDefaultValue() {
-        expectedSettingsLoader.clear();
+        Setting.APP_NAME.setValue(null);
         assertThat(Setting.APP_NAME.getValue("default"), is("default"));
         assertThat(Setting.get("key", "default"), is("default"));
     }
 
     @Test
     public void shouldSetAndGetNewSetting() {
-        expectedSettingsLoader.loadFromFile();
         String keySetting = "newSetting";
         String valueSetting = "valueSetting";
         Setting.set(keySetting, valueSetting);
-        assertThat(Setting.get(keySetting), is(expectedSettingsLoader.getSetting(keySetting)));
+        assertThat(Setting.get(keySetting), is(settingsLoader.getSetting(keySetting)));
     }
 
     @Test
     public void shouldGetMap() {
-        expectedSettingsLoader.loadFromFile();
         assertReflectionEquals(SettingsLoader.getInstance().toMap(), Setting.toMap());
     }
 
@@ -63,14 +65,12 @@ public class SettingTest {
 
     @Test
     public void shouldHasAllEnumsValues() {
-        expectedSettingsLoader.clear();
-        expectedSettingsLoader.init();
         List<String> actualEnumKeys = Arrays
                 .stream(Setting.values())
                 .map(setting -> setting.getKey())
                 .sorted()
                 .collect(Collectors.toList());
-        List<String> expectedEnumKeys = expectedSettingsLoader.getKeys();
+        List<String> expectedEnumKeys = settingsLoader.getKeys();
         assertReflectionEquals(actualEnumKeys, expectedEnumKeys);
     }
 

@@ -6,6 +6,7 @@
 
 package masoes.app.option;
 
+import masoes.app.setting.SettingsLoader;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.junit.Before;
@@ -22,9 +23,11 @@ public class HelpOptionTest {
 
     private HelpOption helpOption;
     private HelpFormatter mockFormatter;
+    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
 
     @Before
     public void setUp() {
+        settingsLoader.load();
         mockFormatter = mock(HelpFormatter.class);
         helpOption = new HelpOption(mockFormatter);
     }

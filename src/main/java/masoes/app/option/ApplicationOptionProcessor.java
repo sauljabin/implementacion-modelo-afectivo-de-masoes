@@ -10,6 +10,7 @@ import masoes.app.logger.ApplicationLogger;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +23,7 @@ public class ApplicationOptionProcessor {
     private CommandLine commandLine;
 
     public ApplicationOptionProcessor(ApplicationOptionManager options) {
-        this(options, new DefaultParser(), ApplicationLogger.newInstance(ApplicationOptionProcessor.class));
+        this(options, new DefaultParser(), new ApplicationLogger(LoggerFactory.getLogger(ApplicationOptionProcessor.class)));
     }
 
     public ApplicationOptionProcessor(ApplicationOptionManager options, CommandLineParser commandLineParser, ApplicationLogger logger) {

@@ -7,51 +7,34 @@
 package masoes.app.logger;
 
 import masoes.app.option.ApplicationOption;
+import masoes.app.setting.Setting;
+import masoes.app.setting.SettingsLoader;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.*;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(LoggerFactory.class)
 public class ApplicationLoggerTest {
 
     private Logger mockLogger;
-    private Class<ApplicationLoggerTest> expectedClass;
     private ApplicationLogger applicationLogger;
-    private Map<String, String> expectedMap;
+    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        settingsLoader.load();
         mockLogger = mock(Logger.class);
-        mockStatic(LoggerFactory.class);
-
-        expectedClass = ApplicationLoggerTest.class;
-        when(LoggerFactory.getLogger(expectedClass)).thenReturn(mockLogger);
-
-        applicationLogger = ApplicationLogger.newInstance(expectedClass);
-        expectedMap = new HashMap<>();
-        expectedMap.put("app", "masoes");
+        applicationLogger = new ApplicationLogger(mockLogger);
     }
 
     @Test
     public void shouldLogStartingApp() {
         String[] args = {"-h"};
-        applicationLogger.startingApplication(args, expectedMap);
-        verify(mockLogger).info(eq("Starting application with arguments: [-h], and settings {app=masoes}"));
+        applicationLogger.startingApplication(args);
+        verify(mockLogger).info(eq("Starting application with arguments: [-h], and settings " + Setting.toMap().toString()));
     }
 
     @Test
@@ -73,8 +56,8 @@ public class ApplicationLoggerTest {
 
     @Test
     public void shouldLogUpdatedSettings() {
-        applicationLogger.updatedSettings(expectedMap);
-        verify(mockLogger).info(eq("Updated settings: {app=masoes}"));
+        applicationLogger.updatedSettings();
+        verify(mockLogger).info(eq("Updated settings: " + Setting.toMap().toString()));
     }
 
 }

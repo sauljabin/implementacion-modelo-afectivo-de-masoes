@@ -7,33 +7,33 @@
 package masoes.app.logger;
 
 import masoes.app.option.ApplicationOption;
+import masoes.app.setting.Setting;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.Map;
 
 public class ApplicationLogger {
 
     private Logger logger;
 
-    private ApplicationLogger(Logger logger) {
+    public ApplicationLogger(Logger logger) {
         this.logger = logger;
     }
 
-    public static ApplicationLogger newInstance(Class<?> classObject) {
-        return new ApplicationLogger(LoggerFactory.getLogger(classObject));
+    private LogWriter newLogWriter() {
+        return new LogWriter();
     }
 
-    public void startingApplication(String[] args, Map<String, String> settings) {
-        LogWriter.newInstance()
+    public void startingApplication(String[] args) {
+        newLogWriter()
                 .message("Starting application with arguments: %s, and settings %s")
-                .args(Arrays.toString(args), settings.toString())
+                .args(Arrays.toString(args), Setting.toMap().toString())
                 .info(logger);
     }
 
+
     public void cantNotStartApplication(Exception exception) {
-        LogWriter.newInstance()
+        newLogWriter()
                 .message("Could not start the application [%s]")
                 .args(exception.getMessage())
                 .exception(exception)
@@ -41,16 +41,16 @@ public class ApplicationLogger {
     }
 
     public void startingOption(ApplicationOption applicationOption) {
-        LogWriter.newInstance()
+        newLogWriter()
                 .message("Starting option: %s")
                 .args(applicationOption)
                 .info(logger);
     }
 
-    public void updatedSettings(Map<String, String> settings) {
-        LogWriter.newInstance()
+    public void updatedSettings() {
+        newLogWriter()
                 .message("Updated settings: %s")
-                .args(settings.toString())
+                .args(Setting.toMap().toString())
                 .info(logger);
     }
 

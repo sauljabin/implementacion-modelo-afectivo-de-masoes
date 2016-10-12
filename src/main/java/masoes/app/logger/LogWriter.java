@@ -16,14 +16,14 @@ public class LogWriter {
     private Optional<Exception> exception;
     private Optional<Object[]> args;
 
-    private LogWriter() {
+    public LogWriter() {
+        init();
+    }
+
+    private void init() {
         message = Optional.empty();
         exception = Optional.empty();
         args = Optional.empty();
-    }
-
-    public static LogWriter newInstance() {
-        return new LogWriter();
     }
 
     public LogWriter message(String message) {
@@ -55,6 +55,7 @@ public class LogWriter {
         } else {
             logger.info(getMessage());
         }
+        init();
     }
 
     public void warn(Logger logger) {
@@ -63,6 +64,7 @@ public class LogWriter {
         } else {
             logger.warn(getMessage());
         }
+        init();
     }
 
     public void error(Logger logger) {
@@ -71,6 +73,7 @@ public class LogWriter {
         } else {
             logger.error(getMessage());
         }
+        init();
     }
 
     public void debug(Logger logger) {
@@ -79,6 +82,7 @@ public class LogWriter {
         } else {
             logger.debug(getMessage());
         }
+        init();
     }
 
 }

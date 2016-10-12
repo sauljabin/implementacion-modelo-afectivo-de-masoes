@@ -8,6 +8,7 @@ package masoes.app.option;
 
 import masoes.app.logger.ApplicationLogger;
 import masoes.app.setting.Setting;
+import org.slf4j.LoggerFactory;
 
 import java.security.InvalidParameterException;
 
@@ -20,7 +21,7 @@ public class SettingsOption extends ApplicationOption {
     }
 
     public SettingsOption() {
-        this(ApplicationLogger.newInstance(SettingsOption.class));
+        this(new ApplicationLogger(LoggerFactory.getLogger(SettingsOption.class)));
     }
 
     @Override
@@ -57,7 +58,7 @@ public class SettingsOption extends ApplicationOption {
         for (String pair : settings) {
             setSetting(pair);
         }
-        applicationLogger.updatedSettings(Setting.toMap());
+        applicationLogger.updatedSettings();
     }
 
     private void setSetting(String pair) {
