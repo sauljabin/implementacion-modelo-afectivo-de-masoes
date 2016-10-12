@@ -32,7 +32,7 @@ public class ApplicationOptionManager {
         applicationOptions = new ArrayList<>();
         applicationOptions.add(new HelpOption());
         applicationOptions.add(new VersionOption());
-        applicationOptions.add(new JadeOption());
+        applicationOptions.add(new AgentsOption());
         applicationOptions.add(new SettingsOption());
         applicationOptions.add(new EnvironmentOption());
         applicationOptions.add(new BootOption());

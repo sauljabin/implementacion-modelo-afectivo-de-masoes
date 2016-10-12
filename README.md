@@ -89,13 +89,11 @@ Usage: masoes
  -s,--settings=<arg>   Sets application settings, examples:
                        -s "{setting1=value1, setting2=value2}"
                        --settings="{setting1=value1, setting2=value2}"
- -j,--jade=<arg>       Starts JADE framework with arguments, examples:
-                       Starts with gui:
-                       --jade=-gui
+ -a,--agents=<arg>     Starts JADE with agents, examples:
                        Adds agents:
-                       --jade="-agents <name>:<class>;<name>:<class>"
+                       --agents="<name>:<class>;<name>:<class>"
                        Agent arguments:
-                       --jade="-agents <name>:<class>(arg1,arg2)"
+                       --agents="<name>:<class>(arg1,arg2)"
  -e,--env=<arg>        Sets the environment for case study
  -b,--boot             Starts the application
 ```
@@ -123,7 +121,7 @@ Nuevas configuraciones:
 Ejecutar JADE manualmente:
 
 ```
-./masoes --jade="-gui -agents a1:masoes.core.agent.TestAgent(arg1, arg2)"
+./masoes --agents="a1:masoes.core.agent.TestAgent(arg1, arg2)"
 ```
 
 Ingresar environment a ejecutar:

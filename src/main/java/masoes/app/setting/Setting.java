@@ -20,7 +20,8 @@ public enum Setting {
     JAVA_VENDOR(SettingsLoader.JAVA_VENDOR_KEY),
     MASOES_ENV(SettingsLoader.MASOES_ENV_KEY),
     JADE_REVISION(SettingsLoader.JADE_REVISION_KEY),
-    JADE_VERSION(SettingsLoader.JADE_VERSION_KEY);
+    JADE_VERSION(SettingsLoader.JADE_VERSION_KEY),
+    JADE_PORT(SettingsLoader.JADE_PORT_KEY);
 
     private String key;
 

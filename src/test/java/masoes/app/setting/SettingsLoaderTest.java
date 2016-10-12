@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
@@ -55,14 +56,22 @@ public class SettingsLoaderTest {
     }
 
     @Test
-    public void shouldLoadInitValuesWhenInvokeInit() {
+    public void shouldLoadInitValues() {
         Map<String, String> expectedValues = getInitValues();
         expectedValues.keySet()
                 .forEach(key -> assertEquals(expectedValues.get(key), settingsLoader.getSetting(key)));
+
+        String appNameKey = "app.name",
+                appRevisionKey = "app.revision",
+                appVersionKey = "app.version";
+
+        assertThat(settingsLoader.getSetting(appNameKey), is(notNullValue()));
+        assertThat(settingsLoader.getSetting(appRevisionKey), is(notNullValue()));
+        assertThat(settingsLoader.getSetting(appVersionKey), is(notNullValue()));
     }
 
     @Test
-    public void shouldToStringSameStringThatMap() {
+    public void shouldGetTheSameStringThatAMap() {
         assertEquals(settingsLoader.toMap().toString(), settingsLoader.toString());
     }
 
@@ -82,9 +91,7 @@ public class SettingsLoaderTest {
                 javaVendorKey = "java.vendor",
                 jadeVersionKey = "jade.version",
                 jadeRevisionKey = "jade.revision",
-                appNameKey = "app.name",
-                appRevisionKey = "app.revision",
-                appVersionKey = "app.version",
+                jadePortKey = "jade.port",
                 masoesEnvKey = "masoes.env";
 
         Map<String, String> initValues = new HashMap<>();
@@ -95,10 +102,8 @@ public class SettingsLoaderTest {
         initValues.put(javaVendorKey, System.getProperty(javaVendorKey));
         initValues.put(jadeVersionKey, jade.core.Runtime.getVersion());
         initValues.put(jadeRevisionKey, jade.core.Runtime.getRevision());
-        initValues.put(appNameKey, "${appName}");
-        initValues.put(appRevisionKey, "${appRevision}");
-        initValues.put(appVersionKey, "${appVersion}");
         initValues.put(masoesEnvKey, "generic");
+        initValues.put(jadePortKey, "2000");
         return initValues;
     }
 

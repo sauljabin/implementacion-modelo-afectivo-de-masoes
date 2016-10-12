@@ -29,7 +29,7 @@ public class ApplicationOptionManagerTest {
         expectedOptions = new ArrayList<>();
         expectedOptions.add(new VersionOption());
         expectedOptions.add(new HelpOption());
-        expectedOptions.add(new JadeOption());
+        expectedOptions.add(new AgentsOption());
         expectedOptions.add(new SettingsOption());
         expectedOptions.add(new EnvironmentOption());
         expectedOptions.add(new BootOption());

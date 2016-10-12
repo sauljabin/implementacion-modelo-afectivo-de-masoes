@@ -22,6 +22,7 @@ public class SettingsLoader {
     public static final String JAVA_VENDOR_KEY = "java.vendor";
     public static final String JADE_VERSION_KEY = "jade.version";
     public static final String JADE_REVISION_KEY = "jade.revision";
+    public static final String JADE_PORT_KEY = "jade.port";
     public static final String APP_NAME_KEY = "app.name";
     public static final String APP_REVISION_KEY = "app.revision";
     public static final String APP_VERSION_KEY = "app.version";
