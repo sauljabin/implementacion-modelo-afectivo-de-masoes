@@ -4,10 +4,10 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.env.generic;
+package masoes.core.agent;
 
-import masoes.env.Environment;
+import jade.core.Agent;
 
-public class GenericEnvironment extends Environment {
+public class SettingsAgent extends Agent {
 
 }

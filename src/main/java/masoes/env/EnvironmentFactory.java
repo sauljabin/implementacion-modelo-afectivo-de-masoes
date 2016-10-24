@@ -7,14 +7,14 @@
 package masoes.env;
 
 import masoes.app.setting.Setting;
-import masoes.env.generic.GenericEnvironment;
+import masoes.env.dummy.DummyEnvironment;
 import masoes.env.wikipedia.WikipediaEnvironment;
 
 public class EnvironmentFactory {
 
     public Environment createEnvironment() {
-        if (isContains(GenericEnvironment.class)) {
-            return new GenericEnvironment();
+        if (isContains(DummyEnvironment.class)) {
+            return new DummyEnvironment();
         } else if (isContains(WikipediaEnvironment.class)) {
             return new WikipediaEnvironment();
         } else {

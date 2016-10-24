@@ -8,7 +8,7 @@ package masoes.env;
 
 import masoes.app.setting.Setting;
 import masoes.app.setting.SettingsLoader;
-import masoes.env.generic.GenericEnvironment;
+import masoes.env.dummy.DummyEnvironment;
 import masoes.env.wikipedia.WikipediaEnvironment;
 import org.junit.Before;
 import org.junit.Rule;
@@ -33,8 +33,8 @@ public class EnvironmentFactoryTest {
     }
 
     @Test
-    public void shouldCreateGenericEnvironment() {
-        assertThat(environmentFactory.createEnvironment(), instanceOf(GenericEnvironment.class));
+    public void shouldCreateDummyEnvironment() {
+        assertThat(environmentFactory.createEnvironment(), instanceOf(DummyEnvironment.class));
     }
 
     @Test
