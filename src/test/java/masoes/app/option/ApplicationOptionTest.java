@@ -43,6 +43,7 @@ public class ApplicationOptionTest {
 
     private ApplicationOption createApplicationOption(final String opt, final String longOpt, final boolean hasArg, final String description, int order) {
         return new ApplicationOption() {
+
             @Override
             public int getOrder() {
                 return order;
@@ -71,6 +72,7 @@ public class ApplicationOptionTest {
             @Override
             public void exec(String optionValue) {
             }
+
         };
     }
 

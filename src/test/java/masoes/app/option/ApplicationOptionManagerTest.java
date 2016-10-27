@@ -22,6 +22,7 @@ public class ApplicationOptionManagerTest {
 
     private ApplicationOptionManager applicationOptionManager;
     private List<ApplicationOption> expectedOptions;
+    private Options expectedOptionsObject;
 
     @Before
     public void setUp() throws Exception {
@@ -34,6 +35,9 @@ public class ApplicationOptionManagerTest {
         expectedOptions.add(new EnvironmentOption());
         expectedOptions.add(new BootOption());
         Collections.sort(expectedOptions);
+
+        expectedOptionsObject = new Options();
+        expectedOptions.forEach(option -> expectedOptionsObject.addOption(option.toOption()));
     }
 
     @Test
@@ -48,18 +52,12 @@ public class ApplicationOptionManagerTest {
 
     @Test
     public void shouldReturnOptionsObject() {
-        assertReflectionEquals(createOptions(), applicationOptionManager.toOptions());
+        assertReflectionEquals(expectedOptionsObject, applicationOptionManager.toOptions());
     }
 
     @Test
     public void shouldReturnHelpDefaultOption() {
         assertReflectionEquals(new HelpOption(), applicationOptionManager.getDefaultOption());
-    }
-
-    private Options createOptions() {
-        Options options = new Options();
-        expectedOptions.forEach(option -> options.addOption(option.toOption()));
-        return options;
     }
 
 }

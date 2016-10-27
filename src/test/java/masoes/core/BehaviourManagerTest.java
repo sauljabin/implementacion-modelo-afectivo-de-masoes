@@ -18,8 +18,7 @@ public class BehaviourManagerTest {
 
     @Before
     public void setUp() {
-        behaviourManager = new BehaviourManager() {
-        };
+        behaviourManager = createBehaviourManager();
     }
 
     @Test
@@ -27,6 +26,11 @@ public class BehaviourManagerTest {
         assertThat(behaviourManager.getBehaviourAssociated(EmotionType.NEGATIVE_HIGH), is(BehaviourType.REACTIVE));
         assertThat(behaviourManager.getBehaviourAssociated(EmotionType.NEGATIVE_LOW), is(BehaviourType.COGNITIVE));
         assertThat(behaviourManager.getBehaviourAssociated(EmotionType.POSITIVE), is(BehaviourType.IMITATIVE));
+    }
+
+    private BehaviourManager createBehaviourManager() {
+        return new BehaviourManager() {
+        };
     }
 
 }

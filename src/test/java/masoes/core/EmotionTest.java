@@ -42,6 +42,7 @@ public class EmotionTest {
 
     private Emotion createEmotion(Coordinate[] coordinates, EmotionType emotionType) {
         return new Emotion() {
+
             @Override
             public Coordinate[] getCoordinates() {
                 return coordinates;
@@ -51,6 +52,7 @@ public class EmotionTest {
             public EmotionType getEmotionType() {
                 return emotionType;
             }
+
         };
     }
 

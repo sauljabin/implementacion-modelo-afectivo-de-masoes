@@ -129,10 +129,12 @@ public class EmotionalConfiguratorTest {
 
     private EmotionalConfigurator createEmotionalConfigurator() {
         return new EmotionalConfigurator() {
+
             @Override
             public EmotionalState updateEmotionalState(Stimulus stimulus) {
                 return new EmotionalState(random.getDouble(-1, 1), random.getDouble(-1, 1));
             }
+
         };
     }
 
