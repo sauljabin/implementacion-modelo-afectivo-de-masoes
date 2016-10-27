@@ -8,12 +8,12 @@ package masoes.core.emotion;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import masoes.core.EmotionType;
+import masoes.util.math.GeometryCreator;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
 
-import static masoes.util.math.GeometryCreator.createPoint;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -21,9 +21,11 @@ public class AdmirationTest {
 
     private Admiration admiration;
     private Coordinate[] coordinates;
+    private GeometryCreator geometryCreator;
 
     @Before
     public void setUp() {
+        geometryCreator = new GeometryCreator();
         admiration = new Admiration();
         coordinates = new Coordinate[]{
                 new Coordinate(0, 0),
@@ -37,20 +39,20 @@ public class AdmirationTest {
     @Test
     public void shouldIntersectsWithBoundaryPoints() {
         Arrays.stream(coordinates)
-                .forEach(coordinate -> assertTrue(admiration.getGeometry().intersects(createPoint(coordinate.x, coordinate.y))));
+                .forEach(coordinate -> assertTrue(admiration.getGeometry().intersects(geometryCreator.createPoint(coordinate.x, coordinate.y))));
     }
 
     @Test
     public void shouldContainsInsidePoint() {
-        assertTrue(admiration.getGeometry().intersects(createPoint(-0.1, 0.1)));
-        assertTrue(admiration.getGeometry().intersects(createPoint(-0.4, 0.4)));
+        assertTrue(admiration.getGeometry().intersects(geometryCreator.createPoint(-0.1, 0.1)));
+        assertTrue(admiration.getGeometry().intersects(geometryCreator.createPoint(-0.4, 0.4)));
     }
 
     @Test
     public void shouldNotContainsPoint() {
-        assertFalse(admiration.getGeometry().intersects(createPoint(0.1, 0.1)));
-        assertFalse(admiration.getGeometry().intersects(createPoint(1.1, 0.1)));
-        assertFalse(admiration.getGeometry().intersects(createPoint(-0.6, 0.6)));
+        assertFalse(admiration.getGeometry().intersects(geometryCreator.createPoint(0.1, 0.1)));
+        assertFalse(admiration.getGeometry().intersects(geometryCreator.createPoint(1.1, 0.1)));
+        assertFalse(admiration.getGeometry().intersects(geometryCreator.createPoint(-0.6, 0.6)));
     }
 
     @Test

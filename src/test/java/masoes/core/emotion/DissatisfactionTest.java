@@ -8,12 +8,12 @@ package masoes.core.emotion;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import masoes.core.EmotionType;
+import masoes.util.math.GeometryCreator;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
 
-import static masoes.util.math.GeometryCreator.createPoint;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -21,9 +21,11 @@ public class DissatisfactionTest {
 
     private Dissatisfaction dissatisfaction;
     private Coordinate[] coordinates;
+    private GeometryCreator geometryCreator;
 
     @Before
     public void setUp() {
+        geometryCreator = new GeometryCreator();
         dissatisfaction = new Dissatisfaction();
         coordinates = new Coordinate[]{
                 new Coordinate(0, -0.5),
@@ -39,19 +41,19 @@ public class DissatisfactionTest {
     @Test
     public void shouldIntersectsWithBoundaryPoints() {
         Arrays.stream(coordinates)
-                .forEach(coordinate -> assertTrue(dissatisfaction.getGeometry().intersects(createPoint(coordinate.x, coordinate.y))));
+                .forEach(coordinate -> assertTrue(dissatisfaction.getGeometry().intersects(geometryCreator.createPoint(coordinate.x, coordinate.y))));
     }
 
     @Test
     public void shouldContainsInsidePoint() {
-        assertTrue(dissatisfaction.getGeometry().intersects(createPoint(0.7, -0.7)));
-        assertTrue(dissatisfaction.getGeometry().intersects(createPoint(0.51, -0.51)));
+        assertTrue(dissatisfaction.getGeometry().intersects(geometryCreator.createPoint(0.7, -0.7)));
+        assertTrue(dissatisfaction.getGeometry().intersects(geometryCreator.createPoint(0.51, -0.51)));
     }
 
     @Test
     public void shouldNotContainsPoint() {
-        assertFalse(dissatisfaction.getGeometry().intersects(createPoint(0.1, -0.1)));
-        assertFalse(dissatisfaction.getGeometry().intersects(createPoint(1.1, -0.1)));
+        assertFalse(dissatisfaction.getGeometry().intersects(geometryCreator.createPoint(0.1, -0.1)));
+        assertFalse(dissatisfaction.getGeometry().intersects(geometryCreator.createPoint(1.1, -0.1)));
     }
 
     @Test

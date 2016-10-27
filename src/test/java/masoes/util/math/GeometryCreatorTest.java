@@ -9,22 +9,29 @@ package masoes.util.math;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
+import org.junit.Before;
 import org.junit.Test;
 
-import static masoes.util.math.GeometryCreator.createPoint;
-import static masoes.util.math.GeometryCreator.createPolygon;
-import static masoes.util.math.RandomGenerator.random;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public class GeometryCreatorTest {
 
+    private RandomGenerator random;
+    private GeometryCreator geometryCreator;
+
+    @Before
+    public void setUp() throws Exception {
+        random = new RandomGenerator();
+        geometryCreator = new GeometryCreator();
+    }
+
     @Test
     public void shouldReturnCorrectPoint() {
-        double expectedX = random(0, 10);
-        double expectedY = random(0, 10);
-        Point actualPoint = createPoint(expectedX, expectedY);
+        double expectedX = random.getDouble(0, 10);
+        double expectedY = random.getDouble(0, 10);
+        Point actualPoint = geometryCreator.createPoint(expectedX, expectedY);
         assertThat(actualPoint.getX(), is(expectedX));
         assertThat(actualPoint.getY(), is(expectedY));
     }
@@ -38,6 +45,6 @@ public class GeometryCreatorTest {
                 new Coordinate(-0.5, 0),
                 new Coordinate(0, 0)
         };
-        assertReflectionEquals(createPolygon(expectedCoordinates), new GeometryFactory().createPolygon(expectedCoordinates));
+        assertReflectionEquals(geometryCreator.createPolygon(expectedCoordinates), new GeometryFactory().createPolygon(expectedCoordinates));
     }
 }

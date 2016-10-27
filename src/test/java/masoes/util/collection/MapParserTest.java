@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.util.math;
+package masoes.util.collection;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,24 +17,26 @@ import java.util.Map;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
-public class MapConverterTest {
+public class MapParserTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     private Map<String, String> expectedMap;
     private String actualString;
+    private MapParser mapParser;
 
     @Before
     public void setUp() throws Exception {
         expectedMap = new HashMap<>();
         expectedMap.put("key1", "value1");
         actualString = expectedMap.toString();
+        mapParser = new MapParser();
     }
 
     @Test
     public void shouldReturnCorrectMap() {
-        assertReflectionEquals(expectedMap, MapConverter.convert(actualString));
+        assertReflectionEquals(expectedMap, mapParser.parseMap(actualString));
     }
 
     @Test
@@ -42,7 +44,7 @@ public class MapConverterTest {
         String expectedArgs = "{setting1=,setting2=value2}";
         expectedException.expect(InvalidParameterException.class);
         expectedException.expectMessage("Incorrect string format: " + expectedArgs);
-        MapConverter.convert(expectedArgs);
+        mapParser.parseMap(expectedArgs);
     }
 
 }

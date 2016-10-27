@@ -8,12 +8,12 @@ package masoes.core.emotion;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import masoes.core.EmotionType;
+import masoes.util.math.GeometryCreator;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
 
-import static masoes.util.math.GeometryCreator.createPoint;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -21,9 +21,11 @@ public class RejectionTest {
 
     private Rejection rejection;
     private Coordinate[] coordinates;
+    private GeometryCreator geometryCreator;
 
     @Before
     public void setUp() {
+        geometryCreator = new GeometryCreator();
         rejection = new Rejection();
         coordinates = new Coordinate[]{
                 new Coordinate(0, 0),
@@ -37,19 +39,19 @@ public class RejectionTest {
     @Test
     public void shouldIntersectsWithBoundaryPoints() {
         Arrays.stream(coordinates)
-                .forEach(coordinate -> assertTrue(rejection.getGeometry().intersects(createPoint(coordinate.x, coordinate.y))));
+                .forEach(coordinate -> assertTrue(rejection.getGeometry().intersects(geometryCreator.createPoint(coordinate.x, coordinate.y))));
     }
 
     @Test
     public void shouldNotContainsPoint() {
-        assertFalse(rejection.getGeometry().intersects(createPoint(0.7, 0.7)));
-        assertFalse(rejection.getGeometry().intersects(createPoint(0.51, 0.51)));
+        assertFalse(rejection.getGeometry().intersects(geometryCreator.createPoint(0.7, 0.7)));
+        assertFalse(rejection.getGeometry().intersects(geometryCreator.createPoint(0.51, 0.51)));
     }
 
     @Test
     public void shouldContainsInsidePoint() {
-        assertTrue(rejection.getGeometry().intersects(createPoint(0.1, -0.1)));
-        assertTrue(rejection.getGeometry().intersects(createPoint(0.4, -0.4)));
+        assertTrue(rejection.getGeometry().intersects(geometryCreator.createPoint(0.1, -0.1)));
+        assertTrue(rejection.getGeometry().intersects(geometryCreator.createPoint(0.4, -0.4)));
     }
 
     @Test

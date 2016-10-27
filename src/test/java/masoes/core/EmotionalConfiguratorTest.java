@@ -8,14 +8,14 @@ package masoes.core;
 
 import com.vividsolutions.jts.geom.Point;
 import masoes.core.emotion.*;
+import masoes.util.math.GeometryCreator;
+import masoes.util.math.RandomGenerator;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static masoes.util.math.GeometryCreator.createPoint;
-import static masoes.util.math.RandomGenerator.random;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
@@ -29,9 +29,12 @@ public class EmotionalConfiguratorTest {
     public static final int NEGATIVE_SIGN = -1;
     private List<Emotion> emotions;
     private EmotionalConfigurator configurator;
+    private RandomGenerator random;
+    private GeometryCreator geometryCreator;
 
     @Before
     public void setUp() throws Exception {
+        geometryCreator = new GeometryCreator();
         emotions = new ArrayList<>();
         emotions.add(new Happiness());
         emotions.add(new Joy());
@@ -42,6 +45,7 @@ public class EmotionalConfiguratorTest {
         emotions.add(new Dissatisfaction());
         emotions.add(new Rejection());
         configurator = createEmotionalConfigurator();
+        random = new RandomGenerator();
     }
 
     @Test
@@ -102,17 +106,17 @@ public class EmotionalConfiguratorTest {
     }
 
     private Point getRandomPointForExternalEmotion(double xSign, double ySign) {
-        double x = xSign * random(0, 1);
-        double y = ySign * random(0, 1);
+        double x = xSign * random.getDouble(0, 1);
+        double y = ySign * random.getDouble(0, 1);
         if (xSign * x < 0.5)
-            y = ySign * random(0.5, 1);
-        return createPoint(x, y);
+            y = ySign * random.getDouble(0.5, 1);
+        return geometryCreator.createPoint(x, y);
     }
 
     private Point getRandomPointForBasicEmotion(double xMin, double xMax, double yMin, double yMax) {
-        double x = random(xMin, xMax);
-        double y = random(yMin, yMax);
-        return createPoint(x, y);
+        double x = random.getDouble(xMin, xMax);
+        double y = random.getDouble(yMin, yMax);
+        return geometryCreator.createPoint(x, y);
     }
 
     public void testEmotion(Class<?> emotionClass, Point randomPoint) {
@@ -127,7 +131,7 @@ public class EmotionalConfiguratorTest {
         return new EmotionalConfigurator() {
             @Override
             public EmotionalState updateEmotionalState(Stimulus stimulus) {
-                return new EmotionalState(random(-1, 1), random(-1, 1));
+                return new EmotionalState(random.getDouble(-1, 1), random.getDouble(-1, 1));
             }
         };
     }

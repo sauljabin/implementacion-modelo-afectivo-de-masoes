@@ -4,18 +4,15 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.util.math;
+package masoes.util.collection;
 
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapConverter {
+public class MapParser {
 
-    private MapConverter() {
-    }
-
-    public static Map<String, String> convert(String stringMap) {
+    public Map<String, String> parseMap(String stringMap) {
         validateArgument(stringMap);
         String[] settings = splitArgument(stringMap);
 
@@ -24,21 +21,22 @@ public class MapConverter {
         for (String pair : settings) {
             setValue(map, pair);
         }
+
         return map;
     }
 
-    private static void validateArgument(String stringMap) {
+    private void validateArgument(String stringMap) {
         if (!stringMap.matches("^\\{(\\w+=\\w+(, *)?)+\\}$")) {
             throw new InvalidParameterException("Incorrect string format: " + stringMap);
         }
     }
 
-    private static void setValue(Map<String, String> map, String pair) {
+    private void setValue(Map<String, String> map, String pair) {
         String[] pairArray = pair.split("=");
         map.put(pairArray[0].trim(), pairArray[1].trim());
     }
 
-    private static String[] splitArgument(String optionValue) {
+    private String[] splitArgument(String optionValue) {
         return optionValue.trim().replaceAll("\\{|\\}", "").trim().split(",");
     }
 

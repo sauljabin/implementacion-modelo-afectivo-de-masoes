@@ -17,8 +17,10 @@ public abstract class EmotionalConfigurator {
 
     private List<Emotion> emotions;
     private EmotionalState emotionalState;
+    private GeometryCreator geometryCreator;
 
     public EmotionalConfigurator() {
+        geometryCreator = new GeometryCreator();
         emotionalState = new EmotionalState(0, 0);
         addEmotions();
     }
@@ -48,7 +50,7 @@ public abstract class EmotionalConfigurator {
     }
 
     public Point getEmotionalPoint() {
-        return GeometryCreator.createPoint(emotionalState.getActivation(), emotionalState.getSatisfaction());
+        return geometryCreator.createPoint(emotionalState.getActivation(), emotionalState.getSatisfaction());
     }
 
     public EmotionalState getEmotionalState() {

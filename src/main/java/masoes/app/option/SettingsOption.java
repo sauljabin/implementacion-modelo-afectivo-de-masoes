@@ -8,7 +8,7 @@ package masoes.app.option;
 
 import masoes.app.logger.ApplicationLogger;
 import masoes.app.setting.Setting;
-import masoes.util.math.MapConverter;
+import masoes.util.collection.MapParser;
 import org.slf4j.LoggerFactory;
 
 public class SettingsOption extends ApplicationOption {
@@ -52,7 +52,8 @@ public class SettingsOption extends ApplicationOption {
 
     @Override
     public void exec(String optionValue) {
-        MapConverter.convert(optionValue).forEach((key, value) -> Setting.set(key, value));
+        MapParser mapParser = new MapParser();
+        mapParser.parseMap(optionValue).forEach((key, value) -> Setting.set(key, value));
         applicationLogger.updatedSettings();
     }
 

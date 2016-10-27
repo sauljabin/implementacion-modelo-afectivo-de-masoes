@@ -13,19 +13,18 @@ import com.vividsolutions.jts.geom.Point;
 
 public class GeometryCreator {
 
-    private GeometryCreator() {
+    private GeometryFactory geometryFactory;
+
+    public GeometryCreator() {
+        geometryFactory = new GeometryFactory();
     }
 
-    public static Point createPoint(double x, double y) {
-        return getFactory().createPoint(new Coordinate(x, y));
+    public Point createPoint(double x, double y) {
+        return geometryFactory.createPoint(new Coordinate(x, y));
     }
 
-    public static Geometry createPolygon(Coordinate[] coordinates) {
-        return getFactory().createPolygon(coordinates);
-    }
-
-    private static GeometryFactory getFactory() {
-        return new GeometryFactory();
+    public Geometry createPolygon(Coordinate[] coordinates) {
+        return geometryFactory.createPolygon(coordinates);
     }
 
 }

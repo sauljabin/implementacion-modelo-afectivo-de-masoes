@@ -12,8 +12,14 @@ import masoes.util.math.GeometryCreator;
 
 public abstract class Emotion {
 
+    private GeometryCreator geometryCreator;
+
+    public Emotion() {
+        geometryCreator = new GeometryCreator();
+    }
+
     public Geometry getGeometry() {
-        return GeometryCreator.createPolygon(getCoordinates());
+        return geometryCreator.createPolygon(getCoordinates());
     }
 
     public abstract Coordinate[] getCoordinates();
