@@ -17,4 +17,10 @@ public class WikipediaEnvironment extends Environment {
     public List<EnvironmentAgentInfo> getEnvironmentAgentInfoList() {
         return null;
     }
+
+    @Override
+    public void setup() {
+
+    }
+
 }

@@ -41,7 +41,6 @@ public class EnvironmentAgentInfo {
             return String.format("%s:%s(%s)", name, agentClass.getName(), String.join(",", arguments));
         else
             return String.format("%s:%s", name, agentClass.getName());
-
     }
 
 }
