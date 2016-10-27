@@ -31,6 +31,7 @@ public class ApplicationOptionProcessorTest {
     private ApplicationOption mockOption;
     private ApplicationOption mockOption2;
     private String expectedOpt2;
+    private String expectedOptionValue;
 
     @Before
     public void setUp() throws ParseException {
@@ -57,9 +58,10 @@ public class ApplicationOptionProcessorTest {
         when(mockOption2.toOption()).thenCallRealMethod();
         when(mockOption2.getKeyOpt()).thenCallRealMethod();
 
+        expectedOptionValue = "value";
         when(applicationOptionManager.getApplicationOptions()).thenReturn(applicationOptions);
         when(mockCommandLineParser.parse(any(), any())).thenReturn(mockCommandLine);
-        when(mockCommandLine.getOptionValue(any())).thenReturn("");
+        when(mockCommandLine.getOptionValue(any())).thenReturn(expectedOptionValue);
         when(mockCommandLine.hasOption(expectedOpt)).thenReturn(Boolean.TRUE);
         when(mockCommandLine.hasOption(expectedOpt2)).thenReturn(Boolean.TRUE);
 
@@ -68,14 +70,20 @@ public class ApplicationOptionProcessorTest {
 
     @Test
     public void shouldParseArgs() throws Exception {
+        Options expectedOptions = new Options();
+
+        when(applicationOptionManager.toOptions()).thenReturn(expectedOptions);
+
         applicationOptionProcessor.processArgs(expectedArgs);
-        verify(mockCommandLineParser).parse(any(Options.class), eq(expectedArgs));
+
+        verify(mockCommandLineParser).parse(eq(expectedOptions), eq(expectedArgs));
     }
 
     @Test
     public void shouldInvokeOption() throws Exception {
         applicationOptionProcessor.processArgs(expectedArgs);
-        verify(mockOption).exec(any());
+
+        verify(mockOption).exec(expectedOptionValue);
         verify(mockLogger).startingOption(mockOption);
     }
 
@@ -84,6 +92,7 @@ public class ApplicationOptionProcessorTest {
         expectedArgs = new String[]{"-" + expectedOpt, "-" + expectedOpt2};
 
         applicationOptionProcessor.processArgs(expectedArgs);
+
         verify(mockLogger).startingOption(mockOption);
         verify(mockLogger).startingOption(mockOption2);
         verify(mockOption).exec(any());

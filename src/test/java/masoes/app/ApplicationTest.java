@@ -38,7 +38,7 @@ public class ApplicationTest {
     }
 
     @Test
-    public void shouldSystemExitWhenException() {
+    public void shouldInvokeSystemExitWhenException() {
         RuntimeException expectedException = new RuntimeException();
         doThrow(expectedException).when(mockCli).processArgs(args);
 

@@ -48,17 +48,15 @@ public class ApplicationOptionManagerTest {
 
     @Test
     public void shouldReturnOptionsObject() {
-        Options expectedObjectOptions = createOptions(expectedOptions);
-        assertReflectionEquals(expectedObjectOptions, applicationOptionManager.toOptions());
+        assertReflectionEquals(createOptions(), applicationOptionManager.toOptions());
     }
 
     @Test
     public void shouldReturnHelpDefaultOption() {
-        ApplicationOption defaultOption = applicationOptionManager.getDefaultOption();
-        assertReflectionEquals(defaultOption, new HelpOption());
+        assertReflectionEquals(new HelpOption(), applicationOptionManager.getDefaultOption());
     }
 
-    private Options createOptions(List<ApplicationOption> expectedOptions) {
+    private Options createOptions() {
         Options options = new Options();
         expectedOptions.forEach(option -> options.addOption(option.toOption()));
         return options;

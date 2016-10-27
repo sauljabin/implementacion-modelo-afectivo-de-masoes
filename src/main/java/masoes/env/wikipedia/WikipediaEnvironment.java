@@ -7,7 +7,14 @@
 package masoes.env.wikipedia;
 
 import masoes.env.Environment;
+import masoes.env.EnvironmentAgentInfo;
+
+import java.util.List;
 
 public class WikipediaEnvironment extends Environment {
 
+    @Override
+    public List<EnvironmentAgentInfo> getEnvironmentAgentInfoList() {
+        return null;
+    }
 }

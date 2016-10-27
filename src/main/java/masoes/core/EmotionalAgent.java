@@ -9,6 +9,8 @@ package masoes.core;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 
+import java.util.Optional;
+
 public abstract class EmotionalAgent extends Agent {
 
     private Behaviour currentBehaviour;
@@ -18,9 +20,8 @@ public abstract class EmotionalAgent extends Agent {
     }
 
     public void changeCurrentBehaviour(Behaviour behaviour) {
-        if (getCurrentBehaviour() != null)
+        if (Optional.ofNullable(getCurrentBehaviour()).isPresent())
             removeBehaviour(getCurrentBehaviour());
-
         addBehaviour(behaviour);
         currentBehaviour = behaviour;
     }

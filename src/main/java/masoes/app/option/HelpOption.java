@@ -54,7 +54,7 @@ public class HelpOption extends ApplicationOption {
         try {
             formatter.printHelp(Setting.APP_NAME.getValue(), ApplicationOptionManager.getInstance().toOptions());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 

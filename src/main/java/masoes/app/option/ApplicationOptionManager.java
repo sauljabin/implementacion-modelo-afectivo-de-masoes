@@ -11,6 +11,7 @@ import org.apache.commons.cli.Options;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class ApplicationOptionManager {
 
@@ -22,9 +23,8 @@ public class ApplicationOptionManager {
     }
 
     public synchronized static ApplicationOptionManager getInstance() {
-        if (INSTANCE == null) {
+        if (!Optional.ofNullable(INSTANCE).isPresent())
             INSTANCE = new ApplicationOptionManager();
-        }
         return INSTANCE;
     }
 

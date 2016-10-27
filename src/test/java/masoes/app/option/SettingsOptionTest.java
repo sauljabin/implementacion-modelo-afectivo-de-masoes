@@ -71,7 +71,7 @@ public class SettingsOptionTest {
     public void shouldThrowInvalidParameterWhenNoExistValueException() {
         String expectedArgs = "{setting1=,setting2=value2}";
         expectedException.expect(InvalidParameterException.class);
-        expectedException.expectMessage("Incorrect settings format: " + expectedArgs);
+        expectedException.expectMessage("Incorrect string format: " + expectedArgs);
         settingsOption.exec(expectedArgs);
     }
 

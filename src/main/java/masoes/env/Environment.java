@@ -6,6 +6,10 @@
 
 package masoes.env;
 
+import java.util.List;
+
 public abstract class Environment {
+
+    public abstract List<EnvironmentAgentInfo> getEnvironmentAgentInfoList();
 
 }

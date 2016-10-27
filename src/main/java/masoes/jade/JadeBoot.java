@@ -12,11 +12,15 @@ import masoes.app.setting.Setting;
 
 public class JadeBoot {
 
-    private ProfileImpl profile;
+    public static final String GUI_PARAMETER = "gui";
+    public static final String AGENTS_PARAMETER = "agents";
+    public static final String PORT_PARAMETER = "port";
+
+    private ProfileImpl jadeProfile;
     private Runtime jadeRuntime;
 
-    public JadeBoot(ProfileImpl profile, Runtime jadeRuntime) {
-        this.profile = profile;
+    public JadeBoot(ProfileImpl jadeProfile, Runtime jadeRuntime) {
+        this.jadeProfile = jadeProfile;
         this.jadeRuntime = jadeRuntime;
     }
 
@@ -24,12 +28,12 @@ public class JadeBoot {
         this(new ProfileImpl(), Runtime.instance());
     }
 
-    public void boot(String args) {
-        profile.setParameter("gui", "true");
-        profile.setParameter("agents", args);
-        profile.setParameter("port", Setting.JADE_PORT.getValue());
+    public void boot(String agents) {
+        jadeProfile.setParameter(AGENTS_PARAMETER, agents);
+        jadeProfile.setParameter(GUI_PARAMETER, Setting.JADE_GUI.getValue());
+        jadeProfile.setParameter(PORT_PARAMETER, Setting.JADE_PORT.getValue());
         jadeRuntime.setCloseVM(true);
-        jadeRuntime.createMainContainer(profile);
+        jadeRuntime.createMainContainer(jadeProfile);
     }
 
 }

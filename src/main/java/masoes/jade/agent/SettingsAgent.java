@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.core.agent;
+package masoes.jade.agent;
 
 import jade.core.Agent;
 

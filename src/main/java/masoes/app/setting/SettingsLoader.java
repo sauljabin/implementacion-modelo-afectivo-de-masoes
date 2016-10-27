@@ -9,6 +9,7 @@ package masoes.app.setting;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ public class SettingsLoader {
     public static final String JADE_VERSION_KEY = "jade.version";
     public static final String JADE_REVISION_KEY = "jade.revision";
     public static final String JADE_PORT_KEY = "jade.port";
+    public static final String JADE_GUI_KEY = "jade.gui";
     public static final String APP_NAME_KEY = "app.name";
     public static final String APP_REVISION_KEY = "app.revision";
     public static final String APP_VERSION_KEY = "app.version";
@@ -35,9 +37,8 @@ public class SettingsLoader {
     }
 
     public synchronized static SettingsLoader getInstance() {
-        if (INSTANCE == null) {
+        if (!Optional.ofNullable(INSTANCE).isPresent())
             INSTANCE = new SettingsLoader();
-        }
         return INSTANCE;
     }
 
@@ -58,7 +59,7 @@ public class SettingsLoader {
     }
 
     public synchronized void setSetting(String key, String value) {
-        if (value == null)
+        if (!Optional.ofNullable(value).isPresent())
             properties.remove(key);
         else
             properties.put(key, value);
@@ -66,7 +67,7 @@ public class SettingsLoader {
 
     public synchronized String getSetting(String key, String defaultValue) {
         String value = getSetting(key);
-        if (value == null)
+        if (!Optional.ofNullable(value).isPresent())
             return defaultValue;
         return value;
     }

@@ -37,8 +37,8 @@ public class JadeBootTest {
 
         jadeBoot.boot(expectedArguments);
 
-        verify(bootProfile).setParameter("gui", "true");
         verify(bootProfile).setParameter("agents", expectedArguments);
+        verify(bootProfile).setParameter("gui", Setting.JADE_GUI.getValue());
         verify(bootProfile).setParameter("port", Setting.JADE_PORT.getValue());
         verify(mockRuntime).setCloseVM(true);
         verify(mockRuntime).createMainContainer(bootProfile);

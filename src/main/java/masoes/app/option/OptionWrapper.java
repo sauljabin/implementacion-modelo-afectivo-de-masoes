@@ -9,6 +9,7 @@ package masoes.app.option;
 import org.apache.commons.cli.Option;
 
 import java.util.Comparator;
+import java.util.Optional;
 
 public class OptionWrapper extends Option implements Comparable<OptionWrapper> {
 
@@ -37,7 +38,7 @@ public class OptionWrapper extends Option implements Comparable<OptionWrapper> {
     }
 
     private static String getOptionKey(Option option) {
-        return option.getOpt() == null ? option.getLongOpt() : option.getOpt();
+        return Optional.ofNullable(option.getLongOpt()).orElse(option.getOpt());
     }
 
     @Override

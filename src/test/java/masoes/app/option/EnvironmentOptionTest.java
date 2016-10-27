@@ -37,7 +37,7 @@ public class EnvironmentOptionTest {
 
     @Test
     public void shouldSetEnvironmentSettingValue() {
-        String expectedCaseStudy = "dafault";
+        String expectedCaseStudy = "default";
         environmentOption.exec(expectedCaseStudy);
         assertThat(Setting.MASOES_ENV.getValue(), is(expectedCaseStudy));
         assertThat(Setting.get("masoes.env"), is(expectedCaseStudy));

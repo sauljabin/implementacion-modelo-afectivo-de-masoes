@@ -8,9 +8,8 @@ package masoes.app.option;
 
 import masoes.app.logger.ApplicationLogger;
 import masoes.app.setting.Setting;
+import masoes.util.math.MapConverter;
 import org.slf4j.LoggerFactory;
-
-import java.security.InvalidParameterException;
 
 public class SettingsOption extends ApplicationOption {
 
@@ -53,27 +52,8 @@ public class SettingsOption extends ApplicationOption {
 
     @Override
     public void exec(String optionValue) {
-        validateArgument(optionValue);
-        String[] settings = splitArgument(optionValue);
-        for (String pair : settings) {
-            setSetting(pair);
-        }
+        MapConverter.convert(optionValue).forEach((key, value) -> Setting.set(key, value));
         applicationLogger.updatedSettings();
-    }
-
-    private void setSetting(String pair) {
-        String[] pairArray = pair.split("=");
-        Setting.set(pairArray[0].trim(), pairArray[1].trim());
-    }
-
-    private void validateArgument(String optionValue) {
-        if (!optionValue.matches("^\\{(\\w+=\\w+(, *)?)+\\}$")) {
-            throw new InvalidParameterException("Incorrect settings format: " + optionValue);
-        }
-    }
-
-    private String[] splitArgument(String optionValue) {
-        return optionValue.trim().replaceAll("\\{|\\}", "").trim().split(",");
     }
 
 }
