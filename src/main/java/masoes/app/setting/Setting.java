@@ -22,6 +22,7 @@ public enum Setting {
     JADE_REVISION(SettingsLoader.JADE_REVISION_KEY),
     JADE_VERSION(SettingsLoader.JADE_VERSION_KEY),
     JADE_PORT(SettingsLoader.JADE_PORT_KEY),
+    JADE_MTP_PORT(SettingsLoader.JADE_MTP_PORT_KEY),
     JADE_GUI(SettingsLoader.JADE_GUI_KEY);
 
     private String key;
