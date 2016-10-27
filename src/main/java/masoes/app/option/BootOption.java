@@ -58,12 +58,15 @@ public class BootOption extends ApplicationOption {
     @Override
     public void exec(String optionValue) {
         Environment environment = environmentFactory.createEnvironment();
+        environment.setup();
+
         List<EnvironmentAgentInfo> environmentAgentInfoList = environment.getEnvironmentAgentInfoList();
-        validateEnvironment(environmentAgentInfoList);
+        validateEnvironmentAgentInfo(environmentAgentInfoList);
+
         jadeBoot.boot(toJadeAgentsOption(environmentAgentInfoList));
     }
 
-    private void validateEnvironment(List<EnvironmentAgentInfo> environmentAgentInfoList) {
+    private void validateEnvironmentAgentInfo(List<EnvironmentAgentInfo> environmentAgentInfoList) {
         if (!Optional.ofNullable(environmentAgentInfoList).isPresent() || environmentAgentInfoList.isEmpty())
             throw new InvalidEnvironmentException("No agents in environment");
     }

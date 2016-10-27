@@ -40,6 +40,13 @@ public class MapParserTest {
     }
 
     @Test
+    public void shouldReturnCorrectMapWithTwoValues() {
+        expectedMap.put("key2", "value2");
+        actualString = expectedMap.toString();
+        assertReflectionEquals(expectedMap, mapParser.parseMap(actualString));
+    }
+
+    @Test
     public void shouldThrowInvalidParameterWhenNoExistValueException() {
         String expectedArgs = "{setting1=,setting2=value2}";
         expectedException.expect(InvalidParameterException.class);
