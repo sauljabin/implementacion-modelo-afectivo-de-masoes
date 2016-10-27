@@ -103,7 +103,7 @@ public class SettingsLoaderTest {
         initValues.put(jadeVersionKey, jade.core.Runtime.getVersion());
         initValues.put(jadeRevisionKey, jade.core.Runtime.getRevision());
         initValues.put(masoesEnvKey, "dummy");
-        initValues.put(jadePortKey, "2000");
+        initValues.put(jadePortKey, "1099");
         return initValues;
     }
 
