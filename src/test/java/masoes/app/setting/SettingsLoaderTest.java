@@ -83,7 +83,7 @@ public class SettingsLoaderTest {
         assertThat(settingsLoader.getSetting(keyForTests), is(nullValue()));
     }
 
-    public Map<String, String> getInitValues() {
+    private Map<String, String> getInitValues() {
         String osNameKey = "os.name",
                 osArchKey = "os.arch",
                 osVersionKey = "os.version",

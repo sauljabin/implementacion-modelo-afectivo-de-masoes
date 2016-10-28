@@ -105,6 +105,14 @@ public class EmotionalConfiguratorTest {
         assertThat(configurator.getEmotionalPoint().getY(), is(configurator.getEmotionalState().getSatisfaction()));
     }
 
+    private void testEmotion(Class<?> emotionClass, Point randomPoint) {
+        EmotionalConfigurator fakeConfigurator = mock(EmotionalConfigurator.class);
+        when(fakeConfigurator.getEmotionalPoint()).thenReturn(randomPoint);
+        when(fakeConfigurator.getEmotion()).thenCallRealMethod();
+        when(fakeConfigurator.getEmotions()).thenReturn(emotions);
+        assertThat(fakeConfigurator.getEmotion(), is(instanceOf(emotionClass)));
+    }
+
     private Point getRandomPointForExternalEmotion(double xSign, double ySign) {
         double x = xSign * random.getDouble(0, 1);
         double y = ySign * random.getDouble(0, 1);
@@ -117,14 +125,6 @@ public class EmotionalConfiguratorTest {
         double x = random.getDouble(xMin, xMax);
         double y = random.getDouble(yMin, yMax);
         return geometryCreator.createPoint(x, y);
-    }
-
-    public void testEmotion(Class<?> emotionClass, Point randomPoint) {
-        EmotionalConfigurator fakeConfigurator = mock(EmotionalConfigurator.class);
-        when(fakeConfigurator.getEmotionalPoint()).thenReturn(randomPoint);
-        when(fakeConfigurator.getEmotion()).thenCallRealMethod();
-        when(fakeConfigurator.getEmotions()).thenReturn(emotions);
-        assertThat(fakeConfigurator.getEmotion(), is(instanceOf(emotionClass)));
     }
 
     private EmotionalConfigurator createEmotionalConfigurator() {

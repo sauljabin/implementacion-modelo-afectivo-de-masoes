@@ -38,7 +38,7 @@ public class EmotionalAgentTest {
         assertThat(emotionalAgent.getCurrentBehaviour(), is(expectedBehaviour));
     }
 
-    public Behaviour createBehaviour() {
+    private Behaviour createBehaviour() {
         return new Behaviour() {
 
             @Override
