@@ -53,6 +53,11 @@ public class EmotionTest {
                 return emotionType;
             }
 
+            @Override
+            public String getName() {
+                return null;
+            }
+
         };
     }
 

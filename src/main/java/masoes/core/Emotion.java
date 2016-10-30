@@ -26,4 +26,11 @@ public abstract class Emotion {
 
     public abstract EmotionType getEmotionType();
 
+    public abstract String getName();
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }

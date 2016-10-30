@@ -16,6 +16,7 @@ import java.util.Arrays;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public class CompassionTest {
 
@@ -57,7 +58,9 @@ public class CompassionTest {
     }
 
     @Test
-    public void shouldReturnCorrectEmotionType() {
+    public void shouldReturnCorrectConfiguration() {
+        assertReflectionEquals(compassion.getGeometry(), geometryCreator.createPolygon(coordinates));
+        assertThat(compassion.getName(), is("Compassion"));
         assertThat(compassion.getEmotionType(), is(EmotionType.POSITIVE));
     }
 

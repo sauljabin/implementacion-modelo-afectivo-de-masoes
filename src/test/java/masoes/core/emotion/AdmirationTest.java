@@ -16,6 +16,7 @@ import java.util.Arrays;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public class AdmirationTest {
 
@@ -56,7 +57,9 @@ public class AdmirationTest {
     }
 
     @Test
-    public void shouldReturnCorrectEmotionType() {
+    public void shouldReturnCorrectConfiguration() {
+        assertReflectionEquals(admiration.getGeometry(), geometryCreator.createPolygon(coordinates));
+        assertThat(admiration.getName(), is("Admiration"));
         assertThat(admiration.getEmotionType(), is(EmotionType.POSITIVE));
     }
 

@@ -36,4 +36,9 @@ public class Happiness extends Emotion {
         return EmotionType.POSITIVE;
     }
 
+    @Override
+    public String getName() {
+        return "Happiness";
+    }
+
 }

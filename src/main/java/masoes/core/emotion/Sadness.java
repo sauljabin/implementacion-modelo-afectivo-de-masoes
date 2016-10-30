@@ -34,4 +34,9 @@ public class Sadness extends Emotion {
         return EmotionType.NEGATIVE_LOW;
     }
 
+    @Override
+    public String getName() {
+        return "Sadness";
+    }
+
 }
