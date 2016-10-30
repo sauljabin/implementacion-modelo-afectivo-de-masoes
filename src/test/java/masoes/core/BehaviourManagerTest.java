@@ -6,31 +6,50 @@
 
 package masoes.core;
 
+import jade.core.behaviours.Behaviour;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 public class BehaviourManagerTest {
 
-    private BehaviourManager behaviourManager;
+    private BehaviourManager mockBehaviourManager;
+    private Behaviour mockBehaviour;
+    private EmotionalAgent mockEmotionalAgent;
 
     @Before
     public void setUp() {
-        behaviourManager = createBehaviourManager();
+        mockBehaviourManager = mock(BehaviourManager.class);
+        mockBehaviour = mock(Behaviour.class);
+        mockEmotionalAgent = mock(EmotionalAgent.class);
+
+        doCallRealMethod().when(mockBehaviourManager).getBehaviourTypeAssociated(any());
+        doCallRealMethod().when(mockBehaviourManager).updateEmotionalBehaviour(any(), any());
+        doCallRealMethod().when(mockBehaviourManager).getBehaviour();
+        doReturn(mockBehaviour).when(mockBehaviourManager).evaluateEmotion(any());
     }
 
     @Test
     public void shouldReturnCorrectBehaviourAssociated() {
-        assertThat(behaviourManager.getBehaviourAssociated(EmotionType.NEGATIVE_HIGH), is(BehaviourType.REACTIVE));
-        assertThat(behaviourManager.getBehaviourAssociated(EmotionType.NEGATIVE_LOW), is(BehaviourType.COGNITIVE));
-        assertThat(behaviourManager.getBehaviourAssociated(EmotionType.POSITIVE), is(BehaviourType.IMITATIVE));
+        assertThat(mockBehaviourManager.getBehaviourTypeAssociated(EmotionType.NEGATIVE_HIGH), is(BehaviourType.REACTIVE));
+        assertThat(mockBehaviourManager.getBehaviourTypeAssociated(EmotionType.NEGATIVE_LOW), is(BehaviourType.COGNITIVE));
+        assertThat(mockBehaviourManager.getBehaviourTypeAssociated(EmotionType.POSITIVE), is(BehaviourType.IMITATIVE));
     }
 
-    private BehaviourManager createBehaviourManager() {
-        return new BehaviourManager() {
-        };
+    @Test
+    public void shouldInvokeEvaluateEmotionAndUpdateBehaviour() {
+        mockBehaviourManager.updateEmotionalBehaviour(null, mockEmotionalAgent);
+        verify(mockBehaviourManager).evaluateEmotion(any());
+        verify(mockEmotionalAgent, never()).removeBehaviour(any());
+        verify(mockEmotionalAgent).addBehaviour(mockBehaviour);
+        assertThat(mockBehaviourManager.getBehaviour(), is(mockBehaviour));
+
+        mockBehaviourManager.updateEmotionalBehaviour(null, mockEmotionalAgent);
+        verify(mockEmotionalAgent).removeBehaviour(mockBehaviour);
     }
 
 }

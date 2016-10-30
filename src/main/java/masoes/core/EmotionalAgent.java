@@ -7,23 +7,13 @@
 package masoes.core;
 
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
-
-import java.util.Optional;
 
 public abstract class EmotionalAgent extends Agent {
 
-    private Behaviour currentBehaviour;
+    protected EmotionalModel emotionalModel;
 
-    public Behaviour getCurrentBehaviour() {
-        return currentBehaviour;
-    }
-
-    public void changeCurrentBehaviour(Behaviour behaviour) {
-        if (Optional.ofNullable(getCurrentBehaviour()).isPresent())
-            removeBehaviour(getCurrentBehaviour());
-        addBehaviour(behaviour);
-        currentBehaviour = behaviour;
+    public EmotionalModel getEmotionalModel() {
+        return emotionalModel;
     }
 
 }

@@ -8,36 +8,43 @@ package masoes.core;
 
 import com.vividsolutions.jts.geom.Point;
 import masoes.core.emotion.*;
-import masoes.util.math.GeometryCreator;
+import masoes.util.math.RandomGenerator;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class EmotionalConfigurator {
 
     private List<Emotion> emotions;
     private EmotionalState emotionalState;
-    private GeometryCreator geometryCreator;
+    private Point emotionalPoint;
+    private Emotion emotion;
 
     public EmotionalConfigurator() {
-        geometryCreator = new GeometryCreator();
-        emotionalState = new EmotionalState(0, 0);
         addEmotions();
+        initEmotionalState();
     }
 
     private void addEmotions() {
-        emotions = new ArrayList<>();
-        emotions.add(new Happiness());
-        emotions.add(new Joy());
-        emotions.add(new Compassion());
-        emotions.add(new Admiration());
-        emotions.add(new Depression());
-        emotions.add(new Sadness());
-        emotions.add(new Dissatisfaction());
-        emotions.add(new Rejection());
+        emotions = Arrays.asList(
+                new Happiness(),
+                new Joy(),
+                new Compassion(),
+                new Admiration(),
+                new Depression(),
+                new Sadness(),
+                new Dissatisfaction(),
+                new Rejection());
     }
 
-    public Emotion getEmotion() {
+    private void initEmotionalState() {
+        RandomGenerator random = new RandomGenerator();
+        emotionalState = new EmotionalState(random.getDouble(-1, 1), random.getDouble(-1, 1));
+        emotionalPoint = emotionalState.toPoint();
+        emotion = searchEmotion();
+    }
+
+    private Emotion searchEmotion() {
         return getEmotions()
                 .stream()
                 .filter(emotion -> emotion.getGeometry().intersects(getEmotionalPoint()))
@@ -45,22 +52,28 @@ public abstract class EmotionalConfigurator {
                 .orElse(new Happiness());
     }
 
+    public Emotion getEmotion() {
+        return emotion;
+    }
+
     public List<Emotion> getEmotions() {
         return emotions;
     }
 
     public Point getEmotionalPoint() {
-        return geometryCreator.createPoint(emotionalState.getActivation(), emotionalState.getSatisfaction());
+        return emotionalPoint;
     }
 
     public EmotionalState getEmotionalState() {
         return emotionalState;
     }
 
-    public void evaluateStimulus(Stimulus stimulus) {
-        emotionalState = updateEmotionalState(stimulus);
+    public void updateEmotionalState(Stimulus stimulus) {
+        emotionalState = evaluateStimulus(stimulus);
+        emotionalPoint = emotionalState.toPoint();
+        emotion = searchEmotion();
     }
 
-    protected abstract EmotionalState updateEmotionalState(Stimulus stimulus);
+    protected abstract EmotionalState evaluateStimulus(Stimulus stimulus);
 
 }

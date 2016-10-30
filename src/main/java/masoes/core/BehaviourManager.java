@@ -6,9 +6,19 @@
 
 package masoes.core;
 
+import jade.core.behaviours.Behaviour;
+
+import java.util.Optional;
+
 public abstract class BehaviourManager {
 
-    public BehaviourType getBehaviourAssociated(EmotionType emotionType) {
+    private Behaviour behaviour;
+
+    public Behaviour getBehaviour() {
+        return behaviour;
+    }
+
+    public BehaviourType getBehaviourTypeAssociated(EmotionType emotionType) {
         switch (emotionType) {
             case POSITIVE:
                 return BehaviourType.IMITATIVE;
@@ -20,5 +30,15 @@ public abstract class BehaviourManager {
                 return BehaviourType.IMITATIVE;
         }
     }
+
+    public void updateEmotionalBehaviour(Emotion emotion, EmotionalAgent agent) {
+        if (Optional.ofNullable(behaviour).isPresent())
+            agent.removeBehaviour(behaviour);
+
+        behaviour = evaluateEmotion(emotion);
+        agent.addBehaviour(behaviour);
+    }
+
+    protected abstract Behaviour evaluateEmotion(Emotion emotion);
 
 }

@@ -10,4 +10,8 @@ import jade.core.Agent;
 
 public class SettingsAgent extends Agent {
 
+    @Override
+    protected void setup() {
+    }
+
 }

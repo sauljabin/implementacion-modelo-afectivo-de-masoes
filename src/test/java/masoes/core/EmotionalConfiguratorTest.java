@@ -19,8 +19,9 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.core.IsNot.not;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public class EmotionalConfiguratorTest {
@@ -54,14 +55,33 @@ public class EmotionalConfiguratorTest {
     }
 
     @Test
-    public void shouldReturnDefaultHappinessEmotion() {
-        testEmotion(Happiness.class, getRandomPointForBasicEmotion(2, 10, 2, 10));
+    public void shouldReturnTheSameActivationAndSatisfaction() {
+        configurator.updateEmotionalState(null);
+        assertThat(configurator.getEmotionalPoint().getX(), not(0.0));
+        assertThat(configurator.getEmotionalPoint().getY(), not(0.0));
+        assertThat(configurator.getEmotionalPoint().getX(), is(configurator.getEmotionalState().getActivation()));
+        assertThat(configurator.getEmotionalPoint().getY(), is(configurator.getEmotionalState().getSatisfaction()));
+    }
+
+    @Test
+    public void shouldInvokeEvaluateStimulus() {
+        EmotionalConfigurator mockEmotionalConfigurator = mock(EmotionalConfigurator.class);
+        doCallRealMethod().when(mockEmotionalConfigurator).updateEmotionalState(any());
+        when(mockEmotionalConfigurator.evaluateStimulus(any())).thenReturn(new EmotionalState(0, 0));
+        mockEmotionalConfigurator.updateEmotionalState(null);
+        verify(mockEmotionalConfigurator).evaluateStimulus(any());
     }
 
     @Test
     public void shouldReturnJoyEmotion() {
         testEmotion(Joy.class, getRandomPointForBasicEmotion(0, 0.5, 0, 0.5));
     }
+
+    @Test
+    public void shouldReturnDefaultHappinessEmotion() {
+        testEmotion(Happiness.class, getRandomPointForBasicEmotion(2, 10, 2, 10));
+    }
+
 
     @Test
     public void shouldReturnAdmirationEmotion() {
@@ -98,19 +118,22 @@ public class EmotionalConfiguratorTest {
         testEmotion(Dissatisfaction.class, getRandomPointForExternalEmotion(POSITIVE_SIGN, NEGATIVE_SIGN));
     }
 
-    @Test
-    public void shouldReturnTheSameActivationAndSatisfaction() {
-        configurator.evaluateStimulus(null);
-        assertThat(configurator.getEmotionalPoint().getX(), is(configurator.getEmotionalState().getActivation()));
-        assertThat(configurator.getEmotionalPoint().getY(), is(configurator.getEmotionalState().getSatisfaction()));
-    }
-
     private void testEmotion(Class<?> emotionClass, Point randomPoint) {
-        EmotionalConfigurator fakeConfigurator = mock(EmotionalConfigurator.class);
-        when(fakeConfigurator.getEmotionalPoint()).thenReturn(randomPoint);
-        when(fakeConfigurator.getEmotion()).thenCallRealMethod();
-        when(fakeConfigurator.getEmotions()).thenReturn(emotions);
-        assertThat(fakeConfigurator.getEmotion(), is(instanceOf(emotionClass)));
+        EmotionalConfigurator mockEmotionalConfigurator = mock(EmotionalConfigurator.class);
+
+        EmotionalState mockEmotionalState = mock(EmotionalState.class);
+        when(mockEmotionalState.toPoint()).thenReturn(randomPoint);
+
+        when(mockEmotionalConfigurator.evaluateStimulus(any())).thenReturn(mockEmotionalState);
+
+        when(mockEmotionalConfigurator.getEmotionalPoint()).thenReturn(randomPoint);
+        when(mockEmotionalConfigurator.getEmotion()).thenCallRealMethod();
+        when(mockEmotionalConfigurator.getEmotions()).thenReturn(emotions);
+
+        doCallRealMethod().when(mockEmotionalConfigurator).updateEmotionalState(any());
+        mockEmotionalConfigurator.updateEmotionalState(null);
+
+        assertThat(mockEmotionalConfigurator.getEmotion(), is(instanceOf(emotionClass)));
     }
 
     private Point getRandomPointForExternalEmotion(double xSign, double ySign) {
@@ -131,7 +154,7 @@ public class EmotionalConfiguratorTest {
         return new EmotionalConfigurator() {
 
             @Override
-            public EmotionalState updateEmotionalState(Stimulus stimulus) {
+            public EmotionalState evaluateStimulus(Stimulus stimulus) {
                 return new EmotionalState(random.getDouble(-1, 1), random.getDouble(-1, 1));
             }
 
