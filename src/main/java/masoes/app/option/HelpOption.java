@@ -52,7 +52,7 @@ public class HelpOption extends ApplicationOption {
     @Override
     public void exec(String optionValue) {
         try {
-            formatter.printHelp(Setting.APP_NAME.getValue(), ApplicationOptionManager.getInstance().toOptions());
+            formatter.printHelp(Setting.APP_NAME.getValue(), new ApplicationOptions().toOptions());
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }

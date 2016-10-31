@@ -18,15 +18,15 @@ import java.util.stream.Collectors;
 public class ApplicationOptionProcessor {
 
     private ApplicationLogger logger;
-    private ApplicationOptionManager options;
+    private ApplicationOptions options;
     private CommandLineParser commandLineParser;
     private CommandLine commandLine;
 
-    public ApplicationOptionProcessor(ApplicationOptionManager options) {
-        this(options, new DefaultParser(), new ApplicationLogger(LoggerFactory.getLogger(ApplicationOptionProcessor.class)));
+    public ApplicationOptionProcessor() {
+        this(new ApplicationOptions(), new DefaultParser(), new ApplicationLogger(LoggerFactory.getLogger(ApplicationOptionProcessor.class)));
     }
 
-    public ApplicationOptionProcessor(ApplicationOptionManager options, CommandLineParser commandLineParser, ApplicationLogger logger) {
+    public ApplicationOptionProcessor(ApplicationOptions options, CommandLineParser commandLineParser, ApplicationLogger logger) {
         this.options = options;
         this.commandLineParser = commandLineParser;
         this.logger = logger;
@@ -42,13 +42,13 @@ public class ApplicationOptionProcessor {
     }
 
     private void execOptions() {
-        List<ApplicationOption> optionsToExec = options.getApplicationOptions()
+        List<ApplicationOption> optionsToExec = options.getApplicationOptionList()
                 .stream()
                 .filter(tempOption -> commandLine.hasOption(tempOption.getKeyOpt()))
                 .collect(Collectors.toList());
 
         if (optionsToExec.isEmpty()) {
-            execOption(options.getDefaultOption());
+            execOption(options.getDefaultApplicationOption());
         } else {
             optionsToExec.forEach(this::execOption);
         }

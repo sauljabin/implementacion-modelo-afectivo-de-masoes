@@ -15,26 +15,12 @@ import java.util.List;
 
 public abstract class EmotionalConfigurator {
 
-    private List<Emotion> emotions;
     private EmotionalState emotionalState;
     private Point emotionalPoint;
     private Emotion emotion;
 
     public EmotionalConfigurator() {
-        addEmotions();
         initEmotionalState();
-    }
-
-    private void addEmotions() {
-        emotions = Arrays.asList(
-                new Happiness(),
-                new Joy(),
-                new Compassion(),
-                new Admiration(),
-                new Depression(),
-                new Sadness(),
-                new Dissatisfaction(),
-                new Rejection());
     }
 
     private void initEmotionalState() {
@@ -57,7 +43,15 @@ public abstract class EmotionalConfigurator {
     }
 
     public List<Emotion> getEmotions() {
-        return emotions;
+        return Arrays.asList(
+                new Happiness(),
+                new Joy(),
+                new Compassion(),
+                new Admiration(),
+                new Depression(),
+                new Sadness(),
+                new Dissatisfaction(),
+                new Rejection());
     }
 
     public Point getEmotionalPoint() {

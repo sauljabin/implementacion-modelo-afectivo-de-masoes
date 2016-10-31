@@ -6,59 +6,29 @@
 
 package masoes.core;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import masoes.util.math.GeometryCreator;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 public class EmotionTest {
 
-    private Emotion emotion;
-    private Coordinate[] expectedCoordinates;
-    private Geometry expectedGeometry;
-    private GeometryCreator geometryCreator;
+    private Emotion mockEmotion;
+    private String expectedEmotionName;
 
     @Before
     public void setUp() throws Exception {
-        geometryCreator = new GeometryCreator();
-        expectedCoordinates = new Coordinate[]{
-                new Coordinate(0, 0),
-                new Coordinate(0, 0.5),
-                new Coordinate(-0.5, 0.5),
-                new Coordinate(-0.5, 0),
-                new Coordinate(0, 0)
-        };
-        emotion = createEmotion(expectedCoordinates, null);
-        expectedGeometry = geometryCreator.createPolygon(expectedCoordinates);
+        mockEmotion = mock(Emotion.class);
+        expectedEmotionName = "EmotionName";
+        doReturn(expectedEmotionName).when(mockEmotion).getName();
+        doCallRealMethod().when(mockEmotion).toString();
     }
 
     @Test
-    public void shouldGetCorrectGeometry() {
-        assertReflectionEquals(expectedGeometry, emotion.getGeometry());
-    }
-
-    private Emotion createEmotion(Coordinate[] coordinates, EmotionType emotionType) {
-        return new Emotion() {
-
-            @Override
-            public Coordinate[] getCoordinates() {
-                return coordinates;
-            }
-
-            @Override
-            public EmotionType getEmotionType() {
-                return emotionType;
-            }
-
-            @Override
-            public String getName() {
-                return null;
-            }
-
-        };
+    public void shouldInvokeNameWhenToString() {
+        assertThat(mockEmotion.toString(), is(expectedEmotionName));
     }
 
 }

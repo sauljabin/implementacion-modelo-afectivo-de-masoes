@@ -14,19 +14,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
-public class ApplicationOptionManagerTest {
+public class ApplicationOptionsTest {
 
-    private ApplicationOptionManager applicationOptionManager;
+    private ApplicationOptions applicationOptions;
     private List<ApplicationOption> expectedOptions;
     private Options expectedOptionsObject;
 
     @Before
     public void setUp() throws Exception {
-        applicationOptionManager = ApplicationOptionManager.getInstance();
+        applicationOptions = new ApplicationOptions();
         expectedOptions = new ArrayList<>();
         expectedOptions.add(new VersionOption());
         expectedOptions.add(new HelpOption());
@@ -41,23 +39,18 @@ public class ApplicationOptionManagerTest {
     }
 
     @Test
-    public void shouldReturnSameObject() {
-        assertThat(ApplicationOptionManager.getInstance(), is(applicationOptionManager));
-    }
-
-    @Test
     public void shouldReturnSortOption() {
-        assertReflectionEquals(expectedOptions, applicationOptionManager.getApplicationOptions());
+        assertReflectionEquals(expectedOptions, applicationOptions.getApplicationOptionList());
     }
 
     @Test
     public void shouldReturnOptionsObject() {
-        assertReflectionEquals(expectedOptionsObject, applicationOptionManager.toOptions());
+        assertReflectionEquals(expectedOptionsObject, applicationOptions.toOptions());
     }
 
     @Test
     public void shouldReturnHelpDefaultOption() {
-        assertReflectionEquals(new HelpOption(), applicationOptionManager.getDefaultOption());
+        assertReflectionEquals(new HelpOption(), applicationOptions.getDefaultApplicationOption());
     }
 
 }

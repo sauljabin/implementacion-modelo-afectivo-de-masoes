@@ -12,21 +12,15 @@ import masoes.core.EmotionType;
 
 public class Rejection extends Emotion {
 
-    private Coordinate[] coordinates;
-
-    public Rejection() {
-        coordinates = new Coordinate[]{
+    @Override
+    public Coordinate[] getCoordinates() {
+        return new Coordinate[]{
                 new Coordinate(0, 0),
                 new Coordinate(0, -0.5),
                 new Coordinate(0.5, -0.5),
                 new Coordinate(0.5, 0),
                 new Coordinate(0, 0)
         };
-    }
-
-    @Override
-    public Coordinate[] getCoordinates() {
-        return coordinates;
     }
 
     @Override

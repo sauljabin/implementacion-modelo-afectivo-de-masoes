@@ -13,7 +13,7 @@ import masoes.util.math.RandomGenerator;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -34,17 +34,17 @@ public class EmotionalConfiguratorTest {
     private GeometryCreator geometryCreator;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         geometryCreator = new GeometryCreator();
-        emotions = new ArrayList<>();
-        emotions.add(new Happiness());
-        emotions.add(new Joy());
-        emotions.add(new Compassion());
-        emotions.add(new Admiration());
-        emotions.add(new Depression());
-        emotions.add(new Sadness());
-        emotions.add(new Dissatisfaction());
-        emotions.add(new Rejection());
+        emotions = Arrays.asList(
+                new Happiness(),
+                new Joy(),
+                new Compassion(),
+                new Admiration(),
+                new Depression(),
+                new Sadness(),
+                new Dissatisfaction(),
+                new Rejection());
         configurator = createEmotionalConfigurator();
         random = new RandomGenerator();
     }

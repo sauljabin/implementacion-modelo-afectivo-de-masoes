@@ -12,10 +12,9 @@ import masoes.core.EmotionType;
 
 public class Compassion extends Emotion {
 
-    private Coordinate[] coordinates;
-
-    public Compassion() {
-        coordinates = new Coordinate[]{
+    @Override
+    public Coordinate[] getCoordinates() {
+        return new Coordinate[]{
                 new Coordinate(0, 0.5),
                 new Coordinate(0, 1),
                 new Coordinate(-1, 1),
@@ -24,11 +23,6 @@ public class Compassion extends Emotion {
                 new Coordinate(-0.5, 0.5),
                 new Coordinate(0, 0.5)
         };
-    }
-
-    @Override
-    public Coordinate[] getCoordinates() {
-        return coordinates;
     }
 
     @Override
