@@ -15,8 +15,7 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 public class SettingsLoaderTest {
 
@@ -47,6 +46,17 @@ public class SettingsLoaderTest {
     public void shouldGetDefaultSettingInCaseThatNotExistKey() {
         String expectedDefaultValue = "defaultValue";
         assertEquals(expectedDefaultValue, settingsLoader.getSetting("", expectedDefaultValue));
+    }
+
+    @Test
+    public void shouldGetDefaultSettingInCaseThatKeyIsNull() {
+        String expectedDefaultValue = "defaultValue";
+        assertEquals(expectedDefaultValue, settingsLoader.getSetting(null, expectedDefaultValue));
+    }
+
+    @Test
+    public void shouldReturnNullThatKeyIsNull() {
+        assertNull(settingsLoader.getSetting(null));
     }
 
     @Test

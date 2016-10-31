@@ -68,12 +68,16 @@ public class SettingsLoader {
 
     public synchronized String getSetting(String key, String defaultValue) {
         String value = getSetting(key);
+
         if (!Optional.ofNullable(value).isPresent())
             return defaultValue;
+
         return value;
     }
 
     public synchronized String getSetting(String key) {
+        if (!Optional.ofNullable(key).isPresent())
+            return null;
         return properties.getProperty(key);
     }
 

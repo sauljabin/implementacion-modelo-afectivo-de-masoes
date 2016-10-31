@@ -68,7 +68,7 @@ public class BootOptionTest {
 
         verify(mockEnvironmentFactory).createEnvironment();
         verify(mockEnv).getEnvironmentAgentInfoList();
-        verify(mockJadeBoot).boot("agent:jade.core.Agent(arg1,arg2)");
+        verify(mockJadeBoot).boot("agent:jade.core.Agent(arg1,arg2);settings:masoes.jade.agent.SettingsAgent");
     }
 
     @Test
@@ -82,7 +82,7 @@ public class BootOptionTest {
         verify(mockEnvironmentFactory).createEnvironment();
         verify(mockEnv).getEnvironmentAgentInfoList();
         verify(mockEnv).setup();
-        verify(mockJadeBoot).boot("agent:jade.core.Agent(arg1,arg2);agent2:jade.core.Agent");
+        verify(mockJadeBoot).boot("agent:jade.core.Agent(arg1,arg2);agent2:jade.core.Agent;settings:masoes.jade.agent.SettingsAgent");
     }
 
     @Test

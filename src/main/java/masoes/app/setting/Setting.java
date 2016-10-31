@@ -47,6 +47,10 @@ public enum Setting {
         return SettingsLoader.getInstance().toMap();
     }
 
+    public static String allToString() {
+        return SettingsLoader.getInstance().toString();
+    }
+
     public String getKey() {
         return key;
     }
@@ -65,7 +69,7 @@ public enum Setting {
 
     @Override
     public String toString() {
-        return key;
+        return String.format("%s=%s", getKey(), getValue());
     }
 
 }

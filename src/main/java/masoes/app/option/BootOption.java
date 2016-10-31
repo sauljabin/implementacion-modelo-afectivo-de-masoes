@@ -11,6 +11,7 @@ import masoes.env.EnvironmentAgentInfo;
 import masoes.env.EnvironmentFactory;
 import masoes.env.InvalidEnvironmentException;
 import masoes.jade.JadeBoot;
+import masoes.jade.agent.SettingsAgent;
 
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +73,9 @@ public class BootOption extends ApplicationOption {
     }
 
     private String toJadeAgentsOption(List<EnvironmentAgentInfo> environmentAgentInfoList) {
-        return String.join(";", environmentAgentInfoList.stream().map(EnvironmentAgentInfo::toString).collect(Collectors.toList()));
+        List<String> collect = environmentAgentInfoList.stream().map(EnvironmentAgentInfo::toString).collect(Collectors.toList());
+        collect.add(new EnvironmentAgentInfo("settings", SettingsAgent.class, null).toString());
+        return String.join(";", collect);
     }
 
 }

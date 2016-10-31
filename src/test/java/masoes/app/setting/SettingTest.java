@@ -59,8 +59,13 @@ public class SettingTest {
     }
 
     @Test
-    public void shouldBeEqualsKeyAndToString() {
-        assertThat(Setting.APP_NAME.getKey(), is(Setting.APP_NAME.toString()));
+    public void shouldGetToMap() {
+        assertReflectionEquals(SettingsLoader.getInstance().toString(), Setting.allToString());
+    }
+
+    @Test
+    public void shouldGetCorrectToString() {
+        assertThat(Setting.APP_NAME.getKey() + "=" + Setting.APP_NAME.getValue(), is(Setting.APP_NAME.toString()));
     }
 
     @Test

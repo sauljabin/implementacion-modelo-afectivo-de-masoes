@@ -4,16 +4,14 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.jade.agent;
+package masoes.env.dummy;
 
-import jade.core.Agent;
-import masoes.jade.behaviour.SettingsBehaviour;
+import masoes.core.EmotionalAgent;
 
-public class SettingsAgent extends Agent {
+public class DummyAgent extends EmotionalAgent {
 
     @Override
     protected void setup() {
-        addBehaviour(new SettingsBehaviour());
+        emotionalModel = new DummyEmotionalModel();
     }
-
 }
