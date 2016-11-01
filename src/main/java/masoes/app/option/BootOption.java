@@ -73,8 +73,9 @@ public class BootOption extends ApplicationOption {
     }
 
     private String toJadeAgentsOption(List<EnvironmentAgentInfo> environmentAgentInfoList) {
+        EnvironmentAgentInfo settingsAgentInfo = new EnvironmentAgentInfo("settings", SettingsAgent.class, null);
         List<String> collect = environmentAgentInfoList.stream().map(EnvironmentAgentInfo::toString).collect(Collectors.toList());
-        collect.add(new EnvironmentAgentInfo("settings", SettingsAgent.class, null).toString());
+        collect.add(settingsAgentInfo.toString());
         return String.join(";", collect);
     }
 

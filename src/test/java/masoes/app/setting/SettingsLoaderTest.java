@@ -15,7 +15,7 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class SettingsLoaderTest {
 
@@ -24,7 +24,7 @@ public class SettingsLoaderTest {
     private String expectedValue;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         settingsLoader.load();
         keyForTests = "keyForTests";
         expectedValue = "expectedValue";
@@ -39,37 +39,37 @@ public class SettingsLoaderTest {
     @Test
     public void shouldGetCorrectSetting() {
         settingsLoader.setSetting(keyForTests, expectedValue);
-        assertEquals(expectedValue, settingsLoader.getSetting(keyForTests));
+        assertThat(settingsLoader.getSetting(keyForTests), is(expectedValue));
     }
 
     @Test
     public void shouldGetDefaultSettingInCaseThatNotExistKey() {
         String expectedDefaultValue = "defaultValue";
-        assertEquals(expectedDefaultValue, settingsLoader.getSetting("", expectedDefaultValue));
+        assertThat(settingsLoader.getSetting("", expectedDefaultValue), is(expectedDefaultValue));
     }
 
     @Test
     public void shouldGetDefaultSettingInCaseThatKeyIsNull() {
         String expectedDefaultValue = "defaultValue";
-        assertEquals(expectedDefaultValue, settingsLoader.getSetting(null, expectedDefaultValue));
+        assertThat(settingsLoader.getSetting(null, expectedDefaultValue), is(expectedDefaultValue));
     }
 
     @Test
     public void shouldReturnNullThatKeyIsNull() {
-        assertNull(settingsLoader.getSetting(null));
+        assertThat(settingsLoader.getSetting(null), is(nullValue()));
     }
 
     @Test
     public void shouldNotGetDefaultSettingInCaseThatExistKey() {
         settingsLoader.setSetting(keyForTests, expectedValue);
-        assertEquals(expectedValue, settingsLoader.getSetting(keyForTests, "anything"));
+        assertThat(settingsLoader.getSetting(keyForTests, "anything"), is(expectedValue));
     }
 
     @Test
     public void shouldLoadInitValues() {
         Map<String, String> expectedValues = getInitValues();
         expectedValues.keySet()
-                .forEach(key -> assertEquals(expectedValues.get(key), settingsLoader.getSetting(key)));
+                .forEach(key -> assertThat(settingsLoader.getSetting(key), is(expectedValues.get(key))));
 
         String appNameKey = "app.name",
                 appRevisionKey = "app.revision",
@@ -82,7 +82,7 @@ public class SettingsLoaderTest {
 
     @Test
     public void shouldGetTheSameStringThatAMap() {
-        assertEquals(settingsLoader.toMap().toString(), settingsLoader.toString());
+        assertThat(settingsLoader.toString(), is(settingsLoader.toMap().toString()));
     }
 
     @Test
