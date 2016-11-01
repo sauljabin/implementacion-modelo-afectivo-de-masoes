@@ -4,8 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.jade.behaviour;
+package masoes.jade.setting;
 
+import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -17,19 +18,26 @@ public class SettingsBehaviour extends CyclicBehaviour {
 
     private MessageTemplate template = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
 
+    public SettingsBehaviour() {
+    }
+
+    public SettingsBehaviour(Agent a) {
+        super(a);
+    }
+
     @Override
     public void action() {
         ACLMessage msg = myAgent.receive(template);
 
 
-        if (msg != null) {
+        if (isPresent(msg)) {
 
             ACLMessage reply = msg.createReply();
             reply.setPerformative(ACLMessage.INFORM);
 
-            if (msg.getContent() == null) {
+            if (isNullContent(msg)) {
                 reply.setContent(Setting.allToString());
-            } else if (Optional.ofNullable(Setting.get(msg.getContent(), null)).isPresent()) {
+            } else if (isSetting(msg)) {
                 reply.setContent(Setting.get(msg.getContent()));
             } else {
                 reply.setPerformative(ACLMessage.NOT_UNDERSTOOD);
@@ -42,4 +50,17 @@ public class SettingsBehaviour extends CyclicBehaviour {
         }
 
     }
+
+    private boolean isPresent(ACLMessage msg) {
+        return Optional.ofNullable(msg).isPresent();
+    }
+
+    private boolean isSetting(ACLMessage msg) {
+        return Optional.ofNullable(Setting.get(msg.getContent(), null)).isPresent();
+    }
+
+    private boolean isNullContent(ACLMessage msg) {
+        return !Optional.ofNullable(msg.getContent()).isPresent();
+    }
+
 }

@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.ArgumentCaptor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +37,7 @@ public class BootOptionTest {
     private EnvironmentFactory mockEnvironmentFactory;
     private JadeBoot mockJadeBoot;
     private Environment mockEnv;
+    private ArgumentCaptor<String> stringArgumentCaptor;
 
     @Before
     public void setUp() {
@@ -48,6 +50,7 @@ public class BootOptionTest {
         bootOption = new BootOption(mockEnvironmentFactory, mockJadeBoot);
 
         when(mockEnvironmentFactory.createEnvironment()).thenReturn(mockEnv);
+        stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
     }
 
     @Test
@@ -68,7 +71,8 @@ public class BootOptionTest {
 
         verify(mockEnvironmentFactory).createEnvironment();
         verify(mockEnv).getEnvironmentAgentInfoList();
-        verify(mockJadeBoot).boot("agent:jade.core.Agent(arg1,arg2);settings:masoes.jade.agent.SettingsAgent");
+        verify(mockJadeBoot).boot(stringArgumentCaptor.capture());
+        assertThat(stringArgumentCaptor.getValue(), is("agent:jade.core.Agent(arg1,arg2);settings:masoes.jade.setting.SettingsAgent"));
     }
 
     @Test
@@ -82,7 +86,8 @@ public class BootOptionTest {
         verify(mockEnvironmentFactory).createEnvironment();
         verify(mockEnv).getEnvironmentAgentInfoList();
         verify(mockEnv).setup();
-        verify(mockJadeBoot).boot("agent:jade.core.Agent(arg1,arg2);agent2:jade.core.Agent;settings:masoes.jade.agent.SettingsAgent");
+        verify(mockJadeBoot).boot(stringArgumentCaptor.capture());
+        assertThat(stringArgumentCaptor.getValue(), is("agent:jade.core.Agent(arg1,arg2);agent2:jade.core.Agent;settings:masoes.jade.setting.SettingsAgent"));
     }
 
     @Test

@@ -4,10 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.jade.agent;
+package masoes.jade.setting;
 
 import jade.core.Agent;
-import masoes.jade.behaviour.SettingsBehaviour;
 
 public class SettingsAgent extends Agent {
 

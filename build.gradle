@@ -31,6 +31,8 @@ dependencies {
     testCompile 'org.mockito:mockito-core:1.10.19'
     testCompile 'org.unitils:unitils-core:3.4.2'
     testCompile 'com.github.stefanbirkner:system-rules:1.16.0'
+    testCompile 'org.powermock:powermock-api-mockito:1.6.5'
+    testCompile 'org.powermock:powermock-module-junit4:1.6.5'
 }
 
 processResources {
