@@ -13,69 +13,54 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ApplicationOptionTest {
 
-    private ApplicationOption applicationOptionA;
-    private ApplicationOption applicationOptionB;
+    private ApplicationOption mockApplicationOptionA;
+    private ApplicationOption mockApplicationOptionB;
 
     @Before
-    public void setUp() throws Exception {
-        applicationOptionA = createApplicationOption("a", "testA", false, "testA", 1);
-        applicationOptionB = createApplicationOption("b", null, false, "testB", 2);
+    public void setUp() {
+        mockApplicationOptionA = mock(ApplicationOption.class);
+        mockApplicationOptionB = mock(ApplicationOption.class);
     }
 
     @Test
     public void shouldCorrectCompareObject() {
-        assertThat(applicationOptionA.compareTo(applicationOptionA), is(0));
-        assertThat(applicationOptionA.compareTo(applicationOptionB), is(lessThan(0)));
-        assertThat(applicationOptionB.compareTo(applicationOptionA), is(greaterThan(0)));
+        when(mockApplicationOptionA.compareTo(any())).thenCallRealMethod();
+        when(mockApplicationOptionB.compareTo(any())).thenCallRealMethod();
+        when(mockApplicationOptionA.getOrder()).thenReturn(1);
+        when(mockApplicationOptionB.getOrder()).thenReturn(2);
+        assertThat(mockApplicationOptionA.compareTo(mockApplicationOptionA), is(0));
+        assertThat(mockApplicationOptionB.compareTo(mockApplicationOptionB), is(0));
+        assertThat(mockApplicationOptionA.compareTo(mockApplicationOptionB), is(lessThan(0)));
+        assertThat(mockApplicationOptionB.compareTo(mockApplicationOptionA), is(greaterThan(0)));
     }
 
     @Test
     public void shouldGetCorrectString() {
-        assertThat(applicationOptionA.toString(), is("{option=[-a,--testA], order=1}"));
+        when(mockApplicationOptionA.getOpt()).thenReturn("a");
+        when(mockApplicationOptionA.getLongOpt()).thenReturn("testA");
+        when(mockApplicationOptionA.getOrder()).thenReturn(1);
+        when(mockApplicationOptionA.toString()).thenCallRealMethod();
+        assertThat(mockApplicationOptionA.toString(), is("{option=[-a,--testA], order=1}"));
     }
 
     @Test
-    public void shouldGetCorrectKey() {
-        assertThat(applicationOptionA.getKeyOpt(), is(applicationOptionA.getLongOpt()));
-        assertThat(applicationOptionB.getKeyOpt(), is(applicationOptionB.getOpt()));
+    public void shouldGetCorrectKeyWhenOptIsNull() {
+        when(mockApplicationOptionA.getKeyOpt()).thenCallRealMethod();
+        when(mockApplicationOptionA.getLongOpt()).thenReturn("testA");
+        assertThat(mockApplicationOptionA.getKeyOpt(), is(mockApplicationOptionA.getLongOpt()));
     }
 
-    private ApplicationOption createApplicationOption(final String opt, final String longOpt, final boolean hasArg, final String description, int order) {
-        return new ApplicationOption() {
-
-            @Override
-            public int getOrder() {
-                return order;
-            }
-
-            @Override
-            public String getLongOpt() {
-                return longOpt;
-            }
-
-            @Override
-            public String getOpt() {
-                return opt;
-            }
-
-            @Override
-            public String getDescription() {
-                return description;
-            }
-
-            @Override
-            public boolean hasArg() {
-                return hasArg;
-            }
-
-            @Override
-            public void exec(String optionValue) {
-            }
-
-        };
+    @Test
+    public void shouldGetCorrectKeyLongOptIsNull() {
+        when(mockApplicationOptionA.getKeyOpt()).thenCallRealMethod();
+        when(mockApplicationOptionA.getOpt()).thenReturn("a");
+        assertThat(mockApplicationOptionA.getKeyOpt(), is(mockApplicationOptionA.getOpt()));
     }
 
 }

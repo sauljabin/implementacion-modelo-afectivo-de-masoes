@@ -23,10 +23,10 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.hamcrest.core.IsNot.not;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
@@ -39,12 +39,13 @@ public class EmotionalConfiguratorTest {
     public static final int POSITIVE_SIGN = 1;
     public static final int NEGATIVE_SIGN = -1;
     private List<Emotion> emotions;
-    private EmotionalConfigurator configurator;
+    private EmotionalConfigurator mockEmotionalConfigurator;
     private RandomGenerator random;
     private GeometryCreator geometryCreator;
 
     @Before
     public void setUp() {
+        random = new RandomGenerator();
         geometryCreator = new GeometryCreator();
         emotions = Arrays.asList(
                 new Happiness(),
@@ -55,29 +56,31 @@ public class EmotionalConfiguratorTest {
                 new Sadness(),
                 new Dissatisfaction(),
                 new Rejection());
-        configurator = createEmotionalConfigurator();
-        random = new RandomGenerator();
+
+        mockEmotionalConfigurator = mock(EmotionalConfigurator.class);
+        when(mockEmotionalConfigurator.evaluateStimulus(any())).thenReturn(new EmotionalState(random.getDouble(-1, 1), random.getDouble(-1, 1)));
+        when(mockEmotionalConfigurator.getEmotions()).thenCallRealMethod();
+        when(mockEmotionalConfigurator.getEmotionalPoint()).thenCallRealMethod();
+        when(mockEmotionalConfigurator.getEmotionalState()).thenCallRealMethod();
+        doCallRealMethod().when(mockEmotionalConfigurator).updateEmotionalState(any());
     }
 
     @Test
     public void shouldReturnCorrectList() {
-        assertReflectionEquals(configurator.getEmotions(), emotions);
+        assertReflectionEquals(mockEmotionalConfigurator.getEmotions(), emotions);
     }
 
     @Test
     public void shouldReturnTheSameActivationAndSatisfaction() {
-        configurator.updateEmotionalState(null);
-        assertThat(configurator.getEmotionalPoint().getX(), not(0.0));
-        assertThat(configurator.getEmotionalPoint().getY(), not(0.0));
-        assertThat(configurator.getEmotionalPoint().getX(), is(configurator.getEmotionalState().getActivation()));
-        assertThat(configurator.getEmotionalPoint().getY(), is(configurator.getEmotionalState().getSatisfaction()));
+        mockEmotionalConfigurator.updateEmotionalState(null);
+        assertThat(mockEmotionalConfigurator.getEmotionalPoint().getX(), not(0.0));
+        assertThat(mockEmotionalConfigurator.getEmotionalPoint().getY(), not(0.0));
+        assertThat(mockEmotionalConfigurator.getEmotionalPoint().getX(), is(mockEmotionalConfigurator.getEmotionalState().getActivation()));
+        assertThat(mockEmotionalConfigurator.getEmotionalPoint().getY(), is(mockEmotionalConfigurator.getEmotionalState().getSatisfaction()));
     }
 
     @Test
     public void shouldInvokeEvaluateStimulus() {
-        EmotionalConfigurator mockEmotionalConfigurator = mock(EmotionalConfigurator.class);
-        doCallRealMethod().when(mockEmotionalConfigurator).updateEmotionalState(any());
-        when(mockEmotionalConfigurator.evaluateStimulus(any())).thenReturn(new EmotionalState(0, 0));
         mockEmotionalConfigurator.updateEmotionalState(null);
         verify(mockEmotionalConfigurator).evaluateStimulus(any());
     }
@@ -129,20 +132,12 @@ public class EmotionalConfiguratorTest {
     }
 
     private void testEmotion(Class<?> emotionClass, Point randomPoint) {
-        EmotionalConfigurator mockEmotionalConfigurator = mock(EmotionalConfigurator.class);
-
         EmotionalState mockEmotionalState = mock(EmotionalState.class);
         when(mockEmotionalState.toPoint()).thenReturn(randomPoint);
-
         when(mockEmotionalConfigurator.evaluateStimulus(any())).thenReturn(mockEmotionalState);
-
         when(mockEmotionalConfigurator.getEmotionalPoint()).thenReturn(randomPoint);
         when(mockEmotionalConfigurator.getEmotion()).thenCallRealMethod();
-        when(mockEmotionalConfigurator.getEmotions()).thenReturn(emotions);
-
-        doCallRealMethod().when(mockEmotionalConfigurator).updateEmotionalState(any());
         mockEmotionalConfigurator.updateEmotionalState(null);
-
         assertThat(mockEmotionalConfigurator.getEmotion(), is(instanceOf(emotionClass)));
     }
 
@@ -158,17 +153,6 @@ public class EmotionalConfiguratorTest {
         double x = random.getDouble(xMin, xMax);
         double y = random.getDouble(yMin, yMax);
         return geometryCreator.createPoint(x, y);
-    }
-
-    private EmotionalConfigurator createEmotionalConfigurator() {
-        return new EmotionalConfigurator() {
-
-            @Override
-            public EmotionalState evaluateStimulus(Stimulus stimulus) {
-                return new EmotionalState(random.getDouble(-1, 1), random.getDouble(-1, 1));
-            }
-
-        };
     }
 
 }

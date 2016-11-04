@@ -58,7 +58,7 @@ public class ApplicationLogger {
     public void agentException(Agent agent, Exception exception) {
         newLogWriter()
                 .message("Exception in agent \"%s\": %s")
-                .args(agent.getLocalName(), exception.toString())
+                .args(agent.getLocalName(), exception.getMessage())
                 .exception(exception)
                 .error(logger);
     }
@@ -66,7 +66,7 @@ public class ApplicationLogger {
     public void exception(Exception exception) {
         newLogWriter()
                 .message("Exception: %s")
-                .args(exception.toString())
+                .args(exception.getMessage())
                 .exception(exception)
                 .error(logger);
     }

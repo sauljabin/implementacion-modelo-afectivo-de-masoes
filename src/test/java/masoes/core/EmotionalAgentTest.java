@@ -6,17 +6,6 @@
 
 package masoes.core;
 
-import org.junit.Before;
-
-import static org.mockito.Mockito.mock;
-
 public class EmotionalAgentTest {
-
-    private EmotionalAgent emotionalAgent;
-
-    @Before
-    public void setUp() {
-        emotionalAgent = mock(EmotionalAgent.class);
-    }
 
 }

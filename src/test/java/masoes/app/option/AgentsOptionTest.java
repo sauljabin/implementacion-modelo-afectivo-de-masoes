@@ -43,7 +43,7 @@ public class AgentsOptionTest {
     }
 
     @Test
-    public void shouldInvokeJadeBoot() throws Exception {
+    public void shouldInvokeJadeBoot() {
         String expectedArgs = "a1:ClassName";
         agentsOption.exec(expectedArgs);
         verify(mockJadeBoot).boot(expectedArgs);

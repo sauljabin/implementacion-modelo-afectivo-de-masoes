@@ -22,7 +22,7 @@ public class RandomGeneratorTest {
     private RandomGenerator random;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         random = new RandomGenerator();
     }
 

@@ -16,4 +16,5 @@ public class DummyEmotionalConfigurator extends EmotionalConfigurator {
     protected EmotionalState evaluateStimulus(Stimulus stimulus) {
         return new EmotionalState(.5, .5);
     }
+
 }

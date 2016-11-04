@@ -27,7 +27,7 @@ public class MapParserTest {
     private MapParser mapParser;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         expectedMap = new HashMap<>();
         expectedMap.put("key1", "value1");
         actualString = expectedMap.toString();

@@ -16,4 +16,5 @@ public class DummyBehaviourManager extends BehaviourManager {
     protected Behaviour evaluateEmotion(Emotion emotion) {
         return new DummyBehaviour();
     }
+
 }

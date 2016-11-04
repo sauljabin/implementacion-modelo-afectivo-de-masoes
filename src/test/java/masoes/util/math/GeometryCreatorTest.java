@@ -22,7 +22,7 @@ public class GeometryCreatorTest {
     private GeometryCreator geometryCreator;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         random = new RandomGenerator();
         geometryCreator = new GeometryCreator();
     }

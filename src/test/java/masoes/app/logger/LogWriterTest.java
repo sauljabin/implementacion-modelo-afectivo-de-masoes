@@ -25,7 +25,7 @@ public class LogWriterTest {
     private LogWriter logWritter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mockLogger = mock(Logger.class);
         expectedMessage = "message";
         expectedException = new Exception("exception message");

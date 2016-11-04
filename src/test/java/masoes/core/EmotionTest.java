@@ -21,7 +21,7 @@ public class EmotionTest {
     private String expectedEmotionName;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mockEmotion = mock(Emotion.class);
         expectedEmotionName = "EmotionName";
         doReturn(expectedEmotionName).when(mockEmotion).getName();

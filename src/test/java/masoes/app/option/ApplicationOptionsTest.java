@@ -23,7 +23,7 @@ public class ApplicationOptionsTest {
     private Options expectedOptionsObject;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         applicationOptions = new ApplicationOptions();
         expectedOptions = new ArrayList<>();
         expectedOptions.add(new VersionOption());

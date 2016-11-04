@@ -21,4 +21,5 @@ public class DummyEmotionalModel extends EmotionalModel {
     public BehaviourManager getBehaviourManager() {
         return new DummyBehaviourManager();
     }
+
 }

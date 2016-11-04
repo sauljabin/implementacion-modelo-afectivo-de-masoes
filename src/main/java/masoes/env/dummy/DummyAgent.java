@@ -14,4 +14,5 @@ public class DummyAgent extends EmotionalAgent {
     protected void setup() {
         emotionalModel = new DummyEmotionalModel();
     }
+
 }

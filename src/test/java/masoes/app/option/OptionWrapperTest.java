@@ -24,7 +24,7 @@ public class OptionWrapperTest {
     private Option optionC;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         optionVersion = new VersionOption().toOption();
         optionJade = new AgentsOption().toOption();
         optionHelp = new HelpOption().toOption();

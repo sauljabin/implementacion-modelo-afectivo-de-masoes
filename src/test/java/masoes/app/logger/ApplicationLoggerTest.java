@@ -72,7 +72,7 @@ public class ApplicationLoggerTest {
     public void shouldLogException() {
         Exception expectedException = new Exception("error");
         applicationLogger.exception(expectedException);
-        verify(mockLogger).error(eq("Exception: " + expectedException.toString()), eq(expectedException));
+        verify(mockLogger).error(eq("Exception: " + expectedException.getMessage()), eq(expectedException));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class ApplicationLoggerTest {
         when(mockAgent.getLocalName()).thenReturn(expectedAgentName);
 
         Exception expectedException = new Exception("error");
-        String expectedMessage = String.format("Exception in agent \"%s\": %s", expectedAgentName, expectedException);
+        String expectedMessage = String.format("Exception in agent \"%s\": %s", expectedAgentName, expectedException.getMessage());
 
         applicationLogger.agentException(mockAgent, expectedException);
         verify(mockLogger).error(eq(expectedMessage), eq(expectedException));

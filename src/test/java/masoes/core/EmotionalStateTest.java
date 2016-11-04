@@ -20,7 +20,7 @@ public class EmotionalStateTest {
     private EmotionalState emotionalState;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         random = new RandomGenerator();
         emotionalState = new EmotionalState(random.getDouble(0, 1), random.getDouble(0, 1));
     }

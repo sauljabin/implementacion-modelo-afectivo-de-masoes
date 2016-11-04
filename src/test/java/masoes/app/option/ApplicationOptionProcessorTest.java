@@ -88,7 +88,7 @@ public class ApplicationOptionProcessorTest {
     }
 
     @Test
-    public void shouldInvokeOption() throws Exception {
+    public void shouldInvokeOption() {
         applicationOptionProcessor.processArgs(expectedArgs);
 
         verify(mockOption).exec(expectedOptionValue);
@@ -96,7 +96,7 @@ public class ApplicationOptionProcessorTest {
     }
 
     @Test
-    public void shouldInvokeTwoOptions() throws Exception {
+    public void shouldInvokeTwoOptions() {
         expectedArgs = new String[]{"-" + expectedOpt, "-" + expectedOpt2};
 
         applicationOptionProcessor.processArgs(expectedArgs);
