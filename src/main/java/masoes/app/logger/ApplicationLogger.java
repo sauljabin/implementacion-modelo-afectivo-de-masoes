@@ -6,6 +6,7 @@
 
 package masoes.app.logger;
 
+import jade.core.Agent;
 import masoes.app.option.ApplicationOption;
 import masoes.app.setting.Setting;
 import org.slf4j.Logger;
@@ -52,6 +53,14 @@ public class ApplicationLogger {
                 .message("Updated settings: %s")
                 .args(Setting.toMap().toString())
                 .info(logger);
+    }
+
+    public void agentException(Agent agent, Exception exception) {
+        newLogWriter()
+                .message("Exception in agent \"%s\": %s")
+                .args(agent.getLocalName(), exception.toString())
+                .exception(exception)
+                .error(logger);
     }
 
     public void exception(Exception exception) {

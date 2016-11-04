@@ -74,7 +74,7 @@ public class SettingsAgentTest {
         DFService.deregister(spySettingsAgent);
 
         spySettingsAgent.takeDown();
-        verify(mockApplicationLogger).exception(expectedException);
+        verify(mockApplicationLogger).agentException(spySettingsAgent, expectedException);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class SettingsAgentTest {
         DFService.register(eq(spySettingsAgent), any());
 
         spySettingsAgent.setup();
-        verify(mockApplicationLogger).exception(expectedException);
+        verify(mockApplicationLogger).agentException(spySettingsAgent, expectedException);
     }
 
 }

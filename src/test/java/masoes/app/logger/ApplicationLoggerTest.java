@@ -6,19 +6,25 @@
 
 package masoes.app.logger;
 
+import jade.core.Agent;
 import masoes.app.option.ApplicationOption;
 import masoes.app.setting.Setting;
 import masoes.app.setting.SettingsLoader;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
 
 import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.mock;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Agent.class)
 public class ApplicationLoggerTest {
 
     private Logger mockLogger;
@@ -67,6 +73,19 @@ public class ApplicationLoggerTest {
         Exception expectedException = new Exception("error");
         applicationLogger.exception(expectedException);
         verify(mockLogger).error(eq("Exception: " + expectedException.toString()), eq(expectedException));
+    }
+
+    @Test
+    public void shouldLogAgentException() {
+        Agent mockAgent = mock(Agent.class);
+        String expectedAgentName = "agent";
+        when(mockAgent.getLocalName()).thenReturn(expectedAgentName);
+
+        Exception expectedException = new Exception("error");
+        String expectedMessage = String.format("Exception in agent \"%s\": %s", expectedAgentName, expectedException);
+
+        applicationLogger.agentException(mockAgent, expectedException);
+        verify(mockLogger).error(eq(expectedMessage), eq(expectedException));
     }
 
 }

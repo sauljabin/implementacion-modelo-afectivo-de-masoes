@@ -13,7 +13,6 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import masoes.app.logger.ApplicationLogger;
-import masoes.app.option.ApplicationOptionProcessor;
 import org.slf4j.LoggerFactory;
 
 public class SettingsAgent extends Agent {
@@ -21,7 +20,7 @@ public class SettingsAgent extends Agent {
     ApplicationLogger logger;
 
     public SettingsAgent() {
-        this(new ApplicationLogger(LoggerFactory.getLogger(ApplicationOptionProcessor.class)));
+        this(new ApplicationLogger(LoggerFactory.getLogger(SettingsAgent.class)));
     }
 
     public SettingsAgent(ApplicationLogger logger) {
@@ -42,7 +41,7 @@ public class SettingsAgent extends Agent {
 
             DFService.register(this, agentDescription);
         } catch (FIPAException e) {
-            logger.exception(e);
+            logger.agentException(this, e);
         }
 
         addBehaviour(new SettingsBehaviour());
@@ -53,7 +52,7 @@ public class SettingsAgent extends Agent {
         try {
             DFService.deregister(this);
         } catch (FIPAException e) {
-            logger.exception(e);
+            logger.agentException(this, e);
         }
     }
 
