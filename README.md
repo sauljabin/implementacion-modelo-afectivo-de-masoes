@@ -139,14 +139,16 @@ Ejecutar JADE manualmente:
 ./masoes --agents="a1:masoes.core.agent.TestAgent(arg1, arg2)"
 ```
 
-Ingresar environment a ejecutar:
-
-```
-./masoes --env=wikipedia
-```
-
 Iniciar caso de estudio:
 
 ```
 ./masoes --env=wikipedia --boot
+```
+
+## Otros
+
+Buscar archivos sin cabecera:
+
+```
+grep --include *.java -Lr "Copyright (c) 2016 Saúl Piña <sauljabin@gmail.com>" .
 ```
