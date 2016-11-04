@@ -7,7 +7,14 @@
 package masoes.core;
 
 import com.vividsolutions.jts.geom.Point;
-import masoes.core.emotion.*;
+import masoes.core.emotion.Admiration;
+import masoes.core.emotion.Compassion;
+import masoes.core.emotion.Depression;
+import masoes.core.emotion.Dissatisfaction;
+import masoes.core.emotion.Happiness;
+import masoes.core.emotion.Joy;
+import masoes.core.emotion.Rejection;
+import masoes.core.emotion.Sadness;
 import masoes.util.math.RandomGenerator;
 
 import java.util.Arrays;

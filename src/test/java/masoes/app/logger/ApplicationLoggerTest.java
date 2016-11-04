@@ -15,7 +15,9 @@ import org.slf4j.Logger;
 
 import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ApplicationLoggerTest {
 
@@ -34,7 +36,7 @@ public class ApplicationLoggerTest {
     public void shouldLogStartingApp() {
         String[] args = {"-h"};
         applicationLogger.startingApplication(args);
-        verify(mockLogger).info(eq("Starting application with arguments: [-h], and settings " + Setting.toMap().toString()));
+        verify(mockLogger).info(eq("Starting application with arguments: [-h], and settings: " + Setting.toMap().toString()));
     }
 
     @Test
@@ -58,6 +60,13 @@ public class ApplicationLoggerTest {
     public void shouldLogUpdatedSettings() {
         applicationLogger.updatedSettings();
         verify(mockLogger).info(eq("Updated settings: " + Setting.toMap().toString()));
+    }
+
+    @Test
+    public void shouldLogException() {
+        Exception expectedException = new Exception("error");
+        applicationLogger.exception(expectedException);
+        verify(mockLogger).error(eq("Exception: " + expectedException.toString()), eq(expectedException));
     }
 
 }

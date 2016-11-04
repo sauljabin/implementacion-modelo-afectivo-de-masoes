@@ -7,7 +7,14 @@
 package masoes.core;
 
 import com.vividsolutions.jts.geom.Point;
-import masoes.core.emotion.*;
+import masoes.core.emotion.Admiration;
+import masoes.core.emotion.Compassion;
+import masoes.core.emotion.Depression;
+import masoes.core.emotion.Dissatisfaction;
+import masoes.core.emotion.Happiness;
+import masoes.core.emotion.Joy;
+import masoes.core.emotion.Rejection;
+import masoes.core.emotion.Sadness;
 import masoes.util.math.GeometryCreator;
 import masoes.util.math.RandomGenerator;
 import org.junit.Before;
@@ -21,7 +28,10 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.hamcrest.core.IsNot.not;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public class EmotionalConfiguratorTest {

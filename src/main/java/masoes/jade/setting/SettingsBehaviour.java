@@ -16,13 +16,15 @@ import java.util.Optional;
 
 public class SettingsBehaviour extends CyclicBehaviour {
 
-    private MessageTemplate template = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+    private MessageTemplate template;
 
     public SettingsBehaviour() {
+        this(null);
     }
 
     public SettingsBehaviour(Agent a) {
         super(a);
+        template = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
     }
 
     @Override

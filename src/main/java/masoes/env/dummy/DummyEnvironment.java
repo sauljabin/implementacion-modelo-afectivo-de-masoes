@@ -9,14 +9,16 @@ package masoes.env.dummy;
 import masoes.env.Environment;
 import masoes.env.EnvironmentAgentInfo;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DummyEnvironment extends Environment {
 
     @Override
     public List<EnvironmentAgentInfo> getEnvironmentAgentInfoList() {
-        return Arrays.asList(new EnvironmentAgentInfo("dummy", DummyAgent.class, null));
+        List<EnvironmentAgentInfo> agentsInfo = new ArrayList<>();
+        agentsInfo.add(new EnvironmentAgentInfo("dummy", DummyAgent.class, null));
+        return agentsInfo;
     }
 
     @Override

@@ -7,12 +7,54 @@
 package masoes.jade.setting;
 
 import jade.core.Agent;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
+import jade.domain.FIPANames;
+import masoes.app.logger.ApplicationLogger;
+import masoes.app.option.ApplicationOptionProcessor;
+import org.slf4j.LoggerFactory;
 
 public class SettingsAgent extends Agent {
 
+    ApplicationLogger logger;
+
+    public SettingsAgent() {
+        this(new ApplicationLogger(LoggerFactory.getLogger(ApplicationOptionProcessor.class)));
+    }
+
+    public SettingsAgent(ApplicationLogger logger) {
+        this.logger = logger;
+    }
+
     @Override
     protected void setup() {
+        try {
+            ServiceDescription serviceDescription = new ServiceDescription();
+            serviceDescription.setName("get-setting");
+            serviceDescription.setType(getLocalName() + "-get-setting");
+            serviceDescription.addProtocols(FIPANames.InteractionProtocol.FIPA_REQUEST);
+
+            DFAgentDescription agentDescription = new DFAgentDescription();
+            agentDescription.setName(getAID());
+            agentDescription.addServices(serviceDescription);
+
+            DFService.register(this, agentDescription);
+        } catch (FIPAException e) {
+            logger.exception(e);
+        }
+
         addBehaviour(new SettingsBehaviour());
+    }
+
+    @Override
+    protected void takeDown() {
+        try {
+            DFService.deregister(this);
+        } catch (FIPAException e) {
+            logger.exception(e);
+        }
     }
 
 }

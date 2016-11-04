@@ -26,7 +26,7 @@ public class ApplicationLogger {
 
     public void startingApplication(String[] args) {
         newLogWriter()
-                .message("Starting application with arguments: %s, and settings %s")
+                .message("Starting application with arguments: %s, and settings: %s")
                 .args(Arrays.toString(args), Setting.toMap().toString())
                 .info(logger);
     }
@@ -34,7 +34,7 @@ public class ApplicationLogger {
 
     public void cantNotStartApplication(Exception exception) {
         newLogWriter()
-                .message("Could not start the application [%s]")
+                .message("Could not start the application: %s")
                 .args(exception.getMessage())
                 .exception(exception)
                 .error(logger);
@@ -52,6 +52,14 @@ public class ApplicationLogger {
                 .message("Updated settings: %s")
                 .args(Setting.toMap().toString())
                 .info(logger);
+    }
+
+    public void exception(Exception exception) {
+        newLogWriter()
+                .message("Exception: %s")
+                .args(exception.toString())
+                .exception(exception)
+                .error(logger);
     }
 
 }
