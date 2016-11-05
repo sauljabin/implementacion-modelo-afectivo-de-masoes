@@ -6,7 +6,6 @@
 
 package masoes.test;
 
-import jade.core.Agent;
 import test.common.TestGroup;
 import test.common.TesterAgent;
 
@@ -16,11 +15,13 @@ public class FunctionalTester extends TesterAgent {
 
     @Override
     protected TestGroup getTestGroup() {
-        return new TestGroup(FUNCTIONAL_TEST_LIST_FILE) {
-            @Override
-            protected void shutdown(Agent agent) {
-                System.exit(0);
-            }
-        };
+        return new TestGroup(FUNCTIONAL_TEST_LIST_FILE);
     }
+
+    @Override
+    protected void takeDown() {
+        super.takeDown();
+        System.exit(0);
+    }
+
 }
