@@ -87,6 +87,12 @@ Ejecución de pruebas:
 ./gradlew test
 ```
 
+Ejecución de pruebas funcionales:
+
+```
+./gradlew functionalTest
+```
+
 Limpiar empaquetados:
 
 ```
@@ -199,4 +205,16 @@ Ejecución de pruebas unitarias:
 
 ```
 make unit-test
+```
+
+Ejecución de pruebas funcionales:
+
+```
+make functional-test
+```
+
+Ejecución de todas las pruebas:
+
+```
+make all-test
 ```

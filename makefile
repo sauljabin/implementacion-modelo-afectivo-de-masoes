@@ -1,11 +1,11 @@
 # target dist: Make program.
-dist: refresh ; ./gradlew build ; cp build/distributions/masoes*.zip .
+dist: clean ; ./gradlew build && cp build/distributions/masoes-*.zip .
 
 # target clean: Refresh dependencies and clean.
 clean: ; ./gradlew clean --refresh-dependencies
 
 # target install: Make program and install.
-install: compile ; unzip masoes*.zip
+install: dist ; unzip -o masoes-*.zip && cd masoes-*/bin && ./masoes
 
 # target help: Display callable targets.
 help: ; grep "^# target" [Mm]akefile | cut -c10-
@@ -20,4 +20,10 @@ run: ; ./gradlew run -Pargs="-b"
 no-copyright: ; grep --include *.java -Lr "Copyright (c)" .
 
 # target unit-test: Exec unit test.
-unit-test: ; ./gradlew test
+unit-test: clean ; ./gradlew test
+
+# target functional-test: Exec functional test.
+functional-test: clean ; ./gradlew functionalTest
+
+# target all-test: Exec all test.
+all-test: clean unit-test functional-test

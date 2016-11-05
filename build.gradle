@@ -33,6 +33,7 @@ dependencies {
     testCompile 'com.github.stefanbirkner:system-rules:1.16.0'
     testCompile 'org.powermock:powermock-api-mockito:1.6.5'
     testCompile 'org.powermock:powermock-module-junit4:1.6.5'
+    testCompile 'com.tilab.jade:jade-test-suite:1.13.0'
 }
 
 processResources {
@@ -62,4 +63,18 @@ test {
         exceptionFormat 'full'
         events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
     }
+}
+
+sourceSets {
+    functionalTest {
+        java.srcDir file('src/functionalTest/java')
+        resources.srcDir file('src/functionalTest/resources')
+        compileClasspath += sourceSets.test.compileClasspath
+        runtimeClasspath += sourceSets.test.runtimeClasspath
+    }
+}
+
+task(functionalTest, type: JavaExec) {
+    main = 'masoes.test.FunctionalTestBoot'
+    classpath = sourceSets.functionalTest.runtimeClasspath
 }
