@@ -41,6 +41,7 @@ public class JadeBootTest {
         verify(bootProfile).setParameter("gui", Setting.JADE_GUI.getValue());
         verify(bootProfile).setParameter("port", Setting.JADE_PORT.getValue());
         verify(bootProfile).setParameter("jade_mtp_http_port", Setting.JADE_MTP_PORT.getValue());
+        verify(bootProfile).setParameter("jade_domain_df_autocleanup", Setting.JADE_DF_AUTOCLEANUP.getValue());
         verify(mockRuntime).setCloseVM(true);
         verify(mockRuntime).createMainContainer(bootProfile);
     }

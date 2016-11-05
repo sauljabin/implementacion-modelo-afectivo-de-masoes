@@ -139,16 +139,64 @@ Ejecutar JADE manualmente:
 ./masoes --agents="a1:masoes.core.agent.TestAgent(arg1, arg2)"
 ```
 
+Iniciar dummy:
+
+```
+./masoes --boot
+```
+
 Iniciar caso de estudio:
 
 ```
 ./masoes --env=wikipedia --boot
 ```
 
-## Otros
+## Ejecución con make
 
-Buscar archivos sin cabecera:
+Ayuda:
 
 ```
-grep --include *.java -Lr "Copyright (c) 2016 Saúl Piña <sauljabin@gmail.com>" .
+make help
+```
+
+Ayuda MASOES:
+
+```
+make help-masoes
+```
+
+Buscar archivos sin copyright:
+
+```
+make no-copyright
+```
+
+Crear empaquetado:
+
+```
+make dist
+```
+
+Limpiar:
+
+```
+make clean
+```
+
+Instalar:
+
+```
+make install
+```
+
+Ejecutar dummy:
+
+```
+make run
+```
+
+Ejecución de pruebas unitarias:
+
+```
+make unit-test
 ```

@@ -16,6 +16,7 @@ public class JadeBoot {
     public static final String AGENTS_PARAMETER = "agents";
     public static final String PORT_PARAMETER = "port";
     public static final String JADE_MTP_PORT_PARAMETER = "jade_mtp_http_port";
+    public static final String JADE_DF_AUTOCLEANUP = "jade_domain_df_autocleanup";
 
     private ProfileImpl jadeProfile;
     private Runtime jadeRuntime;
@@ -34,6 +35,7 @@ public class JadeBoot {
         jadeProfile.setParameter(GUI_PARAMETER, Setting.JADE_GUI.getValue());
         jadeProfile.setParameter(PORT_PARAMETER, Setting.JADE_PORT.getValue());
         jadeProfile.setParameter(JADE_MTP_PORT_PARAMETER, Setting.JADE_MTP_PORT.getValue());
+        jadeProfile.setParameter(JADE_DF_AUTOCLEANUP, Setting.JADE_DF_AUTOCLEANUP.getValue());
         jadeRuntime.setCloseVM(true);
         jadeRuntime.createMainContainer(jadeProfile);
     }

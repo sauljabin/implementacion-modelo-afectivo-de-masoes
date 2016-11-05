@@ -30,6 +30,7 @@ public class SettingsLoader {
     public static final String APP_VERSION_KEY = "app.version";
     public static final String MASOES_ENV_KEY = "masoes.env";
     public static final String JADE_MTP_PORT_KEY = "jade.mtp.port";
+    public static final String JADE_DF_AUTOCLEANUP_KEY = "jade.df.autocleanup";
 
     private static SettingsLoader INSTANCE;
     private Properties properties;

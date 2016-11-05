@@ -87,3 +87,9 @@ Desktop.ini
 # ----
 APDescription.txt
 MTPs-Main-Container.txt
+
+
+# Others
+# ------
+masoes-*.zip
+masoes-*/

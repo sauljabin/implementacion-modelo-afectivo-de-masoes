@@ -103,7 +103,8 @@ public class SettingsLoaderTest {
                 jadeRevisionKey = "jade.revision",
                 jadePortKey = "jade.port",
                 masoesEnvKey = "masoes.env",
-                jadeMtpPortKey = "jade.mtp.port";
+                jadeMtpPortKey = "jade.mtp.port",
+                jadeDfAutocleanupKey = "jade.df.autocleanup";
 
         Map<String, String> initValues = new HashMap<>();
         initValues.put(osNameKey, System.getProperty(osNameKey));
@@ -116,6 +117,7 @@ public class SettingsLoaderTest {
         initValues.put(masoesEnvKey, "dummy");
         initValues.put(jadePortKey, "1099");
         initValues.put(jadeMtpPortKey, "7778");
+        initValues.put(jadeDfAutocleanupKey, "true");
         return initValues;
     }
 
