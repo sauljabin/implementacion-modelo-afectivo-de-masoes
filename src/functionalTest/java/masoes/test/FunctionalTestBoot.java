@@ -6,10 +6,23 @@
 
 package masoes.test;
 
+import masoes.app.setting.Setting;
+import masoes.app.setting.SettingsLoader;
+import masoes.jade.JadeBoot;
+
 public class FunctionalTestBoot {
 
     public static void main(String[] args) {
-        System.out.println("functional test");
+        try {
+            SettingsLoader settingsLoader = SettingsLoader.getInstance();
+            settingsLoader.load();
+            Setting.JADE_GUI.setValue("false");
+            JadeBoot jadeBoot = new JadeBoot();
+            jadeBoot.boot("tester:masoes.test.FunctionalTester");
+        } catch (Exception e) {
+            System.exit(-1);
+        }
+
     }
 
 }

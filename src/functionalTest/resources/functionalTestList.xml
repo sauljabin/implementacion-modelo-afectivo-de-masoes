@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<TestsList>
+    <Test name="Getting settings" skip="false">
+        <TestClassName>masoes.test.setting.SettingsBehaviourTest</TestClassName>
+        <WhatTest>Test the correct settings behaviour</WhatTest>
+        <HowWorkTest>An agent make a request and receive a setting</HowWorkTest>
+        <WhenTestPass>The test passes if the agent return the correct settings</WhenTestPass>
+    </Test>
+</TestsList>

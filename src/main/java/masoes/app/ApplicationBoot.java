@@ -6,7 +6,7 @@
 
 package masoes.app;
 
-public class Main {
+public class ApplicationBoot {
 
     public static void main(String[] args) {
         Application application = new Application();
