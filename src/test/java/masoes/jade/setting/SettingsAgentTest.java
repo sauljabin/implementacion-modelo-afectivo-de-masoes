@@ -58,27 +58,7 @@ public class SettingsAgentTest {
     }
 
     @Test
-    public void shouldDeregisterAgent() throws FIPAException {
-        mockStatic(DFService.class);
-        spySettingsAgent.takeDown();
-        verifyStatic();
-        DFService.deregister(spySettingsAgent);
-    }
-
-    @Test
-    public void shouldLogErrorWhenDeregister() throws FIPAException {
-        FIPAException expectedException = new FIPAException("error");
-
-        mockStatic(DFService.class);
-        doThrow(expectedException).when(DFService.class);
-        DFService.deregister(spySettingsAgent);
-
-        spySettingsAgent.takeDown();
-        verify(mockApplicationLogger).agentException(spySettingsAgent, expectedException);
-    }
-
-    @Test
-    public void shouldRegisterAgent() throws FIPAException {
+    public void shouldRegisterAgent() throws Exception {
         when(spySettingsAgent.getLocalName()).thenReturn("settings");
 
         mockStatic(DFService.class);
@@ -94,7 +74,7 @@ public class SettingsAgentTest {
     }
 
     @Test
-    public void shouldLogErrorWhenRegister() throws FIPAException {
+    public void shouldLogErrorWhenRegister() throws Exception {
         FIPAException expectedException = new FIPAException("error");
 
         mockStatic(DFService.class);

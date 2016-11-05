@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public class SettingsAgent extends Agent {
 
-    ApplicationLogger logger;
+    private ApplicationLogger logger;
 
     public SettingsAgent() {
         this(new ApplicationLogger(LoggerFactory.getLogger(SettingsAgent.class)));
@@ -45,15 +45,6 @@ public class SettingsAgent extends Agent {
         }
 
         addBehaviour(new SettingsBehaviour());
-    }
-
-    @Override
-    protected void takeDown() {
-        try {
-            DFService.deregister(this);
-        } catch (FIPAException e) {
-            logger.agentException(this, e);
-        }
     }
 
 }

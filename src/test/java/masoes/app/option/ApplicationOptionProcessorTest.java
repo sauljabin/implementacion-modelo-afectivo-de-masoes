@@ -11,7 +11,6 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,7 +40,7 @@ public class ApplicationOptionProcessorTest {
     private String expectedOptionValue;
 
     @Before
-    public void setUp() throws ParseException {
+    public void setUp() throws Exception {
         mockCommandLineParser = mock(DefaultParser.class);
         mockCommandLine = mock(CommandLine.class);
         mockLogger = mock(ApplicationLogger.class);
