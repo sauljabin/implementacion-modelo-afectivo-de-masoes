@@ -55,6 +55,19 @@ run {
     }
 }
 
+sourceSets {
+    functionalTest {
+        java {
+            srcDirs = ['src/functionalTest/java']
+        }
+        resources {
+            srcDirs = ['src/functionalTest/resources']
+        }
+        compileClasspath += sourceSets.test.compileClasspath
+        runtimeClasspath += sourceSets.test.runtimeClasspath
+    }
+}
+
 test {
     testLogging {
         showExceptions true
@@ -65,16 +78,7 @@ test {
     }
 }
 
-sourceSets {
-    functionalTest {
-        java.srcDir file('src/functionalTest/java')
-        resources.srcDir file('src/functionalTest/resources')
-        compileClasspath += sourceSets.test.compileClasspath
-        runtimeClasspath += sourceSets.test.runtimeClasspath
-    }
-}
-
 task(functionalTest, type: JavaExec) {
-    main = 'masoes.test.FunctionalTestBoot'
+    main = 'masoes.test.functional.FunctionalTestBoot'
     classpath = sourceSets.functionalTest.runtimeClasspath
 }

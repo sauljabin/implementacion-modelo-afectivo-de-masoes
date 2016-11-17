@@ -4,14 +4,21 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.test;
+package masoes.test.functional;
 
+import masoes.app.SystemExitStatus;
 import test.common.TestGroup;
 import test.common.TesterAgent;
 
-public class FunctionalTester extends TesterAgent {
+public class FunctionalTesterAgent extends TesterAgent {
 
     public static final String FUNCTIONAL_TEST_LIST_FILE = "functionalTestList.xml";
+
+    private boolean hasError;
+
+    public void setHasError(boolean hasError) {
+        this.hasError = hasError;
+    }
 
     @Override
     protected TestGroup getTestGroup() {
@@ -21,7 +28,11 @@ public class FunctionalTester extends TesterAgent {
     @Override
     protected void takeDown() {
         super.takeDown();
-        System.exit(0);
+        if (hasError) {
+            System.exit(SystemExitStatus.FAILURE.getValue());
+        } else {
+            System.exit(SystemExitStatus.SUCCESS.getValue());
+        }
     }
 
 }

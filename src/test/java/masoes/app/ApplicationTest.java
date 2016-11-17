@@ -46,7 +46,7 @@ public class ApplicationTest {
         doThrow(expectedException).when(mockCli).processArgs(args);
 
         expectedSystemExit.checkAssertionAfterwards(() -> verify(mockLogger).cantNotStartApplication(eq(expectedException)));
-        expectedSystemExit.expectSystemExitWithStatus(Application.FAILURE_STATUS);
+        expectedSystemExit.expectSystemExitWithStatus(-1);
 
         application.run(args);
     }

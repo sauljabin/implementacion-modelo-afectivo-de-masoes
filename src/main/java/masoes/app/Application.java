@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 
 public class Application {
 
-    public static int FAILURE_STATUS = -1;
-
     private ApplicationLogger logger;
     private SettingsLoader settingsLoader;
     private ApplicationOptionProcessor applicationOptionProcessor;
@@ -36,7 +34,7 @@ public class Application {
             applicationOptionProcessor.processArgs(args);
         } catch (Exception e) {
             logger.cantNotStartApplication(e);
-            System.exit(FAILURE_STATUS);
+            System.exit(SystemExitStatus.FAILURE.getValue());
         }
     }
 
