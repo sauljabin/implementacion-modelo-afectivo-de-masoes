@@ -20,19 +20,18 @@ import test.common.TestException;
 public class ShouldReceiveNotUnderstoodTest extends FunctionalTest {
 
     public static final int TIMEOUT = 6000;
-    public static final String AID_SETTINGS = "settings3";
 
     @Override
     public Behaviour load(Agent tester) throws TestException {
         setTimeout(TIMEOUT);
 
-        createAgent(tester, AID_SETTINGS, SettingsAgent.class.getName(), null);
+        AID settingsAgent = createAgent(tester, SettingsAgent.class.getName());
 
         OneShotBehaviour sendMessageBehaviour = new OneShotBehaviour() {
             @Override
             public void action() {
                 ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
-                testMessage.addReceiver(new AID(AID_SETTINGS, AID.ISLOCALNAME));
+                testMessage.addReceiver(settingsAgent);
                 testMessage.setContent("no_key");
                 myAgent.send(testMessage);
             }

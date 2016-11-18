@@ -9,6 +9,7 @@ package masoes.test.functional;
 import jade.core.AID;
 import jade.core.Agent;
 import masoes.app.logger.ApplicationLogger;
+import masoes.util.string.StringGenerator;
 import org.slf4j.LoggerFactory;
 import test.common.Test;
 import test.common.TestException;
@@ -19,14 +20,17 @@ import java.util.List;
 
 public class FunctionalTest extends Test {
 
+    public static final int RANDOM_STRING_LENGTH = 10;
     private List<AID> agentsToKill;
     private boolean hasError;
     private ApplicationLogger logger;
+    private StringGenerator stringGenerator;
 
     public FunctionalTest() {
         hasError = false;
         agentsToKill = new ArrayList<>();
         logger = new ApplicationLogger(LoggerFactory.getLogger(FunctionalTest.class));
+        stringGenerator = new StringGenerator();
     }
 
     @Override
@@ -65,8 +69,8 @@ public class FunctionalTest extends Test {
         }
     }
 
-    public AID createAgent(Agent tester, String name, String agentClass, Object[] arguments) throws TestException {
-        AID aid = TestUtility.createAgent(tester, name, agentClass, arguments);
+    public AID createAgent(Agent tester, String agentClass) throws TestException {
+        AID aid = TestUtility.createAgent(tester, stringGenerator.getString(RANDOM_STRING_LENGTH), agentClass, null);
         agentsToKill.add(aid);
         return aid;
     }
