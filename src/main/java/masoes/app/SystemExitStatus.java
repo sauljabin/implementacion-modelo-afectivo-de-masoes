@@ -12,7 +12,7 @@ public enum SystemExitStatus {
 
     private final int value;
 
-    private SystemExitStatus(int value) {
+    SystemExitStatus(int value) {
         this.value = value;
     }
 
