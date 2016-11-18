@@ -24,21 +24,21 @@ public class FunctionalTest extends Test {
         }
     }
 
-    public void assertEquals(Object expected, Object actual) {
+    public void assertEquals(String value, Object expected, Object actual) {
         if (actual.equals(expected)) {
-            passed();
+            assertPass(String.format("Assert equals: %s", value));
         } else {
-            hasError(String.format("\nExpected: %s \n and was: %s", expected, actual));
+            assertError(String.format("Assert equals: %s\nExpected: %s \n and was: %s", value, expected, actual));
         }
     }
 
-    private void passed() {
+    private void assertPass(String message) {
         if (!hasError) {
-            passed("");
+            passed(message);
         }
     }
 
-    private void hasError(String message) {
+    private void assertError(String message) {
         if (!hasError) {
             hasError = true;
             failed(message);

@@ -26,4 +26,4 @@ unit-test: clean ; ./gradlew test
 functional-test: clean ; ./gradlew functionalTest
 
 # target all-test: Exec all test.
-all-test: clean unit-test functional-test
+all-test: unit-test functional-test

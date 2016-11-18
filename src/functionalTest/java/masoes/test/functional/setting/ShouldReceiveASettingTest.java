@@ -19,10 +19,10 @@ import masoes.test.functional.FunctionalTest;
 import test.common.TestException;
 import test.common.TestUtility;
 
-public class ShouldReceiveAllSettingsTest extends FunctionalTest {
+public class ShouldReceiveASettingTest extends FunctionalTest {
 
     public static final int TIMEOUT = 6000;
-    public static final String AID_SETTINGS = "settings";
+    public static final String AID_SETTINGS = "settings2";
 
     @Override
     public Behaviour load(Agent tester) throws TestException {
@@ -35,6 +35,7 @@ public class ShouldReceiveAllSettingsTest extends FunctionalTest {
             public void action() {
                 ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
                 testMessage.addReceiver(new AID(AID_SETTINGS, AID.ISLOCALNAME));
+                testMessage.setContent(Setting.APP_NAME.getKey());
                 myAgent.send(testMessage);
             }
         };
@@ -46,7 +47,7 @@ public class ShouldReceiveAllSettingsTest extends FunctionalTest {
             public void action() {
                 ACLMessage msg = myAgent.receive();
                 if (msg != null) {
-                    assertEquals("Content", msg.getContent(), Setting.allToString());
+                    assertEquals("Content", msg.getContent(), Setting.APP_NAME.getValue());
                     assertEquals("Performative", msg.getPerformative(), ACLMessage.INFORM);
                     done = true;
                 } else {
@@ -58,6 +59,7 @@ public class ShouldReceiveAllSettingsTest extends FunctionalTest {
             public boolean done() {
                 return done;
             }
+
         };
 
         SequentialBehaviour testerBehaviour = new SequentialBehaviour();

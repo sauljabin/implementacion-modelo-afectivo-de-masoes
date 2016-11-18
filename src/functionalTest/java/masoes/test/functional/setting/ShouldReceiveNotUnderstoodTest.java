@@ -13,16 +13,15 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
-import masoes.app.setting.Setting;
 import masoes.jade.setting.SettingsAgent;
 import masoes.test.functional.FunctionalTest;
 import test.common.TestException;
 import test.common.TestUtility;
 
-public class ShouldReceiveAllSettingsTest extends FunctionalTest {
+public class ShouldReceiveNotUnderstoodTest extends FunctionalTest {
 
     public static final int TIMEOUT = 6000;
-    public static final String AID_SETTINGS = "settings";
+    public static final String AID_SETTINGS = "settings3";
 
     @Override
     public Behaviour load(Agent tester) throws TestException {
@@ -35,6 +34,7 @@ public class ShouldReceiveAllSettingsTest extends FunctionalTest {
             public void action() {
                 ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
                 testMessage.addReceiver(new AID(AID_SETTINGS, AID.ISLOCALNAME));
+                testMessage.setContent("no_key");
                 myAgent.send(testMessage);
             }
         };
@@ -46,8 +46,7 @@ public class ShouldReceiveAllSettingsTest extends FunctionalTest {
             public void action() {
                 ACLMessage msg = myAgent.receive();
                 if (msg != null) {
-                    assertEquals("Content", msg.getContent(), Setting.allToString());
-                    assertEquals("Performative", msg.getPerformative(), ACLMessage.INFORM);
+                    assertEquals("Performative", msg.getPerformative(), ACLMessage.NOT_UNDERSTOOD);
                     done = true;
                 } else {
                     block();

@@ -6,7 +6,6 @@
 
 package masoes.test.functional;
 
-import masoes.app.Application;
 import masoes.app.SystemExitStatus;
 import masoes.app.logger.ApplicationLogger;
 import masoes.app.setting.Setting;
@@ -22,7 +21,7 @@ public class FunctionalTestApplication {
     private SettingsLoader settingsLoader;
 
     public FunctionalTestApplication() {
-        this(new ApplicationLogger(LoggerFactory.getLogger(Application.class)), SettingsLoader.getInstance());
+        this(new ApplicationLogger(LoggerFactory.getLogger(FunctionalTestApplication.class)), SettingsLoader.getInstance());
     }
 
     public FunctionalTestApplication(ApplicationLogger logger, SettingsLoader settingsLoader) {
@@ -36,9 +35,7 @@ public class FunctionalTestApplication {
             Setting.JADE_GUI.setValue(Boolean.FALSE.toString());
             Setting.MASOES_ENV.setValue(FUNCTIONAL_TEST_ENV);
             logger.startingApplication(args);
-
-            EnvironmentAgentInfo functionalTestEnvironment = new EnvironmentAgentInfo(FunctionalTesterAgent.class.getName(), FunctionalTesterAgent.class, null);
-
+            EnvironmentAgentInfo functionalTestEnvironment = new EnvironmentAgentInfo(FunctionalTesterAgent.class.getSimpleName(), FunctionalTesterAgent.class, null);
             JadeBoot jadeBoot = new JadeBoot();
             jadeBoot.boot(functionalTestEnvironment.toString());
         } catch (Exception e) {
