@@ -20,10 +20,8 @@ public class FunctionalTesterAgent extends TesterAgent {
         this.hasError = false;
     }
 
-    public void setHasError(boolean hasError) {
-        if (!this.hasError) {
-            this.hasError = hasError;
-        }
+    public void hasError() {
+        this.hasError = true;
     }
 
     @Override

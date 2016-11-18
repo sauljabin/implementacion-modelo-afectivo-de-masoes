@@ -17,7 +17,6 @@ import masoes.app.setting.Setting;
 import masoes.jade.setting.SettingsAgent;
 import masoes.test.functional.FunctionalTest;
 import test.common.TestException;
-import test.common.TestUtility;
 
 public class ShouldReceiveAllSettingsTest extends FunctionalTest {
 
@@ -28,7 +27,7 @@ public class ShouldReceiveAllSettingsTest extends FunctionalTest {
     public Behaviour load(Agent tester) throws TestException {
         setTimeout(TIMEOUT);
 
-        TestUtility.createAgent(tester, AID_SETTINGS, SettingsAgent.class.getName(), null);
+        createAgent(tester, AID_SETTINGS, SettingsAgent.class.getName(), null);
 
         OneShotBehaviour sendMessageBehaviour = new OneShotBehaviour() {
             @Override
