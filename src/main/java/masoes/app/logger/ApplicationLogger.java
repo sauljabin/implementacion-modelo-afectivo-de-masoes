@@ -21,20 +21,15 @@ public class ApplicationLogger {
         this.logger = logger;
     }
 
-    private LogWriter newLogWriter() {
-        return new LogWriter();
-    }
-
     public void startingApplication(String[] args) {
-        newLogWriter()
+        new LogWriter()
                 .message("Starting application with arguments: %s, and settings: %s")
                 .args(Arrays.toString(args), Setting.toMap().toString())
                 .info(logger);
     }
 
-
     public void cantNotStartApplication(Exception exception) {
-        newLogWriter()
+        new LogWriter()
                 .message("Could not start the application: %s")
                 .args(exception.getMessage())
                 .exception(exception)
@@ -42,21 +37,21 @@ public class ApplicationLogger {
     }
 
     public void startingOption(ApplicationOption applicationOption) {
-        newLogWriter()
+        new LogWriter()
                 .message("Starting option: %s")
                 .args(applicationOption)
                 .info(logger);
     }
 
     public void updatedSettings() {
-        newLogWriter()
+        new LogWriter()
                 .message("Updated settings: %s")
                 .args(Setting.toMap().toString())
                 .info(logger);
     }
 
     public void agentException(Agent agent, Exception exception) {
-        newLogWriter()
+        new LogWriter()
                 .message("Exception in agent \"%s\": %s")
                 .args(agent.getLocalName(), exception.getMessage())
                 .exception(exception)
@@ -64,7 +59,7 @@ public class ApplicationLogger {
     }
 
     public void exception(Exception exception) {
-        newLogWriter()
+        new LogWriter()
                 .message("Exception: %s")
                 .args(exception.getMessage())
                 .exception(exception)

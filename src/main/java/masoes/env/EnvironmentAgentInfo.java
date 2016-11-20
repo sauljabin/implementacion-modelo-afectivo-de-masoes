@@ -37,10 +37,11 @@ public class EnvironmentAgentInfo {
 
     @Override
     public String toString() {
-        if (Optional.ofNullable(arguments).isPresent())
+        if (Optional.ofNullable(arguments).isPresent()) {
             return String.format("%s:%s(%s)", name, agentClass.getName(), String.join(",", arguments));
-        else
+        } else {
             return String.format("%s:%s", name, agentClass.getName());
+        }
     }
 
 }

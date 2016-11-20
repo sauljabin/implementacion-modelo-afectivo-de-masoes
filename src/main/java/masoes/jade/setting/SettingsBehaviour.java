@@ -31,7 +31,6 @@ public class SettingsBehaviour extends CyclicBehaviour {
     public void action() {
         ACLMessage msg = myAgent.receive(template);
 
-
         if (isPresent(msg)) {
 
             ACLMessage reply = msg.createReply();

@@ -20,7 +20,8 @@ import java.util.List;
 
 public class FunctionalTest extends Test {
 
-    public static final int RANDOM_STRING_LENGTH = 10;
+    public static final int RANDOM_STRING_LENGTH = 20;
+    public static final int SLEEP_KILL_AGENT_MILLIS = 100;
     private List<AID> agentsToKill;
     private boolean hasError;
     private ApplicationLogger logger;
@@ -36,12 +37,12 @@ public class FunctionalTest extends Test {
     @Override
     public void clean(Agent agent) {
         if (agent instanceof FunctionalTesterAgent && hasError) {
-            ((FunctionalTesterAgent) agent).hasError();
+            ((FunctionalTesterAgent) agent).setHasError();
         }
         agentsToKill.forEach(aid -> {
             try {
                 TestUtility.killAgent(agent, aid);
-                Thread.sleep(500);
+                Thread.sleep(SLEEP_KILL_AGENT_MILLIS);
             } catch (Exception e) {
                 logger.agentException(agent, e);
             }
