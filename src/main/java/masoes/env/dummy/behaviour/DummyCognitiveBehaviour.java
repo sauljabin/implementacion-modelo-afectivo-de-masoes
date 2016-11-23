@@ -8,7 +8,7 @@ package masoes.env.dummy.behaviour;
 
 import jade.core.behaviours.Behaviour;
 
-public class DummyBehaviour extends Behaviour {
+public class DummyCognitiveBehaviour extends Behaviour {
 
     @Override
     public void action() {

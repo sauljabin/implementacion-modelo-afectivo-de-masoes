@@ -8,14 +8,26 @@ package masoes.env.dummy;
 
 import jade.core.behaviours.Behaviour;
 import masoes.core.BehaviourManager;
+import masoes.core.BehaviourType;
 import masoes.core.Emotion;
-import masoes.env.dummy.behaviour.DummyBehaviour;
+import masoes.env.dummy.behaviour.DummyCognitiveBehaviour;
+import masoes.env.dummy.behaviour.DummyImitativeBehaviour;
+import masoes.env.dummy.behaviour.DummyReactiveBehaviour;
 
 public class DummyBehaviourManager extends BehaviourManager {
 
     @Override
     protected Behaviour selectBehaviour(Emotion emotion) {
-        return new DummyBehaviour();
+        BehaviourType behaviourType = getBehaviourTypeAssociated(emotion.getEmotionType());
+        switch (behaviourType) {
+            case COGNITIVE:
+                return new DummyCognitiveBehaviour();
+            case IMITATIVE:
+                return new DummyImitativeBehaviour();
+            case REACTIVE:
+            default:
+                return new DummyReactiveBehaviour();
+        }
     }
 
 }

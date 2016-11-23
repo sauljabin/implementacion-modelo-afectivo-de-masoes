@@ -14,9 +14,11 @@ import java.util.List;
 
 public class DummyEnvironment extends Environment {
 
+    public static final String DUMMY_AGENT_NAME = "dummy";
+
     @Override
     public List<EnvironmentAgentInfo> getEnvironmentAgentInfoList() {
-        return Arrays.asList(new EnvironmentAgentInfo("dummy", DummyEmotionalAgent.class, null));
+        return Arrays.asList(new EnvironmentAgentInfo(DUMMY_AGENT_NAME, DummyEmotionalAgent.class, null));
     }
 
 }

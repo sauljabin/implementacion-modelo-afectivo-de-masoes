@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 
 
@@ -26,9 +27,8 @@ public class DummyEmotionalAgentTest {
     @Test
     public void shouldReturnCorrectEmotionalModel() {
         EmotionalModel actualEmotionalModel = dummyEmotionalAgent.createEmotionalModel();
-        EmotionalModel expectedEmotionalModel = new EmotionalModel(new DummyEmotionalConfigurator(), new DummyBehaviourManager());
-        assertThat(actualEmotionalModel.getEmotionalConfigurator().getClass().getName(), is(expectedEmotionalModel.getEmotionalConfigurator().getClass().getName()));
-        assertThat(actualEmotionalModel.getBehaviourManager().getClass().getName(), is(expectedEmotionalModel.getBehaviourManager().getClass().getName()));
+        assertThat(actualEmotionalModel.getEmotionalConfigurator(), is(instanceOf(DummyEmotionalConfigurator.class)));
+        assertThat(actualEmotionalModel.getBehaviourManager(), is(instanceOf(DummyBehaviourManager.class)));
     }
 
 }
