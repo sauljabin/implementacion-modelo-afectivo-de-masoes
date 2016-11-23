@@ -16,7 +16,7 @@ help-masoes: ; ./gradlew run -Pargs="-h"
 # target run: Exec masoes with dummy env.
 run: ; ./gradlew run -Pargs="-b"
 
-# target run: Exec masoes with wikipedia env.
+# target run-wikipedia: Exec masoes with wikipedia env.
 run-wikipedia: ; ./gradlew run -Pargs="-b -e wikipedia"
 
 # target no-copyright: Search files without copyright.
