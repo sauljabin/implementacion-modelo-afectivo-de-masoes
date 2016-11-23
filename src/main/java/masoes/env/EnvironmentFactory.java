@@ -18,7 +18,7 @@ public class EnvironmentFactory {
         } else if (isContains(WikipediaEnvironment.class)) {
             return new WikipediaEnvironment();
         } else {
-            throw new InvalidEnvironmentException("Invalid environment name: " + Setting.MASOES_ENV.getValue());
+            throw new InvalidEnvironmentException(String.format("Invalid environment name \"%s\"", Setting.MASOES_ENV.getValue()));
         }
     }
 

@@ -14,15 +14,15 @@ import masoes.app.setting.Setting;
 
 import java.util.Optional;
 
-public class SettingsBehaviour extends CyclicBehaviour {
+public class ReplaySettingsBehaviour extends CyclicBehaviour {
 
     private MessageTemplate template;
 
-    public SettingsBehaviour() {
+    public ReplaySettingsBehaviour() {
         this(null);
     }
 
-    public SettingsBehaviour(Agent a) {
+    public ReplaySettingsBehaviour(Agent a) {
         super(a);
         template = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
     }

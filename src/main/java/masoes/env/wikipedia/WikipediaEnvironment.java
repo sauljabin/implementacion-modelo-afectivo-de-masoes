@@ -18,9 +18,4 @@ public class WikipediaEnvironment extends Environment {
         return null;
     }
 
-    @Override
-    public void setup() {
-
-    }
-
 }

@@ -87,7 +87,6 @@ public class BootOptionTest {
 
         verify(mockEnvironmentFactory).createEnvironment();
         verify(mockEnv).getEnvironmentAgentInfoList();
-        verify(mockEnv).setup();
         verify(mockJadeBoot).boot(stringArgumentCaptor.capture());
         assertThat(stringArgumentCaptor.getValue(), is("agent:jade.core.Agent(arg1,arg2);agent2:jade.core.Agent;settings:masoes.jade.setting.SettingsAgent"));
     }

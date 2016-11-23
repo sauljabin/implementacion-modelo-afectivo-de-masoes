@@ -44,7 +44,7 @@ public class SettingsAgent extends Agent {
             logger.agentException(this, e);
         }
 
-        addBehaviour(new SettingsBehaviour());
+        addBehaviour(new ReplaySettingsBehaviour());
     }
 
 }

@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.env.dummy;
+package masoes.env.dummy.behaviour;
 
 import jade.core.behaviours.Behaviour;
 

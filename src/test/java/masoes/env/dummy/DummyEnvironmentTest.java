@@ -23,7 +23,7 @@ public class DummyEnvironmentTest {
     @Before
     public void setUp() {
         expectedAgentsInfo = new ArrayList<>();
-        expectedAgentsInfo.add(new EnvironmentAgentInfo("dummy", DummyAgent.class, null));
+        expectedAgentsInfo.add(new EnvironmentAgentInfo("dummy", DummyEmotionalAgent.class, null));
         dummyEnvironment = new DummyEnvironment();
     }
 

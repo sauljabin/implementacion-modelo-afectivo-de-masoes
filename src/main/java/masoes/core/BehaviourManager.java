@@ -8,15 +8,7 @@ package masoes.core;
 
 import jade.core.behaviours.Behaviour;
 
-import java.util.Optional;
-
 public abstract class BehaviourManager {
-
-    private Behaviour behaviour;
-
-    public Behaviour getBehaviour() {
-        return behaviour;
-    }
 
     public BehaviourType getBehaviourTypeAssociated(EmotionType emotionType) {
         switch (emotionType) {
@@ -31,14 +23,6 @@ public abstract class BehaviourManager {
         }
     }
 
-    public void updateEmotionalBehaviour(Emotion emotion, EmotionalAgent agent) {
-        if (Optional.ofNullable(behaviour).isPresent())
-            agent.removeBehaviour(behaviour);
-
-        behaviour = evaluateEmotion(emotion);
-        agent.addBehaviour(behaviour);
-    }
-
-    protected abstract Behaviour evaluateEmotion(Emotion emotion);
+    protected abstract Behaviour selectBehaviour(Emotion emotion);
 
 }

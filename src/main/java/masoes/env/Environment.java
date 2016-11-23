@@ -12,6 +12,4 @@ public abstract class Environment {
 
     public abstract List<EnvironmentAgentInfo> getEnvironmentAgentInfoList();
 
-    public abstract void setup();
-
 }

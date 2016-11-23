@@ -58,7 +58,7 @@ public class EmotionalConfiguratorTest {
                 new Rejection());
 
         mockEmotionalConfigurator = mock(EmotionalConfigurator.class);
-        when(mockEmotionalConfigurator.evaluateStimulus(any())).thenReturn(new EmotionalState(random.getDouble(-1, 1), random.getDouble(-1, 1)));
+        when(mockEmotionalConfigurator.calculateEmotionalState(any())).thenReturn(new EmotionalState(random.getDouble(-1, 1), random.getDouble(-1, 1)));
         when(mockEmotionalConfigurator.getEmotions()).thenCallRealMethod();
         when(mockEmotionalConfigurator.getEmotionalPoint()).thenCallRealMethod();
         when(mockEmotionalConfigurator.getEmotionalState()).thenCallRealMethod();
@@ -82,7 +82,7 @@ public class EmotionalConfiguratorTest {
     @Test
     public void shouldInvokeEvaluateStimulus() {
         mockEmotionalConfigurator.updateEmotionalState(null);
-        verify(mockEmotionalConfigurator).evaluateStimulus(any());
+        verify(mockEmotionalConfigurator).calculateEmotionalState(any());
     }
 
     @Test
@@ -134,7 +134,7 @@ public class EmotionalConfiguratorTest {
     private void testEmotion(Class<?> emotionClass, Point randomPoint) {
         EmotionalState mockEmotionalState = mock(EmotionalState.class);
         when(mockEmotionalState.toPoint()).thenReturn(randomPoint);
-        when(mockEmotionalConfigurator.evaluateStimulus(any())).thenReturn(mockEmotionalState);
+        when(mockEmotionalConfigurator.calculateEmotionalState(any())).thenReturn(mockEmotionalState);
         when(mockEmotionalConfigurator.getEmotionalPoint()).thenReturn(randomPoint);
         when(mockEmotionalConfigurator.getEmotion()).thenCallRealMethod();
         mockEmotionalConfigurator.updateEmotionalState(null);

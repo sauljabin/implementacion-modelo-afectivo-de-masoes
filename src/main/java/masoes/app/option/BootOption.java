@@ -59,11 +59,8 @@ public class BootOption extends ApplicationOption {
     @Override
     public void exec(String optionValue) {
         Environment environment = environmentFactory.createEnvironment();
-        environment.setup();
-
         List<EnvironmentAgentInfo> environmentAgentInfoList = environment.getEnvironmentAgentInfoList();
         validateEnvironmentAgentInfo(environmentAgentInfoList);
-
         jadeBoot.boot(toJadeAgentsOption(environmentAgentInfoList));
     }
 

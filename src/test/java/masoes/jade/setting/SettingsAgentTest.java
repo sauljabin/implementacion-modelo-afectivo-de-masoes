@@ -47,14 +47,14 @@ public class SettingsAgentTest {
     public void setUp() {
         mockApplicationLogger = mock(ApplicationLogger.class);
         spySettingsAgent = spy(new SettingsAgent(mockApplicationLogger));
-        doNothing().when(spySettingsAgent).addBehaviour(any(SettingsBehaviour.class));
+        doNothing().when(spySettingsAgent).addBehaviour(any(ReplaySettingsBehaviour.class));
         doCallRealMethod().when(spySettingsAgent).setup();
     }
 
     @Test
     public void shouldAddSettingsBehaviour() {
         spySettingsAgent.setup();
-        verify(spySettingsAgent).addBehaviour(any(SettingsBehaviour.class));
+        verify(spySettingsAgent).addBehaviour(any(ReplaySettingsBehaviour.class));
     }
 
     @Test

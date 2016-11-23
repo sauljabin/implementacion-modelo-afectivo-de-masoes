@@ -70,11 +70,11 @@ public abstract class EmotionalConfigurator {
     }
 
     public void updateEmotionalState(Stimulus stimulus) {
-        emotionalState = evaluateStimulus(stimulus);
+        emotionalState = calculateEmotionalState(stimulus);
         emotionalPoint = emotionalState.toPoint();
         emotion = searchEmotion();
     }
 
-    protected abstract EmotionalState evaluateStimulus(Stimulus stimulus);
+    protected abstract EmotionalState calculateEmotionalState(Stimulus stimulus);
 
 }

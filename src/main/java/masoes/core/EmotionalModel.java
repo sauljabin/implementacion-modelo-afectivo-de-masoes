@@ -6,10 +6,22 @@
 
 package masoes.core;
 
-public abstract class EmotionalModel {
+public class EmotionalModel {
 
-    public abstract EmotionalConfigurator getEmotionalConfigurator();
+    private EmotionalConfigurator emotionalConfigurator;
+    private BehaviourManager behaviourManager;
 
-    public abstract BehaviourManager getBehaviourManager();
+    public EmotionalModel(EmotionalConfigurator emotionalConfigurator, BehaviourManager behaviourManager) {
+        this.emotionalConfigurator = emotionalConfigurator;
+        this.behaviourManager = behaviourManager;
+    }
+
+    public EmotionalConfigurator getEmotionalConfigurator() {
+        return emotionalConfigurator;
+    }
+
+    public BehaviourManager getBehaviourManager() {
+        return behaviourManager;
+    }
 
 }

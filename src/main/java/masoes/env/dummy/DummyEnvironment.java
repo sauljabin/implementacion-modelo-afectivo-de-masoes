@@ -16,12 +16,7 @@ public class DummyEnvironment extends Environment {
 
     @Override
     public List<EnvironmentAgentInfo> getEnvironmentAgentInfoList() {
-        return Arrays.asList(new EnvironmentAgentInfo("dummy", DummyAgent.class, null));
-    }
-
-    @Override
-    public void setup() {
-
+        return Arrays.asList(new EnvironmentAgentInfo("dummy", DummyEmotionalAgent.class, null));
     }
 
 }

@@ -25,10 +25,10 @@ import static org.powermock.api.mockito.PowerMockito.spy;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Agent.class)
-public class SettingsBehaviourTest {
+public class ReplaySettingsBehaviourTest {
 
     private SettingsLoader settingsLoader = SettingsLoader.getInstance();
-    private SettingsBehaviour spySettingsBehaviour;
+    private ReplaySettingsBehaviour spyReplaySettingsBehaviour;
     private Agent spyAgent;
     private ACLMessage mockAclMessageRequest;
     private ACLMessage mockAclMessageResponse;
@@ -37,7 +37,7 @@ public class SettingsBehaviourTest {
     public void setUp() {
         settingsLoader.load();
         spyAgent = spy(new Agent());
-        spySettingsBehaviour = spy(new SettingsBehaviour(spyAgent));
+        spyReplaySettingsBehaviour = spy(new ReplaySettingsBehaviour(spyAgent));
         mockAclMessageRequest = mock(ACLMessage.class);
         mockAclMessageResponse = mock(ACLMessage.class);
         when(mockAclMessageRequest.createReply()).thenReturn(mockAclMessageResponse);
@@ -47,20 +47,20 @@ public class SettingsBehaviourTest {
     @Test
     public void shouldBlockWhenMessageIsNull() {
         when(spyAgent.receive(any())).thenReturn(null);
-        spySettingsBehaviour.action();
-        verify(spySettingsBehaviour).block();
+        spyReplaySettingsBehaviour.action();
+        verify(spyReplaySettingsBehaviour).block();
     }
 
     @Test
     public void shouldSendAllSettings() {
-        spySettingsBehaviour.action();
+        spyReplaySettingsBehaviour.action();
         verify(mockAclMessageResponse).setContent(Setting.allToString());
     }
 
     @Test
     public void shouldSendSpecificSetting() {
         when(mockAclMessageRequest.getContent()).thenReturn(Setting.APP_NAME.getKey());
-        spySettingsBehaviour.action();
+        spyReplaySettingsBehaviour.action();
         verify(mockAclMessageResponse).setContent(Setting.APP_NAME.getValue());
     }
 
