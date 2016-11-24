@@ -24,8 +24,8 @@ import static org.junit.Assert.assertThat;
 
 public class EmotionalSpaceTest {
 
-    public static final int POSITIVE_SIGN = 1;
-    public static final int NEGATIVE_SIGN = -1;
+    private static final int POSITIVE_SIGN = 1;
+    private static final int NEGATIVE_SIGN = -1;
 
     private EmotionalSpace emotionalSpace;
     private RandomGenerator random;

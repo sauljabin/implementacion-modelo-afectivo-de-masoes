@@ -17,11 +17,13 @@ import test.common.TestUtility;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class FunctionalTest extends Test {
 
-    public static final int RANDOM_STRING_LENGTH = 20;
-    public static final int SLEEP_KILL_AGENT_MILLIS = 100;
+    protected static final int TIMEOUT_DEFAULT = 6000;
+    private static final int RANDOM_STRING_LENGTH = 20;
+    private static final int SLEEP_KILL_AGENT_MILLIS = 100;
     private List<AID> agentsToKill;
     private boolean hasError;
     private ApplicationLogger logger;
@@ -49,11 +51,19 @@ public class FunctionalTest extends Test {
         });
     }
 
-    public void assertEquals(String value, Object expected, Object actual) {
-        if (actual.equals(expected)) {
-            assertPass(String.format("Assert equals: %s", value));
+    public void assertNotNull(String message, Object actual) {
+        if (Optional.ofNullable(actual).isPresent()) {
+            assertPass(String.format("Assert not null: %s", message));
         } else {
-            assertError(String.format("Assert equals: %s\nExpected: %s \n and was: %s", value, expected, actual));
+            assertError(String.format("Assertion error: Expected not null for %s and was null", message));
+        }
+    }
+
+    public void assertEquals(String message, Object expected, Object actual) {
+        if (actual.equals(expected)) {
+            assertPass(String.format("Assert equals: %s", message));
+        } else {
+            assertError(String.format("Assertion error: %s\nExpected: %s \n and was: %s", message, expected, actual));
         }
     }
 

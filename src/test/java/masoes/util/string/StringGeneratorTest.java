@@ -24,7 +24,7 @@ public class StringGeneratorTest {
 
     @Test
     public void shouldReturnRandomString() throws Exception {
-        int length = 6;
+        int length = 100;
         String actualString = stringGenerator.getString(length);
         String actualStringAgain = stringGenerator.getString(length);
         assertThat(actualString.length(), is(length));

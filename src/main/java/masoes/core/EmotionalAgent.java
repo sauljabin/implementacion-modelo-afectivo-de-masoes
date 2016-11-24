@@ -26,6 +26,8 @@ public abstract class EmotionalAgent extends Agent {
         emotionalModel = createEmotionalModel();
         behaviourManager = emotionalModel.getBehaviourManager();
         emotionalConfigurator = emotionalModel.getEmotionalConfigurator();
+        currentEmotion = emotionalConfigurator.getEmotion();
+        emotionalBehaviour = behaviourManager.selectBehaviour(currentEmotion);
         addBehaviour(new ReplayAgentInformationBehaviour(this));
         addBehaviour(new StimulusReceiverBehaviour(this));
         setUp();

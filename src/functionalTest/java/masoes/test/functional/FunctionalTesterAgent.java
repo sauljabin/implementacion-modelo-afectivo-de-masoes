@@ -12,7 +12,7 @@ import test.common.TesterAgent;
 
 public class FunctionalTesterAgent extends TesterAgent {
 
-    public static final String FUNCTIONAL_TEST_LIST_FILE = "functionalTestList.xml";
+    private static final String FUNCTIONAL_TEST_LIST_FILE = "functionalTestList.xml";
     private boolean hasError;
 
     public FunctionalTesterAgent() {

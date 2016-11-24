@@ -20,19 +20,17 @@ import test.common.TestException;
 
 public class ShouldReceiveASettingTest extends FunctionalTest {
 
-    public static final int TIMEOUT = 6000;
-
     @Override
     public Behaviour load(Agent tester) throws TestException {
-        setTimeout(TIMEOUT);
+        setTimeout(TIMEOUT_DEFAULT);
 
-        AID settingsAgent = createAgent(tester, SettingsAgent.class.getName());
+        AID settingsAgentAID = createAgent(tester, SettingsAgent.class.getName());
 
         OneShotBehaviour sendMessageBehaviour = new OneShotBehaviour() {
             @Override
             public void action() {
                 ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
-                testMessage.addReceiver(settingsAgent);
+                testMessage.addReceiver(settingsAgentAID);
                 testMessage.setContent(Setting.APP_NAME.getKey());
                 myAgent.send(testMessage);
             }
@@ -45,8 +43,8 @@ public class ShouldReceiveASettingTest extends FunctionalTest {
             public void action() {
                 ACLMessage msg = myAgent.receive();
                 if (msg != null) {
-                    assertEquals("Content", msg.getContent(), Setting.APP_NAME.getValue());
-                    assertEquals("Performative", msg.getPerformative(), ACLMessage.INFORM);
+                    assertEquals("Content", Setting.APP_NAME.getValue(), msg.getContent());
+                    assertEquals("Performative", ACLMessage.INFORM, msg.getPerformative());
                     done = true;
                 } else {
                     block();

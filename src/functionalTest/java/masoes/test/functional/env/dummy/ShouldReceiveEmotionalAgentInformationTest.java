@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.test.functional.setting;
+package masoes.test.functional.env.dummy;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -13,24 +13,26 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
-import masoes.app.setting.Setting;
-import masoes.jade.setting.SettingsAgent;
+import masoes.env.dummy.DummyEmotionalAgent;
 import masoes.test.functional.FunctionalTest;
+import masoes.util.collection.MapParser;
 import test.common.TestException;
 
-public class ShouldReceiveAllSettingsTest extends FunctionalTest {
+import java.util.Map;
+
+public class ShouldReceiveEmotionalAgentInformationTest extends FunctionalTest {
 
     @Override
     public Behaviour load(Agent tester) throws TestException {
         setTimeout(TIMEOUT_DEFAULT);
 
-        AID settingsAgentAID = createAgent(tester, SettingsAgent.class.getName());
+        AID dummyAgentAID = createAgent(tester, DummyEmotionalAgent.class.getName());
 
         OneShotBehaviour sendMessageBehaviour = new OneShotBehaviour() {
             @Override
             public void action() {
                 ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
-                testMessage.addReceiver(settingsAgentAID);
+                testMessage.addReceiver(dummyAgentAID);
                 myAgent.send(testMessage);
             }
         };
@@ -42,7 +44,11 @@ public class ShouldReceiveAllSettingsTest extends FunctionalTest {
             public void action() {
                 ACLMessage msg = myAgent.receive();
                 if (msg != null) {
-                    assertEquals("Content", Setting.allToString(), msg.getContent());
+                    MapParser mapParser = new MapParser();
+                    Map<String, String> stringMap = mapParser.parseMap(msg.getContent());
+                    assertEquals("Content [agent]", dummyAgentAID.getName(), stringMap.get("agent"));
+                    assertNotNull("Content [emotion]", stringMap.get("emotion"));
+                    assertNotNull("Content [behaviour]", stringMap.get("behaviour"));
                     assertEquals("Performative", ACLMessage.INFORM, msg.getPerformative());
                     done = true;
                 } else {

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class DummyEnvironment extends Environment {
 
-    public static final String DUMMY_AGENT_NAME = "dummy";
+    private static final String DUMMY_AGENT_NAME = "dummy";
 
     @Override
     public List<EnvironmentAgentInfo> getEnvironmentAgentInfoList() {

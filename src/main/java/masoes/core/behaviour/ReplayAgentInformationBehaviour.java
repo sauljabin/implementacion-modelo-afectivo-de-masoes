@@ -17,6 +17,9 @@ import java.util.Optional;
 
 public class ReplayAgentInformationBehaviour extends Behaviour {
 
+    private static final String AGENT_KEY = "agent";
+    private static final String EMOTION_KEY = "emotion";
+    private static final String BEHAVIOUR_KEY = "behaviour";
     private MessageTemplate template;
     private EmotionalAgent emotionalAgent;
 
@@ -44,8 +47,9 @@ public class ReplayAgentInformationBehaviour extends Behaviour {
 
     private String createContent() {
         Map<String, Object> content = new HashMap<>();
-        content.put("emotion", emotionalAgent.getCurrentEmotion());
-        content.put("behaviour", emotionalAgent.getEmotionalBehaviour());
+        content.put(AGENT_KEY, emotionalAgent.getName());
+        content.put(EMOTION_KEY, emotionalAgent.getCurrentEmotion().getName());
+        content.put(BEHAVIOUR_KEY, emotionalAgent.getEmotionalBehaviour().getBehaviourName());
         return content.toString();
     }
 

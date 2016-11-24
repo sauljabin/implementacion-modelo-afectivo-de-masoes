@@ -16,17 +16,13 @@ import org.slf4j.LoggerFactory;
 
 public class FunctionalTestApplication {
 
-    public static final String FUNCTIONAL_TEST_ENV = "functionalTest";
+    private static final String FUNCTIONAL_TEST_ENV = "functionalTest";
     private ApplicationLogger logger;
     private SettingsLoader settingsLoader;
 
     public FunctionalTestApplication() {
-        this(new ApplicationLogger(LoggerFactory.getLogger(FunctionalTestApplication.class)), SettingsLoader.getInstance());
-    }
-
-    public FunctionalTestApplication(ApplicationLogger logger, SettingsLoader settingsLoader) {
-        this.logger = logger;
-        this.settingsLoader = settingsLoader;
+        logger = new ApplicationLogger(LoggerFactory.getLogger(FunctionalTestApplication.class));
+        settingsLoader = SettingsLoader.getInstance();
     }
 
     public void run(String[] args) {

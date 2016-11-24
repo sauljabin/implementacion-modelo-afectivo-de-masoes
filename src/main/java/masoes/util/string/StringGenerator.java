@@ -6,12 +6,26 @@
 
 package masoes.util.string;
 
-import org.apache.commons.lang3.RandomStringUtils;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 public class StringGenerator {
 
+    private static final String CHARACTERS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private final Random random;
+
+    public StringGenerator() {
+        random = new Random();
+    }
+
     public String getString(int length) {
-        return RandomStringUtils.random(length);
+        StringBuilder stringBuilder = new StringBuilder();
+        IntStream.range(0, length).forEach(i -> stringBuilder.append(getCharacter()));
+        return stringBuilder.toString();
+    }
+
+    public char getCharacter() {
+        return CHARACTERS.charAt(random.nextInt(CHARACTERS.length()));
     }
 
 }

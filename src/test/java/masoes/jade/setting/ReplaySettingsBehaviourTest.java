@@ -8,7 +8,6 @@ package masoes.jade.setting;
 
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 import masoes.app.setting.Setting;
 import masoes.app.setting.SettingsLoader;
 import org.junit.Before;
@@ -41,7 +40,7 @@ public class ReplaySettingsBehaviourTest {
         mockAclMessageRequest = mock(ACLMessage.class);
         mockAclMessageResponse = mock(ACLMessage.class);
         when(mockAclMessageRequest.createReply()).thenReturn(mockAclMessageResponse);
-        when(spyAgent.receive(any(MessageTemplate.class))).thenReturn(mockAclMessageRequest);
+        when(spyAgent.receive(any())).thenReturn(mockAclMessageRequest);
     }
 
     @Test
@@ -55,6 +54,8 @@ public class ReplaySettingsBehaviourTest {
     public void shouldSendAllSettings() {
         spyReplaySettingsBehaviour.action();
         verify(mockAclMessageResponse).setContent(Setting.allToString());
+        verify(mockAclMessageResponse).setPerformative(ACLMessage.INFORM);
+        verify(spyAgent).send(mockAclMessageResponse);
     }
 
     @Test
@@ -62,6 +63,16 @@ public class ReplaySettingsBehaviourTest {
         when(mockAclMessageRequest.getContent()).thenReturn(Setting.APP_NAME.getKey());
         spyReplaySettingsBehaviour.action();
         verify(mockAclMessageResponse).setContent(Setting.APP_NAME.getValue());
+        verify(mockAclMessageResponse).setPerformative(ACLMessage.INFORM);
+        verify(spyAgent).send(mockAclMessageResponse);
+    }
+
+    @Test
+    public void shouldSendNotUnderstood() {
+        when(mockAclMessageRequest.getContent()).thenReturn("no_key");
+        spyReplaySettingsBehaviour.action();
+        verify(mockAclMessageResponse).setPerformative(ACLMessage.NOT_UNDERSTOOD);
+        verify(spyAgent).send(mockAclMessageResponse);
     }
 
 }

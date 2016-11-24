@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 public class SettingsLoader {
 
-    public static final String SETTINGS_PROPERTIES_FILE = "settings.properties";
     public static final String OS_NAME_KEY = "os.name";
     public static final String OS_ARCH_KEY = "os.arch";
     public static final String OS_VERSION_KEY = "os.version";
@@ -31,7 +30,7 @@ public class SettingsLoader {
     public static final String MASOES_ENV_KEY = "masoes.env";
     public static final String JADE_MTP_PORT_KEY = "jade.mtp.port";
     public static final String JADE_DF_AUTOCLEANUP_KEY = "jade.df.autocleanup";
-
+    private static final String SETTINGS_PROPERTIES_FILE = "settings.properties";
     private static SettingsLoader INSTANCE;
     private Properties properties;
 

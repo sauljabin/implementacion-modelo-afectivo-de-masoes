@@ -26,7 +26,7 @@ public class MapParser {
     }
 
     private void validateArgument(String stringMap) {
-        if (!stringMap.matches("^\\{(\\w+=\\w+(, *)?)+\\}$")) {
+        if (!stringMap.matches("^\\{(\\w+=[^,]+(, *)?)+\\}$")) {
             throw new InvalidParameterException("Incorrect string format: " + stringMap);
         }
     }

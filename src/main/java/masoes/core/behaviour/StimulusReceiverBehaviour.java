@@ -19,7 +19,7 @@ public class StimulusReceiverBehaviour extends Behaviour {
     public StimulusReceiverBehaviour(EmotionalAgent emotionalAgent) {
         super(emotionalAgent);
         this.emotionalAgent = emotionalAgent;
-        template = MessageTemplate.MatchPerformative(ACLMessage.QUERY_IF);
+        template = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
     }
 
     @Override
