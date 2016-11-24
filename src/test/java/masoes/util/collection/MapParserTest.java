@@ -54,4 +54,19 @@ public class MapParserTest {
         mapParser.parseMap(expectedArgs);
     }
 
+    @Test
+    public void shouldThrowInvalidParameterWhenKeyIsIncorrect() {
+        String expectedArgs = "{sett(ing1=value1,setting2=value2}";
+        expectedException.expect(InvalidParameterException.class);
+        expectedException.expectMessage("Incorrect string format: " + expectedArgs);
+        mapParser.parseMap(expectedArgs);
+    }
+
+    @Test
+    public void shouldParseWithInnerMap() {
+        expectedMap.put("state", "{activation=0.5, satisfaction=0.5}");
+        actualString = expectedMap.toString();
+        assertReflectionEquals(expectedMap, mapParser.parseMap(actualString));
+    }
+
 }
