@@ -6,31 +6,48 @@
 
 package masoes.core;
 
-import org.junit.Before;
+import com.vividsolutions.jts.geom.Coordinate;
+import masoes.util.math.GeometryCreator;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public class EmotionTest {
 
-    private Emotion mockEmotion;
-    private String expectedEmotionName;
-
-    @Before
-    public void setUp() {
-        mockEmotion = mock(Emotion.class);
-        expectedEmotionName = "EmotionName";
-        doReturn(expectedEmotionName).when(mockEmotion).getName();
-        doCallRealMethod().when(mockEmotion).toString();
+    @Test
+    public void shouldInvokeNameWhenToString() {
+        String expectedEmotionName = "EmotionName";
+        Emotion emotion = createDummyEmotion(expectedEmotionName, null);
+        assertThat(emotion.toString(), is(expectedEmotionName));
     }
 
     @Test
-    public void shouldInvokeNameWhenToString() {
-        assertThat(mockEmotion.toString(), is(expectedEmotionName));
+    public void shouldReturnPolygon() {
+        Coordinate[] coordinates = {new Coordinate(0, 0), new Coordinate(1, 1), new Coordinate(1, 0), new Coordinate(0, 0)};
+        Emotion emotion = createDummyEmotion(null, coordinates);
+        assertReflectionEquals(emotion.getGeometry(), new GeometryCreator().createPolygon(coordinates));
+    }
+
+    private Emotion createDummyEmotion(String name, Coordinate[] coordinates) {
+        return new Emotion() {
+            @Override
+            public Coordinate[] getCoordinates() {
+                return coordinates;
+            }
+
+            @Override
+            public EmotionType getEmotionType() {
+                return null;
+            }
+
+            @Override
+            public String getName() {
+                return name;
+            }
+        };
     }
 
 }
+

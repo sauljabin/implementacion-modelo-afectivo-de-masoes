@@ -16,10 +16,9 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -35,22 +34,17 @@ public class EmotionalAgentTest {
 
     @Before
     public void setUp() {
-        mockEmotionalAgent = mock(EmotionalAgent.class);
         mockBehaviourManager = mock(BehaviourManager.class);
         mockBehaviour = mock(Behaviour.class);
         mockEmotionalConfigurator = mock(EmotionalConfigurator.class);
         mockEmotion = mock(Emotion.class);
         mockStimulus = mock(Stimulus.class);
-        emotionalModel = new EmotionalModel(mockEmotionalConfigurator, mockBehaviourManager);
 
-        doCallRealMethod().when(mockEmotionalAgent).getCurrentEmotion();
-        doCallRealMethod().when(mockEmotionalAgent).getEmotionalBehaviour();
-        doCallRealMethod().when(mockEmotionalAgent).evaluateStimulus(any());
-        doCallRealMethod().when(mockEmotionalAgent).setup();
+        emotionalModel = new EmotionalModel(mockEmotionalConfigurator, mockBehaviourManager);
+        mockEmotionalAgent = spy(createDummyEmotionalAgent(emotionalModel));
+
         when(mockBehaviourManager.selectBehaviour(any())).thenReturn(mockBehaviour);
         when(mockEmotionalConfigurator.getEmotion()).thenReturn(mockEmotion);
-        when(mockEmotionalAgent.createEmotionalModel()).thenReturn(emotionalModel);
-        doNothing().when(mockEmotionalAgent).setUp();
 
         mockEmotionalAgent.setup();
     }
@@ -82,6 +76,20 @@ public class EmotionalAgentTest {
         mockEmotionalAgent.evaluateStimulus(mockStimulus);
         verify(mockEmotionalConfigurator).updateEmotionalState(mockStimulus);
         assertThat(mockEmotionalAgent.getCurrentEmotion(), is(mockEmotion));
+    }
+
+    private EmotionalAgent createDummyEmotionalAgent(EmotionalModel emotionalModel) {
+        return new EmotionalAgent() {
+            @Override
+            protected EmotionalModel createEmotionalModel() {
+                return emotionalModel;
+            }
+
+            @Override
+            protected void setUp() {
+
+            }
+        };
     }
 
 }

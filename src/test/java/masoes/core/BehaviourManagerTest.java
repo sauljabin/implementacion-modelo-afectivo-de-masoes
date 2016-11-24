@@ -6,30 +6,36 @@
 
 package masoes.core;
 
+import jade.core.behaviours.Behaviour;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.mock;
 
 public class BehaviourManagerTest {
 
-    private BehaviourManager mockBehaviourManager;
+    private BehaviourManager behaviourManager;
 
     @Before
     public void setUp() {
-        mockBehaviourManager = mock(BehaviourManager.class);
-        doCallRealMethod().when(mockBehaviourManager).getBehaviourTypeAssociated(any());
+        behaviourManager = createDummyBehaviourManager(null);
     }
 
     @Test
     public void shouldReturnCorrectBehaviourAssociated() {
-        assertThat(mockBehaviourManager.getBehaviourTypeAssociated(EmotionType.NEGATIVE_HIGH), is(BehaviourType.REACTIVE));
-        assertThat(mockBehaviourManager.getBehaviourTypeAssociated(EmotionType.NEGATIVE_LOW), is(BehaviourType.COGNITIVE));
-        assertThat(mockBehaviourManager.getBehaviourTypeAssociated(EmotionType.POSITIVE), is(BehaviourType.IMITATIVE));
+        assertThat(behaviourManager.getBehaviourTypeAssociated(EmotionType.NEGATIVE_HIGH), is(BehaviourType.REACTIVE));
+        assertThat(behaviourManager.getBehaviourTypeAssociated(EmotionType.NEGATIVE_LOW), is(BehaviourType.COGNITIVE));
+        assertThat(behaviourManager.getBehaviourTypeAssociated(EmotionType.POSITIVE), is(BehaviourType.IMITATIVE));
+    }
+
+    private BehaviourManager createDummyBehaviourManager(Behaviour Behaviour) {
+        return new BehaviourManager() {
+            @Override
+            protected Behaviour selectBehaviour(Emotion emotion) {
+                return Behaviour;
+            }
+        };
     }
 
 }
