@@ -9,7 +9,9 @@ package masoes.core.behaviour;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import masoes.app.logger.ApplicationLogger;
 import masoes.core.EmotionalAgent;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,17 +25,20 @@ public class ReplayAgentInformationBehaviour extends Behaviour {
     private static final String STATE_KEY = "state";
     private MessageTemplate template;
     private EmotionalAgent emotionalAgent;
+    private ApplicationLogger logger;
 
     public ReplayAgentInformationBehaviour(EmotionalAgent emotionalAgent) {
         super(emotionalAgent);
         this.emotionalAgent = emotionalAgent;
         template = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+        logger = new ApplicationLogger(LoggerFactory.getLogger(ReplayAgentInformationBehaviour.class));
     }
 
     @Override
     public void action() {
         ACLMessage msg = myAgent.receive(template);
         if (Optional.ofNullable(msg).isPresent()) {
+            logger.agentMessage(myAgent, msg);
             ACLMessage reply = msg.createReply();
             reply.setPerformative(ACLMessage.INFORM);
             reply.setContent(createContent());

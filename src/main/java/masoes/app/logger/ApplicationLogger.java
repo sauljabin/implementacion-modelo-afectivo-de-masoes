@@ -7,8 +7,11 @@
 package masoes.app.logger;
 
 import jade.core.Agent;
+import jade.lang.acl.ACLMessage;
 import masoes.app.option.ApplicationOption;
 import masoes.app.setting.Setting;
+import masoes.core.EmotionalAgent;
+import masoes.core.Stimulus;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
@@ -50,6 +53,14 @@ public class ApplicationLogger {
                 .info(logger);
     }
 
+    public void exception(Exception exception) {
+        new LogWriter()
+                .message("Exception: %s")
+                .args(exception.getMessage())
+                .exception(exception)
+                .error(logger);
+    }
+
     public void agentException(Agent agent, Exception exception) {
         new LogWriter()
                 .message("Exception in agent \"%s\": %s")
@@ -58,12 +69,25 @@ public class ApplicationLogger {
                 .error(logger);
     }
 
-    public void exception(Exception exception) {
+    public void agentMessage(Agent agent, ACLMessage message) {
         new LogWriter()
-                .message("Exception: %s")
-                .args(exception.getMessage())
-                .exception(exception)
-                .error(logger);
+                .message("Message received in agent \"%s\": %s")
+                .args(agent.getLocalName(), message)
+                .info(logger);
+    }
+
+    public void agentEmotionalState(EmotionalAgent emotionalAgent) {
+        new LogWriter()
+                .message("Emotional state in agent \"%s\": emotion=%s, state=%s, behaviour=%s")
+                .args(emotionalAgent.getLocalName(), emotionalAgent.getCurrentEmotion(), emotionalAgent.getEmotionalState(), emotionalAgent.getEmotionalBehaviour().getBehaviourName())
+                .info(logger);
+    }
+
+    public void agentEmotionalStateChanged(EmotionalAgent emotionalAgent, Stimulus stimulus) {
+        new LogWriter()
+                .message("Emotional state changed in agent \"%s\": stimulus=%s, emotion=%s, state=%s, behaviour=%s")
+                .args(emotionalAgent.getLocalName(), stimulus, emotionalAgent.getCurrentEmotion(), emotionalAgent.getEmotionalState(), emotionalAgent.getEmotionalBehaviour().getBehaviourName())
+                .info(logger);
     }
 
 }

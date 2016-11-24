@@ -10,13 +10,16 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import masoes.app.logger.ApplicationLogger;
 import masoes.app.setting.Setting;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
 public class ReplaySettingsBehaviour extends CyclicBehaviour {
 
     private MessageTemplate template;
+    private ApplicationLogger logger;
 
     public ReplaySettingsBehaviour() {
         this(null);
@@ -25,6 +28,7 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
     public ReplaySettingsBehaviour(Agent a) {
         super(a);
         template = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+        logger = new ApplicationLogger(LoggerFactory.getLogger(ReplaySettingsBehaviour.class));
     }
 
     @Override
@@ -32,6 +36,7 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
         ACLMessage msg = myAgent.receive(template);
 
         if (isPresent(msg)) {
+            logger.agentMessage(myAgent, msg);
 
             ACLMessage reply = msg.createReply();
             reply.setPerformative(ACLMessage.INFORM);

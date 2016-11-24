@@ -8,17 +8,22 @@ package masoes.core;
 
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
+import masoes.app.logger.ApplicationLogger;
 import masoes.core.behaviour.ReplayAgentInformationBehaviour;
 import masoes.core.behaviour.StimulusReceiverBehaviour;
+import org.slf4j.LoggerFactory;
 
 public abstract class EmotionalAgent extends Agent {
 
     private BehaviourManager behaviourManager;
     private EmotionalConfigurator emotionalConfigurator;
     private EmotionalModel emotionalModel;
+    private ApplicationLogger logger;
 
     @Override
     protected void setup() {
+        logger = new ApplicationLogger(LoggerFactory.getLogger(EmotionalAgent.class));
+
         emotionalModel = createEmotionalModel();
         behaviourManager = emotionalModel.getBehaviourManager();
         emotionalConfigurator = emotionalModel.getEmotionalConfigurator();
@@ -43,10 +48,12 @@ public abstract class EmotionalAgent extends Agent {
     }
 
     public void evaluateStimulus(Stimulus stimulus) {
-        removeBehaviour(behaviourManager.getBehaviour());
+        logger.agentEmotionalState(this);
         emotionalConfigurator.updateEmotionalState(stimulus);
+        removeBehaviour(behaviourManager.getBehaviour());
         behaviourManager.updateBehaviour(emotionalConfigurator.getEmotion());
         addBehaviour(behaviourManager.getBehaviour());
+        logger.agentEmotionalStateChanged(this, stimulus);
     }
 
     protected abstract EmotionalModel createEmotionalModel();

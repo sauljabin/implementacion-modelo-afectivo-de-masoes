@@ -32,6 +32,7 @@ public class EmotionalAgentTest {
     private EmotionalConfigurator mockEmotionalConfigurator;
     private Emotion mockEmotion;
     private EmotionalModel emotionalModel;
+    private Stimulus mockStimulus;
 
     public EmotionalAgentTest() {
         mockEmotionalState = mock(EmotionalState.class);
@@ -47,6 +48,7 @@ public class EmotionalAgentTest {
 
         mockBehaviour = mock(Behaviour.class);
         mockEmotion = mock(Emotion.class);
+        mockStimulus = mock(Stimulus.class);
 
         when(mockEmotionalConfigurator.getEmotion()).thenReturn(mockEmotion);
         when(mockEmotionalConfigurator.getEmotionalState()).thenReturn(mockEmotionalState);
@@ -76,12 +78,12 @@ public class EmotionalAgentTest {
 
     @Test
     public void shouldUpdateEmotion() {
-        Stimulus mockStimulus = mock(Stimulus.class);
         spyEmotionalAgent.evaluateStimulus(mockStimulus);
         verify(mockEmotionalConfigurator).updateEmotionalState(mockStimulus);
         assertThat(spyEmotionalAgent.getCurrentEmotion(), is(mockEmotion));
         assertThat(spyEmotionalAgent.getEmotionalState(), is(mockEmotionalState));
     }
+
 
     private EmotionalAgent createDummyEmotionalAgent(EmotionalModel emotionalModel) {
         return new EmotionalAgent() {
