@@ -16,41 +16,49 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class EmotionalAgentTest {
 
+    private final EmotionalState mockEmotionalState;
     private EmotionalAgent spyEmotionalAgent;
     private BehaviourManager mockBehaviourManager;
     private Behaviour mockBehaviour;
     private EmotionalConfigurator mockEmotionalConfigurator;
-    private Stimulus mockStimulus;
     private Emotion mockEmotion;
     private EmotionalModel emotionalModel;
+
+    public EmotionalAgentTest() {
+        mockEmotionalState = mock(EmotionalState.class);
+    }
 
     @Before
     public void setUp() {
         mockBehaviourManager = mock(BehaviourManager.class);
-        mockBehaviour = mock(Behaviour.class);
         mockEmotionalConfigurator = mock(EmotionalConfigurator.class);
-        mockEmotion = mock(Emotion.class);
-        mockStimulus = mock(Stimulus.class);
 
         emotionalModel = new EmotionalModel(mockEmotionalConfigurator, mockBehaviourManager);
         spyEmotionalAgent = spy(createDummyEmotionalAgent(emotionalModel));
 
-        when(mockBehaviourManager.selectBehaviour(any())).thenReturn(null);
+        mockBehaviour = mock(Behaviour.class);
+        mockEmotion = mock(Emotion.class);
+
         when(mockEmotionalConfigurator.getEmotion()).thenReturn(mockEmotion);
+        when(mockEmotionalConfigurator.getEmotionalState()).thenReturn(mockEmotionalState);
+        when(mockBehaviourManager.calculateBehaviour(any())).thenReturn(mockBehaviour);
+        when(mockBehaviourManager.getBehaviour()).thenReturn(mockBehaviour);
+        doNothing().when(mockBehaviourManager).updateBehaviour(any());
+
+        spyEmotionalAgent.setup();
     }
 
     @Test
     public void shouldAddBasicBehaviors() {
-        when(mockBehaviourManager.selectBehaviour(any())).thenReturn(mockBehaviour);
-        spyEmotionalAgent.setup();
         verify(spyEmotionalAgent, atLeastOnce()).addBehaviour(any(ReplayAgentInformationBehaviour.class));
         verify(spyEmotionalAgent, atLeastOnce()).addBehaviour(any(StimulusReceiverBehaviour.class));
         assertThat(spyEmotionalAgent.getEmotionalBehaviour(), is(mockBehaviour));
@@ -59,31 +67,20 @@ public class EmotionalAgentTest {
 
     @Test
     public void shouldChangeEmotionalBehaviour() {
-        spyEmotionalAgent.setup();
-        when(mockBehaviourManager.selectBehaviour(any())).thenReturn(mockBehaviour);
         spyEmotionalAgent.evaluateStimulus(any());
-        verify(mockBehaviourManager, atLeastOnce()).selectBehaviour(mockEmotion);
-        verify(spyEmotionalAgent).addBehaviour(mockBehaviour);
-        verify(spyEmotionalAgent, never()).removeBehaviour(mockBehaviour);
+        verify(mockBehaviourManager, times(2)).updateBehaviour(mockEmotion);
+        verify(spyEmotionalAgent, times(2)).addBehaviour(mockBehaviour);
+        verify(spyEmotionalAgent).removeBehaviour(mockBehaviour);
         assertThat(spyEmotionalAgent.getEmotionalBehaviour(), is(mockBehaviour));
     }
 
     @Test
-    public void shouldRemoveEmotionalBehaviour() {
-        spyEmotionalAgent.setup();
-        when(mockBehaviourManager.selectBehaviour(any())).thenReturn(mockBehaviour);
-        spyEmotionalAgent.evaluateStimulus(any());
-        spyEmotionalAgent.evaluateStimulus(any());
-        verify(spyEmotionalAgent).removeBehaviour(mockBehaviour);
-    }
-
-    @Test
     public void shouldUpdateEmotion() {
-        when(mockBehaviourManager.selectBehaviour(any())).thenReturn(mockBehaviour);
-        spyEmotionalAgent.setup();
+        Stimulus mockStimulus = mock(Stimulus.class);
         spyEmotionalAgent.evaluateStimulus(mockStimulus);
         verify(mockEmotionalConfigurator).updateEmotionalState(mockStimulus);
         assertThat(spyEmotionalAgent.getCurrentEmotion(), is(mockEmotion));
+        assertThat(spyEmotionalAgent.getEmotionalState(), is(mockEmotionalState));
     }
 
     private EmotionalAgent createDummyEmotionalAgent(EmotionalModel emotionalModel) {

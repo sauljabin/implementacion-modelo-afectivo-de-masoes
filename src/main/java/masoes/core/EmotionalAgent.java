@@ -11,14 +11,10 @@ import jade.core.behaviours.Behaviour;
 import masoes.core.behaviour.ReplayAgentInformationBehaviour;
 import masoes.core.behaviour.StimulusReceiverBehaviour;
 
-import java.util.Optional;
-
 public abstract class EmotionalAgent extends Agent {
 
     private BehaviourManager behaviourManager;
     private EmotionalConfigurator emotionalConfigurator;
-    private Emotion currentEmotion;
-    private Behaviour emotionalBehaviour;
     private EmotionalModel emotionalModel;
 
     @Override
@@ -26,31 +22,31 @@ public abstract class EmotionalAgent extends Agent {
         emotionalModel = createEmotionalModel();
         behaviourManager = emotionalModel.getBehaviourManager();
         emotionalConfigurator = emotionalModel.getEmotionalConfigurator();
-        currentEmotion = emotionalConfigurator.getEmotion();
-        emotionalBehaviour = behaviourManager.selectBehaviour(currentEmotion);
+        behaviourManager.updateBehaviour(emotionalConfigurator.getEmotion());
+
         addBehaviour(new ReplayAgentInformationBehaviour(this));
         addBehaviour(new StimulusReceiverBehaviour(this));
+        addBehaviour(behaviourManager.getBehaviour());
         setUp();
     }
 
     public Emotion getCurrentEmotion() {
-        return currentEmotion;
+        return emotionalConfigurator.getEmotion();
     }
 
     public Behaviour getEmotionalBehaviour() {
-        return emotionalBehaviour;
+        return behaviourManager.getBehaviour();
+    }
+
+    public EmotionalState getEmotionalState() {
+        return emotionalConfigurator.getEmotionalState();
     }
 
     public void evaluateStimulus(Stimulus stimulus) {
+        removeBehaviour(behaviourManager.getBehaviour());
         emotionalConfigurator.updateEmotionalState(stimulus);
-        currentEmotion = emotionalConfigurator.getEmotion();
-
-        if (Optional.ofNullable(emotionalBehaviour).isPresent()) {
-            removeBehaviour(emotionalBehaviour);
-        }
-
-        emotionalBehaviour = behaviourManager.selectBehaviour(currentEmotion);
-        addBehaviour(emotionalBehaviour);
+        behaviourManager.updateBehaviour(emotionalConfigurator.getEmotion());
+        addBehaviour(behaviourManager.getBehaviour());
     }
 
     protected abstract EmotionalModel createEmotionalModel();

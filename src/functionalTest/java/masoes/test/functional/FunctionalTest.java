@@ -67,6 +67,14 @@ public class FunctionalTest extends Test {
         }
     }
 
+    public void assertNotEquals(String message, Object first, Object second) {
+        if (!first.equals(second)) {
+            assertPass(String.format("Assert not equals: %s", message));
+        } else {
+            assertError(String.format("Assertion error: Expected different to %s and was equal", message));
+        }
+    }
+
     private void assertPass(String message) {
         if (!hasError) {
             passed(message);

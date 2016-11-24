@@ -8,17 +8,26 @@ package masoes.core;
 
 import com.vividsolutions.jts.geom.Point;
 import masoes.util.math.GeometryCreator;
+import masoes.util.math.RandomGenerator;
 
 public class EmotionalState {
 
-    private final GeometryCreator geometryCreator;
+    private GeometryCreator geometryCreator;
     private double activation;
     private double satisfaction;
+
+    public EmotionalState() {
+        this(getRandomDouble(), getRandomDouble());
+    }
 
     public EmotionalState(double activation, double satisfaction) {
         this.activation = activation;
         this.satisfaction = satisfaction;
         geometryCreator = new GeometryCreator();
+    }
+
+    private static double getRandomDouble() {
+        return new RandomGenerator().getDouble(-1, 1);
     }
 
     public double getActivation() {

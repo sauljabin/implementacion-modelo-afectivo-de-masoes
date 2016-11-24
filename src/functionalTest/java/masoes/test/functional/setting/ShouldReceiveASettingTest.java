@@ -9,8 +9,6 @@ package masoes.test.functional.setting;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.OneShotBehaviour;
-import jade.core.behaviours.SequentialBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import masoes.app.setting.Setting;
@@ -26,18 +24,16 @@ public class ShouldReceiveASettingTest extends FunctionalTest {
 
         AID settingsAgentAID = createAgent(tester, SettingsAgent.class.getName());
 
-        OneShotBehaviour sendMessageBehaviour = new OneShotBehaviour() {
+        SimpleBehaviour receiveMessageBehaviour = new SimpleBehaviour() {
+            private boolean done = false;
+
             @Override
-            public void action() {
+            public void onStart() {
                 ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
                 testMessage.addReceiver(settingsAgentAID);
                 testMessage.setContent(Setting.APP_NAME.getKey());
                 myAgent.send(testMessage);
             }
-        };
-
-        SimpleBehaviour receiveMessageBehaviour = new SimpleBehaviour() {
-            private boolean done = false;
 
             @Override
             public void action() {
@@ -58,11 +54,7 @@ public class ShouldReceiveASettingTest extends FunctionalTest {
 
         };
 
-        SequentialBehaviour testerBehaviour = new SequentialBehaviour();
-        testerBehaviour.addSubBehaviour(sendMessageBehaviour);
-        testerBehaviour.addSubBehaviour(receiveMessageBehaviour);
-
-        return testerBehaviour;
+        return receiveMessageBehaviour;
     }
 
 }

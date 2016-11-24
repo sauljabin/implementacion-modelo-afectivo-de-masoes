@@ -20,6 +20,7 @@ public class ReplayAgentInformationBehaviour extends Behaviour {
     private static final String AGENT_KEY = "agent";
     private static final String EMOTION_KEY = "emotion";
     private static final String BEHAVIOUR_KEY = "behaviour";
+    private static final String STATE_KEY = "state";
     private MessageTemplate template;
     private EmotionalAgent emotionalAgent;
 
@@ -32,14 +33,11 @@ public class ReplayAgentInformationBehaviour extends Behaviour {
     @Override
     public void action() {
         ACLMessage msg = myAgent.receive(template);
-
         if (Optional.ofNullable(msg).isPresent()) {
-
             ACLMessage reply = msg.createReply();
             reply.setPerformative(ACLMessage.INFORM);
             reply.setContent(createContent());
             myAgent.send(reply);
-
         } else {
             block();
         }
@@ -50,6 +48,7 @@ public class ReplayAgentInformationBehaviour extends Behaviour {
         content.put(AGENT_KEY, emotionalAgent.getName());
         content.put(EMOTION_KEY, emotionalAgent.getCurrentEmotion().getName());
         content.put(BEHAVIOUR_KEY, emotionalAgent.getEmotionalBehaviour().getBehaviourName());
+        content.put(STATE_KEY, emotionalAgent.getEmotionalState());
         return content.toString();
     }
 

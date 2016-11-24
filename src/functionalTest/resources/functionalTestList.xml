@@ -21,7 +21,13 @@
     <Test name="Should receive emotional agent information" skip="false">
         <TestClassName>masoes.test.functional.env.dummy.ShouldReceiveEmotionalAgentInformationTest</TestClassName>
         <WhatTest>Emotional agent information response</WhatTest>
-        <HowWorkTest>An agent make request to an emotional agent anr receive the emotional information</HowWorkTest>
+        <HowWorkTest>An agent make request to an emotional agent and receive the emotional information</HowWorkTest>
         <WhenTestPass>The test passes if the agent return the correct information</WhenTestPass>
+    </Test>
+    <Test name="Should change emotion and behaviour agent" skip="false">
+        <TestClassName>masoes.test.functional.env.dummy.ShouldChangeEmotionAndBehaviourTest</TestClassName>
+        <WhatTest>Emotional agent behaviour</WhatTest>
+        <HowWorkTest>An agent make request to an emotional agent and change his behaviour</HowWorkTest>
+        <WhenTestPass>The test passes if the agent change his behaviour</WhenTestPass>
     </Test>
 </TestsList>

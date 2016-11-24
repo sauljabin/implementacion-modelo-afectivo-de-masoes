@@ -9,8 +9,6 @@ package masoes.test.functional.env.dummy;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.OneShotBehaviour;
-import jade.core.behaviours.SequentialBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import masoes.env.dummy.DummyEmotionalAgent;
@@ -28,17 +26,15 @@ public class ShouldReceiveEmotionalAgentInformationTest extends FunctionalTest {
 
         AID dummyAgentAID = createAgent(tester, DummyEmotionalAgent.class.getName());
 
-        OneShotBehaviour sendMessageBehaviour = new OneShotBehaviour() {
+        SimpleBehaviour receiveMessageBehaviour = new SimpleBehaviour() {
+            private boolean done = false;
+
             @Override
-            public void action() {
+            public void onStart() {
                 ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
                 testMessage.addReceiver(dummyAgentAID);
                 myAgent.send(testMessage);
             }
-        };
-
-        SimpleBehaviour receiveMessageBehaviour = new SimpleBehaviour() {
-            private boolean done = false;
 
             @Override
             public void action() {
@@ -49,6 +45,7 @@ public class ShouldReceiveEmotionalAgentInformationTest extends FunctionalTest {
                     assertEquals("Content [agent]", dummyAgentAID.getName(), stringMap.get("agent"));
                     assertNotNull("Content [emotion]", stringMap.get("emotion"));
                     assertNotNull("Content [behaviour]", stringMap.get("behaviour"));
+                    assertNotNull("Content [state]", stringMap.get("state"));
                     assertEquals("Performative", ACLMessage.INFORM, msg.getPerformative());
                     done = true;
                 } else {
@@ -62,11 +59,7 @@ public class ShouldReceiveEmotionalAgentInformationTest extends FunctionalTest {
             }
         };
 
-        SequentialBehaviour testerBehaviour = new SequentialBehaviour();
-        testerBehaviour.addSubBehaviour(sendMessageBehaviour);
-        testerBehaviour.addSubBehaviour(receiveMessageBehaviour);
-
-        return testerBehaviour;
+        return receiveMessageBehaviour;
     }
 
 }

@@ -10,6 +10,7 @@ import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import masoes.core.Emotion;
 import masoes.core.EmotionalAgent;
+import masoes.core.EmotionalState;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,10 +68,15 @@ public class ReplayAgentInformationBehaviourTest {
         when(mockBehaviour.getBehaviourName()).thenReturn(expectedBehaviour);
         when(mockEmotionalAgent.getEmotionalBehaviour()).thenReturn(mockBehaviour);
 
+        EmotionalState emotionalState = new EmotionalState();
+        String expectedEmotionalState = emotionalState.toString();
+        when(mockEmotionalAgent.getEmotionalState()).thenReturn(emotionalState);
+
         Map<String, String> content = new HashMap<>();
         content.put("agent", expectedName);
         content.put("emotion", expectedEmotion);
         content.put("behaviour", expectedBehaviour);
+        content.put("state", expectedEmotionalState);
 
         spyReplayAgentInformationBehaviour.action();
         verify(mockAclMessageResponse).setContent(content.toString());

@@ -34,19 +34,19 @@ public class DummyBehaviourManagerTest {
     @Test
     public void shouldReturnCognitiveBehaviour() {
         when(mockEmotion.getEmotionType()).thenReturn(EmotionType.NEGATIVE_LOW);
-        assertThat(dummyBehaviourManager.selectBehaviour(mockEmotion), is(instanceOf(DummyCognitiveBehaviour.class)));
+        assertThat(dummyBehaviourManager.calculateBehaviour(mockEmotion), is(instanceOf(DummyCognitiveBehaviour.class)));
     }
 
     @Test
     public void shouldReturnImitativeBehaviour() {
         when(mockEmotion.getEmotionType()).thenReturn(EmotionType.POSITIVE);
-        assertThat(dummyBehaviourManager.selectBehaviour(mockEmotion), is(instanceOf(DummyImitativeBehaviour.class)));
+        assertThat(dummyBehaviourManager.calculateBehaviour(mockEmotion), is(instanceOf(DummyImitativeBehaviour.class)));
     }
 
     @Test
     public void shouldReturnReactiveBehaviour() {
         when(mockEmotion.getEmotionType()).thenReturn(EmotionType.NEGATIVE_HIGH);
-        assertThat(dummyBehaviourManager.selectBehaviour(mockEmotion), is(instanceOf(DummyReactiveBehaviour.class)));
+        assertThat(dummyBehaviourManager.calculateBehaviour(mockEmotion), is(instanceOf(DummyReactiveBehaviour.class)));
     }
 
 }

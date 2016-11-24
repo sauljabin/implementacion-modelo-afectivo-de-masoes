@@ -10,6 +10,12 @@ import jade.core.behaviours.Behaviour;
 
 public abstract class BehaviourManager {
 
+    private Behaviour behaviour;
+
+    public Behaviour getBehaviour() {
+        return behaviour;
+    }
+
     public BehaviourType getBehaviourTypeAssociated(EmotionType emotionType) {
         switch (emotionType) {
             case POSITIVE:
@@ -23,6 +29,10 @@ public abstract class BehaviourManager {
         }
     }
 
-    protected abstract Behaviour selectBehaviour(Emotion emotion);
+    public void updateBehaviour(Emotion emotion) {
+        behaviour = calculateBehaviour(emotion);
+    }
+
+    protected abstract Behaviour calculateBehaviour(Emotion emotion);
 
 }

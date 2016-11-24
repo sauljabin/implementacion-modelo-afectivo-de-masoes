@@ -17,7 +17,7 @@ import masoes.env.dummy.behaviour.DummyReactiveBehaviour;
 public class DummyBehaviourManager extends BehaviourManager {
 
     @Override
-    protected Behaviour selectBehaviour(Emotion emotion) {
+    protected Behaviour calculateBehaviour(Emotion emotion) {
         BehaviourType behaviourType = getBehaviourTypeAssociated(emotion.getEmotionType());
         switch (behaviourType) {
             case COGNITIVE:

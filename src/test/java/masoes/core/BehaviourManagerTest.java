@@ -12,27 +12,38 @@ import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
 public class BehaviourManagerTest {
 
-    private BehaviourManager behaviourManager;
+    private BehaviourManager spyBehaviourManager;
+    private Behaviour mockBehaviour;
 
     @Before
     public void setUp() {
-        behaviourManager = createDummyBehaviourManager(null);
+        mockBehaviour = mock(Behaviour.class);
+        spyBehaviourManager = spy(createDummyBehaviourManager(mockBehaviour));
     }
 
     @Test
     public void shouldReturnCorrectBehaviourAssociated() {
-        assertThat(behaviourManager.getBehaviourTypeAssociated(EmotionType.NEGATIVE_HIGH), is(BehaviourType.REACTIVE));
-        assertThat(behaviourManager.getBehaviourTypeAssociated(EmotionType.NEGATIVE_LOW), is(BehaviourType.COGNITIVE));
-        assertThat(behaviourManager.getBehaviourTypeAssociated(EmotionType.POSITIVE), is(BehaviourType.IMITATIVE));
+        assertThat(spyBehaviourManager.getBehaviourTypeAssociated(EmotionType.NEGATIVE_HIGH), is(BehaviourType.REACTIVE));
+        assertThat(spyBehaviourManager.getBehaviourTypeAssociated(EmotionType.NEGATIVE_LOW), is(BehaviourType.COGNITIVE));
+        assertThat(spyBehaviourManager.getBehaviourTypeAssociated(EmotionType.POSITIVE), is(BehaviourType.IMITATIVE));
+    }
+
+    @Test
+    public void shouldUpdateBehaviour() {
+        spyBehaviourManager.updateBehaviour(any());
+        assertThat(spyBehaviourManager.getBehaviour(), is(mockBehaviour));
     }
 
     private BehaviourManager createDummyBehaviourManager(Behaviour Behaviour) {
         return new BehaviourManager() {
             @Override
-            protected Behaviour selectBehaviour(Emotion emotion) {
+            protected Behaviour calculateBehaviour(Emotion emotion) {
                 return Behaviour;
             }
         };
