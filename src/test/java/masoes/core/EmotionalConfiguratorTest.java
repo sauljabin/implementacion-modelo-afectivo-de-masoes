@@ -6,7 +6,6 @@
 
 package masoes.core;
 
-import masoes.util.math.RandomGenerator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,13 +17,11 @@ public class EmotionalConfiguratorTest {
 
     private EmotionalConfigurator emotionalConfigurator;
     private EmotionalSpace emotionalSpace;
-    private RandomGenerator random;
     private EmotionalState emotionalState;
 
     @Before
     public void setUp() {
-        random = new RandomGenerator();
-        emotionalState = new EmotionalState(random.getDouble(-1, 1), random.getDouble(-1, 1));
+        emotionalState = new EmotionalState();
         emotionalConfigurator = createDummyEmotionalConfigurator(emotionalState);
     }
 

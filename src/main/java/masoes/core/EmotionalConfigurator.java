@@ -6,16 +6,13 @@
 
 package masoes.core;
 
-import masoes.util.math.RandomGenerator;
-
 public abstract class EmotionalConfigurator {
 
     private EmotionalState emotionalState;
     private EmotionalSpace emotionalSpace;
 
     public EmotionalConfigurator() {
-        RandomGenerator random = new RandomGenerator();
-        emotionalState = new EmotionalState(random.getDouble(-1, 1), random.getDouble(-1, 1));
+        emotionalState = new EmotionalState();
         emotionalSpace = new EmotionalSpace();
     }
 
