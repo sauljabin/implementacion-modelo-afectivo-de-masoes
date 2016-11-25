@@ -20,10 +20,16 @@ public abstract class EmotionalAgent extends Agent {
     private EmotionalModel emotionalModel;
     private ApplicationLogger logger;
 
+    public EmotionalAgent() {
+        this(new ApplicationLogger(LoggerFactory.getLogger(EmotionalAgent.class)));
+    }
+
+    public EmotionalAgent(ApplicationLogger logger) {
+        this.logger = logger;
+    }
+
     @Override
     protected void setup() {
-        logger = new ApplicationLogger(LoggerFactory.getLogger(EmotionalAgent.class));
-
         emotionalModel = createEmotionalModel();
         behaviourManager = emotionalModel.getBehaviourManager();
         emotionalConfigurator = emotionalModel.getEmotionalConfigurator();

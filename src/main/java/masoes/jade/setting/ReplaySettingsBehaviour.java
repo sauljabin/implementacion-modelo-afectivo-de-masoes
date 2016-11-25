@@ -25,10 +25,14 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
         this(null);
     }
 
-    public ReplaySettingsBehaviour(Agent a) {
-        super(a);
+    public ReplaySettingsBehaviour(Agent agent) {
+        this(agent, new ApplicationLogger(LoggerFactory.getLogger(ReplaySettingsBehaviour.class)));
+    }
+
+    public ReplaySettingsBehaviour(Agent agent, ApplicationLogger logger) {
+        super(agent);
+        this.logger = logger;
         template = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
-        logger = new ApplicationLogger(LoggerFactory.getLogger(ReplaySettingsBehaviour.class));
     }
 
     @Override

@@ -8,6 +8,7 @@ package masoes.jade.setting;
 
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
+import masoes.app.logger.ApplicationLogger;
 import masoes.app.setting.Setting;
 import masoes.app.setting.SettingsLoader;
 import org.junit.Before;
@@ -33,12 +34,14 @@ public class ReplaySettingsBehaviourTest {
     private Agent spyAgent;
     private ACLMessage mockAclMessageRequest;
     private ACLMessage mockAclMessageResponse;
+    private ApplicationLogger mockApplicationLogger;
 
     @Before
     public void setUp() {
         settingsLoader.load();
         spyAgent = spy(new Agent());
-        spyReplaySettingsBehaviour = spy(new ReplaySettingsBehaviour(spyAgent));
+        mockApplicationLogger = mock(ApplicationLogger.class);
+        spyReplaySettingsBehaviour = spy(new ReplaySettingsBehaviour(spyAgent, mockApplicationLogger));
         mockAclMessageRequest = mock(ACLMessage.class);
         mockAclMessageResponse = mock(ACLMessage.class);
         when(mockAclMessageRequest.createReply()).thenReturn(mockAclMessageResponse);
@@ -75,6 +78,12 @@ public class ReplaySettingsBehaviourTest {
         spyReplaySettingsBehaviour.action();
         verify(mockAclMessageResponse).setPerformative(ACLMessage.NOT_UNDERSTOOD);
         verify(spyAgent).send(mockAclMessageResponse);
+    }
+
+    @Test
+    public void shouldLogMessage() {
+        spyReplaySettingsBehaviour.action();
+        verify(mockApplicationLogger).agentMessage(spyAgent, mockAclMessageRequest);
     }
 
 }

@@ -8,6 +8,7 @@ package masoes.core.behaviour;
 
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
+import masoes.app.logger.ApplicationLogger;
 import masoes.core.Emotion;
 import masoes.core.EmotionalAgent;
 import masoes.core.EmotionalState;
@@ -34,27 +35,22 @@ public class ReplayAgentInformationBehaviourTest {
 
     private EmotionalAgent mockEmotionalAgent;
     private ReplayAgentInformationBehaviour spyReplayAgentInformationBehaviour;
+    private ApplicationLogger mockApplicationLogger;
+    private ACLMessage mockAclMessageRequest;
+    private ACLMessage mockAclMessageResponse;
+    private Map<String, String> expectedContent;
 
     @Before
     public void setUp() {
         mockEmotionalAgent = mock(EmotionalAgent.class);
-        spyReplayAgentInformationBehaviour = spy(new ReplayAgentInformationBehaviour(mockEmotionalAgent));
-    }
+        mockApplicationLogger = mock(ApplicationLogger.class);
+        spyReplayAgentInformationBehaviour = spy(new ReplayAgentInformationBehaviour(mockEmotionalAgent, mockApplicationLogger));
 
-    @Test
-    public void shouldBlockWhenMessageIsNull() {
-        when(mockEmotionalAgent.receive(any())).thenReturn(null);
-        spyReplayAgentInformationBehaviour.action();
-        verify(spyReplayAgentInformationBehaviour).block();
-    }
+        mockAclMessageRequest = mock(ACLMessage.class);
+        mockAclMessageResponse = mock(ACLMessage.class);
 
-    @Test
-    public void shouldSendEmotionAndNameAndBehaviourState() {
-        ACLMessage mockAclMessageRequest = mock(ACLMessage.class);
-        ACLMessage mockAclMessageResponse = mock(ACLMessage.class);
-
-        when(mockAclMessageRequest.createReply()).thenReturn(mockAclMessageResponse);
         when(mockEmotionalAgent.receive(any())).thenReturn(mockAclMessageRequest);
+        when(mockAclMessageRequest.createReply()).thenReturn(mockAclMessageResponse);
 
         String expectedName = "EXPECTED_NAME";
         when(mockEmotionalAgent.getName()).thenReturn(expectedName);
@@ -74,16 +70,32 @@ public class ReplayAgentInformationBehaviourTest {
         String expectedEmotionalState = emotionalState.toString();
         when(mockEmotionalAgent.getEmotionalState()).thenReturn(emotionalState);
 
-        Map<String, String> content = new HashMap<>();
-        content.put("agent", expectedName);
-        content.put("emotion", expectedEmotion);
-        content.put("behaviour", expectedBehaviour);
-        content.put("state", expectedEmotionalState);
+        expectedContent = new HashMap<>();
+        expectedContent.put("agent", expectedName);
+        expectedContent.put("emotion", expectedEmotion);
+        expectedContent.put("behaviour", expectedBehaviour);
+        expectedContent.put("state", expectedEmotionalState);
+    }
 
+    @Test
+    public void shouldBlockWhenMessageIsNull() {
+        when(mockEmotionalAgent.receive(any())).thenReturn(null);
         spyReplayAgentInformationBehaviour.action();
-        verify(mockAclMessageResponse).setContent(content.toString());
+        verify(spyReplayAgentInformationBehaviour).block();
+    }
+
+    @Test
+    public void shouldSendEmotionAndNameAndBehaviourState() {
+        spyReplayAgentInformationBehaviour.action();
+        verify(mockAclMessageResponse).setContent(expectedContent.toString());
         verify(mockAclMessageResponse).setPerformative(ACLMessage.INFORM);
         verify(mockEmotionalAgent).send(mockAclMessageResponse);
+    }
+
+    @Test
+    public void shouldLogMessage() {
+        spyReplayAgentInformationBehaviour.action();
+        verify(mockApplicationLogger).agentMessage(mockEmotionalAgent, mockAclMessageRequest);
     }
 
 }

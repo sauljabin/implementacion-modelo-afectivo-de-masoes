@@ -22,11 +22,15 @@ public class StimulusReceiverBehaviour extends Behaviour {
     private EmotionalAgent emotionalAgent;
     private ApplicationLogger logger;
 
-    public StimulusReceiverBehaviour(EmotionalAgent emotionalAgent) {
+    public StimulusReceiverBehaviour(EmotionalAgent emotionalAgent, ApplicationLogger logger) {
         super(emotionalAgent);
+        this.logger = logger;
         this.emotionalAgent = emotionalAgent;
         template = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
-        logger = new ApplicationLogger(LoggerFactory.getLogger(StimulusReceiverBehaviour.class));
+    }
+
+    public StimulusReceiverBehaviour(EmotionalAgent emotionalAgent) {
+        this(emotionalAgent, new ApplicationLogger(LoggerFactory.getLogger(StimulusReceiverBehaviour.class)));
     }
 
     @Override

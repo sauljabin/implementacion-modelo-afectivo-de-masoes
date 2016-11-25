@@ -8,6 +8,7 @@ package masoes.core.behaviour;
 
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
+import masoes.app.logger.ApplicationLogger;
 import masoes.core.EmotionalAgent;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,11 +30,17 @@ public class StimulusReceiverBehaviourTest {
 
     private EmotionalAgent mockEmotionalAgent;
     private StimulusReceiverBehaviour spyStimulusReceiverBehaviour;
+    private ApplicationLogger mockApplicationLogger;
+    private ACLMessage mockAclMessageRequest;
 
     @Before
     public void setUp() {
         mockEmotionalAgent = mock(EmotionalAgent.class);
-        spyStimulusReceiverBehaviour = spy(new StimulusReceiverBehaviour(mockEmotionalAgent));
+        mockApplicationLogger = mock(ApplicationLogger.class);
+        spyStimulusReceiverBehaviour = spy(new StimulusReceiverBehaviour(mockEmotionalAgent, mockApplicationLogger));
+        mockAclMessageRequest = mock(ACLMessage.class);
+
+        when(mockEmotionalAgent.receive(any())).thenReturn(mockAclMessageRequest);
     }
 
     @Test
@@ -45,10 +52,14 @@ public class StimulusReceiverBehaviourTest {
 
     @Test
     public void shouldEvaluateStimulus() {
-        ACLMessage mockAclMessageRequest = mock(ACLMessage.class);
-        when(mockEmotionalAgent.receive(any())).thenReturn(mockAclMessageRequest);
         spyStimulusReceiverBehaviour.action();
         verify(mockEmotionalAgent).evaluateStimulus(any());
+    }
+
+    @Test
+    public void shouldLogMessage() {
+        spyStimulusReceiverBehaviour.action();
+        verify(mockApplicationLogger).agentMessage(mockEmotionalAgent, mockAclMessageRequest);
     }
 
 }

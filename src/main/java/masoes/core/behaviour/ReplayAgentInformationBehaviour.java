@@ -27,11 +27,15 @@ public class ReplayAgentInformationBehaviour extends Behaviour {
     private EmotionalAgent emotionalAgent;
     private ApplicationLogger logger;
 
-    public ReplayAgentInformationBehaviour(EmotionalAgent emotionalAgent) {
+    public ReplayAgentInformationBehaviour(EmotionalAgent emotionalAgent, ApplicationLogger logger) {
         super(emotionalAgent);
+        this.logger = logger;
         this.emotionalAgent = emotionalAgent;
         template = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
-        logger = new ApplicationLogger(LoggerFactory.getLogger(ReplayAgentInformationBehaviour.class));
+    }
+
+    public ReplayAgentInformationBehaviour(EmotionalAgent emotionalAgent) {
+        this(emotionalAgent, new ApplicationLogger(LoggerFactory.getLogger(ReplayAgentInformationBehaviour.class)));
     }
 
     @Override

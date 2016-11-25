@@ -7,6 +7,7 @@
 package masoes.core;
 
 import jade.core.behaviours.Behaviour;
+import masoes.app.logger.ApplicationLogger;
 import masoes.core.behaviour.ReplayAgentInformationBehaviour;
 import masoes.core.behaviour.StimulusReceiverBehaviour;
 import org.junit.Before;
@@ -25,7 +26,7 @@ import static org.mockito.Mockito.when;
 
 public class EmotionalAgentTest {
 
-    private final EmotionalState mockEmotionalState;
+    private EmotionalState mockEmotionalState;
     private EmotionalAgent spyEmotionalAgent;
     private BehaviourManager mockBehaviourManager;
     private Behaviour mockBehaviour;
@@ -33,18 +34,17 @@ public class EmotionalAgentTest {
     private Emotion mockEmotion;
     private EmotionalModel emotionalModel;
     private Stimulus mockStimulus;
-
-    public EmotionalAgentTest() {
-        mockEmotionalState = mock(EmotionalState.class);
-    }
+    private ApplicationLogger mockApplicationLogger;
 
     @Before
     public void setUp() {
+        mockEmotionalState = mock(EmotionalState.class);
         mockBehaviourManager = mock(BehaviourManager.class);
         mockEmotionalConfigurator = mock(EmotionalConfigurator.class);
 
         emotionalModel = new EmotionalModel(mockEmotionalConfigurator, mockBehaviourManager);
-        spyEmotionalAgent = spy(createDummyEmotionalAgent(emotionalModel));
+        mockApplicationLogger = mock(ApplicationLogger.class);
+        spyEmotionalAgent = spy(createDummyEmotionalAgent(emotionalModel, mockApplicationLogger));
 
         mockBehaviour = mock(Behaviour.class);
         mockEmotion = mock(Emotion.class);
@@ -84,9 +84,15 @@ public class EmotionalAgentTest {
         assertThat(spyEmotionalAgent.getEmotionalState(), is(mockEmotionalState));
     }
 
+    @Test
+    public void shouldLogEmotionChange() {
+        spyEmotionalAgent.evaluateStimulus(mockStimulus);
+        verify(mockApplicationLogger).agentEmotionalState(spyEmotionalAgent);
+        verify(mockApplicationLogger).agentEmotionalStateChanged(spyEmotionalAgent, mockStimulus);
+    }
 
-    private EmotionalAgent createDummyEmotionalAgent(EmotionalModel emotionalModel) {
-        return new EmotionalAgent() {
+    private EmotionalAgent createDummyEmotionalAgent(EmotionalModel emotionalModel, ApplicationLogger applicationLogger) {
+        return new EmotionalAgent(applicationLogger) {
             @Override
             protected EmotionalModel createEmotionalModel() {
                 return emotionalModel;
