@@ -27,6 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.when;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
@@ -35,16 +36,20 @@ public class ReplayAgentInformationBehaviourTest {
 
     private EmotionalAgent mockEmotionalAgent;
     private ReplayAgentInformationBehaviour spyReplayAgentInformationBehaviour;
-    private ApplicationLogger mockApplicationLogger;
+    private ApplicationLogger mockLogger;
     private ACLMessage mockAclMessageRequest;
     private ACLMessage mockAclMessageResponse;
     private Map<String, String> expectedContent;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         mockEmotionalAgent = mock(EmotionalAgent.class);
-        mockApplicationLogger = mock(ApplicationLogger.class);
-        spyReplayAgentInformationBehaviour = spy(new ReplayAgentInformationBehaviour(mockEmotionalAgent, mockApplicationLogger));
+        mockLogger = mock(ApplicationLogger.class);
+
+        ReplayAgentInformationBehaviour replayAgentInformationBehaviour = new ReplayAgentInformationBehaviour(mockEmotionalAgent);
+        setFieldValue(replayAgentInformationBehaviour, "logger", mockLogger);
+
+        spyReplayAgentInformationBehaviour = spy(replayAgentInformationBehaviour);
 
         mockAclMessageRequest = mock(ACLMessage.class);
         mockAclMessageResponse = mock(ACLMessage.class);
@@ -95,7 +100,7 @@ public class ReplayAgentInformationBehaviourTest {
     @Test
     public void shouldLogMessage() {
         spyReplayAgentInformationBehaviour.action();
-        verify(mockApplicationLogger).agentMessage(mockEmotionalAgent, mockAclMessageRequest);
+        verify(mockLogger).agentMessage(mockEmotionalAgent, mockAclMessageRequest);
     }
 
 }

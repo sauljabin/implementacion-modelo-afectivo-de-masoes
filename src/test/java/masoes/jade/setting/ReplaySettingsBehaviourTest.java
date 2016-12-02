@@ -23,25 +23,31 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.spy;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
 @PrepareForTest(Agent.class)
 public class ReplaySettingsBehaviourTest {
 
-    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
+    private SettingsLoader settingsLoader;
     private ReplaySettingsBehaviour spyReplaySettingsBehaviour;
     private Agent spyAgent;
     private ACLMessage mockAclMessageRequest;
     private ACLMessage mockAclMessageResponse;
-    private ApplicationLogger mockApplicationLogger;
+    private ApplicationLogger mockLogger;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        settingsLoader = SettingsLoader.getInstance();
         settingsLoader.load();
         spyAgent = spy(new Agent());
-        mockApplicationLogger = mock(ApplicationLogger.class);
-        spyReplaySettingsBehaviour = spy(new ReplaySettingsBehaviour(spyAgent, mockApplicationLogger));
+        mockLogger = mock(ApplicationLogger.class);
+
+        ReplaySettingsBehaviour replaySettingsBehaviour = new ReplaySettingsBehaviour(spyAgent);
+        setFieldValue(replaySettingsBehaviour, "logger", mockLogger);
+
+        spyReplaySettingsBehaviour = spy(replaySettingsBehaviour);
         mockAclMessageRequest = mock(ACLMessage.class);
         mockAclMessageResponse = mock(ACLMessage.class);
         when(mockAclMessageRequest.createReply()).thenReturn(mockAclMessageResponse);
@@ -83,7 +89,7 @@ public class ReplaySettingsBehaviourTest {
     @Test
     public void shouldLogMessage() {
         spyReplaySettingsBehaviour.action();
-        verify(mockApplicationLogger).agentMessage(spyAgent, mockAclMessageRequest);
+        verify(mockLogger).agentMessage(spyAgent, mockAclMessageRequest);
     }
 
 }

@@ -6,7 +6,7 @@
 
 package masoes.core;
 
-public abstract class EmotionalConfigurator {
+public class EmotionalConfigurator {
 
     private EmotionalState emotionalState;
     private EmotionalSpace emotionalSpace;
@@ -28,6 +28,9 @@ public abstract class EmotionalConfigurator {
         emotionalState = calculateEmotionalState(stimulus);
     }
 
-    protected abstract EmotionalState calculateEmotionalState(Stimulus stimulus);
+    protected EmotionalState calculateEmotionalState(Stimulus stimulus) {
+        // TODO: Implementar este método
+        return new EmotionalState();
+    }
 
 }

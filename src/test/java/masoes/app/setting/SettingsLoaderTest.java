@@ -19,12 +19,13 @@ import static org.junit.Assert.assertThat;
 
 public class SettingsLoaderTest {
 
-    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
+    private SettingsLoader settingsLoader;
     private String keyForTests;
     private String expectedValue;
 
     @Before
     public void setUp() {
+        settingsLoader = SettingsLoader.getInstance();
         settingsLoader.load();
         keyForTests = "keyForTests";
         expectedValue = "expectedValue";

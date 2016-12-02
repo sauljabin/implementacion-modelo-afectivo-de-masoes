@@ -22,6 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.when;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
@@ -30,15 +31,19 @@ public class StimulusReceiverBehaviourTest {
 
     private EmotionalAgent mockEmotionalAgent;
     private StimulusReceiverBehaviour spyStimulusReceiverBehaviour;
-    private ApplicationLogger mockApplicationLogger;
+    private ApplicationLogger mockLogger;
     private ACLMessage mockAclMessageRequest;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         mockEmotionalAgent = mock(EmotionalAgent.class);
-        mockApplicationLogger = mock(ApplicationLogger.class);
-        spyStimulusReceiverBehaviour = spy(new StimulusReceiverBehaviour(mockEmotionalAgent, mockApplicationLogger));
+        mockLogger = mock(ApplicationLogger.class);
         mockAclMessageRequest = mock(ACLMessage.class);
+
+        StimulusReceiverBehaviour stimulusReceiverBehaviour = new StimulusReceiverBehaviour(mockEmotionalAgent);
+        setFieldValue(stimulusReceiverBehaviour, "logger", mockLogger);
+
+        spyStimulusReceiverBehaviour = spy(stimulusReceiverBehaviour);
 
         when(mockEmotionalAgent.receive(any())).thenReturn(mockAclMessageRequest);
     }
@@ -59,7 +64,7 @@ public class StimulusReceiverBehaviourTest {
     @Test
     public void shouldLogMessage() {
         spyStimulusReceiverBehaviour.action();
-        verify(mockApplicationLogger).agentMessage(mockEmotionalAgent, mockAclMessageRequest);
+        verify(mockLogger).agentMessage(mockEmotionalAgent, mockAclMessageRequest);
     }
 
 }

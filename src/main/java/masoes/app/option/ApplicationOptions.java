@@ -21,7 +21,13 @@ public class ApplicationOptions {
     }
 
     public List<ApplicationOption> getApplicationOptionList() {
-        List<ApplicationOption> applicationOptions = Arrays.asList(new HelpOption(), new VersionOption(), new AgentsOption(), new SettingsOption(), new EnvironmentOption(), new BootOption());
+        List<ApplicationOption> applicationOptions = Arrays
+                .asList(new HelpOption(),
+                        new VersionOption(),
+                        new AgentsOption(),
+                        new SettingsOption(),
+                        new EnvironmentOption(),
+                        new BootOption());
         Collections.sort(applicationOptions);
         return applicationOptions;
     }

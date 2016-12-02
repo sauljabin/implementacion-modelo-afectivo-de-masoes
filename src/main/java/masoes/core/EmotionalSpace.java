@@ -20,7 +20,7 @@ import java.util.List;
 
 public class EmotionalSpace {
 
-    private final List<Emotion> emotions;
+    private List<Emotion> emotions;
 
     public EmotionalSpace() {
         emotions = Arrays.asList(

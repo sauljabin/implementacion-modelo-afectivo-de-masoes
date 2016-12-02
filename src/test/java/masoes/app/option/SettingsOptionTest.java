@@ -24,6 +24,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class SettingsOptionTest {
 
@@ -32,13 +33,15 @@ public class SettingsOptionTest {
 
     private SettingsOption settingsOption;
     private ApplicationLogger mockLogger;
-    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
+    private SettingsLoader settingsLoader;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        settingsLoader = SettingsLoader.getInstance();
         settingsLoader.load();
         mockLogger = mock(ApplicationLogger.class);
-        settingsOption = new SettingsOption(mockLogger);
+        settingsOption = new SettingsOption();
+        setFieldValue(settingsOption, "logger", mockLogger);
     }
 
     @Test

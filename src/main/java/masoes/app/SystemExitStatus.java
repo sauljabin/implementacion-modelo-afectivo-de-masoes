@@ -10,7 +10,7 @@ public enum SystemExitStatus {
 
     FAILURE(-1), SUCCESS(0);
 
-    private final int value;
+    private int value;
 
     SystemExitStatus(int value) {
         this.value = value;

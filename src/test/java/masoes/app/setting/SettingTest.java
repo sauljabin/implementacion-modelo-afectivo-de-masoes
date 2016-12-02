@@ -19,10 +19,11 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 
 public class SettingTest {
 
-    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
+    private SettingsLoader settingsLoader;
 
     @Before
     public void setUp() {
+        settingsLoader = SettingsLoader.getInstance();
         settingsLoader.load();
     }
 
@@ -60,7 +61,7 @@ public class SettingTest {
 
     @Test
     public void shouldGetToMap() {
-        assertReflectionEquals(SettingsLoader.getInstance().toString(), Setting.allToString());
+        assertThat(Setting.allToString(), is(SettingsLoader.getInstance().toString()));
     }
 
     @Test

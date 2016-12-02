@@ -25,6 +25,8 @@ public class ApplicationOptionsTest {
     @Before
     public void setUp() {
         applicationOptions = new ApplicationOptions();
+        expectedOptionsObject = new Options();
+
         expectedOptions = new ArrayList<>();
         expectedOptions.add(new VersionOption());
         expectedOptions.add(new HelpOption());
@@ -32,10 +34,9 @@ public class ApplicationOptionsTest {
         expectedOptions.add(new SettingsOption());
         expectedOptions.add(new EnvironmentOption());
         expectedOptions.add(new BootOption());
-        Collections.sort(expectedOptions);
-
-        expectedOptionsObject = new Options();
         expectedOptions.forEach(option -> expectedOptionsObject.addOption(option.toOption()));
+
+        Collections.sort(expectedOptions);
     }
 
     @Test

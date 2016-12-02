@@ -18,18 +18,21 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class HelpOptionTest {
 
     private HelpOption helpOption;
-    private HelpFormatter mockFormatter;
-    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
+    private HelpFormatter mockHelpFormatter;
+    private SettingsLoader settingsLoader;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        settingsLoader = SettingsLoader.getInstance();
         settingsLoader.load();
-        mockFormatter = mock(HelpFormatter.class);
-        helpOption = new HelpOption(mockFormatter);
+        helpOption = new HelpOption();
+        mockHelpFormatter = mock(HelpFormatter.class);
+        setFieldValue(helpOption, "helpFormatter", mockHelpFormatter);
     }
 
     @Test
@@ -42,16 +45,12 @@ public class HelpOptionTest {
     }
 
     @Test
-    public void shouldConfigFormatter() {
-        verify(mockFormatter).setSyntaxPrefix("Usage: ");
-        verify(mockFormatter).setLongOptSeparator("=");
-        verify(mockFormatter).setOptionComparator(OptionWrapper.comparator());
-    }
-
-    @Test
     public void shouldPrintHelp() {
         helpOption.exec("");
-        verify(mockFormatter).printHelp(any(), any(Options.class));
+        verify(mockHelpFormatter).setSyntaxPrefix("Usage: ");
+        verify(mockHelpFormatter).setLongOptSeparator("=");
+        verify(mockHelpFormatter).setOptionComparator(OptionWrapper.comparator());
+        verify(mockHelpFormatter).printHelp(any(), any(Options.class));
     }
 
 }

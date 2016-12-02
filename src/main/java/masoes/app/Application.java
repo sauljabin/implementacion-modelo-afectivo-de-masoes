@@ -18,13 +18,9 @@ public class Application {
     private ApplicationOptionProcessor applicationOptionProcessor;
 
     public Application() {
-        this(new ApplicationLogger(LoggerFactory.getLogger(Application.class)), SettingsLoader.getInstance(), new ApplicationOptionProcessor());
-    }
-
-    public Application(ApplicationLogger logger, SettingsLoader settingsLoader, ApplicationOptionProcessor applicationOptionProcessor) {
-        this.logger = logger;
-        this.settingsLoader = settingsLoader;
-        this.applicationOptionProcessor = applicationOptionProcessor;
+        logger = new ApplicationLogger(LoggerFactory.getLogger(Application.class));
+        settingsLoader = SettingsLoader.getInstance();
+        applicationOptionProcessor = new ApplicationOptionProcessor();
     }
 
     public void run(String[] args) {

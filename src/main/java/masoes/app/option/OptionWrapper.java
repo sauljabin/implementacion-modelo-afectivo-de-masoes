@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class OptionWrapper extends Option implements Comparable<OptionWrapper> {
 
-    private final ApplicationOption applicationOption;
+    private ApplicationOption applicationOption;
 
     public OptionWrapper(ApplicationOption applicationOption) {
         super(applicationOption.getOpt(), applicationOption.getLongOpt(), applicationOption.hasArg(), applicationOption.getDescription());

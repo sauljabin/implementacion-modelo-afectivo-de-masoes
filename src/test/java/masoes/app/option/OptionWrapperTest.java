@@ -10,42 +10,66 @@ import org.apache.commons.cli.Option;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Comparator;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class OptionWrapperTest {
 
-    private Option optionVersion;
-    private Option optionJade;
     private Option optionA;
     private Option optionB;
-    private Option optionHelp;
     private Option optionC;
+    private OptionWrapper optionD;
+    private OptionWrapper optionE;
+    private OptionWrapper optionF;
+    private ApplicationOption mockApplicationOptionD;
+    private ApplicationOption mockApplicationOptionE;
+    private ApplicationOption mockApplicationOptionF;
+    private Comparator<Option> comparator;
 
     @Before
     public void setUp() {
-        optionVersion = new VersionOption().toOption();
-        optionJade = new AgentsOption().toOption();
-        optionHelp = new HelpOption().toOption();
+        comparator = OptionWrapper.comparator();
         optionA = new Option("a", null);
         optionB = new Option("b", null);
         optionC = new Option("c", null);
+
+        mockApplicationOptionD = mock(ApplicationOption.class);
+        when(mockApplicationOptionD.getOrder()).thenReturn(10);
+        optionD = new OptionWrapper(mockApplicationOptionD);
+
+        mockApplicationOptionE = mock(ApplicationOption.class);
+        when(mockApplicationOptionE.getOrder()).thenReturn(20);
+        optionE = new OptionWrapper(mockApplicationOptionE);
+
+        mockApplicationOptionF = mock(ApplicationOption.class);
+        when(mockApplicationOptionF.getOpt()).thenReturn("f");
+        optionF = new OptionWrapper(mockApplicationOptionF);
     }
 
     @Test
-    public void shouldReturnVersionLessJade() {
-        assertThat(OptionWrapper.comparator().compare(optionVersion, optionJade), is(lessThan(0)));
+    public void shouldReturnALessThanB() {
+        assertThat(comparator.compare(optionA, optionB), is(lessThan(0)));
     }
 
     @Test
-    public void shouldReturnALessB() {
-        assertThat(OptionWrapper.comparator().compare(optionA, optionB), is(lessThan(0)));
+    public void shouldReturnDLessThanE() {
+        assertThat(comparator.compare(optionD, optionE), is(lessThan(0)));
     }
 
     @Test
-    public void shouldReturnCLessHelp() {
-        assertThat(OptionWrapper.comparator().compare(optionC, optionHelp), is(lessThan(0)));
+    public void shouldReturnCLessThanF() {
+        assertThat(comparator.compare(optionC, optionF), is(lessThan(0)));
+    }
+
+    @Test
+    public void shouldReturnCorrectOrder() {
+        assertThat(optionD.getOrder(), is(mockApplicationOptionD.getOrder()));
+        assertThat(optionE.getOrder(), is(mockApplicationOptionE.getOrder()));
     }
 
 }

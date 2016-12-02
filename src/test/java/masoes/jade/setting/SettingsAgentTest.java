@@ -34,6 +34,7 @@ import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
@@ -41,14 +42,18 @@ import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 public class SettingsAgentTest {
 
     private SettingsAgent spySettingsAgent;
-    private ApplicationLogger mockApplicationLogger;
-
-    private ArgumentCaptor<DFAgentDescription> agentDescriptionArgumentCaptor = ArgumentCaptor.forClass(DFAgentDescription.class);
+    private ApplicationLogger mockLogger;
+    private ArgumentCaptor<DFAgentDescription> agentDescriptionArgumentCaptor;
 
     @Before
-    public void setUp() {
-        mockApplicationLogger = mock(ApplicationLogger.class);
-        spySettingsAgent = spy(new SettingsAgent(mockApplicationLogger));
+    public void setUp() throws Exception {
+        agentDescriptionArgumentCaptor = ArgumentCaptor.forClass(DFAgentDescription.class);
+        mockLogger = mock(ApplicationLogger.class);
+
+        SettingsAgent settingsAgent = new SettingsAgent();
+        setFieldValue(settingsAgent, "logger", mockLogger);
+
+        spySettingsAgent = spy(settingsAgent);
         doNothing().when(spySettingsAgent).addBehaviour(any(ReplaySettingsBehaviour.class));
         doCallRealMethod().when(spySettingsAgent).setup();
     }
@@ -84,7 +89,7 @@ public class SettingsAgentTest {
         DFService.register(eq(spySettingsAgent), any());
 
         spySettingsAgent.setup();
-        verify(mockApplicationLogger).agentException(spySettingsAgent, expectedException);
+        verify(mockLogger).agentException(spySettingsAgent, expectedException);
     }
 
 }

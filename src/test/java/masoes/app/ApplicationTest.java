@@ -19,31 +19,34 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class ApplicationTest {
 
     @Rule
-    public final ExpectedSystemExit expectedSystemExit = ExpectedSystemExit.none();
+    public ExpectedSystemExit expectedSystemExit = ExpectedSystemExit.none();
     private ApplicationLogger mockLogger;
-    private ApplicationOptionProcessor mockCli;
-    private SettingsLoader mockSettings;
+    private ApplicationOptionProcessor mockApplicationOptionProcessor;
+    private SettingsLoader mockSettingsLoader;
     private String[] args;
     private Application application;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         mockLogger = mock(ApplicationLogger.class);
-        mockSettings = mock(SettingsLoader.class);
-        mockCli = mock(ApplicationOptionProcessor.class);
-
-        application = new Application(mockLogger, mockSettings, mockCli);
+        mockSettingsLoader = mock(SettingsLoader.class);
+        mockApplicationOptionProcessor = mock(ApplicationOptionProcessor.class);
+        application = new Application();
+        setFieldValue(application, "logger", mockLogger);
+        setFieldValue(application, "settingsLoader", mockSettingsLoader);
+        setFieldValue(application, "applicationOptionProcessor", mockApplicationOptionProcessor);
         args = new String[]{};
     }
 
     @Test
     public void shouldInvokeSystemExitWhenException() {
         RuntimeException expectedException = new RuntimeException();
-        doThrow(expectedException).when(mockCli).processArgs(args);
+        doThrow(expectedException).when(mockApplicationOptionProcessor).processArgs(args);
 
         expectedSystemExit.checkAssertionAfterwards(() -> verify(mockLogger).cantNotStartApplication(eq(expectedException)));
         expectedSystemExit.expectSystemExitWithStatus(-1);
@@ -55,9 +58,9 @@ public class ApplicationTest {
     public void shouldStartApp() {
         application.run(args);
 
-        verify(mockCli).processArgs(args);
+        verify(mockApplicationOptionProcessor).processArgs(args);
         verify(mockLogger).startingApplication(any());
-        verify(mockSettings).load();
+        verify(mockSettingsLoader).load();
     }
 
 }

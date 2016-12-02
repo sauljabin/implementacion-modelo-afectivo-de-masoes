@@ -18,39 +18,32 @@ import java.util.stream.Collectors;
 public class ApplicationOptionProcessor {
 
     private ApplicationLogger logger;
-    private ApplicationOptions options;
+    private ApplicationOptions applicationOptions;
     private CommandLineParser commandLineParser;
     private CommandLine commandLine;
 
     public ApplicationOptionProcessor() {
-        this(new ApplicationOptions(), new DefaultParser(), new ApplicationLogger(LoggerFactory.getLogger(ApplicationOptionProcessor.class)));
-    }
-
-    public ApplicationOptionProcessor(ApplicationOptions options, CommandLineParser commandLineParser, ApplicationLogger logger) {
-        this.options = options;
-        this.commandLineParser = commandLineParser;
-        this.logger = logger;
+        applicationOptions = new ApplicationOptions();
+        commandLineParser = new DefaultParser();
+        logger = new ApplicationLogger(LoggerFactory.getLogger(ApplicationOptionProcessor.class));
     }
 
     public void processArgs(String[] args) {
         try {
-            commandLine = commandLineParser.parse(options.toOptions(), args);
-            execOptions();
+            commandLine = commandLineParser.parse(applicationOptions.toOptions(), args);
+
+            List<ApplicationOption> optionsToExec = applicationOptions.getApplicationOptionList()
+                    .stream()
+                    .filter(tempOption -> commandLine.hasOption(tempOption.getKeyOpt()))
+                    .collect(Collectors.toList());
+
+            if (optionsToExec.isEmpty()) {
+                execOption(applicationOptions.getDefaultApplicationOption());
+            } else {
+                optionsToExec.forEach(this::execOption);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
-        }
-    }
-
-    private void execOptions() {
-        List<ApplicationOption> optionsToExec = options.getApplicationOptionList()
-                .stream()
-                .filter(tempOption -> commandLine.hasOption(tempOption.getKeyOpt()))
-                .collect(Collectors.toList());
-
-        if (optionsToExec.isEmpty()) {
-            execOption(options.getDefaultApplicationOption());
-        } else {
-            optionsToExec.forEach(this::execOption);
         }
     }
 

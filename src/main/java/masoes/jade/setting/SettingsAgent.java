@@ -20,11 +20,7 @@ public class SettingsAgent extends Agent {
     private ApplicationLogger logger;
 
     public SettingsAgent() {
-        this(new ApplicationLogger(LoggerFactory.getLogger(SettingsAgent.class)));
-    }
-
-    public SettingsAgent(ApplicationLogger logger) {
-        this.logger = logger;
+        logger = new ApplicationLogger(LoggerFactory.getLogger(SettingsAgent.class));
     }
 
     @Override

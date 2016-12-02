@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 public class StringGenerator {
 
     private static final String CHARACTERS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    private final Random random;
+    private Random random;
 
     public StringGenerator() {
         random = new Random();

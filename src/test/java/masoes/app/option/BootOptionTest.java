@@ -28,6 +28,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class BootOptionTest {
 
@@ -35,24 +36,24 @@ public class BootOptionTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     private BootOption bootOption;
-    private List<EnvironmentAgentInfo> expectedJadeAgentOptionList;
     private EnvironmentFactory mockEnvironmentFactory;
     private JadeBoot mockJadeBoot;
     private Environment mockEnv;
     private ArgumentCaptor<String> stringArgumentCaptor;
 
     @Before
-    public void setUp() {
-        expectedJadeAgentOptionList = new ArrayList<>();
+    public void setUp() throws Exception {
+        stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
 
         mockEnvironmentFactory = mock(EnvironmentFactory.class);
         mockJadeBoot = mock(JadeBoot.class);
         mockEnv = mock(Environment.class);
 
-        bootOption = new BootOption(mockEnvironmentFactory, mockJadeBoot);
+        bootOption = new BootOption();
+        setFieldValue(bootOption, "environmentFactory", mockEnvironmentFactory);
+        setFieldValue(bootOption, "jadeBoot", mockJadeBoot);
 
         when(mockEnvironmentFactory.createEnvironment()).thenReturn(mockEnv);
-        stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
     }
 
     @Test
@@ -66,6 +67,7 @@ public class BootOptionTest {
 
     @Test
     public void shouldInvokeEnvironmentCreation() {
+        List<EnvironmentAgentInfo> expectedJadeAgentOptionList = new ArrayList<>();
         expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent", Agent.class, Arrays.asList("arg1", "arg2")));
         when(mockEnv.getEnvironmentAgentInfoList()).thenReturn(expectedJadeAgentOptionList);
 
@@ -79,6 +81,7 @@ public class BootOptionTest {
 
     @Test
     public void shouldInvokeEnvironmentCreationWithTwoAgents() {
+        List<EnvironmentAgentInfo> expectedJadeAgentOptionList = new ArrayList<>();
         expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent", Agent.class, Arrays.asList("arg1", "arg2")));
         expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent2", Agent.class, null));
         when(mockEnv.getEnvironmentAgentInfoList()).thenReturn(expectedJadeAgentOptionList);

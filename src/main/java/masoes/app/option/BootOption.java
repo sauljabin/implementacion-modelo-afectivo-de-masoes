@@ -22,13 +22,9 @@ public class BootOption extends ApplicationOption {
     private EnvironmentFactory environmentFactory;
     private JadeBoot jadeBoot;
 
-    public BootOption(EnvironmentFactory environmentFactory, JadeBoot jadeBoot) {
-        this.environmentFactory = environmentFactory;
-        this.jadeBoot = jadeBoot;
-    }
-
     public BootOption() {
-        this(new EnvironmentFactory(), new JadeBoot());
+        environmentFactory = new EnvironmentFactory();
+        jadeBoot = new JadeBoot();
     }
 
     @Override

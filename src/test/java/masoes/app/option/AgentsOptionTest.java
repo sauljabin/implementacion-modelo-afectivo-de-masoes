@@ -15,6 +15,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class AgentsOptionTest {
 
@@ -22,9 +23,10 @@ public class AgentsOptionTest {
     private JadeBoot mockJadeBoot;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         mockJadeBoot = mock(JadeBoot.class);
-        agentsOption = new AgentsOption(mockJadeBoot);
+        agentsOption = new AgentsOption();
+        setFieldValue(agentsOption, "jadeBoot", mockJadeBoot);
     }
 
     @Test

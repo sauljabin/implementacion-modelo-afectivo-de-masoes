@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class RandomGenerator {
 
-    private final Random random;
+    private Random random;
 
     public RandomGenerator() {
         random = new Random();

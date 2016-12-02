@@ -21,12 +21,14 @@ import static org.junit.Assert.assertThat;
 public class VersionOptionTest {
 
     @Rule
-    public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
+    public SystemOutRule systemOutRule = new SystemOutRule().enableLog();
+
     private VersionOption versionOption;
-    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
+    private SettingsLoader settingsLoader;
 
     @Before
     public void setUp() {
+        settingsLoader = SettingsLoader.getInstance();
         settingsLoader.load();
         versionOption = new VersionOption();
     }

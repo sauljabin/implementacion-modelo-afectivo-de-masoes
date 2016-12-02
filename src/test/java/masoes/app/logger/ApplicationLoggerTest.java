@@ -37,10 +37,11 @@ public class ApplicationLoggerTest {
 
     private Logger mockLogger;
     private ApplicationLogger applicationLogger;
-    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
+    private SettingsLoader settingsLoader;
 
     @Before
     public void setUp() {
+        settingsLoader = SettingsLoader.getInstance();
         settingsLoader.load();
         mockLogger = mock(Logger.class);
         applicationLogger = new ApplicationLogger(mockLogger);

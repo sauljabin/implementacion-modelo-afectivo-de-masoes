@@ -8,7 +8,7 @@ package masoes.core;
 
 import jade.core.behaviours.Behaviour;
 
-public abstract class BehaviourManager {
+public class BehaviourManager {
 
     private Behaviour behaviour;
 
@@ -33,6 +33,29 @@ public abstract class BehaviourManager {
         behaviour = calculateBehaviour(emotion);
     }
 
-    protected abstract Behaviour calculateBehaviour(Emotion emotion);
+    protected Behaviour calculateBehaviour(Emotion emotion) {
+        BehaviourType behaviourType = getBehaviourTypeAssociated(emotion.getEmotionType());
+        switch (behaviourType) {
+            case COGNITIVE:
+                return createCognitiveBehaviour();
+            case IMITATIVE:
+                return createImitativeBehaviour();
+            case REACTIVE:
+            default:
+                return createReactiveBehaviour();
+        }
+    }
+
+    protected Behaviour createReactiveBehaviour() {
+        return null;
+    }
+
+    protected Behaviour createImitativeBehaviour() {
+        return null;
+    }
+
+    protected Behaviour createCognitiveBehaviour() {
+        return null;
+    }
 
 }

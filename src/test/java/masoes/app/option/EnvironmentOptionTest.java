@@ -18,10 +18,11 @@ import static org.junit.Assert.assertTrue;
 public class EnvironmentOptionTest {
 
     private EnvironmentOption environmentOption;
-    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
+    private SettingsLoader settingsLoader;
 
     @Before
     public void setUp() {
+        settingsLoader = SettingsLoader.getInstance();
         settingsLoader.load();
         environmentOption = new EnvironmentOption();
     }

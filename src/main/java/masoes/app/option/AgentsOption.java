@@ -13,11 +13,7 @@ public class AgentsOption extends ApplicationOption {
     private JadeBoot jadeBoot;
 
     public AgentsOption() {
-        this(new JadeBoot());
-    }
-
-    public AgentsOption(JadeBoot jadeBoot) {
-        this.jadeBoot = jadeBoot;
+        jadeBoot = new JadeBoot();
     }
 
     @Override

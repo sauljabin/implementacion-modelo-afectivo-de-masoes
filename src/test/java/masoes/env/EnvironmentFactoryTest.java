@@ -24,10 +24,11 @@ public class EnvironmentFactoryTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     private EnvironmentFactory environmentFactory;
-    private SettingsLoader settingsLoader = SettingsLoader.getInstance();
+    private SettingsLoader settingsLoader;
 
     @Before
     public void setUp() {
+        settingsLoader = SettingsLoader.getInstance();
         settingsLoader.load();
         environmentFactory = new EnvironmentFactory();
     }

@@ -21,13 +21,9 @@ public class JadeBoot {
     private ProfileImpl jadeProfile;
     private Runtime jadeRuntime;
 
-    public JadeBoot(ProfileImpl jadeProfile, Runtime jadeRuntime) {
-        this.jadeProfile = jadeProfile;
-        this.jadeRuntime = jadeRuntime;
-    }
-
     public JadeBoot() {
-        this(new ProfileImpl(), Runtime.instance());
+        jadeProfile = new ProfileImpl();
+        jadeRuntime = Runtime.instance();
     }
 
     public void boot(String agents) {

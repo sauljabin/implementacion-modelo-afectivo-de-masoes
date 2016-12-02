@@ -13,14 +13,10 @@ import org.slf4j.LoggerFactory;
 
 public class SettingsOption extends ApplicationOption {
 
-    private ApplicationLogger applicationLogger;
-
-    public SettingsOption(ApplicationLogger appLogger) {
-        applicationLogger = appLogger;
-    }
+    private ApplicationLogger logger;
 
     public SettingsOption() {
-        this(new ApplicationLogger(LoggerFactory.getLogger(SettingsOption.class)));
+        logger = new ApplicationLogger(LoggerFactory.getLogger(SettingsOption.class));
     }
 
     @Override
@@ -54,7 +50,7 @@ public class SettingsOption extends ApplicationOption {
     public void exec(String optionValue) {
         MapParser mapParser = new MapParser();
         mapParser.parseMap(optionValue).forEach((key, value) -> Setting.set(key, value));
-        applicationLogger.updatedSettings();
+        logger.updatedSettings();
     }
 
 }

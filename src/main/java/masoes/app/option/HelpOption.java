@@ -11,17 +11,10 @@ import org.apache.commons.cli.HelpFormatter;
 
 public class HelpOption extends ApplicationOption {
 
-    private final HelpFormatter formatter;
+    private HelpFormatter helpFormatter;
 
     public HelpOption() {
-        this(new HelpFormatter());
-    }
-
-    public HelpOption(HelpFormatter formatter) {
-        this.formatter = formatter;
-        formatter.setSyntaxPrefix("Usage: ");
-        formatter.setLongOptSeparator("=");
-        formatter.setOptionComparator(OptionWrapper.comparator());
+        helpFormatter = new HelpFormatter();
     }
 
     @Override
@@ -52,7 +45,10 @@ public class HelpOption extends ApplicationOption {
     @Override
     public void exec(String optionValue) {
         try {
-            formatter.printHelp(Setting.APP_NAME.getValue(), new ApplicationOptions().toOptions());
+            helpFormatter.setSyntaxPrefix("Usage: ");
+            helpFormatter.setLongOptSeparator("=");
+            helpFormatter.setOptionComparator(OptionWrapper.comparator());
+            helpFormatter.printHelp(Setting.APP_NAME.getValue(), new ApplicationOptions().toOptions());
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
