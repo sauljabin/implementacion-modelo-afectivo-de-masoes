@@ -131,4 +131,10 @@ public class LogWriterTest {
         verify(mockLogger).debug(eq(expectedFormatMessage), eq(expectedException));
     }
 
+    @Test
+    public void shouldAddArgsInDifferentInvokes() throws Exception {
+        logWriter.message(expectedFormat).args("arg").args(1).args(0.4).info(mockLogger);
+        verify(mockLogger).info(eq(expectedFormatMessage));
+    }
+
 }

@@ -134,6 +134,13 @@ public class ApplicationLoggerTest {
 
         applicationLogger.agentEmotionalState(mockAgent);
         verify(mockLogger).info(eq(expectedMessage));
+
+        expectedBehaviourName = "NO BEHAVIOUR";
+        when(mockAgent.getEmotionalBehaviour()).thenReturn(null);
+        expectedMessage = String.format("Emotional state in agent \"%s\": emotion=%s, state=%s, behaviour=%s", expectedAgentName, mockEmotion, emotionalState, expectedBehaviourName);
+
+        applicationLogger.agentEmotionalState(mockAgent);
+        verify(mockLogger).info(eq(expectedMessage));
     }
 
     @Test
@@ -158,6 +165,13 @@ public class ApplicationLoggerTest {
         when(mockAgent.getEmotionalBehaviour()).thenReturn(mockBehaviour);
 
         String expectedMessage = String.format("Emotional state changed in agent \"%s\": stimulus=%s, emotion=%s, state=%s, behaviour=%s", expectedAgentName, mockStimulus, mockEmotion, emotionalState, expectedBehaviourName);
+
+        applicationLogger.agentEmotionalStateChanged(mockAgent, mockStimulus);
+        verify(mockLogger).info(eq(expectedMessage));
+
+        expectedBehaviourName = "NO BEHAVIOUR";
+        when(mockAgent.getEmotionalBehaviour()).thenReturn(null);
+        expectedMessage = String.format("Emotional state changed in agent \"%s\": stimulus=%s, emotion=%s, state=%s, behaviour=%s", expectedAgentName, mockStimulus, mockEmotion, emotionalState, expectedBehaviourName);
 
         applicationLogger.agentEmotionalStateChanged(mockAgent, mockStimulus);
         verify(mockLogger).info(eq(expectedMessage));

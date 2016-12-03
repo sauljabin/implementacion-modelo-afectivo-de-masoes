@@ -8,13 +8,16 @@ package masoes.app.logger;
 
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class LogWriter {
 
     private Optional<String> message;
     private Optional<Exception> exception;
-    private Optional<Object[]> args;
+    private List<Object> argsList;
 
     public LogWriter() {
         init();
@@ -23,7 +26,7 @@ public class LogWriter {
     private void init() {
         message = Optional.empty();
         exception = Optional.empty();
-        args = Optional.empty();
+        argsList = new ArrayList<>();
     }
 
     public LogWriter message(String message) {
@@ -37,13 +40,13 @@ public class LogWriter {
     }
 
     public LogWriter args(Object... args) {
-        this.args = Optional.ofNullable(args);
+        argsList.addAll(Arrays.asList(args));
         return this;
     }
 
     private String getMessage() {
-        if (args.isPresent()) {
-            return String.format(message.orElse("%s"), args.get());
+        if (!argsList.isEmpty()) {
+            return String.format(message.orElse("%s"), argsList.toArray());
         } else {
             return message.orElse("");
         }

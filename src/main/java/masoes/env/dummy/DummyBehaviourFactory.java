@@ -29,4 +29,5 @@ public class DummyBehaviourFactory extends BehaviourFactory {
     public Behaviour createCognitiveBehaviour(EmotionalAgent agent) {
         return new DummyCognitiveBehaviour();
     }
+
 }
