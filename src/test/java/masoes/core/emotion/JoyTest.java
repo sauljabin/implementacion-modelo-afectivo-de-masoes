@@ -7,8 +7,8 @@
 package masoes.core.emotion;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import masoes.core.EmotionType;
-import masoes.util.math.GeometryCreator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,11 +24,11 @@ public class JoyTest {
 
     private Joy joy;
     private Coordinate[] coordinates;
-    private GeometryCreator geometryCreator;
+    private GeometryFactory geometryFactory;
 
     @Before
     public void setUp() {
-        geometryCreator = new GeometryCreator();
+        geometryFactory = new GeometryFactory();
         joy = new Joy();
         coordinates = new Coordinate[]{
                 new Coordinate(0, 0),
@@ -42,24 +42,24 @@ public class JoyTest {
     @Test
     public void shouldIntersectsWithBoundaryPoints() {
         Arrays.stream(coordinates)
-                .forEach(coordinate -> assertTrue(joy.getGeometry().intersects(geometryCreator.createPoint(coordinate.x, coordinate.y))));
+                .forEach(coordinate -> assertTrue(joy.getGeometry().intersects(geometryFactory.createPoint(coordinate))));
     }
 
     @Test
     public void shouldNotContainsPoint() {
-        assertFalse(joy.getGeometry().intersects(geometryCreator.createPoint(0.7, 0.7)));
-        assertFalse(joy.getGeometry().intersects(geometryCreator.createPoint(0.51, 0.51)));
+        assertFalse(joy.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.7, 0.7))));
+        assertFalse(joy.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.51, 0.51))));
     }
 
     @Test
     public void shouldContainsInsidePoint() {
-        assertTrue(joy.getGeometry().intersects(geometryCreator.createPoint(0.1, 0.1)));
-        assertTrue(joy.getGeometry().intersects(geometryCreator.createPoint(0.4, 0.4)));
+        assertTrue(joy.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.1, 0.1))));
+        assertTrue(joy.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.4, 0.4))));
     }
 
     @Test
     public void shouldReturnCorrectConfiguration() {
-        assertReflectionEquals(joy.getGeometry(), geometryCreator.createPolygon(coordinates));
+        assertReflectionEquals(joy.getGeometry(), geometryFactory.createPolygon(coordinates));
         assertThat(joy.getName(), is("Joy"));
         assertThat(joy.getEmotionType(), is(EmotionType.POSITIVE));
     }

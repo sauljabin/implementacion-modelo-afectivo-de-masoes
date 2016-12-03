@@ -7,8 +7,8 @@
 package masoes.core.emotion;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import masoes.core.EmotionType;
-import masoes.util.math.GeometryCreator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,11 +24,11 @@ public class SadnessTest {
 
     private Sadness sadness;
     private Coordinate[] coordinates;
-    private GeometryCreator geometryCreator;
+    private GeometryFactory geometryFactory;
 
     @Before
     public void setUp() {
-        geometryCreator = new GeometryCreator();
+        geometryFactory = new GeometryFactory();
         sadness = new Sadness();
         coordinates = new Coordinate[]{
                 new Coordinate(0, 0),
@@ -42,25 +42,25 @@ public class SadnessTest {
     @Test
     public void shouldIntersectsWithBoundaryPoints() {
         Arrays.stream(coordinates)
-                .forEach(coordinate -> assertTrue(sadness.getGeometry().intersects(geometryCreator.createPoint(coordinate.x, coordinate.y))));
+                .forEach(coordinate -> assertTrue(sadness.getGeometry().intersects(geometryFactory.createPoint(coordinate))));
     }
 
     @Test
     public void shouldContainsInsidePoint() {
-        assertTrue(sadness.getGeometry().intersects(geometryCreator.createPoint(-0.1, -0.1)));
-        assertTrue(sadness.getGeometry().intersects(geometryCreator.createPoint(-0.4, -0.4)));
+        assertTrue(sadness.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.1, -0.1))));
+        assertTrue(sadness.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.4, -0.4))));
     }
 
     @Test
     public void shouldNotContainsPoint() {
-        assertFalse(sadness.getGeometry().intersects(geometryCreator.createPoint(0.1, -0.1)));
-        assertFalse(sadness.getGeometry().intersects(geometryCreator.createPoint(1.1, -0.1)));
-        assertFalse(sadness.getGeometry().intersects(geometryCreator.createPoint(-0.6, -0.6)));
+        assertFalse(sadness.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.1, -0.1))));
+        assertFalse(sadness.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(1.1, -0.1))));
+        assertFalse(sadness.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.6, -0.6))));
     }
 
     @Test
     public void shouldReturnCorrectConfiguration() {
-        assertReflectionEquals(sadness.getGeometry(), geometryCreator.createPolygon(coordinates));
+        assertReflectionEquals(sadness.getGeometry(), geometryFactory.createPolygon(coordinates));
         assertThat(sadness.getName(), is("Sadness"));
         assertThat(sadness.getEmotionType(), is(EmotionType.NEGATIVE_LOW));
     }

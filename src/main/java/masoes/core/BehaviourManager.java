@@ -8,6 +8,8 @@ package masoes.core;
 
 import jade.core.behaviours.Behaviour;
 
+import java.util.Optional;
+
 public class BehaviourManager {
 
     private Behaviour behaviour;
@@ -29,33 +31,34 @@ public class BehaviourManager {
         }
     }
 
-    public void updateBehaviour(Emotion emotion) {
-        behaviour = calculateBehaviour(emotion);
-    }
+    public void updateBehaviour(EmotionalAgent agent) {
+        if (Optional.ofNullable(behaviour).isPresent()) {
+            agent.removeBehaviour(behaviour);
+        }
 
-    protected Behaviour calculateBehaviour(Emotion emotion) {
-        BehaviourType behaviourType = getBehaviourTypeAssociated(emotion.getEmotionType());
-        switch (behaviourType) {
-            case COGNITIVE:
-                return createCognitiveBehaviour();
-            case IMITATIVE:
-                return createImitativeBehaviour();
-            case REACTIVE:
-            default:
-                return createReactiveBehaviour();
+        behaviour = calculateBehaviour(agent);
+
+        if (Optional.ofNullable(behaviour).isPresent()) {
+            agent.addBehaviour(behaviour);
         }
     }
 
-    protected Behaviour createReactiveBehaviour() {
-        return null;
-    }
+    protected Behaviour calculateBehaviour(EmotionalAgent agent) {
+        BehaviourFactory behaviourFactory = agent.getBehaviourFactory();
 
-    protected Behaviour createImitativeBehaviour() {
-        return null;
-    }
+        if (!Optional.ofNullable(behaviourFactory).isPresent()) {
+            return null;
+        }
 
-    protected Behaviour createCognitiveBehaviour() {
-        return null;
+        switch (getBehaviourTypeAssociated(agent.getCurrentEmotion().getEmotionType())) {
+            case COGNITIVE:
+                return behaviourFactory.createCognitiveBehaviour(agent);
+            case IMITATIVE:
+                return behaviourFactory.createImitativeBehaviour(agent);
+            case REACTIVE:
+            default:
+                return behaviourFactory.createReactiveBehaviour(agent);
+        }
     }
 
 }

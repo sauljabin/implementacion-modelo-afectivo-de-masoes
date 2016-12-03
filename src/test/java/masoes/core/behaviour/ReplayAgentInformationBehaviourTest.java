@@ -65,7 +65,6 @@ public class ReplayAgentInformationBehaviourTest {
         when(mockEmotion.getName()).thenReturn(expectedEmotion);
         when(mockEmotionalAgent.getCurrentEmotion()).thenReturn(mockEmotion);
 
-
         Behaviour mockBehaviour = mock(Behaviour.class);
         String expectedBehaviour = "EXPECTED_BEHAVIOUR";
         when(mockBehaviour.getBehaviourName()).thenReturn(expectedBehaviour);
@@ -80,6 +79,24 @@ public class ReplayAgentInformationBehaviourTest {
         expectedContent.put("emotion", expectedEmotion);
         expectedContent.put("behaviour", expectedBehaviour);
         expectedContent.put("state", expectedEmotionalState);
+    }
+
+    @Test
+    public void shouldNotSendInfoOfBehaviourIfIsNull() {
+        when(mockEmotionalAgent.getEmotionalBehaviour()).thenReturn(null);
+        expectedContent.put("behaviour", "NO BEHAVIOUR");
+        spyReplayAgentInformationBehaviour.action();
+        verify(mockAclMessageResponse).setContent(expectedContent.toString());
+    }
+
+    @Test
+    public void shouldNotSendInfoOfEmotionIfIsNull() {
+        when(mockEmotionalAgent.getCurrentEmotion()).thenReturn(null);
+        when(mockEmotionalAgent.getEmotionalState()).thenReturn(null);
+        expectedContent.put("emotion", "NO EMOTION");
+        expectedContent.put("state", "NO STATE");
+        spyReplayAgentInformationBehaviour.action();
+        verify(mockAclMessageResponse).setContent(expectedContent.toString());
     }
 
     @Test

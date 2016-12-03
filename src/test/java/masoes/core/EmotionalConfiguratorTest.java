@@ -12,40 +12,38 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class EmotionalConfiguratorTest {
 
-    private EmotionalConfigurator emotionalConfigurator;
+    private EmotionalConfigurator spyEmotionalConfigurator;
     private EmotionalSpace emotionalSpace;
-    private EmotionalState emotionalState;
 
     @Before
-    public void setUp() {
-        emotionalState = new EmotionalState();
-        emotionalConfigurator = createDummyEmotionalConfigurator(emotionalState);
+    public void setUp() throws Exception {
+        emotionalSpace = new EmotionalSpace();
+        spyEmotionalConfigurator = spy(new EmotionalConfigurator());
     }
 
     @Test
-    public void shouldReturnTheSameActivationAndSatisfaction() {
-        emotionalConfigurator.updateEmotionalState(null);
-        assertThat(emotionalConfigurator.getEmotionalState(), is(emotionalState));
+    public void shouldUpdateEmotionalState() throws Exception {
+        EmotionalState mockEmotionalState = mock(EmotionalState.class);
+        Stimulus mockStimulus = mock(Stimulus.class);
+        when(spyEmotionalConfigurator.calculateEmotionalState(mockStimulus)).thenReturn(mockEmotionalState);
+        spyEmotionalConfigurator.updateEmotion(mockStimulus);
+        verify(spyEmotionalConfigurator).calculateEmotionalState(mockStimulus);
+        assertThat(spyEmotionalConfigurator.getEmotionalState(), is(mockEmotionalState));
     }
 
     @Test
     public void shouldReturnCorrectEmotion() {
-        emotionalSpace = new EmotionalSpace();
-        emotionalConfigurator.updateEmotionalState(null);
-        Emotion expectedEmotion = emotionalSpace.searchEmotion(emotionalConfigurator.getEmotionalState());
-        assertThat(emotionalConfigurator.getEmotion(), is(instanceOf(expectedEmotion.getClass())));
-    }
-
-    private EmotionalConfigurator createDummyEmotionalConfigurator(EmotionalState emotionalState) {
-        return new EmotionalConfigurator() {
-            @Override
-            protected EmotionalState calculateEmotionalState(Stimulus stimulus) {
-                return emotionalState;
-            }
-        };
+        spyEmotionalConfigurator.updateEmotion(any());
+        Emotion expectedEmotion = emotionalSpace.searchEmotion(spyEmotionalConfigurator.getEmotionalState());
+        assertThat(spyEmotionalConfigurator.getEmotion(), is(instanceOf(expectedEmotion.getClass())));
     }
 
 }

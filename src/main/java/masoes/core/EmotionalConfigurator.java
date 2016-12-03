@@ -24,12 +24,11 @@ public class EmotionalConfigurator {
         return emotionalState;
     }
 
-    public void updateEmotionalState(Stimulus stimulus) {
+    public void updateEmotion(Stimulus stimulus) {
         emotionalState = calculateEmotionalState(stimulus);
     }
 
     protected EmotionalState calculateEmotionalState(Stimulus stimulus) {
-        // TODO: Implementar este método
         return new EmotionalState();
     }
 

@@ -13,28 +13,25 @@ import masoes.core.behaviour.ReplayAgentInformationBehaviour;
 import masoes.core.behaviour.StimulusReceiverBehaviour;
 import org.slf4j.LoggerFactory;
 
-public abstract class EmotionalAgent extends Agent {
+public class EmotionalAgent extends Agent {
 
     private BehaviourManager behaviourManager;
     private EmotionalConfigurator emotionalConfigurator;
-    private EmotionalModel emotionalModel;
     private ApplicationLogger logger;
+    private BehaviourFactory behaviourFactory;
 
     public EmotionalAgent() {
         logger = new ApplicationLogger(LoggerFactory.getLogger(EmotionalAgent.class));
+        behaviourManager = new BehaviourManager();
+        emotionalConfigurator = new EmotionalConfigurator();
     }
 
     @Override
-    protected void setup() {
-        emotionalModel = createEmotionalModel();
-        behaviourManager = emotionalModel.getBehaviourManager();
-        emotionalConfigurator = emotionalModel.getEmotionalConfigurator();
-        behaviourManager.updateBehaviour(emotionalConfigurator.getEmotion());
-
+    protected final void setup() {
+        setUp();
         addBehaviour(new ReplayAgentInformationBehaviour(this));
         addBehaviour(new StimulusReceiverBehaviour(this));
-        addBehaviour(behaviourManager.getBehaviour());
-        setUp();
+        behaviourManager.updateBehaviour(this);
     }
 
     public Emotion getCurrentEmotion() {
@@ -51,15 +48,21 @@ public abstract class EmotionalAgent extends Agent {
 
     public void evaluateStimulus(Stimulus stimulus) {
         logger.agentEmotionalState(this);
-        emotionalConfigurator.updateEmotionalState(stimulus);
-        removeBehaviour(behaviourManager.getBehaviour());
-        behaviourManager.updateBehaviour(emotionalConfigurator.getEmotion());
-        addBehaviour(behaviourManager.getBehaviour());
+        emotionalConfigurator.updateEmotion(stimulus);
+        behaviourManager.updateBehaviour(this);
         logger.agentEmotionalStateChanged(this, stimulus);
     }
 
-    protected abstract EmotionalModel createEmotionalModel();
+    public BehaviourFactory getBehaviourFactory() {
+        return behaviourFactory;
+    }
 
-    protected abstract void setUp();
+    public void setBehaviourFactory(BehaviourFactory behaviourFactory) {
+        this.behaviourFactory = behaviourFactory;
+    }
+
+    protected void setUp() {
+
+    }
 
 }

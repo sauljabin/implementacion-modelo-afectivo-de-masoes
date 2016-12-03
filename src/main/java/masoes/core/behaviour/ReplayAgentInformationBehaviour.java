@@ -10,7 +10,9 @@ import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import masoes.app.logger.ApplicationLogger;
+import masoes.core.Emotion;
 import masoes.core.EmotionalAgent;
+import masoes.core.EmotionalState;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
@@ -23,6 +25,9 @@ public class ReplayAgentInformationBehaviour extends Behaviour {
     private static final String EMOTION_KEY = "emotion";
     private static final String BEHAVIOUR_KEY = "behaviour";
     private static final String STATE_KEY = "state";
+    private static final String NO_BEHAVIOUR = "NO BEHAVIOUR";
+    private static final String NO_EMOTION = "NO EMOTION";
+    private static final String NO_STATE = "NO STATE";
     private MessageTemplate template;
     private EmotionalAgent emotionalAgent;
     private ApplicationLogger logger;
@@ -51,9 +56,28 @@ public class ReplayAgentInformationBehaviour extends Behaviour {
     private String createContent() {
         Map<String, Object> content = new HashMap<>();
         content.put(AGENT_KEY, emotionalAgent.getName());
-        content.put(EMOTION_KEY, emotionalAgent.getCurrentEmotion().getName());
-        content.put(BEHAVIOUR_KEY, emotionalAgent.getEmotionalBehaviour().getBehaviourName());
-        content.put(STATE_KEY, emotionalAgent.getEmotionalState());
+
+        Optional<Emotion> emotionOptional = Optional.ofNullable(emotionalAgent.getCurrentEmotion());
+        if (emotionOptional.isPresent()) {
+            content.put(EMOTION_KEY, emotionOptional.get().getName());
+        } else {
+            content.put(EMOTION_KEY, NO_EMOTION);
+        }
+
+        Optional<Behaviour> behaviourOptional = Optional.ofNullable(emotionalAgent.getEmotionalBehaviour());
+        if (behaviourOptional.isPresent()) {
+            content.put(BEHAVIOUR_KEY, behaviourOptional.get().getBehaviourName());
+        } else {
+            content.put(BEHAVIOUR_KEY, NO_BEHAVIOUR);
+        }
+
+        Optional<EmotionalState> stateOptional = Optional.ofNullable(emotionalAgent.getEmotionalState());
+        if (stateOptional.isPresent()) {
+            content.put(STATE_KEY, stateOptional.get().toString());
+        } else {
+            content.put(STATE_KEY, NO_STATE);
+        }
+
         return content.toString();
     }
 

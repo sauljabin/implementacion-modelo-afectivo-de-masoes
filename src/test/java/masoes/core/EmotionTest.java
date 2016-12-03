@@ -7,7 +7,7 @@
 package masoes.core;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import masoes.util.math.GeometryCreator;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
@@ -27,7 +27,7 @@ public class EmotionTest {
     public void shouldReturnPolygon() {
         Coordinate[] coordinates = {new Coordinate(0, 0), new Coordinate(1, 1), new Coordinate(1, 0), new Coordinate(0, 0)};
         Emotion emotion = createDummyEmotion(null, coordinates);
-        assertReflectionEquals(emotion.getGeometry(), new GeometryCreator().createPolygon(coordinates));
+        assertReflectionEquals(emotion.getGeometry(), new GeometryFactory().createPolygon(coordinates));
     }
 
     private Emotion createDummyEmotion(String name, Coordinate[] coordinates) {

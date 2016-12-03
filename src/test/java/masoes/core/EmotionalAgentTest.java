@@ -11,19 +11,20 @@ import masoes.app.logger.ApplicationLogger;
 import masoes.core.behaviour.ReplayAgentInformationBehaviour;
 import masoes.core.behaviour.StimulusReceiverBehaviour;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.InOrder;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class EmotionalAgentTest {
 
@@ -33,20 +34,18 @@ public class EmotionalAgentTest {
     private Behaviour mockBehaviour;
     private EmotionalConfigurator mockEmotionalConfigurator;
     private Emotion mockEmotion;
-    private EmotionalModel emotionalModel;
     private Stimulus mockStimulus;
-    private ApplicationLogger mockApplicationLogger;
+    private ApplicationLogger mockLogger;
 
     @Before
     public void setUp() throws Exception {
-        mockEmotionalState = mock(EmotionalState.class);
         mockBehaviourManager = mock(BehaviourManager.class);
         mockEmotionalConfigurator = mock(EmotionalConfigurator.class);
+        mockLogger = mock(ApplicationLogger.class);
 
-        emotionalModel = new EmotionalModel(mockEmotionalConfigurator, mockBehaviourManager);
-        mockApplicationLogger = mock(ApplicationLogger.class);
-        spyEmotionalAgent = spy(createDummyEmotionalAgent(emotionalModel, mockApplicationLogger));
+        spyEmotionalAgent = createAgent();
 
+        mockEmotionalState = mock(EmotionalState.class);
         mockBehaviour = mock(Behaviour.class);
         mockEmotion = mock(Emotion.class);
         mockStimulus = mock(Stimulus.class);
@@ -66,48 +65,38 @@ public class EmotionalAgentTest {
         verify(spyEmotionalAgent, atLeastOnce()).addBehaviour(any(StimulusReceiverBehaviour.class));
         assertThat(spyEmotionalAgent.getEmotionalBehaviour(), is(mockBehaviour));
         assertThat(spyEmotionalAgent.getCurrentEmotion(), is(mockEmotion));
+
+        InOrder inOrder = inOrder(spyEmotionalAgent, mockBehaviourManager);
+        inOrder.verify(spyEmotionalAgent).setUp();
+        inOrder.verify(mockBehaviourManager).updateBehaviour(spyEmotionalAgent);
     }
 
     @Test
-    public void shouldChangeEmotionalBehaviour() {
-        spyEmotionalAgent.evaluateStimulus(any());
-        verify(mockBehaviourManager, times(2)).updateBehaviour(mockEmotion);
-        verify(spyEmotionalAgent, times(2)).addBehaviour(mockBehaviour);
-        verify(spyEmotionalAgent).removeBehaviour(mockBehaviour);
-        assertThat(spyEmotionalAgent.getEmotionalBehaviour(), is(mockBehaviour));
+    public void shouldUpdateBehaviour() throws Exception {
+        spyEmotionalAgent = createAgent();
+        spyEmotionalAgent.evaluateStimulus(mockStimulus);
+        verify(mockBehaviourManager).updateBehaviour(spyEmotionalAgent);
     }
 
     @Test
     public void shouldUpdateEmotion() {
         spyEmotionalAgent.evaluateStimulus(mockStimulus);
-        verify(mockEmotionalConfigurator).updateEmotionalState(mockStimulus);
-        assertThat(spyEmotionalAgent.getCurrentEmotion(), is(mockEmotion));
-        assertThat(spyEmotionalAgent.getEmotionalState(), is(mockEmotionalState));
+        verify(mockEmotionalConfigurator).updateEmotion(mockStimulus);
     }
 
     @Test
-    @Ignore
     public void shouldLogEmotionChange() {
         spyEmotionalAgent.evaluateStimulus(mockStimulus);
-        verify(mockApplicationLogger).agentEmotionalState(spyEmotionalAgent);
-        verify(mockApplicationLogger).agentEmotionalStateChanged(spyEmotionalAgent, mockStimulus);
+        verify(mockLogger).agentEmotionalState(spyEmotionalAgent);
+        verify(mockLogger).agentEmotionalStateChanged(spyEmotionalAgent, mockStimulus);
     }
 
-    private EmotionalAgent createDummyEmotionalAgent(EmotionalModel emotionalModel, ApplicationLogger applicationLogger) throws Exception {
-
-        EmotionalAgent emotionalAgent = new EmotionalAgent() {
-            @Override
-            protected EmotionalModel createEmotionalModel() {
-                return emotionalModel;
-            }
-
-            @Override
-            protected void setUp() {
-
-            }
-        };
-
-        return emotionalAgent;
+    private EmotionalAgent createAgent() throws NoSuchFieldException {
+        EmotionalAgent emotionalAgent = new EmotionalAgent();
+        setFieldValue(emotionalAgent, "behaviourManager", mockBehaviourManager);
+        setFieldValue(emotionalAgent, "emotionalConfigurator", mockEmotionalConfigurator);
+        setFieldValue(emotionalAgent, "logger", mockLogger);
+        return spy(emotionalAgent);
     }
 
 }

@@ -7,18 +7,12 @@
 package masoes.env.dummy;
 
 import masoes.core.EmotionalAgent;
-import masoes.core.EmotionalModel;
 
 public class DummyEmotionalAgent extends EmotionalAgent {
 
     @Override
-    protected EmotionalModel createEmotionalModel() {
-        return new EmotionalModel(new DummyEmotionalConfigurator(), new DummyBehaviourManager());
-    }
-
-    @Override
     protected void setUp() {
-
+        setBehaviourFactory(new DummyBehaviourFactory());
     }
 
 }

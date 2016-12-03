@@ -8,16 +8,16 @@ package masoes.core;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
-import masoes.util.math.GeometryCreator;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 public abstract class Emotion {
 
     private Geometry polygon;
-    private GeometryCreator geometryCreator;
+    private GeometryFactory geometryFactory;
 
     public Emotion() {
-        geometryCreator = new GeometryCreator();
-        polygon = geometryCreator.createPolygon(getCoordinates());
+        geometryFactory = new GeometryFactory();
+        polygon = geometryFactory.createPolygon(getCoordinates());
     }
 
     public Geometry getGeometry() {
