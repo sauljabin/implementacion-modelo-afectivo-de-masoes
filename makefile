@@ -11,13 +11,13 @@ install: dist ; unzip -o masoes-*.zip && cd masoes-*/bin && ./masoes
 help: ; grep "^# target" [Mm]akefile | cut -c10-
 
 # target help-masoes: Display masoes help.
-help-masoes: ; ./gradlew run -Pargs="-h"
+help-masoes: ; ./gradlew -q run -Pargs="-h"
 
 # target run: Exec masoes with dummy env.
-run: ; ./gradlew run -Pargs="-b"
+run: ; ./gradlew -q run -Pargs="-b"
 
 # target run-wikipedia: Exec masoes with wikipedia env.
-run-wikipedia: ; ./gradlew run -Pargs="-b -e wikipedia"
+run-wikipedia: ; ./gradlew -q run -Pargs="-b -e wikipedia"
 
 # target no-copyright: Search files without copyright.
 no-copyright: ; grep --include *.java -Lr "Copyright (c)" .
