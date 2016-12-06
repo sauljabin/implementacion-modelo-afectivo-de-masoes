@@ -1,8 +1,8 @@
 # target dist: Make program.
-dist: clean ; ./gradlew build && cp build/distributions/masoes-*.zip .
+dist: clean ; ./gradlew -q build && cp build/distributions/masoes-*.zip .
 
 # target clean: Refresh dependencies and clean.
-clean: ; ./gradlew clean --refresh-dependencies
+clean: ; ./gradlew -q clean --refresh-dependencies
 
 # target install: Make program and install.
 install: dist ; unzip -o masoes-*.zip && cd masoes-*/bin && ./masoes
@@ -26,7 +26,7 @@ no-copyright: ; grep --include *.java -Lr "Copyright (c)" .
 unit-test: clean ; ./gradlew test
 
 # target functional-test: Exec functional test.
-functional-test: clean ; ./gradlew functionalTest
+functional-test: clean ; ./gradlew -q functionalTest
 
 # target all-test: Exec all test.
 all-test: unit-test functional-test
