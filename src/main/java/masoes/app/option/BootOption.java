@@ -68,7 +68,7 @@ public class BootOption extends ApplicationOption {
     private String toJadeAgentsOption(List<EnvironmentAgentInfo> environmentAgentInfoList) {
         List<String> stringList = toStringList(environmentAgentInfoList);
         if (isNotPresentAgentSetting(environmentAgentInfoList))
-            stringList.add(new EnvironmentAgentInfo("settings", SettingsAgent.class, null).toString());
+            stringList.add(new EnvironmentAgentInfo("settings", SettingsAgent.class).toString());
         return String.join(";", stringList);
     }
 

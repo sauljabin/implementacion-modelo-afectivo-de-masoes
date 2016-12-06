@@ -17,6 +17,11 @@ public class EnvironmentAgentInfo {
     private Class<? extends Agent> agentClass;
     private List<String> arguments;
 
+    public EnvironmentAgentInfo(String name, Class<? extends Agent> agentClass) {
+        this.name = name;
+        this.agentClass = agentClass;
+    }
+
     public EnvironmentAgentInfo(String name, Class<? extends Agent> agentClass, List<String> arguments) {
         this.name = name;
         this.agentClass = agentClass;

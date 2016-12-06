@@ -31,7 +31,7 @@ public class FunctionalTestApplication {
             Setting.JADE_GUI.setValue(Boolean.FALSE.toString());
             Setting.MASOES_ENV.setValue(FUNCTIONAL_TEST_ENV);
             logger.startingApplication(args);
-            EnvironmentAgentInfo functionalTestEnvironment = new EnvironmentAgentInfo(FunctionalTesterAgent.class.getSimpleName(), FunctionalTesterAgent.class, null);
+            EnvironmentAgentInfo functionalTestEnvironment = new EnvironmentAgentInfo(FunctionalTesterAgent.class.getSimpleName(), FunctionalTesterAgent.class);
             JadeBoot jadeBoot = new JadeBoot();
             jadeBoot.boot(functionalTestEnvironment.toString());
         } catch (Exception e) {

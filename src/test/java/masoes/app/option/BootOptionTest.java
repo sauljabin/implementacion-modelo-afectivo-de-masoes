@@ -83,7 +83,7 @@ public class BootOptionTest {
     public void shouldInvokeEnvironmentCreationWithTwoAgents() {
         List<EnvironmentAgentInfo> expectedJadeAgentOptionList = new ArrayList<>();
         expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent", Agent.class, Arrays.asList("arg1", "arg2")));
-        expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent2", Agent.class, null));
+        expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent2", Agent.class));
         when(mockEnv.getEnvironmentAgentInfoList()).thenReturn(expectedJadeAgentOptionList);
 
         bootOption.exec(null);

@@ -24,7 +24,7 @@ public class EnvironmentAgentInfoTest {
 
     @Test
     public void shouldGetCorrectToStringWithoutArguments() {
-        EnvironmentAgentInfo actualAgentInfo = new EnvironmentAgentInfo("agent", Agent.class, null);
+        EnvironmentAgentInfo actualAgentInfo = new EnvironmentAgentInfo("agent", Agent.class);
         assertThat(actualAgentInfo.toString(), is("agent:jade.core.Agent"));
     }
 
