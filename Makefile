@@ -1,5 +1,5 @@
 # target dist: Make program.
-dist: clean ; ./gradlew -q build && cp build/distributions/masoes-*.zip .
+dist: clean ; ./gradlew -q build
 
 # target clean: Refresh dependencies and clean.
 clean: ; ./gradlew -q clean --refresh-dependencies

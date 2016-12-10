@@ -69,4 +69,11 @@ public class MapParserTest {
         assertReflectionEquals(expectedMap, mapParser.parseMap(actualString));
     }
 
+    @Test
+    public void shouldParseWithPoint() {
+        expectedMap.put("jade.gui", "true");
+        actualString = expectedMap.toString();
+        assertReflectionEquals(expectedMap, mapParser.parseMap(actualString));
+    }
+
 }

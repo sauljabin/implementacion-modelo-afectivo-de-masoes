@@ -218,3 +218,17 @@ Ejecución de todas las pruebas:
 ```
 make all-test
 ```
+
+## Ejecución con docker
+
+Crear imagen:
+
+```
+docker-compose build
+```
+
+Iniciar con docker:
+
+```
+docker-compose up
+```
