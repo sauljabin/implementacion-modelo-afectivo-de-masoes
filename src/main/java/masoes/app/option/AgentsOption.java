@@ -35,9 +35,9 @@ public class AgentsOption extends ApplicationOption {
     public String getDescription() {
         String description = "Starts JADE with agents, examples:\n" +
                 "Adds agents: \n" +
-                "  --agents=\"<name>:<class>;<name>:<class>\"\n" +
+                "-a <name>:<class>;<name>:<class>\n" +
                 "Agent arguments: \n" +
-                "  --agents=\"<name>:<class>(arg1,arg2)\"";
+                "-a <name>:<class>(arg1,arg2)";
         return description;
     }
 
