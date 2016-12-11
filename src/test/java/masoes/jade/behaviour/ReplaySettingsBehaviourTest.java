@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -42,6 +43,7 @@ public class ReplaySettingsBehaviourTest {
     private ApplicationLogger mockLogger;
     private ObjectMapper objectMapper;
     private JadeSettings mockJadeSettings;
+    private Map<String, Object> expectedContent;
 
     @Before
     public void setUp() throws Exception {
@@ -63,6 +65,19 @@ public class ReplaySettingsBehaviourTest {
         mockAclMessageResponse = mock(ACLMessage.class);
         when(mockAclMessageRequest.createReply()).thenReturn(mockAclMessageResponse);
         when(spyAgent.receive(any())).thenReturn(mockAclMessageRequest);
+
+        Map<String, String> expectedApplicationSettingsMap = new HashMap<>();
+        expectedApplicationSettingsMap.put("key1", "value1");
+        when(mockApplicationSettings.toMap()).thenReturn(expectedApplicationSettingsMap);
+
+
+        Map<String, String> expectedJadeSettingsMap = new HashMap<>();
+        expectedJadeSettingsMap.put("key1", "value1");
+        when(mockJadeSettings.toMap()).thenReturn(expectedJadeSettingsMap);
+
+        expectedContent = new HashMap<>();
+        expectedContent.put("applicationSettings", expectedApplicationSettingsMap);
+        expectedContent.put("jadeSettings", expectedJadeSettingsMap);
     }
 
     @Test
@@ -74,23 +89,9 @@ public class ReplaySettingsBehaviourTest {
 
     @Test
     public void shouldSendAllSettings() throws Exception {
-        Map<String, String> expectedApplicationSettingsMap = new HashMap<>();
-        expectedApplicationSettingsMap.put("key1", "value1");
-        when(mockApplicationSettings.toMap()).thenReturn(expectedApplicationSettingsMap);
-
-
-        Map<String, String> expectedJadeSettingsMap = new HashMap<>();
-        expectedJadeSettingsMap.put("key1", "value1");
-        when(mockJadeSettings.toMap()).thenReturn(expectedJadeSettingsMap);
-
         spyReplaySettingsBehaviour.action();
 
-        Map<String, Object> objectMap = new HashMap<>();
-
-        objectMap.put("applicationSettings", expectedApplicationSettingsMap);
-        objectMap.put("jadeSettings", expectedJadeSettingsMap);
-
-        String content = objectMapper.writeValueAsString(objectMap);
+        String content = objectMapper.writeValueAsString(expectedContent);
 
         verify(mockAclMessageResponse).setContent(content);
         verify(mockAclMessageResponse).setPerformative(ACLMessage.INFORM);
@@ -117,6 +118,18 @@ public class ReplaySettingsBehaviourTest {
         verify(mockAclMessageResponse).setContent(expectedContent);
         verify(mockAclMessageResponse).setPerformative(ACLMessage.INFORM);
         verify(spyAgent).send(mockAclMessageResponse);
+    }
+
+    @Test
+    public void shouldSendFailure() throws Exception {
+        String expectedMessage = "";
+        RuntimeException toBeThrown = new RuntimeException(expectedMessage);
+        doThrow(toBeThrown).when(mockAclMessageResponse).setContent(objectMapper.writeValueAsString(expectedContent));
+        spyReplaySettingsBehaviour.action();
+        verify(mockAclMessageResponse).setContent(expectedMessage);
+        verify(mockAclMessageResponse).setPerformative(ACLMessage.FAILURE);
+        verify(spyAgent).send(mockAclMessageResponse);
+        verify(mockLogger).agentException(spyAgent, toBeThrown);
     }
 
     @Test

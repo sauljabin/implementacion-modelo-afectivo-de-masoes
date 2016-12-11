@@ -8,6 +8,7 @@ package masoes.core.emotion;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Polygon;
 import masoes.core.EmotionType;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +60,8 @@ public class RejectionTest {
 
     @Test
     public void shouldReturnCorrectConfiguration() {
-        assertReflectionEquals(rejection.getGeometry(), geometryFactory.createPolygon(coordinates));
+        Polygon expectedPolygon = geometryFactory.createPolygon(coordinates);
+        assertReflectionEquals(expectedPolygon, rejection.getGeometry());
         assertThat(rejection.getName(), is("Rejection"));
         assertThat(rejection.getEmotionType(), is(EmotionType.NEGATIVE_LOW));
     }

@@ -47,14 +47,20 @@ public class ReplayAgentInformationBehaviour extends Behaviour {
             logger.agentMessage(myAgent, msg);
             ACLMessage reply = msg.createReply();
             reply.setPerformative(ACLMessage.INFORM);
-            reply.setContent(createContent());
+            try {
+                reply.setContent(createContent());
+            } catch (Exception e) {
+                reply.setPerformative(ACLMessage.FAILURE);
+                reply.setContent(e.getMessage());
+                logger.agentException(myAgent, e);
+            }
             myAgent.send(reply);
         } else {
             block();
         }
     }
 
-    private String createContent() {
+    private String createContent() throws Exception {
         Map<String, Object> content = new HashMap<>();
         content.put(AGENT_KEY, emotionalAgent.getName());
 
@@ -81,11 +87,7 @@ public class ReplayAgentInformationBehaviour extends Behaviour {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        try {
-            return objectMapper.writeValueAsString(content);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        return objectMapper.writeValueAsString(content);
     }
 
     @Override

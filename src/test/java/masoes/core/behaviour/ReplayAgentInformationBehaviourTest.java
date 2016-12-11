@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.spy;
@@ -115,6 +116,19 @@ public class ReplayAgentInformationBehaviourTest {
         verify(mockAclMessageResponse).setContent(objectMapper.writeValueAsString(expectedContent));
         verify(mockAclMessageResponse).setPerformative(ACLMessage.INFORM);
         verify(mockEmotionalAgent).send(mockAclMessageResponse);
+    }
+
+    @Test
+    public void shouldSendFailure() throws Exception {
+        String expectedMessage = "";
+        RuntimeException toBeThrown = new RuntimeException(expectedMessage);
+        doThrow(toBeThrown).when(mockAclMessageResponse).setContent(objectMapper.writeValueAsString(expectedContent));
+        spyReplayAgentInformationBehaviour.action();
+        verify(mockAclMessageResponse).setContent(expectedMessage);
+        verify(mockAclMessageResponse).setPerformative(ACLMessage.FAILURE);
+        verify(mockEmotionalAgent).send(mockAclMessageResponse);
+        verify(mockLogger).agentException(mockEmotionalAgent, toBeThrown);
+
     }
 
     @Test

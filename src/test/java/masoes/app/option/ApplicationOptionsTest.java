@@ -21,11 +21,13 @@ public class ApplicationOptionsTest {
     private ApplicationOptions applicationOptions;
     private List<ApplicationOption> expectedOptions;
     private Options expectedOptionsObject;
+    private HelpOption expectedDefaultOption;
 
     @Before
     public void setUp() {
         applicationOptions = new ApplicationOptions();
         expectedOptionsObject = new Options();
+        expectedDefaultOption = new HelpOption();
 
         expectedOptions = new ArrayList<>();
         expectedOptions.add(new VersionOption());
@@ -51,7 +53,7 @@ public class ApplicationOptionsTest {
 
     @Test
     public void shouldReturnHelpDefaultOption() {
-        assertReflectionEquals(new HelpOption(), applicationOptions.getDefaultApplicationOption());
+        assertReflectionEquals(expectedDefaultOption, applicationOptions.getDefaultApplicationOption());
     }
 
 }

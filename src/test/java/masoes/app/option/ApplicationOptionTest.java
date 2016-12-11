@@ -54,16 +54,16 @@ public class ApplicationOptionTest {
     public void shouldCreateCorrectLongOption() {
         String expectedLongOpt = "long";
         ApplicationOption applicationOption = createDummyApplicationOption(0, expectedLongOpt, null, null, ArgumentType.NO_ARGS);
-        Option option = Option.builder().longOpt(expectedLongOpt).build();
-        assertReflectionEquals(applicationOption.toOption(), option);
+        Option expectedOption = Option.builder().longOpt(expectedLongOpt).build();
+        assertReflectionEquals(expectedOption, applicationOption.toOption());
     }
 
     @Test
     public void shouldCreateCorrectOptOption() {
         String expectedOpt = "opt";
         ApplicationOption applicationOption = createDummyApplicationOption(0, null, expectedOpt, null, ArgumentType.NO_ARGS);
-        Option option = Option.builder(expectedOpt).build();
-        assertReflectionEquals(applicationOption.toOption(), option);
+        Option expectedOption = Option.builder(expectedOpt).build();
+        assertReflectionEquals(expectedOption, applicationOption.toOption());
     }
 
     @Test
@@ -71,16 +71,16 @@ public class ApplicationOptionTest {
         String expectedDesc = "desc";
         String expectedOpt = "opt";
         ApplicationOption applicationOption = createDummyApplicationOption(0, null, expectedOpt, expectedDesc, ArgumentType.NO_ARGS);
-        Option option = Option.builder(expectedOpt).desc(expectedDesc).build();
-        assertReflectionEquals(applicationOption.toOption(), option);
+        Option expectedOption = Option.builder(expectedOpt).desc(expectedDesc).build();
+        assertReflectionEquals(expectedOption, applicationOption.toOption());
     }
 
     @Test
     public void shouldCreateCorrectOptionWithArgs() {
         String expectedOpt = "opt";
         ApplicationOption applicationOption = createDummyApplicationOption(0, null, expectedOpt, null, ArgumentType.UNLIMITED_ARGS);
-        Option option = Option.builder(expectedOpt).hasArgs().build();
-        assertReflectionEquals(applicationOption.toOption(), option);
+        Option expectedOption = Option.builder(expectedOpt).hasArgs().build();
+        assertReflectionEquals(expectedOption, applicationOption.toOption());
     }
 
     private ApplicationOption createDummyApplicationOption(int order, String longOpt, String opt, String description, ArgumentType argumentType) {

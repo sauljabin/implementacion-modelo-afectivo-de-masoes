@@ -49,39 +49,37 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
             ACLMessage reply = msg.createReply();
             reply.setPerformative(ACLMessage.INFORM);
 
-            if (isNullContent(msg)) {
-                reply.setContent(getContentAllSettings());
-            } else if (isSetting(msg.getContent())) {
-                reply.setContent(getContent(msg.getContent()));
-            } else {
-                reply.setPerformative(ACLMessage.NOT_UNDERSTOOD);
+            try {
+                if (isNullContent(msg)) {
+                    reply.setContent(getContentAllSettings());
+                } else if (isSetting(msg.getContent())) {
+                    reply.setContent(getContent(msg.getContent()));
+                } else {
+                    reply.setPerformative(ACLMessage.NOT_UNDERSTOOD);
+                }
+            } catch (Exception e) {
+                reply.setPerformative(ACLMessage.FAILURE);
+                reply.setContent(e.getMessage());
+                logger.agentException(myAgent, e);
             }
-
             myAgent.send(reply);
-
         } else {
             block();
         }
-
     }
 
     private String getContent(String key) {
         return Optional.ofNullable(applicationSettings.get(key)).orElse(jadeSettings.get(key));
     }
 
-    private String getContentAllSettings() {
-        try {
+    private String getContentAllSettings() throws Exception {
+        Map<String, Object> objectMap = new HashMap<>();
 
-            Map<String, Object> objectMap = new HashMap<>();
+        objectMap.put("applicationSettings", applicationSettings.toMap());
+        objectMap.put("jadeSettings", jadeSettings.toMap());
 
-            objectMap.put("applicationSettings", applicationSettings.toMap());
-            objectMap.put("jadeSettings", jadeSettings.toMap());
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.writeValueAsString(objectMap);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(objectMap);
     }
 
     private boolean isPresent(ACLMessage msg) {
