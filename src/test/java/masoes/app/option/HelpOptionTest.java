@@ -23,15 +23,15 @@ public class HelpOptionTest {
 
     private HelpOption helpOption;
     private HelpFormatter mockHelpFormatter;
-    private ApplicationSettings applicationSettings;
+    private ApplicationSettings mockApplicationSettings;
 
     @Before
     public void setUp() throws Exception {
-        applicationSettings = ApplicationSettings.getInstance();
-        applicationSettings.load();
+        mockApplicationSettings = mock(ApplicationSettings.class);
         helpOption = new HelpOption();
         mockHelpFormatter = mock(HelpFormatter.class);
         setFieldValue(helpOption, "helpFormatter", mockHelpFormatter);
+        setFieldValue(helpOption, "applicationSettings", mockApplicationSettings);
     }
 
     @Test

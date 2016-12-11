@@ -91,7 +91,7 @@ public class EmotionalAgentTest {
         verify(mockLogger).agentEmotionalStateChanged(spyEmotionalAgent, mockStimulus);
     }
 
-    private EmotionalAgent createAgent() throws NoSuchFieldException {
+    private EmotionalAgent createAgent() throws Exception {
         EmotionalAgent emotionalAgent = new EmotionalAgent();
         setFieldValue(emotionalAgent, "behaviourManager", mockBehaviourManager);
         setFieldValue(emotionalAgent, "emotionalConfigurator", mockEmotionalConfigurator);

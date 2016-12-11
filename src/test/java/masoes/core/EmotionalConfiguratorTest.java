@@ -24,13 +24,13 @@ public class EmotionalConfiguratorTest {
     private EmotionalSpace emotionalSpace;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         emotionalSpace = new EmotionalSpace();
         spyEmotionalConfigurator = spy(new EmotionalConfigurator());
     }
 
     @Test
-    public void shouldUpdateEmotionalState() throws Exception {
+    public void shouldUpdateEmotionalState() {
         EmotionalState mockEmotionalState = mock(EmotionalState.class);
         Stimulus mockStimulus = mock(Stimulus.class);
         when(spyEmotionalConfigurator.calculateEmotionalState(mockStimulus)).thenReturn(mockEmotionalState);

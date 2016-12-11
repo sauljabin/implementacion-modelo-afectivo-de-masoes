@@ -6,7 +6,6 @@
 
 package masoes.jade.settings;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
@@ -25,6 +24,7 @@ public class JadeSettings {
     private Properties properties;
 
     private JadeSettings() {
+        properties = new Properties();
     }
 
     public synchronized static JadeSettings getInstance() {
@@ -35,16 +35,15 @@ public class JadeSettings {
     }
 
     public synchronized void load() {
-        properties = new Properties();
         try {
+            properties.clear();
             properties.load(ClassLoader.getSystemResourceAsStream(SETTINGS_PROPERTIES_FILE));
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
+        } catch (Exception e) {
+            throw new JadeSettingsException(e.getMessage(), e);
         }
     }
 
     public synchronized void set(String key, String value) {
-        validatePropertiesLoad();
         if (!Optional.ofNullable(value).isPresent()) {
             properties.remove(key);
         } else {
@@ -53,7 +52,6 @@ public class JadeSettings {
     }
 
     public synchronized String get(String key, String defaultValue) {
-        validatePropertiesLoad();
         String value = get(key);
         if (!Optional.ofNullable(value).isPresent()) {
             return defaultValue;
@@ -62,7 +60,6 @@ public class JadeSettings {
     }
 
     public synchronized String get(String key) {
-        validatePropertiesLoad();
         if (!Optional.ofNullable(key).isPresent()) {
             return null;
         }
@@ -75,17 +72,10 @@ public class JadeSettings {
     }
 
     public synchronized Map<String, String> toMap() {
-        validatePropertiesLoad();
         return properties.stringPropertyNames()
                 .stream()
                 .sorted()
                 .collect(Collectors.toMap(key -> key, key -> get(key)));
-    }
-
-    private void validatePropertiesLoad() {
-        if (!Optional.ofNullable(properties).isPresent()) {
-            throw new JadeSettingsException("Jade settings not loaded, first invokes load()");
-        }
     }
 
 }

@@ -30,15 +30,15 @@ public class SettingsOptionTest {
 
     private SettingsOption settingsOption;
     private ApplicationLogger mockLogger;
-    private ApplicationSettings applicationSettings;
+    private ApplicationSettings mockApplicationSettings;
 
     @Before
     public void setUp() throws Exception {
-        applicationSettings = ApplicationSettings.getInstance();
-        applicationSettings.load();
+        mockApplicationSettings = mock(ApplicationSettings.class);
         mockLogger = mock(ApplicationLogger.class);
         settingsOption = new SettingsOption();
         setFieldValue(settingsOption, "logger", mockLogger);
+        setFieldValue(settingsOption, "applicationSettings", mockApplicationSettings);
     }
 
     @Test
@@ -64,8 +64,8 @@ public class SettingsOptionTest {
         settingsOption.setProperties(expectedProperties);
         settingsOption.exec();
 
-        assertThat(applicationSettings.get(expectedKey1), is(expectedValue1));
-        assertThat(applicationSettings.get(expectedKey2), is(expectedValue2));
+        verify(mockApplicationSettings).set(expectedKey1, expectedValue1);
+        verify(mockApplicationSettings).set(expectedKey2, expectedValue2);
         verify(mockLogger).updatedSettings();
     }
 

@@ -24,7 +24,7 @@ public class DummyEmotionalAgentTest {
     }
 
     @Test
-    public void shouldSetCorrectBehaviourFactory() throws Exception {
+    public void shouldSetCorrectBehaviourFactory() {
         spyDummyEmotionalAgent.setUp();
         verify(spyDummyEmotionalAgent).setBehaviourFactory(any(DummyBehaviourFactory.class));
     }

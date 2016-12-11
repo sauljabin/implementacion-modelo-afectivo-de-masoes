@@ -22,16 +22,15 @@ public class AgentsOptionTest {
 
     private AgentsOption agentsOption;
     private JadeBoot mockJadeBoot;
-    private JadeSettings jadeSettings;
+    private JadeSettings mockJadeSettings;
 
     @Before
     public void setUp() throws Exception {
         mockJadeBoot = mock(JadeBoot.class);
+        mockJadeSettings = mock(JadeSettings.class);
         agentsOption = new AgentsOption();
-        jadeSettings = JadeSettings.getInstance();
-        jadeSettings.load();
         setFieldValue(agentsOption, "jadeBoot", mockJadeBoot);
-        setFieldValue(agentsOption, "jadeSettings", jadeSettings);
+        setFieldValue(agentsOption, "jadeSettings", mockJadeSettings);
     }
 
     @Test
@@ -51,7 +50,7 @@ public class AgentsOptionTest {
         agentsOption.setValue(expectedArgs);
         agentsOption.exec();
         verify(mockJadeBoot).boot();
-        assertThat(jadeSettings.get(JadeSettings.AGENTS), is(expectedArgs));
+        verify(mockJadeSettings).set(JadeSettings.AGENTS, expectedArgs);
     }
 
 }

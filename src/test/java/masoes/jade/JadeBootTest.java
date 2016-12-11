@@ -13,8 +13,12 @@ import masoes.jade.settings.JadeSettings;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class JadeBootTest {
@@ -22,16 +26,12 @@ public class JadeBootTest {
     private ProfileImpl mockJadeProfile;
     private Runtime mockJadeRuntime;
     private JadeBoot jadeBoot;
-    private ApplicationSettings applicationSettings;
-    private JadeSettings jadeSettings;
+    private ApplicationSettings mockApplicationSettings;
+    private JadeSettings mockJadeSettings;
 
     @Before
     public void setUp() throws Exception {
-        applicationSettings = ApplicationSettings.getInstance();
-        applicationSettings.load();
-
-        jadeSettings = JadeSettings.getInstance();
-        jadeSettings.load();
+        mockJadeSettings = mock(JadeSettings.class);
 
         mockJadeProfile = mock(ProfileImpl.class);
         mockJadeRuntime = mock(Runtime.class);
@@ -39,22 +39,21 @@ public class JadeBootTest {
         jadeBoot = new JadeBoot();
         setFieldValue(jadeBoot, "jadeProfile", mockJadeProfile);
         setFieldValue(jadeBoot, "jadeRuntime", mockJadeRuntime);
-        setFieldValue(jadeBoot, "jadeSettings", jadeSettings);
+        setFieldValue(jadeBoot, "jadeSettings", mockJadeSettings);
     }
 
     @Test
     public void shouldSetCorrectProfileVariables() {
-        String expectedArguments = "arguments";
+        String expectedKey = "key";
+        String expectedValue = "key";
 
-        jadeSettings.set(JadeSettings.AGENTS, expectedArguments);
+        Map<String, String> map = new HashMap<>();
+        map.put(expectedKey, expectedValue);
 
+        when(mockJadeSettings.toMap()).thenReturn(map);
         jadeBoot.boot();
 
-        verify(mockJadeProfile).setParameter("agents", expectedArguments);
-        verify(mockJadeProfile).setParameter("gui", jadeSettings.get(JadeSettings.GUI));
-        verify(mockJadeProfile).setParameter("port", jadeSettings.get(JadeSettings.PORT));
-        verify(mockJadeProfile).setParameter("jade_mtp_http_port", jadeSettings.get(JadeSettings.JADE_MTP_HTTP_PORT));
-        verify(mockJadeProfile).setParameter("jade_domain_df_autocleanup", jadeSettings.get(JadeSettings.JADE_DOMAIN_DF_AUTOCLEANUP));
+        verify(mockJadeProfile).setParameter(expectedKey, expectedValue);
         verify(mockJadeRuntime).setCloseVM(true);
         verify(mockJadeRuntime).startUp(mockJadeProfile);
     }

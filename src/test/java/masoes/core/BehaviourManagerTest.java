@@ -98,7 +98,7 @@ public class BehaviourManagerTest {
     }
 
     @Test
-    public void shouldNotInvokeAddBehaviour() throws Exception {
+    public void shouldNotInvokeAddBehaviour() {
         when(mockEmotionalAgent.getBehaviourFactory()).thenReturn(null);
         behaviourManager.updateBehaviour(mockEmotionalAgent);
         verify(mockEmotionalAgent, never()).addBehaviour(any());

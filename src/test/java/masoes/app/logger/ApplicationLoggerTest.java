@@ -24,6 +24,9 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
@@ -37,24 +40,30 @@ public class ApplicationLoggerTest {
 
     private Logger mockLogger;
     private ApplicationLogger applicationLogger;
-    private ApplicationSettings applicationSettings;
-    private JadeSettings jadeSettings;
+    private ApplicationSettings mockApplicationSettings;
+    private JadeSettings mockJadeSettings;
+    private Map<String, String> expectedApplicationSettingsMap;
+    private Map<String, String> expectedJadeSettingsMap;
 
     @Before
     public void setUp() {
-        applicationSettings = ApplicationSettings.getInstance();
-        applicationSettings.load();
-        jadeSettings = JadeSettings.getInstance();
-        jadeSettings.load();
+        mockApplicationSettings = mock(ApplicationSettings.class);
+        mockJadeSettings = mock(JadeSettings.class);
         mockLogger = mock(Logger.class);
         applicationLogger = new ApplicationLogger(mockLogger);
+
+        expectedApplicationSettingsMap = new HashMap<>();
+        when(mockApplicationSettings.toMap()).thenReturn(expectedApplicationSettingsMap);
+
+        expectedJadeSettingsMap = new HashMap<>();
+        when(mockJadeSettings.toMap()).thenReturn(expectedJadeSettingsMap);
     }
 
     @Test
     public void shouldLogStartingApp() {
         String[] args = {"-h"};
         applicationLogger.startingApplication(args);
-        verify(mockLogger).info(eq("Starting application with arguments: [-h], settings: " + applicationSettings.toMap().toString() + ", jade settings: " + JadeSettings.getInstance().toMap().toString()));
+        verify(mockLogger).info(eq("Starting application with arguments: [-h], settings: " + expectedApplicationSettingsMap.toString() + ", jade settings: " + expectedJadeSettingsMap.toString()));
     }
 
     @Test
@@ -77,7 +86,7 @@ public class ApplicationLoggerTest {
     @Test
     public void shouldLogUpdatedSettings() {
         applicationLogger.updatedSettings();
-        verify(mockLogger).info(eq("Updated settings: " + applicationSettings.toMap().toString()));
+        verify(mockLogger).info(eq("Updated settings: " + mockApplicationSettings.toMap().toString()));
     }
 
     @Test

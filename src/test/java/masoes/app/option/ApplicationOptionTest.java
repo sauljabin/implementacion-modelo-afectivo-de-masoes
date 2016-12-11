@@ -51,7 +51,7 @@ public class ApplicationOptionTest {
     }
 
     @Test
-    public void shouldCreateCorrectLongOption() throws Exception {
+    public void shouldCreateCorrectLongOption() {
         String expectedLongOpt = "long";
         ApplicationOption applicationOption = createDummyApplicationOption(0, expectedLongOpt, null, null, ArgumentType.NO_ARGS);
         Option option = Option.builder().longOpt(expectedLongOpt).build();
@@ -59,7 +59,7 @@ public class ApplicationOptionTest {
     }
 
     @Test
-    public void shouldCreateCorrectOptOption() throws Exception {
+    public void shouldCreateCorrectOptOption() {
         String expectedOpt = "opt";
         ApplicationOption applicationOption = createDummyApplicationOption(0, null, expectedOpt, null, ArgumentType.NO_ARGS);
         Option option = Option.builder(expectedOpt).build();
@@ -67,7 +67,7 @@ public class ApplicationOptionTest {
     }
 
     @Test
-    public void shouldCreateCorrectOptionWithDesc() throws Exception {
+    public void shouldCreateCorrectOptionWithDesc() {
         String expectedDesc = "desc";
         String expectedOpt = "opt";
         ApplicationOption applicationOption = createDummyApplicationOption(0, null, expectedOpt, expectedDesc, ArgumentType.NO_ARGS);
@@ -76,7 +76,7 @@ public class ApplicationOptionTest {
     }
 
     @Test
-    public void shouldCreateCorrectOptionWithArgs() throws Exception {
+    public void shouldCreateCorrectOptionWithArgs() {
         String expectedOpt = "opt";
         ApplicationOption applicationOption = createDummyApplicationOption(0, null, expectedOpt, null, ArgumentType.UNLIMITED_ARGS);
         Option option = Option.builder(expectedOpt).hasArgs().build();

@@ -6,7 +6,6 @@
 
 package masoes.app.settings;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
@@ -31,6 +30,7 @@ public class ApplicationSettings {
     private Properties properties;
 
     private ApplicationSettings() {
+        properties = new Properties();
     }
 
     public synchronized static ApplicationSettings getInstance() {
@@ -41,23 +41,22 @@ public class ApplicationSettings {
     }
 
     public synchronized void load() {
-        properties = new Properties();
-        set(OS_NAME, System.getProperty(OS_NAME));
-        set(OS_ARCH, System.getProperty(OS_ARCH));
-        set(OS_VERSION, System.getProperty(OS_VERSION));
-        set(JAVA_VERSION, System.getProperty(JAVA_VERSION));
-        set(JAVA_VENDOR, System.getProperty(JAVA_VENDOR));
-        set(JADE_VERSION, jade.core.Runtime.getVersion());
-        set(JADE_REVISION, jade.core.Runtime.getRevision());
         try {
+            properties.clear();
+            set(OS_NAME, System.getProperty(OS_NAME));
+            set(OS_ARCH, System.getProperty(OS_ARCH));
+            set(OS_VERSION, System.getProperty(OS_VERSION));
+            set(JAVA_VERSION, System.getProperty(JAVA_VERSION));
+            set(JAVA_VENDOR, System.getProperty(JAVA_VENDOR));
+            set(JADE_VERSION, jade.core.Runtime.getVersion());
+            set(JADE_REVISION, jade.core.Runtime.getRevision());
             properties.load(ClassLoader.getSystemResourceAsStream(SETTINGS_PROPERTIES_FILE));
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
+        } catch (Exception e) {
+            throw new ApplicationSettingsException(e.getMessage(), e);
         }
     }
 
     public synchronized void set(String key, String value) {
-        validatePropertiesLoad();
         if (!Optional.ofNullable(value).isPresent()) {
             properties.remove(key);
         } else {
@@ -66,7 +65,6 @@ public class ApplicationSettings {
     }
 
     public synchronized String get(String key, String defaultValue) {
-        validatePropertiesLoad();
         String value = get(key);
         if (!Optional.ofNullable(value).isPresent()) {
             return defaultValue;
@@ -75,7 +73,6 @@ public class ApplicationSettings {
     }
 
     public synchronized String get(String key) {
-        validatePropertiesLoad();
         if (!Optional.ofNullable(key).isPresent()) {
             return null;
         }
@@ -88,17 +85,10 @@ public class ApplicationSettings {
     }
 
     public synchronized Map<String, String> toMap() {
-        validatePropertiesLoad();
         return properties.stringPropertyNames()
                 .stream()
                 .sorted()
                 .collect(Collectors.toMap(key -> key, key -> get(key)));
-    }
-
-    private void validatePropertiesLoad() {
-        if (!Optional.ofNullable(properties).isPresent()) {
-            throw new ApplicationSettingsException("Application settings not loaded, first invokes load()");
-        }
     }
 
 }

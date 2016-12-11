@@ -34,30 +34,29 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 @PrepareForTest(Agent.class)
 public class ReplaySettingsBehaviourTest {
 
-    private ApplicationSettings applicationSettings;
+    private ApplicationSettings mockApplicationSettings;
     private ReplaySettingsBehaviour spyReplaySettingsBehaviour;
     private Agent spyAgent;
     private ACLMessage mockAclMessageRequest;
     private ACLMessage mockAclMessageResponse;
     private ApplicationLogger mockLogger;
     private ObjectMapper objectMapper;
-    private JadeSettings jadeSettings;
+    private JadeSettings mockJadeSettings;
 
     @Before
     public void setUp() throws Exception {
         objectMapper = new ObjectMapper();
 
-        applicationSettings = ApplicationSettings.getInstance();
-        applicationSettings.load();
-
-        jadeSettings = JadeSettings.getInstance();
-        jadeSettings.load();
+        mockApplicationSettings = mock(ApplicationSettings.class);
+        mockJadeSettings = mock(JadeSettings.class);
 
         spyAgent = spy(new Agent());
         mockLogger = mock(ApplicationLogger.class);
 
         ReplaySettingsBehaviour replaySettingsBehaviour = new ReplaySettingsBehaviour(spyAgent);
         setFieldValue(replaySettingsBehaviour, "logger", mockLogger);
+        setFieldValue(replaySettingsBehaviour, "applicationSettings", mockApplicationSettings);
+        setFieldValue(replaySettingsBehaviour, "jadeSettings", mockJadeSettings);
 
         spyReplaySettingsBehaviour = spy(replaySettingsBehaviour);
         mockAclMessageRequest = mock(ACLMessage.class);
@@ -75,12 +74,21 @@ public class ReplaySettingsBehaviourTest {
 
     @Test
     public void shouldSendAllSettings() throws Exception {
+        Map<String, String> expectedApplicationSettingsMap = new HashMap<>();
+        expectedApplicationSettingsMap.put("key1", "value1");
+        when(mockApplicationSettings.toMap()).thenReturn(expectedApplicationSettingsMap);
+
+
+        Map<String, String> expectedJadeSettingsMap = new HashMap<>();
+        expectedJadeSettingsMap.put("key1", "value1");
+        when(mockJadeSettings.toMap()).thenReturn(expectedJadeSettingsMap);
+
         spyReplaySettingsBehaviour.action();
 
         Map<String, Object> objectMap = new HashMap<>();
 
-        objectMap.put("applicationSettings", applicationSettings.toMap());
-        objectMap.put("jadeSettings", jadeSettings.toMap());
+        objectMap.put("applicationSettings", expectedApplicationSettingsMap);
+        objectMap.put("jadeSettings", expectedJadeSettingsMap);
 
         String content = objectMapper.writeValueAsString(objectMap);
 
@@ -91,19 +99,22 @@ public class ReplaySettingsBehaviourTest {
 
     @Test
     public void shouldSendSpecificSetting() {
-        when(mockAclMessageRequest.getContent()).thenReturn("app.name");
+        String expectedContent = "content";
+        when(mockApplicationSettings.get(ApplicationSettings.APP_NAME)).thenReturn(expectedContent);
+        when(mockAclMessageRequest.getContent()).thenReturn(ApplicationSettings.APP_NAME);
         spyReplaySettingsBehaviour.action();
-        verify(mockAclMessageResponse).setContent(applicationSettings.get(ApplicationSettings.APP_NAME));
+        verify(mockAclMessageResponse).setContent(expectedContent);
         verify(mockAclMessageResponse).setPerformative(ACLMessage.INFORM);
         verify(spyAgent).send(mockAclMessageResponse);
     }
 
     @Test
     public void shouldSendSpecificJadeSetting() {
-        jadeSettings.set("gui", "false");
-        when(mockAclMessageRequest.getContent()).thenReturn("gui");
+        String expectedContent = "content";
+        when(mockJadeSettings.get(JadeSettings.GUI)).thenReturn(expectedContent);
+        when(mockAclMessageRequest.getContent()).thenReturn(JadeSettings.GUI);
         spyReplaySettingsBehaviour.action();
-        verify(mockAclMessageResponse).setContent("false");
+        verify(mockAclMessageResponse).setContent(expectedContent);
         verify(mockAclMessageResponse).setPerformative(ACLMessage.INFORM);
         verify(spyAgent).send(mockAclMessageResponse);
     }

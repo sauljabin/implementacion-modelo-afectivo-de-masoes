@@ -12,17 +12,20 @@ import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class EnvironmentOptionTest {
 
     private EnvironmentOption environmentOption;
-    private ApplicationSettings applicationSettings;
+    private ApplicationSettings mockApplicationSettings;
 
     @Before
-    public void setUp() {
-        applicationSettings = ApplicationSettings.getInstance();
-        applicationSettings.load();
+    public void setUp() throws Exception {
+        mockApplicationSettings = mock(ApplicationSettings.class);
         environmentOption = new EnvironmentOption();
+        setFieldValue(environmentOption, "applicationSettings", mockApplicationSettings);
     }
 
     @Test
@@ -36,10 +39,10 @@ public class EnvironmentOptionTest {
 
     @Test
     public void shouldSetEnvironmentSettingValue() {
-        String expectedCaseStudy = "default";
-        environmentOption.setValue(expectedCaseStudy);
+        String caseStudy = "default";
+        environmentOption.setValue(caseStudy);
         environmentOption.exec();
-        assertThat(applicationSettings.get("masoes.env"), is(expectedCaseStudy));
+        verify(mockApplicationSettings).set(ApplicationSettings.MASOES_ENV, caseStudy);
     }
 
 }

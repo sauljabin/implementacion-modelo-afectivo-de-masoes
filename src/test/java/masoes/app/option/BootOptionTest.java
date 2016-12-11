@@ -39,21 +39,19 @@ public class BootOptionTest {
     private EnvironmentFactory mockEnvironmentFactory;
     private JadeBoot mockJadeBoot;
     private Environment mockEnv;
-    private JadeSettings jadeSettings;
+    private JadeSettings mockJadeSettings;
 
     @Before
     public void setUp() throws Exception {
         mockEnvironmentFactory = mock(EnvironmentFactory.class);
         mockJadeBoot = mock(JadeBoot.class);
         mockEnv = mock(Environment.class);
-
-        jadeSettings = JadeSettings.getInstance();
-        jadeSettings.load();
+        mockJadeSettings = mock(JadeSettings.class);
 
         bootOption = new BootOption();
         setFieldValue(bootOption, "environmentFactory", mockEnvironmentFactory);
         setFieldValue(bootOption, "jadeBoot", mockJadeBoot);
-        setFieldValue(bootOption, "jadeSettings", jadeSettings);
+        setFieldValue(bootOption, "jadeSettings", mockJadeSettings);
 
         when(mockEnvironmentFactory.createEnvironment()).thenReturn(mockEnv);
     }
@@ -78,7 +76,7 @@ public class BootOptionTest {
         verify(mockEnvironmentFactory).createEnvironment();
         verify(mockEnv, atLeastOnce()).getEnvironmentAgentInfoList();
         verify(mockJadeBoot).boot();
-        assertThat(jadeSettings.get(JadeSettings.AGENTS), is("agent:jade.core.Agent(arg1,arg2);settings:masoes.jade.agent.SettingsAgent"));
+        verify(mockJadeSettings).set(JadeSettings.AGENTS, "agent:jade.core.Agent(arg1,arg2);settings:masoes.jade.agent.SettingsAgent");
     }
 
     @Test
@@ -93,7 +91,7 @@ public class BootOptionTest {
         verify(mockEnvironmentFactory).createEnvironment();
         verify(mockEnv, atLeastOnce()).getEnvironmentAgentInfoList();
         verify(mockJadeBoot).boot();
-        assertThat(jadeSettings.get(JadeSettings.AGENTS), is("agent:jade.core.Agent(arg1,arg2);agent2:jade.core.Agent;settings:masoes.jade.agent.SettingsAgent"));
+        verify(mockJadeSettings).set(JadeSettings.AGENTS, "agent:jade.core.Agent(arg1,arg2);agent2:jade.core.Agent;settings:masoes.jade.agent.SettingsAgent");
     }
 
     @Test

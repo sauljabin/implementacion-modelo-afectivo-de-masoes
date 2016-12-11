@@ -132,7 +132,7 @@ public class LogWriterTest {
     }
 
     @Test
-    public void shouldAddArgsInDifferentInvokes() throws Exception {
+    public void shouldAddArgsInDifferentInvokes() {
         logWriter.message(expectedFormat).args("arg").args(1).args(0.4).info(mockLogger);
         verify(mockLogger).info(eq(expectedFormatMessage));
     }

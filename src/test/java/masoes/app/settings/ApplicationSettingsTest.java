@@ -11,13 +11,20 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class ApplicationSettingsTest {
@@ -32,6 +39,7 @@ public class ApplicationSettingsTest {
     @Before
     public void setUp() {
         applicationSettings = ApplicationSettings.getInstance();
+        applicationSettings.load();
         key = "key";
         expectedValue = "expectedValue";
     }
@@ -43,72 +51,56 @@ public class ApplicationSettingsTest {
     }
 
     @Test
-    public void shouldThrowsExceptionInSetWhenSettingsIsNotLoaded() throws NoSuchFieldException {
-        prepareExceptionTest();
-        applicationSettings.set(key, expectedValue);
-    }
-
-    @Test
-    public void shouldThrowsExceptionInGetWhenSettingsIsNotLoaded() throws NoSuchFieldException {
-        prepareExceptionTest();
-        applicationSettings.get(key);
-    }
-
-    @Test
-    public void shouldThrowsExceptionInGetDefaultWhenSettingsIsNotLoaded() throws NoSuchFieldException {
-        prepareExceptionTest();
-        applicationSettings.get(key, "default");
-    }
-
-    @Test
-    public void shouldThrowsExceptionInToMapWhenSettingsIsNotLoaded() throws NoSuchFieldException {
-        prepareExceptionTest();
-        applicationSettings.toMap();
-    }
-
-    @Test
-    public void shouldThrowsExceptionInToStringWhenSettingsIsNotLoaded() throws NoSuchFieldException {
-        prepareExceptionTest();
-        applicationSettings.toString();
+    public void shouldThrowsExceptionWhenErrorInLoad() throws Exception {
+        String expectedMessage = "Message";
+        Properties mockProperties = mock(Properties.class);
+        doThrow(new IOException(expectedMessage)).when(mockProperties).load(any(InputStream.class));
+        setFieldValue(applicationSettings, "properties", mockProperties);
+        expectedException.expect(ApplicationSettingsException.class);
+        expectedException.expectMessage(expectedMessage);
+        applicationSettings.load();
     }
 
     @Test
     public void shouldGetCorrectSetting() {
-        applicationSettings.load();
         applicationSettings.set(key, expectedValue);
         assertThat(applicationSettings.get(key), is(expectedValue));
     }
 
     @Test
-    public void shouldGetDefaultSettingInCaseThatNotExistKey() {
+    public void shouldClearSettingsWhenLoad() {
+        Map<String, String> expectedToMap = applicationSettings.toMap();
+        applicationSettings.set(key, expectedValue);
         applicationSettings.load();
+        Map<String, String> actualToMap = applicationSettings.toMap();
+        assertReflectionEquals(expectedToMap, actualToMap);
+    }
+
+    @Test
+    public void shouldGetDefaultSettingInCaseThatNotExistKey() {
         String expectedDefaultValue = "defaultValue";
         assertThat(applicationSettings.get("", expectedDefaultValue), is(expectedDefaultValue));
     }
 
     @Test
     public void shouldGetDefaultSettingInCaseThatKeyIsNull() {
-        applicationSettings.load();
         String expectedDefaultValue = "defaultValue";
         assertThat(applicationSettings.get(null, expectedDefaultValue), is(expectedDefaultValue));
     }
 
     @Test
     public void shouldReturnNullThatKeyIsNull() {
-        applicationSettings.load();
         assertThat(applicationSettings.get(null), is(nullValue()));
     }
 
     @Test
     public void shouldNotGetDefaultSettingInCaseThatExistKey() {
-        applicationSettings.load();
         applicationSettings.set(key, expectedValue);
         assertThat(applicationSettings.get(key, "anything"), is(expectedValue));
     }
 
     @Test
     public void shouldLoadInitValues() {
-        applicationSettings.load();
         Map<String, String> expectedValues = getInitValues();
         expectedValues.keySet()
                 .forEach(key -> assertThat(applicationSettings.get(key), is(expectedValues.get(key))));
@@ -124,13 +116,11 @@ public class ApplicationSettingsTest {
 
     @Test
     public void shouldGetTheSameStringThatAMap() {
-        applicationSettings.load();
         assertThat(applicationSettings.toString(), is(applicationSettings.toMap().toString()));
     }
 
     @Test
     public void shouldRemoveProperty() {
-        applicationSettings.load();
         applicationSettings.set(key, null);
         assertThat(applicationSettings.get(key), is(nullValue()));
     }
@@ -155,12 +145,6 @@ public class ApplicationSettingsTest {
         initValues.put(jadeRevisionKey, jade.core.Runtime.getRevision());
         initValues.put(masoesEnvKey, "dummy");
         return initValues;
-    }
-
-    private void prepareExceptionTest() throws NoSuchFieldException {
-        setFieldValue(applicationSettings, "properties", null);
-        expectedException.expect(ApplicationSettingsException.class);
-        expectedException.expectMessage("Application settings not loaded, first invokes load()");
     }
 
 }

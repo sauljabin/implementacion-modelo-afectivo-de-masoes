@@ -43,7 +43,7 @@ public class ApplicationOptionProcessor {
                 optionsToExec.forEach(this::execOption);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new OptionProcessorException(e.getMessage(), e);
         }
     }
 

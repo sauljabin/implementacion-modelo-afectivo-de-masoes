@@ -16,6 +16,9 @@ import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class EnvironmentFactoryTest {
 
@@ -23,30 +26,31 @@ public class EnvironmentFactoryTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     private EnvironmentFactory environmentFactory;
-    private ApplicationSettings applicationSettings;
+    private ApplicationSettings mockApplicationSettings;
 
     @Before
-    public void setUp() {
-        applicationSettings = ApplicationSettings.getInstance();
-        applicationSettings.load();
+    public void setUp() throws Exception {
+        mockApplicationSettings = mock(ApplicationSettings.class);
         environmentFactory = new EnvironmentFactory();
+        setFieldValue(environmentFactory, "applicationSettings", mockApplicationSettings);
     }
 
     @Test
     public void shouldCreateDummyEnvironment() {
+        when(mockApplicationSettings.get(ApplicationSettings.MASOES_ENV)).thenReturn("dummy");
         assertThat(environmentFactory.createEnvironment(), instanceOf(DummyEnvironment.class));
     }
 
     @Test
     public void shouldCreateWikipediaEnvironment() {
-        applicationSettings.set(ApplicationSettings.MASOES_ENV, "wikipedia");
+        when(mockApplicationSettings.get(ApplicationSettings.MASOES_ENV)).thenReturn("wikipedia");
         assertThat(environmentFactory.createEnvironment(), instanceOf(WikipediaEnvironment.class));
     }
 
     @Test
     public void shouldThrowInvalidParameterWhenNoExistValueException() {
         String stringArg = "anything";
-        applicationSettings.set(ApplicationSettings.MASOES_ENV, stringArg);
+        when(mockApplicationSettings.get(ApplicationSettings.MASOES_ENV)).thenReturn(stringArg);
         expectedException.expect(InvalidEnvironmentException.class);
         expectedException.expectMessage(String.format("Invalid environment name \"%s\"", stringArg));
         environmentFactory.createEnvironment();

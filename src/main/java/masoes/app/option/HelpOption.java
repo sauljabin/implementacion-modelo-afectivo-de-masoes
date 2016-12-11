@@ -46,13 +46,9 @@ public class HelpOption extends ApplicationOption {
 
     @Override
     public void exec() {
-        try {
-            helpFormatter.setSyntaxPrefix("Usage: ");
-            helpFormatter.setLongOptSeparator("=");
-            helpFormatter.printHelp(applicationSettings.get(ApplicationSettings.APP_NAME), new ApplicationOptions().toOptions());
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        helpFormatter.setSyntaxPrefix("Usage: ");
+        helpFormatter.setLongOptSeparator("=");
+        helpFormatter.printHelp(applicationSettings.get(ApplicationSettings.APP_NAME), new ApplicationOptions().toOptions());
     }
 
 }
