@@ -94,4 +94,8 @@ public class FunctionalTest extends Test {
         return aid;
     }
 
+    public ApplicationLogger getLogger() {
+        return logger;
+    }
+
 }

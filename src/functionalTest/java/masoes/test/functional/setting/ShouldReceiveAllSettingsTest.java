@@ -6,6 +6,7 @@
 
 package masoes.test.functional.setting;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
@@ -38,9 +39,14 @@ public class ShouldReceiveAllSettingsTest extends FunctionalTest {
             public void action() {
                 ACLMessage msg = myAgent.receive();
                 if (msg != null) {
-                    assertEquals("Content", Setting.allToString(), msg.getContent());
-                    assertEquals("Performative", ACLMessage.INFORM, msg.getPerformative());
-                    done = true;
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        assertEquals("Content", mapper.writeValueAsString(Setting.toMap()), msg.getContent());
+                        assertEquals("Performative", ACLMessage.INFORM, msg.getPerformative());
+                        done = true;
+                    } catch (Exception e) {
+                        throw new RuntimeException(e.getMessage(), e);
+                    }
                 } else {
                     block();
                 }

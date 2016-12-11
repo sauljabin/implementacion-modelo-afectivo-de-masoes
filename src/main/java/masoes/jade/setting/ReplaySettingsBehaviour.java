@@ -6,6 +6,7 @@
 
 package masoes.jade.setting;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -42,7 +43,7 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
             reply.setPerformative(ACLMessage.INFORM);
 
             if (isNullContent(msg)) {
-                reply.setContent(Setting.allToString());
+                reply.setContent(getContentAllSettings());
             } else if (isSetting(msg)) {
                 reply.setContent(Setting.get(msg.getContent()));
             } else {
@@ -55,6 +56,15 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
             block();
         }
 
+    }
+
+    private String getContentAllSettings() {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(Setting.toMap());
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
     private boolean isPresent(ACLMessage msg) {

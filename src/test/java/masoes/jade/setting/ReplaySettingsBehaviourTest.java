@@ -6,6 +6,7 @@
 
 package masoes.jade.setting;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import masoes.app.logger.ApplicationLogger;
@@ -36,9 +37,12 @@ public class ReplaySettingsBehaviourTest {
     private ACLMessage mockAclMessageRequest;
     private ACLMessage mockAclMessageResponse;
     private ApplicationLogger mockLogger;
+    private ObjectMapper objectMapper;
 
     @Before
     public void setUp() throws Exception {
+        objectMapper = new ObjectMapper();
+
         settingsLoader = SettingsLoader.getInstance();
         settingsLoader.load();
         spyAgent = spy(new Agent());
@@ -62,9 +66,9 @@ public class ReplaySettingsBehaviourTest {
     }
 
     @Test
-    public void shouldSendAllSettings() {
+    public void shouldSendAllSettings() throws Exception {
         spyReplaySettingsBehaviour.action();
-        verify(mockAclMessageResponse).setContent(Setting.allToString());
+        verify(mockAclMessageResponse).setContent(objectMapper.writeValueAsString(Setting.toMap()));
         verify(mockAclMessageResponse).setPerformative(ACLMessage.INFORM);
         verify(spyAgent).send(mockAclMessageResponse);
     }

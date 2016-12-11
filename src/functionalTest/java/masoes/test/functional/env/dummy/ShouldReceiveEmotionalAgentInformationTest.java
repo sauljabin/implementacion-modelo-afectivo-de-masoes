@@ -6,6 +6,8 @@
 
 package masoes.test.functional.env.dummy;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
@@ -13,7 +15,6 @@ import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import masoes.env.dummy.DummyEmotionalAgent;
 import masoes.test.functional.FunctionalTest;
-import masoes.util.collection.MapParser;
 import test.common.TestException;
 
 import java.util.Map;
@@ -40,14 +41,21 @@ public class ShouldReceiveEmotionalAgentInformationTest extends FunctionalTest {
             public void action() {
                 ACLMessage msg = myAgent.receive();
                 if (msg != null) {
-                    MapParser mapParser = new MapParser();
-                    Map<String, String> stringMap = mapParser.parseMap(msg.getContent());
-                    assertEquals("Content [agent]", dummyAgentAID.getName(), stringMap.get("agent"));
-                    assertNotNull("Content [emotion]", stringMap.get("emotion"));
-                    assertNotNull("Content [behaviour]", stringMap.get("behaviour"));
-                    assertNotNull("Content [state]", stringMap.get("state"));
-                    assertEquals("Performative", ACLMessage.INFORM, msg.getPerformative());
-                    done = true;
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+
+                        Map<String, Object> stringMap = mapper.readValue(msg.getContent(), new TypeReference<Map<String, Object>>() {
+                        });
+
+                        assertEquals("Content [agent]", dummyAgentAID.getName(), stringMap.get("agent"));
+                        assertNotNull("Content [emotion]", stringMap.get("emotion"));
+                        assertNotNull("Content [behaviour]", stringMap.get("behaviour"));
+                        assertNotNull("Content [state]", stringMap.get("state"));
+                        assertEquals("Performative", ACLMessage.INFORM, msg.getPerformative());
+                        done = true;
+                    } catch (Exception e) {
+                        throw new RuntimeException(e.getMessage(), e);
+                    }
                 } else {
                     block();
                 }

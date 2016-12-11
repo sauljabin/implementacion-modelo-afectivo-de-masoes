@@ -6,6 +6,7 @@
 
 package masoes.core.behaviour;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -73,12 +74,18 @@ public class ReplayAgentInformationBehaviour extends Behaviour {
 
         Optional<EmotionalState> stateOptional = Optional.ofNullable(emotionalAgent.getEmotionalState());
         if (stateOptional.isPresent()) {
-            content.put(STATE_KEY, stateOptional.get().toString());
+            content.put(STATE_KEY, stateOptional.get());
         } else {
             content.put(STATE_KEY, NO_STATE);
         }
 
-        return content.toString();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            return objectMapper.writeValueAsString(content);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
     @Override
