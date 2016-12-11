@@ -17,6 +17,8 @@ import masoes.env.dummy.agent.DummyEmotionalAgent;
 import masoes.test.functional.FunctionalTest;
 import test.common.TestException;
 
+import java.util.Optional;
+
 public class ShouldChangeEmotionAndBehaviourTest extends FunctionalTest {
 
     private String firstEmotionalResponse;
@@ -40,7 +42,7 @@ public class ShouldChangeEmotionAndBehaviourTest extends FunctionalTest {
             @Override
             public void action() {
                 ACLMessage msg = myAgent.receive();
-                if (msg != null) {
+                if (Optional.ofNullable(msg).isPresent()) {
                     firstEmotionalResponse = msg.getContent();
                     done = true;
                 } else {
@@ -76,7 +78,7 @@ public class ShouldChangeEmotionAndBehaviourTest extends FunctionalTest {
             @Override
             public void action() {
                 ACLMessage msg = myAgent.receive();
-                if (msg != null) {
+                if (Optional.ofNullable(msg).isPresent()) {
                     String secondEmotionalResponse = msg.getContent();
                     assertNotEquals("Content", firstEmotionalResponse, secondEmotionalResponse);
                     done = true;

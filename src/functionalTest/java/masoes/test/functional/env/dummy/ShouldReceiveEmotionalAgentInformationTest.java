@@ -18,6 +18,7 @@ import masoes.test.functional.FunctionalTest;
 import test.common.TestException;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class ShouldReceiveEmotionalAgentInformationTest extends FunctionalTest {
 
@@ -40,7 +41,7 @@ public class ShouldReceiveEmotionalAgentInformationTest extends FunctionalTest {
             @Override
             public void action() {
                 ACLMessage msg = myAgent.receive();
-                if (msg != null) {
+                if (Optional.ofNullable(msg).isPresent()) {
                     try {
                         ObjectMapper mapper = new ObjectMapper();
 

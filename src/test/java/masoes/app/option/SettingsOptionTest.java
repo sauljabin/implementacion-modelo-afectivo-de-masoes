@@ -7,8 +7,7 @@
 package masoes.app.option;
 
 import masoes.app.logger.ApplicationLogger;
-import masoes.app.setting.Setting;
-import masoes.app.setting.SettingsLoader;
+import masoes.app.settings.ApplicationSettings;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,12 +30,12 @@ public class SettingsOptionTest {
 
     private SettingsOption settingsOption;
     private ApplicationLogger mockLogger;
-    private SettingsLoader settingsLoader;
+    private ApplicationSettings applicationSettings;
 
     @Before
     public void setUp() throws Exception {
-        settingsLoader = SettingsLoader.getInstance();
-        settingsLoader.load();
+        applicationSettings = ApplicationSettings.getInstance();
+        applicationSettings.load();
         mockLogger = mock(ApplicationLogger.class);
         settingsOption = new SettingsOption();
         setFieldValue(settingsOption, "logger", mockLogger);
@@ -65,8 +64,8 @@ public class SettingsOptionTest {
         settingsOption.setProperties(expectedProperties);
         settingsOption.exec();
 
-        assertThat(Setting.get(expectedKey1), is(expectedValue1));
-        assertThat(Setting.get(expectedKey2), is(expectedValue2));
+        assertThat(applicationSettings.get(expectedKey1), is(expectedValue1));
+        assertThat(applicationSettings.get(expectedKey2), is(expectedValue2));
         verify(mockLogger).updatedSettings();
     }
 

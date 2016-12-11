@@ -6,8 +6,7 @@
 
 package masoes.env;
 
-import masoes.app.setting.Setting;
-import masoes.app.setting.SettingsLoader;
+import masoes.app.settings.ApplicationSettings;
 import masoes.env.dummy.DummyEnvironment;
 import masoes.env.wikipedia.WikipediaEnvironment;
 import org.junit.Before;
@@ -24,12 +23,12 @@ public class EnvironmentFactoryTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     private EnvironmentFactory environmentFactory;
-    private SettingsLoader settingsLoader;
+    private ApplicationSettings applicationSettings;
 
     @Before
     public void setUp() {
-        settingsLoader = SettingsLoader.getInstance();
-        settingsLoader.load();
+        applicationSettings = ApplicationSettings.getInstance();
+        applicationSettings.load();
         environmentFactory = new EnvironmentFactory();
     }
 
@@ -40,14 +39,14 @@ public class EnvironmentFactoryTest {
 
     @Test
     public void shouldCreateWikipediaEnvironment() {
-        Setting.MASOES_ENV.setValue("wikipedia");
+        applicationSettings.set(ApplicationSettings.MASOES_ENV, "wikipedia");
         assertThat(environmentFactory.createEnvironment(), instanceOf(WikipediaEnvironment.class));
     }
 
     @Test
     public void shouldThrowInvalidParameterWhenNoExistValueException() {
         String stringArg = "anything";
-        Setting.MASOES_ENV.setValue(stringArg);
+        applicationSettings.set(ApplicationSettings.MASOES_ENV, stringArg);
         expectedException.expect(InvalidEnvironmentException.class);
         expectedException.expectMessage(String.format("Invalid environment name \"%s\"", stringArg));
         environmentFactory.createEnvironment();

@@ -6,9 +6,15 @@
 
 package masoes.app.option;
 
-import masoes.app.setting.Setting;
+import masoes.app.settings.ApplicationSettings;
 
 public class VersionOption extends ApplicationOption {
+
+    private ApplicationSettings applicationSettings;
+
+    public VersionOption() {
+        applicationSettings = ApplicationSettings.getInstance();
+    }
 
     @Override
     public int getOrder() {
@@ -39,13 +45,13 @@ public class VersionOption extends ApplicationOption {
     public void exec() {
         String line = "--------------------------------------------------";
         System.out.println(line);
-        System.out.println(Setting.APP_NAME.getValue().toUpperCase());
-        System.out.printf("Version: %s\n", Setting.APP_VERSION.getValue());
-        System.out.printf("Revision: %s\n", Setting.APP_REVISION.getValue());
+        System.out.println(applicationSettings.get(ApplicationSettings.APP_NAME).toUpperCase());
+        System.out.printf("Version: %s\n", applicationSettings.get(ApplicationSettings.APP_VERSION));
+        System.out.printf("Revision: %s\n", applicationSettings.get(ApplicationSettings.APP_REVISION));
         System.out.println(line);
         System.out.println("JADE");
-        System.out.printf("Version: %s\n", Setting.JADE_VERSION.getValue());
-        System.out.printf("Revision: %s\n", Setting.JADE_REVISION.getValue());
+        System.out.printf("Version: %s\n", applicationSettings.get(ApplicationSettings.JADE_VERSION));
+        System.out.printf("Revision: %s\n", applicationSettings.get(ApplicationSettings.JADE_REVISION));
         System.out.println(line);
     }
 

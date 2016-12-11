@@ -10,7 +10,7 @@ import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import masoes.app.option.ApplicationOption;
-import masoes.app.setting.Setting;
+import masoes.app.settings.ApplicationSettings;
 import masoes.core.EmotionalAgent;
 import masoes.core.Stimulus;
 import masoes.jade.settings.JadeSettings;
@@ -31,7 +31,7 @@ public class ApplicationLogger {
     public void startingApplication(String[] args) {
         new LogWriter()
                 .message("Starting application with arguments: %s, settings: %s, jade settings: %s")
-                .args(Arrays.toString(args), Setting.toMap().toString(), JadeSettings.getInstance().toMap().toString())
+                .args(Arrays.toString(args), ApplicationSettings.getInstance().toMap().toString(), JadeSettings.getInstance().toMap().toString())
                 .info(logger);
     }
 
@@ -53,7 +53,7 @@ public class ApplicationLogger {
     public void updatedSettings() {
         new LogWriter()
                 .message("Updated settings: %s")
-                .args(Setting.toMap().toString())
+                .args(ApplicationSettings.getInstance().toMap().toString())
                 .info(logger);
     }
 

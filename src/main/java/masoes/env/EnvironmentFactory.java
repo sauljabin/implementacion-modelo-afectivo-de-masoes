@@ -6,11 +6,17 @@
 
 package masoes.env;
 
-import masoes.app.setting.Setting;
+import masoes.app.settings.ApplicationSettings;
 import masoes.env.dummy.DummyEnvironment;
 import masoes.env.wikipedia.WikipediaEnvironment;
 
 public class EnvironmentFactory {
+
+    private ApplicationSettings applicationSettings;
+
+    public EnvironmentFactory() {
+        applicationSettings = ApplicationSettings.getInstance();
+    }
 
     public Environment createEnvironment() {
         if (isContains(DummyEnvironment.class)) {
@@ -18,12 +24,12 @@ public class EnvironmentFactory {
         } else if (isContains(WikipediaEnvironment.class)) {
             return new WikipediaEnvironment();
         } else {
-            throw new InvalidEnvironmentException(String.format("Invalid environment name \"%s\"", Setting.MASOES_ENV.getValue()));
+            throw new InvalidEnvironmentException(String.format("Invalid environment name \"%s\"", applicationSettings.get(ApplicationSettings.MASOES_ENV)));
         }
     }
 
     private boolean isContains(Class<? extends Environment> environmentClass) {
-        return environmentClass.getSimpleName().toLowerCase().contains(Setting.MASOES_ENV.getValue().toLowerCase());
+        return environmentClass.getSimpleName().toLowerCase().contains(applicationSettings.get(ApplicationSettings.MASOES_ENV).toLowerCase());
     }
 
 }

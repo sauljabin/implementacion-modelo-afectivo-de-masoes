@@ -12,7 +12,7 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import masoes.app.logger.ApplicationLogger;
-import masoes.app.setting.Setting;
+import masoes.app.settings.ApplicationSettings;
 import masoes.jade.settings.JadeSettings;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +25,7 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
     private MessageTemplate template;
     private ApplicationLogger logger;
     private JadeSettings jadeSettings;
+    private ApplicationSettings applicationSettings;
 
     public ReplaySettingsBehaviour() {
         this(null);
@@ -35,6 +36,7 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
         logger = new ApplicationLogger(LoggerFactory.getLogger(ReplaySettingsBehaviour.class));
         template = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
         jadeSettings = JadeSettings.getInstance();
+        applicationSettings = ApplicationSettings.getInstance();
     }
 
     @Override
@@ -64,7 +66,7 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
     }
 
     private String getContent(String key) {
-        return Optional.ofNullable(Setting.get(key)).orElse(jadeSettings.get(key));
+        return Optional.ofNullable(applicationSettings.get(key)).orElse(jadeSettings.get(key));
     }
 
     private String getContentAllSettings() {
@@ -72,7 +74,7 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
 
             Map<String, Object> objectMap = new HashMap<>();
 
-            objectMap.put("applicationSettings", Setting.toMap());
+            objectMap.put("applicationSettings", applicationSettings.toMap());
             objectMap.put("jadeSettings", jadeSettings.toMap());
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -87,7 +89,7 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
     }
 
     private boolean isSetting(String key) {
-        return Optional.ofNullable(Setting.get(key)).isPresent() || Optional.ofNullable(jadeSettings.get(key)).isPresent();
+        return Optional.ofNullable(applicationSettings.get(key)).isPresent() || Optional.ofNullable(jadeSettings.get(key)).isPresent();
     }
 
     private boolean isNullContent(ACLMessage msg) {

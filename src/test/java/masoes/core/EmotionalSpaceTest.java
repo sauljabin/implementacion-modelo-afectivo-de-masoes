@@ -93,8 +93,9 @@ public class EmotionalSpaceTest {
     private EmotionalState getRandomPointForExternalEmotion(double xSign, double ySign) {
         double x = xSign * random.getDouble(0, 1);
         double y = ySign * random.getDouble(0, 1);
-        if (xSign * x < 0.5)
+        if (xSign * x < 0.5) {
             y = ySign * random.getDouble(0.5, 1);
+        }
         return new EmotionalState(x, y);
     }
 

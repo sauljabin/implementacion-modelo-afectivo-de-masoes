@@ -6,9 +6,15 @@
 
 package masoes.app.option;
 
-import masoes.app.setting.Setting;
+import masoes.app.settings.ApplicationSettings;
 
 public class EnvironmentOption extends ApplicationOption {
+
+    private ApplicationSettings applicationSettings;
+
+    public EnvironmentOption() {
+        applicationSettings = ApplicationSettings.getInstance();
+    }
 
     @Override
     public int getOrder() {
@@ -37,7 +43,7 @@ public class EnvironmentOption extends ApplicationOption {
 
     @Override
     public void exec() {
-        Setting.MASOES_ENV.setValue(getValue());
+        applicationSettings.set(ApplicationSettings.MASOES_ENV, getValue());
     }
 
 }

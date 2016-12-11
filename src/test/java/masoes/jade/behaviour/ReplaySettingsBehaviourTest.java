@@ -10,8 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import masoes.app.logger.ApplicationLogger;
-import masoes.app.setting.Setting;
-import masoes.app.setting.SettingsLoader;
+import masoes.app.settings.ApplicationSettings;
 import masoes.jade.settings.JadeSettings;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +34,7 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 @PrepareForTest(Agent.class)
 public class ReplaySettingsBehaviourTest {
 
-    private SettingsLoader settingsLoader;
+    private ApplicationSettings applicationSettings;
     private ReplaySettingsBehaviour spyReplaySettingsBehaviour;
     private Agent spyAgent;
     private ACLMessage mockAclMessageRequest;
@@ -48,8 +47,8 @@ public class ReplaySettingsBehaviourTest {
     public void setUp() throws Exception {
         objectMapper = new ObjectMapper();
 
-        settingsLoader = SettingsLoader.getInstance();
-        settingsLoader.load();
+        applicationSettings = ApplicationSettings.getInstance();
+        applicationSettings.load();
 
         jadeSettings = JadeSettings.getInstance();
         jadeSettings.load();
@@ -65,7 +64,6 @@ public class ReplaySettingsBehaviourTest {
         mockAclMessageResponse = mock(ACLMessage.class);
         when(mockAclMessageRequest.createReply()).thenReturn(mockAclMessageResponse);
         when(spyAgent.receive(any())).thenReturn(mockAclMessageRequest);
-
     }
 
     @Test
@@ -81,7 +79,7 @@ public class ReplaySettingsBehaviourTest {
 
         Map<String, Object> objectMap = new HashMap<>();
 
-        objectMap.put("applicationSettings", Setting.toMap());
+        objectMap.put("applicationSettings", applicationSettings.toMap());
         objectMap.put("jadeSettings", jadeSettings.toMap());
 
         String content = objectMapper.writeValueAsString(objectMap);
@@ -95,7 +93,7 @@ public class ReplaySettingsBehaviourTest {
     public void shouldSendSpecificSetting() {
         when(mockAclMessageRequest.getContent()).thenReturn("app.name");
         spyReplaySettingsBehaviour.action();
-        verify(mockAclMessageResponse).setContent(Setting.APP_NAME.getValue());
+        verify(mockAclMessageResponse).setContent(applicationSettings.get(ApplicationSettings.APP_NAME));
         verify(mockAclMessageResponse).setPerformative(ACLMessage.INFORM);
         verify(spyAgent).send(mockAclMessageResponse);
     }

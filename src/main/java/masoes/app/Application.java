@@ -8,27 +8,27 @@ package masoes.app;
 
 import masoes.app.logger.ApplicationLogger;
 import masoes.app.option.ApplicationOptionProcessor;
-import masoes.app.setting.SettingsLoader;
+import masoes.app.settings.ApplicationSettings;
 import masoes.jade.settings.JadeSettings;
 import org.slf4j.LoggerFactory;
 
 public class Application {
 
     private ApplicationLogger logger;
-    private SettingsLoader settingsLoader;
+    private ApplicationSettings applicationSettings;
     private ApplicationOptionProcessor applicationOptionProcessor;
     private JadeSettings jadeSettings;
 
     public Application() {
         logger = new ApplicationLogger(LoggerFactory.getLogger(Application.class));
-        settingsLoader = SettingsLoader.getInstance();
+        applicationSettings = ApplicationSettings.getInstance();
         applicationOptionProcessor = new ApplicationOptionProcessor();
         jadeSettings = JadeSettings.getInstance();
     }
 
     public void run(String[] args) {
         try {
-            settingsLoader.load();
+            applicationSettings.load();
             jadeSettings.load();
             logger.startingApplication(args);
             applicationOptionProcessor.processArgs(args);

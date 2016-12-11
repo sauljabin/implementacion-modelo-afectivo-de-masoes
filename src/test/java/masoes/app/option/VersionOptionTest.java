@@ -6,8 +6,7 @@
 
 package masoes.app.option;
 
-import masoes.app.setting.Setting;
-import masoes.app.setting.SettingsLoader;
+import masoes.app.settings.ApplicationSettings;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,12 +22,12 @@ public class VersionOptionTest {
     public SystemOutRule systemOutRule = new SystemOutRule().enableLog();
 
     private VersionOption versionOption;
-    private SettingsLoader settingsLoader;
+    private ApplicationSettings applicationSettings;
 
     @Before
     public void setUp() {
-        settingsLoader = SettingsLoader.getInstance();
-        settingsLoader.load();
+        applicationSettings = ApplicationSettings.getInstance();
+        applicationSettings.load();
         versionOption = new VersionOption();
     }
 
@@ -43,8 +42,8 @@ public class VersionOptionTest {
 
     @Test
     public void shouldPrintVersion() {
-        String expectedStringMasoes = String.format("%s\nVersion: %s\nRevision: %s", Setting.APP_NAME.getValue().toUpperCase(), Setting.APP_VERSION.getValue(), Setting.APP_REVISION.getValue());
-        String expectedStringJade = String.format("JADE\nVersion: %s\nRevision: %s\n", Setting.JADE_VERSION.getValue(), Setting.JADE_REVISION.getValue());
+        String expectedStringMasoes = String.format("%s\nVersion: %s\nRevision: %s", applicationSettings.get(ApplicationSettings.APP_NAME).toUpperCase(), applicationSettings.get(ApplicationSettings.APP_VERSION), applicationSettings.get(ApplicationSettings.APP_REVISION));
+        String expectedStringJade = String.format("JADE\nVersion: %s\nRevision: %s\n", applicationSettings.get(ApplicationSettings.JADE_VERSION), applicationSettings.get(ApplicationSettings.JADE_REVISION));
         versionOption.exec();
         assertThat(systemOutRule.getLog(), containsString(expectedStringMasoes));
         assertThat(systemOutRule.getLog(), containsString(expectedStringJade));

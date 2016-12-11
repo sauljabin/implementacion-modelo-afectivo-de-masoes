@@ -7,15 +7,17 @@
 package masoes.app.option;
 
 import masoes.app.logger.ApplicationLogger;
-import masoes.app.setting.Setting;
+import masoes.app.settings.ApplicationSettings;
 import org.slf4j.LoggerFactory;
 
 public class SettingsOption extends ApplicationOption {
 
+    private ApplicationSettings applicationSettings;
     private ApplicationLogger logger;
 
     public SettingsOption() {
         logger = new ApplicationLogger(LoggerFactory.getLogger(SettingsOption.class));
+        applicationSettings = ApplicationSettings.getInstance();
     }
 
     @Override
@@ -46,7 +48,7 @@ public class SettingsOption extends ApplicationOption {
 
     @Override
     public void exec() {
-        getProperties().entrySet().forEach(objectEntry -> Setting.set(objectEntry.getKey().toString(), objectEntry.getValue().toString()));
+        getProperties().entrySet().forEach(objectEntry -> applicationSettings.set(objectEntry.getKey().toString(), objectEntry.getValue().toString()));
         logger.updatedSettings();
     }
 

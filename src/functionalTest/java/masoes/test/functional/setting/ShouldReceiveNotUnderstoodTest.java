@@ -15,6 +15,8 @@ import masoes.jade.agent.SettingsAgent;
 import masoes.test.functional.FunctionalTest;
 import test.common.TestException;
 
+import java.util.Optional;
+
 public class ShouldReceiveNotUnderstoodTest extends FunctionalTest {
 
     @Override
@@ -37,7 +39,7 @@ public class ShouldReceiveNotUnderstoodTest extends FunctionalTest {
             @Override
             public void action() {
                 ACLMessage msg = myAgent.receive();
-                if (msg != null) {
+                if (Optional.ofNullable(msg).isPresent()) {
                     assertEquals("Performative", ACLMessage.NOT_UNDERSTOOD, msg.getPerformative());
                     done = true;
                 } else {

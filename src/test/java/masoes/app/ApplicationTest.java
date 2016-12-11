@@ -8,7 +8,7 @@ package masoes.app;
 
 import masoes.app.logger.ApplicationLogger;
 import masoes.app.option.ApplicationOptionProcessor;
-import masoes.app.setting.SettingsLoader;
+import masoes.app.settings.ApplicationSettings;
 import masoes.jade.settings.JadeSettings;
 import org.junit.Before;
 import org.junit.Rule;
@@ -28,7 +28,7 @@ public class ApplicationTest {
     public ExpectedSystemExit expectedSystemExit = ExpectedSystemExit.none();
     private ApplicationLogger mockLogger;
     private ApplicationOptionProcessor mockApplicationOptionProcessor;
-    private SettingsLoader mockSettingsLoader;
+    private ApplicationSettings mockApplicationSettings;
     private String[] args;
     private Application application;
     private JadeSettings mockJadeSettings;
@@ -37,11 +37,11 @@ public class ApplicationTest {
     public void setUp() throws Exception {
         mockJadeSettings = mock(JadeSettings.class);
         mockLogger = mock(ApplicationLogger.class);
-        mockSettingsLoader = mock(SettingsLoader.class);
+        mockApplicationSettings = mock(ApplicationSettings.class);
         mockApplicationOptionProcessor = mock(ApplicationOptionProcessor.class);
         application = new Application();
         setFieldValue(application, "logger", mockLogger);
-        setFieldValue(application, "settingsLoader", mockSettingsLoader);
+        setFieldValue(application, "applicationSettings", mockApplicationSettings);
         setFieldValue(application, "applicationOptionProcessor", mockApplicationOptionProcessor);
         setFieldValue(application, "jadeSettings", mockJadeSettings);
         args = new String[]{};
@@ -64,7 +64,7 @@ public class ApplicationTest {
 
         verify(mockApplicationOptionProcessor).processArgs(args);
         verify(mockLogger).startingApplication(any());
-        verify(mockSettingsLoader).load();
+        verify(mockApplicationSettings).load();
         verify(mockJadeSettings).load();
     }
 

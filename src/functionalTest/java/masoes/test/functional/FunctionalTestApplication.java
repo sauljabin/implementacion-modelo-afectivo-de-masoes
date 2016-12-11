@@ -8,8 +8,7 @@ package masoes.test.functional;
 
 import masoes.app.SystemExitStatus;
 import masoes.app.logger.ApplicationLogger;
-import masoes.app.setting.Setting;
-import masoes.app.setting.SettingsLoader;
+import masoes.app.settings.ApplicationSettings;
 import masoes.env.EnvironmentAgentInfo;
 import masoes.jade.JadeBoot;
 import masoes.jade.settings.JadeSettings;
@@ -18,21 +17,21 @@ import org.slf4j.LoggerFactory;
 public class FunctionalTestApplication {
 
     private static final String FUNCTIONAL_TEST_ENV = "functionalTest";
-    private final JadeSettings jadeSettings;
-    private final JadeBoot jadeBoot;
+    private JadeSettings jadeSettings;
+    private JadeBoot jadeBoot;
     private ApplicationLogger logger;
-    private SettingsLoader settingsLoader;
+    private ApplicationSettings applicationSettings;
 
     public FunctionalTestApplication() {
         logger = new ApplicationLogger(LoggerFactory.getLogger(FunctionalTestApplication.class));
-        settingsLoader = SettingsLoader.getInstance();
+        applicationSettings = ApplicationSettings.getInstance();
         jadeSettings = JadeSettings.getInstance();
         jadeBoot = new JadeBoot();
     }
 
     public void run(String[] args) {
         try {
-            settingsLoader.load();
+            applicationSettings.load();
             jadeSettings.load();
             setSettings();
             logger.startingApplication(args);
@@ -44,7 +43,7 @@ public class FunctionalTestApplication {
     }
 
     private void setSettings() {
-        Setting.MASOES_ENV.setValue(FUNCTIONAL_TEST_ENV);
+        applicationSettings.set(ApplicationSettings.MASOES_ENV, FUNCTIONAL_TEST_ENV);
         jadeSettings.set(JadeSettings.AGENTS, getEnvironmentAgentInfo());
         jadeSettings.set(JadeSettings.GUI, Boolean.FALSE.toString());
     }

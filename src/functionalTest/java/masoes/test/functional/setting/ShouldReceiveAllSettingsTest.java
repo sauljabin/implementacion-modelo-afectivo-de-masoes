@@ -12,7 +12,7 @@ import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
-import masoes.app.setting.Setting;
+import masoes.app.settings.ApplicationSettings;
 import masoes.jade.agent.SettingsAgent;
 import masoes.jade.settings.JadeSettings;
 import masoes.test.functional.FunctionalTest;
@@ -20,6 +20,7 @@ import test.common.TestException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class ShouldReceiveAllSettingsTest extends FunctionalTest {
 
@@ -42,13 +43,13 @@ public class ShouldReceiveAllSettingsTest extends FunctionalTest {
             @Override
             public void action() {
                 ACLMessage msg = myAgent.receive();
-                if (msg != null) {
+                if (Optional.ofNullable(msg).isPresent()) {
                     try {
                         ObjectMapper mapper = new ObjectMapper();
 
                         Map<String, Object> objectMap = new HashMap<>();
 
-                        objectMap.put("applicationSettings", Setting.toMap());
+                        objectMap.put("applicationSettings", ApplicationSettings.getInstance().toMap());
                         objectMap.put("jadeSettings", JadeSettings.getInstance().toMap());
 
                         assertEquals("Content", mapper.writeValueAsString(objectMap), msg.getContent());

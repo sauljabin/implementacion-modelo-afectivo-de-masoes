@@ -11,6 +11,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -117,10 +120,31 @@ public class JadeSettingsTest {
         assertThat(jadeSettings.get(key), is(nullValue()));
     }
 
+    @Test
+    public void shouldLoadInitValues() {
+        jadeSettings.load();
+        Map<String, String> expectedValues = getInitValues();
+        expectedValues.keySet().forEach(key -> assertThat(jadeSettings.get(key), is(expectedValues.get(key))));
+    }
+
     private void prepareExceptionTest() throws NoSuchFieldException {
         setFieldValue(jadeSettings, "properties", null);
         expectedException.expect(JadeSettingsException.class);
         expectedException.expectMessage("Jade settings not loaded, first invokes load()");
+    }
+
+    private Map<String, String> getInitValues() {
+        String gui = "gui",
+                port = "port",
+                jade_mtp_http_port = "jade_mtp_http_port",
+                jade_domain_df_autocleanup = "jade_domain_df_autocleanup";
+
+        Map<String, String> initValues = new HashMap<>();
+        initValues.put(gui, "true");
+        initValues.put(port, "1099");
+        initValues.put(jade_mtp_http_port, "7778");
+        initValues.put(jade_domain_df_autocleanup, "true");
+        return initValues;
     }
 
 }

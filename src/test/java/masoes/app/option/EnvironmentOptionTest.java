@@ -6,8 +6,7 @@
 
 package masoes.app.option;
 
-import masoes.app.setting.Setting;
-import masoes.app.setting.SettingsLoader;
+import masoes.app.settings.ApplicationSettings;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,12 +16,12 @@ import static org.junit.Assert.assertThat;
 public class EnvironmentOptionTest {
 
     private EnvironmentOption environmentOption;
-    private SettingsLoader settingsLoader;
+    private ApplicationSettings applicationSettings;
 
     @Before
     public void setUp() {
-        settingsLoader = SettingsLoader.getInstance();
-        settingsLoader.load();
+        applicationSettings = ApplicationSettings.getInstance();
+        applicationSettings.load();
         environmentOption = new EnvironmentOption();
     }
 
@@ -40,8 +39,7 @@ public class EnvironmentOptionTest {
         String expectedCaseStudy = "default";
         environmentOption.setValue(expectedCaseStudy);
         environmentOption.exec();
-        assertThat(Setting.MASOES_ENV.getValue(), is(expectedCaseStudy));
-        assertThat(Setting.get("masoes.env"), is(expectedCaseStudy));
+        assertThat(applicationSettings.get("masoes.env"), is(expectedCaseStudy));
     }
 
 }

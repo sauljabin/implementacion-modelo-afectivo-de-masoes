@@ -10,8 +10,7 @@ import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import masoes.app.option.ApplicationOption;
-import masoes.app.setting.Setting;
-import masoes.app.setting.SettingsLoader;
+import masoes.app.settings.ApplicationSettings;
 import masoes.core.Emotion;
 import masoes.core.EmotionalAgent;
 import masoes.core.EmotionalState;
@@ -38,13 +37,13 @@ public class ApplicationLoggerTest {
 
     private Logger mockLogger;
     private ApplicationLogger applicationLogger;
-    private SettingsLoader settingsLoader;
+    private ApplicationSettings applicationSettings;
     private JadeSettings jadeSettings;
 
     @Before
     public void setUp() {
-        settingsLoader = SettingsLoader.getInstance();
-        settingsLoader.load();
+        applicationSettings = ApplicationSettings.getInstance();
+        applicationSettings.load();
         jadeSettings = JadeSettings.getInstance();
         jadeSettings.load();
         mockLogger = mock(Logger.class);
@@ -55,7 +54,7 @@ public class ApplicationLoggerTest {
     public void shouldLogStartingApp() {
         String[] args = {"-h"};
         applicationLogger.startingApplication(args);
-        verify(mockLogger).info(eq("Starting application with arguments: [-h], settings: " + Setting.toMap().toString() + ", jade settings: " + JadeSettings.getInstance().toMap().toString()));
+        verify(mockLogger).info(eq("Starting application with arguments: [-h], settings: " + applicationSettings.toMap().toString() + ", jade settings: " + JadeSettings.getInstance().toMap().toString()));
     }
 
     @Test
@@ -78,7 +77,7 @@ public class ApplicationLoggerTest {
     @Test
     public void shouldLogUpdatedSettings() {
         applicationLogger.updatedSettings();
-        verify(mockLogger).info(eq("Updated settings: " + Setting.toMap().toString()));
+        verify(mockLogger).info(eq("Updated settings: " + applicationSettings.toMap().toString()));
     }
 
     @Test

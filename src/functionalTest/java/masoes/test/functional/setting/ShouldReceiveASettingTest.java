@@ -11,10 +11,12 @@ import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
-import masoes.app.setting.Setting;
+import masoes.app.settings.ApplicationSettings;
 import masoes.jade.agent.SettingsAgent;
 import masoes.test.functional.FunctionalTest;
 import test.common.TestException;
+
+import java.util.Optional;
 
 public class ShouldReceiveASettingTest extends FunctionalTest {
 
@@ -25,21 +27,22 @@ public class ShouldReceiveASettingTest extends FunctionalTest {
         AID settingsAgentAID = createAgent(tester, SettingsAgent.class.getName());
 
         SimpleBehaviour receiveMessageBehaviour = new SimpleBehaviour() {
+            private ApplicationSettings applicationSettings = ApplicationSettings.getInstance();
             private boolean done = false;
 
             @Override
             public void onStart() {
                 ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
                 testMessage.addReceiver(settingsAgentAID);
-                testMessage.setContent(Setting.APP_NAME.getKey());
+                testMessage.setContent(ApplicationSettings.APP_NAME);
                 myAgent.send(testMessage);
             }
 
             @Override
             public void action() {
                 ACLMessage msg = myAgent.receive();
-                if (msg != null) {
-                    assertEquals("Content", Setting.APP_NAME.getValue(), msg.getContent());
+                if (Optional.ofNullable(msg).isPresent()) {
+                    assertEquals("Content", applicationSettings.get(ApplicationSettings.APP_NAME), msg.getContent());
                     assertEquals("Performative", ACLMessage.INFORM, msg.getPerformative());
                     done = true;
                 } else {
