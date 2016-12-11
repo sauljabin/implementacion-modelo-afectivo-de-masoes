@@ -105,18 +105,17 @@ Ayuda:
 ./gradlew run -Pargs="-h"
 
 Usage: masoes
- -v,--version          Shows the application version
- -h,--help             Shows the options
- -s,--settings=<arg>   Sets application settings, examples:
-                       -s "{setting1=value1, setting2=value2}"
-                       --settings="{setting1=value1, setting2=value2}"
- -a,--agents=<arg>     Starts JADE with agents, examples:
-                       Adds agents:
-                       --agents="<name>:<class>;<name>:<class>"
-                       Agent arguments:
-                       --agents="<name>:<class>(arg1,arg2)"
- -e,--env=<arg>        Sets the environment for case study
- -b,--boot             Starts the application
+ -a,--agents=<arg>   Starts JADE with agents, examples:
+                     Adds agents:
+                     -a <name>:<class>;<name>:<class>
+                     Agent arguments:
+                     -a <name>:<class>(arg1,arg2)
+ -b,--boot           Starts the application
+ -e,--env=<arg>      Sets the environment for case study
+ -h,--help           Shows the options
+ -S <arg>            Sets application settings, examples:
+                     -Skey=value -Skey=value
+ -v,--version        Shows the application version
 ```
 
 ## Ejecución desde Empaquetado
@@ -160,22 +159,22 @@ Iniciar caso de estudio:
 
 ## Ejecución con make
 
-Ayuda:
+Opciones del make:
 
 ```
-make help
+make targets
 ```
 
 Ayuda MASOES:
 
 ```
-make help-masoes
+make help
 ```
 
 Buscar archivos sin copyright:
 
 ```
-make no-copyright
+make uncopyrighted
 ```
 
 Crear empaquetado:
@@ -199,7 +198,13 @@ make install
 Ejecutar dummy:
 
 ```
-make run
+make dummy
+```
+
+Ejecutar wikipedia:
+
+```
+make wikipedia
 ```
 
 Ejecución de pruebas unitarias:
