@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.jade.setting;
+package masoes.jade.agent;
 
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -13,6 +13,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import masoes.app.logger.ApplicationLogger;
+import masoes.jade.behaviour.ReplaySettingsBehaviour;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

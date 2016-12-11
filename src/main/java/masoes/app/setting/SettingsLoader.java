@@ -38,20 +38,21 @@ public class SettingsLoader {
     }
 
     public synchronized static SettingsLoader getInstance() {
-        if (!Optional.ofNullable(INSTANCE).isPresent())
+        if (!Optional.ofNullable(INSTANCE).isPresent()) {
             INSTANCE = new SettingsLoader();
+        }
         return INSTANCE;
     }
 
     public synchronized void load() {
         properties = new Properties();
-        setSetting(OS_NAME_KEY, System.getProperty(OS_NAME_KEY));
-        setSetting(OS_ARCH_KEY, System.getProperty(OS_ARCH_KEY));
-        setSetting(OS_VERSION_KEY, System.getProperty(OS_VERSION_KEY));
-        setSetting(JAVA_VERSION_KEY, System.getProperty(JAVA_VERSION_KEY));
-        setSetting(JAVA_VENDOR_KEY, System.getProperty(JAVA_VENDOR_KEY));
-        setSetting(JADE_VERSION_KEY, jade.core.Runtime.getVersion());
-        setSetting(JADE_REVISION_KEY, jade.core.Runtime.getRevision());
+        set(OS_NAME_KEY, System.getProperty(OS_NAME_KEY));
+        set(OS_ARCH_KEY, System.getProperty(OS_ARCH_KEY));
+        set(OS_VERSION_KEY, System.getProperty(OS_VERSION_KEY));
+        set(JAVA_VERSION_KEY, System.getProperty(JAVA_VERSION_KEY));
+        set(JAVA_VENDOR_KEY, System.getProperty(JAVA_VENDOR_KEY));
+        set(JADE_VERSION_KEY, jade.core.Runtime.getVersion());
+        set(JADE_REVISION_KEY, jade.core.Runtime.getRevision());
         try {
             properties.load(ClassLoader.getSystemResourceAsStream(SETTINGS_PROPERTIES_FILE));
         } catch (IOException ioe) {
@@ -59,28 +60,32 @@ public class SettingsLoader {
         }
     }
 
-    public synchronized void setSetting(String key, String value) {
-        if (!Optional.ofNullable(value).isPresent())
+    public synchronized void set(String key, String value) {
+        if (!Optional.ofNullable(value).isPresent()) {
             properties.remove(key);
-        else
+        } else {
             properties.put(key, value);
+        }
     }
 
-    public synchronized String getSetting(String key, String defaultValue) {
-        String value = getSetting(key);
+    public synchronized String get(String key, String defaultValue) {
+        String value = get(key);
 
-        if (!Optional.ofNullable(value).isPresent())
+        if (!Optional.ofNullable(value).isPresent()) {
             return defaultValue;
+        }
 
         return value;
     }
 
-    public synchronized String getSetting(String key) {
-        if (!Optional.ofNullable(key).isPresent())
+    public synchronized String get(String key) {
+        if (!Optional.ofNullable(key).isPresent()) {
             return null;
+        }
         return properties.getProperty(key);
     }
 
+    @Override
     public synchronized String toString() {
         return toMap().toString();
     }
@@ -89,9 +94,10 @@ public class SettingsLoader {
         return properties.stringPropertyNames()
                 .stream()
                 .sorted()
-                .collect(Collectors.toMap(key -> key, key -> getSetting(key)));
+                .collect(Collectors.toMap(key -> key, key -> get(key)));
     }
 
+    //TODO QUITAR
     public synchronized List<String> getKeys() {
         return properties.stringPropertyNames().stream().sorted().collect(Collectors.toList());
     }

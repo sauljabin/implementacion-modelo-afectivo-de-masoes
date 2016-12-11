@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.jade.setting;
+package masoes.jade.behaviour;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.Agent;
@@ -12,12 +12,16 @@ import jade.lang.acl.ACLMessage;
 import masoes.app.logger.ApplicationLogger;
 import masoes.app.setting.Setting;
 import masoes.app.setting.SettingsLoader;
+import masoes.jade.settings.JadeSettings;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -38,6 +42,7 @@ public class ReplaySettingsBehaviourTest {
     private ACLMessage mockAclMessageResponse;
     private ApplicationLogger mockLogger;
     private ObjectMapper objectMapper;
+    private JadeSettings jadeSettings;
 
     @Before
     public void setUp() throws Exception {
@@ -45,6 +50,10 @@ public class ReplaySettingsBehaviourTest {
 
         settingsLoader = SettingsLoader.getInstance();
         settingsLoader.load();
+
+        jadeSettings = JadeSettings.getInstance();
+        jadeSettings.load();
+
         spyAgent = spy(new Agent());
         mockLogger = mock(ApplicationLogger.class);
 
@@ -56,6 +65,7 @@ public class ReplaySettingsBehaviourTest {
         mockAclMessageResponse = mock(ACLMessage.class);
         when(mockAclMessageRequest.createReply()).thenReturn(mockAclMessageResponse);
         when(spyAgent.receive(any())).thenReturn(mockAclMessageRequest);
+
     }
 
     @Test
@@ -68,16 +78,34 @@ public class ReplaySettingsBehaviourTest {
     @Test
     public void shouldSendAllSettings() throws Exception {
         spyReplaySettingsBehaviour.action();
-        verify(mockAclMessageResponse).setContent(objectMapper.writeValueAsString(Setting.toMap()));
+
+        Map<String, Object> objectMap = new HashMap<>();
+
+        objectMap.put("applicationSettings", Setting.toMap());
+        objectMap.put("jadeSettings", jadeSettings.toMap());
+
+        String content = objectMapper.writeValueAsString(objectMap);
+
+        verify(mockAclMessageResponse).setContent(content);
         verify(mockAclMessageResponse).setPerformative(ACLMessage.INFORM);
         verify(spyAgent).send(mockAclMessageResponse);
     }
 
     @Test
     public void shouldSendSpecificSetting() {
-        when(mockAclMessageRequest.getContent()).thenReturn(Setting.APP_NAME.getKey());
+        when(mockAclMessageRequest.getContent()).thenReturn("app.name");
         spyReplaySettingsBehaviour.action();
         verify(mockAclMessageResponse).setContent(Setting.APP_NAME.getValue());
+        verify(mockAclMessageResponse).setPerformative(ACLMessage.INFORM);
+        verify(spyAgent).send(mockAclMessageResponse);
+    }
+
+    @Test
+    public void shouldSendSpecificJadeSetting() {
+        jadeSettings.set("gui", "false");
+        when(mockAclMessageRequest.getContent()).thenReturn("gui");
+        spyReplaySettingsBehaviour.action();
+        verify(mockAclMessageResponse).setContent("false");
         verify(mockAclMessageResponse).setPerformative(ACLMessage.INFORM);
         verify(spyAgent).send(mockAclMessageResponse);
     }

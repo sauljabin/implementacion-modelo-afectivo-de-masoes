@@ -4,12 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.env.dummy;
+package masoes.env.dummy.behaviour;
 
 import masoes.core.EmotionalAgent;
-import masoes.env.dummy.behaviour.DummyCognitiveBehaviour;
-import masoes.env.dummy.behaviour.DummyImitativeBehaviour;
-import masoes.env.dummy.behaviour.DummyReactiveBehaviour;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -20,11 +20,7 @@ public enum Setting {
     JAVA_VENDOR(SettingsLoader.JAVA_VENDOR_KEY),
     MASOES_ENV(SettingsLoader.MASOES_ENV_KEY),
     JADE_REVISION(SettingsLoader.JADE_REVISION_KEY),
-    JADE_VERSION(SettingsLoader.JADE_VERSION_KEY),
-    JADE_PORT(SettingsLoader.JADE_PORT_KEY),
-    JADE_MTP_PORT(SettingsLoader.JADE_MTP_PORT_KEY),
-    JADE_GUI(SettingsLoader.JADE_GUI_KEY),
-    JADE_DF_AUTOCLEANUP(SettingsLoader.JADE_DF_AUTOCLEANUP_KEY);
+    JADE_VERSION(SettingsLoader.JADE_VERSION_KEY);
 
     private String key;
 
@@ -33,15 +29,15 @@ public enum Setting {
     }
 
     public static void set(String key, String value) {
-        SettingsLoader.getInstance().setSetting(key, value);
+        SettingsLoader.getInstance().set(key, value);
     }
 
     public static String get(String key, String defaultValue) {
-        return SettingsLoader.getInstance().getSetting(key, defaultValue);
+        return SettingsLoader.getInstance().get(key, defaultValue);
     }
 
     public static String get(String key) {
-        return SettingsLoader.getInstance().getSetting(key, "");
+        return SettingsLoader.getInstance().get(key);
     }
 
     public static Map<String, String> toMap() {

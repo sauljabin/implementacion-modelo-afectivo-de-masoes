@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.jade.setting;
+package masoes.jade.behaviour;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.Agent;
@@ -13,14 +13,18 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import masoes.app.logger.ApplicationLogger;
 import masoes.app.setting.Setting;
+import masoes.jade.settings.JadeSettings;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class ReplaySettingsBehaviour extends CyclicBehaviour {
 
     private MessageTemplate template;
     private ApplicationLogger logger;
+    private JadeSettings jadeSettings;
 
     public ReplaySettingsBehaviour() {
         this(null);
@@ -30,6 +34,7 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
         super(agent);
         logger = new ApplicationLogger(LoggerFactory.getLogger(ReplaySettingsBehaviour.class));
         template = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+        jadeSettings = JadeSettings.getInstance();
     }
 
     @Override
@@ -44,8 +49,8 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
 
             if (isNullContent(msg)) {
                 reply.setContent(getContentAllSettings());
-            } else if (isSetting(msg)) {
-                reply.setContent(Setting.get(msg.getContent()));
+            } else if (isSetting(msg.getContent())) {
+                reply.setContent(getContent(msg.getContent()));
             } else {
                 reply.setPerformative(ACLMessage.NOT_UNDERSTOOD);
             }
@@ -58,10 +63,20 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
 
     }
 
+    private String getContent(String key) {
+        return Optional.ofNullable(Setting.get(key)).orElse(jadeSettings.get(key));
+    }
+
     private String getContentAllSettings() {
         try {
+
+            Map<String, Object> objectMap = new HashMap<>();
+
+            objectMap.put("applicationSettings", Setting.toMap());
+            objectMap.put("jadeSettings", jadeSettings.toMap());
+
             ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.writeValueAsString(Setting.toMap());
+            return objectMapper.writeValueAsString(objectMap);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -71,8 +86,8 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
         return Optional.ofNullable(msg).isPresent();
     }
 
-    private boolean isSetting(ACLMessage msg) {
-        return Optional.ofNullable(Setting.get(msg.getContent(), null)).isPresent();
+    private boolean isSetting(String key) {
+        return Optional.ofNullable(Setting.get(key)).isPresent() || Optional.ofNullable(jadeSettings.get(key)).isPresent();
     }
 
     private boolean isNullContent(ACLMessage msg) {

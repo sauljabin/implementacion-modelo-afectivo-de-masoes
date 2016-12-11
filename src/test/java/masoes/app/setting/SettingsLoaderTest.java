@@ -39,46 +39,46 @@ public class SettingsLoaderTest {
 
     @Test
     public void shouldGetCorrectSetting() {
-        settingsLoader.setSetting(keyForTests, expectedValue);
-        assertThat(settingsLoader.getSetting(keyForTests), is(expectedValue));
+        settingsLoader.set(keyForTests, expectedValue);
+        assertThat(settingsLoader.get(keyForTests), is(expectedValue));
     }
 
     @Test
     public void shouldGetDefaultSettingInCaseThatNotExistKey() {
         String expectedDefaultValue = "defaultValue";
-        assertThat(settingsLoader.getSetting("", expectedDefaultValue), is(expectedDefaultValue));
+        assertThat(settingsLoader.get("", expectedDefaultValue), is(expectedDefaultValue));
     }
 
     @Test
     public void shouldGetDefaultSettingInCaseThatKeyIsNull() {
         String expectedDefaultValue = "defaultValue";
-        assertThat(settingsLoader.getSetting(null, expectedDefaultValue), is(expectedDefaultValue));
+        assertThat(settingsLoader.get(null, expectedDefaultValue), is(expectedDefaultValue));
     }
 
     @Test
     public void shouldReturnNullThatKeyIsNull() {
-        assertThat(settingsLoader.getSetting(null), is(nullValue()));
+        assertThat(settingsLoader.get(null), is(nullValue()));
     }
 
     @Test
     public void shouldNotGetDefaultSettingInCaseThatExistKey() {
-        settingsLoader.setSetting(keyForTests, expectedValue);
-        assertThat(settingsLoader.getSetting(keyForTests, "anything"), is(expectedValue));
+        settingsLoader.set(keyForTests, expectedValue);
+        assertThat(settingsLoader.get(keyForTests, "anything"), is(expectedValue));
     }
 
     @Test
     public void shouldLoadInitValues() {
         Map<String, String> expectedValues = getInitValues();
         expectedValues.keySet()
-                .forEach(key -> assertThat(settingsLoader.getSetting(key), is(expectedValues.get(key))));
+                .forEach(key -> assertThat(settingsLoader.get(key), is(expectedValues.get(key))));
 
         String appNameKey = "app.name",
                 appRevisionKey = "app.revision",
                 appVersionKey = "app.version";
 
-        assertThat(settingsLoader.getSetting(appNameKey), is(notNullValue()));
-        assertThat(settingsLoader.getSetting(appRevisionKey), is(notNullValue()));
-        assertThat(settingsLoader.getSetting(appVersionKey), is(notNullValue()));
+        assertThat(settingsLoader.get(appNameKey), is(notNullValue()));
+        assertThat(settingsLoader.get(appRevisionKey), is(notNullValue()));
+        assertThat(settingsLoader.get(appVersionKey), is(notNullValue()));
     }
 
     @Test
@@ -88,10 +88,10 @@ public class SettingsLoaderTest {
 
     @Test
     public void shouldRemoveProperty() {
-        settingsLoader.setSetting(keyForTests, expectedValue);
-        assertThat(settingsLoader.getSetting(keyForTests), is(expectedValue));
-        settingsLoader.setSetting(keyForTests, null);
-        assertThat(settingsLoader.getSetting(keyForTests), is(nullValue()));
+        settingsLoader.set(keyForTests, expectedValue);
+        assertThat(settingsLoader.get(keyForTests), is(expectedValue));
+        settingsLoader.set(keyForTests, null);
+        assertThat(settingsLoader.get(keyForTests), is(nullValue()));
     }
 
     private Map<String, String> getInitValues() {
@@ -102,10 +102,7 @@ public class SettingsLoaderTest {
                 javaVendorKey = "java.vendor",
                 jadeVersionKey = "jade.version",
                 jadeRevisionKey = "jade.revision",
-                jadePortKey = "jade.port",
-                masoesEnvKey = "masoes.env",
-                jadeMtpPortKey = "jade.mtp.port",
-                jadeDfAutocleanupKey = "jade.df.autocleanup";
+                masoesEnvKey = "masoes.env";
 
         Map<String, String> initValues = new HashMap<>();
         initValues.put(osNameKey, System.getProperty(osNameKey));
@@ -116,9 +113,6 @@ public class SettingsLoaderTest {
         initValues.put(jadeVersionKey, jade.core.Runtime.getVersion());
         initValues.put(jadeRevisionKey, jade.core.Runtime.getRevision());
         initValues.put(masoesEnvKey, "dummy");
-        initValues.put(jadePortKey, "1099");
-        initValues.put(jadeMtpPortKey, "7778");
-        initValues.put(jadeDfAutocleanupKey, "true");
         return initValues;
     }
 

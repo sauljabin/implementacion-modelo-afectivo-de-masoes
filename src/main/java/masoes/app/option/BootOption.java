@@ -11,7 +11,8 @@ import masoes.env.EnvironmentAgentInfo;
 import masoes.env.EnvironmentFactory;
 import masoes.env.InvalidEnvironmentException;
 import masoes.jade.JadeBoot;
-import masoes.jade.setting.SettingsAgent;
+import masoes.jade.agent.SettingsAgent;
+import masoes.jade.settings.JadeSettings;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,12 +20,14 @@ import java.util.stream.Collectors;
 
 public class BootOption extends ApplicationOption {
 
+    private JadeSettings jadeSettings;
     private EnvironmentFactory environmentFactory;
     private JadeBoot jadeBoot;
 
     public BootOption() {
         environmentFactory = new EnvironmentFactory();
         jadeBoot = new JadeBoot();
+        jadeSettings = JadeSettings.getInstance();
     }
 
     @Override
@@ -55,21 +58,23 @@ public class BootOption extends ApplicationOption {
     @Override
     public void exec() {
         Environment environment = environmentFactory.createEnvironment();
-        List<EnvironmentAgentInfo> environmentAgentInfoList = environment.getEnvironmentAgentInfoList();
-        validateEnvironmentAgentInfo(environmentAgentInfoList);
-        jadeBoot.boot(toJadeAgentsOption(environmentAgentInfoList));
+        validateEnvironmentAgentInfo(environment.getEnvironmentAgentInfoList());
+        toJadeAgentsOption(environment.getEnvironmentAgentInfoList());
+        jadeBoot.boot();
     }
 
     private void validateEnvironmentAgentInfo(List<EnvironmentAgentInfo> environmentAgentInfoList) {
-        if (!Optional.ofNullable(environmentAgentInfoList).isPresent() || environmentAgentInfoList.isEmpty())
+        if (!Optional.ofNullable(environmentAgentInfoList).isPresent() || environmentAgentInfoList.isEmpty()) {
             throw new InvalidEnvironmentException("No agents in environment");
+        }
     }
 
-    private String toJadeAgentsOption(List<EnvironmentAgentInfo> environmentAgentInfoList) {
+    private void toJadeAgentsOption(List<EnvironmentAgentInfo> environmentAgentInfoList) {
         List<String> stringList = toStringList(environmentAgentInfoList);
-        if (isNotPresentAgentSetting(environmentAgentInfoList))
+        if (isNotPresentAgentSetting(environmentAgentInfoList)) {
             stringList.add(new EnvironmentAgentInfo("settings", SettingsAgent.class).toString());
-        return String.join(";", stringList);
+        }
+        jadeSettings.set(JadeSettings.AGENTS, String.join(";", stringList));
     }
 
     private List<String> toStringList(List<EnvironmentAgentInfo> environmentAgentInfoList) {

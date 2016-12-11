@@ -13,9 +13,13 @@ import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import masoes.app.setting.Setting;
-import masoes.jade.setting.SettingsAgent;
+import masoes.jade.agent.SettingsAgent;
+import masoes.jade.settings.JadeSettings;
 import masoes.test.functional.FunctionalTest;
 import test.common.TestException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ShouldReceiveAllSettingsTest extends FunctionalTest {
 
@@ -41,7 +45,13 @@ public class ShouldReceiveAllSettingsTest extends FunctionalTest {
                 if (msg != null) {
                     try {
                         ObjectMapper mapper = new ObjectMapper();
-                        assertEquals("Content", mapper.writeValueAsString(Setting.toMap()), msg.getContent());
+
+                        Map<String, Object> objectMap = new HashMap<>();
+
+                        objectMap.put("applicationSettings", Setting.toMap());
+                        objectMap.put("jadeSettings", JadeSettings.getInstance().toMap());
+
+                        assertEquals("Content", mapper.writeValueAsString(objectMap), msg.getContent());
                         assertEquals("Performative", ACLMessage.INFORM, msg.getPerformative());
                         done = true;
                     } catch (Exception e) {

@@ -11,7 +11,7 @@ import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
-import masoes.jade.setting.SettingsAgent;
+import masoes.jade.agent.SettingsAgent;
 import masoes.test.functional.FunctionalTest;
 import test.common.TestException;
 

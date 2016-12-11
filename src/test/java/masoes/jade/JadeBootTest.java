@@ -8,8 +8,8 @@ package masoes.jade;
 
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
-import masoes.app.setting.Setting;
 import masoes.app.setting.SettingsLoader;
+import masoes.jade.settings.JadeSettings;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,31 +23,40 @@ public class JadeBootTest {
     private Runtime mockJadeRuntime;
     private JadeBoot jadeBoot;
     private SettingsLoader settingsLoader;
+    private JadeSettings jadeSettings;
 
     @Before
     public void setUp() throws Exception {
         settingsLoader = SettingsLoader.getInstance();
         settingsLoader.load();
+
+        jadeSettings = JadeSettings.getInstance();
+        jadeSettings.load();
+
         mockJadeProfile = mock(ProfileImpl.class);
         mockJadeRuntime = mock(Runtime.class);
+
         jadeBoot = new JadeBoot();
         setFieldValue(jadeBoot, "jadeProfile", mockJadeProfile);
         setFieldValue(jadeBoot, "jadeRuntime", mockJadeRuntime);
+        setFieldValue(jadeBoot, "jadeSettings", jadeSettings);
     }
 
     @Test
     public void shouldSetCorrectProfileVariables() {
         String expectedArguments = "arguments";
 
-        jadeBoot.boot(expectedArguments);
+        jadeSettings.set(JadeSettings.AGENTS, expectedArguments);
+
+        jadeBoot.boot();
 
         verify(mockJadeProfile).setParameter("agents", expectedArguments);
-        verify(mockJadeProfile).setParameter("gui", Setting.JADE_GUI.getValue());
-        verify(mockJadeProfile).setParameter("port", Setting.JADE_PORT.getValue());
-        verify(mockJadeProfile).setParameter("jade_mtp_http_port", Setting.JADE_MTP_PORT.getValue());
-        verify(mockJadeProfile).setParameter("jade_domain_df_autocleanup", Setting.JADE_DF_AUTOCLEANUP.getValue());
+        verify(mockJadeProfile).setParameter("gui", jadeSettings.get(JadeSettings.GUI));
+        verify(mockJadeProfile).setParameter("port", jadeSettings.get(JadeSettings.PORT));
+        verify(mockJadeProfile).setParameter("jade_mtp_http_port", jadeSettings.get(JadeSettings.JADE_MTP_HTTP_PORT));
+        verify(mockJadeProfile).setParameter("jade_domain_df_autocleanup", jadeSettings.get(JadeSettings.JADE_DOMAIN_DF_AUTOCLEANUP));
         verify(mockJadeRuntime).setCloseVM(true);
-        verify(mockJadeRuntime).createMainContainer(mockJadeProfile);
+        verify(mockJadeRuntime).startUp(mockJadeProfile);
     }
 
 }

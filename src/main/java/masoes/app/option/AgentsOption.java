@@ -7,13 +7,16 @@
 package masoes.app.option;
 
 import masoes.jade.JadeBoot;
+import masoes.jade.settings.JadeSettings;
 
 public class AgentsOption extends ApplicationOption {
 
+    private JadeSettings jadeSettings;
     private JadeBoot jadeBoot;
 
     public AgentsOption() {
         jadeBoot = new JadeBoot();
+        jadeSettings = JadeSettings.getInstance();
     }
 
     @Override
@@ -48,7 +51,8 @@ public class AgentsOption extends ApplicationOption {
 
     @Override
     public void exec() {
-        jadeBoot.boot(getValue());
+        jadeSettings.set(JadeSettings.AGENTS, getValue());
+        jadeBoot.boot();
     }
 
 }

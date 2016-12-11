@@ -13,6 +13,7 @@ import masoes.app.option.ApplicationOption;
 import masoes.app.setting.Setting;
 import masoes.core.EmotionalAgent;
 import masoes.core.Stimulus;
+import masoes.jade.settings.JadeSettings;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
@@ -29,8 +30,8 @@ public class ApplicationLogger {
 
     public void startingApplication(String[] args) {
         new LogWriter()
-                .message("Starting application with arguments: %s, and settings: %s")
-                .args(Arrays.toString(args), Setting.toMap().toString())
+                .message("Starting application with arguments: %s, settings: %s, jade settings: %s")
+                .args(Arrays.toString(args), Setting.toMap().toString(), JadeSettings.getInstance().toMap().toString())
                 .info(logger);
     }
 

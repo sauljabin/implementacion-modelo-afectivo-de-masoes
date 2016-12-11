@@ -4,14 +4,11 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.env.dummy;
+package masoes.env.dummy.behaviour;
 
 import jade.core.behaviours.Behaviour;
 import masoes.core.BehaviourFactory;
 import masoes.core.EmotionalAgent;
-import masoes.env.dummy.behaviour.DummyCognitiveBehaviour;
-import masoes.env.dummy.behaviour.DummyImitativeBehaviour;
-import masoes.env.dummy.behaviour.DummyReactiveBehaviour;
 
 public class DummyBehaviourFactory extends BehaviourFactory {
 

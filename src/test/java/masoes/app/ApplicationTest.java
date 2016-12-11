@@ -9,6 +9,7 @@ package masoes.app;
 import masoes.app.logger.ApplicationLogger;
 import masoes.app.option.ApplicationOptionProcessor;
 import masoes.app.setting.SettingsLoader;
+import masoes.jade.settings.JadeSettings;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,9 +31,11 @@ public class ApplicationTest {
     private SettingsLoader mockSettingsLoader;
     private String[] args;
     private Application application;
+    private JadeSettings mockJadeSettings;
 
     @Before
     public void setUp() throws Exception {
+        mockJadeSettings = mock(JadeSettings.class);
         mockLogger = mock(ApplicationLogger.class);
         mockSettingsLoader = mock(SettingsLoader.class);
         mockApplicationOptionProcessor = mock(ApplicationOptionProcessor.class);
@@ -40,6 +43,7 @@ public class ApplicationTest {
         setFieldValue(application, "logger", mockLogger);
         setFieldValue(application, "settingsLoader", mockSettingsLoader);
         setFieldValue(application, "applicationOptionProcessor", mockApplicationOptionProcessor);
+        setFieldValue(application, "jadeSettings", mockJadeSettings);
         args = new String[]{};
     }
 
@@ -61,6 +65,7 @@ public class ApplicationTest {
         verify(mockApplicationOptionProcessor).processArgs(args);
         verify(mockLogger).startingApplication(any());
         verify(mockSettingsLoader).load();
+        verify(mockJadeSettings).load();
     }
 
 }

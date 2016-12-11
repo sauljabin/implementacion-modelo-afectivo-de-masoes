@@ -16,6 +16,7 @@ import masoes.core.Emotion;
 import masoes.core.EmotionalAgent;
 import masoes.core.EmotionalState;
 import masoes.core.Stimulus;
+import masoes.jade.settings.JadeSettings;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,11 +39,14 @@ public class ApplicationLoggerTest {
     private Logger mockLogger;
     private ApplicationLogger applicationLogger;
     private SettingsLoader settingsLoader;
+    private JadeSettings jadeSettings;
 
     @Before
     public void setUp() {
         settingsLoader = SettingsLoader.getInstance();
         settingsLoader.load();
+        jadeSettings = JadeSettings.getInstance();
+        jadeSettings.load();
         mockLogger = mock(Logger.class);
         applicationLogger = new ApplicationLogger(mockLogger);
     }
@@ -51,7 +55,7 @@ public class ApplicationLoggerTest {
     public void shouldLogStartingApp() {
         String[] args = {"-h"};
         applicationLogger.startingApplication(args);
-        verify(mockLogger).info(eq("Starting application with arguments: [-h], and settings: " + Setting.toMap().toString()));
+        verify(mockLogger).info(eq("Starting application with arguments: [-h], settings: " + Setting.toMap().toString() + ", jade settings: " + JadeSettings.getInstance().toMap().toString()));
     }
 
     @Test

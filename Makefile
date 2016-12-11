@@ -30,3 +30,9 @@ functional-test: clean ; ./gradlew -q functionalTest
 
 # target all-test: Exec all test.
 all-test: unit-test functional-test
+
+# target docker-build: Make docker image.
+docker-build: dist ; docker-compose build
+
+# target docker-up: Starts docker image.
+docker-up: docker-build ; docker-compose up

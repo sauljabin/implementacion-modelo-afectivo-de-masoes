@@ -12,11 +12,11 @@ import masoes.env.EnvironmentAgentInfo;
 import masoes.env.EnvironmentFactory;
 import masoes.env.InvalidEnvironmentException;
 import masoes.jade.JadeBoot;
+import masoes.jade.settings.JadeSettings;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.ArgumentCaptor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +24,7 @@ import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,19 +39,21 @@ public class BootOptionTest {
     private EnvironmentFactory mockEnvironmentFactory;
     private JadeBoot mockJadeBoot;
     private Environment mockEnv;
-    private ArgumentCaptor<String> stringArgumentCaptor;
+    private JadeSettings jadeSettings;
 
     @Before
     public void setUp() throws Exception {
-        stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
-
         mockEnvironmentFactory = mock(EnvironmentFactory.class);
         mockJadeBoot = mock(JadeBoot.class);
         mockEnv = mock(Environment.class);
 
+        jadeSettings = JadeSettings.getInstance();
+        jadeSettings.load();
+
         bootOption = new BootOption();
         setFieldValue(bootOption, "environmentFactory", mockEnvironmentFactory);
         setFieldValue(bootOption, "jadeBoot", mockJadeBoot);
+        setFieldValue(bootOption, "jadeSettings", jadeSettings);
 
         when(mockEnvironmentFactory.createEnvironment()).thenReturn(mockEnv);
     }
@@ -73,9 +76,9 @@ public class BootOptionTest {
         bootOption.exec();
 
         verify(mockEnvironmentFactory).createEnvironment();
-        verify(mockEnv).getEnvironmentAgentInfoList();
-        verify(mockJadeBoot).boot(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is("agent:jade.core.Agent(arg1,arg2);settings:masoes.jade.setting.SettingsAgent"));
+        verify(mockEnv, atLeastOnce()).getEnvironmentAgentInfoList();
+        verify(mockJadeBoot).boot();
+        assertThat(jadeSettings.get(JadeSettings.AGENTS), is("agent:jade.core.Agent(arg1,arg2);settings:masoes.jade.agent.SettingsAgent"));
     }
 
     @Test
@@ -88,9 +91,9 @@ public class BootOptionTest {
         bootOption.exec();
 
         verify(mockEnvironmentFactory).createEnvironment();
-        verify(mockEnv).getEnvironmentAgentInfoList();
-        verify(mockJadeBoot).boot(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is("agent:jade.core.Agent(arg1,arg2);agent2:jade.core.Agent;settings:masoes.jade.setting.SettingsAgent"));
+        verify(mockEnv, atLeastOnce()).getEnvironmentAgentInfoList();
+        verify(mockJadeBoot).boot();
+        assertThat(jadeSettings.get(JadeSettings.AGENTS), is("agent:jade.core.Agent(arg1,arg2);agent2:jade.core.Agent;settings:masoes.jade.agent.SettingsAgent"));
     }
 
     @Test

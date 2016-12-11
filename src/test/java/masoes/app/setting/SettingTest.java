@@ -29,7 +29,7 @@ public class SettingTest {
 
     @Test
     public void shouldReturnCorrectValue() {
-        assertThat(Setting.APP_NAME.getValue(), is(settingsLoader.getSetting("app.name")));
+        assertThat(Setting.APP_NAME.getValue(), is(settingsLoader.get("app.name")));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class SettingTest {
         String keySetting = "newSetting";
         String valueSetting = "valueSetting";
         Setting.set(keySetting, valueSetting);
-        assertThat(Setting.get(keySetting), is(settingsLoader.getSetting(keySetting)));
+        assertThat(Setting.get(keySetting), is(settingsLoader.get(keySetting)));
     }
 
     @Test

@@ -10,8 +10,8 @@ import java.security.InvalidParameterException;
 
 public class InvalidEnvironmentException extends InvalidParameterException {
 
-    public InvalidEnvironmentException(String s) {
-        super(s);
+    public InvalidEnvironmentException(String message) {
+        super(message);
     }
 
 }

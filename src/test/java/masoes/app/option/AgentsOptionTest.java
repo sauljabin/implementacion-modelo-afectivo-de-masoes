@@ -7,6 +7,7 @@
 package masoes.app.option;
 
 import masoes.jade.JadeBoot;
+import masoes.jade.settings.JadeSettings;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,12 +22,16 @@ public class AgentsOptionTest {
 
     private AgentsOption agentsOption;
     private JadeBoot mockJadeBoot;
+    private JadeSettings jadeSettings;
 
     @Before
     public void setUp() throws Exception {
         mockJadeBoot = mock(JadeBoot.class);
         agentsOption = new AgentsOption();
+        jadeSettings = JadeSettings.getInstance();
+        jadeSettings.load();
         setFieldValue(agentsOption, "jadeBoot", mockJadeBoot);
+        setFieldValue(agentsOption, "jadeSettings", jadeSettings);
     }
 
     @Test
@@ -45,7 +50,8 @@ public class AgentsOptionTest {
         String expectedArgs = "a1:ClassName";
         agentsOption.setValue(expectedArgs);
         agentsOption.exec();
-        verify(mockJadeBoot).boot(expectedArgs);
+        verify(mockJadeBoot).boot();
+        assertThat(jadeSettings.get(JadeSettings.AGENTS), is(expectedArgs));
     }
 
 }

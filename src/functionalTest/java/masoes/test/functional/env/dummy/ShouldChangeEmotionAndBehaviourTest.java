@@ -13,7 +13,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
-import masoes.env.dummy.DummyEmotionalAgent;
+import masoes.env.dummy.agent.DummyEmotionalAgent;
 import masoes.test.functional.FunctionalTest;
 import test.common.TestException;
 
