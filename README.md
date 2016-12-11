@@ -66,7 +66,7 @@ Iniciar aplicación limpiando dependencias:
 Iniciar aplicación con argumentos:
 
 ```
-./gradlew run -Pargs="arg1 arg2"
+./gradlew run -Pargs='arg1 arg2'
 ```
 
 Iniciar aplicación con argumentos y espacios en blanco:
@@ -136,13 +136,14 @@ Versión:
 Nuevas configuraciones:
 
 ```
-./masoes --settings="{setting1=value1,setting2=value2}"
+./masoes -Skey1=value1 -Skey2=value2
 ```
 
 Ejecutar JADE manualmente:
 
 ```
-./masoes --agents="a1:masoes.core.agent.TestAgent(arg1, arg2)"
+./masoes -a a1:masoes.core.agent.TestAgent
+./masoes -a "a1:masoes.core.agent.TestAgent(arg1, arg2)"
 ```
 
 Iniciar dummy:

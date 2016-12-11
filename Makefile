@@ -7,20 +7,20 @@ clean: ; ./gradlew -q clean --refresh-dependencies
 # target install: Make program and install.
 install: dist ; unzip -o masoes-*.zip && cd masoes-*/bin && ./masoes
 
-# target help: Display callable targets.
-help: ; grep "^# target" [Mm]akefile | cut -c10-
+# target targets: Display callable targets.
+targets: ; grep "^# target" [Mm]akefile | cut -c10-
 
-# target help-masoes: Display masoes help.
-help-masoes: ; ./gradlew -q run -Pargs="-h"
+# target help: Display masoes help.
+help: ; ./gradlew -q run -Pargs="-h"
 
-# target run: Exec masoes with dummy env.
-run: ; ./gradlew -q run -Pargs="-b"
+# target dummy: Exec masoes with dummy env.
+dummy: ; ./gradlew -q run -Pargs="-b"
 
-# target run-wikipedia: Exec masoes with wikipedia env.
-run-wikipedia: ; ./gradlew -q run -Pargs="-b -e wikipedia"
+# target wikipedia: Exec masoes with wikipedia env.
+wikipedia: ; ./gradlew -q run -Pargs="-e wikipedia -b"
 
-# target no-copyright: Search files without copyright.
-no-copyright: ; grep --include *.java -Lr "Copyright (c)" .
+# target uncopyrighted: Search files without copyright.
+uncopyrighted: ; grep --include *.java -Lr "Copyright (c)" .
 
 # target unit-test: Exec unit test.
 unit-test: clean ; ./gradlew test
