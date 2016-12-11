@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.any;
@@ -76,12 +77,16 @@ public class ApplicationOptionProcessorTest {
     @Test
     public void shouldInvokeOption() {
         String expectedOptionValue = "value";
+        Properties mockProperties = mock(Properties.class);
 
         when(mockCommandLine.getOptionValue(any())).thenReturn(expectedOptionValue);
+        when(mockCommandLine.getOptionProperties(any())).thenReturn(mockProperties);
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
-        verify(mockOption).exec(expectedOptionValue);
+        verify(mockOption).setValue(expectedOptionValue);
+        verify(mockOption).setProperties(mockProperties);
+        verify(mockOption).exec();
         verify(mockLogger).startingOption(mockOption);
     }
 
@@ -98,8 +103,8 @@ public class ApplicationOptionProcessorTest {
 
         verify(mockLogger).startingOption(mockOption);
         verify(mockLogger).startingOption(mockOption2);
-        verify(mockOption).exec(any());
-        verify(mockOption2).exec(any());
+        verify(mockOption).exec();
+        verify(mockOption2).exec();
     }
 
     @Test
@@ -112,7 +117,7 @@ public class ApplicationOptionProcessorTest {
         applicationOptionProcessor.processArgs(expectedArgs);
 
         verify(mockApplicationOptions).getDefaultApplicationOption();
-        verify(mockHelOption).exec(any());
+        verify(mockHelOption).exec();
     }
 
     private ApplicationOption getCreateMockApplicationOption(String option) {

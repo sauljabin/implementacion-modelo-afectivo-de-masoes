@@ -48,12 +48,12 @@ public class BootOption extends ApplicationOption {
     }
 
     @Override
-    public boolean hasArg() {
-        return false;
+    public ArgumentType getArgType() {
+        return ArgumentType.NO_ARGS;
     }
 
     @Override
-    public void exec(String optionValue) {
+    public void exec() {
         Environment environment = environmentFactory.createEnvironment();
         List<EnvironmentAgentInfo> environmentAgentInfoList = environment.getEnvironmentAgentInfoList();
         validateEnvironmentAgentInfo(environmentAgentInfoList);

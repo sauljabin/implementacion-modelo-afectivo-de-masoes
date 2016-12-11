@@ -14,14 +14,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.security.InvalidParameterException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Properties;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
@@ -46,10 +44,10 @@ public class SettingsOptionTest {
 
     @Test
     public void shouldGetCorrectConfiguration() {
-        assertThat(settingsOption.getOpt(), is("s"));
-        assertThat(settingsOption.getLongOpt(), is("settings"));
+        assertThat(settingsOption.getOpt(), is("S"));
+        assertThat(settingsOption.getLongOpt(), is(nullValue()));
         assertThat(settingsOption.getDescription(), containsString("Sets application settings"));
-        assertTrue(settingsOption.hasArg());
+        assertThat(settingsOption.getArgType(), is(ArgumentType.UNLIMITED_ARGS));
         assertThat(settingsOption.getOrder(), is(30));
     }
 
@@ -60,28 +58,15 @@ public class SettingsOptionTest {
         String expectedKey2 = "expectedKey2";
         String expectedValue2 = "value2";
 
-        Map<String, String> expectedMap = new HashMap<>();
-        expectedMap.put(expectedKey1, expectedValue1);
-        expectedMap.put(expectedKey2, expectedValue2);
+        Properties expectedProperties = new Properties();
+        expectedProperties.put(expectedKey1, expectedValue1);
+        expectedProperties.put(expectedKey2, expectedValue2);
 
-        settingsOption.exec(expectedMap.toString());
+        settingsOption.setProperties(expectedProperties);
+        settingsOption.exec();
 
         assertThat(Setting.get(expectedKey1), is(expectedValue1));
         assertThat(Setting.get(expectedKey2), is(expectedValue2));
-    }
-
-    @Test
-    public void shouldThrowInvalidParameterWhenNoExistValueException() {
-        String expectedArgs = "{setting1=,setting2=value2}";
-        expectedException.expect(InvalidParameterException.class);
-        expectedException.expectMessage("Incorrect string format: " + expectedArgs);
-        settingsOption.exec(expectedArgs);
-    }
-
-    @Test
-    public void shouldInvokeLoggerErrorWhenException() {
-        String expectedArgs = "{setting1=value1,setting2=value2}";
-        settingsOption.exec(expectedArgs);
         verify(mockLogger).updatedSettings();
     }
 

@@ -15,7 +15,6 @@ import org.junit.contrib.java.lang.system.SystemOutRule;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
 public class VersionOptionTest {
@@ -38,7 +37,7 @@ public class VersionOptionTest {
         assertThat(versionOption.getOpt(), is("v"));
         assertThat(versionOption.getLongOpt(), is("version"));
         assertThat(versionOption.getDescription(), is("Shows the application version"));
-        assertFalse(versionOption.hasArg());
+        assertThat(versionOption.getArgType(), is(ArgumentType.NO_ARGS));
         assertThat(versionOption.getOrder(), is(10));
     }
 
@@ -46,7 +45,7 @@ public class VersionOptionTest {
     public void shouldPrintVersion() {
         String expectedStringMasoes = String.format("%s\nVersion: %s\nRevision: %s", Setting.APP_NAME.getValue().toUpperCase(), Setting.APP_VERSION.getValue(), Setting.APP_REVISION.getValue());
         String expectedStringJade = String.format("JADE\nVersion: %s\nRevision: %s\n", Setting.JADE_VERSION.getValue(), Setting.JADE_REVISION.getValue());
-        versionOption.exec("");
+        versionOption.exec();
         assertThat(systemOutRule.getLog(), containsString(expectedStringMasoes));
         assertThat(systemOutRule.getLog(), containsString(expectedStringJade));
     }

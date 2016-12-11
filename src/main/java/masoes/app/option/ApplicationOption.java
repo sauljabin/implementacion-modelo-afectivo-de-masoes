@@ -9,11 +9,43 @@ package masoes.app.option;
 import org.apache.commons.cli.Option;
 
 import java.util.Optional;
+import java.util.Properties;
 
 public abstract class ApplicationOption implements Comparable<ApplicationOption> {
 
+    private String value;
+    private Properties properties;
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
+
     public Option toOption() {
-        return new OptionWrapper(this);
+        Option.Builder option = Option.builder(getOpt()).longOpt(getLongOpt()).desc(getDescription());
+        switch (getArgType()) {
+            case ONE_ARG:
+                option.hasArg();
+                break;
+            case UNLIMITED_ARGS:
+                option.hasArgs();
+                break;
+            case NO_ARGS:
+            default:
+                option.hasArg(false);
+        }
+        return option.build();
     }
 
     public String getKeyOpt() {
@@ -38,8 +70,8 @@ public abstract class ApplicationOption implements Comparable<ApplicationOption>
 
     public abstract String getDescription();
 
-    public abstract boolean hasArg();
+    public abstract ArgumentType getArgType();
 
-    public abstract void exec(String optionValue);
+    public abstract void exec();
 
 }

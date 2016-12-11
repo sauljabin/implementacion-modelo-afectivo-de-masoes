@@ -42,13 +42,13 @@ public class AgentsOption extends ApplicationOption {
     }
 
     @Override
-    public boolean hasArg() {
-        return true;
+    public ArgumentType getArgType() {
+        return ArgumentType.ONE_ARG;
     }
 
     @Override
-    public void exec(String optionValue) {
-        jadeBoot.boot(optionValue);
+    public void exec() {
+        jadeBoot.boot(getValue());
     }
 
 }

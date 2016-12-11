@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -40,16 +39,15 @@ public class HelpOptionTest {
         assertThat(helpOption.getOpt(), is("h"));
         assertThat(helpOption.getLongOpt(), is("help"));
         assertThat(helpOption.getDescription(), is("Shows the options"));
-        assertFalse(helpOption.hasArg());
+        assertThat(helpOption.getArgType(), is(ArgumentType.NO_ARGS));
         assertThat(helpOption.getOrder(), is(20));
     }
 
     @Test
     public void shouldPrintHelp() {
-        helpOption.exec("");
+        helpOption.exec();
         verify(mockHelpFormatter).setSyntaxPrefix("Usage: ");
         verify(mockHelpFormatter).setLongOptSeparator("=");
-        verify(mockHelpFormatter).setOptionComparator(OptionWrapper.comparator());
         verify(mockHelpFormatter).printHelp(any(), any(Options.class));
     }
 

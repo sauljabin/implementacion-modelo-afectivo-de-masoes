@@ -11,10 +11,10 @@ def processArguments(String optionValue) {
     for (int i = 0; i < optionValue.length(); i++) {
         def c = optionValue.charAt(i)
 
-        if (c == '\"' && !ignoreWhiteSpace) {
+        if (c == '"' && !ignoreWhiteSpace) {
             ignoreWhiteSpace = true
             continue
-        } else if (c == '\"' && ignoreWhiteSpace) {
+        } else if (c == '"' && ignoreWhiteSpace) {
             ignoreWhiteSpace = false
             continue
         }

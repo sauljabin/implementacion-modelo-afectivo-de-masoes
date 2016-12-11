@@ -38,16 +38,15 @@ public class HelpOption extends ApplicationOption {
     }
 
     @Override
-    public boolean hasArg() {
-        return false;
+    public ArgumentType getArgType() {
+        return ArgumentType.NO_ARGS;
     }
 
     @Override
-    public void exec(String optionValue) {
+    public void exec() {
         try {
             helpFormatter.setSyntaxPrefix("Usage: ");
             helpFormatter.setLongOptSeparator("=");
-            helpFormatter.setOptionComparator(OptionWrapper.comparator());
             helpFormatter.printHelp(Setting.APP_NAME.getValue(), new ApplicationOptions().toOptions());
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);

@@ -49,7 +49,9 @@ public class ApplicationOptionProcessor {
 
     private void execOption(ApplicationOption option) {
         logger.startingOption(option);
-        option.exec(commandLine.getOptionValue(option.getKeyOpt()));
+        option.setValue(commandLine.getOptionValue(option.getKeyOpt()));
+        option.setProperties(commandLine.getOptionProperties(option.getKeyOpt()));
+        option.exec();
     }
 
 }

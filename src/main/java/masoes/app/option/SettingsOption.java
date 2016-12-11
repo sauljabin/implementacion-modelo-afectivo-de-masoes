@@ -8,7 +8,6 @@ package masoes.app.option;
 
 import masoes.app.logger.ApplicationLogger;
 import masoes.app.setting.Setting;
-import masoes.util.collection.MapParser;
 import org.slf4j.LoggerFactory;
 
 public class SettingsOption extends ApplicationOption {
@@ -26,30 +25,28 @@ public class SettingsOption extends ApplicationOption {
 
     @Override
     public String getLongOpt() {
-        return "settings";
+        return null;
     }
 
     @Override
     public String getOpt() {
-        return "s";
+        return "S";
     }
 
     @Override
     public String getDescription() {
         return "Sets application settings, examples:\n" +
-                "-s \"{setting1=value1, setting2=value2}\"\n" +
-                "--settings=\"{setting1=value1, setting2=value2}\"";
+                "-Skey=value -Skey=value";
     }
 
     @Override
-    public boolean hasArg() {
-        return true;
+    public ArgumentType getArgType() {
+        return ArgumentType.UNLIMITED_ARGS;
     }
 
     @Override
-    public void exec(String optionValue) {
-        MapParser mapParser = new MapParser();
-        mapParser.parseMap(optionValue).forEach((key, value) -> Setting.set(key, value));
+    public void exec() {
+        getProperties().entrySet().forEach(objectEntry -> Setting.set(objectEntry.getKey().toString(), objectEntry.getValue().toString()));
         logger.updatedSettings();
     }
 

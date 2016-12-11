@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
@@ -40,14 +39,15 @@ public class AgentsOptionTest {
         assertThat(agentsOption.getOpt(), is("a"));
         assertThat(agentsOption.getLongOpt(), is("agents"));
         assertThat(agentsOption.getDescription(), is(expectedDescription));
-        assertTrue(agentsOption.hasArg());
+        assertThat(agentsOption.getArgType(), is(ArgumentType.ONE_ARG));
         assertThat(agentsOption.getOrder(), is(40));
     }
 
     @Test
     public void shouldInvokeJadeBoot() {
         String expectedArgs = "a1:ClassName";
-        agentsOption.exec(expectedArgs);
+        agentsOption.setValue(expectedArgs);
+        agentsOption.exec();
         verify(mockJadeBoot).boot(expectedArgs);
     }
 

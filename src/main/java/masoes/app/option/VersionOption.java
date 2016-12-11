@@ -31,12 +31,12 @@ public class VersionOption extends ApplicationOption {
     }
 
     @Override
-    public boolean hasArg() {
-        return false;
+    public ArgumentType getArgType() {
+        return ArgumentType.NO_ARGS;
     }
 
     @Override
-    public void exec(String optionValue) {
+    public void exec() {
         String line = "--------------------------------------------------";
         System.out.println(line);
         System.out.println(Setting.APP_NAME.getValue().toUpperCase());

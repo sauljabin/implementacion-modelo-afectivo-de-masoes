@@ -31,13 +31,13 @@ public class EnvironmentOption extends ApplicationOption {
     }
 
     @Override
-    public boolean hasArg() {
-        return true;
+    public ArgumentType getArgType() {
+        return ArgumentType.ONE_ARG;
     }
 
     @Override
-    public void exec(String optionValue) {
-        Setting.MASOES_ENV.setValue(optionValue);
+    public void exec() {
+        Setting.MASOES_ENV.setValue(getValue());
     }
 
 }

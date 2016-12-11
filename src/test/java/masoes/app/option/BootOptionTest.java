@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -61,7 +60,7 @@ public class BootOptionTest {
         assertThat(bootOption.getOpt(), is("b"));
         assertThat(bootOption.getLongOpt(), is("boot"));
         assertThat(bootOption.getDescription(), is("Starts the application"));
-        assertFalse(bootOption.hasArg());
+        assertThat(bootOption.getArgType(), is(ArgumentType.NO_ARGS));
         assertThat(bootOption.getOrder(), is(60));
     }
 
@@ -71,7 +70,7 @@ public class BootOptionTest {
         expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent", Agent.class, Arrays.asList("arg1", "arg2")));
         when(mockEnv.getEnvironmentAgentInfoList()).thenReturn(expectedJadeAgentOptionList);
 
-        bootOption.exec(null);
+        bootOption.exec();
 
         verify(mockEnvironmentFactory).createEnvironment();
         verify(mockEnv).getEnvironmentAgentInfoList();
@@ -86,7 +85,7 @@ public class BootOptionTest {
         expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent2", Agent.class));
         when(mockEnv.getEnvironmentAgentInfoList()).thenReturn(expectedJadeAgentOptionList);
 
-        bootOption.exec(null);
+        bootOption.exec();
 
         verify(mockEnvironmentFactory).createEnvironment();
         verify(mockEnv).getEnvironmentAgentInfoList();
@@ -99,7 +98,7 @@ public class BootOptionTest {
         when(mockEnv.getEnvironmentAgentInfoList()).thenReturn(null);
         expectedException.expect(InvalidEnvironmentException.class);
         expectedException.expectMessage("No agents in environment");
-        bootOption.exec(null);
+        bootOption.exec();
     }
 
 }
