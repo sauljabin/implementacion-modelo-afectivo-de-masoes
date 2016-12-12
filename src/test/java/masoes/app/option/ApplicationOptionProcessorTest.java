@@ -38,6 +38,8 @@ public class ApplicationOptionProcessorTest {
     private CommandLine mockCommandLine;
     private ApplicationLogger mockLogger;
     private ApplicationOption mockOption;
+    private ApplicationOption mockDefaultOption;
+    private String defaultKeyOption;
 
     @Before
     public void setUp() throws Exception {
@@ -45,6 +47,7 @@ public class ApplicationOptionProcessorTest {
         mockCommandLine = mock(CommandLine.class);
         mockLogger = mock(ApplicationLogger.class);
         mockApplicationOptions = mock(ApplicationOptions.class);
+        mockDefaultOption = mock(ApplicationOption.class);
 
         applicationOptionProcessor = new ApplicationOptionProcessor();
         setFieldValue(applicationOptionProcessor, "applicationOptions", mockApplicationOptions);
@@ -60,6 +63,7 @@ public class ApplicationOptionProcessorTest {
         when(mockApplicationOptions.getApplicationOptionList()).thenReturn(applicationOptionList);
         when(mockCommandLineParser.parse(any(), any())).thenReturn(mockCommandLine);
         when(mockCommandLine.hasOption(expectedOpt)).thenReturn(Boolean.TRUE);
+        when(mockApplicationOptions.getDefaultApplicationOption()).thenReturn(mockDefaultOption);
 
         expectedArgs = new String[]{"-" + expectedOpt};
     }
@@ -134,15 +138,22 @@ public class ApplicationOptionProcessorTest {
 
     @Test
     public void shouldInvokeDefaultOption() {
-        HelpOption mockHelOption = mock(HelpOption.class);
-
-        when(mockApplicationOptions.getDefaultApplicationOption()).thenReturn(mockHelOption);
         when(mockCommandLine.hasOption(expectedOpt)).thenReturn(Boolean.FALSE);
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
-        verify(mockApplicationOptions).getDefaultApplicationOption();
-        verify(mockHelOption).exec();
+        verify(mockOption, never()).exec();
+        verify(mockDefaultOption).exec();
+    }
+
+    @Test
+    public void shouldInvokeDefaultOptionIfOptionNotIsFinal() {
+        when(mockCommandLine.hasOption(expectedOpt)).thenReturn(Boolean.TRUE);
+
+        applicationOptionProcessor.processArgs(expectedArgs);
+
+        verify(mockOption).exec();
+        verify(mockDefaultOption).exec();
     }
 
     private ApplicationOption getCreateMockApplicationOption(String option, boolean stopApplication) {

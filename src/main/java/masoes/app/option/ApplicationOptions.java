@@ -33,7 +33,7 @@ public class ApplicationOptions {
     }
 
     public ApplicationOption getDefaultApplicationOption() {
-        return new HelpOption();
+        return new BootOption();
     }
 
 }

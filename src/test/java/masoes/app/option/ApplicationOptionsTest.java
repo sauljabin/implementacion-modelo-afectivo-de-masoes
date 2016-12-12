@@ -27,7 +27,7 @@ public class ApplicationOptionsTest {
     public void setUp() {
         applicationOptions = new ApplicationOptions();
         expectedOptionsObject = new Options();
-        expectedDefaultOption = new HelpOption();
+        expectedDefaultOption = new BootOption();
 
         expectedOptions = new ArrayList<>();
         expectedOptions.add(new VersionOption());

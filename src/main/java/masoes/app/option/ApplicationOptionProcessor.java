@@ -31,25 +31,36 @@ public class ApplicationOptionProcessor {
     public void processArgs(String[] args) {
         try {
             commandLine = commandLineParser.parse(applicationOptions.toOptions(), args);
-
-            List<ApplicationOption> optionsToExec = applicationOptions.getApplicationOptionList()
-                    .stream()
-                    .filter(tempOption -> commandLine.hasOption(tempOption.getKeyOpt()))
-                    .collect(Collectors.toList());
-
-            if (optionsToExec.isEmpty()) {
-                execOption(applicationOptions.getDefaultApplicationOption());
-            } else {
-                for (ApplicationOption applicationOption : optionsToExec) {
-                    execOption(applicationOption);
-                    if (applicationOption.isFinalOption()) {
-                        break;
-                    }
-                }
-            }
+            execOptions(getOptionsToExec());
         } catch (Exception e) {
             throw new OptionProcessorException(e.getMessage(), e);
         }
+    }
+
+    private void execOptions(List<ApplicationOption> optionsToExec) {
+        for (ApplicationOption applicationOption : optionsToExec) {
+            execOption(applicationOption);
+            if (applicationOption.isFinalOption()) {
+                break;
+            }
+        }
+    }
+
+    private List<ApplicationOption> getOptionsToExec() {
+        List<ApplicationOption> options = applicationOptions.getApplicationOptionList()
+                .stream()
+                .filter(tempOption -> commandLine.hasOption(tempOption.getKeyOpt()))
+                .collect(Collectors.toList());
+        
+        if (isNotPresentOptionDefault(options)) {
+            options.add(applicationOptions.getDefaultApplicationOption());
+        }
+
+        return options;
+    }
+
+    private boolean isNotPresentOptionDefault(List<ApplicationOption> options) {
+        return !options.stream().filter(option -> option.getClass().equals(applicationOptions.getApplicationOptionList().getClass())).findFirst().isPresent();
     }
 
     private void execOption(ApplicationOption option) {
