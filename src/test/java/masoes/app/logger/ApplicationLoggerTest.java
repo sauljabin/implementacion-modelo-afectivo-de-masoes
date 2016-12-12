@@ -32,6 +32,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
@@ -46,17 +47,24 @@ public class ApplicationLoggerTest {
     private Map<String, String> expectedJadeSettingsMap;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         mockApplicationSettings = mock(ApplicationSettings.class);
         mockJadeSettings = mock(JadeSettings.class);
         mockLogger = mock(Logger.class);
         applicationLogger = new ApplicationLogger(mockLogger);
 
         expectedApplicationSettingsMap = new HashMap<>();
+        expectedApplicationSettingsMap.put("key", "value");
         when(mockApplicationSettings.toMap()).thenReturn(expectedApplicationSettingsMap);
+        when(mockApplicationSettings.toString()).thenCallRealMethod();
 
         expectedJadeSettingsMap = new HashMap<>();
+        expectedJadeSettingsMap.put("key", "value");
         when(mockJadeSettings.toMap()).thenReturn(expectedJadeSettingsMap);
+        when(mockJadeSettings.toString()).thenCallRealMethod();
+
+        setFieldValue(applicationLogger, "jadeSettings", mockJadeSettings);
+        setFieldValue(applicationLogger, "applicationSettings", mockApplicationSettings);
     }
 
     @Test
@@ -92,7 +100,7 @@ public class ApplicationLoggerTest {
     @Test
     public void shouldLogUpdatedSettings() {
         applicationLogger.updatedSettings();
-        verify(mockLogger).info(eq("Updated settings: " + mockApplicationSettings.toMap().toString()));
+        verify(mockLogger).info(eq("Updated settings: " + expectedApplicationSettingsMap.toString() + ", jade settings: " + expectedJadeSettingsMap.toString()));
     }
 
     @Test

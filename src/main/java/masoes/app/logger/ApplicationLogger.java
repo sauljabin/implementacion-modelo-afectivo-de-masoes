@@ -22,16 +22,20 @@ import java.util.Optional;
 public class ApplicationLogger {
 
     private static final String NO_BEHAVIOUR = "NO BEHAVIOUR";
+    private JadeSettings jadeSettings;
     private Logger logger;
+    private ApplicationSettings applicationSettings;
 
     public ApplicationLogger(Logger logger) {
         this.logger = logger;
+        applicationSettings = ApplicationSettings.getInstance();
+        jadeSettings = JadeSettings.getInstance();
     }
 
     public void startingApplication(String[] args) {
         new LogWriter()
                 .message("Starting application with arguments: %s, settings: %s, jade settings: %s")
-                .args(Arrays.toString(args), ApplicationSettings.getInstance().toMap().toString(), JadeSettings.getInstance().toMap().toString())
+                .args(Arrays.toString(args), applicationSettings.toString(), jadeSettings.toString())
                 .info(logger);
     }
 
@@ -58,8 +62,8 @@ public class ApplicationLogger {
 
     public void updatedSettings() {
         new LogWriter()
-                .message("Updated settings: %s")
-                .args(ApplicationSettings.getInstance().toMap().toString())
+                .message("Updated settings: %s, jade settings: %s")
+                .args(applicationSettings.toString(), jadeSettings.toString())
                 .info(logger);
     }
 

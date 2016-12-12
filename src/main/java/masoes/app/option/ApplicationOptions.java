@@ -24,7 +24,7 @@ public class ApplicationOptions {
         List<ApplicationOption> applicationOptions = Arrays
                 .asList(new HelpOption(),
                         new VersionOption(),
-                        new AgentsOption(),
+                        new JadeOption(),
                         new SettingsOption(),
                         new EnvironmentOption(),
                         new BootOption());

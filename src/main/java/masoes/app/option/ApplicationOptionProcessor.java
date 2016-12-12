@@ -51,7 +51,7 @@ public class ApplicationOptionProcessor {
                 .stream()
                 .filter(tempOption -> commandLine.hasOption(tempOption.getKeyOpt()))
                 .collect(Collectors.toList());
-        
+
         if (isNotPresentOptionDefault(options)) {
             options.add(applicationOptions.getDefaultApplicationOption());
         }

@@ -54,7 +54,11 @@ public abstract class ApplicationOption implements Comparable<ApplicationOption>
 
     @Override
     public String toString() {
-        return String.format("{option=[-%s,--%s], order=%d}", getOpt(), getLongOpt(), getOrder());
+        if (Optional.ofNullable(getLongOpt()).isPresent()) {
+            return String.format("{option=[-%s,--%s], order=%d}", getOpt(), getLongOpt(), getOrder());
+        } else {
+            return String.format("{option=[-%s], order=%d}", getOpt(), getOrder());
+        }
     }
 
     @Override

@@ -6,16 +6,17 @@
 
 package masoes.app.option;
 
-import masoes.jade.JadeBoot;
+import masoes.app.logger.ApplicationLogger;
 import masoes.jade.settings.JadeSettings;
+import org.slf4j.LoggerFactory;
 
-public class AgentsOption extends ApplicationOption {
+public class JadeOption extends ApplicationOption {
 
     private JadeSettings jadeSettings;
-    private JadeBoot jadeBoot;
+    private ApplicationLogger logger;
 
-    public AgentsOption() {
-        jadeBoot = new JadeBoot();
+    public JadeOption() {
+        logger = new ApplicationLogger(LoggerFactory.getLogger(SettingsOption.class));
         jadeSettings = JadeSettings.getInstance();
     }
 
@@ -26,27 +27,23 @@ public class AgentsOption extends ApplicationOption {
 
     @Override
     public String getLongOpt() {
-        return "agents";
+        return null;
     }
 
     @Override
     public String getOpt() {
-        return "a";
+        return "J";
     }
 
     @Override
     public String getDescription() {
-        String description = "Starts JADE with agents, examples:\n" +
-                "Adds agents: \n" +
-                "-a <name>:<class>;<name>:<class>\n" +
-                "Agent arguments: \n" +
-                "-a <name>:<class>(arg1,arg2)";
-        return description;
+        return "Sets JADE settings, examples:\n" +
+                "-Jkey=value -Jkey=value";
     }
 
     @Override
     public ArgumentType getArgType() {
-        return ArgumentType.ONE_ARG;
+        return ArgumentType.UNLIMITED_ARGS;
     }
 
     @Override
@@ -56,8 +53,8 @@ public class AgentsOption extends ApplicationOption {
 
     @Override
     public void exec() {
-        jadeSettings.set(JadeSettings.AGENTS, getValue());
-        jadeBoot.boot();
+        getProperties().entrySet().forEach(objectEntry -> jadeSettings.set(objectEntry.getKey().toString(), objectEntry.getValue().toString()));
+        logger.updatedSettings();
     }
 
 }
