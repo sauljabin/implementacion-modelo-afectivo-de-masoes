@@ -64,6 +64,7 @@ public class ApplicationTest {
 
         verify(mockApplicationOptionProcessor).processArgs(args);
         verify(mockLogger).startingApplication(any());
+        verify(mockLogger).closingApplication();
         verify(mockApplicationSettings).load();
         verify(mockJadeSettings).load();
     }

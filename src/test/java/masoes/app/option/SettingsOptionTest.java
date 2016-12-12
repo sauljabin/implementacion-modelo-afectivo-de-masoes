@@ -18,6 +18,7 @@ import java.util.Properties;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -48,6 +49,7 @@ public class SettingsOptionTest {
         assertThat(settingsOption.getDescription(), containsString("Sets application settings"));
         assertThat(settingsOption.getArgType(), is(ArgumentType.UNLIMITED_ARGS));
         assertThat(settingsOption.getOrder(), is(30));
+        assertFalse(settingsOption.isFinalOption());
     }
 
     @Test

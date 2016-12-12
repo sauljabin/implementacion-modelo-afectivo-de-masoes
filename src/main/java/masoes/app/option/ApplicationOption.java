@@ -74,4 +74,6 @@ public abstract class ApplicationOption implements Comparable<ApplicationOption>
 
     public abstract void exec();
 
+    public abstract boolean isFinalOption();
+
 }

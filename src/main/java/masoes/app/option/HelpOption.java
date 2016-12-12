@@ -45,6 +45,11 @@ public class HelpOption extends ApplicationOption {
     }
 
     @Override
+    public boolean isFinalOption() {
+        return true;
+    }
+
+    @Override
     public void exec() {
         helpFormatter.setSyntaxPrefix("Usage: ");
         helpFormatter.setLongOptSeparator("=");

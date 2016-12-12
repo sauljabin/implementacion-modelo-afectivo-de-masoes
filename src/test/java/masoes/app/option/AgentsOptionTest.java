@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -35,13 +36,12 @@ public class AgentsOptionTest {
 
     @Test
     public void shouldGetCorrectConfiguration() {
-        String expectedDescription = "Starts JADE with agents";
-
         assertThat(agentsOption.getOpt(), is("a"));
         assertThat(agentsOption.getLongOpt(), is("agents"));
-        assertThat(agentsOption.getDescription(), containsString(expectedDescription));
+        assertThat(agentsOption.getDescription(), containsString("Starts JADE with agents"));
         assertThat(agentsOption.getArgType(), is(ArgumentType.ONE_ARG));
         assertThat(agentsOption.getOrder(), is(40));
+        assertFalse(agentsOption.isFinalOption());
     }
 
     @Test

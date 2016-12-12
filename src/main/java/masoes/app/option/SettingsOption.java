@@ -47,6 +47,11 @@ public class SettingsOption extends ApplicationOption {
     }
 
     @Override
+    public boolean isFinalOption() {
+        return false;
+    }
+
+    @Override
     public void exec() {
         getProperties().entrySet().forEach(objectEntry -> applicationSettings.set(objectEntry.getKey().toString(), objectEntry.getValue().toString()));
         logger.updatedSettings();

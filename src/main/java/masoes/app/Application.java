@@ -32,6 +32,7 @@ public class Application {
             jadeSettings.load();
             logger.startingApplication(args);
             applicationOptionProcessor.processArgs(args);
+            logger.closingApplication();
         } catch (Exception e) {
             logger.cantNotStartApplication(e);
             System.exit(SystemExitStatus.FAILURE.getValue());

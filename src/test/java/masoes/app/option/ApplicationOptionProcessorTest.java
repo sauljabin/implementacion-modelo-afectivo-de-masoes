@@ -21,6 +21,7 @@ import java.util.Properties;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
@@ -51,7 +52,7 @@ public class ApplicationOptionProcessorTest {
         setFieldValue(applicationOptionProcessor, "logger", mockLogger);
 
         expectedOpt = "test";
-        mockOption = getCreateMockApplicationOption(expectedOpt);
+        mockOption = getCreateMockApplicationOption(expectedOpt, false);
 
         applicationOptionList = new ArrayList<>();
         applicationOptionList.add(mockOption);
@@ -93,7 +94,7 @@ public class ApplicationOptionProcessorTest {
     @Test
     public void shouldInvokeTwoOptions() {
         String expectedOpt2 = "test";
-        ApplicationOption mockOption2 = getCreateMockApplicationOption(expectedOpt2);
+        ApplicationOption mockOption2 = getCreateMockApplicationOption(expectedOpt2, false);
         applicationOptionList.add(mockOption2);
         when(mockCommandLine.hasOption(expectedOpt2)).thenReturn(Boolean.TRUE);
 
@@ -105,6 +106,30 @@ public class ApplicationOptionProcessorTest {
         verify(mockLogger).startingOption(mockOption2);
         verify(mockOption).exec();
         verify(mockOption2).exec();
+    }
+
+    @Test
+    public void shouldBreakWheOptionIsFinalOption() {
+        applicationOptionList = new ArrayList<>();
+        when(mockApplicationOptions.getApplicationOptionList()).thenReturn(applicationOptionList);
+
+        String expectedOpt1 = "a";
+        ApplicationOption mockOption1 = getCreateMockApplicationOption(expectedOpt1, true);
+        when(mockCommandLine.hasOption(expectedOpt1)).thenReturn(Boolean.TRUE);
+
+        String expectedOpt2 = "b";
+        ApplicationOption mockOption2 = getCreateMockApplicationOption(expectedOpt2, false);
+        when(mockCommandLine.hasOption(expectedOpt2)).thenReturn(Boolean.TRUE);
+
+        applicationOptionList.add(mockOption1);
+        applicationOptionList.add(mockOption2);
+
+        expectedArgs = new String[]{"-" + expectedOpt1, "-" + expectedOpt2};
+
+        applicationOptionProcessor.processArgs(expectedArgs);
+
+        verify(mockOption1).exec();
+        verify(mockOption2, never()).exec();
     }
 
     @Test
@@ -120,11 +145,12 @@ public class ApplicationOptionProcessorTest {
         verify(mockHelOption).exec();
     }
 
-    private ApplicationOption getCreateMockApplicationOption(String option) {
+    private ApplicationOption getCreateMockApplicationOption(String option, boolean stopApplication) {
         ApplicationOption mock = mock(ApplicationOption.class);
         when(mock.toOption()).thenCallRealMethod();
         when(mock.getLongOpt()).thenReturn(option);
         when(mock.getKeyOpt()).thenCallRealMethod();
+        when(mock.isFinalOption()).thenReturn(stopApplication);
         return mock;
     }
 

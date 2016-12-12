@@ -67,6 +67,12 @@ public class ApplicationLoggerTest {
     }
 
     @Test
+    public void shouldLogClosingApp() {
+        applicationLogger.closingApplication();
+        verify(mockLogger).info(eq("Closing application"));
+    }
+
+    @Test
     public void shouldLogCantNotStartApp() {
         Exception expectedException = new Exception();
         applicationLogger.cantNotStartApplication(expectedException);

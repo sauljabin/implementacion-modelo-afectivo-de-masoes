@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -41,6 +42,7 @@ public class HelpOptionTest {
         assertThat(helpOption.getDescription(), is("Shows the options"));
         assertThat(helpOption.getArgType(), is(ArgumentType.NO_ARGS));
         assertThat(helpOption.getOrder(), is(20));
+        assertTrue(helpOption.isFinalOption());
     }
 
     @Test

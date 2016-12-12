@@ -15,6 +15,7 @@ import org.junit.contrib.java.lang.system.SystemOutRule;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
@@ -41,6 +42,7 @@ public class VersionOptionTest {
         assertThat(versionOption.getDescription(), is("Shows the application version"));
         assertThat(versionOption.getArgType(), is(ArgumentType.NO_ARGS));
         assertThat(versionOption.getOrder(), is(10));
+        assertTrue(versionOption.isFinalOption());
     }
 
     @Test

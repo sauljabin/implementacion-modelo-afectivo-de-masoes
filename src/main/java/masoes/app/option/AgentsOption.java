@@ -50,6 +50,11 @@ public class AgentsOption extends ApplicationOption {
     }
 
     @Override
+    public boolean isFinalOption() {
+        return false;
+    }
+
+    @Override
     public void exec() {
         jadeSettings.set(JadeSettings.AGENTS, getValue());
         jadeBoot.boot();

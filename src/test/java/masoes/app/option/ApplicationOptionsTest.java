@@ -21,7 +21,7 @@ public class ApplicationOptionsTest {
     private ApplicationOptions applicationOptions;
     private List<ApplicationOption> expectedOptions;
     private Options expectedOptionsObject;
-    private HelpOption expectedDefaultOption;
+    private ApplicationOption expectedDefaultOption;
 
     @Before
     public void setUp() {

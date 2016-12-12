@@ -23,8 +23,8 @@ public class ApplicationOptionTest {
 
     @Before
     public void setUp() {
-        applicationOptionA = createDummyApplicationOption(1, "testA", "a", null, ArgumentType.NO_ARGS);
-        applicationOptionB = createDummyApplicationOption(2, null, "a", null, ArgumentType.NO_ARGS);
+        applicationOptionA = createDummyApplicationOption(1, "testA", "a", null, ArgumentType.NO_ARGS, false);
+        applicationOptionB = createDummyApplicationOption(2, null, "a", null, ArgumentType.NO_ARGS, false);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class ApplicationOptionTest {
     @Test
     public void shouldCreateCorrectLongOption() {
         String expectedLongOpt = "long";
-        ApplicationOption applicationOption = createDummyApplicationOption(0, expectedLongOpt, null, null, ArgumentType.NO_ARGS);
+        ApplicationOption applicationOption = createDummyApplicationOption(0, expectedLongOpt, null, null, ArgumentType.NO_ARGS, false);
         Option expectedOption = Option.builder().longOpt(expectedLongOpt).build();
         assertReflectionEquals(expectedOption, applicationOption.toOption());
     }
@@ -61,7 +61,7 @@ public class ApplicationOptionTest {
     @Test
     public void shouldCreateCorrectOptOption() {
         String expectedOpt = "opt";
-        ApplicationOption applicationOption = createDummyApplicationOption(0, null, expectedOpt, null, ArgumentType.NO_ARGS);
+        ApplicationOption applicationOption = createDummyApplicationOption(0, null, expectedOpt, null, ArgumentType.NO_ARGS, false);
         Option expectedOption = Option.builder(expectedOpt).build();
         assertReflectionEquals(expectedOption, applicationOption.toOption());
     }
@@ -70,7 +70,7 @@ public class ApplicationOptionTest {
     public void shouldCreateCorrectOptionWithDesc() {
         String expectedDesc = "desc";
         String expectedOpt = "opt";
-        ApplicationOption applicationOption = createDummyApplicationOption(0, null, expectedOpt, expectedDesc, ArgumentType.NO_ARGS);
+        ApplicationOption applicationOption = createDummyApplicationOption(0, null, expectedOpt, expectedDesc, ArgumentType.NO_ARGS, false);
         Option expectedOption = Option.builder(expectedOpt).desc(expectedDesc).build();
         assertReflectionEquals(expectedOption, applicationOption.toOption());
     }
@@ -78,12 +78,12 @@ public class ApplicationOptionTest {
     @Test
     public void shouldCreateCorrectOptionWithArgs() {
         String expectedOpt = "opt";
-        ApplicationOption applicationOption = createDummyApplicationOption(0, null, expectedOpt, null, ArgumentType.UNLIMITED_ARGS);
+        ApplicationOption applicationOption = createDummyApplicationOption(0, null, expectedOpt, null, ArgumentType.UNLIMITED_ARGS, false);
         Option expectedOption = Option.builder(expectedOpt).hasArgs().build();
         assertReflectionEquals(expectedOption, applicationOption.toOption());
     }
 
-    private ApplicationOption createDummyApplicationOption(int order, String longOpt, String opt, String description, ArgumentType argumentType) {
+    private ApplicationOption createDummyApplicationOption(int order, String longOpt, String opt, String description, ArgumentType argumentType, boolean isStopApplication) {
         return new ApplicationOption() {
             @Override
             public int getOrder() {
@@ -108,6 +108,11 @@ public class ApplicationOptionTest {
             @Override
             public ArgumentType getArgType() {
                 return argumentType;
+            }
+
+            @Override
+            public boolean isFinalOption() {
+                return isStopApplication;
             }
 
             @Override

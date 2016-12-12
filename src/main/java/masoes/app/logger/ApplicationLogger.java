@@ -35,6 +35,12 @@ public class ApplicationLogger {
                 .info(logger);
     }
 
+    public void closingApplication() {
+        new LogWriter()
+                .message("Closing application")
+                .info(logger);
+    }
+
     public void cantNotStartApplication(Exception exception) {
         new LogWriter()
                 .message("Could not start the application: %s")

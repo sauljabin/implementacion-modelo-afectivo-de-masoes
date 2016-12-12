@@ -40,7 +40,12 @@ public class ApplicationOptionProcessor {
             if (optionsToExec.isEmpty()) {
                 execOption(applicationOptions.getDefaultApplicationOption());
             } else {
-                optionsToExec.forEach(this::execOption);
+                for (ApplicationOption applicationOption : optionsToExec) {
+                    execOption(applicationOption);
+                    if (applicationOption.isFinalOption()) {
+                        break;
+                    }
+                }
             }
         } catch (Exception e) {
             throw new OptionProcessorException(e.getMessage(), e);

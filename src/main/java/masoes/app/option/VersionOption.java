@@ -42,6 +42,11 @@ public class VersionOption extends ApplicationOption {
     }
 
     @Override
+    public boolean isFinalOption() {
+        return true;
+    }
+
+    @Override
     public void exec() {
         String line = "--------------------------------------------------";
         System.out.println(line);
