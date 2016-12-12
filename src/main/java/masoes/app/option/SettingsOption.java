@@ -37,7 +37,7 @@ public class SettingsOption extends ApplicationOption {
 
     @Override
     public String getDescription() {
-        return "Sets application settings, examples:\n" +
+        return "Sets application settings, example:\n" +
                 "-Skey=value -Skey=value";
     }
 

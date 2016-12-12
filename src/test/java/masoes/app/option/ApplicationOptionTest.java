@@ -10,6 +10,8 @@ import org.apache.commons.cli.Option;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Properties;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
@@ -37,8 +39,16 @@ public class ApplicationOptionTest {
 
     @Test
     public void shouldGetCorrectString() {
-        assertThat(applicationOptionA.toString(), is("{option=[-a,--testA], order=1}"));
+        assertThat(applicationOptionA.toString(), is("{option=[-a, --testA], order=1}"));
         assertThat(applicationOptionB.toString(), is("{option=[-a], order=2}"));
+
+        applicationOptionA.setValue("test");
+        Properties properties = new Properties();
+        properties.put("p1", "val1");
+        applicationOptionB.setProperties(properties);
+
+        assertThat(applicationOptionA.toString(), is("{option=[-a, --testA], order=1, value=test}"));
+        assertThat(applicationOptionB.toString(), is("{option=[-a], order=2, properties=" + properties + "}"));
     }
 
     @Test

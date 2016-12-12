@@ -37,7 +37,7 @@ public class JadeOption extends ApplicationOption {
 
     @Override
     public String getDescription() {
-        return "Sets JADE settings, examples:\n" +
+        return "Sets JADE settings, example:\n" +
                 "-Jkey=value -Jkey=value";
     }
 

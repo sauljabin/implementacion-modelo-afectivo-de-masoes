@@ -6,13 +6,13 @@
 
 package masoes.app.option;
 
-public class OptionProcessorException extends RuntimeException {
+public class ApplicationOptionProcessorException extends RuntimeException {
 
-    public OptionProcessorException(String message) {
+    public ApplicationOptionProcessorException(String message) {
         super(message);
     }
 
-    public OptionProcessorException(String message, Throwable cause) {
+    public ApplicationOptionProcessorException(String message, Throwable cause) {
         super(message, cause);
     }
 

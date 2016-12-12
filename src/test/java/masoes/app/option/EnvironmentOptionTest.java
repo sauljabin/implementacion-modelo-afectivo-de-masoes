@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -53,9 +55,9 @@ public class EnvironmentOptionTest {
 
     @Test
     public void shouldGetCorrectConfiguration() {
-        assertThat(environmentOption.getOpt(), is("e"));
-        assertThat(environmentOption.getLongOpt(), is("env"));
-        assertThat(environmentOption.getDescription(), is("Sets the environment for case study"));
+        assertThat(environmentOption.getOpt(), is("E"));
+        assertThat(environmentOption.getLongOpt(), is(nullValue()));
+        assertThat(environmentOption.getDescription(), containsString("Sets the environment (dummy, wikipedia)"));
         assertThat(environmentOption.getArgType(), is(ArgumentType.ONE_ARG));
         assertThat(environmentOption.getOrder(), is(50));
         assertFalse(environmentOption.isFinalOption());

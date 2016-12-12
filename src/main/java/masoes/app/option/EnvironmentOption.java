@@ -37,17 +37,18 @@ public class EnvironmentOption extends ApplicationOption {
 
     @Override
     public String getLongOpt() {
-        return "env";
+        return null;
     }
 
     @Override
     public String getOpt() {
-        return "e";
+        return "E";
     }
 
     @Override
     public String getDescription() {
-        return "Sets the environment for case study";
+        return "Sets the environment (dummy, wikipedia), example:\n" +
+                "-Edummy";
     }
 
     @Override

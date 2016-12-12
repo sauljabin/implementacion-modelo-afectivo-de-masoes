@@ -54,11 +54,22 @@ public abstract class ApplicationOption implements Comparable<ApplicationOption>
 
     @Override
     public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("{");
+        stringBuilder.append("option=[-" + getOpt());
         if (Optional.ofNullable(getLongOpt()).isPresent()) {
-            return String.format("{option=[-%s,--%s], order=%d}", getOpt(), getLongOpt(), getOrder());
-        } else {
-            return String.format("{option=[-%s], order=%d}", getOpt(), getOrder());
+            stringBuilder.append(", --" + getLongOpt());
         }
+        stringBuilder.append("]");
+        stringBuilder.append(", order=" + getOrder());
+        if (Optional.ofNullable(getValue()).isPresent()) {
+            stringBuilder.append(", value=" + getValue());
+        }
+        if (Optional.ofNullable(getProperties()).isPresent()) {
+            stringBuilder.append(", properties=" + getProperties());
+        }
+        stringBuilder.append("}");
+        return stringBuilder.toString();
     }
 
     @Override

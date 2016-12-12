@@ -132,8 +132,7 @@ public class ApplicationSettingsTest {
                 javaVersionKey = "java.version",
                 javaVendorKey = "java.vendor",
                 jadeVersionKey = "jade.version",
-                jadeRevisionKey = "jade.revision",
-                masoesEnvKey = "masoes.env";
+                jadeRevisionKey = "jade.revision";
 
         Map<String, String> initValues = new HashMap<>();
         initValues.put(osNameKey, System.getProperty(osNameKey));
@@ -143,7 +142,6 @@ public class ApplicationSettingsTest {
         initValues.put(javaVendorKey, System.getProperty(javaVendorKey));
         initValues.put(jadeVersionKey, jade.core.Runtime.getVersion());
         initValues.put(jadeRevisionKey, jade.core.Runtime.getRevision());
-        initValues.put(masoesEnvKey, "dummy");
         return initValues;
     }
 

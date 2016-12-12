@@ -105,17 +105,15 @@ Ayuda:
 ./gradlew run -Pargs="-h"
 
 Usage: masoes
- -a,--agents=<arg>   Starts JADE with agents, examples:
-                     Adds agents:
-                     -a <name>:<class>;<name>:<class>
-                     Agent arguments:
-                     -a <name>:<class>(arg1,arg2)
- -b,--boot           Starts the application
- -e,--env=<arg>      Sets the environment for case study
- -h,--help           Shows the options
- -S <arg>            Sets application settings, examples:
-                     -Skey=value -Skey=value
- -v,--version        Shows the application version
+ -b,--boot      Starts the application (Default option)
+ -E <arg>       Sets the environment (dummy, wikipedia), example:
+                -Edummy
+ -h,--help      Shows the options
+ -J <arg>       Sets JADE settings, example:
+                -Jkey=value -Jkey=value
+ -S <arg>       Sets application settings, example:
+                -Skey=value -Skey=value
+ -v,--version   Shows the application version
 ```
 
 ## Ejecución desde Empaquetado
@@ -132,29 +130,30 @@ Versión:
 ./masoes -v
 ```
 
-Nuevas configuraciones:
+Settings:
 
 ```
 ./masoes -Skey1=value1 -Skey2=value2
 ```
 
-Ejecutar JADE manualmente:
+Settings de JADE:
 
 ```
-./masoes -a a1:masoes.core.agent.TestAgent
-./masoes -a "a1:masoes.core.agent.TestAgent(arg1, arg2)"
+./masoes -Jkey1=value1 -Jkey2=value2
+./masoes -Jgui=false -Jagents=a1:masoes.core.agent.TestAgent
+./masoes -Jagents="a1:masoes.core.agent.TestAgent(arg1, arg2)"
 ```
 
 Iniciar dummy:
 
 ```
-./masoes --boot
+./masoes -Edummy
 ```
 
 Iniciar caso de estudio:
 
 ```
-./masoes --env=wikipedia --boot
+./masoes -Ewikipedia
 ```
 
 ## Ejecución con make
@@ -225,16 +224,14 @@ Ejecución de todas las pruebas:
 make all-test
 ```
 
-## Ejecución con docker
-
 Crear imagen:
 
 ```
-docker-compose build
+make docker-build
 ```
 
 Iniciar con docker:
 
 ```
-docker-compose up
+make docker-up
 ```

@@ -33,7 +33,7 @@ public class ApplicationOptionProcessor {
             commandLine = commandLineParser.parse(applicationOptions.toOptions(), args);
             execOptions(getOptionsToExec());
         } catch (Exception e) {
-            throw new OptionProcessorException(e.getMessage(), e);
+            throw new ApplicationOptionProcessorException(e.getMessage(), e);
         }
     }
 
@@ -64,9 +64,12 @@ public class ApplicationOptionProcessor {
     }
 
     private void execOption(ApplicationOption option) {
+        if (option.getArgType().equals(ArgumentType.ONE_ARG)) {
+            option.setValue(commandLine.getOptionValue(option.getKeyOpt()));
+        } else if (option.getArgType().equals(ArgumentType.UNLIMITED_ARGS)) {
+            option.setProperties(commandLine.getOptionProperties(option.getKeyOpt()));
+        }
         logger.startingOption(option);
-        option.setValue(commandLine.getOptionValue(option.getKeyOpt()));
-        option.setProperties(commandLine.getOptionProperties(option.getKeyOpt()));
         option.exec();
     }
 

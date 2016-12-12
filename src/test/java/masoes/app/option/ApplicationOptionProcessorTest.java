@@ -47,7 +47,6 @@ public class ApplicationOptionProcessorTest {
         mockCommandLine = mock(CommandLine.class);
         mockLogger = mock(ApplicationLogger.class);
         mockApplicationOptions = mock(ApplicationOptions.class);
-        mockDefaultOption = mock(ApplicationOption.class);
 
         applicationOptionProcessor = new ApplicationOptionProcessor();
         setFieldValue(applicationOptionProcessor, "applicationOptions", mockApplicationOptions);
@@ -55,7 +54,10 @@ public class ApplicationOptionProcessorTest {
         setFieldValue(applicationOptionProcessor, "logger", mockLogger);
 
         expectedOpt = "test";
-        mockOption = getCreateMockApplicationOption(expectedOpt, false);
+        mockOption = getCreateMockApplicationOption(expectedOpt, false, ArgumentType.ONE_ARG);
+
+        defaultKeyOption = "default";
+        mockDefaultOption = getCreateMockApplicationOption(defaultKeyOption, false, ArgumentType.NO_ARGS);
 
         applicationOptionList = new ArrayList<>();
         applicationOptionList.add(mockOption);
@@ -80,16 +82,26 @@ public class ApplicationOptionProcessorTest {
     }
 
     @Test
-    public void shouldInvokeOption() {
+    public void shouldInvokeOptionAndSeValue() {
         String expectedOptionValue = "value";
-        Properties mockProperties = mock(Properties.class);
 
         when(mockCommandLine.getOptionValue(any())).thenReturn(expectedOptionValue);
-        when(mockCommandLine.getOptionProperties(any())).thenReturn(mockProperties);
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
         verify(mockOption).setValue(expectedOptionValue);
+        verify(mockOption).exec();
+        verify(mockLogger).startingOption(mockOption);
+    }
+
+    @Test
+    public void shouldInvokeOptionAndSetProperties() {
+        Properties mockProperties = mock(Properties.class);
+        when(mockOption.getArgType()).thenReturn(ArgumentType.UNLIMITED_ARGS);
+        when(mockCommandLine.getOptionProperties(any())).thenReturn(mockProperties);
+
+        applicationOptionProcessor.processArgs(expectedArgs);
+
         verify(mockOption).setProperties(mockProperties);
         verify(mockOption).exec();
         verify(mockLogger).startingOption(mockOption);
@@ -98,7 +110,7 @@ public class ApplicationOptionProcessorTest {
     @Test
     public void shouldInvokeTwoOptions() {
         String expectedOpt2 = "test";
-        ApplicationOption mockOption2 = getCreateMockApplicationOption(expectedOpt2, false);
+        ApplicationOption mockOption2 = getCreateMockApplicationOption(expectedOpt2, false, ArgumentType.NO_ARGS);
         applicationOptionList.add(mockOption2);
         when(mockCommandLine.hasOption(expectedOpt2)).thenReturn(Boolean.TRUE);
 
@@ -118,11 +130,11 @@ public class ApplicationOptionProcessorTest {
         when(mockApplicationOptions.getApplicationOptionList()).thenReturn(applicationOptionList);
 
         String expectedOpt1 = "a";
-        ApplicationOption mockOption1 = getCreateMockApplicationOption(expectedOpt1, true);
+        ApplicationOption mockOption1 = getCreateMockApplicationOption(expectedOpt1, true, ArgumentType.NO_ARGS);
         when(mockCommandLine.hasOption(expectedOpt1)).thenReturn(Boolean.TRUE);
 
         String expectedOpt2 = "b";
-        ApplicationOption mockOption2 = getCreateMockApplicationOption(expectedOpt2, false);
+        ApplicationOption mockOption2 = getCreateMockApplicationOption(expectedOpt2, false, ArgumentType.NO_ARGS);
         when(mockCommandLine.hasOption(expectedOpt2)).thenReturn(Boolean.TRUE);
 
         applicationOptionList.add(mockOption1);
@@ -156,12 +168,13 @@ public class ApplicationOptionProcessorTest {
         verify(mockDefaultOption).exec();
     }
 
-    private ApplicationOption getCreateMockApplicationOption(String option, boolean stopApplication) {
+    private ApplicationOption getCreateMockApplicationOption(String option, boolean isFinalOption, ArgumentType argumentType) {
         ApplicationOption mock = mock(ApplicationOption.class);
         when(mock.toOption()).thenCallRealMethod();
         when(mock.getLongOpt()).thenReturn(option);
         when(mock.getKeyOpt()).thenCallRealMethod();
-        when(mock.isFinalOption()).thenReturn(stopApplication);
+        when(mock.isFinalOption()).thenReturn(isFinalOption);
+        when(mock.getArgType()).thenReturn(argumentType);
         return mock;
     }
 
