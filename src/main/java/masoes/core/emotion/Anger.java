@@ -10,7 +10,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import masoes.core.Emotion;
 import masoes.core.EmotionType;
 
-public class Dissatisfaction extends Emotion {
+public class Anger extends Emotion {
 
     @Override
     public Coordinate[] getCoordinates() {
@@ -32,7 +32,7 @@ public class Dissatisfaction extends Emotion {
 
     @Override
     public String getName() {
-        return "Dissatisfaction";
+        return "Anger";
     }
 
 }

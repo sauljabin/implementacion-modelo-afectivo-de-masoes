@@ -7,9 +7,9 @@
 package masoes.core;
 
 import masoes.core.emotion.Admiration;
+import masoes.core.emotion.Anger;
 import masoes.core.emotion.Compassion;
 import masoes.core.emotion.Depression;
-import masoes.core.emotion.Dissatisfaction;
 import masoes.core.emotion.Happiness;
 import masoes.core.emotion.Joy;
 import masoes.core.emotion.Rejection;
@@ -87,7 +87,7 @@ public class EmotionalSpaceTest {
     @Test
     public void shouldReturnDissatisfactionEmotion() {
         EmotionalState randomPoint = getRandomPointForExternalEmotion(POSITIVE_SIGN, NEGATIVE_SIGN);
-        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(Dissatisfaction.class)));
+        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(Anger.class)));
     }
 
     private EmotionalState getRandomPointForExternalEmotion(double xSign, double ySign) {

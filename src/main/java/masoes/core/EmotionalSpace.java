@@ -7,9 +7,9 @@
 package masoes.core;
 
 import masoes.core.emotion.Admiration;
+import masoes.core.emotion.Anger;
 import masoes.core.emotion.Compassion;
 import masoes.core.emotion.Depression;
-import masoes.core.emotion.Dissatisfaction;
 import masoes.core.emotion.Happiness;
 import masoes.core.emotion.Joy;
 import masoes.core.emotion.Rejection;
@@ -30,7 +30,7 @@ public class EmotionalSpace {
                 new Admiration(),
                 new Depression(),
                 new Sadness(),
-                new Dissatisfaction(),
+                new Anger(),
                 new Rejection());
     }
 
