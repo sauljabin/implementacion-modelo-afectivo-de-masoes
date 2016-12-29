@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 public class SettingsAgent extends Agent {
 
+    private static final String SERVICE_NAME = "get-setting";
     private ApplicationLogger logger;
 
     public SettingsAgent() {
@@ -28,8 +29,8 @@ public class SettingsAgent extends Agent {
     protected void setup() {
         try {
             ServiceDescription serviceDescription = new ServiceDescription();
-            serviceDescription.setName("get-setting");
-            serviceDescription.setType(getLocalName() + "-get-setting");
+            serviceDescription.setName(SERVICE_NAME);
+            serviceDescription.setType(getLocalName() + "-" + SERVICE_NAME);
             serviceDescription.addProtocols(FIPANames.InteractionProtocol.FIPA_REQUEST);
 
             DFAgentDescription agentDescription = new DFAgentDescription();

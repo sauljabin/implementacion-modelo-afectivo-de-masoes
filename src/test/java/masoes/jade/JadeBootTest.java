@@ -8,7 +8,6 @@ package masoes.jade;
 
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
-import masoes.app.settings.ApplicationSettings;
 import masoes.jade.settings.JadeSettings;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +25,6 @@ public class JadeBootTest {
     private ProfileImpl mockJadeProfile;
     private Runtime mockJadeRuntime;
     private JadeBoot jadeBoot;
-    private ApplicationSettings mockApplicationSettings;
     private JadeSettings mockJadeSettings;
 
     @Before

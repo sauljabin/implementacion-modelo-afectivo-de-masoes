@@ -18,7 +18,6 @@ import static org.hamcrest.core.Is.is;
 
 public class RandomGeneratorTest {
 
-    private static final int ITERATIONS = 1000;
     private RandomGenerator random;
 
     @Before
@@ -41,7 +40,7 @@ public class RandomGeneratorTest {
     }
 
     private void assertRandom(double xMin, double xMax) {
-        IntStream.range(0, ITERATIONS).forEach(i -> {
+        IntStream.range(0, 1000).forEach(i -> {
             double value = random.getDouble(xMin, xMax);
             assertThat(value, is(greaterThanOrEqualTo(xMin)));
             assertThat(value, is(lessThanOrEqualTo(xMax)));

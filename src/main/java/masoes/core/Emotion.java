@@ -9,6 +9,8 @@ package masoes.core;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.shape.random.RandomPointsBuilder;
 
 public abstract class Emotion {
 
@@ -33,6 +35,13 @@ public abstract class Emotion {
     @Override
     public String toString() {
         return getName();
+    }
+
+    public Point getRandomPoint() {
+        RandomPointsBuilder randomPointsBuilder = new RandomPointsBuilder();
+        randomPointsBuilder.setExtent(getGeometry());
+        randomPointsBuilder.setNumPoints(1);
+        return randomPointsBuilder.getGeometry().getInteriorPoint();
     }
 
 }

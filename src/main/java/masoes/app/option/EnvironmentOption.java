@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 public class EnvironmentOption extends ApplicationOption {
 
+    private static final String AGENT_DELIMITER = ";";
     private final JadeSettings jadeSettings;
     private final EnvironmentFactory environmentFactory;
     private ApplicationSettings applicationSettings;
@@ -68,17 +69,18 @@ public class EnvironmentOption extends ApplicationOption {
     }
 
     private String getAgents() {
-        List<EnvironmentAgentInfo> environmentAgentInfoList = getEnvironmentAgentInfoList(environmentFactory.createEnvironment());
-        List<String> stringEnvironmentAgentInfoList = toStringList(environmentAgentInfoList);
-        return String.join(";", stringEnvironmentAgentInfoList);
+        return String.join(AGENT_DELIMITER, toStringList(getEnvironmentAgentInfoList(environmentFactory.createEnvironment())));
     }
 
     private List<EnvironmentAgentInfo> getEnvironmentAgentInfoList(Environment environment) {
         List<EnvironmentAgentInfo> environmentAgentInfoList = new ArrayList<>();
+
         environmentAgentInfoList.addAll(Optional.ofNullable(environment.getEnvironmentAgentInfoList()).orElse(new ArrayList<>()));
+
         if (isNotPresentAgentSetting(environmentAgentInfoList)) {
             environmentAgentInfoList.add(new EnvironmentAgentInfo("settings", SettingsAgent.class));
         }
+
         return environmentAgentInfoList;
     }
 

@@ -11,6 +11,8 @@ import org.apache.commons.cli.HelpFormatter;
 
 public class HelpOption extends ApplicationOption {
 
+    private static final String LONG_OPT_SEPARATOR = "=";
+    private static final String SYNTAX_PREFIX = "Usage: ";
     private ApplicationSettings applicationSettings;
     private HelpFormatter helpFormatter;
 
@@ -51,8 +53,8 @@ public class HelpOption extends ApplicationOption {
 
     @Override
     public void exec() {
-        helpFormatter.setSyntaxPrefix("Usage: ");
-        helpFormatter.setLongOptSeparator("=");
+        helpFormatter.setSyntaxPrefix(SYNTAX_PREFIX);
+        helpFormatter.setLongOptSeparator(LONG_OPT_SEPARATOR);
         helpFormatter.printHelp(applicationSettings.get(ApplicationSettings.APP_NAME), new ApplicationOptions().toOptions());
     }
 

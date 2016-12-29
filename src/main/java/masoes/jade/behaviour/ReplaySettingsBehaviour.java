@@ -22,6 +22,8 @@ import java.util.Optional;
 
 public class ReplaySettingsBehaviour extends CyclicBehaviour {
 
+    private static final String APPLICATION_SETTINGS = "applicationSettings";
+    private static final String JADE_SETTINGS = "jadeSettings";
     private MessageTemplate template;
     private ApplicationLogger logger;
     private JadeSettings jadeSettings;
@@ -75,8 +77,8 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
     private String getContentAllSettings() throws Exception {
         Map<String, Object> objectMap = new HashMap<>();
 
-        objectMap.put("applicationSettings", applicationSettings.toMap());
-        objectMap.put("jadeSettings", jadeSettings.toMap());
+        objectMap.put(APPLICATION_SETTINGS, applicationSettings.toMap());
+        objectMap.put(JADE_SETTINGS, jadeSettings.toMap());
 
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(objectMap);
