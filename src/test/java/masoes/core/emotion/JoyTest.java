@@ -61,7 +61,7 @@ public class JoyTest {
     @Test
     public void shouldReturnCorrectConfiguration() {
         Polygon expectedPolygon = geometryFactory.createPolygon(coordinates);
-        assertReflectionEquals(expectedPolygon, joy.getGeometry());
+        assertReflectionEquals(expectedPolygon.getCoordinates(), joy.getGeometry().getCoordinates());
         assertThat(joy.getName(), is("Joy"));
         assertThat(joy.getEmotionType(), is(EmotionType.POSITIVE));
     }

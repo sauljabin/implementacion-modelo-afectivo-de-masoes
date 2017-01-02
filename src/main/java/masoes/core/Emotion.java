@@ -14,12 +14,16 @@ import com.vividsolutions.jts.shape.random.RandomPointsBuilder;
 
 public abstract class Emotion {
 
+    private RandomPointsBuilder randomPointsBuilder;
     private Geometry polygon;
     private GeometryFactory geometryFactory;
 
     public Emotion() {
         geometryFactory = new GeometryFactory();
         polygon = geometryFactory.createPolygon(getCoordinates());
+        randomPointsBuilder = new RandomPointsBuilder();
+        randomPointsBuilder.setExtent(polygon);
+        randomPointsBuilder.setNumPoints(1);
     }
 
     public Geometry getGeometry() {
@@ -38,9 +42,6 @@ public abstract class Emotion {
     }
 
     public Point getRandomPoint() {
-        RandomPointsBuilder randomPointsBuilder = new RandomPointsBuilder();
-        randomPointsBuilder.setExtent(getGeometry());
-        randomPointsBuilder.setNumPoints(1);
         return randomPointsBuilder.getGeometry().getInteriorPoint();
     }
 

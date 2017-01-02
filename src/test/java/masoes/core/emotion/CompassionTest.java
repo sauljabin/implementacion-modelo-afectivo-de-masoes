@@ -63,7 +63,7 @@ public class CompassionTest {
     @Test
     public void shouldReturnCorrectConfiguration() {
         Polygon expectedPolygon = geometryFactory.createPolygon(coordinates);
-        assertReflectionEquals(expectedPolygon, compassion.getGeometry());
+        assertReflectionEquals(expectedPolygon.getCoordinates(), compassion.getGeometry().getCoordinates());
         assertThat(compassion.getName(), is("Compassion"));
         assertThat(compassion.getEmotionType(), is(EmotionType.POSITIVE));
     }

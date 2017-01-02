@@ -62,7 +62,7 @@ public class SadnessTest {
     @Test
     public void shouldReturnCorrectConfiguration() {
         Polygon expectedPolygon = geometryFactory.createPolygon(coordinates);
-        assertReflectionEquals(expectedPolygon, sadness.getGeometry());
+        assertReflectionEquals(expectedPolygon.getCoordinates(), sadness.getGeometry().getCoordinates());
         assertThat(sadness.getName(), is("Sadness"));
         assertThat(sadness.getEmotionType(), is(EmotionType.NEGATIVE_LOW));
     }

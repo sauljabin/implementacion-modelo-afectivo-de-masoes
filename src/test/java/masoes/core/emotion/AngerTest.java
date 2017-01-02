@@ -63,7 +63,7 @@ public class AngerTest {
     @Test
     public void shouldReturnCorrectConfiguration() {
         Polygon expectedPolygon = geometryFactory.createPolygon(coordinates);
-        assertReflectionEquals(expectedPolygon, anger.getGeometry());
+        assertReflectionEquals(expectedPolygon.getCoordinates(), anger.getGeometry().getCoordinates());
         assertThat(anger.getName(), is("Anger"));
         assertThat(anger.getEmotionType(), is(EmotionType.NEGATIVE_HIGH));
     }

@@ -63,7 +63,7 @@ public class DepressionTest {
     @Test
     public void shouldReturnCorrectConfiguration() {
         Polygon expectedPolygon = geometryFactory.createPolygon(coordinates);
-        assertReflectionEquals(expectedPolygon, depression.getGeometry());
+        assertReflectionEquals(expectedPolygon.getCoordinates(), depression.getGeometry().getCoordinates());
         assertThat(depression.getName(), is("Depression"));
         assertThat(depression.getEmotionType(), is(EmotionType.NEGATIVE_HIGH));
     }

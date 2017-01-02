@@ -41,7 +41,7 @@ public class EmotionTest {
     @Test
     public void shouldReturnPolygon() {
         Polygon expectedPolygon = new GeometryFactory().createPolygon(coordinates);
-        assertReflectionEquals(expectedPolygon, emotion.getGeometry());
+        assertReflectionEquals(expectedPolygon.getCoordinates(), emotion.getGeometry().getCoordinates());
     }
 
     @Test
