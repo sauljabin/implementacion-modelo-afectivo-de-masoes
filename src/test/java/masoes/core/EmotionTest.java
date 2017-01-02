@@ -16,6 +16,7 @@ import org.junit.Test;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
@@ -27,7 +28,15 @@ public class EmotionTest {
 
     @Before
     public void setUp() throws Exception {
-        coordinates = new Coordinate[]{new Coordinate(0, 0), new Coordinate(1, 1), new Coordinate(1, 0), new Coordinate(0, 0)};
+        coordinates = new Coordinate[]{
+                new Coordinate(0, 0.5),
+                new Coordinate(0, 1),
+                new Coordinate(-1, 1),
+                new Coordinate(-1, 0),
+                new Coordinate(-0.5, 0),
+                new Coordinate(-0.5, 0.5),
+                new Coordinate(0, 0.5)
+        };
         emotion = createDummyEmotion(null, coordinates);
     }
 
@@ -47,8 +56,12 @@ public class EmotionTest {
     @Test
     public void shouldGetRandomPointInGeometry() {
         IntStream.range(0, 1000).forEach(i -> {
-            Point point = emotion.getRandomPoint();
-            assertTrue(emotion.getGeometry().intersects(point));
+            Point pointA = emotion.getRandomPoint();
+            Point pointB = emotion.getRandomPoint();
+            assertTrue(emotion.getGeometry().intersects(pointA));
+            assertTrue(emotion.getGeometry().intersects(pointB));
+            assertThat(pointA.getX(), is(not(pointB.getX())));
+            assertThat(pointA.getY(), is(not(pointB.getY())));
         });
     }
 
