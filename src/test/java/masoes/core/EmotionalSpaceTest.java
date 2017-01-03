@@ -14,9 +14,9 @@ import masoes.core.emotion.Happiness;
 import masoes.core.emotion.Joy;
 import masoes.core.emotion.Rejection;
 import masoes.core.emotion.Sadness;
-import masoes.util.math.RandomGenerator;
 import org.junit.Before;
 import org.junit.Test;
+import util.math.RandomGenerator;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;

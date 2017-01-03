@@ -6,7 +6,7 @@
 
 package masoes.env;
 
-import masoes.app.settings.ApplicationSettings;
+import application.settings.ApplicationSettings;
 import masoes.env.dummy.DummyEnvironment;
 import masoes.env.wikipedia.WikipediaEnvironment;
 

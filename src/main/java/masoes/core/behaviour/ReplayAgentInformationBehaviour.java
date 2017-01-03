@@ -6,11 +6,11 @@
 
 package masoes.core.behaviour;
 
+import application.logger.ApplicationLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import masoes.app.logger.ApplicationLogger;
 import masoes.core.Emotion;
 import masoes.core.EmotionalAgent;
 import masoes.core.EmotionalState;

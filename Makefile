@@ -22,14 +22,14 @@ wikipedia: ; ./gradlew -q run -Pargs="-Ewikipedia"
 # target uncopyrighted: Search files without copyright.
 uncopyrighted: ; grep --include *.java -Lr "Copyright (c)" .
 
-# target unit-test: Exec unit test.
-unit-test: clean ; ./gradlew test
+# target unit-tests: Exec unit test.
+unit-tests: clean ; ./gradlew test
 
-# target functional-test: Exec functional test.
-functional-test: clean ; ./gradlew -q functionalTest
+# target functional-tests: Exec functional test.
+functional-tests: clean ; ./gradlew -q functionalTest
 
-# target all-test: Exec all test.
-all-test: unit-test functional-test
+# target all-tests: Exec all test.
+all-tests: unit-tests functional-tests
 
 # target docker-build: Make docker image.
 docker-build: install ; docker-compose build

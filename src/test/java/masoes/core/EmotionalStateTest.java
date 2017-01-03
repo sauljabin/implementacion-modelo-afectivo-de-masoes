@@ -7,8 +7,8 @@
 package masoes.core;
 
 import com.vividsolutions.jts.geom.Point;
-import masoes.util.math.RandomGenerator;
 import org.junit.Test;
+import util.math.RandomGenerator;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

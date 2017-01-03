@@ -209,19 +209,19 @@ make wikipedia
 Ejecución de pruebas unitarias:
 
 ```
-make unit-test
+make unit-tests
 ```
 
 Ejecución de pruebas funcionales:
 
 ```
-make functional-test
+make functional-tests
 ```
 
 Ejecución de todas las pruebas:
 
 ```
-make all-test
+make all-tests
 ```
 
 Crear imagen:

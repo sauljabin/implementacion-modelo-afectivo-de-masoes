@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <TestsList>
     <Test name="Should receive all settings" skip="false">
-        <TestClassName>masoes.test.functional.setting.ShouldReceiveAllSettingsTest</TestClassName>
+        <TestClassName>functional.test.jade.settings.ShouldReceiveAllSettingsTest</TestClassName>
         <WhatTest>Test the correct settings behaviour</WhatTest>
         <HowWorkTest>An agent make a request and receive all settings</HowWorkTest>
         <WhenTestPass>The test passes if the agent return the correct settings</WhenTestPass>
     </Test>
     <Test name="Should receive a setting" skip="false">
-        <TestClassName>masoes.test.functional.setting.ShouldReceiveASettingTest</TestClassName>
+        <TestClassName>functional.test.jade.settings.ShouldReceiveASettingTest</TestClassName>
         <WhatTest>Test the correct settings behaviour</WhatTest>
         <HowWorkTest>An agent make a request and receive the correct setting</HowWorkTest>
         <WhenTestPass>The test passes if the agent return the correct setting</WhenTestPass>
     </Test>
     <Test name="Should receive not understood" skip="false">
-        <TestClassName>masoes.test.functional.setting.ShouldReceiveNotUnderstoodTest</TestClassName>
+        <TestClassName>functional.test.jade.settings.ShouldReceiveNotUnderstoodTest</TestClassName>
         <WhatTest>Test correct response</WhatTest>
         <HowWorkTest>An agent make a bad request and receive the not understood</HowWorkTest>
         <WhenTestPass>The test passes if the agent return not understood</WhenTestPass>
     </Test>
     <Test name="Should receive emotional agent information" skip="false">
-        <TestClassName>masoes.test.functional.env.dummy.ShouldReceiveEmotionalAgentInformationTest</TestClassName>
+        <TestClassName>functional.test.masoes.env.dummy.ShouldReceiveEmotionalAgentInformationTest</TestClassName>
         <WhatTest>Emotional agent information response</WhatTest>
         <HowWorkTest>An agent make request to an emotional agent and receive the emotional information</HowWorkTest>
         <WhenTestPass>The test passes if the agent return the correct information</WhenTestPass>
     </Test>
     <Test name="Should change emotion and behaviour agent" skip="false">
-        <TestClassName>masoes.test.functional.env.dummy.ShouldChangeEmotionAndBehaviourTest</TestClassName>
+        <TestClassName>functional.test.masoes.env.dummy.ShouldChangeEmotionAndBehaviourTest</TestClassName>
         <WhatTest>Emotional agent behaviour</WhatTest>
         <HowWorkTest>An agent make request to an emotional agent and change his behaviour</HowWorkTest>
         <WhenTestPass>The test passes if the agent change his behaviour</WhenTestPass>

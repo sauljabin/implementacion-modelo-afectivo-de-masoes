@@ -9,7 +9,7 @@ package masoes.core;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
-import masoes.util.math.RandomGenerator;
+import util.math.RandomGenerator;
 
 public class EmotionalState {
 

@@ -6,8 +6,8 @@
 
 package masoes.core;
 
+import application.logger.ApplicationLogger;
 import jade.core.behaviours.Behaviour;
-import masoes.app.logger.ApplicationLogger;
 import masoes.core.behaviour.ReplayAgentInformationBehaviour;
 import masoes.core.behaviour.StimulusReceiverBehaviour;
 import org.junit.Before;

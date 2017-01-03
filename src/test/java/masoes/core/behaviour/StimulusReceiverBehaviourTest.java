@@ -6,9 +6,9 @@
 
 package masoes.core.behaviour;
 
+import application.logger.ApplicationLogger;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
-import masoes.app.logger.ApplicationLogger;
 import masoes.core.EmotionalAgent;
 import org.junit.Before;
 import org.junit.Test;
