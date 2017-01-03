@@ -1,11 +1,11 @@
+# target install: Make program and install.
+install: dist ; ./gradlew -q installDist
+
 # target dist: Make program.
-dist: clean ; ./gradlew -q build
+dist: clean ; ./gradlew -q assembleDist
 
 # target clean: Refresh dependencies and clean.
 clean: ; ./gradlew -q clean --refresh-dependencies
-
-# target install: Make program and install.
-install: dist ; cp build/distributions/masoes-*.zip . && unzip -o masoes-*.zip && cd masoes-*/bin && ./masoes -v
 
 # target targets: Display callable targets.
 targets: ; grep "^# target" [Mm]akefile | cut -c10-
@@ -32,7 +32,7 @@ functional-test: clean ; ./gradlew -q functionalTest
 all-test: unit-test functional-test
 
 # target docker-build: Make docker image.
-docker-build: dist ; docker-compose build
+docker-build: install ; docker-compose build
 
 # target docker-up: Starts docker image.
-docker-up: docker-build ; docker-compose up
+docker-up: ; docker-compose up

@@ -1,5 +1,5 @@
 FROM openjdk:8
-COPY build/distributions/*.tar /masoes/app.tar
-RUN tar -xf /masoes/app.tar -C /masoes --strip 1
+COPY build/install/masoes /masoes
 WORKDIR /masoes/bin
-CMD ./masoes -Jgui=false -Ewikipedia -Sdocker
+ENTRYPOINT ["./masoes"]
+CMD ["-Jgui=false", "-Ewikipedia", "-Sdocker"]
