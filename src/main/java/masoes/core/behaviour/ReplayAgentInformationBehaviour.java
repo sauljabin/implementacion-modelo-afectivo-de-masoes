@@ -66,7 +66,7 @@ public class ReplayAgentInformationBehaviour extends Behaviour {
 
         Optional<Emotion> emotionOptional = Optional.ofNullable(emotionalAgent.getCurrentEmotion());
         if (emotionOptional.isPresent()) {
-            content.put(EMOTION_KEY, emotionOptional.get().getName());
+            content.put(EMOTION_KEY, emotionOptional.get().getEmotionName());
         } else {
             content.put(EMOTION_KEY, NO_EMOTION);
         }

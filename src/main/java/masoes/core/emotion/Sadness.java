@@ -8,6 +8,7 @@ package masoes.core.emotion;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import masoes.core.Emotion;
+import masoes.core.EmotionLevel;
 import masoes.core.EmotionType;
 
 public class Sadness extends Emotion {
@@ -29,8 +30,8 @@ public class Sadness extends Emotion {
     }
 
     @Override
-    public String getName() {
-        return "Sadness";
+    public EmotionLevel getEmotionLevel() {
+        return EmotionLevel.INDIVIDUAL;
     }
 
 }

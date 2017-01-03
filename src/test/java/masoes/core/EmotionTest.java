@@ -37,14 +37,13 @@ public class EmotionTest {
                 new Coordinate(-0.5, 0.5),
                 new Coordinate(0, 0.5)
         };
-        emotion = createDummyEmotion(null, coordinates);
+        emotion = createDummyEmotion(coordinates);
     }
 
     @Test
     public void shouldInvokeNameWhenToString() {
-        String expectedEmotionName = "EmotionName";
-        Emotion emotion = createDummyEmotion(expectedEmotionName, null);
-        assertThat(emotion.toString(), is(expectedEmotionName));
+        Emotion emotion = createDummyEmotion(null);
+        assertThat(emotion.toString(), is(emotion.getEmotionName()));
     }
 
     @Test
@@ -65,7 +64,7 @@ public class EmotionTest {
         });
     }
 
-    private Emotion createDummyEmotion(String name, Coordinate[] coordinates) {
+    private Emotion createDummyEmotion(Coordinate[] coordinates) {
         return new Emotion() {
             @Override
             public Coordinate[] getCoordinates() {
@@ -78,8 +77,8 @@ public class EmotionTest {
             }
 
             @Override
-            public String getName() {
-                return name;
+            public EmotionLevel getEmotionLevel() {
+                return null;
             }
         };
     }

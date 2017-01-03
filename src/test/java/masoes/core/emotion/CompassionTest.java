@@ -9,6 +9,7 @@ package masoes.core.emotion;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Polygon;
+import masoes.core.EmotionLevel;
 import masoes.core.EmotionType;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +65,8 @@ public class CompassionTest {
     public void shouldReturnCorrectConfiguration() {
         Polygon expectedPolygon = geometryFactory.createPolygon(coordinates);
         assertReflectionEquals(expectedPolygon.getCoordinates(), compassion.getGeometry().getCoordinates());
-        assertThat(compassion.getName(), is("Compassion"));
+        assertThat(compassion.getEmotionName(), is("Compassion"));
+        assertThat(compassion.getEmotionLevel(), is(EmotionLevel.COLLECTIVE));
         assertThat(compassion.getEmotionType(), is(EmotionType.POSITIVE));
     }
 

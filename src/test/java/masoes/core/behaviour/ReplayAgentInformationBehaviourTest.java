@@ -67,7 +67,7 @@ public class ReplayAgentInformationBehaviourTest {
 
         Emotion mockEmotion = mock(Emotion.class);
         String expectedEmotion = "EXPECTED_EMOTION";
-        when(mockEmotion.getName()).thenReturn(expectedEmotion);
+        when(mockEmotion.getEmotionName()).thenReturn(expectedEmotion);
         when(mockEmotionalAgent.getCurrentEmotion()).thenReturn(mockEmotion);
 
         Behaviour mockBehaviour = mock(Behaviour.class);

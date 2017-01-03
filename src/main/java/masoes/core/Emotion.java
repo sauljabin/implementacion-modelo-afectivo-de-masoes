@@ -30,19 +30,23 @@ public abstract class Emotion {
         return polygon;
     }
 
-    public abstract Coordinate[] getCoordinates();
-
-    public abstract EmotionType getEmotionType();
-
-    public abstract String getName();
+    public String getEmotionName() {
+        return this.getClass().getSimpleName();
+    }
 
     @Override
     public String toString() {
-        return getName();
+        return getEmotionName();
     }
 
     public Point getRandomPoint() {
         return randomPointsBuilder.getGeometry().getInteriorPoint();
     }
+
+    public abstract Coordinate[] getCoordinates();
+
+    public abstract EmotionType getEmotionType();
+
+    public abstract EmotionLevel getEmotionLevel();
 
 }
