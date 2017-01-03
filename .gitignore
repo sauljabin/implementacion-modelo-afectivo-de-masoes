@@ -1,13 +1,11 @@
-# Gradle
-# ------
+### Gradle
 .gradle
 /build
 /buildSrc/build
 /subprojects/*/build
 /subprojects/docs/src/samples/*/*/build
 
-# IDEA
-# ----
+### IDEA
 .idea
 .shelf
 /*.iml
@@ -21,8 +19,7 @@
 /subprojects/*/*.iml
 /subprojects/*/out
 
-# Eclipse
-# -------
+### Eclipse
 *.classpath
 *.project
 *.settings
@@ -30,66 +27,46 @@
 /subprojects/*/bin
 atlassian-ide-plugin.xml
 
-# NetBeans
-# --------
+### NetBeans
 .nb-gradle
 .nb-gradle-properties
 
-# Vim
-# ---
+### Vim
 *.sw[op]
 
-# Emacs
-# -----
+### Emacs
 *~
 
-# Textmate
-# --------
+### Textmate
 .textmate
 
-# Sublime Text
-# ------------
+### Sublime Text
 *.sublime-*
 
-# jEnv
-# ----
+### jEnv
 .java-version
 
-# OS X
-# ----
+### OS X
 .DS_Store
 
-# HPROF
-# -----
+### HPROF
 *.hprof
 
-# Work dirs
-# ---------
+### Work dirs
 /incoming-distributions
 /intTestHomeDir
 
-# Logs
-# ----
+### Logs
 *.log
 /log
 
-# KDE
-# ----
+### KDE
 .directory
 
-# Windows
-# -------
+### Windows
 Thumbs.db
 Desktop.ini
 
-
-# JADE
-# ----
+### JADE
 APDescription.txt
 MTPs-Main-Container.txt
-
-
-# Others
-# ------
-masoes-*.zip
-masoes-*/
