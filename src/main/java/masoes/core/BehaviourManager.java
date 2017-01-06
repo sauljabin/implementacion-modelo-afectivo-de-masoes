@@ -44,21 +44,16 @@ public class BehaviourManager {
     }
 
     protected Behaviour calculateBehaviour(EmotionalAgent agent) {
-        BehaviourFactory behaviourFactory = agent.getBehaviourFactory();
-
-        if (!Optional.ofNullable(behaviourFactory).isPresent()) {
-            return null;
-        }
-
         switch (getBehaviourTypeAssociated(agent.getCurrentEmotion().getEmotionType())) {
             case COGNITIVE:
-                return behaviourFactory.createCognitiveBehaviour(agent);
+                return agent.getCognitiveBehaviour();
             case IMITATIVE:
-                return behaviourFactory.createImitativeBehaviour(agent);
+                return agent.getImitativeBehaviour();
             case REACTIVE:
             default:
-                return behaviourFactory.createReactiveBehaviour(agent);
+                return agent.getReactiveBehaviour();
         }
     }
+
 
 }

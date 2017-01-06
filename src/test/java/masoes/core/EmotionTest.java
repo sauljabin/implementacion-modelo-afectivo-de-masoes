@@ -19,12 +19,14 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public class EmotionTest {
 
     private Coordinate[] coordinates;
-    private Emotion emotion;
+    private Emotion spyEmotion;
 
     @Before
     public void setUp() throws Exception {
@@ -37,28 +39,29 @@ public class EmotionTest {
                 new Coordinate(-0.5, 0.5),
                 new Coordinate(0, 0.5)
         };
-        emotion = createDummyEmotion(coordinates);
+        spyEmotion = spy(createDummyEmotion(coordinates));
     }
 
     @Test
     public void shouldInvokeNameWhenToString() {
-        Emotion emotion = createDummyEmotion(null);
-        assertThat(emotion.toString(), is(emotion.getEmotionName()));
+        String expectedName = "NAME";
+        when(spyEmotion.getEmotionName()).thenReturn(expectedName);
+        assertThat(spyEmotion.toString(), is(expectedName));
     }
 
     @Test
     public void shouldReturnPolygon() {
         Polygon expectedPolygon = new GeometryFactory().createPolygon(coordinates);
-        assertReflectionEquals(expectedPolygon.getCoordinates(), emotion.getGeometry().getCoordinates());
+        assertReflectionEquals(expectedPolygon.getCoordinates(), spyEmotion.getGeometry().getCoordinates());
     }
 
     @Test
     public void shouldGetRandomPointInGeometry() {
         IntStream.range(0, 1000).forEach(i -> {
-            Point pointA = emotion.getRandomPoint();
-            Point pointB = emotion.getRandomPoint();
-            assertTrue(emotion.getGeometry().intersects(pointA));
-            assertTrue(emotion.getGeometry().intersects(pointB));
+            Point pointA = spyEmotion.getRandomPoint();
+            Point pointB = spyEmotion.getRandomPoint();
+            assertTrue(spyEmotion.getGeometry().intersects(pointA));
+            assertTrue(spyEmotion.getGeometry().intersects(pointB));
             assertThat(pointA.getX(), is(not(pointB.getX())));
             assertThat(pointA.getY(), is(not(pointB.getY())));
         });

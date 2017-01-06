@@ -7,13 +7,17 @@
 package masoes.env.dummy.agent;
 
 import masoes.core.EmotionalAgent;
-import masoes.env.dummy.behaviour.DummyBehaviourFactory;
+import masoes.env.dummy.behaviour.DummyCognitiveBehaviour;
+import masoes.env.dummy.behaviour.DummyImitativeBehaviour;
+import masoes.env.dummy.behaviour.DummyReactiveBehaviour;
 
 public class DummyEmotionalAgent extends EmotionalAgent {
 
     @Override
     protected void setUp() {
-        setBehaviourFactory(new DummyBehaviourFactory());
+        setCognitiveBehaviour(new DummyCognitiveBehaviour());
+        setReactiveBehaviour(new DummyReactiveBehaviour());
+        setImitativeBehaviour(new DummyImitativeBehaviour());
     }
 
 }

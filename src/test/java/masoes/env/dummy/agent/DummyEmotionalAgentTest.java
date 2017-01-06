@@ -6,7 +6,9 @@
 
 package masoes.env.dummy.agent;
 
-import masoes.env.dummy.behaviour.DummyBehaviourFactory;
+import masoes.env.dummy.behaviour.DummyCognitiveBehaviour;
+import masoes.env.dummy.behaviour.DummyImitativeBehaviour;
+import masoes.env.dummy.behaviour.DummyReactiveBehaviour;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,9 +26,11 @@ public class DummyEmotionalAgentTest {
     }
 
     @Test
-    public void shouldSetCorrectBehaviourFactory() {
+    public void shouldSetCorrectBehaviourConfiguration() {
         spyDummyEmotionalAgent.setUp();
-        verify(spyDummyEmotionalAgent).setBehaviourFactory(any(DummyBehaviourFactory.class));
+        verify(spyDummyEmotionalAgent).setCognitiveBehaviour(any(DummyCognitiveBehaviour.class));
+        verify(spyDummyEmotionalAgent).setImitativeBehaviour(any(DummyImitativeBehaviour.class));
+        verify(spyDummyEmotionalAgent).setReactiveBehaviour(any(DummyReactiveBehaviour.class));
     }
 
 }

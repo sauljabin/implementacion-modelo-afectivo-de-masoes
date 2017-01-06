@@ -18,7 +18,10 @@ public class EmotionalAgent extends Agent {
     private BehaviourManager behaviourManager;
     private EmotionalConfigurator emotionalConfigurator;
     private ApplicationLogger logger;
-    private BehaviourFactory behaviourFactory;
+
+    private Behaviour cognitiveBehaviour;
+    private Behaviour imitativeBehaviour;
+    private Behaviour reactiveBehaviour;
 
     public EmotionalAgent() {
         logger = new ApplicationLogger(LoggerFactory.getLogger(EmotionalAgent.class));
@@ -53,16 +56,33 @@ public class EmotionalAgent extends Agent {
         logger.agentEmotionalStateChanged(this, stimulus);
     }
 
-    public BehaviourFactory getBehaviourFactory() {
-        return behaviourFactory;
+    public Behaviour getCognitiveBehaviour() {
+        return cognitiveBehaviour;
     }
 
-    public void setBehaviourFactory(BehaviourFactory behaviourFactory) {
-        this.behaviourFactory = behaviourFactory;
+    public void setCognitiveBehaviour(Behaviour cognitiveBehaviour) {
+        this.cognitiveBehaviour = cognitiveBehaviour;
+    }
+
+    public Behaviour getImitativeBehaviour() {
+        return imitativeBehaviour;
+    }
+
+    public void setImitativeBehaviour(Behaviour imitativeBehaviour) {
+        this.imitativeBehaviour = imitativeBehaviour;
+    }
+
+    public Behaviour getReactiveBehaviour() {
+        return reactiveBehaviour;
+    }
+
+    public void setReactiveBehaviour(Behaviour reactiveBehaviour) {
+        this.reactiveBehaviour = reactiveBehaviour;
     }
 
     protected void setUp() {
 
     }
+
 
 }
