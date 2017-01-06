@@ -11,26 +11,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class ApplicationSettingsTest {
 
-    private static final String KEY = "KEY";
-    private static final String EXPECTED_VALUE = "VALUE";
     private static final String APP_NAME = "app.name";
     private static final String APP_REVISION = "app.revision";
     private static final String APP_VERSION = "app.version";
@@ -60,86 +49,23 @@ public class ApplicationSettingsTest {
     }
 
     @Test
-    public void shouldThrowsExceptionWhenErrorInLoad() throws Exception {
-        String expectedMessage = "Message";
-        Properties mockProperties = mock(Properties.class);
-        doThrow(new IOException(expectedMessage)).when(mockProperties).load(any(InputStream.class));
-        setFieldValue(applicationSettings, "properties", mockProperties);
-        expectedException.expect(ApplicationSettingsException.class);
-        expectedException.expectMessage(expectedMessage);
-        applicationSettings.load();
-    }
-
-    @Test
-    public void shouldGetCorrectSetting() {
-        applicationSettings.set(KEY, EXPECTED_VALUE);
-        assertThat(applicationSettings.get(KEY), is(EXPECTED_VALUE));
-    }
-
-    @Test
-    public void shouldClearSettingsWhenLoad() {
-        Map<String, String> expectedToMap = applicationSettings.toMap();
-        applicationSettings.set(KEY, EXPECTED_VALUE);
-        applicationSettings.load();
-        Map<String, String> actualToMap = applicationSettings.toMap();
-        assertReflectionEquals(expectedToMap, actualToMap);
-    }
-
-    @Test
-    public void shouldGetDefaultSettingInCaseThatNotExistKey() {
-        String expectedDefaultValue = "defaultValue";
-        assertThat(applicationSettings.get("", expectedDefaultValue), is(expectedDefaultValue));
-    }
-
-    @Test
-    public void shouldGetDefaultSettingInCaseThatKeyIsNull() {
-        String expectedDefaultValue = "defaultValue";
-        assertThat(applicationSettings.get(null, expectedDefaultValue), is(expectedDefaultValue));
-    }
-
-    @Test
-    public void shouldReturnNullThatKeyIsNull() {
-        assertThat(applicationSettings.get(null), is(nullValue()));
-    }
-
-    @Test
-    public void shouldNotGetDefaultSettingInCaseThatExistKey() {
-        applicationSettings.set(KEY, EXPECTED_VALUE);
-        assertThat(applicationSettings.get(KEY, "anything"), is(EXPECTED_VALUE));
-    }
-
-    @Test
     public void shouldLoadInitValues() {
-        Map<String, String> expectedValues = getInitValues();
+        Map<String, String> expectedValues = new HashMap<>();
+        expectedValues.put(OS_NAME, System.getProperty(OS_NAME));
+        expectedValues.put(OS_ARCH, System.getProperty(OS_ARCH));
+        expectedValues.put(OS_VERSION, System.getProperty(OS_VERSION));
+        expectedValues.put(JAVA_VERSION, System.getProperty(JAVA_VERSION));
+        expectedValues.put(JAVA_VENDOR, System.getProperty(JAVA_VENDOR));
+        expectedValues.put(JADE_VERSION, jade.core.Runtime.getVersion());
+        expectedValues.put(JADE_REVISION, jade.core.Runtime.getRevision());
+
         expectedValues.keySet().forEach(
                 key -> assertThat(applicationSettings.get(key), is(expectedValues.get(key)))
         );
+
         assertThat(applicationSettings.get(APP_NAME), is(notNullValue()));
         assertThat(applicationSettings.get(APP_REVISION), is(notNullValue()));
         assertThat(applicationSettings.get(APP_VERSION), is(notNullValue()));
-    }
-
-    @Test
-    public void shouldGetTheSameStringThatAMap() {
-        assertThat(applicationSettings.toString(), is(applicationSettings.toMap().toString()));
-    }
-
-    @Test
-    public void shouldRemoveProperty() {
-        applicationSettings.set(KEY, null);
-        assertThat(applicationSettings.get(KEY), is(nullValue()));
-    }
-
-    private Map<String, String> getInitValues() {
-        Map<String, String> initValues = new HashMap<>();
-        initValues.put(OS_NAME, System.getProperty(OS_NAME));
-        initValues.put(OS_ARCH, System.getProperty(OS_ARCH));
-        initValues.put(OS_VERSION, System.getProperty(OS_VERSION));
-        initValues.put(JAVA_VERSION, System.getProperty(JAVA_VERSION));
-        initValues.put(JAVA_VENDOR, System.getProperty(JAVA_VENDOR));
-        initValues.put(JADE_VERSION, jade.core.Runtime.getVersion());
-        initValues.put(JADE_REVISION, jade.core.Runtime.getRevision());
-        return initValues;
     }
 
 }

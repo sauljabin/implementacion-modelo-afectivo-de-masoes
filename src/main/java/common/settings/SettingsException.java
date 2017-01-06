@@ -4,15 +4,15 @@
  * Please see the LICENSE.txt file
  */
 
-package application.settings;
+package common.settings;
 
-public class ApplicationSettingsException extends RuntimeException {
+public class SettingsException extends RuntimeException {
 
-    public ApplicationSettingsException(String message) {
+    public SettingsException(String message) {
         super(message);
     }
 
-    public ApplicationSettingsException(String message, Throwable cause) {
+    public SettingsException(String message, Throwable cause) {
         super(message, cause);
     }
 

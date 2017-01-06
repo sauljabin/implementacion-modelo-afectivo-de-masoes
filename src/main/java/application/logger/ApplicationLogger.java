@@ -8,6 +8,7 @@ package application.logger;
 
 import application.option.ApplicationOption;
 import application.settings.ApplicationSettings;
+import common.logger.LogWriter;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;

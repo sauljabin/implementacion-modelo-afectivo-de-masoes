@@ -6,6 +6,7 @@
 
 package application.logger;
 
+import common.logger.LogWriter;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
