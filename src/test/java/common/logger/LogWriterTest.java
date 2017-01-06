@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package application.logger;
+package common.logger;
 
 import common.logger.LogWriter;
 import org.junit.Before;
