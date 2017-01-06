@@ -35,7 +35,7 @@ public class SettingsTest {
     private Settings jadeSettings;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         jadeSettings = new Settings();
         jadeSettings.load(PATH);
     }
@@ -47,7 +47,7 @@ public class SettingsTest {
     }
 
     @Test
-    public void shouldClearSettingsWhenLoad() throws Exception {
+    public void shouldClearSettingsWhenLoad() {
         Map<String, String> expectedToMap = jadeSettings.toMap();
         jadeSettings.set(KEY, VALUE);
         jadeSettings.load(PATH);

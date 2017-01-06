@@ -35,7 +35,7 @@ public class JadeLoggerTest {
     private JadeLogger jadeLogger;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mockLogger = mock(Logger.class);
         jadeLogger = new JadeLogger(mockLogger);
     }

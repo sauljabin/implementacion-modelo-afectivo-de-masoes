@@ -29,7 +29,7 @@ public class EmotionTest {
     private Emotion spyEmotion;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         coordinates = new Coordinate[]{
                 new Coordinate(0, 0.5),
                 new Coordinate(0, 1),
