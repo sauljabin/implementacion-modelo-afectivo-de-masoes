@@ -118,16 +118,12 @@ public class JadeSettingsTest {
     }
 
     private Map<String, String> getInitValues() {
-        String gui = "gui",
-                port = "port",
-                jade_mtp_http_port = "jade_mtp_http_port",
-                jade_domain_df_autocleanup = "jade_domain_df_autocleanup";
-
         Map<String, String> initValues = new HashMap<>();
-        initValues.put(gui, "true");
-        initValues.put(port, "1099");
-        initValues.put(jade_mtp_http_port, "7778");
-        initValues.put(jade_domain_df_autocleanup, "true");
+        initValues.put("gui", "true");
+        initValues.put("port", "1099");
+        initValues.put("jade_mtp_http_port", "7778");
+        initValues.put("jade_domain_df_autocleanup", "true");
+        initValues.put("platform-id", "masoes");
         return initValues;
     }
 

@@ -5,7 +5,7 @@ apply plugin: 'application'
 apply from: 'util.gradle'
 
 version = '1.0.0'
-mainClassName = 'masoes.app.ApplicationBoot'
+mainClassName = 'application.boot.ApplicationMain'
 
 def appName = rootProject.name
 def argsProperty = 'args'

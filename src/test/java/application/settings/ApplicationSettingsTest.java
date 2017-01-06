@@ -29,19 +29,28 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class ApplicationSettingsTest {
 
+    private static final String KEY = "KEY";
+    private static final String EXPECTED_VALUE = "VALUE";
+    private static final String APP_NAME = "app.name";
+    private static final String APP_REVISION = "app.revision";
+    private static final String APP_VERSION = "app.version";
+    private static final String OS_NAME = "os.name";
+    private static final String OS_ARCH = "os.arch";
+    private static final String OS_VERSION = "os.version";
+    private static final String JAVA_VERSION = "java.version";
+    private static final String JAVA_VENDOR = "java.vendor";
+    private static final String JADE_VERSION = "jade.version";
+    private static final String JADE_REVISION = "jade.revision";
+
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     private ApplicationSettings applicationSettings;
-    private String key;
-    private String expectedValue;
 
     @Before
     public void setUp() {
         applicationSettings = ApplicationSettings.getInstance();
         applicationSettings.load();
-        key = "key";
-        expectedValue = "expectedValue";
     }
 
     @Test
@@ -63,14 +72,14 @@ public class ApplicationSettingsTest {
 
     @Test
     public void shouldGetCorrectSetting() {
-        applicationSettings.set(key, expectedValue);
-        assertThat(applicationSettings.get(key), is(expectedValue));
+        applicationSettings.set(KEY, EXPECTED_VALUE);
+        assertThat(applicationSettings.get(KEY), is(EXPECTED_VALUE));
     }
 
     @Test
     public void shouldClearSettingsWhenLoad() {
         Map<String, String> expectedToMap = applicationSettings.toMap();
-        applicationSettings.set(key, expectedValue);
+        applicationSettings.set(KEY, EXPECTED_VALUE);
         applicationSettings.load();
         Map<String, String> actualToMap = applicationSettings.toMap();
         assertReflectionEquals(expectedToMap, actualToMap);
@@ -95,23 +104,19 @@ public class ApplicationSettingsTest {
 
     @Test
     public void shouldNotGetDefaultSettingInCaseThatExistKey() {
-        applicationSettings.set(key, expectedValue);
-        assertThat(applicationSettings.get(key, "anything"), is(expectedValue));
+        applicationSettings.set(KEY, EXPECTED_VALUE);
+        assertThat(applicationSettings.get(KEY, "anything"), is(EXPECTED_VALUE));
     }
 
     @Test
     public void shouldLoadInitValues() {
         Map<String, String> expectedValues = getInitValues();
-        expectedValues.keySet()
-                .forEach(key -> assertThat(applicationSettings.get(key), is(expectedValues.get(key))));
-
-        String appNameKey = "app.name",
-                appRevisionKey = "app.revision",
-                appVersionKey = "app.version";
-
-        assertThat(applicationSettings.get(appNameKey), is(notNullValue()));
-        assertThat(applicationSettings.get(appRevisionKey), is(notNullValue()));
-        assertThat(applicationSettings.get(appVersionKey), is(notNullValue()));
+        expectedValues.keySet().forEach(
+                key -> assertThat(applicationSettings.get(key), is(expectedValues.get(key)))
+        );
+        assertThat(applicationSettings.get(APP_NAME), is(notNullValue()));
+        assertThat(applicationSettings.get(APP_REVISION), is(notNullValue()));
+        assertThat(applicationSettings.get(APP_VERSION), is(notNullValue()));
     }
 
     @Test
@@ -121,27 +126,19 @@ public class ApplicationSettingsTest {
 
     @Test
     public void shouldRemoveProperty() {
-        applicationSettings.set(key, null);
-        assertThat(applicationSettings.get(key), is(nullValue()));
+        applicationSettings.set(KEY, null);
+        assertThat(applicationSettings.get(KEY), is(nullValue()));
     }
 
     private Map<String, String> getInitValues() {
-        String osNameKey = "os.name",
-                osArchKey = "os.arch",
-                osVersionKey = "os.version",
-                javaVersionKey = "java.version",
-                javaVendorKey = "java.vendor",
-                jadeVersionKey = "jade.version",
-                jadeRevisionKey = "jade.revision";
-
         Map<String, String> initValues = new HashMap<>();
-        initValues.put(osNameKey, System.getProperty(osNameKey));
-        initValues.put(osArchKey, System.getProperty(osArchKey));
-        initValues.put(osVersionKey, System.getProperty(osVersionKey));
-        initValues.put(javaVersionKey, System.getProperty(javaVersionKey));
-        initValues.put(javaVendorKey, System.getProperty(javaVendorKey));
-        initValues.put(jadeVersionKey, jade.core.Runtime.getVersion());
-        initValues.put(jadeRevisionKey, jade.core.Runtime.getRevision());
+        initValues.put(OS_NAME, System.getProperty(OS_NAME));
+        initValues.put(OS_ARCH, System.getProperty(OS_ARCH));
+        initValues.put(OS_VERSION, System.getProperty(OS_VERSION));
+        initValues.put(JAVA_VERSION, System.getProperty(JAVA_VERSION));
+        initValues.put(JAVA_VENDOR, System.getProperty(JAVA_VENDOR));
+        initValues.put(JADE_VERSION, jade.core.Runtime.getVersion());
+        initValues.put(JADE_REVISION, jade.core.Runtime.getRevision());
         return initValues;
     }
 
