@@ -6,11 +6,11 @@
 
 package masoes.core.behaviour;
 
-import application.logger.ApplicationLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.logger.JadeLogger;
 import masoes.core.Emotion;
 import masoes.core.EmotionalAgent;
 import masoes.core.EmotionalState;
@@ -31,12 +31,12 @@ public class ReplayAgentInformationBehaviour extends Behaviour {
     private static final String NO_STATE = "NO STATE";
     private MessageTemplate template;
     private EmotionalAgent emotionalAgent;
-    private ApplicationLogger logger;
+    private JadeLogger logger;
 
     public ReplayAgentInformationBehaviour(EmotionalAgent emotionalAgent) {
         super(emotionalAgent);
         this.emotionalAgent = emotionalAgent;
-        logger = new ApplicationLogger(LoggerFactory.getLogger(ReplayAgentInformationBehaviour.class));
+        logger = new JadeLogger(LoggerFactory.getLogger(ReplayAgentInformationBehaviour.class));
         template = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
     }
 

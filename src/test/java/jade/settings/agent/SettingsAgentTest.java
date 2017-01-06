@@ -6,13 +6,13 @@
 
 package jade.settings.agent;
 
-import application.logger.ApplicationLogger;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
+import jade.logger.JadeLogger;
 import jade.settings.behaviour.ReplaySettingsBehaviour;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,13 +43,13 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 public class SettingsAgentTest {
 
     private SettingsAgent spySettingsAgent;
-    private ApplicationLogger mockLogger;
+    private JadeLogger mockLogger;
     private ArgumentCaptor<DFAgentDescription> agentDescriptionArgumentCaptor;
 
     @Before
     public void setUp() throws Exception {
         agentDescriptionArgumentCaptor = ArgumentCaptor.forClass(DFAgentDescription.class);
-        mockLogger = mock(ApplicationLogger.class);
+        mockLogger = mock(JadeLogger.class);
 
         SettingsAgent settingsAgent = new SettingsAgent();
         setFieldValue(settingsAgent, "logger", mockLogger);

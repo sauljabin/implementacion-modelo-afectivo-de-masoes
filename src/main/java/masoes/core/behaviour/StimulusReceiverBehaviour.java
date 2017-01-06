@@ -6,10 +6,10 @@
 
 package masoes.core.behaviour;
 
-import application.logger.ApplicationLogger;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.logger.JadeLogger;
 import masoes.core.EmotionalAgent;
 import masoes.core.Stimulus;
 import org.slf4j.LoggerFactory;
@@ -20,12 +20,12 @@ public class StimulusReceiverBehaviour extends Behaviour {
 
     private MessageTemplate template;
     private EmotionalAgent emotionalAgent;
-    private ApplicationLogger logger;
+    private JadeLogger logger;
 
     public StimulusReceiverBehaviour(EmotionalAgent emotionalAgent) {
         super(emotionalAgent);
         this.emotionalAgent = emotionalAgent;
-        logger = new ApplicationLogger(LoggerFactory.getLogger(StimulusReceiverBehaviour.class));
+        logger = new JadeLogger(LoggerFactory.getLogger(StimulusReceiverBehaviour.class));
         template = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
     }
 

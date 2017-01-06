@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 public class EnvironmentOption extends ApplicationOption {
 
     private static final String AGENT_DELIMITER = ";";
-    private final JadeSettings jadeSettings;
-    private final EnvironmentFactory environmentFactory;
+    private JadeSettings jadeSettings;
+    private EnvironmentFactory environmentFactory;
     private ApplicationSettings applicationSettings;
 
     public EnvironmentOption() {

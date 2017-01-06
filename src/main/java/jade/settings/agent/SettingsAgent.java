@@ -6,23 +6,23 @@
 
 package jade.settings.agent;
 
-import application.logger.ApplicationLogger;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
+import jade.logger.JadeLogger;
 import jade.settings.behaviour.ReplaySettingsBehaviour;
 import org.slf4j.LoggerFactory;
 
 public class SettingsAgent extends Agent {
 
     private static final String SERVICE_NAME = "get-setting";
-    private ApplicationLogger logger;
+    private JadeLogger logger;
 
     public SettingsAgent() {
-        logger = new ApplicationLogger(LoggerFactory.getLogger(SettingsAgent.class));
+        logger = new JadeLogger(LoggerFactory.getLogger(SettingsAgent.class));
     }
 
     @Override

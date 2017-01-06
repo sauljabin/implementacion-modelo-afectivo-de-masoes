@@ -9,20 +9,13 @@ package application.logger;
 import application.option.ApplicationOption;
 import application.settings.ApplicationSettings;
 import common.logger.LogWriter;
-import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
-import jade.lang.acl.ACLMessage;
 import jade.settings.JadeSettings;
-import masoes.core.EmotionalAgent;
-import masoes.core.Stimulus;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 public class ApplicationLogger {
 
-    private static final String NO_BEHAVIOUR = "NO BEHAVIOUR";
     private JadeSettings jadeSettings;
     private Logger logger;
     private ApplicationSettings applicationSettings;
@@ -74,53 +67,6 @@ public class ApplicationLogger {
                 .args(exception.getMessage())
                 .exception(exception)
                 .error(logger);
-    }
-
-    public void agentException(Agent agent, Exception exception) {
-        new LogWriter()
-                .message("Exception in agent \"%s\": %s")
-                .args(agent.getLocalName(), exception.getMessage())
-                .exception(exception)
-                .error(logger);
-    }
-
-    public void agentMessage(Agent agent, ACLMessage message) {
-        new LogWriter()
-                .message("Message in agent \"%s\": %s")
-                .args(agent.getLocalName(), message)
-                .info(logger);
-    }
-
-    public void agentEmotionalState(EmotionalAgent emotionalAgent) {
-        LogWriter logWriter = new LogWriter()
-                .message("Emotional state in agent \"%s\": emotion=%s, state=%s, behaviour=%s")
-                .args(emotionalAgent.getLocalName(), emotionalAgent.getCurrentEmotion(), emotionalAgent.getEmotionalState());
-
-        Optional<Behaviour> behaviourOptional = Optional.ofNullable(emotionalAgent.getEmotionalBehaviour());
-
-        if (behaviourOptional.isPresent()) {
-            logWriter.args(behaviourOptional.get().getBehaviourName());
-        } else {
-            logWriter.args(NO_BEHAVIOUR);
-        }
-
-        logWriter.info(logger);
-    }
-
-    public void agentEmotionalStateChanged(EmotionalAgent emotionalAgent, Stimulus stimulus) {
-        LogWriter logWriter = new LogWriter()
-                .message("Emotional state changed in agent \"%s\": stimulus=%s, emotion=%s, state=%s, behaviour=%s")
-                .args(emotionalAgent.getLocalName(), stimulus, emotionalAgent.getCurrentEmotion(), emotionalAgent.getEmotionalState());
-
-        Optional<Behaviour> behaviourOptional = Optional.ofNullable(emotionalAgent.getEmotionalBehaviour());
-
-        if (behaviourOptional.isPresent()) {
-            logWriter.args(behaviourOptional.get().getBehaviourName());
-        } else {
-            logWriter.args(NO_BEHAVIOUR);
-        }
-
-        logWriter.info(logger);
     }
 
 }

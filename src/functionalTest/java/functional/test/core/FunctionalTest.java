@@ -6,9 +6,9 @@
 
 package functional.test.core;
 
-import application.logger.ApplicationLogger;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.logger.JadeLogger;
 import org.slf4j.LoggerFactory;
 import test.common.Test;
 import test.common.TestException;
@@ -26,13 +26,13 @@ public class FunctionalTest extends Test {
     private static final int SLEEP_KILL_AGENT_MILLIS = 100;
     private List<AID> agentsToKill;
     private boolean hasError;
-    private ApplicationLogger logger;
+    private JadeLogger logger;
     private StringGenerator stringGenerator;
 
     public FunctionalTest() {
         hasError = false;
         agentsToKill = new ArrayList<>();
-        logger = new ApplicationLogger(LoggerFactory.getLogger(FunctionalTest.class));
+        logger = new JadeLogger(LoggerFactory.getLogger(FunctionalTest.class));
         stringGenerator = new StringGenerator();
     }
 
@@ -94,7 +94,7 @@ public class FunctionalTest extends Test {
         return aid;
     }
 
-    public ApplicationLogger getLogger() {
+    public JadeLogger getLogger() {
         return logger;
     }
 

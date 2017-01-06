@@ -6,8 +6,8 @@
 
 package masoes.core;
 
-import application.logger.ApplicationLogger;
 import jade.core.behaviours.Behaviour;
+import jade.logger.JadeLogger;
 import masoes.core.behaviour.ReplayAgentInformationBehaviour;
 import masoes.core.behaviour.StimulusReceiverBehaviour;
 import org.junit.Before;
@@ -35,13 +35,13 @@ public class EmotionalAgentTest {
     private EmotionalConfigurator mockEmotionalConfigurator;
     private Emotion mockEmotion;
     private Stimulus mockStimulus;
-    private ApplicationLogger mockLogger;
+    private JadeLogger mockLogger;
 
     @Before
     public void setUp() throws Exception {
         mockBehaviourManager = mock(BehaviourManager.class);
         mockEmotionalConfigurator = mock(EmotionalConfigurator.class);
-        mockLogger = mock(ApplicationLogger.class);
+        mockLogger = mock(JadeLogger.class);
 
         spyEmotionalAgent = createAgent();
 

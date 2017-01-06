@@ -6,9 +6,9 @@
 
 package masoes.core.behaviour;
 
-import application.logger.ApplicationLogger;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
+import jade.logger.JadeLogger;
 import masoes.core.EmotionalAgent;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,13 +31,13 @@ public class StimulusReceiverBehaviourTest {
 
     private EmotionalAgent mockEmotionalAgent;
     private StimulusReceiverBehaviour spyStimulusReceiverBehaviour;
-    private ApplicationLogger mockLogger;
+    private JadeLogger mockLogger;
     private ACLMessage mockAclMessageRequest;
 
     @Before
     public void setUp() throws Exception {
         mockEmotionalAgent = mock(EmotionalAgent.class);
-        mockLogger = mock(ApplicationLogger.class);
+        mockLogger = mock(JadeLogger.class);
         mockAclMessageRequest = mock(ACLMessage.class);
 
         StimulusReceiverBehaviour stimulusReceiverBehaviour = new StimulusReceiverBehaviour(mockEmotionalAgent);

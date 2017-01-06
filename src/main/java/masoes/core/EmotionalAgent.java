@@ -6,9 +6,9 @@
 
 package masoes.core;
 
-import application.logger.ApplicationLogger;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
+import jade.logger.JadeLogger;
 import masoes.core.behaviour.ReplayAgentInformationBehaviour;
 import masoes.core.behaviour.StimulusReceiverBehaviour;
 import org.slf4j.LoggerFactory;
@@ -17,14 +17,14 @@ public class EmotionalAgent extends Agent {
 
     private BehaviourManager behaviourManager;
     private EmotionalConfigurator emotionalConfigurator;
-    private ApplicationLogger logger;
+    private JadeLogger logger;
 
     private Behaviour cognitiveBehaviour;
     private Behaviour imitativeBehaviour;
     private Behaviour reactiveBehaviour;
 
     public EmotionalAgent() {
-        logger = new ApplicationLogger(LoggerFactory.getLogger(EmotionalAgent.class));
+        logger = new JadeLogger(LoggerFactory.getLogger(EmotionalAgent.class));
         behaviourManager = new BehaviourManager();
         emotionalConfigurator = new EmotionalConfigurator();
     }

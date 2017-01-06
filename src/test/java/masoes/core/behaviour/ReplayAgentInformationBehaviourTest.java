@@ -6,10 +6,10 @@
 
 package masoes.core.behaviour;
 
-import application.logger.ApplicationLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
+import jade.logger.JadeLogger;
 import masoes.core.Emotion;
 import masoes.core.EmotionalAgent;
 import masoes.core.EmotionalState;
@@ -38,7 +38,7 @@ public class ReplayAgentInformationBehaviourTest {
 
     private EmotionalAgent mockEmotionalAgent;
     private ReplayAgentInformationBehaviour spyReplayAgentInformationBehaviour;
-    private ApplicationLogger mockLogger;
+    private JadeLogger mockLogger;
     private ACLMessage mockAclMessageRequest;
     private ACLMessage mockAclMessageResponse;
     private Map<String, Object> expectedContent;
@@ -49,7 +49,7 @@ public class ReplayAgentInformationBehaviourTest {
         objectMapper = new ObjectMapper();
 
         mockEmotionalAgent = mock(EmotionalAgent.class);
-        mockLogger = mock(ApplicationLogger.class);
+        mockLogger = mock(JadeLogger.class);
 
         ReplayAgentInformationBehaviour replayAgentInformationBehaviour = new ReplayAgentInformationBehaviour(mockEmotionalAgent);
         setFieldValue(replayAgentInformationBehaviour, "logger", mockLogger);

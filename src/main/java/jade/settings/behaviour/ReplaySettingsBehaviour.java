@@ -6,13 +6,13 @@
 
 package jade.settings.behaviour;
 
-import application.logger.ApplicationLogger;
 import application.settings.ApplicationSettings;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.logger.JadeLogger;
 import jade.settings.JadeSettings;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +25,7 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
     private static final String APPLICATION_SETTINGS = "applicationSettings";
     private static final String JADE_SETTINGS = "jadeSettings";
     private MessageTemplate template;
-    private ApplicationLogger logger;
+    private JadeLogger logger;
     private JadeSettings jadeSettings;
     private ApplicationSettings applicationSettings;
 
@@ -35,7 +35,7 @@ public class ReplaySettingsBehaviour extends CyclicBehaviour {
 
     public ReplaySettingsBehaviour(Agent agent) {
         super(agent);
-        logger = new ApplicationLogger(LoggerFactory.getLogger(ReplaySettingsBehaviour.class));
+        logger = new JadeLogger(LoggerFactory.getLogger(ReplaySettingsBehaviour.class));
         template = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
         jadeSettings = JadeSettings.getInstance();
         applicationSettings = ApplicationSettings.getInstance();

@@ -6,11 +6,11 @@
 
 package jade.settings.behaviour;
 
-import application.logger.ApplicationLogger;
 import application.settings.ApplicationSettings;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
+import jade.logger.JadeLogger;
 import jade.settings.JadeSettings;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class ReplaySettingsBehaviourTest {
     private Agent spyAgent;
     private ACLMessage mockAclMessageRequest;
     private ACLMessage mockAclMessageResponse;
-    private ApplicationLogger mockLogger;
+    private JadeLogger mockLogger;
     private ObjectMapper objectMapper;
     private JadeSettings mockJadeSettings;
     private Map<String, Object> expectedContent;
@@ -54,7 +54,7 @@ public class ReplaySettingsBehaviourTest {
         mockJadeSettings = mock(JadeSettings.class);
 
         spyAgent = spy(new Agent());
-        mockLogger = mock(ApplicationLogger.class);
+        mockLogger = mock(JadeLogger.class);
 
         ReplaySettingsBehaviour replaySettingsBehaviour = new ReplaySettingsBehaviour(spyAgent);
         setFieldValue(replaySettingsBehaviour, "logger", mockLogger);

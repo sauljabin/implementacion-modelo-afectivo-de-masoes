@@ -62,5 +62,5 @@ public class Settings {
                 .sorted()
                 .collect(Collectors.toMap(key -> key, key -> get(key)));
     }
-    
+
 }
