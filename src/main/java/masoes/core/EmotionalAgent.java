@@ -84,5 +84,4 @@ public class EmotionalAgent extends Agent {
 
     }
 
-
 }
