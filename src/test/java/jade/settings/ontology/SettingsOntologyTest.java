@@ -32,6 +32,11 @@ public class SettingsOntologyTest {
     }
 
     @Test
+    public void shouldGetSameInstance() {
+        assertThat(SettingsOntology.getInstance(), is(settingsOntology));
+    }
+
+    @Test
     public void shouldReturnCorrectName() {
         assertThat(settingsOntology.getName(), is("settings"));
     }

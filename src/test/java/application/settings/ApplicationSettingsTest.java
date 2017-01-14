@@ -50,8 +50,7 @@ public class ApplicationSettingsTest {
 
     @Test
     public void shouldGetSameInstance() {
-        ApplicationSettings expectedApplicationSettings = ApplicationSettings.getInstance();
-        assertThat(applicationSettings, is(expectedApplicationSettings));
+        assertThat(ApplicationSettings.getInstance(), is(applicationSettings));
     }
 
     @Test

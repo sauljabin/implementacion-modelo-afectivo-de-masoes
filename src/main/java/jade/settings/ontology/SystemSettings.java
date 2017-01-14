@@ -7,7 +7,6 @@
 package jade.settings.ontology;
 
 import jade.content.Predicate;
-import jade.util.leap.ArrayList;
 import jade.util.leap.List;
 
 
@@ -15,8 +14,14 @@ public class SystemSettings implements Predicate {
 
     private List settings;
 
+    public SystemSettings() {
+    }
+
+    public SystemSettings(List settings) {
+        this.settings = settings;
+    }
+
     public List getSettings() {
-        settings = new ArrayList();
         return settings;
     }
 

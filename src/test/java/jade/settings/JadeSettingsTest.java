@@ -33,8 +33,7 @@ public class JadeSettingsTest {
 
     @Test
     public void shouldGetSameInstance() {
-        JadeSettings actualJadeSettings = JadeSettings.getInstance();
-        assertThat(actualJadeSettings, is(jadeSettings));
+        assertThat(JadeSettings.getInstance(), is(jadeSettings));
     }
 
     @Test

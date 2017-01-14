@@ -6,6 +6,7 @@
 
 package jade.ontology.base;
 
+import jade.content.onto.BasicOntology;
 import jade.content.onto.BeanOntology;
 import jade.ontology.SetupOntologyException;
 
@@ -17,7 +18,7 @@ public class BaseOntology extends BeanOntology {
     private static BaseOntology INSTANCE;
 
     private BaseOntology() {
-        super(ONTOLOGY_NAME);
+        super(ONTOLOGY_NAME, BasicOntology.getInstance());
         initialize();
     }
 

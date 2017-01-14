@@ -13,6 +13,14 @@ public class Setting implements Concept {
     private String value;
     private String key;
 
+    public Setting() {
+    }
+
+    public Setting(String value, String key) {
+        this.value = value;
+        this.key = key;
+    }
+
     public String getValue() {
         return value;
     }

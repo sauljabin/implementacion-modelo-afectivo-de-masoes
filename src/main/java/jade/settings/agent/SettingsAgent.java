@@ -12,8 +12,9 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
+import jade.language.FipaLanguage;
 import jade.logger.JadeLogger;
-import jade.settings.behaviour.ReplaySettingsBehaviour;
+import jade.settings.behaviour.ResponseSettingsBehaviour;
 import jade.settings.ontology.SettingsOntology;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +28,9 @@ public class SettingsAgent extends Agent {
 
     @Override
     protected void setup() {
+        getContentManager().registerOntology(SettingsOntology.getInstance());
+        getContentManager().registerLanguage(FipaLanguage.getInstance());
+
         try {
             ServiceDescription getSetting = createService("GetSetting");
             ServiceDescription getAllSettings = createService("GetAllSettings");
@@ -41,7 +45,7 @@ public class SettingsAgent extends Agent {
             logger.agentException(this, e);
         }
 
-        addBehaviour(new ReplaySettingsBehaviour());
+        addBehaviour(new ResponseSettingsBehaviour());
     }
 
     private ServiceDescription createService(String serviceName) {
@@ -49,7 +53,7 @@ public class SettingsAgent extends Agent {
         serviceDescription.setName(serviceName);
         serviceDescription.setType(getLocalName() + "-" + serviceName);
         serviceDescription.addProtocols(FIPANames.InteractionProtocol.FIPA_REQUEST);
-        serviceDescription.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
+        serviceDescription.addLanguages(FipaLanguage.LANGUAGE_NAME);
         serviceDescription.addOntologies(SettingsOntology.ONTOLOGY_NAME);
         return serviceDescription;
     }

@@ -6,14 +6,17 @@
 
 package jade.settings.agent;
 
+import jade.content.ContentManager;
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
+import jade.language.FipaLanguage;
 import jade.logger.JadeLogger;
-import jade.settings.behaviour.ReplaySettingsBehaviour;
+import jade.settings.behaviour.ResponseSettingsBehaviour;
 import jade.settings.ontology.SettingsOntology;
 import jade.util.leap.Iterator;
 import org.junit.Before;
@@ -25,10 +28,9 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -47,24 +49,40 @@ public class SettingsAgentTest {
     private SettingsAgent spySettingsAgent;
     private JadeLogger mockLogger;
     private ArgumentCaptor<DFAgentDescription> agentDescriptionArgumentCaptor;
+    private ArgumentCaptor<Behaviour> behaviourArgumentCaptor;
+    private ArgumentCaptor<SettingsOntology> ontologyArgumentCaptor;
+    private ArgumentCaptor<FipaLanguage> codecArgumentCaptor;
 
     @Before
     public void setUp() throws Exception {
         agentDescriptionArgumentCaptor = ArgumentCaptor.forClass(DFAgentDescription.class);
+        behaviourArgumentCaptor = ArgumentCaptor.forClass(Behaviour.class);
+        ontologyArgumentCaptor = ArgumentCaptor.forClass(SettingsOntology.class);
+        codecArgumentCaptor = ArgumentCaptor.forClass(FipaLanguage.class);
         mockLogger = mock(JadeLogger.class);
 
         SettingsAgent settingsAgent = new SettingsAgent();
         setFieldValue(settingsAgent, "logger", mockLogger);
 
         spySettingsAgent = spy(settingsAgent);
-        doNothing().when(spySettingsAgent).addBehaviour(any(ReplaySettingsBehaviour.class));
-        doCallRealMethod().when(spySettingsAgent).setup();
     }
 
     @Test
     public void shouldAddSettingsBehaviour() {
         spySettingsAgent.setup();
-        verify(spySettingsAgent).addBehaviour(any(ReplaySettingsBehaviour.class));
+        verify(spySettingsAgent).addBehaviour(behaviourArgumentCaptor.capture());
+        assertThat(behaviourArgumentCaptor.getValue(), is(instanceOf(ResponseSettingsBehaviour.class)));
+    }
+
+    @Test
+    public void shouldAddOntologyAndLanguage() throws Exception {
+        ContentManager mockContentManager = mock(ContentManager.class);
+        when(spySettingsAgent.getContentManager()).thenReturn(mockContentManager);
+        spySettingsAgent.setup();
+        verify(mockContentManager).registerLanguage(codecArgumentCaptor.capture());
+        verify(mockContentManager).registerOntology(ontologyArgumentCaptor.capture());
+        assertThat(codecArgumentCaptor.getValue(), is(instanceOf(FipaLanguage.class)));
+        assertThat(ontologyArgumentCaptor.getValue(), is(instanceOf(SettingsOntology.class)));
     }
 
     @Test
@@ -89,18 +107,16 @@ public class SettingsAgentTest {
         assertThat(actualService.getName(), is(name));
         assertThat(actualService.getType(), is("settings-" + name));
         assertThat(actualService.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
-        assertThat(actualService.getAllLanguages().next(), is(FIPANames.ContentLanguage.FIPA_SL));
+        assertThat(actualService.getAllLanguages().next(), is(FipaLanguage.LANGUAGE_NAME));
         assertThat(actualService.getAllOntologies().next(), is(SettingsOntology.ONTOLOGY_NAME));
     }
 
     @Test
     public void shouldLogErrorWhenRegister() throws Exception {
         FIPAException expectedException = new FIPAException("error");
-
         mockStatic(DFService.class);
         doThrow(expectedException).when(DFService.class);
         DFService.register(eq(spySettingsAgent), any());
-
         spySettingsAgent.setup();
         verify(mockLogger).agentException(spySettingsAgent, expectedException);
     }

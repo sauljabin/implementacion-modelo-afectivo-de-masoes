@@ -12,6 +12,13 @@ public class GetSetting implements AgentAction {
 
     private String key;
 
+    public GetSetting() {
+    }
+
+    public GetSetting(String key) {
+        this.key = key;
+    }
+
     public String getKey() {
         return key;
     }

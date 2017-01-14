@@ -26,6 +26,11 @@ public class BaseOntologyTest {
         baseOntology = BaseOntology.getInstance();
     }
 
+    @Test
+    public void shouldGetSameInstance() {
+        assertThat(BaseOntology.getInstance(), is(baseOntology));
+    }
+
     @After
     public void tearDown() throws Exception {
         setFieldValue(baseOntology, "INSTANCE", null);

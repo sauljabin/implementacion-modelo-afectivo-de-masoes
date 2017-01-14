@@ -13,6 +13,9 @@ targets: ; grep "^# target" [Mm]akefile | cut -c10-
 # target help: Display masoes help.
 help: ; ./gradlew -q run -Pargs="-h"
 
+# target run: Exec masoes without env.
+run: ; ./gradlew -q run
+
 # target dummy: Exec masoes with dummy env.
 dummy: ; ./gradlew -q run -Pargs="-Edummy"
 
