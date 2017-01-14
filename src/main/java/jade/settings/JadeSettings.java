@@ -23,6 +23,7 @@ public class JadeSettings extends Settings {
     private static JadeSettings INSTANCE;
 
     private JadeSettings() {
+        load();
     }
 
     public synchronized static JadeSettings getInstance() {

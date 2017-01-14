@@ -61,12 +61,9 @@ public class ApplicationBootTest {
     @Test
     public void shouldStartApp() {
         applicationBoot.boot(args);
-
         verify(mockApplicationOptionProcessor).processArgs(args);
         verify(mockLogger).startingApplication(any());
         verify(mockLogger).closingApplication();
-        verify(mockApplicationSettings).load();
-        verify(mockJadeSettings).load();
     }
 
 }

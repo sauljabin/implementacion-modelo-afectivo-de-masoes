@@ -28,6 +28,7 @@ public class ApplicationSettings extends Settings {
     private static ApplicationSettings INSTANCE;
 
     private ApplicationSettings() {
+        load();
     }
 
     public synchronized static ApplicationSettings getInstance() {

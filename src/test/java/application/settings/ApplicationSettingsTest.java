@@ -41,7 +41,6 @@ public class ApplicationSettingsTest {
     @Before
     public void setUp() {
         applicationSettings = ApplicationSettings.getInstance();
-        applicationSettings.load();
     }
 
     @After

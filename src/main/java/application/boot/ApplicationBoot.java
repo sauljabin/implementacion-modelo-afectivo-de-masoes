@@ -29,8 +29,6 @@ public class ApplicationBoot {
 
     public void boot(String[] args) {
         try {
-            applicationSettings.load();
-            jadeSettings.load();
             logger.startingApplication(args);
             applicationOptionProcessor.processArgs(args);
             logger.closingApplication();

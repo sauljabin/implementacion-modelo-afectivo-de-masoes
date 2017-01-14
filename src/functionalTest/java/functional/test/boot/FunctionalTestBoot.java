@@ -32,8 +32,6 @@ public class FunctionalTestBoot {
 
     public void boot(String[] args) {
         try {
-            applicationSettings.load();
-            jadeSettings.load();
             setSettings();
             logger.startingApplication(args);
             jadeBoot.boot();

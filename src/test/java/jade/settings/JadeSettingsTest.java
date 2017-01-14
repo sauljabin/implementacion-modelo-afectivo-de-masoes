@@ -24,7 +24,6 @@ public class JadeSettingsTest {
     @Before
     public void setUp() {
         jadeSettings = JadeSettings.getInstance();
-        jadeSettings.load();
     }
 
     @After
