@@ -14,11 +14,11 @@ import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import jade.logger.JadeLogger;
 import jade.settings.behaviour.ReplaySettingsBehaviour;
+import jade.settings.ontology.SettingsOntology;
 import org.slf4j.LoggerFactory;
 
 public class SettingsAgent extends Agent {
 
-    private static final String SERVICE_NAME = "get-setting";
     private JadeLogger logger;
 
     public SettingsAgent() {
@@ -28,14 +28,13 @@ public class SettingsAgent extends Agent {
     @Override
     protected void setup() {
         try {
-            ServiceDescription serviceDescription = new ServiceDescription();
-            serviceDescription.setName(SERVICE_NAME);
-            serviceDescription.setType(getLocalName() + "-" + SERVICE_NAME);
-            serviceDescription.addProtocols(FIPANames.InteractionProtocol.FIPA_REQUEST);
+            ServiceDescription getSetting = createService("GetSetting");
+            ServiceDescription getAllSettings = createService("GetAllSettings");
 
             DFAgentDescription agentDescription = new DFAgentDescription();
             agentDescription.setName(getAID());
-            agentDescription.addServices(serviceDescription);
+            agentDescription.addServices(getSetting);
+            agentDescription.addServices(getAllSettings);
 
             DFService.register(this, agentDescription);
         } catch (FIPAException e) {
@@ -43,6 +42,16 @@ public class SettingsAgent extends Agent {
         }
 
         addBehaviour(new ReplaySettingsBehaviour());
+    }
+
+    private ServiceDescription createService(String serviceName) {
+        ServiceDescription serviceDescription = new ServiceDescription();
+        serviceDescription.setName(serviceName);
+        serviceDescription.setType(getLocalName() + "-" + serviceName);
+        serviceDescription.addProtocols(FIPANames.InteractionProtocol.FIPA_REQUEST);
+        serviceDescription.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
+        serviceDescription.addOntologies(SettingsOntology.ONTOLOGY_NAME);
+        return serviceDescription;
     }
 
 }

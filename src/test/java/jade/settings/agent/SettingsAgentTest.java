@@ -14,6 +14,8 @@ import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import jade.logger.JadeLogger;
 import jade.settings.behaviour.ReplaySettingsBehaviour;
+import jade.settings.ontology.SettingsOntology;
+import jade.util.leap.Iterator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,11 +76,21 @@ public class SettingsAgentTest {
         verifyStatic();
         DFService.register(eq(spySettingsAgent), agentDescriptionArgumentCaptor.capture());
 
-        ServiceDescription actualService = (ServiceDescription) agentDescriptionArgumentCaptor.getValue().getAllServices().next();
+        Iterator allServices = agentDescriptionArgumentCaptor.getValue().getAllServices();
 
-        assertThat(actualService.getName(), is("get-setting"));
-        assertThat(actualService.getType(), is("settings-get-setting"));
+        ServiceDescription serviceGetSetting = (ServiceDescription) allServices.next();
+        testService(serviceGetSetting, "GetSetting");
+
+        ServiceDescription serviceGetAllSettings = (ServiceDescription) allServices.next();
+        testService(serviceGetAllSettings, "GetAllSettings");
+    }
+
+    private void testService(ServiceDescription actualService, String name) {
+        assertThat(actualService.getName(), is(name));
+        assertThat(actualService.getType(), is("settings-" + name));
         assertThat(actualService.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
+        assertThat(actualService.getAllLanguages().next(), is(FIPANames.ContentLanguage.FIPA_SL));
+        assertThat(actualService.getAllOntologies().next(), is(SettingsOntology.ONTOLOGY_NAME));
     }
 
     @Test

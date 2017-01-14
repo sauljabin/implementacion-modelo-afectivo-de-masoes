@@ -8,6 +8,6 @@ package jade.settings.ontology;
 
 import jade.content.AgentAction;
 
-public class QueryAllSettings implements AgentAction {
+public class GetAllSettings implements AgentAction {
 
 }

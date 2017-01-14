@@ -8,7 +8,7 @@ package jade.settings.ontology;
 
 import jade.content.AgentAction;
 
-public class QuerySetting implements AgentAction {
+public class GetSetting implements AgentAction {
 
     private String key;
 
