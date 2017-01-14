@@ -4,15 +4,15 @@
  * Please see the LICENSE.txt file
  */
 
-package jade.settings.ontology;
+package jade.ontology;
 
-public class SettingsOntologyException extends RuntimeException {
+public class SetupOntologyException extends RuntimeException {
 
-    public SettingsOntologyException(String message) {
+    public SetupOntologyException(String message) {
         super(message);
     }
 
-    public SettingsOntologyException(String message, Throwable cause) {
+    public SetupOntologyException(String message, Throwable cause) {
         super(message, cause);
     }
 

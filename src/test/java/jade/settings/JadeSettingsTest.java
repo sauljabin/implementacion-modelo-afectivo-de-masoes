@@ -6,6 +6,7 @@
 
 package jade.settings;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,6 +15,7 @@ import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class JadeSettingsTest {
 
@@ -23,6 +25,11 @@ public class JadeSettingsTest {
     public void setUp() {
         jadeSettings = JadeSettings.getInstance();
         jadeSettings.load();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        setFieldValue(jadeSettings, "INSTANCE", null);
     }
 
     @Test

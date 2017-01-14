@@ -4,13 +4,22 @@
  * Please see the LICENSE.txt file
  */
 
-package jade.settings.ontology.elements;
+package jade.ontology.base;
 
 import jade.content.Predicate;
 
 public class UnexpectedContent implements Predicate {
 
     private String message;
+    private String content;
+
+    public UnexpectedContent() {
+    }
+
+    public UnexpectedContent(String message, String content) {
+        this.message = message;
+        this.content = content;
+    }
 
     public String getMessage() {
         return message;
@@ -18,6 +27,14 @@ public class UnexpectedContent implements Predicate {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
 }

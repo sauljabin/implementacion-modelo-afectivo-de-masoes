@@ -6,6 +6,7 @@
 
 package application.settings;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class ApplicationSettingsTest {
 
@@ -40,6 +42,11 @@ public class ApplicationSettingsTest {
     public void setUp() {
         applicationSettings = ApplicationSettings.getInstance();
         applicationSettings.load();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        setFieldValue(applicationSettings, "INSTANCE", null);
     }
 
     @Test

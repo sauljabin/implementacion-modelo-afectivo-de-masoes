@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package jade.settings.ontology.elements;
+package jade.settings.ontology;
 
 import jade.content.Predicate;
 import jade.util.leap.ArrayList;
