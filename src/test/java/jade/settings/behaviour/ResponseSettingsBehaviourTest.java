@@ -15,13 +15,19 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.language.FipaLanguage;
+import jade.settings.JadeSettings;
+import jade.settings.ontology.GetAllSettings;
 import jade.settings.ontology.GetSetting;
 import jade.settings.ontology.Setting;
 import jade.settings.ontology.SettingsOntology;
 import jade.settings.ontology.SystemSettings;
+import jade.util.leap.ArrayList;
+import jade.util.leap.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+
+import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -78,6 +84,34 @@ public class ResponseSettingsBehaviourTest {
 
         Setting expectedSetting = new Setting(ApplicationSettings.OS_VERSION, ApplicationSettings.getInstance().get(ApplicationSettings.OS_VERSION));
         assertReflectionEquals(expectedSetting, systemSettings.getSettings().get(0));
+    }
+
+    @Test
+    public void shouldReturnAllSettings() throws Exception {
+        ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
+        request.setLanguage(FipaLanguage.LANGUAGE_NAME);
+        request.setOntology(SettingsOntology.ONTOLOGY_NAME);
+
+        Action action = new Action(new AID(), new GetAllSettings());
+
+        contentManager.fillContent(request, action);
+
+        ACLMessage response = spySettingsBehaviour.prepareResponse(request);
+
+        SystemSettings systemSettings = (SystemSettings) contentManager.extractContent(response);
+
+        SystemSettings expectedSetting = new SystemSettings();
+        List appList = new ArrayList();
+
+        Map<String, String> appSettings = ApplicationSettings.getInstance().toMap();
+        appSettings.forEach((key, value) -> appList.add(new Setting(key, value)));
+
+        Map<String, String> jadeSettings = JadeSettings.getInstance().toMap();
+        jadeSettings.forEach((key, value) -> appList.add(new Setting(key, value)));
+
+        expectedSetting.setSettings(appList);
+
+        assertReflectionEquals(expectedSetting.getSettings().toArray(), systemSettings.getSettings().toArray());
     }
 
 }
