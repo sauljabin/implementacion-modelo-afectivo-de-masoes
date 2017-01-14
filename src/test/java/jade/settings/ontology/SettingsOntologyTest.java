@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package jade.ontology.base;
+package jade.settings.ontology;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,28 +17,30 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
-public class BaseOntologyTest {
+public class SettingsOntologyTest {
 
-    private BaseOntology baseOntology;
+    private SettingsOntology settingsOntology;
 
     @Before
     public void setUp() {
-        baseOntology = BaseOntology.getInstance();
+        settingsOntology = SettingsOntology.getInstance();
     }
 
     @After
     public void tearDown() throws Exception {
-        setFieldValue(baseOntology, "INSTANCE", null);
+        setFieldValue(settingsOntology, "INSTANCE", null);
     }
 
     @Test
     public void shouldReturnCorrectName() {
-        assertThat(baseOntology.getName(), is("base"));
+        assertThat(settingsOntology.getName(), is("settings"));
     }
 
     @Test
     public void shouldInitializeElements() {
-        assertThat(Arrays.asList(baseOntology.getPredicateNames().toArray()), hasItems("FailedAction", "Done", "UnexpectedContent"));
+        assertThat(Arrays.asList(settingsOntology.getPredicateNames().toArray()), hasItems("FailedAction", "Done", "UnexpectedContent", "SystemSettings"));
+        assertThat(Arrays.asList(settingsOntology.getConceptNames().toArray()), hasItems("Setting"));
+        assertThat(Arrays.asList(settingsOntology.getActionNames().toArray()), hasItems("QueryAllSettings", "QuerySetting"));
     }
 
 }

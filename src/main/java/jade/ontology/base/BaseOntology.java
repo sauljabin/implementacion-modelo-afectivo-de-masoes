@@ -21,19 +21,19 @@ public class BaseOntology extends BeanOntology {
         initialize();
     }
 
+    public synchronized static BaseOntology getInstance() {
+        if (!Optional.ofNullable(INSTANCE).isPresent()) {
+            INSTANCE = new BaseOntology();
+        }
+        return INSTANCE;
+    }
+
     private void initialize() {
         try {
             add(BaseOntology.class.getPackage().getName());
         } catch (Exception e) {
             throw new SetupOntologyException(e.getMessage(), e);
         }
-    }
-
-    public synchronized static BaseOntology getInstance() {
-        if (!Optional.ofNullable(INSTANCE).isPresent()) {
-            INSTANCE = new BaseOntology();
-        }
-        return INSTANCE;
     }
 
 }
