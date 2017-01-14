@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class MasoesOntology extends BeanOntology {
 
-    public static final String ONTOLOGY_NAME = "base";
+    public static final String ONTOLOGY_NAME = "masoes";
     private static MasoesOntology INSTANCE;
 
     private MasoesOntology() {
