@@ -7,20 +7,23 @@
 package functional.test.jade.settings;
 
 import application.settings.ApplicationSettings;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import functional.test.core.FunctionalTest;
+import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
+import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
+import jade.language.FipaLanguage;
 import jade.settings.JadeSettings;
 import jade.settings.agent.SettingsAgent;
+import jade.settings.ontology.GetAllSettings;
+import jade.settings.ontology.Setting;
+import jade.settings.ontology.SettingsOntology;
+import jade.settings.ontology.SystemSettings;
+import jade.util.leap.ArrayList;
 import test.common.TestException;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 public class ShouldReceiveAllSettingsTest extends FunctionalTest {
 
@@ -31,42 +34,47 @@ public class ShouldReceiveAllSettingsTest extends FunctionalTest {
         AID settingsAgentAID = createAgent(tester, SettingsAgent.class.getName());
 
         SimpleBehaviour receiveMessageBehaviour = new SimpleBehaviour() {
-            private boolean done = false;
-
-            @Override
-            public void onStart() {
-                ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
-                testMessage.addReceiver(settingsAgentAID);
-                myAgent.send(testMessage);
-            }
 
             @Override
             public void action() {
-                ACLMessage msg = myAgent.receive();
-                if (Optional.ofNullable(msg).isPresent()) {
+                try {
+                    ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
+                    testMessage.addReceiver(settingsAgentAID);
+                    testMessage.setOntology(SettingsOntology.ONTOLOGY_NAME);
+                    testMessage.setLanguage(FipaLanguage.LANGUAGE_NAME);
+                    testMessage.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
+
+                    myAgent.getContentManager().registerLanguage(FipaLanguage.getInstance());
+                    myAgent.getContentManager().registerOntology(SettingsOntology.getInstance());
+
+                    myAgent.getContentManager().fillContent(testMessage, new Action(myAgent.getAID(), new GetAllSettings()));
+
+                    myAgent.send(testMessage);
+
+                    ACLMessage msg = myAgent.blockingReceive();
                     getLogger().agentMessage(myAgent, msg);
-                    try {
-                        ObjectMapper mapper = new ObjectMapper();
+                    SystemSettings expectedSystemSettings = new SystemSettings(new ArrayList());
 
-                        Map<String, Object> objectMap = new HashMap<>();
+                    ApplicationSettings.getInstance().toMap().forEach(
+                            (key, value) -> expectedSystemSettings.getSettings().add(new Setting(key, value))
+                    );
 
-                        objectMap.put("applicationSettings", ApplicationSettings.getInstance().toMap());
-                        objectMap.put("jadeSettings", JadeSettings.getInstance().toMap());
+                    JadeSettings.getInstance().toMap().forEach(
+                            (key, value) -> expectedSystemSettings.getSettings().add(new Setting(key, value))
+                    );
 
-                        assertEquals("Content", mapper.writeValueAsString(objectMap), msg.getContent());
-                        assertEquals("Performative", ACLMessage.INFORM, msg.getPerformative());
-                        done = true;
-                    } catch (Exception e) {
-                        throw new RuntimeException(e.getMessage(), e);
-                    }
-                } else {
-                    block();
+                    SystemSettings systemSettings = (SystemSettings) myAgent.getContentManager().extractContent(msg);
+
+                    assertEquals("Performative", ACLMessage.INFORM, msg.getPerformative());
+                    assertReflectionEquals("Content", expectedSystemSettings.getSettings().toArray(), systemSettings.getSettings().toArray());
+                } catch (Exception e) {
+                    throw new RuntimeException(e.getMessage(), e);
                 }
             }
 
             @Override
             public boolean done() {
-                return done;
+                return true;
             }
 
         };

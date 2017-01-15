@@ -9,7 +9,9 @@ package functional.test.core;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.logger.JadeLogger;
+import junit.framework.AssertionFailedError;
 import org.slf4j.LoggerFactory;
+import org.unitils.reflectionassert.ReflectionAssert;
 import test.common.Test;
 import test.common.TestException;
 import test.common.TestUtility;
@@ -64,6 +66,15 @@ public class FunctionalTest extends Test {
             assertPass(String.format("Assert equals: %s", message));
         } else {
             assertError(String.format("Assertion error: %s\nExpected: %s \n and was: %s", message, expected, actual));
+        }
+    }
+
+    public void assertReflectionEquals(String message, Object expected, Object actual) {
+        try {
+            ReflectionAssert.assertReflectionEquals(expected, actual);
+            assertPass(String.format("Assert equals: %s", message));
+        } catch (AssertionFailedError e) {
+            assertError(String.format("Assertion error: %s\n%s", message, e.getMessage()));
         }
     }
 

@@ -7,15 +7,19 @@
 package functional.test.jade.settings;
 
 import functional.test.core.FunctionalTest;
+import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
+import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
+import jade.language.FipaLanguage;
+import jade.ontology.base.UnexpectedContent;
 import jade.settings.agent.SettingsAgent;
+import jade.settings.ontology.GetSetting;
+import jade.settings.ontology.SettingsOntology;
 import test.common.TestException;
-
-import java.util.Optional;
 
 public class ShouldReceiveNotUnderstoodTest extends FunctionalTest {
 
@@ -26,31 +30,42 @@ public class ShouldReceiveNotUnderstoodTest extends FunctionalTest {
         AID settingsAgentAID = createAgent(tester, SettingsAgent.class.getName());
 
         SimpleBehaviour receiveMessageBehaviour = new SimpleBehaviour() {
-            private boolean done = false;
-
-            @Override
-            public void onStart() {
-                ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
-                testMessage.addReceiver(settingsAgentAID);
-                testMessage.setContent("no_key");
-                myAgent.send(testMessage);
-            }
 
             @Override
             public void action() {
-                ACLMessage msg = myAgent.receive();
-                if (Optional.ofNullable(msg).isPresent()) {
+                try {
+                    ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
+                    testMessage.addReceiver(settingsAgentAID);
+                    testMessage.setOntology(SettingsOntology.ONTOLOGY_NAME);
+                    testMessage.setLanguage(FipaLanguage.LANGUAGE_NAME);
+                    testMessage.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
+
+                    myAgent.getContentManager().registerLanguage(FipaLanguage.getInstance());
+                    myAgent.getContentManager().registerOntology(SettingsOntology.getInstance());
+
+                    String keyForTest = "no-key";
+                    GetSetting getSetting = new GetSetting(keyForTest);
+                    myAgent.getContentManager().fillContent(testMessage, new Action(myAgent.getAID(), getSetting));
+
+                    myAgent.send(testMessage);
+
+                    ACLMessage msg = myAgent.blockingReceive();
                     getLogger().agentMessage(myAgent, msg);
+
+                    UnexpectedContent expectedContent = new UnexpectedContent("Setting not found", keyForTest);
+
+                    UnexpectedContent content = (UnexpectedContent) myAgent.getContentManager().extractContent(msg);
+
                     assertEquals("Performative", ACLMessage.NOT_UNDERSTOOD, msg.getPerformative());
-                    done = true;
-                } else {
-                    block();
+                    assertReflectionEquals("Content", expectedContent, content);
+                } catch (Exception e) {
+                    throw new RuntimeException(e.getMessage(), e);
                 }
             }
 
             @Override
             public boolean done() {
-                return done;
+                return true;
             }
         };
 
