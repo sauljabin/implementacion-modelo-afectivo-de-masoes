@@ -19,11 +19,11 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class EmotionalAgentTest {
@@ -50,10 +50,10 @@ public class EmotionalAgentTest {
         mockEmotion = mock(Emotion.class);
         mockStimulus = mock(Stimulus.class);
 
-        when(mockEmotionalConfigurator.getEmotion()).thenReturn(mockEmotion);
-        when(mockEmotionalConfigurator.getEmotionalState()).thenReturn(mockEmotionalState);
-        when(mockBehaviourManager.calculateBehaviour(any())).thenReturn(mockBehaviour);
-        when(mockBehaviourManager.getBehaviour()).thenReturn(mockBehaviour);
+        doReturn(mockEmotion).when(mockEmotionalConfigurator).getEmotion();
+        doReturn(mockEmotionalState).when(mockEmotionalConfigurator).getEmotionalState();
+        doReturn(mockBehaviour).when(mockBehaviourManager).calculateBehaviour(any());
+        doReturn(mockBehaviour).when(mockBehaviourManager).getBehaviour();
         doNothing().when(mockBehaviourManager).updateBehaviour(any());
 
         spyEmotionalAgent.setup();

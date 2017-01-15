@@ -24,11 +24,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.spy;
-import static org.powermock.api.mockito.PowerMockito.when;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 @RunWith(PowerMockRunner.class)
@@ -59,24 +59,24 @@ public class ReplayAgentInformationBehaviourTest {
         mockAclMessageRequest = mock(ACLMessage.class);
         mockAclMessageResponse = mock(ACLMessage.class);
 
-        when(mockEmotionalAgent.receive(any())).thenReturn(mockAclMessageRequest);
-        when(mockAclMessageRequest.createReply()).thenReturn(mockAclMessageResponse);
+        doReturn(mockAclMessageRequest).when(mockEmotionalAgent).receive(any());
+        doReturn(mockAclMessageResponse).when(mockAclMessageRequest).createReply();
 
         String expectedName = "EXPECTED_NAME";
-        when(mockEmotionalAgent.getName()).thenReturn(expectedName);
+        doReturn(expectedName).when(mockEmotionalAgent).getName();
 
         Emotion mockEmotion = mock(Emotion.class);
         String expectedEmotion = "EXPECTED_EMOTION";
-        when(mockEmotion.getEmotionName()).thenReturn(expectedEmotion);
-        when(mockEmotionalAgent.getCurrentEmotion()).thenReturn(mockEmotion);
+        doReturn(expectedEmotion).when(mockEmotion).getEmotionName();
+        doReturn(mockEmotion).when(mockEmotionalAgent).getCurrentEmotion();
 
         Behaviour mockBehaviour = mock(Behaviour.class);
         String expectedBehaviour = "EXPECTED_BEHAVIOUR";
-        when(mockBehaviour.getBehaviourName()).thenReturn(expectedBehaviour);
-        when(mockEmotionalAgent.getEmotionalBehaviour()).thenReturn(mockBehaviour);
+        doReturn(expectedBehaviour).when(mockBehaviour).getBehaviourName();
+        doReturn(mockBehaviour).when(mockEmotionalAgent).getEmotionalBehaviour();
 
         EmotionalState emotionalState = new EmotionalState();
-        when(mockEmotionalAgent.getEmotionalState()).thenReturn(emotionalState);
+        doReturn(emotionalState).when(mockEmotionalAgent).getEmotionalState();
 
         expectedContent = new HashMap<>();
         expectedContent.put("agent", expectedName);
@@ -87,7 +87,7 @@ public class ReplayAgentInformationBehaviourTest {
 
     @Test
     public void shouldNotSendInfoOfBehaviourIfIsNull() throws Exception {
-        when(mockEmotionalAgent.getEmotionalBehaviour()).thenReturn(null);
+        doReturn(null).when(mockEmotionalAgent).getEmotionalBehaviour();
         expectedContent.put("behaviour", "NO BEHAVIOUR");
         spyReplayAgentInformationBehaviour.action();
         verify(mockAclMessageResponse).setContent(objectMapper.writeValueAsString(expectedContent));
@@ -95,8 +95,8 @@ public class ReplayAgentInformationBehaviourTest {
 
     @Test
     public void shouldNotSendInfoOfEmotionIfIsNull() throws Exception {
-        when(mockEmotionalAgent.getCurrentEmotion()).thenReturn(null);
-        when(mockEmotionalAgent.getEmotionalState()).thenReturn(null);
+        doReturn(null).when(mockEmotionalAgent).getCurrentEmotion();
+        doReturn(null).when(mockEmotionalAgent).getEmotionalState();
         expectedContent.put("emotion", "NO EMOTION");
         expectedContent.put("state", "NO STATE");
         spyReplayAgentInformationBehaviour.action();
@@ -105,7 +105,7 @@ public class ReplayAgentInformationBehaviourTest {
 
     @Test
     public void shouldBlockWhenMessageIsNull() {
-        when(mockEmotionalAgent.receive(any())).thenReturn(null);
+        doReturn(null).when(mockEmotionalAgent).receive(any());
         spyReplayAgentInformationBehaviour.action();
         verify(spyReplayAgentInformationBehaviour).block();
     }

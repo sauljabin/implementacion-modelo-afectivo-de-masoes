@@ -13,10 +13,10 @@ import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class BehaviourManagerTest {
@@ -32,9 +32,9 @@ public class BehaviourManagerTest {
         mockEmotionalAgent = mock(EmotionalAgent.class);
         mockBehaviour = mock(Behaviour.class);
         mockEmotion = mock(Emotion.class);
-        when(mockEmotionalAgent.getCurrentEmotion()).thenReturn(mockEmotion);
-        when(mockEmotion.getEmotionType()).thenReturn(EmotionType.NEGATIVE_LOW);
-        when(mockEmotionalAgent.getCognitiveBehaviour()).thenReturn(mockBehaviour);
+        doReturn(mockEmotion).when(mockEmotionalAgent).getCurrentEmotion();
+        doReturn(EmotionType.NEGATIVE_LOW).when(mockEmotion).getEmotionType();
+        doReturn(mockBehaviour).when(mockEmotionalAgent).getCognitiveBehaviour();
     }
 
     @Test
@@ -46,8 +46,8 @@ public class BehaviourManagerTest {
 
     @Test
     public void shouldUpdateCognitiveBehaviour() {
-        when(mockEmotion.getEmotionType()).thenReturn(EmotionType.NEGATIVE_LOW);
-        when(mockEmotionalAgent.getCognitiveBehaviour()).thenReturn(mockBehaviour);
+        doReturn(EmotionType.NEGATIVE_LOW).when(mockEmotion).getEmotionType();
+        doReturn(mockBehaviour).when(mockEmotionalAgent).getCognitiveBehaviour();
         behaviourManager.updateBehaviour(mockEmotionalAgent);
         verify(mockEmotionalAgent).getCognitiveBehaviour();
         assertThat(behaviourManager.getBehaviour(), is(mockBehaviour));
@@ -55,8 +55,8 @@ public class BehaviourManagerTest {
 
     @Test
     public void shouldUpdateImitativeBehaviour() {
-        when(mockEmotion.getEmotionType()).thenReturn(EmotionType.POSITIVE);
-        when(mockEmotionalAgent.getImitativeBehaviour()).thenReturn(mockBehaviour);
+        doReturn(EmotionType.POSITIVE).when(mockEmotion).getEmotionType();
+        doReturn(mockBehaviour).when(mockEmotionalAgent).getImitativeBehaviour();
         behaviourManager.updateBehaviour(mockEmotionalAgent);
         verify(mockEmotionalAgent).getImitativeBehaviour();
         assertThat(behaviourManager.getBehaviour(), is(mockBehaviour));
@@ -64,8 +64,8 @@ public class BehaviourManagerTest {
 
     @Test
     public void shouldUpdateReactiveBehaviour() {
-        when(mockEmotion.getEmotionType()).thenReturn(EmotionType.NEGATIVE_HIGH);
-        when(mockEmotionalAgent.getReactiveBehaviour()).thenReturn(mockBehaviour);
+        doReturn(EmotionType.NEGATIVE_HIGH).when(mockEmotion).getEmotionType();
+        doReturn(mockBehaviour).when(mockEmotionalAgent).getReactiveBehaviour();
         behaviourManager.updateBehaviour(mockEmotionalAgent);
         verify(mockEmotionalAgent).getReactiveBehaviour();
         assertThat(behaviourManager.getBehaviour(), is(mockBehaviour));
@@ -89,7 +89,7 @@ public class BehaviourManagerTest {
 
     @Test
     public void shouldNotInvokeAddBehaviour() {
-        when(mockEmotionalAgent.getCognitiveBehaviour()).thenReturn(null);
+        doReturn(null).when(mockEmotionalAgent).getCognitiveBehaviour();
         behaviourManager.updateBehaviour(mockEmotionalAgent);
         verify(mockEmotionalAgent, never()).addBehaviour(any());
     }

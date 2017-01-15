@@ -22,8 +22,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
 
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mock;
 
 @RunWith(PowerMockRunner.class)
@@ -44,7 +44,7 @@ public class JadeLoggerTest {
     public void shouldLogAgentException() {
         Agent mockAgent = mock(Agent.class);
         String expectedAgentName = "agent";
-        when(mockAgent.getLocalName()).thenReturn(expectedAgentName);
+        doReturn(expectedAgentName).when(mockAgent).getLocalName();
 
         Exception expectedException = new Exception("error");
         String expectedMessage = String.format("Exception in agent \"%s\": %s", expectedAgentName, expectedException.getMessage());
@@ -57,10 +57,10 @@ public class JadeLoggerTest {
     public void shouldLogAgentMessage() {
         String expectedAgentName = "agent";
         Agent mockAgent = mock(Agent.class);
-        when(mockAgent.getLocalName()).thenReturn(expectedAgentName);
+        doReturn(expectedAgentName).when(mockAgent).getLocalName();
 
         ACLMessage mockMessage = mock(ACLMessage.class);
-        when(mockMessage.toString()).thenReturn("message");
+        doReturn("message").when(mockMessage).toString();
 
         String expectedMessage = String.format("Message in agent \"%s\": %s", expectedAgentName, mockMessage);
 
@@ -72,19 +72,19 @@ public class JadeLoggerTest {
     public void shouldLogAgentEmotionalState() {
         String expectedAgentName = "agent";
         EmotionalAgent mockAgent = mock(EmotionalAgent.class);
-        when(mockAgent.getLocalName()).thenReturn(expectedAgentName);
+        doReturn(expectedAgentName).when(mockAgent).getLocalName();
 
         Emotion mockEmotion = mock(Emotion.class);
-        when(mockEmotion.toString()).thenReturn("emotion");
-        when(mockAgent.getCurrentEmotion()).thenReturn(mockEmotion);
+        doReturn("emotion").when(mockEmotion).toString();
+        doReturn(mockEmotion).when(mockAgent).getCurrentEmotion();
 
         EmotionalState emotionalState = new EmotionalState();
-        when(mockAgent.getEmotionalState()).thenReturn(emotionalState);
+        doReturn(emotionalState).when(mockAgent).getEmotionalState();
 
         Behaviour mockBehaviour = mock(Behaviour.class);
         String expectedBehaviourName = "behaviour";
-        when(mockBehaviour.getBehaviourName()).thenReturn(expectedBehaviourName);
-        when(mockAgent.getEmotionalBehaviour()).thenReturn(mockBehaviour);
+        doReturn(expectedBehaviourName).when(mockBehaviour).getBehaviourName();
+        doReturn(mockBehaviour).when(mockAgent).getEmotionalBehaviour();
 
         String expectedMessage = String.format("Emotional state in agent \"%s\": emotion=%s, state=%s, behaviour=%s", expectedAgentName, mockEmotion, emotionalState, expectedBehaviourName);
 
@@ -92,7 +92,7 @@ public class JadeLoggerTest {
         verify(mockLogger).info(eq(expectedMessage));
 
         expectedBehaviourName = "NO BEHAVIOUR";
-        when(mockAgent.getEmotionalBehaviour()).thenReturn(null);
+        doReturn(null).when(mockAgent).getEmotionalBehaviour();
         expectedMessage = String.format("Emotional state in agent \"%s\": emotion=%s, state=%s, behaviour=%s", expectedAgentName, mockEmotion, emotionalState, expectedBehaviourName);
 
         jadeLogger.agentEmotionalState(mockAgent);
@@ -103,22 +103,22 @@ public class JadeLoggerTest {
     public void shouldLogAgentEmotionalStateChanged() {
         String expectedAgentName = "agent";
         EmotionalAgent mockAgent = mock(EmotionalAgent.class);
-        when(mockAgent.getLocalName()).thenReturn(expectedAgentName);
+        doReturn(expectedAgentName).when(mockAgent).getLocalName();
 
         Stimulus mockStimulus = mock(Stimulus.class);
-        when(mockStimulus.toString()).thenReturn("stimulus");
+        doReturn("stimulus").when(mockStimulus).toString();
 
         Emotion mockEmotion = mock(Emotion.class);
-        when(mockEmotion.toString()).thenReturn("emotion");
-        when(mockAgent.getCurrentEmotion()).thenReturn(mockEmotion);
+        doReturn("emotion").when(mockEmotion).toString();
+        doReturn(mockEmotion).when(mockAgent).getCurrentEmotion();
 
         EmotionalState emotionalState = new EmotionalState();
-        when(mockAgent.getEmotionalState()).thenReturn(emotionalState);
+        doReturn(emotionalState).when(mockAgent).getEmotionalState();
 
         Behaviour mockBehaviour = mock(Behaviour.class);
         String expectedBehaviourName = "behaviour";
-        when(mockBehaviour.getBehaviourName()).thenReturn(expectedBehaviourName);
-        when(mockAgent.getEmotionalBehaviour()).thenReturn(mockBehaviour);
+        doReturn(expectedBehaviourName).when(mockBehaviour).getBehaviourName();
+        doReturn(mockBehaviour).when(mockAgent).getEmotionalBehaviour();
 
         String expectedMessage = String.format("Emotional state changed in agent \"%s\": stimulus=%s, emotion=%s, state=%s, behaviour=%s", expectedAgentName, mockStimulus, mockEmotion, emotionalState, expectedBehaviourName);
 
@@ -126,7 +126,7 @@ public class JadeLoggerTest {
         verify(mockLogger).info(eq(expectedMessage));
 
         expectedBehaviourName = "NO BEHAVIOUR";
-        when(mockAgent.getEmotionalBehaviour()).thenReturn(null);
+        doReturn(null).when(mockAgent).getEmotionalBehaviour();
         expectedMessage = String.format("Emotional state changed in agent \"%s\": stimulus=%s, emotion=%s, state=%s, behaviour=%s", expectedAgentName, mockStimulus, mockEmotion, emotionalState, expectedBehaviourName);
 
         jadeLogger.agentEmotionalStateChanged(mockAgent, mockStimulus);

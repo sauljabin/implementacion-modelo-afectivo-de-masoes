@@ -16,8 +16,8 @@ import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class EnvironmentFactoryTest {
@@ -37,20 +37,20 @@ public class EnvironmentFactoryTest {
 
     @Test
     public void shouldCreateDummyEnvironment() {
-        when(mockApplicationSettings.get(ApplicationSettings.MASOES_ENV)).thenReturn("dummy");
+        doReturn("dummy").when(mockApplicationSettings).get(ApplicationSettings.MASOES_ENV);
         assertThat(environmentFactory.createEnvironment(), instanceOf(DummyEnvironment.class));
     }
 
     @Test
     public void shouldCreateWikipediaEnvironment() {
-        when(mockApplicationSettings.get(ApplicationSettings.MASOES_ENV)).thenReturn("wikipedia");
+        doReturn("wikipedia").when(mockApplicationSettings).get(ApplicationSettings.MASOES_ENV);
         assertThat(environmentFactory.createEnvironment(), instanceOf(WikipediaEnvironment.class));
     }
 
     @Test
     public void shouldThrowInvalidParameterWhenNoExistValueException() {
         String stringArg = "anything";
-        when(mockApplicationSettings.get(ApplicationSettings.MASOES_ENV)).thenReturn(stringArg);
+        doReturn(stringArg).when(mockApplicationSettings).get(ApplicationSettings.MASOES_ENV);
         expectedException.expect(InvalidEnvironmentException.class);
         expectedException.expectMessage(String.format("Invalid environment name \"%s\"", stringArg));
         environmentFactory.createEnvironment();

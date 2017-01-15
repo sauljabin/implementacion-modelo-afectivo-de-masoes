@@ -20,10 +20,11 @@ import java.util.Properties;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class ApplicationOptionProcessorTest {
@@ -62,10 +63,10 @@ public class ApplicationOptionProcessorTest {
         applicationOptionList = new ArrayList<>();
         applicationOptionList.add(mockOption);
 
-        when(mockApplicationOptions.getApplicationOptionList()).thenReturn(applicationOptionList);
-        when(mockCommandLineParser.parse(any(), any())).thenReturn(mockCommandLine);
-        when(mockCommandLine.hasOption(expectedOpt)).thenReturn(Boolean.TRUE);
-        when(mockApplicationOptions.getDefaultApplicationOption()).thenReturn(mockDefaultOption);
+        doReturn(applicationOptionList).when(mockApplicationOptions).getApplicationOptionList();
+        doReturn(mockCommandLine).when(mockCommandLineParser).parse(any(), any());
+        doReturn(Boolean.TRUE).when(mockCommandLine).hasOption(expectedOpt);
+        doReturn(mockDefaultOption).when(mockApplicationOptions).getDefaultApplicationOption();
 
         expectedArgs = new String[]{"-" + expectedOpt};
     }
@@ -73,8 +74,7 @@ public class ApplicationOptionProcessorTest {
     @Test
     public void shouldParseArgs() throws Exception {
         Options expectedOptions = new Options();
-
-        when(mockApplicationOptions.toOptions()).thenReturn(expectedOptions);
+        doReturn(expectedOptions).when(mockApplicationOptions).toOptions();
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
@@ -84,8 +84,7 @@ public class ApplicationOptionProcessorTest {
     @Test
     public void shouldInvokeOptionAndSeValue() {
         String expectedOptionValue = "value";
-
-        when(mockCommandLine.getOptionValue(any())).thenReturn(expectedOptionValue);
+        doReturn(expectedOptionValue).when(mockCommandLine).getOptionValue(any());
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
@@ -97,8 +96,8 @@ public class ApplicationOptionProcessorTest {
     @Test
     public void shouldInvokeOptionAndSetProperties() {
         Properties mockProperties = mock(Properties.class);
-        when(mockOption.getArgType()).thenReturn(ArgumentType.UNLIMITED_ARGS);
-        when(mockCommandLine.getOptionProperties(any())).thenReturn(mockProperties);
+        doReturn(ArgumentType.UNLIMITED_ARGS).when(mockOption).getArgType();
+        doReturn(mockProperties).when(mockCommandLine).getOptionProperties(any());
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
@@ -112,7 +111,7 @@ public class ApplicationOptionProcessorTest {
         String expectedOpt2 = "test";
         ApplicationOption mockOption2 = getCreateMockApplicationOption(expectedOpt2, false, ArgumentType.NO_ARGS);
         applicationOptionList.add(mockOption2);
-        when(mockCommandLine.hasOption(expectedOpt2)).thenReturn(Boolean.TRUE);
+        doReturn(Boolean.TRUE).when(mockCommandLine).hasOption(expectedOpt2);
 
         expectedArgs = new String[]{"-" + expectedOpt, "-" + expectedOpt2};
 
@@ -127,15 +126,15 @@ public class ApplicationOptionProcessorTest {
     @Test
     public void shouldBreakWheOptionIsFinalOption() {
         applicationOptionList = new ArrayList<>();
-        when(mockApplicationOptions.getApplicationOptionList()).thenReturn(applicationOptionList);
+        doReturn(applicationOptionList).when(mockApplicationOptions).getApplicationOptionList();
 
         String expectedOpt1 = "a";
         ApplicationOption mockOption1 = getCreateMockApplicationOption(expectedOpt1, true, ArgumentType.NO_ARGS);
-        when(mockCommandLine.hasOption(expectedOpt1)).thenReturn(Boolean.TRUE);
+        doReturn(Boolean.TRUE).when(mockCommandLine).hasOption(expectedOpt1);
 
         String expectedOpt2 = "b";
         ApplicationOption mockOption2 = getCreateMockApplicationOption(expectedOpt2, false, ArgumentType.NO_ARGS);
-        when(mockCommandLine.hasOption(expectedOpt2)).thenReturn(Boolean.TRUE);
+        doReturn(Boolean.TRUE).when(mockCommandLine).hasOption(expectedOpt2);
 
         applicationOptionList.add(mockOption1);
         applicationOptionList.add(mockOption2);
@@ -150,7 +149,7 @@ public class ApplicationOptionProcessorTest {
 
     @Test
     public void shouldInvokeDefaultOption() {
-        when(mockCommandLine.hasOption(expectedOpt)).thenReturn(Boolean.FALSE);
+        doReturn(Boolean.FALSE).when(mockCommandLine).hasOption(expectedOpt);
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
@@ -160,7 +159,7 @@ public class ApplicationOptionProcessorTest {
 
     @Test
     public void shouldInvokeDefaultOptionIfOptionNotIsFinal() {
-        when(mockCommandLine.hasOption(expectedOpt)).thenReturn(Boolean.TRUE);
+        doReturn(Boolean.TRUE).when(mockCommandLine).hasOption(expectedOpt);
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
@@ -170,11 +169,11 @@ public class ApplicationOptionProcessorTest {
 
     private ApplicationOption getCreateMockApplicationOption(String option, boolean isFinalOption, ArgumentType argumentType) {
         ApplicationOption mock = mock(ApplicationOption.class);
-        when(mock.toOption()).thenCallRealMethod();
-        when(mock.getLongOpt()).thenReturn(option);
-        when(mock.getKeyOpt()).thenCallRealMethod();
-        when(mock.isFinalOption()).thenReturn(isFinalOption);
-        when(mock.getArgType()).thenReturn(argumentType);
+        doCallRealMethod().when(mock).toOption();
+        doCallRealMethod().when(mock).getKeyOpt();
+        doReturn(option).when(mock).getLongOpt();
+        doReturn(isFinalOption).when(mock).isFinalOption();
+        doReturn(argumentType).when(mock).getArgType();
         return mock;
     }
 

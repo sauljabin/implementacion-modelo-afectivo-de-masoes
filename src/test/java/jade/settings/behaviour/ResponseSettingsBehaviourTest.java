@@ -39,10 +39,10 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
@@ -68,7 +68,7 @@ public class ResponseSettingsBehaviourTest {
         spyContentManager = spy(new ContentManager());
         spyContentManager.registerLanguage(FipaLanguage.getInstance());
         spyContentManager.registerOntology(SettingsOntology.getInstance());
-        when(mockAgent.getContentManager()).thenReturn(spyContentManager);
+        doReturn(spyContentManager).when(mockAgent).getContentManager();
 
         request = new ACLMessage(ACLMessage.REQUEST);
         request.setLanguage(FipaLanguage.LANGUAGE_NAME);
@@ -98,7 +98,7 @@ public class ResponseSettingsBehaviourTest {
     public void shouldReturnASetting() throws Exception {
         String keyApp = "keyApp";
         String valueApp = "valueApp";
-        when(mockApplicationSettings.get(keyApp)).thenReturn(valueApp);
+        doReturn(valueApp).when(mockApplicationSettings).get(keyApp);
         testReturnASettings(keyApp, valueApp);
     }
 
@@ -106,15 +106,15 @@ public class ResponseSettingsBehaviourTest {
     public void shouldReturnAJadeSetting() throws Exception {
         String keyJade = "keyJade";
         String valueJade = "valueJade";
-        when(mockJadeSettings.get(keyJade)).thenReturn(valueJade);
+        doReturn(valueJade).when(mockJadeSettings).get(keyJade);
         testReturnASettings(keyJade, valueJade);
     }
 
     @Test
     public void shouldReturnNullSetting() throws Exception {
         String key = "no-key";
-        when(mockApplicationSettings.get(key)).thenReturn(null);
-        when(mockJadeSettings.get(key)).thenReturn(null);
+        doReturn(null).when(mockApplicationSettings).get(key);
+        doReturn(null).when(mockJadeSettings).get(key);
 
         GetSetting getSetting = new GetSetting(key);
         Action action = new Action(new AID(), getSetting);
@@ -133,12 +133,12 @@ public class ResponseSettingsBehaviourTest {
         Map<String, String> appSettingsMap = new HashMap<>();
         appSettingsMap.put("keyApp1", "valueApp1");
         appSettingsMap.put("keyApp2", "valueApp2");
-        when(mockApplicationSettings.toMap()).thenReturn(appSettingsMap);
+        doReturn(appSettingsMap).when(mockApplicationSettings).toMap();
 
         Map<String, String> jadeSettingsMap = new HashMap<>();
         jadeSettingsMap.put("keyJade1", "valueJade1");
         jadeSettingsMap.put("keyJade2", "valueJade2");
-        when(mockJadeSettings.toMap()).thenReturn(jadeSettingsMap);
+        doReturn(jadeSettingsMap).when(mockJadeSettings).toMap();
 
         SystemSettings expectedSetting = new SystemSettings();
         List appList = new ArrayList();
@@ -169,9 +169,9 @@ public class ResponseSettingsBehaviourTest {
         OntologyException ontologyException = new OntologyException(message);
 
         ContentManager mockContentManager = mock(ContentManager.class);
-        when(mockContentManager.extractContent(any())).thenThrow(ontologyException);
+        doThrow(ontologyException).when(mockContentManager).extractContent(any());
 
-        when(mockAgent.getContentManager()).thenReturn(mockContentManager);
+        doReturn(mockContentManager).when(mockAgent).getContentManager();
 
         ACLMessage response = settingsBehaviour.prepareResponse(request);
 
@@ -185,7 +185,7 @@ public class ResponseSettingsBehaviourTest {
         request.setContent("INVALID CONTENT");
         AgentAction mockAgentAction = mock(AgentAction.class);
         Action mockAction = mock(Action.class);
-        when(mockAction.getAction()).thenReturn(mockAgentAction);
+        doReturn(mockAgentAction).when(mockAction).getAction();
         doReturn(mockAction).when(spyContentManager).extractContent(request);
 
         ACLMessage response = settingsBehaviour.prepareResponse(request);

@@ -15,9 +15,9 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class JadeBootTest {
@@ -48,7 +48,7 @@ public class JadeBootTest {
         Map<String, String> map = new HashMap<>();
         map.put(expectedKey, expectedValue);
 
-        when(mockJadeSettings.toMap()).thenReturn(map);
+        doReturn(map).when(mockJadeSettings).toMap();
         jadeBoot.boot();
 
         verify(mockJadeProfile).setParameter(expectedKey, expectedValue);

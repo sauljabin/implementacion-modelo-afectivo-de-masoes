@@ -16,8 +16,8 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class VersionOptionTest {
@@ -53,11 +53,11 @@ public class VersionOptionTest {
         String jadeVersion = "jadeVersion";
         String jadeRevision = "jadeRevision";
 
-        when(mockApplicationSettings.get(ApplicationSettings.APP_NAME)).thenReturn(appName);
-        when(mockApplicationSettings.get(ApplicationSettings.APP_VERSION)).thenReturn(appVersion);
-        when(mockApplicationSettings.get(ApplicationSettings.APP_REVISION)).thenReturn(appRevision);
-        when(mockApplicationSettings.get(ApplicationSettings.JADE_VERSION)).thenReturn(jadeVersion);
-        when(mockApplicationSettings.get(ApplicationSettings.JADE_REVISION)).thenReturn(jadeRevision);
+        doReturn(appName).when(mockApplicationSettings).get(ApplicationSettings.APP_NAME);
+        doReturn(appVersion).when(mockApplicationSettings).get(ApplicationSettings.APP_VERSION);
+        doReturn(appRevision).when(mockApplicationSettings).get(ApplicationSettings.APP_REVISION);
+        doReturn(jadeVersion).when(mockApplicationSettings).get(ApplicationSettings.JADE_VERSION);
+        doReturn(jadeRevision).when(mockApplicationSettings).get(ApplicationSettings.JADE_REVISION);
 
         String expectedStringMasoes = String.format("%s\nVersion: %s\nRevision: %s", appName, appVersion, appRevision);
         String expectedStringJade = String.format("JADE\nVersion: %s\nRevision: %s\n", jadeVersion, jadeRevision);

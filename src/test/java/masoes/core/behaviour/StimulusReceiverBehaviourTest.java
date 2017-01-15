@@ -18,10 +18,10 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.spy;
-import static org.powermock.api.mockito.PowerMockito.when;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 @RunWith(PowerMockRunner.class)
@@ -45,12 +45,12 @@ public class StimulusReceiverBehaviourTest {
 
         spyStimulusReceiverBehaviour = spy(stimulusReceiverBehaviour);
 
-        when(mockEmotionalAgent.receive(any())).thenReturn(mockAclMessageRequest);
+        doReturn(mockAclMessageRequest).when(mockEmotionalAgent).receive(any());
     }
 
     @Test
     public void shouldBlockWhenMessageIsNull() {
-        when(mockEmotionalAgent.receive(any())).thenReturn(null);
+        doReturn(null).when(mockEmotionalAgent).receive(any());
         spyStimulusReceiverBehaviour.action();
         verify(spyStimulusReceiverBehaviour).block();
     }

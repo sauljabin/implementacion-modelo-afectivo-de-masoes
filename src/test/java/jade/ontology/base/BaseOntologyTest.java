@@ -43,7 +43,7 @@ public class BaseOntologyTest {
 
     @Test
     public void shouldInitializeElements() {
-        assertThat(Arrays.asList(baseOntology.getPredicateNames().toArray()), hasItems("FailedAction", "Done", "UnexpectedContent"));
+        assertThat(Arrays.asList(baseOntology.getPredicateNames().toArray()), hasItems("Done", "UnexpectedContent"));
     }
 
 }

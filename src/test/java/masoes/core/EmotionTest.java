@@ -19,8 +19,8 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public class EmotionTest {
@@ -45,7 +45,7 @@ public class EmotionTest {
     @Test
     public void shouldInvokeNameWhenToString() {
         String expectedName = "NAME";
-        when(spyEmotion.getEmotionName()).thenReturn(expectedName);
+        doReturn(expectedName).when(spyEmotion).getEmotionName();
         assertThat(spyEmotion.toString(), is(expectedName));
     }
 

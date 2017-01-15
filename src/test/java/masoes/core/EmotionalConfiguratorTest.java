@@ -13,10 +13,10 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class EmotionalConfiguratorTest {
 
@@ -33,7 +33,7 @@ public class EmotionalConfiguratorTest {
     public void shouldUpdateEmotionalState() {
         EmotionalState mockEmotionalState = mock(EmotionalState.class);
         Stimulus mockStimulus = mock(Stimulus.class);
-        when(spyEmotionalConfigurator.calculateEmotionalState(mockStimulus)).thenReturn(mockEmotionalState);
+        doReturn(mockEmotionalState).when(spyEmotionalConfigurator).calculateEmotionalState(mockStimulus);
         spyEmotionalConfigurator.updateEmotion(mockStimulus);
         verify(spyEmotionalConfigurator).calculateEmotionalState(mockStimulus);
         assertThat(spyEmotionalConfigurator.getEmotionalState(), is(mockEmotionalState));

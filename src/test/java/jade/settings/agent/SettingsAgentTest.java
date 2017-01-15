@@ -31,10 +31,10 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.spy;
@@ -77,7 +77,7 @@ public class SettingsAgentTest {
     @Test
     public void shouldAddOntologyAndLanguage() throws Exception {
         ContentManager mockContentManager = mock(ContentManager.class);
-        when(spySettingsAgent.getContentManager()).thenReturn(mockContentManager);
+        doReturn(mockContentManager).when(spySettingsAgent).getContentManager();
         spySettingsAgent.setup();
         verify(mockContentManager).registerLanguage(codecArgumentCaptor.capture());
         verify(mockContentManager).registerOntology(ontologyArgumentCaptor.capture());
@@ -87,7 +87,7 @@ public class SettingsAgentTest {
 
     @Test
     public void shouldRegisterAgent() throws Exception {
-        when(spySettingsAgent.getLocalName()).thenReturn("settings");
+        doReturn("settings").when(spySettingsAgent).getLocalName();
 
         mockStatic(DFService.class);
         spySettingsAgent.setup();

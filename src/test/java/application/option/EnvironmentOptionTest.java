@@ -26,9 +26,9 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class EnvironmentOptionTest {
@@ -51,7 +51,7 @@ public class EnvironmentOptionTest {
         setFieldValue(environmentOption, "jadeSettings", mockJadeSettings);
         setFieldValue(environmentOption, "environmentFactory", mockEnvironmentFactory);
 
-        when(mockEnvironmentFactory.createEnvironment()).thenReturn(mockEnvironment);
+        doReturn(mockEnvironment).when(mockEnvironmentFactory).createEnvironment();
     }
 
     @Test
@@ -68,7 +68,7 @@ public class EnvironmentOptionTest {
     public void shouldInvokeEnvironmentCreation() {
         List<EnvironmentAgentInfo> expectedJadeAgentOptionList = new ArrayList<>();
         expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent", Agent.class, Arrays.asList("arg1", "arg2")));
-        when(mockEnvironment.getEnvironmentAgentInfoList()).thenReturn(expectedJadeAgentOptionList);
+        doReturn(expectedJadeAgentOptionList).when(mockEnvironment).getEnvironmentAgentInfoList();
 
         environmentOption.exec();
 
@@ -79,7 +79,7 @@ public class EnvironmentOptionTest {
 
     @Test
     public void shouldSetOnlySettingsAgent() {
-        when(mockEnvironment.getEnvironmentAgentInfoList()).thenReturn(null);
+        doReturn(null).when(mockEnvironment).getEnvironmentAgentInfoList();
 
         environmentOption.exec();
 
@@ -93,7 +93,7 @@ public class EnvironmentOptionTest {
         List<EnvironmentAgentInfo> expectedJadeAgentOptionList = new ArrayList<>();
         expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent", Agent.class, Arrays.asList("arg1", "arg2")));
         expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent2", Agent.class));
-        when(mockEnvironment.getEnvironmentAgentInfoList()).thenReturn(expectedJadeAgentOptionList);
+        doReturn(expectedJadeAgentOptionList).when(mockEnvironment).getEnvironmentAgentInfoList();
 
         environmentOption.exec();
 

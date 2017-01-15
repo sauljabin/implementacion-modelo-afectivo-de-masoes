@@ -18,8 +18,9 @@ import java.util.Map;
 
 import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
@@ -41,13 +42,13 @@ public class ApplicationLoggerTest {
 
         expectedApplicationSettingsMap = new HashMap<>();
         expectedApplicationSettingsMap.put("key", "value");
-        when(mockApplicationSettings.toMap()).thenReturn(expectedApplicationSettingsMap);
-        when(mockApplicationSettings.toString()).thenCallRealMethod();
+        doReturn(expectedApplicationSettingsMap).when(mockApplicationSettings).toMap();
+        doCallRealMethod().when(mockApplicationSettings).toString();
 
         expectedJadeSettingsMap = new HashMap<>();
         expectedJadeSettingsMap.put("key", "value");
-        when(mockJadeSettings.toMap()).thenReturn(expectedJadeSettingsMap);
-        when(mockJadeSettings.toString()).thenCallRealMethod();
+        doReturn(expectedJadeSettingsMap).when(mockJadeSettings).toMap();
+        doCallRealMethod().when(mockJadeSettings).toString();
 
         setFieldValue(applicationLogger, "jadeSettings", mockJadeSettings);
         setFieldValue(applicationLogger, "applicationSettings", mockApplicationSettings);
@@ -77,7 +78,7 @@ public class ApplicationLoggerTest {
     public void shouldLogStartingOption() {
         ApplicationOption applicationOption = mock(ApplicationOption.class);
         String expectedToString = "expectedToString";
-        when(applicationOption.toString()).thenReturn(expectedToString);
+        doReturn(expectedToString).when(applicationOption).toString();
 
         applicationLogger.startingOption(applicationOption);
         verify(mockLogger).info(eq("Starting option: " + expectedToString));
