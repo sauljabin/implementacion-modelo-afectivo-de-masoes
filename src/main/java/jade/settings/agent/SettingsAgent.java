@@ -6,13 +6,13 @@
 
 package jade.settings.agent;
 
+import jade.content.lang.sl.SLCodec;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
-import jade.language.FipaLanguage;
 import jade.logger.JadeLogger;
 import jade.settings.behaviour.ResponseSettingsBehaviour;
 import jade.settings.ontology.SettingsOntology;
@@ -28,8 +28,8 @@ public class SettingsAgent extends Agent {
 
     @Override
     protected void setup() {
-        getContentManager().registerOntology(SettingsOntology.getInstance());
-        getContentManager().registerLanguage(FipaLanguage.getInstance());
+        getContentManager().registerOntology(new SettingsOntology());
+        getContentManager().registerLanguage(new SLCodec());
 
         try {
             ServiceDescription getSetting = createService("GetSetting");
@@ -53,7 +53,7 @@ public class SettingsAgent extends Agent {
         serviceDescription.setName(serviceName);
         serviceDescription.setType(getLocalName() + "-" + serviceName);
         serviceDescription.addProtocols(FIPANames.InteractionProtocol.FIPA_REQUEST);
-        serviceDescription.addLanguages(FipaLanguage.LANGUAGE_NAME);
+        serviceDescription.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
         serviceDescription.addOntologies(SettingsOntology.ONTOLOGY_NAME);
         return serviceDescription;
     }

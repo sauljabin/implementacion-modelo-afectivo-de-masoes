@@ -9,6 +9,7 @@ package jade.settings.behaviour;
 import application.settings.ApplicationSettings;
 import jade.content.AgentAction;
 import jade.content.ContentManager;
+import jade.content.lang.sl.SLCodec;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
@@ -16,7 +17,6 @@ import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.language.FipaLanguage;
 import jade.logger.JadeLogger;
 import jade.ontology.base.UnexpectedContent;
 import jade.settings.JadeSettings;
@@ -66,12 +66,13 @@ public class ResponseSettingsBehaviourTest {
         settingsBehaviour.setAgent(mockAgent);
 
         spyContentManager = spy(new ContentManager());
-        spyContentManager.registerLanguage(FipaLanguage.getInstance());
-        spyContentManager.registerOntology(SettingsOntology.getInstance());
+        spyContentManager.registerLanguage(new SLCodec());
+        spyContentManager.registerOntology(new SettingsOntology());
         doReturn(spyContentManager).when(mockAgent).getContentManager();
 
         request = new ACLMessage(ACLMessage.REQUEST);
-        request.setLanguage(FipaLanguage.LANGUAGE_NAME);
+        request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
+        request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
         request.setOntology(SettingsOntology.ONTOLOGY_NAME);
 
         mockLogger = mock(JadeLogger.class);
@@ -86,7 +87,7 @@ public class ResponseSettingsBehaviourTest {
     public void shouldSetCorrectMessageTemplate() {
         MessageTemplate expectedTemplate = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
         expectedTemplate = MessageTemplate.and(expectedTemplate, MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST));
-        expectedTemplate = MessageTemplate.and(expectedTemplate, MessageTemplate.MatchLanguage(FipaLanguage.LANGUAGE_NAME));
+        expectedTemplate = MessageTemplate.and(expectedTemplate, MessageTemplate.MatchLanguage(FIPANames.ContentLanguage.FIPA_SL));
         expectedTemplate = MessageTemplate.and(expectedTemplate, MessageTemplate.MatchOntology(SettingsOntology.ONTOLOGY_NAME));
         ResponseSettingsBehaviour spySettingsBehaviour = spy(new ResponseSettingsBehaviour());
         spySettingsBehaviour.onStart();
@@ -123,7 +124,7 @@ public class ResponseSettingsBehaviourTest {
         UnexpectedContent expectedContent = new UnexpectedContent("Setting not found", getSetting.getKey());
         UnexpectedContent content = (UnexpectedContent) spyContentManager.extractContent(response);
         assertThat(response.getPerformative(), is(ACLMessage.NOT_UNDERSTOOD));
-        assertThat(response.getLanguage(), is(FipaLanguage.LANGUAGE_NAME));
+        assertThat(response.getLanguage(), is(FIPANames.ContentLanguage.FIPA_SL));
         assertThat(response.getOntology(), is(SettingsOntology.ONTOLOGY_NAME));
         assertReflectionEquals(expectedContent, content);
     }
@@ -158,7 +159,7 @@ public class ResponseSettingsBehaviourTest {
         SystemSettings systemSettings = (SystemSettings) spyContentManager.extractContent(response);
 
         assertThat(response.getPerformative(), is(ACLMessage.INFORM));
-        assertThat(response.getLanguage(), is(FipaLanguage.LANGUAGE_NAME));
+        assertThat(response.getLanguage(), is(FIPANames.ContentLanguage.FIPA_SL));
         assertThat(response.getOntology(), is(SettingsOntology.ONTOLOGY_NAME));
         assertReflectionEquals(expectedSetting.getSettings().toArray(), systemSettings.getSettings().toArray());
     }
@@ -189,12 +190,11 @@ public class ResponseSettingsBehaviourTest {
         doReturn(mockAction).when(spyContentManager).extractContent(request);
 
         ACLMessage response = settingsBehaviour.prepareResponse(request);
-        System.out.println(response);
         UnexpectedContent expectedContent = new UnexpectedContent("Invalid agent action", request.getContent());
         UnexpectedContent content = (UnexpectedContent) spyContentManager.extractContent(response);
 
         assertThat(response.getPerformative(), is(ACLMessage.NOT_UNDERSTOOD));
-        assertThat(response.getLanguage(), is(FipaLanguage.LANGUAGE_NAME));
+        assertThat(response.getLanguage(), is(FIPANames.ContentLanguage.FIPA_SL));
         assertThat(response.getOntology(), is(SettingsOntology.ONTOLOGY_NAME));
         assertReflectionEquals(expectedContent, content);
     }
@@ -207,7 +207,7 @@ public class ResponseSettingsBehaviourTest {
         SystemSettings systemSettings = (SystemSettings) spyContentManager.extractContent(response);
         Setting expectedSetting = new Setting(key, expectedValue);
         assertThat(response.getPerformative(), is(ACLMessage.INFORM));
-        assertThat(response.getLanguage(), is(FipaLanguage.LANGUAGE_NAME));
+        assertThat(response.getLanguage(), is(FIPANames.ContentLanguage.FIPA_SL));
         assertThat(response.getOntology(), is(SettingsOntology.ONTOLOGY_NAME));
         assertReflectionEquals(expectedSetting, systemSettings.getSettings().get(0));
     }

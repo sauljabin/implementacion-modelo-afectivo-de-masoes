@@ -8,6 +8,7 @@ package functional.test.jade.settings;
 
 import application.settings.ApplicationSettings;
 import functional.test.core.FunctionalTest;
+import jade.content.lang.sl.SLCodec;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
@@ -15,7 +16,6 @@ import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import jade.language.FipaLanguage;
 import jade.settings.JadeSettings;
 import jade.settings.agent.SettingsAgent;
 import jade.settings.ontology.GetAllSettings;
@@ -41,11 +41,11 @@ public class ShouldReceiveAllSettingsTest extends FunctionalTest {
                     ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
                     testMessage.addReceiver(settingsAgentAID);
                     testMessage.setOntology(SettingsOntology.ONTOLOGY_NAME);
-                    testMessage.setLanguage(FipaLanguage.LANGUAGE_NAME);
+                    testMessage.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
                     testMessage.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
 
-                    myAgent.getContentManager().registerLanguage(FipaLanguage.getInstance());
-                    myAgent.getContentManager().registerOntology(SettingsOntology.getInstance());
+                    myAgent.getContentManager().registerLanguage(new SLCodec());
+                    myAgent.getContentManager().registerOntology(new SettingsOntology());
 
                     myAgent.getContentManager().fillContent(testMessage, new Action(myAgent.getAID(), new GetAllSettings()));
 

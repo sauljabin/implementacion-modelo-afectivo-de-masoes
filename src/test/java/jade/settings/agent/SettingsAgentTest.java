@@ -7,6 +7,8 @@
 package jade.settings.agent;
 
 import jade.content.ContentManager;
+import jade.content.lang.Codec;
+import jade.content.lang.sl.SLCodec;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.domain.DFService;
@@ -14,7 +16,6 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
-import jade.language.FipaLanguage;
 import jade.logger.JadeLogger;
 import jade.settings.behaviour.ResponseSettingsBehaviour;
 import jade.settings.ontology.SettingsOntology;
@@ -51,14 +52,14 @@ public class SettingsAgentTest {
     private ArgumentCaptor<DFAgentDescription> agentDescriptionArgumentCaptor;
     private ArgumentCaptor<Behaviour> behaviourArgumentCaptor;
     private ArgumentCaptor<SettingsOntology> ontologyArgumentCaptor;
-    private ArgumentCaptor<FipaLanguage> codecArgumentCaptor;
+    private ArgumentCaptor<Codec> codecArgumentCaptor;
 
     @Before
     public void setUp() throws Exception {
         agentDescriptionArgumentCaptor = ArgumentCaptor.forClass(DFAgentDescription.class);
         behaviourArgumentCaptor = ArgumentCaptor.forClass(Behaviour.class);
         ontologyArgumentCaptor = ArgumentCaptor.forClass(SettingsOntology.class);
-        codecArgumentCaptor = ArgumentCaptor.forClass(FipaLanguage.class);
+        codecArgumentCaptor = ArgumentCaptor.forClass(Codec.class);
         mockLogger = mock(JadeLogger.class);
 
         SettingsAgent settingsAgent = new SettingsAgent();
@@ -81,7 +82,7 @@ public class SettingsAgentTest {
         spySettingsAgent.setup();
         verify(mockContentManager).registerLanguage(codecArgumentCaptor.capture());
         verify(mockContentManager).registerOntology(ontologyArgumentCaptor.capture());
-        assertThat(codecArgumentCaptor.getValue(), is(instanceOf(FipaLanguage.class)));
+        assertThat(codecArgumentCaptor.getValue(), is(instanceOf(SLCodec.class)));
         assertThat(ontologyArgumentCaptor.getValue(), is(instanceOf(SettingsOntology.class)));
     }
 
@@ -107,7 +108,7 @@ public class SettingsAgentTest {
         assertThat(actualService.getName(), is(name));
         assertThat(actualService.getType(), is("settings-" + name));
         assertThat(actualService.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
-        assertThat(actualService.getAllLanguages().next(), is(FipaLanguage.LANGUAGE_NAME));
+        assertThat(actualService.getAllLanguages().next(), is(FIPANames.ContentLanguage.FIPA_SL));
         assertThat(actualService.getAllOntologies().next(), is(SettingsOntology.ONTOLOGY_NAME));
     }
 

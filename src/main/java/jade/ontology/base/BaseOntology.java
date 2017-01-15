@@ -10,26 +10,12 @@ import jade.content.onto.BasicOntology;
 import jade.content.onto.BeanOntology;
 import jade.ontology.SetupOntologyException;
 
-import java.util.Optional;
-
 public class BaseOntology extends BeanOntology {
 
     public static final String ONTOLOGY_NAME = "base";
-    private static BaseOntology INSTANCE;
 
-    private BaseOntology() {
+    public BaseOntology() {
         super(ONTOLOGY_NAME, BasicOntology.getInstance());
-        initialize();
-    }
-
-    public synchronized static BaseOntology getInstance() {
-        if (!Optional.ofNullable(INSTANCE).isPresent()) {
-            INSTANCE = new BaseOntology();
-        }
-        return INSTANCE;
-    }
-
-    private void initialize() {
         try {
             add(BaseOntology.class.getPackage().getName());
         } catch (Exception e) {

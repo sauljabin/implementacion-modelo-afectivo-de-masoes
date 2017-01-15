@@ -6,7 +6,6 @@
 
 package masoes.core.ontology;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +14,6 @@ import java.util.Arrays;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class MasoesOntologyTest {
 
@@ -23,12 +21,7 @@ public class MasoesOntologyTest {
 
     @Before
     public void setUp() {
-        masoesOntology = MasoesOntology.getInstance();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        setFieldValue(masoesOntology, "INSTANCE", null);
+        masoesOntology = new MasoesOntology();
     }
 
     @Test

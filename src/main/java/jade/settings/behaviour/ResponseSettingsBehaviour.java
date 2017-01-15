@@ -13,7 +13,6 @@ import jade.content.onto.basic.Action;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.language.FipaLanguage;
 import jade.logger.JadeLogger;
 import jade.ontology.base.UnexpectedContent;
 import jade.protocol.ProtocolRequestResponderBehaviour;
@@ -45,7 +44,7 @@ public class ResponseSettingsBehaviour extends ProtocolRequestResponderBehaviour
     public void onStart() {
         template = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
         template = MessageTemplate.and(template, MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST));
-        template = MessageTemplate.and(template, MessageTemplate.MatchLanguage(FipaLanguage.LANGUAGE_NAME));
+        template = MessageTemplate.and(template, MessageTemplate.MatchLanguage(FIPANames.ContentLanguage.FIPA_SL));
         template = MessageTemplate.and(template, MessageTemplate.MatchOntology(SettingsOntology.ONTOLOGY_NAME));
         setMessageTemplate(template);
     }

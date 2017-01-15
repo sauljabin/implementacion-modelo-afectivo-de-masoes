@@ -6,7 +6,6 @@
 
 package jade.ontology.base;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +14,6 @@ import java.util.Arrays;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class BaseOntologyTest {
 
@@ -23,17 +21,7 @@ public class BaseOntologyTest {
 
     @Before
     public void setUp() {
-        baseOntology = BaseOntology.getInstance();
-    }
-
-    @Test
-    public void shouldGetSameInstance() {
-        assertThat(BaseOntology.getInstance(), is(baseOntology));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        setFieldValue(baseOntology, "INSTANCE", null);
+        baseOntology = new BaseOntology();
     }
 
     @Test
