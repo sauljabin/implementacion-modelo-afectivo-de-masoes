@@ -7,6 +7,7 @@
 package jade.settings.behaviour;
 
 import application.settings.ApplicationSettings;
+import jade.content.AgentAction;
 import jade.content.ContentManager;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
@@ -17,6 +18,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.language.FipaLanguage;
 import jade.logger.JadeLogger;
+import jade.ontology.base.UnexpectedContent;
 import jade.settings.JadeSettings;
 import jade.settings.ontology.GetAllSettings;
 import jade.settings.ontology.GetSetting;
@@ -36,6 +38,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -48,7 +51,7 @@ public class ResponseSettingsBehaviourTest {
     private Agent mockAgent;
     private ResponseSettingsBehaviour settingsBehaviour;
     private ArgumentCaptor<MessageTemplate> messageTemplateArgumentCaptor;
-    private ContentManager contentManager;
+    private ContentManager spyContentManager;
     private ACLMessage request;
     private JadeLogger mockLogger;
     private ApplicationSettings mockApplicationSettings;
@@ -62,10 +65,10 @@ public class ResponseSettingsBehaviourTest {
         mockAgent = mock(Agent.class);
         settingsBehaviour.setAgent(mockAgent);
 
-        contentManager = new ContentManager();
-        contentManager.registerLanguage(FipaLanguage.getInstance());
-        contentManager.registerOntology(SettingsOntology.getInstance());
-        when(mockAgent.getContentManager()).thenReturn(contentManager);
+        spyContentManager = spy(new ContentManager());
+        spyContentManager.registerLanguage(FipaLanguage.getInstance());
+        spyContentManager.registerOntology(SettingsOntology.getInstance());
+        when(mockAgent.getContentManager()).thenReturn(spyContentManager);
 
         request = new ACLMessage(ACLMessage.REQUEST);
         request.setLanguage(FipaLanguage.LANGUAGE_NAME);
@@ -110,23 +113,19 @@ public class ResponseSettingsBehaviourTest {
     @Test
     public void shouldReturnNullSetting() throws Exception {
         String key = "no-key";
-        String value = null;
-        when(mockApplicationSettings.get(key)).thenReturn(value);
-        when(mockJadeSettings.get(key)).thenReturn(value);
-        testReturnASettings(key, value);
-    }
+        when(mockApplicationSettings.get(key)).thenReturn(null);
+        when(mockJadeSettings.get(key)).thenReturn(null);
 
-    private void testReturnASettings(String key, String expectedValue) throws Exception {
         GetSetting getSetting = new GetSetting(key);
         Action action = new Action(new AID(), getSetting);
-        contentManager.fillContent(request, action);
+        spyContentManager.fillContent(request, action);
         ACLMessage response = settingsBehaviour.prepareResponse(request);
-        SystemSettings systemSettings = (SystemSettings) contentManager.extractContent(response);
-        Setting expectedSetting = new Setting(key, expectedValue);
-        assertThat(response.getPerformative(), is(ACLMessage.INFORM));
+        UnexpectedContent expectedContent = new UnexpectedContent("Setting not found", getSetting.getKey());
+        UnexpectedContent content = (UnexpectedContent) spyContentManager.extractContent(response);
+        assertThat(response.getPerformative(), is(ACLMessage.NOT_UNDERSTOOD));
         assertThat(response.getLanguage(), is(FipaLanguage.LANGUAGE_NAME));
         assertThat(response.getOntology(), is(SettingsOntology.ONTOLOGY_NAME));
-        assertReflectionEquals(expectedSetting, systemSettings.getSettings().get(0));
+        assertReflectionEquals(expectedContent, content);
     }
 
     @Test
@@ -154,9 +153,9 @@ public class ResponseSettingsBehaviourTest {
         );
 
         Action action = new Action(new AID(), new GetAllSettings());
-        contentManager.fillContent(request, action);
+        spyContentManager.fillContent(request, action);
         ACLMessage response = settingsBehaviour.prepareResponse(request);
-        SystemSettings systemSettings = (SystemSettings) contentManager.extractContent(response);
+        SystemSettings systemSettings = (SystemSettings) spyContentManager.extractContent(response);
 
         assertThat(response.getPerformative(), is(ACLMessage.INFORM));
         assertThat(response.getLanguage(), is(FipaLanguage.LANGUAGE_NAME));
@@ -179,6 +178,38 @@ public class ResponseSettingsBehaviourTest {
         assertThat(response.getPerformative(), is(ACLMessage.FAILURE));
         assertThat(response.getContent(), is(message));
         verify(mockLogger).agentException(eq(mockAgent), eq(ontologyException));
+    }
+
+    @Test
+    public void shouldReturnInvalidAgentAction() throws Exception {
+        request.setContent("INVALID CONTENT");
+        AgentAction mockAgentAction = mock(AgentAction.class);
+        Action mockAction = mock(Action.class);
+        when(mockAction.getAction()).thenReturn(mockAgentAction);
+        doReturn(mockAction).when(spyContentManager).extractContent(request);
+
+        ACLMessage response = settingsBehaviour.prepareResponse(request);
+        System.out.println(response);
+        UnexpectedContent expectedContent = new UnexpectedContent("Invalid agent action", request.getContent());
+        UnexpectedContent content = (UnexpectedContent) spyContentManager.extractContent(response);
+
+        assertThat(response.getPerformative(), is(ACLMessage.NOT_UNDERSTOOD));
+        assertThat(response.getLanguage(), is(FipaLanguage.LANGUAGE_NAME));
+        assertThat(response.getOntology(), is(SettingsOntology.ONTOLOGY_NAME));
+        assertReflectionEquals(expectedContent, content);
+    }
+
+    private void testReturnASettings(String key, String expectedValue) throws Exception {
+        GetSetting getSetting = new GetSetting(key);
+        Action action = new Action(new AID(), getSetting);
+        spyContentManager.fillContent(request, action);
+        ACLMessage response = settingsBehaviour.prepareResponse(request);
+        SystemSettings systemSettings = (SystemSettings) spyContentManager.extractContent(response);
+        Setting expectedSetting = new Setting(key, expectedValue);
+        assertThat(response.getPerformative(), is(ACLMessage.INFORM));
+        assertThat(response.getLanguage(), is(FipaLanguage.LANGUAGE_NAME));
+        assertThat(response.getOntology(), is(SettingsOntology.ONTOLOGY_NAME));
+        assertReflectionEquals(expectedSetting, systemSettings.getSettings().get(0));
     }
 
 }

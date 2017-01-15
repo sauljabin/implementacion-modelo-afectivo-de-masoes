@@ -6,11 +6,13 @@
 
 package jade.language;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class FipaLanguageTest {
 
@@ -19,6 +21,11 @@ public class FipaLanguageTest {
     @Before
     public void setUp() {
         fipaLanguage = FipaLanguage.getInstance();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        setFieldValue(fipaLanguage, "INSTANCE", null);
     }
 
     @Test
