@@ -16,7 +16,7 @@ public class Setting implements Concept {
     public Setting() {
     }
 
-    public Setting(String value, String key) {
+    public Setting(String key, String value) {
         this.value = value;
         this.key = key;
     }
