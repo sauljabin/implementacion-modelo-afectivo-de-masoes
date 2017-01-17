@@ -6,14 +6,14 @@
 
 package masoes.core;
 
-import masoes.core.emotion.Admiration;
-import masoes.core.emotion.Anger;
-import masoes.core.emotion.Compassion;
-import masoes.core.emotion.Depression;
-import masoes.core.emotion.Happiness;
-import masoes.core.emotion.Joy;
-import masoes.core.emotion.Rejection;
-import masoes.core.emotion.Sadness;
+import masoes.core.emotion.AdmirationEmotion;
+import masoes.core.emotion.AngerEmotion;
+import masoes.core.emotion.CompassionEmotion;
+import masoes.core.emotion.DepressionEmotion;
+import masoes.core.emotion.HappinessEmotion;
+import masoes.core.emotion.JoyEmotion;
+import masoes.core.emotion.RejectionEmotion;
+import masoes.core.emotion.SadnessEmotion;
 import org.junit.Before;
 import org.junit.Test;
 import util.math.RandomGenerator;
@@ -39,55 +39,55 @@ public class EmotionalSpaceTest {
     @Test
     public void shouldReturnDefaultHappinessEmotion() {
         EmotionalState randomPoint = getRandomPointForBasicEmotion(2, 10, 2, 10);
-        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(Happiness.class)));
+        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(HappinessEmotion.class)));
     }
 
     @Test
     public void shouldReturnJoyEmotion() {
         EmotionalState randomPoint = getRandomPointForBasicEmotion(0, 0.5, 0, 0.5);
-        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(Joy.class)));
+        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(JoyEmotion.class)));
     }
 
     @Test
     public void shouldReturnAdmirationEmotion() {
         EmotionalState randomPoint = getRandomPointForBasicEmotion(-0.5, 0, 0, 0.5);
-        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(Admiration.class)));
+        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(AdmirationEmotion.class)));
     }
 
     @Test
     public void shouldReturnSadnessEmotion() {
         EmotionalState randomPoint = getRandomPointForBasicEmotion(-0.5, 0, -0.5, 0);
-        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(Sadness.class)));
+        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(SadnessEmotion.class)));
     }
 
     @Test
     public void shouldReturnRejectionEmotion() {
         EmotionalState randomPoint = getRandomPointForBasicEmotion(0, 0.5, -0.5, 0);
-        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(Rejection.class)));
+        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(RejectionEmotion.class)));
     }
 
     @Test
     public void shouldReturnHappinessEmotion() {
         EmotionalState randomPoint = getRandomPointForExternalEmotion(POSITIVE_SIGN, POSITIVE_SIGN);
-        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(Happiness.class)));
+        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(HappinessEmotion.class)));
     }
 
     @Test
     public void shouldReturnCompassionEmotion() {
         EmotionalState randomPoint = getRandomPointForExternalEmotion(NEGATIVE_SIGN, POSITIVE_SIGN);
-        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(Compassion.class)));
+        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(CompassionEmotion.class)));
     }
 
     @Test
     public void shouldReturnDepressionEmotion() {
         EmotionalState randomPoint = getRandomPointForExternalEmotion(NEGATIVE_SIGN, NEGATIVE_SIGN);
-        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(Depression.class)));
+        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(DepressionEmotion.class)));
     }
 
     @Test
     public void shouldReturnDissatisfactionEmotion() {
         EmotionalState randomPoint = getRandomPointForExternalEmotion(POSITIVE_SIGN, NEGATIVE_SIGN);
-        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(Anger.class)));
+        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(AngerEmotion.class)));
     }
 
     private EmotionalState getRandomPointForExternalEmotion(double xSign, double ySign) {

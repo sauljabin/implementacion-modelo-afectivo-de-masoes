@@ -6,14 +6,14 @@
 
 package masoes.core;
 
-import masoes.core.emotion.Admiration;
-import masoes.core.emotion.Anger;
-import masoes.core.emotion.Compassion;
-import masoes.core.emotion.Depression;
-import masoes.core.emotion.Happiness;
-import masoes.core.emotion.Joy;
-import masoes.core.emotion.Rejection;
-import masoes.core.emotion.Sadness;
+import masoes.core.emotion.AdmirationEmotion;
+import masoes.core.emotion.AngerEmotion;
+import masoes.core.emotion.CompassionEmotion;
+import masoes.core.emotion.DepressionEmotion;
+import masoes.core.emotion.HappinessEmotion;
+import masoes.core.emotion.JoyEmotion;
+import masoes.core.emotion.RejectionEmotion;
+import masoes.core.emotion.SadnessEmotion;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,14 +24,14 @@ public class EmotionalSpace {
 
     public EmotionalSpace() {
         emotions = Arrays.asList(
-                new Happiness(),
-                new Joy(),
-                new Compassion(),
-                new Admiration(),
-                new Depression(),
-                new Sadness(),
-                new Anger(),
-                new Rejection());
+                new HappinessEmotion(),
+                new JoyEmotion(),
+                new CompassionEmotion(),
+                new AdmirationEmotion(),
+                new DepressionEmotion(),
+                new SadnessEmotion(),
+                new AngerEmotion(),
+                new RejectionEmotion());
     }
 
     public Emotion searchEmotion(EmotionalState emotionalState) {
@@ -39,7 +39,7 @@ public class EmotionalSpace {
                 .stream()
                 .filter(emotion -> emotion.getGeometry().intersects(emotionalState.toPoint()))
                 .findFirst()
-                .orElse(new Happiness());
+                .orElse(new HappinessEmotion());
     }
 
 }

@@ -22,16 +22,16 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
-public class RejectionTest {
+public class RejectionEmotionTest {
 
-    private Rejection rejection;
+    private RejectionEmotion rejectionEmotion;
     private Coordinate[] coordinates;
     private GeometryFactory geometryFactory;
 
     @Before
     public void setUp() {
         geometryFactory = new GeometryFactory();
-        rejection = new Rejection();
+        rejectionEmotion = new RejectionEmotion();
         coordinates = new Coordinate[]{
                 new Coordinate(0, 0),
                 new Coordinate(0, -0.5),
@@ -44,28 +44,28 @@ public class RejectionTest {
     @Test
     public void shouldIntersectsWithBoundaryPoints() {
         Arrays.stream(coordinates)
-                .forEach(coordinate -> assertTrue(rejection.getGeometry().intersects(geometryFactory.createPoint(coordinate))));
+                .forEach(coordinate -> assertTrue(rejectionEmotion.getGeometry().intersects(geometryFactory.createPoint(coordinate))));
     }
 
     @Test
     public void shouldNotContainsPoint() {
-        assertFalse(rejection.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.7, 0.7))));
-        assertFalse(rejection.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.51, 0.51))));
+        assertFalse(rejectionEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.7, 0.7))));
+        assertFalse(rejectionEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.51, 0.51))));
     }
 
     @Test
     public void shouldContainsInsidePoint() {
-        assertTrue(rejection.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.1, -0.1))));
-        assertTrue(rejection.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.4, -0.4))));
+        assertTrue(rejectionEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.1, -0.1))));
+        assertTrue(rejectionEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.4, -0.4))));
     }
 
     @Test
     public void shouldReturnCorrectConfiguration() {
         Polygon expectedPolygon = geometryFactory.createPolygon(coordinates);
-        assertReflectionEquals(expectedPolygon.getCoordinates(), rejection.getGeometry().getCoordinates());
-        assertThat(rejection.getEmotionName(), is("Rejection"));
-        assertThat(rejection.getEmotionLevel(), is(EmotionLevel.COLLECTIVE));
-        assertThat(rejection.getEmotionType(), is(EmotionType.NEGATIVE_LOW));
+        assertReflectionEquals(expectedPolygon.getCoordinates(), rejectionEmotion.getGeometry().getCoordinates());
+        assertThat(rejectionEmotion.getEmotionName(), is("RejectionEmotion"));
+        assertThat(rejectionEmotion.getEmotionLevel(), is(EmotionLevel.COLLECTIVE));
+        assertThat(rejectionEmotion.getEmotionType(), is(EmotionType.NEGATIVE_LOW));
     }
 
 }

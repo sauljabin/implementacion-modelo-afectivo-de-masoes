@@ -22,16 +22,16 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
-public class CompassionTest {
+public class CompassionEmotionTest {
 
-    private Compassion compassion;
+    private CompassionEmotion compassionEmotion;
     private Coordinate[] coordinates;
     private GeometryFactory geometryFactory;
 
     @Before
     public void setUp() {
         geometryFactory = new GeometryFactory();
-        compassion = new Compassion();
+        compassionEmotion = new CompassionEmotion();
         coordinates = new Coordinate[]{
                 new Coordinate(0, 0.5),
                 new Coordinate(0, 1),
@@ -46,28 +46,28 @@ public class CompassionTest {
     @Test
     public void shouldIntersectsWithBoundaryPoints() {
         Arrays.stream(coordinates)
-                .forEach(coordinate -> assertTrue(compassion.getGeometry().intersects(geometryFactory.createPoint(coordinate))));
+                .forEach(coordinate -> assertTrue(compassionEmotion.getGeometry().intersects(geometryFactory.createPoint(coordinate))));
     }
 
     @Test
     public void shouldContainsInsidePoint() {
-        assertTrue(compassion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.7, 0.7))));
-        assertTrue(compassion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.51, 0.51))));
+        assertTrue(compassionEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.7, 0.7))));
+        assertTrue(compassionEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.51, 0.51))));
     }
 
     @Test
     public void shouldNotContainsPoint() {
-        assertFalse(compassion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.1, 0.1))));
-        assertFalse(compassion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-1.1, 0.1))));
+        assertFalse(compassionEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.1, 0.1))));
+        assertFalse(compassionEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-1.1, 0.1))));
     }
 
     @Test
     public void shouldReturnCorrectConfiguration() {
         Polygon expectedPolygon = geometryFactory.createPolygon(coordinates);
-        assertReflectionEquals(expectedPolygon.getCoordinates(), compassion.getGeometry().getCoordinates());
-        assertThat(compassion.getEmotionName(), is("Compassion"));
-        assertThat(compassion.getEmotionLevel(), is(EmotionLevel.COLLECTIVE));
-        assertThat(compassion.getEmotionType(), is(EmotionType.POSITIVE));
+        assertReflectionEquals(expectedPolygon.getCoordinates(), compassionEmotion.getGeometry().getCoordinates());
+        assertThat(compassionEmotion.getEmotionName(), is("CompassionEmotion"));
+        assertThat(compassionEmotion.getEmotionLevel(), is(EmotionLevel.COLLECTIVE));
+        assertThat(compassionEmotion.getEmotionType(), is(EmotionType.POSITIVE));
     }
 
 }

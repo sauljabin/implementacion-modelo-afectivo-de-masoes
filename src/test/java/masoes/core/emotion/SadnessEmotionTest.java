@@ -22,20 +22,20 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
-public class AdmirationTest {
+public class SadnessEmotionTest {
 
-    private Admiration admiration;
+    private SadnessEmotion sadnessEmotion;
     private Coordinate[] coordinates;
     private GeometryFactory geometryFactory;
 
     @Before
     public void setUp() {
         geometryFactory = new GeometryFactory();
-        admiration = new Admiration();
+        sadnessEmotion = new SadnessEmotion();
         coordinates = new Coordinate[]{
                 new Coordinate(0, 0),
-                new Coordinate(0, 0.5),
-                new Coordinate(-0.5, 0.5),
+                new Coordinate(0, -0.5),
+                new Coordinate(-0.5, -0.5),
                 new Coordinate(-0.5, 0),
                 new Coordinate(0, 0)
         };
@@ -44,29 +44,29 @@ public class AdmirationTest {
     @Test
     public void shouldIntersectsWithBoundaryPoints() {
         Arrays.stream(coordinates)
-                .forEach(coordinate -> assertTrue(admiration.getGeometry().intersects(geometryFactory.createPoint(coordinate))));
+                .forEach(coordinate -> assertTrue(sadnessEmotion.getGeometry().intersects(geometryFactory.createPoint(coordinate))));
     }
 
     @Test
     public void shouldContainsInsidePoint() {
-        assertTrue(admiration.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.1, 0.1))));
-        assertTrue(admiration.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.4, 0.4))));
+        assertTrue(sadnessEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.1, -0.1))));
+        assertTrue(sadnessEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.4, -0.4))));
     }
 
     @Test
     public void shouldNotContainsPoint() {
-        assertFalse(admiration.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.1, 0.1))));
-        assertFalse(admiration.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(1.1, 0.1))));
-        assertFalse(admiration.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.6, 0.6))));
+        assertFalse(sadnessEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.1, -0.1))));
+        assertFalse(sadnessEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(1.1, -0.1))));
+        assertFalse(sadnessEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(-0.6, -0.6))));
     }
 
     @Test
     public void shouldReturnCorrectConfiguration() {
         Polygon expectedPolygon = geometryFactory.createPolygon(coordinates);
-        assertReflectionEquals(expectedPolygon.getCoordinates(), admiration.getGeometry().getCoordinates());
-        assertThat(admiration.getEmotionName(), is("Admiration"));
-        assertThat(admiration.getEmotionLevel(), is(EmotionLevel.COLLECTIVE));
-        assertThat(admiration.getEmotionType(), is(EmotionType.POSITIVE));
+        assertReflectionEquals(expectedPolygon.getCoordinates(), sadnessEmotion.getGeometry().getCoordinates());
+        assertThat(sadnessEmotion.getEmotionName(), is("SadnessEmotion"));
+        assertThat(sadnessEmotion.getEmotionLevel(), is(EmotionLevel.INDIVIDUAL));
+        assertThat(sadnessEmotion.getEmotionType(), is(EmotionType.NEGATIVE_LOW));
     }
 
 }

@@ -11,14 +11,14 @@ import masoes.core.Emotion;
 import masoes.core.EmotionLevel;
 import masoes.core.EmotionType;
 
-public class Joy extends Emotion {
+public class RejectionEmotion extends Emotion {
 
     @Override
     public Coordinate[] getCoordinates() {
         return new Coordinate[]{
                 new Coordinate(0, 0),
-                new Coordinate(0, 0.5),
-                new Coordinate(0.5, 0.5),
+                new Coordinate(0, -0.5),
+                new Coordinate(0.5, -0.5),
                 new Coordinate(0.5, 0),
                 new Coordinate(0, 0)
         };
@@ -26,12 +26,12 @@ public class Joy extends Emotion {
 
     @Override
     public EmotionType getEmotionType() {
-        return EmotionType.POSITIVE;
+        return EmotionType.NEGATIVE_LOW;
     }
 
     @Override
     public EmotionLevel getEmotionLevel() {
-        return EmotionLevel.INDIVIDUAL;
+        return EmotionLevel.COLLECTIVE;
     }
 
 }

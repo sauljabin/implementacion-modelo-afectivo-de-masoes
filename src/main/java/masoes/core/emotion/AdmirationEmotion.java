@@ -11,29 +11,27 @@ import masoes.core.Emotion;
 import masoes.core.EmotionLevel;
 import masoes.core.EmotionType;
 
-public class Depression extends Emotion {
+public class AdmirationEmotion extends Emotion {
 
     @Override
     public Coordinate[] getCoordinates() {
         return new Coordinate[]{
-                new Coordinate(0, -0.5),
-                new Coordinate(0, -1),
-                new Coordinate(-1, -1),
-                new Coordinate(-1, 0),
+                new Coordinate(0, 0),
+                new Coordinate(0, 0.5),
+                new Coordinate(-0.5, 0.5),
                 new Coordinate(-0.5, 0),
-                new Coordinate(-0.5, -0.5),
-                new Coordinate(0, -0.5)
+                new Coordinate(0, 0)
         };
     }
 
     @Override
     public EmotionType getEmotionType() {
-        return EmotionType.NEGATIVE_HIGH;
+        return EmotionType.POSITIVE;
     }
 
     @Override
     public EmotionLevel getEmotionLevel() {
-        return EmotionLevel.INDIVIDUAL;
+        return EmotionLevel.COLLECTIVE;
     }
 
 }

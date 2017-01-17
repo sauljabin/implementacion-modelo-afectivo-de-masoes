@@ -22,16 +22,16 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
-public class JoyTest {
+public class JoyEmotionTest {
 
-    private Joy joy;
+    private JoyEmotion joyEmotion;
     private Coordinate[] coordinates;
     private GeometryFactory geometryFactory;
 
     @Before
     public void setUp() {
         geometryFactory = new GeometryFactory();
-        joy = new Joy();
+        joyEmotion = new JoyEmotion();
         coordinates = new Coordinate[]{
                 new Coordinate(0, 0),
                 new Coordinate(0, 0.5),
@@ -44,28 +44,28 @@ public class JoyTest {
     @Test
     public void shouldIntersectsWithBoundaryPoints() {
         Arrays.stream(coordinates)
-                .forEach(coordinate -> assertTrue(joy.getGeometry().intersects(geometryFactory.createPoint(coordinate))));
+                .forEach(coordinate -> assertTrue(joyEmotion.getGeometry().intersects(geometryFactory.createPoint(coordinate))));
     }
 
     @Test
     public void shouldNotContainsPoint() {
-        assertFalse(joy.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.7, 0.7))));
-        assertFalse(joy.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.51, 0.51))));
+        assertFalse(joyEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.7, 0.7))));
+        assertFalse(joyEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.51, 0.51))));
     }
 
     @Test
     public void shouldContainsInsidePoint() {
-        assertTrue(joy.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.1, 0.1))));
-        assertTrue(joy.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.4, 0.4))));
+        assertTrue(joyEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.1, 0.1))));
+        assertTrue(joyEmotion.getGeometry().intersects(geometryFactory.createPoint(new Coordinate(0.4, 0.4))));
     }
 
     @Test
     public void shouldReturnCorrectConfiguration() {
         Polygon expectedPolygon = geometryFactory.createPolygon(coordinates);
-        assertReflectionEquals(expectedPolygon.getCoordinates(), joy.getGeometry().getCoordinates());
-        assertThat(joy.getEmotionName(), is("Joy"));
-        assertThat(joy.getEmotionLevel(), is(EmotionLevel.INDIVIDUAL));
-        assertThat(joy.getEmotionType(), is(EmotionType.POSITIVE));
+        assertReflectionEquals(expectedPolygon.getCoordinates(), joyEmotion.getGeometry().getCoordinates());
+        assertThat(joyEmotion.getEmotionName(), is("JoyEmotion"));
+        assertThat(joyEmotion.getEmotionLevel(), is(EmotionLevel.INDIVIDUAL));
+        assertThat(joyEmotion.getEmotionType(), is(EmotionType.POSITIVE));
     }
 
 }

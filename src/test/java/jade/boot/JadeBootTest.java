@@ -30,7 +30,6 @@ public class JadeBootTest {
     @Before
     public void setUp() throws Exception {
         mockJadeSettings = mock(JadeSettings.class);
-
         mockJadeProfile = mock(ProfileImpl.class);
         mockJadeRuntime = mock(Runtime.class);
 
