@@ -7,31 +7,30 @@
 package masoes.core.behaviour;
 
 import jade.content.Concept;
-import jade.content.lang.Codec;
-import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.logger.JadeLogger;
-import jade.ontology.base.ActionResult;
 import jade.ontology.base.UnexpectedContent;
 import jade.protocol.ProtocolRequestResponderBehaviour;
 import masoes.core.EmotionalAgent;
-import masoes.core.ontology.EvaluateStimulus;
+import masoes.core.ontology.AgentStatus;
+import masoes.core.ontology.EmotionStatus;
+import masoes.core.ontology.GetAgentStatus;
 import masoes.core.ontology.MasoesOntology;
 import org.slf4j.LoggerFactory;
 
-public class StimulusReceiverBehaviour extends ProtocolRequestResponderBehaviour {
+public class ResponseAgentStatusBehaviour extends ProtocolRequestResponderBehaviour {
 
-    private MessageTemplate template;
     private EmotionalAgent emotionalAgent;
+    private MessageTemplate template;
     private JadeLogger logger;
 
-    public StimulusReceiverBehaviour(EmotionalAgent emotionalAgent) {
-        super(emotionalAgent);
-        this.emotionalAgent = emotionalAgent;
-        logger = new JadeLogger(LoggerFactory.getLogger(StimulusReceiverBehaviour.class));
+    public ResponseAgentStatusBehaviour(EmotionalAgent agent) {
+        super(agent);
+        logger = new JadeLogger(LoggerFactory.getLogger(ResponseAgentStatusBehaviour.class));
+        emotionalAgent = agent;
     }
 
     @Override
@@ -50,8 +49,8 @@ public class StimulusReceiverBehaviour extends ProtocolRequestResponderBehaviour
             Action action = (Action) myAgent.getContentManager().extractContent(request);
             Concept agentAction = action.getAction();
 
-            if (agentAction instanceof EvaluateStimulus) {
-                evaluateStimulusResponse(response, (EvaluateStimulus) agentAction);
+            if (agentAction instanceof GetAgentStatus) {
+                getAgentStatusResponse(response);
             } else {
                 invalidActionResponse(request, response);
             }
@@ -62,12 +61,14 @@ public class StimulusReceiverBehaviour extends ProtocolRequestResponderBehaviour
         return response;
     }
 
-    private void evaluateStimulusResponse(ACLMessage response, EvaluateStimulus agentAction) throws Codec.CodecException, OntologyException {
+    private void getAgentStatusResponse(ACLMessage response) throws Exception {
         response.setPerformative(ACLMessage.INFORM);
-        EvaluateStimulus evaluateStimulus = agentAction;
-        emotionalAgent.evaluateStimulus(evaluateStimulus.getStimulus());
-        ActionResult actionResult = new ActionResult("Ok", agentAction);
-        emotionalAgent.getContentManager().fillContent(response, actionResult);
+        AgentStatus agentStatus = new AgentStatus();
+        agentStatus.setEmotionName(emotionalAgent.getCurrentEmotion().getEmotionName());
+        agentStatus.setBehaviourName(emotionalAgent.getCurrentEmotionalBehaviour().getBehaviourName());
+        agentStatus.setAgent(emotionalAgent.getAID());
+        agentStatus.setEmotionStatus(new EmotionStatus(emotionalAgent.getEmotionalState().getActivation(), emotionalAgent.getEmotionalState().getSatisfaction()));
+        myAgent.getContentManager().fillContent(response, agentStatus);
     }
 
     private void invalidActionResponse(ACLMessage request, ACLMessage response) throws Exception {
@@ -81,6 +82,5 @@ public class StimulusReceiverBehaviour extends ProtocolRequestResponderBehaviour
         response.setContent(e.getMessage());
         logger.agentException(myAgent, e);
     }
-
 
 }

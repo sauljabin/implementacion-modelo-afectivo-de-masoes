@@ -9,14 +9,15 @@ package jade.ontology.base;
 import jade.content.AgentAction;
 import jade.content.Predicate;
 
-public class Done implements Predicate {
+public class ActionResult implements Predicate {
+
     private String result;
     private AgentAction action;
 
-    public Done() {
+    public ActionResult() {
     }
 
-    public Done(String result, AgentAction action) {
+    public ActionResult(String result, AgentAction action) {
         this.result = result;
         this.action = action;
     }
@@ -36,5 +37,4 @@ public class Done implements Predicate {
     public void setAction(AgentAction action) {
         this.action = action;
     }
-
 }

@@ -11,7 +11,7 @@ import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import masoes.core.EmotionalAgent;
-import masoes.core.Stimulus;
+import masoes.core.ontology.Stimulus;
 import org.slf4j.Logger;
 
 import java.util.Optional;
@@ -46,7 +46,7 @@ public class JadeLogger {
                 .message("Emotional state in agent \"%s\": emotion=%s, state=%s, behaviour=%s")
                 .args(emotionalAgent.getLocalName(), emotionalAgent.getCurrentEmotion(), emotionalAgent.getEmotionalState());
 
-        Optional<Behaviour> behaviourOptional = Optional.ofNullable(emotionalAgent.getEmotionalBehaviour());
+        Optional<Behaviour> behaviourOptional = Optional.ofNullable(emotionalAgent.getCurrentEmotionalBehaviour());
 
         if (behaviourOptional.isPresent()) {
             logWriter.args(behaviourOptional.get().getBehaviourName());
@@ -62,7 +62,7 @@ public class JadeLogger {
                 .message("Emotional state changed in agent \"%s\": stimulus=%s, emotion=%s, state=%s, behaviour=%s")
                 .args(emotionalAgent.getLocalName(), stimulus, emotionalAgent.getCurrentEmotion(), emotionalAgent.getEmotionalState());
 
-        Optional<Behaviour> behaviourOptional = Optional.ofNullable(emotionalAgent.getEmotionalBehaviour());
+        Optional<Behaviour> behaviourOptional = Optional.ofNullable(emotionalAgent.getCurrentEmotionalBehaviour());
 
         if (behaviourOptional.isPresent()) {
             logWriter.args(behaviourOptional.get().getBehaviourName());

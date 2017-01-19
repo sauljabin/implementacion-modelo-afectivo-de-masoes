@@ -4,8 +4,10 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.core;
+package masoes.core.ontology;
 
-public class Stimulus {
+import jade.content.AgentAction;
+
+public class GetAgentStatus implements AgentAction {
 
 }

@@ -6,15 +6,23 @@
 
 package masoes.core;
 
+import jade.content.ContentManager;
+import jade.content.lang.Codec;
+import jade.content.lang.sl.SLCodec;
 import jade.core.behaviours.Behaviour;
 import jade.logger.JadeLogger;
-import masoes.core.behaviour.ReplayAgentInformationBehaviour;
+import masoes.core.behaviour.ResponseAgentStatusBehaviour;
 import masoes.core.behaviour.StimulusReceiverBehaviour;
+import masoes.core.ontology.MasoesOntology;
+import masoes.core.ontology.Stimulus;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
@@ -36,39 +44,57 @@ public class EmotionalAgentTest {
     private Emotion mockEmotion;
     private Stimulus mockStimulus;
     private JadeLogger mockLogger;
+    private ArgumentCaptor<MasoesOntology> ontologyArgumentCaptor;
+    private ArgumentCaptor<Codec> codecArgumentCaptor;
+    private ArgumentCaptor<Behaviour> behaviourArgumentCaptor;
+    private ContentManager mockContentManager;
 
     @Before
     public void setUp() throws Exception {
+        ontologyArgumentCaptor = ArgumentCaptor.forClass(MasoesOntology.class);
+        codecArgumentCaptor = ArgumentCaptor.forClass(Codec.class);
+        behaviourArgumentCaptor = ArgumentCaptor.forClass(Behaviour.class);
+
         mockBehaviourManager = mock(BehaviourManager.class);
         mockEmotionalConfigurator = mock(EmotionalConfigurator.class);
         mockLogger = mock(JadeLogger.class);
-
-        spyEmotionalAgent = createAgent();
-
+        mockContentManager = mock(ContentManager.class);
         mockEmotionalState = mock(EmotionalState.class);
         mockBehaviour = mock(Behaviour.class);
         mockEmotion = mock(Emotion.class);
         mockStimulus = mock(Stimulus.class);
+
+        spyEmotionalAgent = createAgent();
 
         doReturn(mockEmotion).when(mockEmotionalConfigurator).getEmotion();
         doReturn(mockEmotionalState).when(mockEmotionalConfigurator).getEmotionalState();
         doReturn(mockBehaviour).when(mockBehaviourManager).calculateBehaviour(any());
         doReturn(mockBehaviour).when(mockBehaviourManager).getBehaviour();
         doNothing().when(mockBehaviourManager).updateBehaviour(any());
+        doReturn(mockContentManager).when(spyEmotionalAgent).getContentManager();
 
         spyEmotionalAgent.setup();
     }
 
     @Test
     public void shouldAddBasicBehaviors() {
-        verify(spyEmotionalAgent, atLeastOnce()).addBehaviour(any(ReplayAgentInformationBehaviour.class));
-        verify(spyEmotionalAgent, atLeastOnce()).addBehaviour(any(StimulusReceiverBehaviour.class));
-        assertThat(spyEmotionalAgent.getEmotionalBehaviour(), is(mockBehaviour));
+        verify(spyEmotionalAgent, atLeastOnce()).addBehaviour(behaviourArgumentCaptor.capture());
+        verify(spyEmotionalAgent, atLeastOnce()).addBehaviour(behaviourArgumentCaptor.capture());
+        assertThat(spyEmotionalAgent.getCurrentEmotionalBehaviour(), is(mockBehaviour));
         assertThat(spyEmotionalAgent.getCurrentEmotion(), is(mockEmotion));
+        assertThat(behaviourArgumentCaptor.getAllValues(), hasItems(is(instanceOf(ResponseAgentStatusBehaviour.class)), is(instanceOf(StimulusReceiverBehaviour.class))));
 
         InOrder inOrder = inOrder(spyEmotionalAgent, mockBehaviourManager);
         inOrder.verify(spyEmotionalAgent).setUp();
         inOrder.verify(mockBehaviourManager).updateBehaviour(spyEmotionalAgent);
+    }
+
+    @Test
+    public void shouldAddOntologyAndLanguage() throws Exception {
+        verify(mockContentManager).registerLanguage(codecArgumentCaptor.capture());
+        verify(mockContentManager).registerOntology(ontologyArgumentCaptor.capture());
+        assertThat(codecArgumentCaptor.getValue(), is(instanceOf(SLCodec.class)));
+        assertThat(ontologyArgumentCaptor.getValue(), is(instanceOf(MasoesOntology.class)));
     }
 
     @Test

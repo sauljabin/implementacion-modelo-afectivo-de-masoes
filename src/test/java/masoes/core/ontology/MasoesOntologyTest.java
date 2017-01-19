@@ -31,7 +31,7 @@ public class MasoesOntologyTest {
 
     @Test
     public void shouldInitializeElements() {
-        assertThat(Arrays.asList(masoesOntology.getPredicateNames().toArray()), hasItems("Done", "UnexpectedContent"));
+        assertThat(Arrays.asList(masoesOntology.getPredicateNames().toArray()), hasItems("ActionResult", "UnexpectedContent"));
     }
 
 }

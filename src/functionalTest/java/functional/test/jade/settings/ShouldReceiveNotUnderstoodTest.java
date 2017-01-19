@@ -12,6 +12,7 @@ import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
@@ -29,7 +30,7 @@ public class ShouldReceiveNotUnderstoodTest extends FunctionalTest {
 
         AID settingsAgentAID = createAgent(tester, SettingsAgent.class.getName());
 
-        SimpleBehaviour receiveMessageBehaviour = new SimpleBehaviour() {
+        SimpleBehaviour receiveMessageBehaviour = new OneShotBehaviour() {
 
             @Override
             public void action() {
@@ -63,10 +64,6 @@ public class ShouldReceiveNotUnderstoodTest extends FunctionalTest {
                 }
             }
 
-            @Override
-            public boolean done() {
-                return true;
-            }
         };
 
         return receiveMessageBehaviour;

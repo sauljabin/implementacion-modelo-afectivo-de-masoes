@@ -6,6 +6,8 @@
 
 package masoes.core;
 
+import masoes.core.ontology.Stimulus;
+
 public class EmotionalConfigurator {
 
     private EmotionalState emotionalState;

@@ -12,7 +12,7 @@ import jade.lang.acl.ACLMessage;
 import masoes.core.Emotion;
 import masoes.core.EmotionalAgent;
 import masoes.core.EmotionalState;
-import masoes.core.Stimulus;
+import masoes.core.ontology.Stimulus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -84,7 +84,7 @@ public class JadeLoggerTest {
         Behaviour mockBehaviour = mock(Behaviour.class);
         String expectedBehaviourName = "behaviour";
         doReturn(expectedBehaviourName).when(mockBehaviour).getBehaviourName();
-        doReturn(mockBehaviour).when(mockAgent).getEmotionalBehaviour();
+        doReturn(mockBehaviour).when(mockAgent).getCurrentEmotionalBehaviour();
 
         String expectedMessage = String.format("Emotional state in agent \"%s\": emotion=%s, state=%s, behaviour=%s", expectedAgentName, mockEmotion, emotionalState, expectedBehaviourName);
 
@@ -92,7 +92,7 @@ public class JadeLoggerTest {
         verify(mockLogger).info(eq(expectedMessage));
 
         expectedBehaviourName = "NO BEHAVIOUR";
-        doReturn(null).when(mockAgent).getEmotionalBehaviour();
+        doReturn(null).when(mockAgent).getCurrentEmotionalBehaviour();
         expectedMessage = String.format("Emotional state in agent \"%s\": emotion=%s, state=%s, behaviour=%s", expectedAgentName, mockEmotion, emotionalState, expectedBehaviourName);
 
         jadeLogger.agentEmotionalState(mockAgent);
@@ -118,7 +118,7 @@ public class JadeLoggerTest {
         Behaviour mockBehaviour = mock(Behaviour.class);
         String expectedBehaviourName = "behaviour";
         doReturn(expectedBehaviourName).when(mockBehaviour).getBehaviourName();
-        doReturn(mockBehaviour).when(mockAgent).getEmotionalBehaviour();
+        doReturn(mockBehaviour).when(mockAgent).getCurrentEmotionalBehaviour();
 
         String expectedMessage = String.format("Emotional state changed in agent \"%s\": stimulus=%s, emotion=%s, state=%s, behaviour=%s", expectedAgentName, mockStimulus, mockEmotion, emotionalState, expectedBehaviourName);
 
@@ -126,7 +126,7 @@ public class JadeLoggerTest {
         verify(mockLogger).info(eq(expectedMessage));
 
         expectedBehaviourName = "NO BEHAVIOUR";
-        doReturn(null).when(mockAgent).getEmotionalBehaviour();
+        doReturn(null).when(mockAgent).getCurrentEmotionalBehaviour();
         expectedMessage = String.format("Emotional state changed in agent \"%s\": stimulus=%s, emotion=%s, state=%s, behaviour=%s", expectedAgentName, mockStimulus, mockEmotion, emotionalState, expectedBehaviourName);
 
         jadeLogger.agentEmotionalStateChanged(mockAgent, mockStimulus);

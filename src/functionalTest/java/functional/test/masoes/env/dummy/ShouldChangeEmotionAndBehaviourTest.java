@@ -7,21 +7,29 @@
 package functional.test.masoes.env.dummy;
 
 import functional.test.core.FunctionalTest;
+import jade.content.lang.sl.SLCodec;
+import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
+import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
+import jade.ontology.base.ActionResult;
+import jade.settings.ontology.SettingsOntology;
+import masoes.core.ontology.AgentStatus;
+import masoes.core.ontology.EvaluateStimulus;
+import masoes.core.ontology.GetAgentStatus;
+import masoes.core.ontology.MasoesOntology;
+import masoes.core.ontology.Stimulus;
 import masoes.env.dummy.agent.DummyEmotionalAgent;
 import test.common.TestException;
 
-import java.util.Optional;
-
 public class ShouldChangeEmotionAndBehaviourTest extends FunctionalTest {
 
-    private String firstEmotionalResponse;
+    private AgentStatus firstEmotionalResponse;
 
     @Override
     public Behaviour load(Agent tester) throws TestException {
@@ -29,68 +37,90 @@ public class ShouldChangeEmotionAndBehaviourTest extends FunctionalTest {
 
         AID dummyAgentAID = createAgent(tester, DummyEmotionalAgent.class.getName());
 
-        SimpleBehaviour receiveFirstMessageBehaviour = new SimpleBehaviour() {
-            private boolean done = false;
-
-            @Override
-            public void onStart() {
-                ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
-                testMessage.addReceiver(dummyAgentAID);
-                myAgent.send(testMessage);
-            }
+        SimpleBehaviour receiveFirstMessageBehaviour = new OneShotBehaviour() {
 
             @Override
             public void action() {
-                ACLMessage msg = myAgent.receive();
-                if (Optional.ofNullable(msg).isPresent()) {
-                    firstEmotionalResponse = msg.getContent();
-                    done = true;
-                } else {
-                    block();
+                try {
+                    ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
+                    testMessage.addReceiver(dummyAgentAID);
+                    testMessage.setOntology(MasoesOntology.ONTOLOGY_NAME);
+                    testMessage.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
+                    testMessage.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
+
+                    myAgent.getContentManager().registerLanguage(new SLCodec());
+                    myAgent.getContentManager().registerOntology(new MasoesOntology());
+
+                    myAgent.getContentManager().fillContent(testMessage, new Action(myAgent.getAID(), new GetAgentStatus()));
+
+                    myAgent.send(testMessage);
+
+                    ACLMessage msg = myAgent.blockingReceive();
+                    getLogger().agentMessage(myAgent, msg);
+
+                    firstEmotionalResponse = (AgentStatus) myAgent.getContentManager().extractContent(msg);
+                } catch (Exception e) {
+                    throw new RuntimeException(e.getMessage(), e);
                 }
             }
 
-            @Override
-            public boolean done() {
-                return done;
-            }
         };
 
         OneShotBehaviour sendStimulusBehaviour = new OneShotBehaviour() {
             @Override
             public void action() {
-                ACLMessage testMessage = new ACLMessage(ACLMessage.INFORM);
-                testMessage.addReceiver(dummyAgentAID);
-                myAgent.send(testMessage);
+                try {
+                    ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
+                    testMessage.addReceiver(dummyAgentAID);
+                    testMessage.setOntology(MasoesOntology.ONTOLOGY_NAME);
+                    testMessage.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
+                    testMessage.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
+
+                    myAgent.getContentManager().registerLanguage(new SLCodec());
+                    myAgent.getContentManager().registerOntology(new SettingsOntology());
+
+                    myAgent.getContentManager().fillContent(testMessage, new Action(myAgent.getAID(), new EvaluateStimulus(new Stimulus())));
+
+                    myAgent.send(testMessage);
+
+                    ACLMessage msg = myAgent.blockingReceive();
+                    getLogger().agentMessage(myAgent, msg);
+
+                    ActionResult actionResult = (ActionResult) myAgent.getContentManager().extractContent(msg);
+                } catch (Exception e) {
+                    throw new RuntimeException(e.getMessage(), e);
+                }
             }
         };
 
-        SimpleBehaviour receiveSecondMessageBehaviour = new SimpleBehaviour() {
-            private boolean done = false;
-
-            @Override
-            public void onStart() {
-                ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
-                testMessage.addReceiver(dummyAgentAID);
-                myAgent.send(testMessage);
-            }
+        SimpleBehaviour receiveSecondMessageBehaviour = new OneShotBehaviour() {
 
             @Override
             public void action() {
-                ACLMessage msg = myAgent.receive();
-                if (Optional.ofNullable(msg).isPresent()) {
-                    String secondEmotionalResponse = msg.getContent();
-                    assertNotEquals("Content", firstEmotionalResponse, secondEmotionalResponse);
-                    done = true;
-                } else {
-                    block();
+                try {
+                    ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
+                    testMessage.addReceiver(dummyAgentAID);
+                    testMessage.setOntology(MasoesOntology.ONTOLOGY_NAME);
+                    testMessage.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
+                    testMessage.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
+
+                    myAgent.getContentManager().registerLanguage(new SLCodec());
+                    myAgent.getContentManager().registerOntology(new SettingsOntology());
+
+                    myAgent.getContentManager().fillContent(testMessage, new Action(myAgent.getAID(), new GetAgentStatus()));
+
+                    myAgent.send(testMessage);
+
+                    ACLMessage msg = myAgent.blockingReceive();
+                    getLogger().agentMessage(myAgent, msg);
+
+                    AgentStatus agentStatus = (AgentStatus) myAgent.getContentManager().extractContent(msg);
+                    assertReflectionNotEquals("Agent Status", firstEmotionalResponse, agentStatus);
+                } catch (Exception e) {
+                    throw new RuntimeException(e.getMessage(), e);
                 }
             }
 
-            @Override
-            public boolean done() {
-                return done;
-            }
         };
 
         SequentialBehaviour testerBehaviour = new SequentialBehaviour();

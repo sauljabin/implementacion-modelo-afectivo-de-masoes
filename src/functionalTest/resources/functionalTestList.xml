@@ -18,12 +18,6 @@
         <HowWorkTest>An agent make a bad request and receive the not understood</HowWorkTest>
         <WhenTestPass>The test passes if the agent return not understood</WhenTestPass>
     </Test>
-    <Test name="Should receive emotional agent information" skip="false">
-        <TestClassName>functional.test.masoes.env.dummy.ShouldReceiveEmotionalAgentInformationTest</TestClassName>
-        <WhatTest>Emotional agent information response</WhatTest>
-        <HowWorkTest>An agent make request to an emotional agent and receive the emotional information</HowWorkTest>
-        <WhenTestPass>The test passes if the agent return the correct information</WhenTestPass>
-    </Test>
     <Test name="Should change emotion and behaviour agent" skip="false">
         <TestClassName>functional.test.masoes.env.dummy.ShouldChangeEmotionAndBehaviourTest</TestClassName>
         <WhatTest>Emotional agent behaviour</WhatTest>

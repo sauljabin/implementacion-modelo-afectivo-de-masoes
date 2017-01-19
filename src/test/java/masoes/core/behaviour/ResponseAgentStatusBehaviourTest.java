@@ -17,18 +17,18 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.logger.JadeLogger;
-import jade.ontology.base.ActionResult;
 import jade.ontology.base.UnexpectedContent;
 import masoes.core.Emotion;
 import masoes.core.EmotionalAgent;
-import masoes.core.ontology.EvaluateStimulus;
+import masoes.core.EmotionalState;
+import masoes.core.ontology.AgentStatus;
+import masoes.core.ontology.EmotionStatus;
+import masoes.core.ontology.GetAgentStatus;
 import masoes.core.ontology.MasoesOntology;
-import masoes.core.ontology.Stimulus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -48,14 +48,15 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
 @PrepareForTest({Behaviour.class, EmotionalAgent.class})
-public class StimulusReceiverBehaviourTest {
+public class ResponseAgentStatusBehaviourTest {
 
-
+    private static final String EMOTION_NAME = "EMOTION NAME";
+    private static final String BEHAVIOUR_NAME = "BEHAVIOUR NAME";
     private EmotionalAgent emotionalAgentMock;
     private ArgumentCaptor<MessageTemplate> messageTemplateArgumentCaptor;
     private ContentManager spyContentManager;
     private ACLMessage request;
-    private StimulusReceiverBehaviour stimulusReceiverBehaviour;
+    private ResponseAgentStatusBehaviour responseAgentStatusBehaviour;
     private JadeLogger mockLogger;
     private Emotion emotionMock;
     private Behaviour behaviourMock;
@@ -65,12 +66,20 @@ public class StimulusReceiverBehaviourTest {
         messageTemplateArgumentCaptor = ArgumentCaptor.forClass(MessageTemplate.class);
 
         emotionalAgentMock = mock(EmotionalAgent.class);
-        stimulusReceiverBehaviour = new StimulusReceiverBehaviour(emotionalAgentMock);
+        responseAgentStatusBehaviour = new ResponseAgentStatusBehaviour(emotionalAgentMock);
 
         spyContentManager = spy(new ContentManager());
         spyContentManager.registerLanguage(new SLCodec());
         spyContentManager.registerOntology(new MasoesOntology());
         doReturn(spyContentManager).when(emotionalAgentMock).getContentManager();
+
+        emotionMock = mock(Emotion.class);
+        doReturn(EMOTION_NAME).when(emotionMock).getEmotionName();
+        doReturn(emotionMock).when(emotionalAgentMock).getCurrentEmotion();
+
+        behaviourMock = mock(Behaviour.class);
+        doReturn(BEHAVIOUR_NAME).when(behaviourMock).getBehaviourName();
+        doReturn(behaviourMock).when(emotionalAgentMock).getCurrentEmotionalBehaviour();
 
         request = new ACLMessage(ACLMessage.REQUEST);
         request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
@@ -78,28 +87,7 @@ public class StimulusReceiverBehaviourTest {
         request.setOntology(MasoesOntology.ONTOLOGY_NAME);
 
         mockLogger = mock(JadeLogger.class);
-        setFieldValue(stimulusReceiverBehaviour, "logger", mockLogger);
-    }
-
-    @Test
-    public void shouldEvaluateStimulus() throws Exception {
-        AID aid = new AID();
-        Stimulus stimulus = new Stimulus();
-
-        EvaluateStimulus evaluateStimulus = new EvaluateStimulus(stimulus);
-        Action action = new Action(aid, evaluateStimulus);
-        spyContentManager.fillContent(request, action);
-
-        ACLMessage response = stimulusReceiverBehaviour.prepareResponse(request);
-
-        ActionResult actionResult = (ActionResult) spyContentManager.extractContent(response);
-        ActionResult expectedActionResult = new ActionResult("Ok", evaluateStimulus);
-
-        verify(emotionalAgentMock).evaluateStimulus(any());
-        assertThat(response.getPerformative(), is(ACLMessage.INFORM));
-        assertThat(response.getLanguage(), is(FIPANames.ContentLanguage.FIPA_SL));
-        assertThat(response.getOntology(), is(MasoesOntology.ONTOLOGY_NAME));
-        assertReflectionEquals(expectedActionResult, actionResult);
+        setFieldValue(responseAgentStatusBehaviour, "logger", mockLogger);
     }
 
     @Test
@@ -108,10 +96,38 @@ public class StimulusReceiverBehaviourTest {
         expectedTemplate = MessageTemplate.and(expectedTemplate, MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST));
         expectedTemplate = MessageTemplate.and(expectedTemplate, MessageTemplate.MatchLanguage(FIPANames.ContentLanguage.FIPA_SL));
         expectedTemplate = MessageTemplate.and(expectedTemplate, MessageTemplate.MatchOntology(MasoesOntology.ONTOLOGY_NAME));
-        ResponseAgentStatusBehaviour spySettingsBehaviour = Mockito.spy(new ResponseAgentStatusBehaviour(emotionalAgentMock));
+        ResponseAgentStatusBehaviour spySettingsBehaviour = spy(new ResponseAgentStatusBehaviour(emotionalAgentMock));
         spySettingsBehaviour.onStart();
         verify(spySettingsBehaviour).setMessageTemplate(messageTemplateArgumentCaptor.capture());
         assertReflectionEquals(expectedTemplate, messageTemplateArgumentCaptor.getValue());
+    }
+
+    @Test
+    public void shouldReturnAgentStatus() throws Exception {
+        AID aid = new AID();
+        doReturn(aid).when(emotionalAgentMock).getAID();
+
+        EmotionalState emotionalState = new EmotionalState();
+        doReturn(emotionalState).when(emotionalAgentMock).getEmotionalState();
+
+        GetAgentStatus getAgentStatus = new GetAgentStatus();
+        Action action = new Action(aid, getAgentStatus);
+        spyContentManager.fillContent(request, action);
+
+        ACLMessage response = responseAgentStatusBehaviour.prepareResponse(request);
+
+        AgentStatus agentStatus = (AgentStatus) spyContentManager.extractContent(response);
+
+        AgentStatus expectedAgentStatus = new AgentStatus();
+        expectedAgentStatus.setBehaviourName(BEHAVIOUR_NAME);
+        expectedAgentStatus.setEmotionName(EMOTION_NAME);
+        expectedAgentStatus.setAgent(aid);
+        expectedAgentStatus.setEmotionStatus(new EmotionStatus(emotionalState.getActivation(), emotionalState.getSatisfaction()));
+
+        assertThat(response.getPerformative(), is(ACLMessage.INFORM));
+        assertThat(response.getLanguage(), is(FIPANames.ContentLanguage.FIPA_SL));
+        assertThat(response.getOntology(), is(MasoesOntology.ONTOLOGY_NAME));
+        assertReflectionEquals(expectedAgentStatus, agentStatus);
     }
 
     @Test
@@ -124,7 +140,7 @@ public class StimulusReceiverBehaviourTest {
 
         doReturn(mockContentManager).when(emotionalAgentMock).getContentManager();
 
-        ACLMessage response = stimulusReceiverBehaviour.prepareResponse(request);
+        ACLMessage response = responseAgentStatusBehaviour.prepareResponse(request);
 
         assertThat(response.getPerformative(), is(ACLMessage.FAILURE));
         assertThat(response.getContent(), is(message));
@@ -139,7 +155,7 @@ public class StimulusReceiverBehaviourTest {
         doReturn(mockAgentAction).when(mockAction).getAction();
         doReturn(mockAction).when(spyContentManager).extractContent(request);
 
-        ACLMessage response = stimulusReceiverBehaviour.prepareResponse(request);
+        ACLMessage response = responseAgentStatusBehaviour.prepareResponse(request);
         UnexpectedContent expectedContent = new UnexpectedContent("Invalid agent action", request.getContent());
         UnexpectedContent content = (UnexpectedContent) spyContentManager.extractContent(response);
 
