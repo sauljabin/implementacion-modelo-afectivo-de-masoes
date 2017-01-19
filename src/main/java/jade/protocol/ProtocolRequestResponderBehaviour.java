@@ -24,6 +24,10 @@ public class ProtocolRequestResponderBehaviour extends SimpleAchieveREResponder 
         super(agent, messageTemplate);
     }
 
+    public ProtocolRequestResponderBehaviour(MessageTemplate messageTemplate) {
+        super(null, messageTemplate);
+    }
+
     public void setMessageTemplate(MessageTemplate messageTemplate) {
         reset(messageTemplate);
     }

@@ -8,20 +8,17 @@ package masoes.core.behaviour;
 
 import jade.content.Concept;
 import jade.content.onto.basic.Action;
-import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.logger.JadeLogger;
 import jade.ontology.base.UnexpectedContent;
-import jade.protocol.ProtocolRequestResponderBehaviour;
 import masoes.core.EmotionalAgent;
 import masoes.core.ontology.AgentStatus;
 import masoes.core.ontology.EmotionStatus;
 import masoes.core.ontology.GetAgentStatus;
-import masoes.core.ontology.MasoesOntology;
 import org.slf4j.LoggerFactory;
 
-public class ResponseAgentStatusBehaviour extends ProtocolRequestResponderBehaviour {
+public class ResponseAgentStatusBehaviour extends MasoesResponderBehaviour {
 
     private EmotionalAgent emotionalAgent;
     private MessageTemplate template;
@@ -31,15 +28,6 @@ public class ResponseAgentStatusBehaviour extends ProtocolRequestResponderBehavi
         super(agent);
         logger = new JadeLogger(LoggerFactory.getLogger(ResponseAgentStatusBehaviour.class));
         emotionalAgent = agent;
-    }
-
-    @Override
-    public void onStart() {
-        template = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
-        template = MessageTemplate.and(template, MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST));
-        template = MessageTemplate.and(template, MessageTemplate.MatchLanguage(FIPANames.ContentLanguage.FIPA_SL));
-        template = MessageTemplate.and(template, MessageTemplate.MatchOntology(MasoesOntology.ONTOLOGY_NAME));
-        setMessageTemplate(template);
     }
 
     @Override

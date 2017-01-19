@@ -15,7 +15,6 @@ import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 import jade.logger.JadeLogger;
 import jade.ontology.base.UnexpectedContent;
 import masoes.core.Emotion;
@@ -28,7 +27,6 @@ import masoes.core.ontology.MasoesOntology;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -53,7 +51,6 @@ public class ResponseAgentStatusBehaviourTest {
     private static final String EMOTION_NAME = "EMOTION NAME";
     private static final String BEHAVIOUR_NAME = "BEHAVIOUR NAME";
     private EmotionalAgent emotionalAgentMock;
-    private ArgumentCaptor<MessageTemplate> messageTemplateArgumentCaptor;
     private ContentManager spyContentManager;
     private ACLMessage request;
     private ResponseAgentStatusBehaviour responseAgentStatusBehaviour;
@@ -63,8 +60,6 @@ public class ResponseAgentStatusBehaviourTest {
 
     @Before
     public void setUp() throws Exception {
-        messageTemplateArgumentCaptor = ArgumentCaptor.forClass(MessageTemplate.class);
-
         emotionalAgentMock = mock(EmotionalAgent.class);
         responseAgentStatusBehaviour = new ResponseAgentStatusBehaviour(emotionalAgentMock);
 
@@ -88,18 +83,6 @@ public class ResponseAgentStatusBehaviourTest {
 
         mockLogger = mock(JadeLogger.class);
         setFieldValue(responseAgentStatusBehaviour, "logger", mockLogger);
-    }
-
-    @Test
-    public void shouldSetCorrectMessageTemplate() {
-        MessageTemplate expectedTemplate = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
-        expectedTemplate = MessageTemplate.and(expectedTemplate, MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST));
-        expectedTemplate = MessageTemplate.and(expectedTemplate, MessageTemplate.MatchLanguage(FIPANames.ContentLanguage.FIPA_SL));
-        expectedTemplate = MessageTemplate.and(expectedTemplate, MessageTemplate.MatchOntology(MasoesOntology.ONTOLOGY_NAME));
-        ResponseAgentStatusBehaviour spySettingsBehaviour = spy(new ResponseAgentStatusBehaviour(emotionalAgentMock));
-        spySettingsBehaviour.onStart();
-        verify(spySettingsBehaviour).setMessageTemplate(messageTemplateArgumentCaptor.capture());
-        assertReflectionEquals(expectedTemplate, messageTemplateArgumentCaptor.getValue());
     }
 
     @Test
