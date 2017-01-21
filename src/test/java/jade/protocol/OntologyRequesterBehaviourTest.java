@@ -31,6 +31,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -79,7 +80,7 @@ public class OntologyRequesterBehaviourTest {
     public void shouldPrepareCorrectRequestMessage() throws Exception {
         ACLMessage actualRequest = ontologyRequesterBehaviour.prepareRequest(request);
         verify(contentManagerMock).registerOntology(ontologyMock);
-        verify(contentManagerMock).registerLanguage(any(SLCodec.class));
+        verify(contentManagerMock).registerLanguage(isA(SLCodec.class));
         verify(contentManagerMock).fillContent(eq(request), actionArgumentCaptor.capture());
         assertThat(actionArgumentCaptor.getValue().getActor(), is(senderMock));
         assertThat(actionArgumentCaptor.getValue().getAction(), is(agentActionMock));
@@ -91,7 +92,7 @@ public class OntologyRequesterBehaviourTest {
     }
 
     @Test
-    public void shouldThrowRequesterExceptionWhenFillContentThrowsAException() throws Exception {
+    public void shouldThrowExceptionWhenFillContentThrowsAException() throws Exception {
         String message = "MESSAGE";
         doThrow(new OntologyException(message)).when(contentManagerMock).fillContent(eq(request), any(AgentAction.class));
         expectedException.expectMessage(message);

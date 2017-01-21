@@ -81,14 +81,14 @@ public class BehaviourManagerTest {
     }
 
     @Test
-    public void shouldNotInvokeRemoveBehaviour() throws Exception {
+    public void shouldNotInvokeRemoveBehaviourWhenBehaviourIsNull() throws Exception {
         setFieldValue(behaviourManager, "behaviour", null);
         behaviourManager.updateBehaviour(emotionalAgentMock);
         verify(emotionalAgentMock, never()).removeBehaviour(any());
     }
 
     @Test
-    public void shouldNotInvokeAddBehaviour() {
+    public void shouldNotInvokeAddBehaviourWhenBehaviourIsNull() {
         doReturn(null).when(emotionalAgentMock).getCognitiveBehaviour();
         behaviourManager.updateBehaviour(emotionalAgentMock);
         verify(emotionalAgentMock, never()).addBehaviour(any());

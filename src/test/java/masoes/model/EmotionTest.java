@@ -42,13 +42,13 @@ public class EmotionTest {
     }
 
     @Test
-    public void shouldReturnPolygon() {
+    public void shouldCreateGeometryPolygonWithCoordinates() {
         Polygon expectedPolygon = new GeometryFactory().createPolygon(coordinates);
         assertReflectionEquals(expectedPolygon.getCoordinates(), emotionSpy.getGeometry().getCoordinates());
     }
 
     @Test
-    public void shouldGetRandomPointInGeometry() {
+    public void shouldGetRandomPointInsideGeometry() {
         IntStream.range(0, 1000).forEach(i -> {
             Point pointA = emotionSpy.getRandomPoint();
             Point pointB = emotionSpy.getRandomPoint();

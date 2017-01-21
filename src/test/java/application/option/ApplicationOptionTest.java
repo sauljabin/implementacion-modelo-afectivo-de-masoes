@@ -38,10 +38,6 @@ public class ApplicationOptionTest {
     @Test
     public void shouldGetCorrectKeyWhenOptIsNull() {
         assertThat(applicationOptionA.getKeyOpt(), is(applicationOptionA.getLongOpt()));
-    }
-
-    @Test
-    public void shouldGetCorrectKeyLongOptIsNull() {
         assertThat(applicationOptionB.getKeyOpt(), is(applicationOptionB.getOpt()));
     }
 

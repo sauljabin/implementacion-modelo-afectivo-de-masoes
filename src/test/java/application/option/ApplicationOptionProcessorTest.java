@@ -72,7 +72,7 @@ public class ApplicationOptionProcessorTest {
     }
 
     @Test
-    public void shouldParseArgs() throws Exception {
+    public void shouldInvokeParseArgs() throws Exception {
         Options expectedOptions = new Options();
         doReturn(expectedOptions).when(applicationOptionsMock).toOptions();
 
@@ -82,7 +82,7 @@ public class ApplicationOptionProcessorTest {
     }
 
     @Test
-    public void shouldInvokeOptionAndSeValue() {
+    public void shouldInvokeOptionAndSetValue() {
         String expectedOptionValue = "value";
         doReturn(expectedOptionValue).when(commandLineMock).getOptionValue(any());
 
@@ -124,7 +124,7 @@ public class ApplicationOptionProcessorTest {
     }
 
     @Test
-    public void shouldBreakWheOptionIsFinalOption() {
+    public void shouldBreakWhenOptionIsAFinalOption() {
         applicationOptionList = new ArrayList<>();
         doReturn(applicationOptionList).when(applicationOptionsMock).getApplicationOptionList();
 
@@ -158,7 +158,7 @@ public class ApplicationOptionProcessorTest {
     }
 
     @Test
-    public void shouldInvokeDefaultOptionIfOptionNotIsFinal() {
+    public void shouldInvokeDefaultOptionIfOptionIsNotAFinalOption() {
         doReturn(Boolean.TRUE).when(commandLineMock).hasOption(expectedOpt);
 
         applicationOptionProcessor.processArgs(expectedArgs);

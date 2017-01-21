@@ -48,7 +48,7 @@ public class ApplicationBootTest {
     }
 
     @Test
-    public void shouldInvokeSystemExitWhenException() {
+    public void shouldInvokeSystemExitFailureWhenException() {
         RuntimeException expectedException = new RuntimeException();
         doThrow(expectedException).when(applicationOptionProcessorMock).processArgs(args);
 
@@ -59,7 +59,7 @@ public class ApplicationBootTest {
     }
 
     @Test
-    public void shouldStartApp() {
+    public void shouldInvokeStartApp() {
         applicationBoot.boot(args);
         verify(applicationOptionProcessorMock).processArgs(args);
         verify(loggerMock).startingApplication(any());

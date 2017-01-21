@@ -13,15 +13,12 @@ import masoes.behaviour.StimulusReceiverBehaviour;
 import masoes.ontology.Stimulus;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
-import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.inOrder;
@@ -40,12 +37,9 @@ public class EmotionalAgentTest {
     private Emotion emotionMock;
     private Stimulus stimulusMock;
     private JadeLogger loggerMock;
-    private ArgumentCaptor<Behaviour> behaviourArgumentCaptor;
 
     @Before
     public void setUp() throws Exception {
-        behaviourArgumentCaptor = ArgumentCaptor.forClass(Behaviour.class);
-
         behaviourManagerMock = mock(BehaviourManager.class);
         emotionalConfiguratorMock = mock(EmotionalConfigurator.class);
         loggerMock = mock(JadeLogger.class);
@@ -67,11 +61,10 @@ public class EmotionalAgentTest {
 
     @Test
     public void shouldAddBasicBehaviors() {
-        verify(spyEmotionalAgent, atLeastOnce()).addBehaviour(behaviourArgumentCaptor.capture());
-        verify(spyEmotionalAgent, atLeastOnce()).addBehaviour(behaviourArgumentCaptor.capture());
+        verify(spyEmotionalAgent).addBehaviour(isA(ResponseAgentStatusBehaviour.class));
+        verify(spyEmotionalAgent).addBehaviour(isA(StimulusReceiverBehaviour.class));
         assertThat(spyEmotionalAgent.getCurrentEmotionalBehaviour(), is(behaviourMock));
         assertThat(spyEmotionalAgent.getCurrentEmotion(), is(emotionMock));
-        assertThat(behaviourArgumentCaptor.getAllValues(), hasItems(is(instanceOf(ResponseAgentStatusBehaviour.class)), is(instanceOf(StimulusReceiverBehaviour.class))));
 
         InOrder inOrder = inOrder(spyEmotionalAgent, behaviourManagerMock);
         inOrder.verify(spyEmotionalAgent).setUp();
@@ -79,14 +72,14 @@ public class EmotionalAgentTest {
     }
 
     @Test
-    public void shouldUpdateBehaviour() throws Exception {
+    public void shouldUpdateBehaviourWhenEvaluateStimulus() throws Exception {
         spyEmotionalAgent = createAgent();
         spyEmotionalAgent.evaluateStimulus(stimulusMock);
         verify(behaviourManagerMock).updateBehaviour(spyEmotionalAgent);
     }
 
     @Test
-    public void shouldUpdateEmotion() {
+    public void shouldUpdateEmotionWhenEvaluateStimulus() {
         spyEmotionalAgent.evaluateStimulus(stimulusMock);
         verify(emotionalConfiguratorMock).updateEmotion(stimulusMock);
     }

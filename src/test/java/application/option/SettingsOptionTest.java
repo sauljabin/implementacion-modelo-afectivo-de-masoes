@@ -26,20 +26,29 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class SettingsOptionTest {
 
+    private static final String ENV = "masoes.env";
+    private static final String ENV_VALUE = "dummy";
+    private static final String APP_NAME = "app.name";
+    private static final String APP_NAME_VALUE = "masoes";
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
-
     private SettingsOption settingsOption;
     private ApplicationLogger loggerMock;
     private ApplicationSettings applicationSettingsMock;
+    private Properties properties;
 
     @Before
     public void setUp() throws Exception {
         applicationSettingsMock = mock(ApplicationSettings.class);
         loggerMock = mock(ApplicationLogger.class);
+
         settingsOption = new SettingsOption();
         setFieldValue(settingsOption, "logger", loggerMock);
         setFieldValue(settingsOption, "applicationSettings", applicationSettingsMock);
+
+        properties = new Properties();
+        properties.put(ENV, ENV_VALUE);
+        properties.put(APP_NAME, APP_NAME_VALUE);
     }
 
     @Test
@@ -53,21 +62,11 @@ public class SettingsOptionTest {
     }
 
     @Test
-    public void shouldSetSettings() {
-        String expectedKey1 = "expectedKey1";
-        String expectedValue1 = "value1";
-        String expectedKey2 = "expectedKey2";
-        String expectedValue2 = "value2";
-
-        Properties expectedProperties = new Properties();
-        expectedProperties.put(expectedKey1, expectedValue1);
-        expectedProperties.put(expectedKey2, expectedValue2);
-
-        settingsOption.setProperties(expectedProperties);
+    public void shouldSetApplicationSettings() {
+        settingsOption.setProperties(properties);
         settingsOption.exec();
-
-        verify(applicationSettingsMock).set(expectedKey1, expectedValue1);
-        verify(applicationSettingsMock).set(expectedKey2, expectedValue2);
+        verify(applicationSettingsMock).set(ENV, ENV_VALUE);
+        verify(applicationSettingsMock).set(APP_NAME, APP_NAME_VALUE);
         verify(loggerMock).updatedSettings();
     }
 

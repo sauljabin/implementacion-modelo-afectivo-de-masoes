@@ -42,17 +42,17 @@ public class ApplicationOptionsTest {
     }
 
     @Test
-    public void shouldReturnSortOption() {
+    public void shouldReturnSortOptionList() {
         assertReflectionEquals(expectedOptions, applicationOptions.getApplicationOptionList());
     }
 
     @Test
-    public void shouldReturnOptionsObject() {
+    public void shouldConvertOptionListToOptions() {
         assertReflectionEquals(expectedOptionsObject, applicationOptions.toOptions());
     }
 
     @Test
-    public void shouldReturnHelpDefaultOption() {
+    public void shouldReturnCorrectDefaultOption() {
         assertReflectionEquals(expectedDefaultOption, applicationOptions.getDefaultApplicationOption());
     }
 

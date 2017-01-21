@@ -21,7 +21,7 @@ public class ProtocolResponderBehaviourTest {
 
     @Before
     public void setUp() {
-        responderBehaviourSpy = spy(new ProtocolResponderBehaviour(mock(Agent.class)));
+        responderBehaviourSpy = spy(new ProtocolResponderBehaviour(mock(Agent.class), mock(MessageTemplate.class)));
     }
 
     @Test

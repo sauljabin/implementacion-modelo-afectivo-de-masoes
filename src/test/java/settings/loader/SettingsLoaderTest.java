@@ -69,7 +69,7 @@ public class SettingsLoaderTest {
     }
 
     @Test
-    public void shouldReturnNullThatKeyIsNull() {
+    public void shouldReturnNullWhenKeyIsNull() {
         assertThat(jadeSettingsLoader.get(null), is(nullValue()));
     }
 

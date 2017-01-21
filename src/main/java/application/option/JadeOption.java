@@ -16,7 +16,7 @@ public class JadeOption extends ApplicationOption {
     private ApplicationLogger logger;
 
     public JadeOption() {
-        logger = new ApplicationLogger(LoggerFactory.getLogger(SettingsOption.class));
+        logger = new ApplicationLogger(LoggerFactory.getLogger(JadeOption.class));
         jadeSettings = JadeSettings.getInstance();
     }
 

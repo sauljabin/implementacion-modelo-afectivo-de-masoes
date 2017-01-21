@@ -16,13 +16,13 @@ import static org.junit.Assert.assertThat;
 public class EmotionalStateTest {
 
     @Test
-    public void shouldReturnCorrectGeometryPoint() {
+    public void shouldCreatePoint() {
         RandomGenerator random = new RandomGenerator();
         testEmotionalState(new EmotionalState(random.getDouble(0, 1), random.getDouble(0, 1)));
     }
 
     @Test
-    public void shouldConstructCorrectObject() {
+    public void shouldConstructEmotionalStateWithRandomValues() {
         testEmotionalState(new EmotionalState());
     }
 

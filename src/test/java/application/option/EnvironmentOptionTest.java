@@ -78,17 +78,6 @@ public class EnvironmentOptionTest {
     }
 
     @Test
-    public void shouldSetOnlySettingsAgent() {
-        doReturn(null).when(environmentMock).getAgentCommands();
-
-        environmentOption.exec();
-
-        verify(environmentFactoryMock).createEnvironment();
-        verify(environmentMock, atLeastOnce()).getAgentCommands();
-        verify(jadeSettingsMock).set(JadeSettings.AGENTS, "settings:" + SettingsAgent.class.getName());
-    }
-
-    @Test
     public void shouldInvokeEnvironmentCreationWithTwoAgents() {
         List<AgentCommandFormatter> expectedJadeAgentOptionList = new ArrayList<>();
         expectedJadeAgentOptionList.add(new AgentCommandFormatter("agent", Agent.class, Arrays.asList("arg1", "arg2")));
@@ -100,6 +89,17 @@ public class EnvironmentOptionTest {
         verify(environmentFactoryMock).createEnvironment();
         verify(environmentMock, atLeastOnce()).getAgentCommands();
         verify(jadeSettingsMock).set(JadeSettings.AGENTS, "agent:jade.core.Agent(arg1,arg2);agent2:jade.core.Agent;settings:" + SettingsAgent.class.getName());
+    }
+
+    @Test
+    public void shouldAddSettingsAgent() {
+        doReturn(null).when(environmentMock).getAgentCommands();
+
+        environmentOption.exec();
+
+        verify(environmentFactoryMock).createEnvironment();
+        verify(environmentMock, atLeastOnce()).getAgentCommands();
+        verify(jadeSettingsMock).set(JadeSettings.AGENTS, "settings:" + SettingsAgent.class.getName());
     }
 
     @Test

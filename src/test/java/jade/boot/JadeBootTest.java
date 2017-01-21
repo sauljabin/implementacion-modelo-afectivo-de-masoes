@@ -40,17 +40,22 @@ public class JadeBootTest {
     }
 
     @Test
-    public void shouldSetCorrectProfileVariables() {
-        String expectedKey = "key";
-        String expectedValue = "key";
+    public void shouldSetJadeSettingsInJadeProfile() {
+        String expectedKey1 = "key";
+        String expectedKey2 = "key";
+        String expectedValue1 = "key";
+        String expectedValue2 = "key";
 
         Map<String, String> map = new HashMap<>();
-        map.put(expectedKey, expectedValue);
+        map.put(expectedKey1, expectedValue1);
+        map.put(expectedKey2, expectedValue2);
 
         doReturn(map).when(jadeSettingsMock).toMap();
+
         jadeBoot.boot();
 
-        verify(jadeProfileMock).setParameter(expectedKey, expectedValue);
+        verify(jadeProfileMock).setParameter(expectedKey1, expectedValue1);
+        verify(jadeProfileMock).setParameter(expectedKey2, expectedValue2);
         verify(jadeRuntimeMock).setCloseVM(true);
         verify(jadeRuntimeMock).startUp(jadeProfileMock);
     }

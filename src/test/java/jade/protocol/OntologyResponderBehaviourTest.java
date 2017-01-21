@@ -23,6 +23,7 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -69,7 +70,7 @@ public class OntologyResponderBehaviourTest {
     public void shouldConfigContentManager() throws Exception {
         ontologyResponderBehaviour.prepareResponse(request);
         verify(contentManagerMock).registerOntology(ontologyMock);
-        verify(contentManagerMock).registerLanguage(any(SLCodec.class));
+        verify(contentManagerMock).registerLanguage(isA(SLCodec.class));
     }
 
     @Test
@@ -88,16 +89,15 @@ public class OntologyResponderBehaviourTest {
     }
 
     @Test
-    public void shouldReturnRefuseIfException() throws Exception {
+    public void shouldReturnRefuseIfThrowsExceptionInPrepareResponse() throws Exception {
         doThrow(new OntologyException(EXPECTED_EXCEPTION_MESSAGE)).when(contentManagerMock).extractContent(request);
-        doReturn(true).when(ontologyResponderBehaviourSpy).isValidAction(actionMock);
         ACLMessage response = ontologyResponderBehaviourSpy.prepareResponse(request);
         assertThat(response.getPerformative(), is(ACLMessage.REFUSE));
         assertThat(response.getContent(), is(EXPECTED_EXCEPTION_MESSAGE));
     }
 
     @Test
-    public void shouldReturnFailureIfException() throws Exception {
+    public void shouldReturnFailureIfThrowsExceptionInPerformAction() throws Exception {
         doThrow(new RuntimeException(EXPECTED_EXCEPTION_MESSAGE)).when(ontologyResponderBehaviourSpy).performAction(actionMock);
         ACLMessage response = ontologyResponderBehaviourSpy.prepareResultNotification(request, request.createReply());
         assertThat(response.getPerformative(), is(ACLMessage.FAILURE));

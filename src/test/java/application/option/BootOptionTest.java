@@ -45,7 +45,7 @@ public class BootOptionTest {
     }
 
     @Test
-    public void shouldInvokeEnvironmentCreation() {
+    public void shouldInvokeJadeBoot() {
         bootOption.exec();
         verify(jadeBootMock).boot();
     }

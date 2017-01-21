@@ -31,7 +31,7 @@ public class EmotionalConfiguratorTest {
     }
 
     @Test
-    public void shouldUpdateEmotionalState() {
+    public void shouldUpdateEmotionalStateWhenCalculateNewEmotion() {
         EmotionalState emotionalStateMock = mock(EmotionalState.class);
         Stimulus stimulusMock = mock(Stimulus.class);
         doReturn(emotionalStateMock).when(emotionalConfiguratorSpy).calculateEmotionalState(stimulusMock);

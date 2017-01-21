@@ -9,7 +9,7 @@ package masoes.environment.dummy;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
@@ -25,9 +25,9 @@ public class DummyEmotionalAgentTest {
     @Test
     public void shouldSetCorrectBehaviourConfiguration() {
         dummyEmotionalAgentSpy.setUp();
-        verify(dummyEmotionalAgentSpy).setCognitiveBehaviour(any(DummyCognitiveBehaviour.class));
-        verify(dummyEmotionalAgentSpy).setImitativeBehaviour(any(DummyImitativeBehaviour.class));
-        verify(dummyEmotionalAgentSpy).setReactiveBehaviour(any(DummyReactiveBehaviour.class));
+        verify(dummyEmotionalAgentSpy).setCognitiveBehaviour(isA(DummyCognitiveBehaviour.class));
+        verify(dummyEmotionalAgentSpy).setImitativeBehaviour(isA(DummyImitativeBehaviour.class));
+        verify(dummyEmotionalAgentSpy).setReactiveBehaviour(isA(DummyReactiveBehaviour.class));
     }
 
 }

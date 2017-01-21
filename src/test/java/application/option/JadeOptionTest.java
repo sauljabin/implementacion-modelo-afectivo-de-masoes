@@ -24,17 +24,27 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class JadeOptionTest {
 
+    private static final String GUI = "gui";
+    private static final String GUI_VALUE = "false";
+    private static final String PORT = "port";
+    private static final String PORT_VALUE = "1099";
     private JadeOption jadeOption;
     private JadeSettings jadeSettingsMock;
     private ApplicationLogger loggerMock;
+    private Properties properties;
 
     @Before
     public void setUp() throws Exception {
         jadeSettingsMock = mock(JadeSettings.class);
         loggerMock = mock(ApplicationLogger.class);
+
         jadeOption = new JadeOption();
         setFieldValue(jadeOption, "logger", loggerMock);
         setFieldValue(jadeOption, "jadeSettings", jadeSettingsMock);
+
+        properties = new Properties();
+        properties.put(GUI, GUI_VALUE);
+        properties.put(PORT, PORT_VALUE);
     }
 
     @Test
@@ -48,21 +58,11 @@ public class JadeOptionTest {
     }
 
     @Test
-    public void shouldSetSettings() {
-        String expectedKey1 = "expectedKey1";
-        String expectedValue1 = "value1";
-        String expectedKey2 = "expectedKey2";
-        String expectedValue2 = "value2";
-
-        Properties expectedProperties = new Properties();
-        expectedProperties.put(expectedKey1, expectedValue1);
-        expectedProperties.put(expectedKey2, expectedValue2);
-
-        jadeOption.setProperties(expectedProperties);
+    public void shouldSeJadeSettings() {
+        jadeOption.setProperties(properties);
         jadeOption.exec();
-
-        verify(jadeSettingsMock).set(expectedKey1, expectedValue1);
-        verify(jadeSettingsMock).set(expectedKey2, expectedValue2);
+        verify(jadeSettingsMock).set(GUI, GUI_VALUE);
+        verify(jadeSettingsMock).set(PORT, PORT_VALUE);
         verify(loggerMock).updatedSettings();
     }
 

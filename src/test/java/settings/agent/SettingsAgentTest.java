@@ -7,7 +7,6 @@
 package settings.agent;
 
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -26,9 +25,9 @@ import settings.behaviour.ResponseSettingsBehaviour;
 import settings.ontology.SettingsOntology;
 
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
@@ -47,12 +46,10 @@ public class SettingsAgentTest {
     private SettingsAgent settingsAgentSpy;
     private JadeLogger loggerMock;
     private ArgumentCaptor<DFAgentDescription> agentDescriptionArgumentCaptor;
-    private ArgumentCaptor<Behaviour> behaviourArgumentCaptor;
 
     @Before
     public void setUp() throws Exception {
         agentDescriptionArgumentCaptor = ArgumentCaptor.forClass(DFAgentDescription.class);
-        behaviourArgumentCaptor = ArgumentCaptor.forClass(Behaviour.class);
         loggerMock = mock(JadeLogger.class);
 
         SettingsAgent settingsAgent = new SettingsAgent();
@@ -64,8 +61,7 @@ public class SettingsAgentTest {
     @Test
     public void shouldAddSettingsBehaviour() {
         settingsAgentSpy.setup();
-        verify(settingsAgentSpy).addBehaviour(behaviourArgumentCaptor.capture());
-        assertThat(behaviourArgumentCaptor.getValue(), is(instanceOf(ResponseSettingsBehaviour.class)));
+        verify(settingsAgentSpy).addBehaviour(isA(ResponseSettingsBehaviour.class));
     }
 
     @Test
@@ -86,22 +82,22 @@ public class SettingsAgentTest {
         testService(serviceGetAllSettings, "GetAllSettings");
     }
 
-    private void testService(ServiceDescription actualService, String name) {
-        assertThat(actualService.getName(), is(name));
-        assertThat(actualService.getType(), is("settings-" + name));
-        assertThat(actualService.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
-        assertThat(actualService.getAllLanguages().next(), is(FIPANames.ContentLanguage.FIPA_SL));
-        assertThat(actualService.getAllOntologies().next(), is(SettingsOntology.ONTOLOGY_NAME));
-    }
-
     @Test
-    public void shouldLogErrorWhenRegister() throws Exception {
+    public void shouldLogErrorWhenRegisterThrowsException() throws Exception {
         FIPAException expectedException = new FIPAException("error");
         mockStatic(DFService.class);
         doThrow(expectedException).when(DFService.class);
         DFService.register(eq(settingsAgentSpy), any());
         settingsAgentSpy.setup();
         verify(loggerMock).agentException(settingsAgentSpy, expectedException);
+    }
+
+    private void testService(ServiceDescription actualService, String name) {
+        assertThat(actualService.getName(), is(name));
+        assertThat(actualService.getType(), is("settings-" + name));
+        assertThat(actualService.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
+        assertThat(actualService.getAllLanguages().next(), is(FIPANames.ContentLanguage.FIPA_SL));
+        assertThat(actualService.getAllOntologies().next(), is(SettingsOntology.ONTOLOGY_NAME));
     }
 
 }

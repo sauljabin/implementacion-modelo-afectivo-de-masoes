@@ -49,7 +49,7 @@ public class EnvironmentFactoryTest {
     }
 
     @Test
-    public void shouldThrowInvalidParameterWhenNoExistValueException() {
+    public void shouldThrowInvalidEnvironmentWhenEnvironmentNotExist() {
         String stringArg = "anything";
         doReturn(stringArg).when(applicationSettingsMock).get(ApplicationSettings.MASOES_ENV);
         expectedException.expect(InvalidEnvironmentException.class);
