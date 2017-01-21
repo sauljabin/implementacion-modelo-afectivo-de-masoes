@@ -31,69 +31,58 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 @PrepareForTest({Agent.class, Behaviour.class})
 public class JadeLoggerTest {
 
+    private static final String EXPECTED_AGENT_NAME = "AGENT";
     private Logger mockLogger;
     private JadeLogger jadeLogger;
+    private EmotionalAgent mockAgent;
+    private Behaviour mockBehaviour;
 
     @Before
     public void setUp() {
         mockLogger = mock(Logger.class);
         jadeLogger = new JadeLogger(mockLogger);
+        mockAgent = mock(EmotionalAgent.class);
+        doReturn(EXPECTED_AGENT_NAME).when(mockAgent).getLocalName();
+        mockBehaviour = mock(Behaviour.class);
     }
 
     @Test
     public void shouldLogAgentException() {
-        Agent mockAgent = mock(Agent.class);
-        String expectedAgentName = "agent";
-        doReturn(expectedAgentName).when(mockAgent).getLocalName();
-
         Exception expectedException = new Exception("error");
-        String expectedMessage = String.format("Exception in agent \"%s\": %s", expectedAgentName, expectedException.getMessage());
-
+        String expectedMessage = String.format("Exception in agent \"%s\": %s", EXPECTED_AGENT_NAME, expectedException.getMessage());
         jadeLogger.agentException(mockAgent, expectedException);
         verify(mockLogger).error(eq(expectedMessage), eq(expectedException));
     }
 
     @Test
     public void shouldLogAgentMessage() {
-        String expectedAgentName = "agent";
-        Agent mockAgent = mock(Agent.class);
-        doReturn(expectedAgentName).when(mockAgent).getLocalName();
-
         ACLMessage mockMessage = mock(ACLMessage.class);
         doReturn("message").when(mockMessage).toString();
-
-        String expectedMessage = String.format("Message in agent \"%s\": %s", expectedAgentName, mockMessage);
-
+        String expectedMessage = String.format("Message in agent \"%s\": %s", EXPECTED_AGENT_NAME, mockMessage);
         jadeLogger.agentMessage(mockAgent, mockMessage);
         verify(mockLogger).info(eq(expectedMessage));
     }
 
     @Test
     public void shouldLogAgentEmotionalState() {
-        String expectedAgentName = "agent";
-        EmotionalAgent mockAgent = mock(EmotionalAgent.class);
-        doReturn(expectedAgentName).when(mockAgent).getLocalName();
-
         Emotion mockEmotion = mock(Emotion.class);
         doReturn("emotion").when(mockEmotion).toString();
         doReturn(mockEmotion).when(mockAgent).getCurrentEmotion();
-
         EmotionalState emotionalState = new EmotionalState();
         doReturn(emotionalState).when(mockAgent).getEmotionalState();
 
-        Behaviour mockBehaviour = mock(Behaviour.class);
         String expectedBehaviourName = "behaviour";
         doReturn(expectedBehaviourName).when(mockBehaviour).getBehaviourName();
         doReturn(mockBehaviour).when(mockAgent).getCurrentEmotionalBehaviour();
 
-        String expectedMessage = String.format("Emotional state in agent \"%s\": emotion=%s, state=%s, behaviour=%s", expectedAgentName, mockEmotion, emotionalState, expectedBehaviourName);
+        String expectedMessage = String.format("Emotional state in agent \"%s\": emotion=%s, state=%s, behaviour=%s", EXPECTED_AGENT_NAME, mockEmotion, emotionalState, expectedBehaviourName);
 
         jadeLogger.agentEmotionalState(mockAgent);
         verify(mockLogger).info(eq(expectedMessage));
 
         expectedBehaviourName = "NO BEHAVIOUR";
         doReturn(null).when(mockAgent).getCurrentEmotionalBehaviour();
-        expectedMessage = String.format("Emotional state in agent \"%s\": emotion=%s, state=%s, behaviour=%s", expectedAgentName, mockEmotion, emotionalState, expectedBehaviourName);
+        expectedMessage = String.format("Emotional state in agent \"%s\": emotion=%s, state=%s, behaviour=%s", EXPECTED_AGENT_NAME, mockEmotion, emotionalState, expectedBehaviourName);
 
         jadeLogger.agentEmotionalState(mockAgent);
         verify(mockLogger).info(eq(expectedMessage));
@@ -101,10 +90,6 @@ public class JadeLoggerTest {
 
     @Test
     public void shouldLogAgentEmotionalStateChanged() {
-        String expectedAgentName = "agent";
-        EmotionalAgent mockAgent = mock(EmotionalAgent.class);
-        doReturn(expectedAgentName).when(mockAgent).getLocalName();
-
         Stimulus mockStimulus = mock(Stimulus.class);
         doReturn("stimulus").when(mockStimulus).toString();
 
@@ -115,19 +100,18 @@ public class JadeLoggerTest {
         EmotionalState emotionalState = new EmotionalState();
         doReturn(emotionalState).when(mockAgent).getEmotionalState();
 
-        Behaviour mockBehaviour = mock(Behaviour.class);
         String expectedBehaviourName = "behaviour";
         doReturn(expectedBehaviourName).when(mockBehaviour).getBehaviourName();
         doReturn(mockBehaviour).when(mockAgent).getCurrentEmotionalBehaviour();
 
-        String expectedMessage = String.format("Emotional state changed in agent \"%s\": stimulus=%s, emotion=%s, state=%s, behaviour=%s", expectedAgentName, mockStimulus, mockEmotion, emotionalState, expectedBehaviourName);
+        String expectedMessage = String.format("Emotional state changed in agent \"%s\": stimulus=%s, emotion=%s, state=%s, behaviour=%s", EXPECTED_AGENT_NAME, mockStimulus, mockEmotion, emotionalState, expectedBehaviourName);
 
         jadeLogger.agentEmotionalStateChanged(mockAgent, mockStimulus);
         verify(mockLogger).info(eq(expectedMessage));
 
         expectedBehaviourName = "NO BEHAVIOUR";
         doReturn(null).when(mockAgent).getCurrentEmotionalBehaviour();
-        expectedMessage = String.format("Emotional state changed in agent \"%s\": stimulus=%s, emotion=%s, state=%s, behaviour=%s", expectedAgentName, mockStimulus, mockEmotion, emotionalState, expectedBehaviourName);
+        expectedMessage = String.format("Emotional state changed in agent \"%s\": stimulus=%s, emotion=%s, state=%s, behaviour=%s", EXPECTED_AGENT_NAME, mockStimulus, mockEmotion, emotionalState, expectedBehaviourName);
 
         jadeLogger.agentEmotionalStateChanged(mockAgent, mockStimulus);
         verify(mockLogger).info(eq(expectedMessage));

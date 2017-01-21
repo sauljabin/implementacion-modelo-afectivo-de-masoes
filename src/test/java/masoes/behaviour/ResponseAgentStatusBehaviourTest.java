@@ -9,6 +9,7 @@ package masoes.behaviour;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
+import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import logger.jade.JadeLogger;
 import masoes.model.Emotion;
@@ -32,7 +33,7 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
-@PrepareForTest({Behaviour.class, EmotionalAgent.class})
+@PrepareForTest({Agent.class, Behaviour.class})
 public class ResponseAgentStatusBehaviourTest {
 
     private static final String EMOTION_NAME = "EMOTION NAME";

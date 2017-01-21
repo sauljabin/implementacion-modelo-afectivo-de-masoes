@@ -19,7 +19,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -36,12 +35,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
-@PrepareForTest({DFService.class, Agent.class})
+@PrepareForTest({Agent.class, DFService.class})
 public class SettingsAgentTest {
 
     private SettingsAgent spySettingsAgent;
@@ -58,7 +58,7 @@ public class SettingsAgentTest {
         SettingsAgent settingsAgent = new SettingsAgent();
         setFieldValue(settingsAgent, "logger", mockLogger);
 
-        spySettingsAgent = PowerMockito.spy(settingsAgent);
+        spySettingsAgent = spy(settingsAgent);
     }
 
     @Test
