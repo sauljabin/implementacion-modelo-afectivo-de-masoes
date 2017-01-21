@@ -4,11 +4,11 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.env.dummy;
+package masoes.environment.dummy;
 
-import masoes.env.Environment;
-import masoes.env.EnvironmentAgentInfo;
-import masoes.env.dummy.agent.DummyEmotionalAgent;
+import masoes.environment.Environment;
+import masoes.environment.EnvironmentAgentInfo;
+import masoes.environment.dummy.agent.DummyEmotionalAgent;
 
 import java.util.Arrays;
 import java.util.List;

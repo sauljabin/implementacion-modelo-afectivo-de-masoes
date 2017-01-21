@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.test.masoes.env.dummy;
+package functional.test.masoes.environment.dummy;
 
 import functional.test.core.FunctionalTest;
 import jade.content.lang.sl.SLCodec;
@@ -24,7 +24,7 @@ import masoes.core.ontology.EvaluateStimulus;
 import masoes.core.ontology.GetAgentStatus;
 import masoes.core.ontology.MasoesOntology;
 import masoes.core.ontology.Stimulus;
-import masoes.env.dummy.agent.DummyEmotionalAgent;
+import masoes.environment.dummy.agent.DummyEmotionalAgent;
 import test.common.TestException;
 
 public class ShouldChangeEmotionAndBehaviourTest extends FunctionalTest {

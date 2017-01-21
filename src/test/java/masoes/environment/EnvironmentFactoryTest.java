@@ -4,12 +4,12 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.env;
+package masoes.environment;
 
 import application.settings.ApplicationSettings;
-import masoes.env.dummy.DummyEnvironment;
-import masoes.env.exception.InvalidEnvironmentException;
-import masoes.env.wikipedia.WikipediaEnvironment;
+import masoes.environment.dummy.DummyEnvironment;
+import masoes.environment.exception.InvalidEnvironmentException;
+import masoes.environment.wikipedia.WikipediaEnvironment;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

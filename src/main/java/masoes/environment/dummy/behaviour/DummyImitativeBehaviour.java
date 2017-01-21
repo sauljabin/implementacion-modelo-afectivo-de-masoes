@@ -4,11 +4,11 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.env.dummy.behaviour;
+package masoes.environment.dummy.behaviour;
 
 import jade.core.behaviours.Behaviour;
 
-public class DummyReactiveBehaviour extends Behaviour {
+public class DummyImitativeBehaviour extends Behaviour {
 
     @Override
     public void action() {

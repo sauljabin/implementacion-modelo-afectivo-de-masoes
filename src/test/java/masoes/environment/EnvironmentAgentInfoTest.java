@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.env;
+package masoes.environment;
 
 import jade.core.Agent;
 import org.junit.Test;

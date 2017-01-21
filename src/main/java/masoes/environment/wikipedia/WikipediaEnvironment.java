@@ -4,10 +4,10 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.env.wikipedia;
+package masoes.environment.wikipedia;
 
-import masoes.env.Environment;
-import masoes.env.EnvironmentAgentInfo;
+import masoes.environment.Environment;
+import masoes.environment.EnvironmentAgentInfo;
 
 import java.util.List;
 

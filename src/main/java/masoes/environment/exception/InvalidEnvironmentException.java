@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.env.exception;
+package masoes.environment.exception;
 
 public class InvalidEnvironmentException extends RuntimeException {
 

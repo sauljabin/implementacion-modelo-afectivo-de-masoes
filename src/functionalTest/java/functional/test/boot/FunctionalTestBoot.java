@@ -11,7 +11,7 @@ import application.settings.ApplicationSettings;
 import functional.test.core.FunctionalTesterAgent;
 import jade.boot.JadeBoot;
 import jade.settings.JadeSettings;
-import masoes.env.EnvironmentAgentInfo;
+import masoes.environment.EnvironmentAgentInfo;
 import org.slf4j.LoggerFactory;
 
 public class FunctionalTestBoot {

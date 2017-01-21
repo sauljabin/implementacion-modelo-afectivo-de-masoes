@@ -4,12 +4,12 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.env.dummy.agent;
+package masoes.environment.dummy.agent;
 
 import masoes.core.EmotionalAgent;
-import masoes.env.dummy.behaviour.DummyCognitiveBehaviour;
-import masoes.env.dummy.behaviour.DummyImitativeBehaviour;
-import masoes.env.dummy.behaviour.DummyReactiveBehaviour;
+import masoes.environment.dummy.behaviour.DummyCognitiveBehaviour;
+import masoes.environment.dummy.behaviour.DummyImitativeBehaviour;
+import masoes.environment.dummy.behaviour.DummyReactiveBehaviour;
 
 public class DummyEmotionalAgent extends EmotionalAgent {
 

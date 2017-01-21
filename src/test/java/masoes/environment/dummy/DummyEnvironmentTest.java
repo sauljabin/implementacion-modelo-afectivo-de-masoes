@@ -4,10 +4,10 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.env.dummy;
+package masoes.environment.dummy;
 
-import masoes.env.EnvironmentAgentInfo;
-import masoes.env.dummy.agent.DummyEmotionalAgent;
+import masoes.environment.EnvironmentAgentInfo;
+import masoes.environment.dummy.agent.DummyEmotionalAgent;
 import org.junit.Before;
 import org.junit.Test;
 

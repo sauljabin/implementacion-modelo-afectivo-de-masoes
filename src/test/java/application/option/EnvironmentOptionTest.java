@@ -10,9 +10,9 @@ import application.settings.ApplicationSettings;
 import jade.core.Agent;
 import jade.settings.JadeSettings;
 import jade.settings.agent.SettingsAgent;
-import masoes.env.Environment;
-import masoes.env.EnvironmentAgentInfo;
-import masoes.env.EnvironmentFactory;
+import masoes.environment.Environment;
+import masoes.environment.EnvironmentAgentInfo;
+import masoes.environment.EnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
 

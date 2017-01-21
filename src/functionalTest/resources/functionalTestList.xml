@@ -19,7 +19,7 @@
         <WhenTestPass>The test passes if the agent return not understood</WhenTestPass>
     </Test>
     <Test name="Should change emotion and behaviour agent" skip="false">
-        <TestClassName>functional.test.masoes.env.dummy.ShouldChangeEmotionAndBehaviourTest</TestClassName>
+        <TestClassName>functional.test.masoes.environment.dummy.ShouldChangeEmotionAndBehaviourTest</TestClassName>
         <WhatTest>Emotional agent behaviour</WhatTest>
         <HowWorkTest>An agent make request to an emotional agent and change his behaviour</HowWorkTest>
         <WhenTestPass>The test passes if the agent change his behaviour</WhenTestPass>
