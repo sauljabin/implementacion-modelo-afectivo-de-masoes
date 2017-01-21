@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package application.option;
+package application.option.exception;
 
 public class ApplicationOptionProcessorException extends RuntimeException {
 

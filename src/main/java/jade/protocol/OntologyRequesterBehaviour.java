@@ -15,7 +15,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import jade.protocol.exception.RequesterException;
+import jade.ontology.exception.FillOntologyContentException;
 
 public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
 
@@ -46,7 +46,7 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
         try {
             contentManager.fillContent(message, new Action(myAgent.getAID(), agentAction));
         } catch (Exception e) {
-            throw new RequesterException(e.getMessage(), e);
+            throw new FillOntologyContentException(e.getMessage(), e);
         }
 
         return message;

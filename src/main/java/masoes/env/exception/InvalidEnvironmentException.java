@@ -4,15 +4,15 @@
  * Please see the LICENSE.txt file
  */
 
-package jade.ontology;
+package masoes.env.exception;
 
-public class SetupOntologyException extends RuntimeException {
+public class InvalidEnvironmentException extends RuntimeException {
 
-    public SetupOntologyException(String message) {
+    public InvalidEnvironmentException(String message) {
         super(message);
     }
 
-    public SetupOntologyException(String message, Throwable cause) {
+    public InvalidEnvironmentException(String message, Throwable cause) {
         super(message, cause);
     }
 

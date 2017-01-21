@@ -6,6 +6,7 @@
 
 package common.settings;
 
+import common.settings.exception.SettingsException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

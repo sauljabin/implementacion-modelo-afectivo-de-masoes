@@ -4,15 +4,15 @@
  * Please see the LICENSE.txt file
  */
 
-package jade.protocol.exception;
+package jade.ontology.exception;
 
-public class RequesterException extends RuntimeException {
+public class SetupOntologyException extends RuntimeException {
 
-    public RequesterException(String message) {
+    public SetupOntologyException(String message) {
         super(message);
     }
 
-    public RequesterException(String message, Throwable cause) {
+    public SetupOntologyException(String message, Throwable cause) {
         super(message, cause);
     }
 

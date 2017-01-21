@@ -16,7 +16,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import jade.protocol.exception.RequesterException;
+import jade.ontology.exception.FillOntologyContentException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -95,7 +95,7 @@ public class OntologyRequesterBehaviourTest {
         String message = "MESSAGE";
         doThrow(new OntologyException(message)).when(contentManagerMock).fillContent(eq(request), any(AgentAction.class));
         expectedException.expectMessage(message);
-        expectedException.expect(RequesterException.class);
+        expectedException.expect(FillOntologyContentException.class);
         ontologyRequesterBehaviour.prepareRequest(request);
     }
 

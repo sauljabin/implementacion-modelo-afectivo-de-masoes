@@ -6,6 +6,8 @@
 
 package common.settings;
 
+import common.settings.exception.SettingsException;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;

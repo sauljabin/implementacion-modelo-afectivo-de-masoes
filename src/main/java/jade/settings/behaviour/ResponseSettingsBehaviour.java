@@ -7,7 +7,7 @@
 package jade.settings.behaviour;
 
 import application.settings.ApplicationSettings;
-import common.settings.SettingsException;
+import common.settings.exception.SettingsException;
 import jade.content.Concept;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;

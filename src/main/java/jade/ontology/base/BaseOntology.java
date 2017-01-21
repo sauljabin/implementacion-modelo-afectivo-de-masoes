@@ -8,7 +8,7 @@ package jade.ontology.base;
 
 import jade.content.onto.BasicOntology;
 import jade.content.onto.BeanOntology;
-import jade.ontology.SetupOntologyException;
+import jade.ontology.exception.SetupOntologyException;
 
 public class BaseOntology extends BeanOntology {
 

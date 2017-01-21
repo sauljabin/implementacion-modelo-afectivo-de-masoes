@@ -4,15 +4,15 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.env;
+package common.settings.exception;
 
-public class InvalidEnvironmentException extends RuntimeException {
+public class SettingsException extends RuntimeException {
 
-    public InvalidEnvironmentException(String message) {
+    public SettingsException(String message) {
         super(message);
     }
 
-    public InvalidEnvironmentException(String message, Throwable cause) {
+    public SettingsException(String message, Throwable cause) {
         super(message, cause);
     }
 
