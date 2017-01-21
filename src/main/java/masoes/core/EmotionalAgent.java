@@ -10,10 +10,10 @@ import jade.content.lang.sl.SLCodec;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.logger.JadeLogger;
-import masoes.core.behaviour.ResponseAgentStatusBehaviour;
-import masoes.core.behaviour.StimulusReceiverBehaviour;
-import masoes.core.ontology.MasoesOntology;
-import masoes.core.ontology.Stimulus;
+import masoes.behaviour.ResponseAgentStatusBehaviour;
+import masoes.behaviour.StimulusReceiverBehaviour;
+import masoes.ontology.MasoesOntology;
+import masoes.ontology.Stimulus;
 import org.slf4j.LoggerFactory;
 
 public class EmotionalAgent extends Agent {

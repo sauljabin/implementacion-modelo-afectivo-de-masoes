@@ -6,7 +6,7 @@
 
 package masoes.core;
 
-import masoes.core.ontology.Stimulus;
+import masoes.ontology.Stimulus;
 import org.junit.Before;
 import org.junit.Test;
 

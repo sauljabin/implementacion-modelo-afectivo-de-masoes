@@ -12,7 +12,7 @@ import jade.lang.acl.ACLMessage;
 import masoes.core.Emotion;
 import masoes.core.EmotionalAgent;
 import masoes.core.EmotionalState;
-import masoes.core.ontology.Stimulus;
+import masoes.ontology.Stimulus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

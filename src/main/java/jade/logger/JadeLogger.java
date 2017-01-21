@@ -11,7 +11,7 @@ import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import masoes.core.EmotionalAgent;
-import masoes.core.ontology.Stimulus;
+import masoes.ontology.Stimulus;
 import org.slf4j.Logger;
 
 import java.util.Optional;

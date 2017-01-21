@@ -19,11 +19,11 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.ontology.base.ActionResult;
 import jade.settings.ontology.SettingsOntology;
-import masoes.core.ontology.AgentStatus;
-import masoes.core.ontology.EvaluateStimulus;
-import masoes.core.ontology.GetAgentStatus;
-import masoes.core.ontology.MasoesOntology;
-import masoes.core.ontology.Stimulus;
+import masoes.ontology.AgentStatus;
+import masoes.ontology.EvaluateStimulus;
+import masoes.ontology.GetAgentStatus;
+import masoes.ontology.MasoesOntology;
+import masoes.ontology.Stimulus;
 import masoes.environment.dummy.agent.DummyEmotionalAgent;
 import test.common.TestException;
 
