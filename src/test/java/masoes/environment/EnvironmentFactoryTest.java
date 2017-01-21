@@ -27,31 +27,31 @@ public class EnvironmentFactoryTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     private EnvironmentFactory environmentFactory;
-    private ApplicationSettings mockApplicationSettings;
+    private ApplicationSettings applicationSettingsMock;
 
     @Before
     public void setUp() throws Exception {
-        mockApplicationSettings = mock(ApplicationSettings.class);
+        applicationSettingsMock = mock(ApplicationSettings.class);
         environmentFactory = new EnvironmentFactory();
-        setFieldValue(environmentFactory, "applicationSettings", mockApplicationSettings);
+        setFieldValue(environmentFactory, "applicationSettings", applicationSettingsMock);
     }
 
     @Test
     public void shouldCreateDummyEnvironment() {
-        doReturn("dummy").when(mockApplicationSettings).get(ApplicationSettings.MASOES_ENV);
+        doReturn("dummy").when(applicationSettingsMock).get(ApplicationSettings.MASOES_ENV);
         assertThat(environmentFactory.createEnvironment(), instanceOf(DummyEnvironment.class));
     }
 
     @Test
     public void shouldCreateWikipediaEnvironment() {
-        doReturn("wikipedia").when(mockApplicationSettings).get(ApplicationSettings.MASOES_ENV);
+        doReturn("wikipedia").when(applicationSettingsMock).get(ApplicationSettings.MASOES_ENV);
         assertThat(environmentFactory.createEnvironment(), instanceOf(WikipediaEnvironment.class));
     }
 
     @Test
     public void shouldThrowInvalidParameterWhenNoExistValueException() {
         String stringArg = "anything";
-        doReturn(stringArg).when(mockApplicationSettings).get(ApplicationSettings.MASOES_ENV);
+        doReturn(stringArg).when(applicationSettingsMock).get(ApplicationSettings.MASOES_ENV);
         expectedException.expect(InvalidEnvironmentException.class);
         expectedException.expectMessage(String.format("Invalid environment name \"%s\"", stringArg));
         environmentFactory.createEnvironment();

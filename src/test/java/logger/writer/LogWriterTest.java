@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 
 public class LogWriterTest {
 
-    private Logger mockLogger;
+    private Logger loggerMock;
     private String expectedMessage;
     private Exception expectedException;
     private String expectedFormat;
@@ -26,7 +26,7 @@ public class LogWriterTest {
 
     @Before
     public void setUp() {
-        mockLogger = mock(Logger.class);
+        loggerMock = mock(Logger.class);
         expectedMessage = "message";
         expectedException = new Exception("exception message");
         expectedFormat = "String %s, Integer %d, Double %f";
@@ -37,104 +37,104 @@ public class LogWriterTest {
 
     @Test
     public void shouldInvokeInfoWithMessage() {
-        logWriter.message(expectedMessage).info(mockLogger);
-        verify(mockLogger).info(eq(expectedMessage));
+        logWriter.message(expectedMessage).info(loggerMock);
+        verify(loggerMock).info(eq(expectedMessage));
     }
 
     @Test
     public void shouldInvokeInfoWithMessageAndError() {
-        logWriter.message(expectedMessage).exception(expectedException).info(mockLogger);
-        verify(mockLogger).info(eq(expectedMessage), eq(expectedException));
+        logWriter.message(expectedMessage).exception(expectedException).info(loggerMock);
+        verify(loggerMock).info(eq(expectedMessage), eq(expectedException));
     }
 
     @Test
     public void shouldInvokeInfoWithArguments() {
-        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).info(mockLogger);
-        verify(mockLogger).info(eq(expectedFormatMessage));
+        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).info(loggerMock);
+        verify(loggerMock).info(eq(expectedFormatMessage));
     }
 
     @Test
     public void shouldInvokeInfoWithArgumentsAndError() {
-        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).exception(expectedException).info(mockLogger);
-        verify(mockLogger).info(eq(expectedFormatMessage), eq(expectedException));
+        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).exception(expectedException).info(loggerMock);
+        verify(loggerMock).info(eq(expectedFormatMessage), eq(expectedException));
     }
 
     @Test
     public void shouldInvokeWarnWithMessage() {
-        logWriter.message(expectedMessage).warn(mockLogger);
-        verify(mockLogger).warn(eq(expectedMessage));
+        logWriter.message(expectedMessage).warn(loggerMock);
+        verify(loggerMock).warn(eq(expectedMessage));
     }
 
     @Test
     public void shouldInvokeWarnWithMessageAndError() {
-        logWriter.message(expectedMessage).exception(expectedException).warn(mockLogger);
-        verify(mockLogger).warn(eq(expectedMessage), eq(expectedException));
+        logWriter.message(expectedMessage).exception(expectedException).warn(loggerMock);
+        verify(loggerMock).warn(eq(expectedMessage), eq(expectedException));
     }
 
     @Test
     public void shouldInvokeWarnWithArguments() {
-        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).warn(mockLogger);
-        verify(mockLogger).warn(eq(expectedFormatMessage));
+        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).warn(loggerMock);
+        verify(loggerMock).warn(eq(expectedFormatMessage));
     }
 
     @Test
     public void shouldInvokeWarnWithArgumentsAndError() {
-        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).exception(expectedException).warn(mockLogger);
-        verify(mockLogger).warn(eq(expectedFormatMessage), eq(expectedException));
+        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).exception(expectedException).warn(loggerMock);
+        verify(loggerMock).warn(eq(expectedFormatMessage), eq(expectedException));
     }
 
     @Test
     public void shouldInvokeErrorWithMessage() {
-        logWriter.message(expectedMessage).error(mockLogger);
-        verify(mockLogger).error(eq(expectedMessage));
+        logWriter.message(expectedMessage).error(loggerMock);
+        verify(loggerMock).error(eq(expectedMessage));
     }
 
     @Test
     public void shouldInvokeErrorWithMessageAndError() {
-        logWriter.message(expectedMessage).exception(expectedException).error(mockLogger);
-        verify(mockLogger).error(eq(expectedMessage), eq(expectedException));
+        logWriter.message(expectedMessage).exception(expectedException).error(loggerMock);
+        verify(loggerMock).error(eq(expectedMessage), eq(expectedException));
     }
 
     @Test
     public void shouldInvokeErrorWithArguments() {
-        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).error(mockLogger);
-        verify(mockLogger).error(eq(expectedFormatMessage));
+        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).error(loggerMock);
+        verify(loggerMock).error(eq(expectedFormatMessage));
     }
 
     @Test
     public void shouldInvokeErrorWithArgumentsAndError() {
-        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).exception(expectedException).error(mockLogger);
-        verify(mockLogger).error(eq(expectedFormatMessage), eq(expectedException));
+        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).exception(expectedException).error(loggerMock);
+        verify(loggerMock).error(eq(expectedFormatMessage), eq(expectedException));
     }
 
     @Test
     public void shouldInvokeDebugWithMessage() {
-        logWriter.message(expectedMessage).debug(mockLogger);
-        verify(mockLogger).debug(eq(expectedMessage));
+        logWriter.message(expectedMessage).debug(loggerMock);
+        verify(loggerMock).debug(eq(expectedMessage));
     }
 
     @Test
     public void shouldInvokeDebugWithMessageAndError() {
-        logWriter.message(expectedMessage).exception(expectedException).debug(mockLogger);
-        verify(mockLogger).debug(eq(expectedMessage), eq(expectedException));
+        logWriter.message(expectedMessage).exception(expectedException).debug(loggerMock);
+        verify(loggerMock).debug(eq(expectedMessage), eq(expectedException));
     }
 
     @Test
     public void shouldInvokeDebugWithArguments() {
-        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).debug(mockLogger);
-        verify(mockLogger).debug(eq(expectedFormatMessage));
+        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).debug(loggerMock);
+        verify(loggerMock).debug(eq(expectedFormatMessage));
     }
 
     @Test
     public void shouldInvokeDebugWithArgumentsAndError() {
-        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).exception(expectedException).debug(mockLogger);
-        verify(mockLogger).debug(eq(expectedFormatMessage), eq(expectedException));
+        logWriter.message(expectedFormatMessage).args(expectedMessageObjects).exception(expectedException).debug(loggerMock);
+        verify(loggerMock).debug(eq(expectedFormatMessage), eq(expectedException));
     }
 
     @Test
     public void shouldAddArgsInDifferentInvokes() {
-        logWriter.message(expectedFormat).args("arg").args(1).args(0.4).info(mockLogger);
-        verify(mockLogger).info(eq(expectedFormatMessage));
+        logWriter.message(expectedFormat).args("arg").args(1).args(0.4).info(loggerMock);
+        verify(loggerMock).info(eq(expectedFormatMessage));
     }
 
 }

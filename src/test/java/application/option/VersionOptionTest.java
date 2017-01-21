@@ -26,13 +26,13 @@ public class VersionOptionTest {
     public SystemOutRule systemOutRule = new SystemOutRule().enableLog();
 
     private VersionOption versionOption;
-    private ApplicationSettings mockApplicationSettings;
+    private ApplicationSettings applicationSettingsMock;
 
     @Before
     public void setUp() throws Exception {
-        mockApplicationSettings = mock(ApplicationSettings.class);
+        applicationSettingsMock = mock(ApplicationSettings.class);
         versionOption = new VersionOption();
-        setFieldValue(versionOption, "applicationSettings", mockApplicationSettings);
+        setFieldValue(versionOption, "applicationSettings", applicationSettingsMock);
     }
 
     @Test
@@ -53,11 +53,11 @@ public class VersionOptionTest {
         String jadeVersion = "jadeVersion";
         String jadeRevision = "jadeRevision";
 
-        doReturn(appName).when(mockApplicationSettings).get(ApplicationSettings.APP_NAME);
-        doReturn(appVersion).when(mockApplicationSettings).get(ApplicationSettings.APP_VERSION);
-        doReturn(appRevision).when(mockApplicationSettings).get(ApplicationSettings.APP_REVISION);
-        doReturn(jadeVersion).when(mockApplicationSettings).get(ApplicationSettings.JADE_VERSION);
-        doReturn(jadeRevision).when(mockApplicationSettings).get(ApplicationSettings.JADE_REVISION);
+        doReturn(appName).when(applicationSettingsMock).get(ApplicationSettings.APP_NAME);
+        doReturn(appVersion).when(applicationSettingsMock).get(ApplicationSettings.APP_VERSION);
+        doReturn(appRevision).when(applicationSettingsMock).get(ApplicationSettings.APP_REVISION);
+        doReturn(jadeVersion).when(applicationSettingsMock).get(ApplicationSettings.JADE_VERSION);
+        doReturn(jadeRevision).when(applicationSettingsMock).get(ApplicationSettings.JADE_REVISION);
 
         String expectedStringMasoes = String.format("%s\nVersion: %s\nRevision: %s", appName, appVersion, appRevision);
         String expectedStringJade = String.format("JADE\nVersion: %s\nRevision: %s\n", jadeVersion, jadeRevision);

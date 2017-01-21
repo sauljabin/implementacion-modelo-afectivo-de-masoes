@@ -38,30 +38,30 @@ public class ResponseSettingsBehaviourTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    private Agent mockAgent;
+    private Agent agentMock;
     private ResponseSettingsBehaviour settingsBehaviour;
-    private JadeLogger mockLogger;
-    private ApplicationSettings mockApplicationSettings;
-    private JadeSettings mockJadeSettings;
+    private JadeLogger loggerMock;
+    private ApplicationSettings applicationSettingsMock;
+    private JadeSettings jadeSettingsMock;
 
     @Before
     public void setUp() throws Exception {
-        mockAgent = mock(Agent.class);
-        mockLogger = mock(JadeLogger.class);
-        mockApplicationSettings = mock(ApplicationSettings.class);
-        mockJadeSettings = mock(JadeSettings.class);
+        agentMock = mock(Agent.class);
+        loggerMock = mock(JadeLogger.class);
+        applicationSettingsMock = mock(ApplicationSettings.class);
+        jadeSettingsMock = mock(JadeSettings.class);
 
-        settingsBehaviour = new ResponseSettingsBehaviour(mockAgent);
-        setFieldValue(settingsBehaviour, "logger", mockLogger);
-        setFieldValue(settingsBehaviour, "applicationSettings", mockApplicationSettings);
-        setFieldValue(settingsBehaviour, "jadeSettings", mockJadeSettings);
+        settingsBehaviour = new ResponseSettingsBehaviour(agentMock);
+        setFieldValue(settingsBehaviour, "logger", loggerMock);
+        setFieldValue(settingsBehaviour, "applicationSettings", applicationSettingsMock);
+        setFieldValue(settingsBehaviour, "jadeSettings", jadeSettingsMock);
     }
 
     @Test
     public void shouldReturnASetting() throws Exception {
         String keyApp = "keyApp";
         String valueApp = "valueApp";
-        doReturn(valueApp).when(mockApplicationSettings).get(keyApp);
+        doReturn(valueApp).when(applicationSettingsMock).get(keyApp);
         testReturnASettings(keyApp, valueApp);
     }
 
@@ -69,7 +69,7 @@ public class ResponseSettingsBehaviourTest {
     public void shouldReturnAJadeSetting() throws Exception {
         String keyJade = "keyJade";
         String valueJade = "valueJade";
-        doReturn(valueJade).when(mockJadeSettings).get(keyJade);
+        doReturn(valueJade).when(jadeSettingsMock).get(keyJade);
         testReturnASettings(keyJade, valueJade);
     }
 
@@ -78,8 +78,8 @@ public class ResponseSettingsBehaviourTest {
         String key = "no-key";
         expectedException.expectMessage("Setting not found " + key);
         expectedException.expect(SettingsException.class);
-        doReturn(null).when(mockApplicationSettings).get(key);
-        doReturn(null).when(mockJadeSettings).get(key);
+        doReturn(null).when(applicationSettingsMock).get(key);
+        doReturn(null).when(jadeSettingsMock).get(key);
         GetSetting getSetting = new GetSetting(key);
         Action action = new Action(new AID(), getSetting);
         settingsBehaviour.performAction(action);
@@ -90,12 +90,12 @@ public class ResponseSettingsBehaviourTest {
         Map<String, String> appSettingsMap = new HashMap<>();
         appSettingsMap.put("keyApp1", "valueApp1");
         appSettingsMap.put("keyApp2", "valueApp2");
-        doReturn(appSettingsMap).when(mockApplicationSettings).toMap();
+        doReturn(appSettingsMap).when(applicationSettingsMock).toMap();
 
         Map<String, String> jadeSettingsMap = new HashMap<>();
         jadeSettingsMap.put("keyJade1", "valueJade1");
         jadeSettingsMap.put("keyJade2", "valueJade2");
-        doReturn(jadeSettingsMap).when(mockJadeSettings).toMap();
+        doReturn(jadeSettingsMap).when(jadeSettingsMock).toMap();
 
         SystemSettings expectedSetting = new SystemSettings();
         List appList = new ArrayList();

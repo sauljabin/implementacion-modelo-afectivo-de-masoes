@@ -40,7 +40,7 @@ public class ResponseAgentStatusBehaviourTest {
     private static final String BEHAVIOUR_NAME = "BEHAVIOUR NAME";
     private EmotionalAgent emotionalAgentMock;
     private ResponseAgentStatusBehaviour responseAgentStatusBehaviour;
-    private JadeLogger mockLogger;
+    private JadeLogger loggerMock;
     private Emotion emotionMock;
     private Behaviour behaviourMock;
 
@@ -57,8 +57,8 @@ public class ResponseAgentStatusBehaviourTest {
         doReturn(BEHAVIOUR_NAME).when(behaviourMock).getBehaviourName();
         doReturn(behaviourMock).when(emotionalAgentMock).getCurrentEmotionalBehaviour();
 
-        mockLogger = mock(JadeLogger.class);
-        setFieldValue(responseAgentStatusBehaviour, "logger", mockLogger);
+        loggerMock = mock(JadeLogger.class);
+        setFieldValue(responseAgentStatusBehaviour, "logger", loggerMock);
     }
 
     @Test

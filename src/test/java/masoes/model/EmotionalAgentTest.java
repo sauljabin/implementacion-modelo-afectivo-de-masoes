@@ -32,35 +32,35 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class EmotionalAgentTest {
 
-    private EmotionalState mockEmotionalState;
+    private EmotionalState emotionalStateMock;
     private EmotionalAgent spyEmotionalAgent;
-    private BehaviourManager mockBehaviourManager;
-    private Behaviour mockBehaviour;
-    private EmotionalConfigurator mockEmotionalConfigurator;
-    private Emotion mockEmotion;
-    private Stimulus mockStimulus;
-    private JadeLogger mockLogger;
+    private BehaviourManager behaviourManagerMock;
+    private Behaviour behaviourMock;
+    private EmotionalConfigurator emotionalConfiguratorMock;
+    private Emotion emotionMock;
+    private Stimulus stimulusMock;
+    private JadeLogger loggerMock;
     private ArgumentCaptor<Behaviour> behaviourArgumentCaptor;
 
     @Before
     public void setUp() throws Exception {
         behaviourArgumentCaptor = ArgumentCaptor.forClass(Behaviour.class);
 
-        mockBehaviourManager = mock(BehaviourManager.class);
-        mockEmotionalConfigurator = mock(EmotionalConfigurator.class);
-        mockLogger = mock(JadeLogger.class);
-        mockEmotionalState = mock(EmotionalState.class);
-        mockBehaviour = mock(Behaviour.class);
-        mockEmotion = mock(Emotion.class);
-        mockStimulus = mock(Stimulus.class);
+        behaviourManagerMock = mock(BehaviourManager.class);
+        emotionalConfiguratorMock = mock(EmotionalConfigurator.class);
+        loggerMock = mock(JadeLogger.class);
+        emotionalStateMock = mock(EmotionalState.class);
+        behaviourMock = mock(Behaviour.class);
+        emotionMock = mock(Emotion.class);
+        stimulusMock = mock(Stimulus.class);
 
         spyEmotionalAgent = createAgent();
 
-        doReturn(mockEmotion).when(mockEmotionalConfigurator).getEmotion();
-        doReturn(mockEmotionalState).when(mockEmotionalConfigurator).getEmotionalState();
-        doReturn(mockBehaviour).when(mockBehaviourManager).calculateBehaviour(any());
-        doReturn(mockBehaviour).when(mockBehaviourManager).getBehaviour();
-        doNothing().when(mockBehaviourManager).updateBehaviour(any());
+        doReturn(emotionMock).when(emotionalConfiguratorMock).getEmotion();
+        doReturn(emotionalStateMock).when(emotionalConfiguratorMock).getEmotionalState();
+        doReturn(behaviourMock).when(behaviourManagerMock).calculateBehaviour(any());
+        doReturn(behaviourMock).when(behaviourManagerMock).getBehaviour();
+        doNothing().when(behaviourManagerMock).updateBehaviour(any());
 
         spyEmotionalAgent.setup();
     }
@@ -69,40 +69,40 @@ public class EmotionalAgentTest {
     public void shouldAddBasicBehaviors() {
         verify(spyEmotionalAgent, atLeastOnce()).addBehaviour(behaviourArgumentCaptor.capture());
         verify(spyEmotionalAgent, atLeastOnce()).addBehaviour(behaviourArgumentCaptor.capture());
-        assertThat(spyEmotionalAgent.getCurrentEmotionalBehaviour(), is(mockBehaviour));
-        assertThat(spyEmotionalAgent.getCurrentEmotion(), is(mockEmotion));
+        assertThat(spyEmotionalAgent.getCurrentEmotionalBehaviour(), is(behaviourMock));
+        assertThat(spyEmotionalAgent.getCurrentEmotion(), is(emotionMock));
         assertThat(behaviourArgumentCaptor.getAllValues(), hasItems(is(instanceOf(ResponseAgentStatusBehaviour.class)), is(instanceOf(StimulusReceiverBehaviour.class))));
 
-        InOrder inOrder = inOrder(spyEmotionalAgent, mockBehaviourManager);
+        InOrder inOrder = inOrder(spyEmotionalAgent, behaviourManagerMock);
         inOrder.verify(spyEmotionalAgent).setUp();
-        inOrder.verify(mockBehaviourManager).updateBehaviour(spyEmotionalAgent);
+        inOrder.verify(behaviourManagerMock).updateBehaviour(spyEmotionalAgent);
     }
 
     @Test
     public void shouldUpdateBehaviour() throws Exception {
         spyEmotionalAgent = createAgent();
-        spyEmotionalAgent.evaluateStimulus(mockStimulus);
-        verify(mockBehaviourManager).updateBehaviour(spyEmotionalAgent);
+        spyEmotionalAgent.evaluateStimulus(stimulusMock);
+        verify(behaviourManagerMock).updateBehaviour(spyEmotionalAgent);
     }
 
     @Test
     public void shouldUpdateEmotion() {
-        spyEmotionalAgent.evaluateStimulus(mockStimulus);
-        verify(mockEmotionalConfigurator).updateEmotion(mockStimulus);
+        spyEmotionalAgent.evaluateStimulus(stimulusMock);
+        verify(emotionalConfiguratorMock).updateEmotion(stimulusMock);
     }
 
     @Test
     public void shouldLogEmotionChange() {
-        spyEmotionalAgent.evaluateStimulus(mockStimulus);
-        verify(mockLogger).agentEmotionalState(spyEmotionalAgent);
-        verify(mockLogger).agentEmotionalStateChanged(spyEmotionalAgent, mockStimulus);
+        spyEmotionalAgent.evaluateStimulus(stimulusMock);
+        verify(loggerMock).agentEmotionalState(spyEmotionalAgent);
+        verify(loggerMock).agentEmotionalStateChanged(spyEmotionalAgent, stimulusMock);
     }
 
     private EmotionalAgent createAgent() throws Exception {
         EmotionalAgent emotionalAgent = new EmotionalAgent();
-        setFieldValue(emotionalAgent, "behaviourManager", mockBehaviourManager);
-        setFieldValue(emotionalAgent, "emotionalConfigurator", mockEmotionalConfigurator);
-        setFieldValue(emotionalAgent, "logger", mockLogger);
+        setFieldValue(emotionalAgent, "behaviourManager", behaviourManagerMock);
+        setFieldValue(emotionalAgent, "emotionalConfigurator", emotionalConfiguratorMock);
+        setFieldValue(emotionalAgent, "logger", loggerMock);
         return spy(emotionalAgent);
     }
 

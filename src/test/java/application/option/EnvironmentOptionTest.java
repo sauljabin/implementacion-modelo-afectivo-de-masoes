@@ -34,24 +34,24 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 public class EnvironmentOptionTest {
 
     private EnvironmentOption environmentOption;
-    private ApplicationSettings mockApplicationSettings;
-    private JadeSettings mockJadeSettings;
-    private EnvironmentFactory mockEnvironmentFactory;
-    private Environment mockEnvironment;
+    private ApplicationSettings applicationSettingsMock;
+    private JadeSettings jadeSettingsMock;
+    private EnvironmentFactory environmentFactoryMock;
+    private Environment environmentMock;
 
     @Before
     public void setUp() throws Exception {
-        mockApplicationSettings = mock(ApplicationSettings.class);
-        mockJadeSettings = mock(JadeSettings.class);
-        mockEnvironmentFactory = mock(EnvironmentFactory.class);
-        mockEnvironment = mock(Environment.class);
+        applicationSettingsMock = mock(ApplicationSettings.class);
+        jadeSettingsMock = mock(JadeSettings.class);
+        environmentFactoryMock = mock(EnvironmentFactory.class);
+        environmentMock = mock(Environment.class);
 
         environmentOption = new EnvironmentOption();
-        setFieldValue(environmentOption, "applicationSettings", mockApplicationSettings);
-        setFieldValue(environmentOption, "jadeSettings", mockJadeSettings);
-        setFieldValue(environmentOption, "environmentFactory", mockEnvironmentFactory);
+        setFieldValue(environmentOption, "applicationSettings", applicationSettingsMock);
+        setFieldValue(environmentOption, "jadeSettings", jadeSettingsMock);
+        setFieldValue(environmentOption, "environmentFactory", environmentFactoryMock);
 
-        doReturn(mockEnvironment).when(mockEnvironmentFactory).createEnvironment();
+        doReturn(environmentMock).when(environmentFactoryMock).createEnvironment();
     }
 
     @Test
@@ -68,24 +68,24 @@ public class EnvironmentOptionTest {
     public void shouldInvokeEnvironmentCreation() {
         List<EnvironmentAgentInfo> expectedJadeAgentOptionList = new ArrayList<>();
         expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent", Agent.class, Arrays.asList("arg1", "arg2")));
-        doReturn(expectedJadeAgentOptionList).when(mockEnvironment).getEnvironmentAgentInfoList();
+        doReturn(expectedJadeAgentOptionList).when(environmentMock).getEnvironmentAgentInfoList();
 
         environmentOption.exec();
 
-        verify(mockEnvironmentFactory).createEnvironment();
-        verify(mockEnvironment, atLeastOnce()).getEnvironmentAgentInfoList();
-        verify(mockJadeSettings).set(JadeSettings.AGENTS, "agent:jade.core.Agent(arg1,arg2);settings:" + SettingsAgent.class.getName());
+        verify(environmentFactoryMock).createEnvironment();
+        verify(environmentMock, atLeastOnce()).getEnvironmentAgentInfoList();
+        verify(jadeSettingsMock).set(JadeSettings.AGENTS, "agent:jade.core.Agent(arg1,arg2);settings:" + SettingsAgent.class.getName());
     }
 
     @Test
     public void shouldSetOnlySettingsAgent() {
-        doReturn(null).when(mockEnvironment).getEnvironmentAgentInfoList();
+        doReturn(null).when(environmentMock).getEnvironmentAgentInfoList();
 
         environmentOption.exec();
 
-        verify(mockEnvironmentFactory).createEnvironment();
-        verify(mockEnvironment, atLeastOnce()).getEnvironmentAgentInfoList();
-        verify(mockJadeSettings).set(JadeSettings.AGENTS, "settings:" + SettingsAgent.class.getName());
+        verify(environmentFactoryMock).createEnvironment();
+        verify(environmentMock, atLeastOnce()).getEnvironmentAgentInfoList();
+        verify(jadeSettingsMock).set(JadeSettings.AGENTS, "settings:" + SettingsAgent.class.getName());
     }
 
     @Test
@@ -93,13 +93,13 @@ public class EnvironmentOptionTest {
         List<EnvironmentAgentInfo> expectedJadeAgentOptionList = new ArrayList<>();
         expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent", Agent.class, Arrays.asList("arg1", "arg2")));
         expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent2", Agent.class));
-        doReturn(expectedJadeAgentOptionList).when(mockEnvironment).getEnvironmentAgentInfoList();
+        doReturn(expectedJadeAgentOptionList).when(environmentMock).getEnvironmentAgentInfoList();
 
         environmentOption.exec();
 
-        verify(mockEnvironmentFactory).createEnvironment();
-        verify(mockEnvironment, atLeastOnce()).getEnvironmentAgentInfoList();
-        verify(mockJadeSettings).set(JadeSettings.AGENTS, "agent:jade.core.Agent(arg1,arg2);agent2:jade.core.Agent;settings:" + SettingsAgent.class.getName());
+        verify(environmentFactoryMock).createEnvironment();
+        verify(environmentMock, atLeastOnce()).getEnvironmentAgentInfoList();
+        verify(jadeSettingsMock).set(JadeSettings.AGENTS, "agent:jade.core.Agent(arg1,arg2);agent2:jade.core.Agent;settings:" + SettingsAgent.class.getName());
     }
 
     @Test
@@ -107,7 +107,7 @@ public class EnvironmentOptionTest {
         String caseStudy = "default";
         environmentOption.setValue(caseStudy);
         environmentOption.exec();
-        verify(mockApplicationSettings).set(ApplicationSettings.MASOES_ENV, caseStudy);
+        verify(applicationSettingsMock).set(ApplicationSettings.MASOES_ENV, caseStudy);
     }
 
 }

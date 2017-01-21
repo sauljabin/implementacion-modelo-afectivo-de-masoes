@@ -23,16 +23,16 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 public class HelpOptionTest {
 
     private HelpOption helpOption;
-    private HelpFormatter mockHelpFormatter;
-    private ApplicationSettings mockApplicationSettings;
+    private HelpFormatter helpFormatterMock;
+    private ApplicationSettings applicationSettingsMock;
 
     @Before
     public void setUp() throws Exception {
-        mockApplicationSettings = mock(ApplicationSettings.class);
+        applicationSettingsMock = mock(ApplicationSettings.class);
+        helpFormatterMock = mock(HelpFormatter.class);
         helpOption = new HelpOption();
-        mockHelpFormatter = mock(HelpFormatter.class);
-        setFieldValue(helpOption, "helpFormatter", mockHelpFormatter);
-        setFieldValue(helpOption, "applicationSettings", mockApplicationSettings);
+        setFieldValue(helpOption, "helpFormatter", helpFormatterMock);
+        setFieldValue(helpOption, "applicationSettings", applicationSettingsMock);
     }
 
     @Test
@@ -48,9 +48,9 @@ public class HelpOptionTest {
     @Test
     public void shouldPrintHelp() {
         helpOption.exec();
-        verify(mockHelpFormatter).setSyntaxPrefix("Usage: ");
-        verify(mockHelpFormatter).setLongOptSeparator("=");
-        verify(mockHelpFormatter).printHelp(any(), any(Options.class));
+        verify(helpFormatterMock).setSyntaxPrefix("Usage: ");
+        verify(helpFormatterMock).setLongOptSeparator("=");
+        verify(helpFormatterMock).printHelp(any(), any(Options.class));
     }
 
 }

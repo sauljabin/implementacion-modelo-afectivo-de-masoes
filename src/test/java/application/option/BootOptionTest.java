@@ -25,13 +25,13 @@ public class BootOptionTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     private BootOption bootOption;
-    private JadeBoot mockJadeBoot;
+    private JadeBoot jadeBootMock;
 
     @Before
     public void setUp() throws Exception {
-        mockJadeBoot = mock(JadeBoot.class);
+        jadeBootMock = mock(JadeBoot.class);
         bootOption = new BootOption();
-        setFieldValue(bootOption, "jadeBoot", mockJadeBoot);
+        setFieldValue(bootOption, "jadeBoot", jadeBootMock);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class BootOptionTest {
     @Test
     public void shouldInvokeEnvironmentCreation() {
         bootOption.exec();
-        verify(mockJadeBoot).boot();
+        verify(jadeBootMock).boot();
     }
 
 }

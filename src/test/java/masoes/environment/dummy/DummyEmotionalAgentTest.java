@@ -15,19 +15,19 @@ import static org.mockito.Mockito.verify;
 
 public class DummyEmotionalAgentTest {
 
-    private DummyEmotionalAgent spyDummyEmotionalAgent;
+    private DummyEmotionalAgent dummyEmotionalAgentSpy;
 
     @Before
     public void setUp() {
-        spyDummyEmotionalAgent = spy(new DummyEmotionalAgent());
+        dummyEmotionalAgentSpy = spy(new DummyEmotionalAgent());
     }
 
     @Test
     public void shouldSetCorrectBehaviourConfiguration() {
-        spyDummyEmotionalAgent.setUp();
-        verify(spyDummyEmotionalAgent).setCognitiveBehaviour(any(DummyCognitiveBehaviour.class));
-        verify(spyDummyEmotionalAgent).setImitativeBehaviour(any(DummyImitativeBehaviour.class));
-        verify(spyDummyEmotionalAgent).setReactiveBehaviour(any(DummyReactiveBehaviour.class));
+        dummyEmotionalAgentSpy.setUp();
+        verify(dummyEmotionalAgentSpy).setCognitiveBehaviour(any(DummyCognitiveBehaviour.class));
+        verify(dummyEmotionalAgentSpy).setImitativeBehaviour(any(DummyImitativeBehaviour.class));
+        verify(dummyEmotionalAgentSpy).setReactiveBehaviour(any(DummyReactiveBehaviour.class));
     }
 
 }

@@ -26,52 +26,52 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class ApplicationLoggerTest {
 
-    private Logger mockLogger;
+    private Logger loggerMock;
     private ApplicationLogger applicationLogger;
-    private ApplicationSettings mockApplicationSettings;
-    private JadeSettings mockJadeSettings;
+    private ApplicationSettings applicationSettingsMock;
+    private JadeSettings jadeSettingsMock;
     private Map<String, String> expectedApplicationSettingsMap;
     private Map<String, String> expectedJadeSettingsMap;
 
     @Before
     public void setUp() throws Exception {
-        mockApplicationSettings = mock(ApplicationSettings.class);
-        mockJadeSettings = mock(JadeSettings.class);
-        mockLogger = mock(Logger.class);
-        applicationLogger = new ApplicationLogger(mockLogger);
+        applicationSettingsMock = mock(ApplicationSettings.class);
+        jadeSettingsMock = mock(JadeSettings.class);
+        loggerMock = mock(Logger.class);
+        applicationLogger = new ApplicationLogger(loggerMock);
 
         expectedApplicationSettingsMap = new HashMap<>();
         expectedApplicationSettingsMap.put("key", "value");
-        doReturn(expectedApplicationSettingsMap).when(mockApplicationSettings).toMap();
-        doCallRealMethod().when(mockApplicationSettings).toString();
+        doReturn(expectedApplicationSettingsMap).when(applicationSettingsMock).toMap();
+        doCallRealMethod().when(applicationSettingsMock).toString();
 
         expectedJadeSettingsMap = new HashMap<>();
         expectedJadeSettingsMap.put("key", "value");
-        doReturn(expectedJadeSettingsMap).when(mockJadeSettings).toMap();
-        doCallRealMethod().when(mockJadeSettings).toString();
+        doReturn(expectedJadeSettingsMap).when(jadeSettingsMock).toMap();
+        doCallRealMethod().when(jadeSettingsMock).toString();
 
-        setFieldValue(applicationLogger, "jadeSettings", mockJadeSettings);
-        setFieldValue(applicationLogger, "applicationSettings", mockApplicationSettings);
+        setFieldValue(applicationLogger, "jadeSettings", jadeSettingsMock);
+        setFieldValue(applicationLogger, "applicationSettings", applicationSettingsMock);
     }
 
     @Test
     public void shouldLogStartingApp() {
         String[] args = {"-h"};
         applicationLogger.startingApplication(args);
-        verify(mockLogger).info(eq("Starting application with arguments: [-h], settings: " + expectedApplicationSettingsMap.toString() + ", jade settings: " + expectedJadeSettingsMap.toString()));
+        verify(loggerMock).info(eq("Starting application with arguments: [-h], settings: " + expectedApplicationSettingsMap.toString() + ", jade settings: " + expectedJadeSettingsMap.toString()));
     }
 
     @Test
     public void shouldLogClosingApp() {
         applicationLogger.closingApplication();
-        verify(mockLogger).info(eq("Closing application"));
+        verify(loggerMock).info(eq("Closing application"));
     }
 
     @Test
     public void shouldLogCantNotStartApp() {
         Exception expectedException = new Exception();
         applicationLogger.cantNotStartApplication(expectedException);
-        verify(mockLogger).error(contains("Could not start the application"), eq(expectedException));
+        verify(loggerMock).error(contains("Could not start the application"), eq(expectedException));
     }
 
     @Test
@@ -81,20 +81,20 @@ public class ApplicationLoggerTest {
         doReturn(expectedToString).when(applicationOption).toString();
 
         applicationLogger.startingOption(applicationOption);
-        verify(mockLogger).info(eq("Starting option: " + expectedToString));
+        verify(loggerMock).info(eq("Starting option: " + expectedToString));
     }
 
     @Test
     public void shouldLogUpdatedSettings() {
         applicationLogger.updatedSettings();
-        verify(mockLogger).info(eq("Updated settings: " + expectedApplicationSettingsMap.toString() + ", jade settings: " + expectedJadeSettingsMap.toString()));
+        verify(loggerMock).info(eq("Updated settings: " + expectedApplicationSettingsMap.toString() + ", jade settings: " + expectedJadeSettingsMap.toString()));
     }
 
     @Test
     public void shouldLogException() {
         Exception expectedException = new Exception("error");
         applicationLogger.exception(expectedException);
-        verify(mockLogger).error(eq("Exception: " + expectedException.getMessage()), eq(expectedException));
+        verify(loggerMock).error(eq("Exception: " + expectedException.getMessage()), eq(expectedException));
     }
 
 }

@@ -17,18 +17,18 @@ import static org.mockito.Mockito.verify;
 
 public class ProtocolResponderBehaviourTest {
 
-    private ProtocolResponderBehaviour spyResponderBehaviour;
+    private ProtocolResponderBehaviour responderBehaviourSpy;
 
     @Before
     public void setUp() {
-        spyResponderBehaviour = spy(new ProtocolResponderBehaviour(mock(Agent.class)));
+        responderBehaviourSpy = spy(new ProtocolResponderBehaviour(mock(Agent.class)));
     }
 
     @Test
     public void shouldInvokeReset() {
-        MessageTemplate mockMessageTemplate = mock(MessageTemplate.class);
-        spyResponderBehaviour.setMessageTemplate(mockMessageTemplate);
-        verify(spyResponderBehaviour).reset(mockMessageTemplate);
+        MessageTemplate messageTemplateMock = mock(MessageTemplate.class);
+        responderBehaviourSpy.setMessageTemplate(messageTemplateMock);
+        verify(responderBehaviourSpy).reset(messageTemplateMock);
     }
 
 }

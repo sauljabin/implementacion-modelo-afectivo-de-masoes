@@ -26,33 +26,33 @@ public class ApplicationBootTest {
 
     @Rule
     public ExpectedSystemExit expectedSystemExit = ExpectedSystemExit.none();
-    private ApplicationLogger mockLogger;
-    private ApplicationOptionProcessor mockApplicationOptionProcessor;
-    private ApplicationSettings mockApplicationSettings;
+    private ApplicationLogger loggerMock;
+    private ApplicationOptionProcessor applicationOptionProcessorMock;
+    private ApplicationSettings applicationSettingsMock;
     private String[] args;
     private ApplicationBoot applicationBoot;
-    private JadeSettings mockJadeSettings;
+    private JadeSettings jadeSettingsMock;
 
     @Before
     public void setUp() throws Exception {
-        mockJadeSettings = mock(JadeSettings.class);
-        mockLogger = mock(ApplicationLogger.class);
-        mockApplicationSettings = mock(ApplicationSettings.class);
-        mockApplicationOptionProcessor = mock(ApplicationOptionProcessor.class);
+        jadeSettingsMock = mock(JadeSettings.class);
+        loggerMock = mock(ApplicationLogger.class);
+        applicationSettingsMock = mock(ApplicationSettings.class);
+        applicationOptionProcessorMock = mock(ApplicationOptionProcessor.class);
         applicationBoot = new ApplicationBoot();
-        setFieldValue(applicationBoot, "logger", mockLogger);
-        setFieldValue(applicationBoot, "applicationSettings", mockApplicationSettings);
-        setFieldValue(applicationBoot, "applicationOptionProcessor", mockApplicationOptionProcessor);
-        setFieldValue(applicationBoot, "jadeSettings", mockJadeSettings);
+        setFieldValue(applicationBoot, "logger", loggerMock);
+        setFieldValue(applicationBoot, "applicationSettings", applicationSettingsMock);
+        setFieldValue(applicationBoot, "applicationOptionProcessor", applicationOptionProcessorMock);
+        setFieldValue(applicationBoot, "jadeSettings", jadeSettingsMock);
         args = new String[]{};
     }
 
     @Test
     public void shouldInvokeSystemExitWhenException() {
         RuntimeException expectedException = new RuntimeException();
-        doThrow(expectedException).when(mockApplicationOptionProcessor).processArgs(args);
+        doThrow(expectedException).when(applicationOptionProcessorMock).processArgs(args);
 
-        expectedSystemExit.checkAssertionAfterwards(() -> verify(mockLogger).cantNotStartApplication(eq(expectedException)));
+        expectedSystemExit.checkAssertionAfterwards(() -> verify(loggerMock).cantNotStartApplication(eq(expectedException)));
         expectedSystemExit.expectSystemExitWithStatus(-1);
 
         applicationBoot.boot(args);
@@ -61,9 +61,9 @@ public class ApplicationBootTest {
     @Test
     public void shouldStartApp() {
         applicationBoot.boot(args);
-        verify(mockApplicationOptionProcessor).processArgs(args);
-        verify(mockLogger).startingApplication(any());
-        verify(mockLogger).closingApplication();
+        verify(applicationOptionProcessorMock).processArgs(args);
+        verify(loggerMock).startingApplication(any());
+        verify(loggerMock).closingApplication();
     }
 
 }

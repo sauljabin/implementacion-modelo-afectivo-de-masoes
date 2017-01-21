@@ -27,14 +27,14 @@ public class StimulusReceiverBehaviourTest {
 
     private EmotionalAgent emotionalAgentMock;
     private StimulusReceiverBehaviour stimulusReceiverBehaviour;
-    private JadeLogger mockLogger;
+    private JadeLogger loggerMock;
 
     @Before
     public void setUp() throws Exception {
         emotionalAgentMock = mock(EmotionalAgent.class);
+        loggerMock = mock(JadeLogger.class);
         stimulusReceiverBehaviour = new StimulusReceiverBehaviour(emotionalAgentMock);
-        mockLogger = mock(JadeLogger.class);
-        setFieldValue(stimulusReceiverBehaviour, "logger", mockLogger);
+        setFieldValue(stimulusReceiverBehaviour, "logger", loggerMock);
     }
 
     @Test

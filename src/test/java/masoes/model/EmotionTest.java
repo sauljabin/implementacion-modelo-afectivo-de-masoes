@@ -26,7 +26,7 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 public class EmotionTest {
 
     private Coordinate[] coordinates;
-    private Emotion spyEmotion;
+    private Emotion emotionSpy;
 
     @Before
     public void setUp() {
@@ -39,29 +39,29 @@ public class EmotionTest {
                 new Coordinate(-0.5, 0.5),
                 new Coordinate(0, 0.5)
         };
-        spyEmotion = spy(createDummyEmotion(coordinates));
+        emotionSpy = spy(createDummyEmotion(coordinates));
     }
 
     @Test
     public void shouldInvokeNameWhenToString() {
         String expectedName = "NAME";
-        doReturn(expectedName).when(spyEmotion).getEmotionName();
-        assertThat(spyEmotion.toString(), is(expectedName));
+        doReturn(expectedName).when(emotionSpy).getEmotionName();
+        assertThat(emotionSpy.toString(), is(expectedName));
     }
 
     @Test
     public void shouldReturnPolygon() {
         Polygon expectedPolygon = new GeometryFactory().createPolygon(coordinates);
-        assertReflectionEquals(expectedPolygon.getCoordinates(), spyEmotion.getGeometry().getCoordinates());
+        assertReflectionEquals(expectedPolygon.getCoordinates(), emotionSpy.getGeometry().getCoordinates());
     }
 
     @Test
     public void shouldGetRandomPointInGeometry() {
         IntStream.range(0, 1000).forEach(i -> {
-            Point pointA = spyEmotion.getRandomPoint();
-            Point pointB = spyEmotion.getRandomPoint();
-            assertTrue(spyEmotion.getGeometry().intersects(pointA));
-            assertTrue(spyEmotion.getGeometry().intersects(pointB));
+            Point pointA = emotionSpy.getRandomPoint();
+            Point pointB = emotionSpy.getRandomPoint();
+            assertTrue(emotionSpy.getGeometry().intersects(pointA));
+            assertTrue(emotionSpy.getGeometry().intersects(pointB));
             assertThat(pointA.getX(), is(not(pointB.getX())));
             assertThat(pointA.getY(), is(not(pointB.getY())));
         });

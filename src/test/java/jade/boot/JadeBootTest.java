@@ -22,21 +22,21 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class JadeBootTest {
 
-    private ProfileImpl mockJadeProfile;
-    private Runtime mockJadeRuntime;
+    private ProfileImpl jadeProfileMock;
+    private Runtime jadeRuntimeMock;
     private JadeBoot jadeBoot;
-    private JadeSettings mockJadeSettings;
+    private JadeSettings jadeSettingsMock;
 
     @Before
     public void setUp() throws Exception {
-        mockJadeSettings = mock(JadeSettings.class);
-        mockJadeProfile = mock(ProfileImpl.class);
-        mockJadeRuntime = mock(Runtime.class);
+        jadeSettingsMock = mock(JadeSettings.class);
+        jadeProfileMock = mock(ProfileImpl.class);
+        jadeRuntimeMock = mock(Runtime.class);
 
         jadeBoot = new JadeBoot();
-        setFieldValue(jadeBoot, "jadeProfile", mockJadeProfile);
-        setFieldValue(jadeBoot, "jadeRuntime", mockJadeRuntime);
-        setFieldValue(jadeBoot, "jadeSettings", mockJadeSettings);
+        setFieldValue(jadeBoot, "jadeProfile", jadeProfileMock);
+        setFieldValue(jadeBoot, "jadeRuntime", jadeRuntimeMock);
+        setFieldValue(jadeBoot, "jadeSettings", jadeSettingsMock);
     }
 
     @Test
@@ -47,12 +47,12 @@ public class JadeBootTest {
         Map<String, String> map = new HashMap<>();
         map.put(expectedKey, expectedValue);
 
-        doReturn(map).when(mockJadeSettings).toMap();
+        doReturn(map).when(jadeSettingsMock).toMap();
         jadeBoot.boot();
 
-        verify(mockJadeProfile).setParameter(expectedKey, expectedValue);
-        verify(mockJadeRuntime).setCloseVM(true);
-        verify(mockJadeRuntime).startUp(mockJadeProfile);
+        verify(jadeProfileMock).setParameter(expectedKey, expectedValue);
+        verify(jadeRuntimeMock).setCloseVM(true);
+        verify(jadeRuntimeMock).startUp(jadeProfileMock);
     }
 
 }

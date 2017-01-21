@@ -22,19 +22,19 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 public class BehaviourManagerTest {
 
     private BehaviourManager behaviourManager;
-    private Behaviour mockBehaviour;
-    private EmotionalAgent mockEmotionalAgent;
-    private Emotion mockEmotion;
+    private Behaviour behaviourMock;
+    private EmotionalAgent emotionalAgentMock;
+    private Emotion emotionMock;
 
     @Before
     public void setUp() {
         behaviourManager = new BehaviourManager();
-        mockEmotionalAgent = mock(EmotionalAgent.class);
-        mockBehaviour = mock(Behaviour.class);
-        mockEmotion = mock(Emotion.class);
-        doReturn(mockEmotion).when(mockEmotionalAgent).getCurrentEmotion();
-        doReturn(EmotionType.NEGATIVE_LOW).when(mockEmotion).getEmotionType();
-        doReturn(mockBehaviour).when(mockEmotionalAgent).getCognitiveBehaviour();
+        emotionalAgentMock = mock(EmotionalAgent.class);
+        behaviourMock = mock(Behaviour.class);
+        emotionMock = mock(Emotion.class);
+        doReturn(emotionMock).when(emotionalAgentMock).getCurrentEmotion();
+        doReturn(EmotionType.NEGATIVE_LOW).when(emotionMock).getEmotionType();
+        doReturn(behaviourMock).when(emotionalAgentMock).getCognitiveBehaviour();
     }
 
     @Test
@@ -46,52 +46,52 @@ public class BehaviourManagerTest {
 
     @Test
     public void shouldUpdateCognitiveBehaviour() {
-        doReturn(EmotionType.NEGATIVE_LOW).when(mockEmotion).getEmotionType();
-        doReturn(mockBehaviour).when(mockEmotionalAgent).getCognitiveBehaviour();
-        behaviourManager.updateBehaviour(mockEmotionalAgent);
-        verify(mockEmotionalAgent).getCognitiveBehaviour();
-        assertThat(behaviourManager.getBehaviour(), is(mockBehaviour));
+        doReturn(EmotionType.NEGATIVE_LOW).when(emotionMock).getEmotionType();
+        doReturn(behaviourMock).when(emotionalAgentMock).getCognitiveBehaviour();
+        behaviourManager.updateBehaviour(emotionalAgentMock);
+        verify(emotionalAgentMock).getCognitiveBehaviour();
+        assertThat(behaviourManager.getBehaviour(), is(behaviourMock));
     }
 
     @Test
     public void shouldUpdateImitativeBehaviour() {
-        doReturn(EmotionType.POSITIVE).when(mockEmotion).getEmotionType();
-        doReturn(mockBehaviour).when(mockEmotionalAgent).getImitativeBehaviour();
-        behaviourManager.updateBehaviour(mockEmotionalAgent);
-        verify(mockEmotionalAgent).getImitativeBehaviour();
-        assertThat(behaviourManager.getBehaviour(), is(mockBehaviour));
+        doReturn(EmotionType.POSITIVE).when(emotionMock).getEmotionType();
+        doReturn(behaviourMock).when(emotionalAgentMock).getImitativeBehaviour();
+        behaviourManager.updateBehaviour(emotionalAgentMock);
+        verify(emotionalAgentMock).getImitativeBehaviour();
+        assertThat(behaviourManager.getBehaviour(), is(behaviourMock));
     }
 
     @Test
     public void shouldUpdateReactiveBehaviour() {
-        doReturn(EmotionType.NEGATIVE_HIGH).when(mockEmotion).getEmotionType();
-        doReturn(mockBehaviour).when(mockEmotionalAgent).getReactiveBehaviour();
-        behaviourManager.updateBehaviour(mockEmotionalAgent);
-        verify(mockEmotionalAgent).getReactiveBehaviour();
-        assertThat(behaviourManager.getBehaviour(), is(mockBehaviour));
+        doReturn(EmotionType.NEGATIVE_HIGH).when(emotionMock).getEmotionType();
+        doReturn(behaviourMock).when(emotionalAgentMock).getReactiveBehaviour();
+        behaviourManager.updateBehaviour(emotionalAgentMock);
+        verify(emotionalAgentMock).getReactiveBehaviour();
+        assertThat(behaviourManager.getBehaviour(), is(behaviourMock));
     }
 
     @Test
     public void shouldChangeEmotionalBehaviour() throws Exception {
-        Behaviour mockBehaviourToRemove = mock(Behaviour.class);
-        setFieldValue(behaviourManager, "behaviour", mockBehaviourToRemove);
-        behaviourManager.updateBehaviour(mockEmotionalAgent);
-        verify(mockEmotionalAgent).removeBehaviour(mockBehaviourToRemove);
-        verify(mockEmotionalAgent).addBehaviour(mockBehaviour);
+        Behaviour behaviourMock = mock(Behaviour.class);
+        setFieldValue(behaviourManager, "behaviour", behaviourMock);
+        behaviourManager.updateBehaviour(emotionalAgentMock);
+        verify(emotionalAgentMock).removeBehaviour(behaviourMock);
+        verify(emotionalAgentMock).addBehaviour(this.behaviourMock);
     }
 
     @Test
     public void shouldNotInvokeRemoveBehaviour() throws Exception {
         setFieldValue(behaviourManager, "behaviour", null);
-        behaviourManager.updateBehaviour(mockEmotionalAgent);
-        verify(mockEmotionalAgent, never()).removeBehaviour(any());
+        behaviourManager.updateBehaviour(emotionalAgentMock);
+        verify(emotionalAgentMock, never()).removeBehaviour(any());
     }
 
     @Test
     public void shouldNotInvokeAddBehaviour() {
-        doReturn(null).when(mockEmotionalAgent).getCognitiveBehaviour();
-        behaviourManager.updateBehaviour(mockEmotionalAgent);
-        verify(mockEmotionalAgent, never()).addBehaviour(any());
+        doReturn(null).when(emotionalAgentMock).getCognitiveBehaviour();
+        behaviourManager.updateBehaviour(emotionalAgentMock);
+        verify(emotionalAgentMock, never()).addBehaviour(any());
     }
 
 }

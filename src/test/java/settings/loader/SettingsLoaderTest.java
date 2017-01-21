@@ -95,9 +95,9 @@ public class SettingsLoaderTest {
     @Test
     public void shouldThrowsExceptionWhenErrorInLoad() throws Exception {
         String expectedMessage = "Message";
-        Properties mockProperties = mock(Properties.class);
-        doThrow(new IOException(expectedMessage)).when(mockProperties).load(any(InputStream.class));
-        setFieldValue(jadeSettingsLoader, "properties", mockProperties);
+        Properties propertiesMock = mock(Properties.class);
+        doThrow(new IOException(expectedMessage)).when(propertiesMock).load(any(InputStream.class));
+        setFieldValue(jadeSettingsLoader, "properties", propertiesMock);
         expectedException.expect(SettingsException.class);
         expectedException.expectMessage(expectedMessage);
         jadeSettingsLoader.load(PATH);

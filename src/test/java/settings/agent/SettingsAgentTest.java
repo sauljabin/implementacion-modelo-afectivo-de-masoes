@@ -44,8 +44,8 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 @PrepareForTest({Agent.class, DFService.class})
 public class SettingsAgentTest {
 
-    private SettingsAgent spySettingsAgent;
-    private JadeLogger mockLogger;
+    private SettingsAgent settingsAgentSpy;
+    private JadeLogger loggerMock;
     private ArgumentCaptor<DFAgentDescription> agentDescriptionArgumentCaptor;
     private ArgumentCaptor<Behaviour> behaviourArgumentCaptor;
 
@@ -53,29 +53,29 @@ public class SettingsAgentTest {
     public void setUp() throws Exception {
         agentDescriptionArgumentCaptor = ArgumentCaptor.forClass(DFAgentDescription.class);
         behaviourArgumentCaptor = ArgumentCaptor.forClass(Behaviour.class);
-        mockLogger = mock(JadeLogger.class);
+        loggerMock = mock(JadeLogger.class);
 
         SettingsAgent settingsAgent = new SettingsAgent();
-        setFieldValue(settingsAgent, "logger", mockLogger);
+        setFieldValue(settingsAgent, "logger", loggerMock);
 
-        spySettingsAgent = spy(settingsAgent);
+        settingsAgentSpy = spy(settingsAgent);
     }
 
     @Test
     public void shouldAddSettingsBehaviour() {
-        spySettingsAgent.setup();
-        verify(spySettingsAgent).addBehaviour(behaviourArgumentCaptor.capture());
+        settingsAgentSpy.setup();
+        verify(settingsAgentSpy).addBehaviour(behaviourArgumentCaptor.capture());
         assertThat(behaviourArgumentCaptor.getValue(), is(instanceOf(ResponseSettingsBehaviour.class)));
     }
 
     @Test
     public void shouldRegisterAgent() throws Exception {
-        doReturn("settings").when(spySettingsAgent).getLocalName();
+        doReturn("settings").when(settingsAgentSpy).getLocalName();
 
         mockStatic(DFService.class);
-        spySettingsAgent.setup();
+        settingsAgentSpy.setup();
         verifyStatic();
-        DFService.register(eq(spySettingsAgent), agentDescriptionArgumentCaptor.capture());
+        DFService.register(eq(settingsAgentSpy), agentDescriptionArgumentCaptor.capture());
 
         Iterator allServices = agentDescriptionArgumentCaptor.getValue().getAllServices();
 
@@ -99,9 +99,9 @@ public class SettingsAgentTest {
         FIPAException expectedException = new FIPAException("error");
         mockStatic(DFService.class);
         doThrow(expectedException).when(DFService.class);
-        DFService.register(eq(spySettingsAgent), any());
-        spySettingsAgent.setup();
-        verify(mockLogger).agentException(spySettingsAgent, expectedException);
+        DFService.register(eq(settingsAgentSpy), any());
+        settingsAgentSpy.setup();
+        verify(loggerMock).agentException(settingsAgentSpy, expectedException);
     }
 
 }

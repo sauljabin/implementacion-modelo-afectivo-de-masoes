@@ -21,30 +21,30 @@ import static org.mockito.Mockito.verify;
 
 public class EmotionalConfiguratorTest {
 
-    private EmotionalConfigurator spyEmotionalConfigurator;
+    private EmotionalConfigurator emotionalConfiguratorSpy;
     private EmotionalSpace emotionalSpace;
 
     @Before
     public void setUp() {
         emotionalSpace = new EmotionalSpace();
-        spyEmotionalConfigurator = spy(new EmotionalConfigurator());
+        emotionalConfiguratorSpy = spy(new EmotionalConfigurator());
     }
 
     @Test
     public void shouldUpdateEmotionalState() {
-        EmotionalState mockEmotionalState = mock(EmotionalState.class);
-        Stimulus mockStimulus = mock(Stimulus.class);
-        doReturn(mockEmotionalState).when(spyEmotionalConfigurator).calculateEmotionalState(mockStimulus);
-        spyEmotionalConfigurator.updateEmotion(mockStimulus);
-        verify(spyEmotionalConfigurator).calculateEmotionalState(mockStimulus);
-        assertThat(spyEmotionalConfigurator.getEmotionalState(), is(mockEmotionalState));
+        EmotionalState emotionalStateMock = mock(EmotionalState.class);
+        Stimulus stimulusMock = mock(Stimulus.class);
+        doReturn(emotionalStateMock).when(emotionalConfiguratorSpy).calculateEmotionalState(stimulusMock);
+        emotionalConfiguratorSpy.updateEmotion(stimulusMock);
+        verify(emotionalConfiguratorSpy).calculateEmotionalState(stimulusMock);
+        assertThat(emotionalConfiguratorSpy.getEmotionalState(), is(emotionalStateMock));
     }
 
     @Test
     public void shouldReturnCorrectEmotion() {
-        spyEmotionalConfigurator.updateEmotion(any());
-        Emotion expectedEmotion = emotionalSpace.searchEmotion(spyEmotionalConfigurator.getEmotionalState());
-        assertThat(spyEmotionalConfigurator.getEmotion(), is(instanceOf(expectedEmotion.getClass())));
+        emotionalConfiguratorSpy.updateEmotion(any());
+        Emotion expectedEmotion = emotionalSpace.searchEmotion(emotionalConfiguratorSpy.getEmotionalState());
+        assertThat(emotionalConfiguratorSpy.getEmotion(), is(instanceOf(expectedEmotion.getClass())));
     }
 
 }

@@ -25,16 +25,16 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 public class JadeOptionTest {
 
     private JadeOption jadeOption;
-    private JadeSettings mockJadeSettings;
-    private ApplicationLogger mockLogger;
+    private JadeSettings jadeSettingsMock;
+    private ApplicationLogger loggerMock;
 
     @Before
     public void setUp() throws Exception {
-        mockJadeSettings = mock(JadeSettings.class);
-        mockLogger = mock(ApplicationLogger.class);
+        jadeSettingsMock = mock(JadeSettings.class);
+        loggerMock = mock(ApplicationLogger.class);
         jadeOption = new JadeOption();
-        setFieldValue(jadeOption, "logger", mockLogger);
-        setFieldValue(jadeOption, "jadeSettings", mockJadeSettings);
+        setFieldValue(jadeOption, "logger", loggerMock);
+        setFieldValue(jadeOption, "jadeSettings", jadeSettingsMock);
     }
 
     @Test
@@ -61,9 +61,9 @@ public class JadeOptionTest {
         jadeOption.setProperties(expectedProperties);
         jadeOption.exec();
 
-        verify(mockJadeSettings).set(expectedKey1, expectedValue1);
-        verify(mockJadeSettings).set(expectedKey2, expectedValue2);
-        verify(mockLogger).updatedSettings();
+        verify(jadeSettingsMock).set(expectedKey1, expectedValue1);
+        verify(jadeSettingsMock).set(expectedKey2, expectedValue2);
+        verify(loggerMock).updatedSettings();
     }
 
 }

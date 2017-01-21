@@ -30,43 +30,43 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 public class ApplicationOptionProcessorTest {
 
     private ApplicationOptionProcessor applicationOptionProcessor;
-    private ApplicationOptions mockApplicationOptions;
+    private ApplicationOptions applicationOptionsMock;
     private String expectedOpt;
     private String[] expectedArgs;
     private List<ApplicationOption> applicationOptionList;
 
-    private CommandLineParser mockCommandLineParser;
-    private CommandLine mockCommandLine;
-    private ApplicationLogger mockLogger;
-    private ApplicationOption mockOption;
-    private ApplicationOption mockDefaultOption;
+    private CommandLineParser commandLineParserMock;
+    private CommandLine commandLineMock;
+    private ApplicationLogger loggerMock;
+    private ApplicationOption optionMock;
+    private ApplicationOption defaultOptionMock;
     private String defaultKeyOption;
 
     @Before
     public void setUp() throws Exception {
-        mockCommandLineParser = mock(DefaultParser.class);
-        mockCommandLine = mock(CommandLine.class);
-        mockLogger = mock(ApplicationLogger.class);
-        mockApplicationOptions = mock(ApplicationOptions.class);
+        commandLineParserMock = mock(DefaultParser.class);
+        commandLineMock = mock(CommandLine.class);
+        loggerMock = mock(ApplicationLogger.class);
+        applicationOptionsMock = mock(ApplicationOptions.class);
 
         applicationOptionProcessor = new ApplicationOptionProcessor();
-        setFieldValue(applicationOptionProcessor, "applicationOptions", mockApplicationOptions);
-        setFieldValue(applicationOptionProcessor, "commandLineParser", mockCommandLineParser);
-        setFieldValue(applicationOptionProcessor, "logger", mockLogger);
+        setFieldValue(applicationOptionProcessor, "applicationOptions", applicationOptionsMock);
+        setFieldValue(applicationOptionProcessor, "commandLineParser", commandLineParserMock);
+        setFieldValue(applicationOptionProcessor, "logger", loggerMock);
 
         expectedOpt = "test";
-        mockOption = getCreateMockApplicationOption(expectedOpt, false, ArgumentType.ONE_ARG);
+        optionMock = getCreateMockApplicationOption(expectedOpt, false, ArgumentType.ONE_ARG);
 
         defaultKeyOption = "default";
-        mockDefaultOption = getCreateMockApplicationOption(defaultKeyOption, false, ArgumentType.NO_ARGS);
+        defaultOptionMock = getCreateMockApplicationOption(defaultKeyOption, false, ArgumentType.NO_ARGS);
 
         applicationOptionList = new ArrayList<>();
-        applicationOptionList.add(mockOption);
+        applicationOptionList.add(optionMock);
 
-        doReturn(applicationOptionList).when(mockApplicationOptions).getApplicationOptionList();
-        doReturn(mockCommandLine).when(mockCommandLineParser).parse(any(), any());
-        doReturn(Boolean.TRUE).when(mockCommandLine).hasOption(expectedOpt);
-        doReturn(mockDefaultOption).when(mockApplicationOptions).getDefaultApplicationOption();
+        doReturn(applicationOptionList).when(applicationOptionsMock).getApplicationOptionList();
+        doReturn(commandLineMock).when(commandLineParserMock).parse(any(), any());
+        doReturn(Boolean.TRUE).when(commandLineMock).hasOption(expectedOpt);
+        doReturn(defaultOptionMock).when(applicationOptionsMock).getDefaultApplicationOption();
 
         expectedArgs = new String[]{"-" + expectedOpt};
     }
@@ -74,97 +74,97 @@ public class ApplicationOptionProcessorTest {
     @Test
     public void shouldParseArgs() throws Exception {
         Options expectedOptions = new Options();
-        doReturn(expectedOptions).when(mockApplicationOptions).toOptions();
+        doReturn(expectedOptions).when(applicationOptionsMock).toOptions();
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
-        verify(mockCommandLineParser).parse(eq(expectedOptions), eq(expectedArgs));
+        verify(commandLineParserMock).parse(eq(expectedOptions), eq(expectedArgs));
     }
 
     @Test
     public void shouldInvokeOptionAndSeValue() {
         String expectedOptionValue = "value";
-        doReturn(expectedOptionValue).when(mockCommandLine).getOptionValue(any());
+        doReturn(expectedOptionValue).when(commandLineMock).getOptionValue(any());
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
-        verify(mockOption).setValue(expectedOptionValue);
-        verify(mockOption).exec();
-        verify(mockLogger).startingOption(mockOption);
+        verify(optionMock).setValue(expectedOptionValue);
+        verify(optionMock).exec();
+        verify(loggerMock).startingOption(optionMock);
     }
 
     @Test
     public void shouldInvokeOptionAndSetProperties() {
-        Properties mockProperties = mock(Properties.class);
-        doReturn(ArgumentType.UNLIMITED_ARGS).when(mockOption).getArgType();
-        doReturn(mockProperties).when(mockCommandLine).getOptionProperties(any());
+        Properties propertiesMock = mock(Properties.class);
+        doReturn(ArgumentType.UNLIMITED_ARGS).when(optionMock).getArgType();
+        doReturn(propertiesMock).when(commandLineMock).getOptionProperties(any());
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
-        verify(mockOption).setProperties(mockProperties);
-        verify(mockOption).exec();
-        verify(mockLogger).startingOption(mockOption);
+        verify(optionMock).setProperties(propertiesMock);
+        verify(optionMock).exec();
+        verify(loggerMock).startingOption(optionMock);
     }
 
     @Test
     public void shouldInvokeTwoOptions() {
         String expectedOpt2 = "test";
-        ApplicationOption mockOption2 = getCreateMockApplicationOption(expectedOpt2, false, ArgumentType.NO_ARGS);
-        applicationOptionList.add(mockOption2);
-        doReturn(Boolean.TRUE).when(mockCommandLine).hasOption(expectedOpt2);
+        ApplicationOption optionMock2 = getCreateMockApplicationOption(expectedOpt2, false, ArgumentType.NO_ARGS);
+        applicationOptionList.add(optionMock2);
+        doReturn(Boolean.TRUE).when(commandLineMock).hasOption(expectedOpt2);
 
         expectedArgs = new String[]{"-" + expectedOpt, "-" + expectedOpt2};
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
-        verify(mockLogger).startingOption(mockOption);
-        verify(mockLogger).startingOption(mockOption2);
-        verify(mockOption).exec();
-        verify(mockOption2).exec();
+        verify(loggerMock).startingOption(optionMock);
+        verify(loggerMock).startingOption(optionMock2);
+        verify(optionMock).exec();
+        verify(optionMock2).exec();
     }
 
     @Test
     public void shouldBreakWheOptionIsFinalOption() {
         applicationOptionList = new ArrayList<>();
-        doReturn(applicationOptionList).when(mockApplicationOptions).getApplicationOptionList();
+        doReturn(applicationOptionList).when(applicationOptionsMock).getApplicationOptionList();
 
         String expectedOpt1 = "a";
-        ApplicationOption mockOption1 = getCreateMockApplicationOption(expectedOpt1, true, ArgumentType.NO_ARGS);
-        doReturn(Boolean.TRUE).when(mockCommandLine).hasOption(expectedOpt1);
+        ApplicationOption optionMock1 = getCreateMockApplicationOption(expectedOpt1, true, ArgumentType.NO_ARGS);
+        doReturn(Boolean.TRUE).when(commandLineMock).hasOption(expectedOpt1);
 
         String expectedOpt2 = "b";
-        ApplicationOption mockOption2 = getCreateMockApplicationOption(expectedOpt2, false, ArgumentType.NO_ARGS);
-        doReturn(Boolean.TRUE).when(mockCommandLine).hasOption(expectedOpt2);
+        ApplicationOption optionMock2 = getCreateMockApplicationOption(expectedOpt2, false, ArgumentType.NO_ARGS);
+        doReturn(Boolean.TRUE).when(commandLineMock).hasOption(expectedOpt2);
 
-        applicationOptionList.add(mockOption1);
-        applicationOptionList.add(mockOption2);
+        applicationOptionList.add(optionMock1);
+        applicationOptionList.add(optionMock2);
 
         expectedArgs = new String[]{"-" + expectedOpt1, "-" + expectedOpt2};
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
-        verify(mockOption1).exec();
-        verify(mockOption2, never()).exec();
+        verify(optionMock1).exec();
+        verify(optionMock2, never()).exec();
     }
 
     @Test
     public void shouldInvokeDefaultOption() {
-        doReturn(Boolean.FALSE).when(mockCommandLine).hasOption(expectedOpt);
+        doReturn(Boolean.FALSE).when(commandLineMock).hasOption(expectedOpt);
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
-        verify(mockOption, never()).exec();
-        verify(mockDefaultOption).exec();
+        verify(optionMock, never()).exec();
+        verify(defaultOptionMock).exec();
     }
 
     @Test
     public void shouldInvokeDefaultOptionIfOptionNotIsFinal() {
-        doReturn(Boolean.TRUE).when(mockCommandLine).hasOption(expectedOpt);
+        doReturn(Boolean.TRUE).when(commandLineMock).hasOption(expectedOpt);
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
-        verify(mockOption).exec();
-        verify(mockDefaultOption).exec();
+        verify(optionMock).exec();
+        verify(defaultOptionMock).exec();
     }
 
     private ApplicationOption getCreateMockApplicationOption(String option, boolean isFinalOption, ArgumentType argumentType) {
