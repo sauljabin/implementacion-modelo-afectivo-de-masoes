@@ -15,22 +15,23 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class EmotionalState {
 
+    private static final int MAX = 1;
+    private static final int MIN = -1;
     private GeometryFactory geometryFactory;
     private double activation;
     private double satisfaction;
 
     public EmotionalState() {
-        this(getRandomDouble(), getRandomDouble());
+        RandomGenerator randomGenerator = new RandomGenerator();
+        geometryFactory = new GeometryFactory();
+        this.activation = randomGenerator.getDouble(MIN, MAX);
+        this.satisfaction = randomGenerator.getDouble(MIN, MAX);
     }
 
     public EmotionalState(double activation, double satisfaction) {
+        geometryFactory = new GeometryFactory();
         this.activation = activation;
         this.satisfaction = satisfaction;
-        geometryFactory = new GeometryFactory();
-    }
-
-    private static double getRandomDouble() {
-        return new RandomGenerator().getDouble(-1, 1);
     }
 
     public double getActivation() {
