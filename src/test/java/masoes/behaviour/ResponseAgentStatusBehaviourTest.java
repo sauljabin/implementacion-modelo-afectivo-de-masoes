@@ -11,7 +11,6 @@ import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
-import logger.jade.JadeLogger;
 import masoes.model.Emotion;
 import masoes.model.EmotionalAgent;
 import masoes.model.EmotionalState;
@@ -29,7 +28,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
@@ -40,12 +38,11 @@ public class ResponseAgentStatusBehaviourTest {
     private static final String BEHAVIOUR_NAME = "BEHAVIOUR NAME";
     private EmotionalAgent emotionalAgentMock;
     private ResponseAgentStatusBehaviour responseAgentStatusBehaviour;
-    private JadeLogger loggerMock;
     private Emotion emotionMock;
     private Behaviour behaviourMock;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         emotionalAgentMock = mock(EmotionalAgent.class);
         responseAgentStatusBehaviour = new ResponseAgentStatusBehaviour(emotionalAgentMock);
 
@@ -56,9 +53,6 @@ public class ResponseAgentStatusBehaviourTest {
         behaviourMock = mock(Behaviour.class);
         doReturn(BEHAVIOUR_NAME).when(behaviourMock).getBehaviourName();
         doReturn(behaviourMock).when(emotionalAgentMock).getCurrentEmotionalBehaviour();
-
-        loggerMock = mock(JadeLogger.class);
-        setFieldValue(responseAgentStatusBehaviour, "logger", loggerMock);
     }
 
     @Test

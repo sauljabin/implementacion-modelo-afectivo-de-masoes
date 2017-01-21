@@ -9,7 +9,6 @@ package masoes.behaviour;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.ontology.base.ActionResult;
-import logger.jade.JadeLogger;
 import masoes.model.EmotionalAgent;
 import masoes.ontology.EvaluateStimulus;
 import masoes.ontology.Stimulus;
@@ -21,20 +20,16 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class StimulusReceiverBehaviourTest {
 
     private EmotionalAgent emotionalAgentMock;
     private StimulusReceiverBehaviour stimulusReceiverBehaviour;
-    private JadeLogger loggerMock;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         emotionalAgentMock = mock(EmotionalAgent.class);
-        loggerMock = mock(JadeLogger.class);
         stimulusReceiverBehaviour = new StimulusReceiverBehaviour(emotionalAgentMock);
-        setFieldValue(stimulusReceiverBehaviour, "logger", loggerMock);
     }
 
     @Test

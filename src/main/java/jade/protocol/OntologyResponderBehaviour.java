@@ -17,13 +17,27 @@ import jade.lang.acl.MessageTemplate;
 
 public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
 
+    private final MessageTemplate messageTemplate;
     private ContentManager contentManager;
     private Ontology ontology;
 
     public OntologyResponderBehaviour(Agent agent, MessageTemplate messageTemplate, Ontology ontology) {
         super(agent, messageTemplate);
+        this.messageTemplate = messageTemplate;
         this.ontology = ontology;
         contentManager = new ContentManager();
+    }
+
+    public MessageTemplate getMessageTemplate() {
+        return messageTemplate;
+    }
+
+    public ContentManager getContentManager() {
+        return contentManager;
+    }
+
+    public Ontology getOntology() {
+        return ontology;
     }
 
     @Override

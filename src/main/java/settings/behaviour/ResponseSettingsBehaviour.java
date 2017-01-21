@@ -12,8 +12,6 @@ import jade.content.onto.basic.Action;
 import jade.core.Agent;
 import jade.protocol.OntologyResponderBehaviour;
 import jade.util.leap.ArrayList;
-import logger.jade.JadeLogger;
-import org.slf4j.LoggerFactory;
 import settings.application.ApplicationSettings;
 import settings.exception.SettingsException;
 import settings.jade.JadeSettings;
@@ -31,11 +29,9 @@ public class ResponseSettingsBehaviour extends OntologyResponderBehaviour {
 
     private final ApplicationSettings applicationSettings;
     private final JadeSettings jadeSettings;
-    private JadeLogger logger;
 
     public ResponseSettingsBehaviour(Agent agent) {
         super(agent, new SettingsRequestMessageTemplate(), new SettingsOntology());
-        logger = new JadeLogger(LoggerFactory.getLogger(ResponseSettingsBehaviour.class));
         applicationSettings = ApplicationSettings.getInstance();
         jadeSettings = JadeSettings.getInstance();
     }

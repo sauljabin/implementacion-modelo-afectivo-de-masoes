@@ -32,6 +32,22 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
         contentManager = new ContentManager();
     }
 
+    public AID getReceiver() {
+        return receiver;
+    }
+
+    public Ontology getOntology() {
+        return ontology;
+    }
+
+    public AgentAction getAgentAction() {
+        return agentAction;
+    }
+
+    public ContentManager getContentManager() {
+        return contentManager;
+    }
+
     @Override
     protected ACLMessage prepareRequest(ACLMessage message) {
         contentManager.registerLanguage(new SLCodec());

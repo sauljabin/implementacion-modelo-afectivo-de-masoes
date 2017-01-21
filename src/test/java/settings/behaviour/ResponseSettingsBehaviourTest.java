@@ -11,7 +11,6 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.util.leap.ArrayList;
 import jade.util.leap.List;
-import logger.jade.JadeLogger;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,19 +39,16 @@ public class ResponseSettingsBehaviourTest {
 
     private Agent agentMock;
     private ResponseSettingsBehaviour settingsBehaviour;
-    private JadeLogger loggerMock;
     private ApplicationSettings applicationSettingsMock;
     private JadeSettings jadeSettingsMock;
 
     @Before
     public void setUp() throws Exception {
         agentMock = mock(Agent.class);
-        loggerMock = mock(JadeLogger.class);
         applicationSettingsMock = mock(ApplicationSettings.class);
         jadeSettingsMock = mock(JadeSettings.class);
 
         settingsBehaviour = new ResponseSettingsBehaviour(agentMock);
-        setFieldValue(settingsBehaviour, "logger", loggerMock);
         setFieldValue(settingsBehaviour, "applicationSettings", applicationSettingsMock);
         setFieldValue(settingsBehaviour, "jadeSettings", jadeSettingsMock);
     }
