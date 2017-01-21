@@ -7,15 +7,16 @@
 package jade.settings.behaviour;
 
 import application.settings.ApplicationSettings;
+import common.settings.SettingsException;
 import jade.content.Concept;
-import jade.content.ContentElement;
+import jade.content.Predicate;
 import jade.content.onto.basic.Action;
+import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.logger.JadeLogger;
-import jade.ontology.base.UnexpectedContent;
-import jade.protocol.ProtocolRequestResponderBehaviour;
+import jade.protocol.OntologyResponderBehaviour;
 import jade.settings.JadeSettings;
 import jade.settings.ontology.GetAllSettings;
 import jade.settings.ontology.GetSetting;
@@ -25,16 +26,18 @@ import jade.settings.ontology.SystemSettings;
 import jade.util.leap.ArrayList;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.Optional;
 
-public class ResponseSettingsBehaviour extends ProtocolRequestResponderBehaviour {
+public class ResponseSettingsBehaviour extends OntologyResponderBehaviour {
 
     private final ApplicationSettings applicationSettings;
     private final JadeSettings jadeSettings;
     private JadeLogger logger;
     private MessageTemplate template;
 
-    public ResponseSettingsBehaviour() {
+    public ResponseSettingsBehaviour(Agent agent) {
+        super(agent);
         logger = new JadeLogger(LoggerFactory.getLogger(ResponseSettingsBehaviour.class));
         applicationSettings = ApplicationSettings.getInstance();
         jadeSettings = JadeSettings.getInstance();
@@ -50,39 +53,22 @@ public class ResponseSettingsBehaviour extends ProtocolRequestResponderBehaviour
     }
 
     @Override
-    protected ACLMessage prepareResponse(ACLMessage request) {
-        ACLMessage response = request.createReply();
-        try {
-            Action action = (Action) myAgent.getContentManager().extractContent(request);
-            Concept agentAction = action.getAction();
+    public boolean isValidAction(Action action) {
+        return Arrays.asList(GetSetting.class, GetAllSettings.class)
+                .contains(action.getAction().getClass());
+    }
 
-            if (agentAction instanceof GetSetting) {
-                getSettingResponse(response, (GetSetting) agentAction);
-            } else if (agentAction instanceof GetAllSettings) {
-                getSettingsResponse(response);
-            } else {
-                invalidActionResponse(request, response);
-            }
-
-        } catch (Exception e) {
-            failureResponse(response, e);
+    @Override
+    public Predicate performAction(Action action) {
+        Concept agentAction = action.getAction();
+        if (agentAction instanceof GetSetting) {
+            return getSettingResponse((GetSetting) agentAction);
+        } else {
+            return getSettingsResponse();
         }
-        return response;
     }
 
-    private void invalidActionResponse(ACLMessage request, ACLMessage response) throws Exception {
-        response.setPerformative(ACLMessage.NOT_UNDERSTOOD);
-        UnexpectedContent unexpectedContent = new UnexpectedContent("Invalid agent action", request.getContent());
-        myAgent.getContentManager().fillContent(response, unexpectedContent);
-    }
-
-    private void failureResponse(ACLMessage response, Exception e) {
-        response.setPerformative(ACLMessage.FAILURE);
-        response.setContent(e.getMessage());
-        logger.agentException(myAgent, e);
-    }
-
-    private void getSettingsResponse(ACLMessage response) throws Exception {
+    private Predicate getSettingsResponse() {
         SystemSettings systemSettings = new SystemSettings(new ArrayList());
 
         applicationSettings.toMap().forEach(
@@ -93,12 +79,11 @@ public class ResponseSettingsBehaviour extends ProtocolRequestResponderBehaviour
                 (key, value) -> systemSettings.getSettings().add(new Setting(key, value))
         );
 
-        response.setPerformative(ACLMessage.INFORM);
-        myAgent.getContentManager().fillContent(response, systemSettings);
+        return systemSettings;
     }
 
-    private void getSettingResponse(ACLMessage response, GetSetting getSetting) throws Exception {
-        ContentElement contentElement;
+    private Predicate getSettingResponse(GetSetting getSetting) {
+        Predicate contentElement;
         String setting = applicationSettings.get(getSetting.getKey());
 
         if (!Optional.ofNullable(setting).isPresent()) {
@@ -106,16 +91,14 @@ public class ResponseSettingsBehaviour extends ProtocolRequestResponderBehaviour
         }
 
         if (Optional.ofNullable(setting).isPresent()) {
-            response.setPerformative(ACLMessage.INFORM);
             SystemSettings systemSettings = new SystemSettings(new ArrayList());
             systemSettings.getSettings().add(new Setting(getSetting.getKey(), setting));
             contentElement = systemSettings;
         } else {
-            response.setPerformative(ACLMessage.NOT_UNDERSTOOD);
-            contentElement = new UnexpectedContent("Setting not found", getSetting.getKey());
+            throw new SettingsException(String.format("Setting not found %s", getSetting.getKey()));
         }
 
-        myAgent.getContentManager().fillContent(response, contentElement);
+        return contentElement;
     }
 
 }

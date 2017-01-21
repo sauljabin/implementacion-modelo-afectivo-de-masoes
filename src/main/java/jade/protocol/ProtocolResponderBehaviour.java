@@ -10,22 +10,14 @@ import jade.core.Agent;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
 
-public class ProtocolRequestResponderBehaviour extends SimpleAchieveREResponder {
+public class ProtocolResponderBehaviour extends SimpleAchieveREResponder {
 
-    public ProtocolRequestResponderBehaviour() {
-        super(null, MessageTemplate.MatchAll());
-    }
-
-    public ProtocolRequestResponderBehaviour(Agent agent) {
+    public ProtocolResponderBehaviour(Agent agent) {
         super(agent, MessageTemplate.MatchAll());
     }
 
-    public ProtocolRequestResponderBehaviour(Agent agent, MessageTemplate messageTemplate) {
+    public ProtocolResponderBehaviour(Agent agent, MessageTemplate messageTemplate) {
         super(agent, messageTemplate);
-    }
-
-    public ProtocolRequestResponderBehaviour(MessageTemplate messageTemplate) {
-        super(null, messageTemplate);
     }
 
     public void setMessageTemplate(MessageTemplate messageTemplate) {

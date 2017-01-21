@@ -6,22 +6,20 @@
 
 package masoes.core.behaviour;
 
-import jade.content.Concept;
+import jade.content.Predicate;
 import jade.content.onto.basic.Action;
-import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 import jade.logger.JadeLogger;
-import jade.ontology.base.UnexpectedContent;
 import masoes.core.EmotionalAgent;
 import masoes.core.ontology.AgentStatus;
 import masoes.core.ontology.EmotionStatus;
 import masoes.core.ontology.GetAgentStatus;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+
 public class ResponseAgentStatusBehaviour extends MasoesResponderBehaviour {
 
     private EmotionalAgent emotionalAgent;
-    private MessageTemplate template;
     private JadeLogger logger;
 
     public ResponseAgentStatusBehaviour(EmotionalAgent agent) {
@@ -31,44 +29,19 @@ public class ResponseAgentStatusBehaviour extends MasoesResponderBehaviour {
     }
 
     @Override
-    protected ACLMessage prepareResponse(ACLMessage request) {
-        ACLMessage response = request.createReply();
-        try {
-            Action action = (Action) myAgent.getContentManager().extractContent(request);
-            Concept agentAction = action.getAction();
-
-            if (agentAction instanceof GetAgentStatus) {
-                getAgentStatusResponse(response);
-            } else {
-                invalidActionResponse(request, response);
-            }
-
-        } catch (Exception e) {
-            failureResponse(response, e);
-        }
-        return response;
-    }
-
-    private void getAgentStatusResponse(ACLMessage response) throws Exception {
-        response.setPerformative(ACLMessage.INFORM);
+    public Predicate performAction(Action action) {
         AgentStatus agentStatus = new AgentStatus();
         agentStatus.setEmotionName(emotionalAgent.getCurrentEmotion().getEmotionName());
         agentStatus.setBehaviourName(emotionalAgent.getCurrentEmotionalBehaviour().getBehaviourName());
         agentStatus.setAgent(emotionalAgent.getAID());
         agentStatus.setEmotionStatus(new EmotionStatus(emotionalAgent.getEmotionalState().getActivation(), emotionalAgent.getEmotionalState().getSatisfaction()));
-        myAgent.getContentManager().fillContent(response, agentStatus);
+        return agentStatus;
     }
 
-    private void invalidActionResponse(ACLMessage request, ACLMessage response) throws Exception {
-        response.setPerformative(ACLMessage.NOT_UNDERSTOOD);
-        UnexpectedContent unexpectedContent = new UnexpectedContent("Invalid agent action", request.getContent());
-        myAgent.getContentManager().fillContent(response, unexpectedContent);
-    }
-
-    private void failureResponse(ACLMessage response, Exception e) {
-        response.setPerformative(ACLMessage.FAILURE);
-        response.setContent(e.getMessage());
-        logger.agentException(myAgent, e);
+    @Override
+    public boolean isValidAction(Action action) {
+        return Arrays.asList(GetAgentStatus.class)
+                .contains(action.getAction().getClass());
     }
 
 }

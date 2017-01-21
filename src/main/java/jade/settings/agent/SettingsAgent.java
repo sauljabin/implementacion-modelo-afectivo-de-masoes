@@ -45,7 +45,7 @@ public class SettingsAgent extends Agent {
             logger.agentException(this, e);
         }
 
-        addBehaviour(new ResponseSettingsBehaviour());
+        addBehaviour(new ResponseSettingsBehaviour(this));
     }
 
     private ServiceDescription createService(String serviceName) {

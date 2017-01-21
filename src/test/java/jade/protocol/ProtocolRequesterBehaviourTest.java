@@ -6,7 +6,8 @@
 
 package jade.protocol;
 
-import jade.lang.acl.MessageTemplate;
+import jade.core.Agent;
+import jade.lang.acl.ACLMessage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,20 +15,20 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
-public class ProtocolRequestResponderBehaviourTest {
+public class ProtocolRequesterBehaviourTest {
 
-    private ProtocolRequestResponderBehaviour spyResponderBehaviour;
+    private ProtocolRequesterBehaviour responderBehaviourSpy;
 
     @Before
     public void setUp() {
-        spyResponderBehaviour = spy(new ProtocolRequestResponderBehaviour());
+        responderBehaviourSpy = spy(new ProtocolRequesterBehaviour(mock(Agent.class), mock(ACLMessage.class)));
     }
 
     @Test
     public void shouldInvokeReset() {
-        MessageTemplate mockMessageTemplate = mock(MessageTemplate.class);
-        spyResponderBehaviour.setMessageTemplate(mockMessageTemplate);
-        verify(spyResponderBehaviour).reset(mockMessageTemplate);
+        ACLMessage messageMock = mock(ACLMessage.class);
+        responderBehaviourSpy.setMessage(messageMock);
+        verify(responderBehaviourSpy).reset(messageMock);
     }
 
 }

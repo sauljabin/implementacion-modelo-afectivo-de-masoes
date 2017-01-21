@@ -10,10 +10,10 @@ import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.protocol.ProtocolRequestResponderBehaviour;
+import jade.protocol.OntologyResponderBehaviour;
 import masoes.core.ontology.MasoesOntology;
 
-public class MasoesResponderBehaviour extends ProtocolRequestResponderBehaviour {
+public class MasoesResponderBehaviour extends OntologyResponderBehaviour {
 
     private MessageTemplate template;
 
