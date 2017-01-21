@@ -9,9 +9,6 @@ package settings.behaviour;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.domain.FIPANames;
-import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 import jade.util.leap.ArrayList;
 import jade.util.leap.List;
 import logger.jade.JadeLogger;
@@ -19,15 +16,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import settings.application.ApplicationSettings;
 import settings.exception.SettingsException;
 import settings.jade.JadeSettings;
 import settings.ontology.GetAllSettings;
 import settings.ontology.GetSetting;
 import settings.ontology.Setting;
-import settings.ontology.SettingsOntology;
 import settings.ontology.SystemSettings;
 
 import java.util.HashMap;
@@ -36,7 +30,6 @@ import java.util.Map;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
@@ -47,14 +40,12 @@ public class ResponseSettingsBehaviourTest {
 
     private Agent mockAgent;
     private ResponseSettingsBehaviour settingsBehaviour;
-    private ArgumentCaptor<MessageTemplate> messageTemplateArgumentCaptor;
     private JadeLogger mockLogger;
     private ApplicationSettings mockApplicationSettings;
     private JadeSettings mockJadeSettings;
 
     @Before
     public void setUp() throws Exception {
-        messageTemplateArgumentCaptor = ArgumentCaptor.forClass(MessageTemplate.class);
         mockAgent = mock(Agent.class);
         mockLogger = mock(JadeLogger.class);
         mockApplicationSettings = mock(ApplicationSettings.class);
@@ -64,18 +55,6 @@ public class ResponseSettingsBehaviourTest {
         setFieldValue(settingsBehaviour, "logger", mockLogger);
         setFieldValue(settingsBehaviour, "applicationSettings", mockApplicationSettings);
         setFieldValue(settingsBehaviour, "jadeSettings", mockJadeSettings);
-    }
-
-    @Test
-    public void shouldSetCorrectMessageTemplate() {
-        MessageTemplate expectedTemplate = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
-        expectedTemplate = MessageTemplate.and(expectedTemplate, MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST));
-        expectedTemplate = MessageTemplate.and(expectedTemplate, MessageTemplate.MatchLanguage(FIPANames.ContentLanguage.FIPA_SL));
-        expectedTemplate = MessageTemplate.and(expectedTemplate, MessageTemplate.MatchOntology(SettingsOntology.ONTOLOGY_NAME));
-        ResponseSettingsBehaviour spySettingsBehaviour = Mockito.spy(new ResponseSettingsBehaviour(mockAgent));
-        spySettingsBehaviour.onStart();
-        verify(spySettingsBehaviour).setMessageTemplate(messageTemplateArgumentCaptor.capture());
-        assertReflectionEquals(expectedTemplate, messageTemplateArgumentCaptor.getValue());
     }
 
     @Test

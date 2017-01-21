@@ -10,9 +10,6 @@ import jade.content.Concept;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.core.Agent;
-import jade.domain.FIPANames;
-import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 import jade.protocol.OntologyResponderBehaviour;
 import jade.util.leap.ArrayList;
 import logger.jade.JadeLogger;
@@ -20,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import settings.application.ApplicationSettings;
 import settings.exception.SettingsException;
 import settings.jade.JadeSettings;
+import settings.message.SettingsRequestMessageTemplate;
 import settings.ontology.GetAllSettings;
 import settings.ontology.GetSetting;
 import settings.ontology.Setting;
@@ -34,22 +32,12 @@ public class ResponseSettingsBehaviour extends OntologyResponderBehaviour {
     private final ApplicationSettings applicationSettings;
     private final JadeSettings jadeSettings;
     private JadeLogger logger;
-    private MessageTemplate template;
 
     public ResponseSettingsBehaviour(Agent agent) {
-        super(agent, MessageTemplate.MatchAll(), new SettingsOntology());
+        super(agent, new SettingsRequestMessageTemplate(), new SettingsOntology());
         logger = new JadeLogger(LoggerFactory.getLogger(ResponseSettingsBehaviour.class));
         applicationSettings = ApplicationSettings.getInstance();
         jadeSettings = JadeSettings.getInstance();
-    }
-
-    @Override
-    public void onStart() {
-        template = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
-        template = MessageTemplate.and(template, MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST));
-        template = MessageTemplate.and(template, MessageTemplate.MatchLanguage(FIPANames.ContentLanguage.FIPA_SL));
-        template = MessageTemplate.and(template, MessageTemplate.MatchOntology(SettingsOntology.ONTOLOGY_NAME));
-        setMessageTemplate(template);
     }
 
     @Override
