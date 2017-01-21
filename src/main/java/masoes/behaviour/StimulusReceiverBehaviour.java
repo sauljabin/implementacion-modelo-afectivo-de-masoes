@@ -9,18 +9,20 @@ package masoes.behaviour;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.ontology.base.ActionResult;
+import jade.protocol.OntologyResponderBehaviour;
 import logger.jade.JadeLogger;
+import masoes.message.MasoesMessageTemplate;
 import masoes.model.EmotionalAgent;
 import masoes.ontology.EvaluateStimulus;
 import org.slf4j.LoggerFactory;
 
-public class StimulusReceiverBehaviour extends MasoesResponderBehaviour {
+public class StimulusReceiverBehaviour extends OntologyResponderBehaviour {
 
     private EmotionalAgent emotionalAgent;
     private JadeLogger logger;
 
     public StimulusReceiverBehaviour(EmotionalAgent emotionalAgent) {
-        super(emotionalAgent);
+        super(emotionalAgent, new MasoesMessageTemplate());
         this.emotionalAgent = emotionalAgent;
         logger = new JadeLogger(LoggerFactory.getLogger(StimulusReceiverBehaviour.class));
     }

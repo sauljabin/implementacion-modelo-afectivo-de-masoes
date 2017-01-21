@@ -7,8 +7,8 @@
 package masoes.environment;
 
 import masoes.environment.dummy.DummyEnvironment;
-import masoes.exception.InvalidEnvironmentException;
 import masoes.environment.wikipedia.WikipediaEnvironment;
+import masoes.exception.InvalidEnvironmentException;
 import settings.application.ApplicationSettings;
 
 public class EnvironmentFactory {

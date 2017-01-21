@@ -14,10 +14,6 @@ import jade.lang.acl.MessageTemplate;
 
 public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
 
-    public OntologyResponderBehaviour(Agent agent) {
-        super(agent);
-    }
-
     public OntologyResponderBehaviour(Agent agent, MessageTemplate messageTemplate) {
         super(agent, messageTemplate);
     }

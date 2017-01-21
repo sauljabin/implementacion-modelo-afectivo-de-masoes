@@ -7,8 +7,8 @@
 package masoes.ontology;
 
 import jade.content.onto.BeanOntology;
-import jade.ontology.base.BaseOntology;
 import jade.exception.SetupOntologyException;
+import jade.ontology.base.BaseOntology;
 
 public class MasoesOntology extends BeanOntology {
 

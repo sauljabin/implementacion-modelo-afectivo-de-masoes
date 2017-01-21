@@ -7,8 +7,8 @@
 package masoes.environment;
 
 import masoes.environment.dummy.DummyEnvironment;
-import masoes.exception.InvalidEnvironmentException;
 import masoes.environment.wikipedia.WikipediaEnvironment;
+import masoes.exception.InvalidEnvironmentException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

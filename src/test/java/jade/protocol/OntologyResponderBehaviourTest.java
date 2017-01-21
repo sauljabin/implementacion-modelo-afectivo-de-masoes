@@ -13,6 +13,7 @@ import jade.content.onto.basic.Action;
 import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.ontology.base.BaseOntology;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,11 +36,13 @@ public class OntologyResponderBehaviourTest {
     private ACLMessage request;
     private ContentManager contentManagerMock;
     private Action actionMock;
+    private MessageTemplate messageTemplateMock;
 
     @Before
     public void setUp() throws Exception {
         agentMock = mock(Agent.class);
-        ontologyResponderBehaviour = spy(new OntologyResponderBehaviour(agentMock));
+        messageTemplateMock = mock(MessageTemplate.class);
+        ontologyResponderBehaviour = spy(new OntologyResponderBehaviour(agentMock, messageTemplateMock));
 
         request = new ACLMessage(ACLMessage.REQUEST);
         request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);

@@ -14,8 +14,8 @@ import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPANames;
-import jade.lang.acl.ACLMessage;
 import jade.exception.FillOntologyContentException;
+import jade.lang.acl.ACLMessage;
 
 public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
 
