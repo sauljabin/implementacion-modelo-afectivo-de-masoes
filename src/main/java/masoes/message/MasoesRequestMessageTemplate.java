@@ -8,10 +8,10 @@ package masoes.message;
 
 import jade.lang.acl.MessageTemplate;
 
-public class MasoesMessageTemplate extends MessageTemplate {
+public class MasoesRequestMessageTemplate extends MessageTemplate {
 
-    public MasoesMessageTemplate() {
-        super(new MasoesMatchExpression());
+    public MasoesRequestMessageTemplate() {
+        super(new MasoesMatchRequestExpression());
     }
 
 }

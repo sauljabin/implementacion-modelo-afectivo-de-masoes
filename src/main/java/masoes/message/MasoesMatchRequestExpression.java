@@ -11,7 +11,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import masoes.ontology.MasoesOntology;
 
-public class MasoesMatchExpression implements MessageTemplate.MatchExpression {
+public class MasoesMatchRequestExpression implements MessageTemplate.MatchExpression {
 
     @Override
     public boolean match(ACLMessage message) {

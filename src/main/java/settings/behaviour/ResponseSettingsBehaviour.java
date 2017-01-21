@@ -37,7 +37,7 @@ public class ResponseSettingsBehaviour extends OntologyResponderBehaviour {
     private MessageTemplate template;
 
     public ResponseSettingsBehaviour(Agent agent) {
-        super(agent, MessageTemplate.MatchAll());
+        super(agent, MessageTemplate.MatchAll(), new SettingsOntology());
         logger = new JadeLogger(LoggerFactory.getLogger(ResponseSettingsBehaviour.class));
         applicationSettings = ApplicationSettings.getInstance();
         jadeSettings = JadeSettings.getInstance();

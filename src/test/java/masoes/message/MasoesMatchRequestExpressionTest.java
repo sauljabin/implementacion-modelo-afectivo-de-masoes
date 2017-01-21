@@ -14,14 +14,14 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class MasoesMatchExpressionTest {
+public class MasoesMatchRequestExpressionTest {
 
-    private MasoesMatchExpression masoesMatchExpression;
+    private MasoesMatchRequestExpression masoesMatchRequestExpression;
     private ACLMessage message;
 
     @Before
     public void setUp() {
-        masoesMatchExpression = new MasoesMatchExpression();
+        masoesMatchRequestExpression = new MasoesMatchRequestExpression();
         message = new ACLMessage(ACLMessage.REQUEST);
         message.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         message.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
@@ -30,7 +30,7 @@ public class MasoesMatchExpressionTest {
 
     @Test
     public void shouldMatchWithMasoesMessage() {
-        assertTrue(masoesMatchExpression.match(message));
+        assertTrue(masoesMatchRequestExpression.match(message));
     }
 
 }

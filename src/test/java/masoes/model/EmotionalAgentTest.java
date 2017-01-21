@@ -6,14 +6,10 @@
 
 package masoes.model;
 
-import jade.content.ContentManager;
-import jade.content.lang.Codec;
-import jade.content.lang.sl.SLCodec;
 import jade.core.behaviours.Behaviour;
 import logger.jade.JadeLogger;
 import masoes.behaviour.ResponseAgentStatusBehaviour;
 import masoes.behaviour.StimulusReceiverBehaviour;
-import masoes.ontology.MasoesOntology;
 import masoes.ontology.Stimulus;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,21 +40,15 @@ public class EmotionalAgentTest {
     private Emotion mockEmotion;
     private Stimulus mockStimulus;
     private JadeLogger mockLogger;
-    private ArgumentCaptor<MasoesOntology> ontologyArgumentCaptor;
-    private ArgumentCaptor<Codec> codecArgumentCaptor;
     private ArgumentCaptor<Behaviour> behaviourArgumentCaptor;
-    private ContentManager mockContentManager;
 
     @Before
     public void setUp() throws Exception {
-        ontologyArgumentCaptor = ArgumentCaptor.forClass(MasoesOntology.class);
-        codecArgumentCaptor = ArgumentCaptor.forClass(Codec.class);
         behaviourArgumentCaptor = ArgumentCaptor.forClass(Behaviour.class);
 
         mockBehaviourManager = mock(BehaviourManager.class);
         mockEmotionalConfigurator = mock(EmotionalConfigurator.class);
         mockLogger = mock(JadeLogger.class);
-        mockContentManager = mock(ContentManager.class);
         mockEmotionalState = mock(EmotionalState.class);
         mockBehaviour = mock(Behaviour.class);
         mockEmotion = mock(Emotion.class);
@@ -71,7 +61,6 @@ public class EmotionalAgentTest {
         doReturn(mockBehaviour).when(mockBehaviourManager).calculateBehaviour(any());
         doReturn(mockBehaviour).when(mockBehaviourManager).getBehaviour();
         doNothing().when(mockBehaviourManager).updateBehaviour(any());
-        doReturn(mockContentManager).when(spyEmotionalAgent).getContentManager();
 
         spyEmotionalAgent.setup();
     }
@@ -87,14 +76,6 @@ public class EmotionalAgentTest {
         InOrder inOrder = inOrder(spyEmotionalAgent, mockBehaviourManager);
         inOrder.verify(spyEmotionalAgent).setUp();
         inOrder.verify(mockBehaviourManager).updateBehaviour(spyEmotionalAgent);
-    }
-
-    @Test
-    public void shouldAddOntologyAndLanguage() throws Exception {
-        verify(mockContentManager).registerLanguage(codecArgumentCaptor.capture());
-        verify(mockContentManager).registerOntology(ontologyArgumentCaptor.capture());
-        assertThat(codecArgumentCaptor.getValue(), is(instanceOf(SLCodec.class)));
-        assertThat(ontologyArgumentCaptor.getValue(), is(instanceOf(MasoesOntology.class)));
     }
 
     @Test

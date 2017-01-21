@@ -10,11 +10,12 @@ import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.protocol.OntologyResponderBehaviour;
 import logger.jade.JadeLogger;
-import masoes.message.MasoesMessageTemplate;
+import masoes.message.MasoesRequestMessageTemplate;
 import masoes.model.EmotionalAgent;
 import masoes.ontology.AgentStatus;
 import masoes.ontology.EmotionStatus;
 import masoes.ontology.GetAgentStatus;
+import masoes.ontology.MasoesOntology;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
@@ -25,7 +26,7 @@ public class ResponseAgentStatusBehaviour extends OntologyResponderBehaviour {
     private JadeLogger logger;
 
     public ResponseAgentStatusBehaviour(EmotionalAgent agent) {
-        super(agent, new MasoesMessageTemplate());
+        super(agent, new MasoesRequestMessageTemplate(), new MasoesOntology());
         logger = new JadeLogger(LoggerFactory.getLogger(ResponseAgentStatusBehaviour.class));
         emotionalAgent = agent;
     }

@@ -65,7 +65,7 @@ public class OntologyRequesterBehaviourTest {
         receiverMock = mock(AID.class);
         senderMock = mock(AID.class);
 
-        ontologyRequesterBehaviour = new OntologyRequesterBehaviour(agentMock, receiverMock, ontologyMock, agentActionMock);
+        ontologyRequesterBehaviour = new OntologyRequesterBehaviour(agentMock, receiverMock, agentActionMock, ontologyMock);
         request = new ACLMessage(ACLMessage.REQUEST);
 
         doReturn(ONTOLOGY_NAME).when(ontologyMock).getName();

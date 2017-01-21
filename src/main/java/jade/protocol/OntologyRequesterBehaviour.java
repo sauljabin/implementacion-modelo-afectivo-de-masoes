@@ -24,12 +24,12 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
     private AgentAction agentAction;
     private ContentManager contentManager;
 
-    public OntologyRequesterBehaviour(Agent agent, AID receiver, Ontology ontology, AgentAction agentAction) {
+    public OntologyRequesterBehaviour(Agent agent, AID receiver, AgentAction agentAction, Ontology ontology) {
         super(agent, new ACLMessage(ACLMessage.REQUEST));
         this.receiver = receiver;
         this.ontology = ontology;
         this.agentAction = agentAction;
-        this.contentManager = new ContentManager();
+        contentManager = new ContentManager();
     }
 
     @Override

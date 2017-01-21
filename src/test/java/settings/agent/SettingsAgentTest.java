@@ -6,9 +6,6 @@
 
 package settings.agent;
 
-import jade.content.ContentManager;
-import jade.content.lang.Codec;
-import jade.content.lang.sl.SLCodec;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.domain.DFService;
@@ -51,15 +48,11 @@ public class SettingsAgentTest {
     private JadeLogger mockLogger;
     private ArgumentCaptor<DFAgentDescription> agentDescriptionArgumentCaptor;
     private ArgumentCaptor<Behaviour> behaviourArgumentCaptor;
-    private ArgumentCaptor<SettingsOntology> ontologyArgumentCaptor;
-    private ArgumentCaptor<Codec> codecArgumentCaptor;
 
     @Before
     public void setUp() throws Exception {
         agentDescriptionArgumentCaptor = ArgumentCaptor.forClass(DFAgentDescription.class);
         behaviourArgumentCaptor = ArgumentCaptor.forClass(Behaviour.class);
-        ontologyArgumentCaptor = ArgumentCaptor.forClass(SettingsOntology.class);
-        codecArgumentCaptor = ArgumentCaptor.forClass(Codec.class);
         mockLogger = mock(JadeLogger.class);
 
         SettingsAgent settingsAgent = new SettingsAgent();
@@ -73,17 +66,6 @@ public class SettingsAgentTest {
         spySettingsAgent.setup();
         verify(spySettingsAgent).addBehaviour(behaviourArgumentCaptor.capture());
         assertThat(behaviourArgumentCaptor.getValue(), is(instanceOf(ResponseSettingsBehaviour.class)));
-    }
-
-    @Test
-    public void shouldAddOntologyAndLanguage() throws Exception {
-        ContentManager mockContentManager = mock(ContentManager.class);
-        doReturn(mockContentManager).when(spySettingsAgent).getContentManager();
-        spySettingsAgent.setup();
-        verify(mockContentManager).registerLanguage(codecArgumentCaptor.capture());
-        verify(mockContentManager).registerOntology(ontologyArgumentCaptor.capture());
-        assertThat(codecArgumentCaptor.getValue(), is(instanceOf(SLCodec.class)));
-        assertThat(ontologyArgumentCaptor.getValue(), is(instanceOf(SettingsOntology.class)));
     }
 
     @Test

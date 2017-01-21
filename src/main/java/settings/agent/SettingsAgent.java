@@ -6,7 +6,6 @@
 
 package settings.agent;
 
-import jade.content.lang.sl.SLCodec;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -28,9 +27,6 @@ public class SettingsAgent extends Agent {
 
     @Override
     protected void setup() {
-        getContentManager().registerOntology(new SettingsOntology());
-        getContentManager().registerLanguage(new SLCodec());
-
         try {
             ServiceDescription getSetting = createService("GetSetting");
             ServiceDescription getAllSettings = createService("GetAllSettings");
