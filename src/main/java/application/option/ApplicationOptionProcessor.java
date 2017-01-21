@@ -6,8 +6,8 @@
 
 package application.option;
 
-import application.logger.ApplicationLogger;
-import application.option.exception.ApplicationOptionProcessorException;
+import application.exception.ApplicationOptionProcessorException;
+import logger.application.ApplicationLogger;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;

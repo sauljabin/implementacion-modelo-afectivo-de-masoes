@@ -6,14 +6,14 @@
 
 package masoes.environment;
 
-import application.settings.ApplicationSettings;
 import masoes.environment.dummy.DummyEnvironment;
-import masoes.environment.exception.InvalidEnvironmentException;
+import masoes.exception.InvalidEnvironmentException;
 import masoes.environment.wikipedia.WikipediaEnvironment;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import settings.application.ApplicationSettings;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;

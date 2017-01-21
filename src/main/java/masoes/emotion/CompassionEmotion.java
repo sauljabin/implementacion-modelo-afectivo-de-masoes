@@ -7,9 +7,9 @@
 package masoes.emotion;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import masoes.core.Emotion;
-import masoes.core.EmotionLevel;
-import masoes.core.EmotionType;
+import masoes.model.Emotion;
+import masoes.model.EmotionLevel;
+import masoes.model.EmotionType;
 
 public class CompassionEmotion extends Emotion {
 

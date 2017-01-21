@@ -6,11 +6,11 @@
 
 package application.boot;
 
-import application.logger.ApplicationLogger;
 import application.option.ApplicationOptionProcessor;
-import application.settings.ApplicationSettings;
-import jade.settings.JadeSettings;
+import logger.application.ApplicationLogger;
 import org.slf4j.LoggerFactory;
+import settings.application.ApplicationSettings;
+import settings.jade.JadeSettings;
 
 public class ApplicationBoot {
 

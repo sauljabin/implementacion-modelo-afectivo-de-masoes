@@ -8,14 +8,14 @@ package functional.test.core;
 
 import jade.core.AID;
 import jade.core.Agent;
-import jade.logger.JadeLogger;
 import junit.framework.AssertionFailedError;
+import logger.jade.JadeLogger;
 import org.slf4j.LoggerFactory;
 import org.unitils.reflectionassert.ReflectionAssert;
+import string.random.StringGenerator;
 import test.common.Test;
 import test.common.TestException;
 import test.common.TestUtility;
-import util.string.StringGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

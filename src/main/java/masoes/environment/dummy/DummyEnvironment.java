@@ -8,7 +8,6 @@ package masoes.environment.dummy;
 
 import masoes.environment.Environment;
 import masoes.environment.EnvironmentAgentInfo;
-import masoes.environment.dummy.agent.DummyEmotionalAgent;
 
 import java.util.Arrays;
 import java.util.List;

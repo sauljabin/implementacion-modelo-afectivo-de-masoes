@@ -7,7 +7,6 @@
 package masoes.environment.dummy;
 
 import masoes.environment.EnvironmentAgentInfo;
-import masoes.environment.dummy.agent.DummyEmotionalAgent;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -8,9 +8,9 @@ package jade.boot;
 
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
-import jade.settings.JadeSettings;
 import org.junit.Before;
 import org.junit.Test;
+import settings.jade.JadeSettings;
 
 import java.util.HashMap;
 import java.util.Map;

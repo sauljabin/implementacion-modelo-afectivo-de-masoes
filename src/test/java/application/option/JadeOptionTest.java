@@ -6,10 +6,10 @@
 
 package application.option;
 
-import application.logger.ApplicationLogger;
-import jade.settings.JadeSettings;
+import logger.application.ApplicationLogger;
 import org.junit.Before;
 import org.junit.Test;
+import settings.jade.JadeSettings;
 
 import java.util.Properties;
 

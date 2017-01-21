@@ -6,12 +6,12 @@
 
 package application.option;
 
-import application.settings.ApplicationSettings;
-import jade.settings.JadeSettings;
-import jade.settings.agent.SettingsAgent;
 import masoes.environment.Environment;
 import masoes.environment.EnvironmentAgentInfo;
 import masoes.environment.EnvironmentFactory;
+import settings.agent.SettingsAgent;
+import settings.application.ApplicationSettings;
+import settings.jade.JadeSettings;
 
 import java.util.ArrayList;
 import java.util.List;

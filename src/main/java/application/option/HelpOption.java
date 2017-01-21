@@ -6,8 +6,8 @@
 
 package application.option;
 
-import application.settings.ApplicationSettings;
 import org.apache.commons.cli.HelpFormatter;
+import settings.application.ApplicationSettings;
 
 public class HelpOption extends ApplicationOption {
 

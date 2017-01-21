@@ -1,0 +1,61 @@
+/*
+ * Copyright (c) 2016 Saúl Piña <sauljabin@gmail.com>
+ * License GPLv3 <https://www.gnu.org/licenses/gpl-3.0.html>
+ * Please see the LICENSE.txt file
+ */
+
+package settings.agent;
+
+import jade.content.lang.sl.SLCodec;
+import jade.core.Agent;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
+import jade.domain.FIPANames;
+import logger.jade.JadeLogger;
+import org.slf4j.LoggerFactory;
+import settings.behaviour.ResponseSettingsBehaviour;
+import settings.ontology.SettingsOntology;
+
+public class SettingsAgent extends Agent {
+
+    private JadeLogger logger;
+
+    public SettingsAgent() {
+        logger = new JadeLogger(LoggerFactory.getLogger(SettingsAgent.class));
+    }
+
+    @Override
+    protected void setup() {
+        getContentManager().registerOntology(new SettingsOntology());
+        getContentManager().registerLanguage(new SLCodec());
+
+        try {
+            ServiceDescription getSetting = createService("GetSetting");
+            ServiceDescription getAllSettings = createService("GetAllSettings");
+
+            DFAgentDescription agentDescription = new DFAgentDescription();
+            agentDescription.setName(getAID());
+            agentDescription.addServices(getSetting);
+            agentDescription.addServices(getAllSettings);
+
+            DFService.register(this, agentDescription);
+        } catch (FIPAException e) {
+            logger.agentException(this, e);
+        }
+
+        addBehaviour(new ResponseSettingsBehaviour(this));
+    }
+
+    private ServiceDescription createService(String serviceName) {
+        ServiceDescription serviceDescription = new ServiceDescription();
+        serviceDescription.setName(serviceName);
+        serviceDescription.setType(getLocalName() + "-" + serviceName);
+        serviceDescription.addProtocols(FIPANames.InteractionProtocol.FIPA_REQUEST);
+        serviceDescription.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
+        serviceDescription.addOntologies(SettingsOntology.ONTOLOGY_NAME);
+        return serviceDescription;
+    }
+
+}

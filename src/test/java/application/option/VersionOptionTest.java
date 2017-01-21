@@ -6,11 +6,11 @@
 
 package application.option;
 
-import application.settings.ApplicationSettings;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
+import settings.application.ApplicationSettings;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;

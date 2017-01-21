@@ -6,9 +6,9 @@
 
 package application.option;
 
-import application.logger.ApplicationLogger;
-import jade.settings.JadeSettings;
+import logger.application.ApplicationLogger;
 import org.slf4j.LoggerFactory;
+import settings.jade.JadeSettings;
 
 public class JadeOption extends ApplicationOption {
 

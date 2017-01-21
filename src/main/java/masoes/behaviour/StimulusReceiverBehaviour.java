@@ -8,9 +8,9 @@ package masoes.behaviour;
 
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
-import jade.logger.JadeLogger;
 import jade.ontology.base.ActionResult;
-import masoes.core.EmotionalAgent;
+import logger.jade.JadeLogger;
+import masoes.model.EmotionalAgent;
 import masoes.ontology.EvaluateStimulus;
 import org.slf4j.LoggerFactory;
 

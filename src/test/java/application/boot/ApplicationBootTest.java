@@ -6,14 +6,14 @@
 
 package application.boot;
 
-import application.logger.ApplicationLogger;
 import application.option.ApplicationOptionProcessor;
-import application.settings.ApplicationSettings;
-import jade.settings.JadeSettings;
+import logger.application.ApplicationLogger;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.ExpectedSystemExit;
+import settings.application.ApplicationSettings;
+import settings.jade.JadeSettings;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.any;

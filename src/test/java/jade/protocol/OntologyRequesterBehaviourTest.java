@@ -16,7 +16,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import jade.ontology.exception.FillOntologyContentException;
+import jade.exception.FillOntologyContentException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

@@ -9,8 +9,8 @@ package masoes.emotion;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Polygon;
-import masoes.core.EmotionLevel;
-import masoes.core.EmotionType;
+import masoes.model.EmotionLevel;
+import masoes.model.EmotionType;
 import org.junit.Before;
 import org.junit.Test;
 

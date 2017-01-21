@@ -6,11 +6,11 @@
 
 package application.option;
 
-import application.settings.ApplicationSettings;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.junit.Before;
 import org.junit.Test;
+import settings.application.ApplicationSettings;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

@@ -6,13 +6,13 @@
 
 package functional.test.boot;
 
-import application.logger.ApplicationLogger;
-import application.settings.ApplicationSettings;
 import functional.test.core.FunctionalTesterAgent;
 import jade.boot.JadeBoot;
-import jade.settings.JadeSettings;
+import logger.application.ApplicationLogger;
 import masoes.environment.EnvironmentAgentInfo;
 import org.slf4j.LoggerFactory;
+import settings.application.ApplicationSettings;
+import settings.jade.JadeSettings;
 
 public class FunctionalTestBoot {
 
