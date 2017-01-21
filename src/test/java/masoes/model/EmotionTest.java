@@ -19,7 +19,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
@@ -40,13 +39,6 @@ public class EmotionTest {
                 new Coordinate(0, 0.5)
         };
         emotionSpy = spy(createDummyEmotion(coordinates));
-    }
-
-    @Test
-    public void shouldInvokeNameWhenToString() {
-        String expectedName = "NAME";
-        doReturn(expectedName).when(emotionSpy).getEmotionName();
-        assertThat(emotionSpy.toString(), is(expectedName));
     }
 
     @Test

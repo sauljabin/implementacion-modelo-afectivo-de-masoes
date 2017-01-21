@@ -7,6 +7,8 @@
 package application.option;
 
 import org.apache.commons.cli.Option;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Optional;
 import java.util.Properties;
@@ -54,22 +56,12 @@ public abstract class ApplicationOption implements Comparable<ApplicationOption>
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("{");
-        stringBuilder.append("option=[-" + getOpt());
-        if (Optional.ofNullable(getLongOpt()).isPresent()) {
-            stringBuilder.append(", --" + getLongOpt());
-        }
-        stringBuilder.append("]");
-        stringBuilder.append(", order=" + getOrder());
-        if (Optional.ofNullable(getValue()).isPresent()) {
-            stringBuilder.append(", value=" + getValue());
-        }
-        if (Optional.ofNullable(getProperties()).isPresent()) {
-            stringBuilder.append(", properties=" + getProperties());
-        }
-        stringBuilder.append("}");
-        return stringBuilder.toString();
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("option", getKeyOpt())
+                .append("order", getOrder())
+                .append("value", value)
+                .append("properties", properties)
+                .toString();
     }
 
     @Override

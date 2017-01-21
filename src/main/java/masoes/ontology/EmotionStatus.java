@@ -7,6 +7,8 @@
 package masoes.ontology;
 
 import jade.content.Concept;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class EmotionStatus implements Concept {
 
@@ -37,4 +39,11 @@ public class EmotionStatus implements Concept {
         this.satisfaction = satisfaction;
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("activation", activation)
+                .append("satisfaction", satisfaction)
+                .toString();
+    }
 }

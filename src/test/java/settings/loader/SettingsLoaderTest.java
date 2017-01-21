@@ -80,11 +80,6 @@ public class SettingsLoaderTest {
     }
 
     @Test
-    public void shouldGetTheSameStringThatAMap() {
-        assertThat(jadeSettingsLoader.toString(), is(jadeSettingsLoader.toMap().toString()));
-    }
-
-    @Test
     public void shouldRemoveProperty() {
         jadeSettingsLoader.set(KEY, VALUE);
         assertThat(jadeSettingsLoader.get(KEY), is(VALUE));

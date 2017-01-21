@@ -8,6 +8,8 @@ package masoes.ontology;
 
 import jade.content.Predicate;
 import jade.core.AID;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class AgentStatus implements Predicate {
 
@@ -58,15 +60,14 @@ public class AgentStatus implements Predicate {
         this.emotionName = emotionName;
     }
 
-
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("AgentStatus{");
-        sb.append("agent=").append(agent);
-        sb.append(", behaviourName='").append(behaviourName).append('\'');
-        sb.append(", emotionName='").append(emotionName).append('\'');
-        sb.append(", emotionStatus=").append(emotionStatus);
-        sb.append('}');
-        return sb.toString();
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("agent", agent)
+                .append("behaviourName", behaviourName)
+                .append("emotionName", emotionName)
+                .append("emotionStatus", emotionStatus)
+                .toString();
     }
+
 }

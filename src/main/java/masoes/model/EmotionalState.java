@@ -10,6 +10,8 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import math.random.RandomGenerator;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class EmotionalState {
 
@@ -45,7 +47,9 @@ public class EmotionalState {
 
     @Override
     public String toString() {
-        return String.format("{activation=%s, satisfaction=%s}", activation, satisfaction);
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("activation", activation)
+                .append("satisfaction", satisfaction)
+                .toString();
     }
-
 }

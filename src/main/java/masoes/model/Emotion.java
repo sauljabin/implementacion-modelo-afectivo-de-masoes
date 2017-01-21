@@ -11,6 +11,8 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.shape.random.RandomPointsBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public abstract class Emotion {
 
@@ -36,7 +38,11 @@ public abstract class Emotion {
 
     @Override
     public String toString() {
-        return getEmotionName();
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("name", getEmotionName())
+                .append("type", getEmotionType())
+                .append("level", getEmotionLevel())
+                .toString();
     }
 
     public Point getRandomPoint() {
