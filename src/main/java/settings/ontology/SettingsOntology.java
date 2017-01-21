@@ -9,6 +9,8 @@ package settings.ontology;
 import jade.content.onto.BeanOntology;
 import jade.exception.SetupOntologyException;
 import jade.ontology.base.BaseOntology;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class SettingsOntology extends BeanOntology {
 
@@ -21,6 +23,16 @@ public class SettingsOntology extends BeanOntology {
         } catch (Exception e) {
             throw new SetupOntologyException(e.getMessage(), e);
         }
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("name", getName())
+                .append("actions", getActionNames().toArray())
+                .append("predicates", getPredicateNames().toArray())
+                .append("concepts", getConceptNames().toArray())
+                .toString();
     }
 
 }

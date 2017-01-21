@@ -10,6 +10,7 @@ import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ProtocolRequesterBehaviour extends SimpleAchieveREInitiator {
 
@@ -23,7 +24,7 @@ public class ProtocolRequesterBehaviour extends SimpleAchieveREInitiator {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("name", getBehaviourName())
                 .toString();
     }

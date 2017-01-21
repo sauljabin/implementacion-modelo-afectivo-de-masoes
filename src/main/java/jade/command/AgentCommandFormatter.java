@@ -7,6 +7,8 @@
 package jade.command;
 
 import jade.core.Agent;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +48,15 @@ public class AgentCommandFormatter {
         } else {
             return String.format("%s:%s", agentName, agentClass.getName());
         }
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("agentName", agentName)
+                .append("agentClass", agentClass)
+                .append("agentArguments", agentArguments)
+                .toString();
     }
 
 }

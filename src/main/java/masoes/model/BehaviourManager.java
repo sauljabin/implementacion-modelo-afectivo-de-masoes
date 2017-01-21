@@ -7,6 +7,8 @@
 package masoes.model;
 
 import jade.core.behaviours.Behaviour;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Optional;
 
@@ -55,5 +57,11 @@ public class BehaviourManager {
         }
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("behaviour", behaviour)
+                .toString();
+    }
 
 }

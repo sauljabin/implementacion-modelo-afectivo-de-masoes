@@ -13,6 +13,8 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import logger.jade.JadeLogger;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.LoggerFactory;
 import settings.behaviour.ResponseSettingsBehaviour;
 import settings.ontology.SettingsOntology;
@@ -52,6 +54,13 @@ public class SettingsAgent extends Agent {
         serviceDescription.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
         serviceDescription.addOntologies(SettingsOntology.ONTOLOGY_NAME);
         return serviceDescription;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("aid", getAID())
+                .toString();
     }
 
 }

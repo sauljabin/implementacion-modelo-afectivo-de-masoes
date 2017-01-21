@@ -7,6 +7,8 @@
 package masoes.model;
 
 import masoes.ontology.Stimulus;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class EmotionalConfigurator {
 
@@ -32,6 +34,13 @@ public class EmotionalConfigurator {
 
     protected EmotionalState calculateEmotionalState(Stimulus stimulus) {
         return new EmotionalState();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("emotionalState", emotionalState)
+                .toString();
     }
 
 }

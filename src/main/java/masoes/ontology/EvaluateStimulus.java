@@ -7,6 +7,8 @@
 package masoes.ontology;
 
 import jade.content.AgentAction;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class EvaluateStimulus implements AgentAction {
 
@@ -25,6 +27,13 @@ public class EvaluateStimulus implements AgentAction {
 
     public void setStimulus(Stimulus stimulus) {
         this.stimulus = stimulus;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("stimulus", stimulus)
+                .toString();
     }
 
 }

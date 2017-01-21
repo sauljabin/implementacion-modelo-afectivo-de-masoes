@@ -46,4 +46,5 @@ public class EmotionStatus implements Concept {
                 .append("satisfaction", satisfaction)
                 .toString();
     }
+
 }
