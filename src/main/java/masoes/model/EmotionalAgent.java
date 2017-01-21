@@ -12,6 +12,8 @@ import logger.jade.JadeLogger;
 import masoes.behaviour.ResponseAgentStatusBehaviour;
 import masoes.behaviour.StimulusReceiverBehaviour;
 import masoes.ontology.Stimulus;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.LoggerFactory;
 
 public class EmotionalAgent extends Agent {
@@ -51,10 +53,10 @@ public class EmotionalAgent extends Agent {
     }
 
     public void evaluateStimulus(Stimulus stimulus) {
-        logger.agentEmotionalState(this);
+        logger.agent(this);
         emotionalConfigurator.updateEmotion(stimulus);
         behaviourManager.updateBehaviour(this);
-        logger.agentEmotionalStateChanged(this, stimulus);
+        logger.agent(this);
     }
 
     public Behaviour getCognitiveBehaviour() {
@@ -83,6 +85,16 @@ public class EmotionalAgent extends Agent {
 
     protected void setUp() {
 
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("aid", getAID())
+                .append("behaviour", getCurrentEmotionalBehaviour())
+                .append("emotion", getCurrentEmotion())
+                .append("emotionalState", getEmotionalState())
+                .toString();
     }
 
 }

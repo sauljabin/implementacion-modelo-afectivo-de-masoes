@@ -38,7 +38,7 @@ public class SettingsAgent extends Agent {
 
             DFService.register(this, agentDescription);
         } catch (FIPAException e) {
-            logger.agentException(this, e);
+            logger.exception(this, e);
         }
 
         addBehaviour(new ResponseSettingsBehaviour(this));

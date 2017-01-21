@@ -89,7 +89,7 @@ public class SettingsAgentTest {
         doThrow(expectedException).when(DFService.class);
         DFService.register(eq(settingsAgentSpy), any());
         settingsAgentSpy.setup();
-        verify(loggerMock).agentException(settingsAgentSpy, expectedException);
+        verify(loggerMock).exception(settingsAgentSpy, expectedException);
     }
 
     private void testService(ServiceDescription actualService, String name) {

@@ -9,6 +9,7 @@ package jade.protocol;
 import jade.core.Agent;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ProtocolResponderBehaviour extends SimpleAchieveREResponder {
 
@@ -18,6 +19,13 @@ public class ProtocolResponderBehaviour extends SimpleAchieveREResponder {
 
     public void setMessageTemplate(MessageTemplate messageTemplate) {
         reset(messageTemplate);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("name", getBehaviourName())
+                .toString();
     }
 
 }

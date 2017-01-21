@@ -9,6 +9,7 @@ package jade.protocol;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ProtocolRequesterBehaviour extends SimpleAchieveREInitiator {
 
@@ -18,6 +19,13 @@ public class ProtocolRequesterBehaviour extends SimpleAchieveREInitiator {
 
     public void setMessage(ACLMessage message) {
         reset(message);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("name", getBehaviourName())
+                .toString();
     }
 
 }

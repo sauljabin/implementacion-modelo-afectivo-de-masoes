@@ -51,7 +51,7 @@ public class ShouldReceiveNotUnderstoodTest extends FunctionalTest {
                     myAgent.send(testMessage);
 
                     ACLMessage msg = myAgent.blockingReceive();
-                    getLogger().agentMessage(myAgent, msg);
+                    getLogger().messageRequest(myAgent, msg);
 
                     UnexpectedContent expectedContent = new UnexpectedContent("Setting not found", keyForTest);
 

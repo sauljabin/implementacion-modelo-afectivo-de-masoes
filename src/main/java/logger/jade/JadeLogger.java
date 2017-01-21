@@ -7,18 +7,11 @@
 package logger.jade;
 
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import logger.writer.LogWriter;
-import masoes.model.EmotionalAgent;
-import masoes.ontology.Stimulus;
 import org.slf4j.Logger;
 
-import java.util.Optional;
-
 public class JadeLogger {
-
-    private static final String NO_BEHAVIOUR = "NO BEHAVIOUR";
 
     private Logger logger;
 
@@ -26,7 +19,7 @@ public class JadeLogger {
         this.logger = logger;
     }
 
-    public void agentException(Agent agent, Exception exception) {
+    public void exception(Agent agent, Exception exception) {
         new LogWriter()
                 .message("Exception in agent \"%s\": %s")
                 .args(agent.getLocalName(), exception.getMessage())
@@ -34,43 +27,25 @@ public class JadeLogger {
                 .error(logger);
     }
 
-    public void agentMessage(Agent agent, ACLMessage message) {
+    public void messageRequest(Agent agent, ACLMessage message) {
         new LogWriter()
-                .message("Message in agent \"%s\": %s")
+                .message("Message request in agent \"%s\": %s")
                 .args(agent.getLocalName(), message)
                 .info(logger);
     }
 
-    public void agentEmotionalState(EmotionalAgent emotionalAgent) {
-        LogWriter logWriter = new LogWriter()
-                .message("Emotional state in agent \"%s\": emotion=%s, state=%s, behaviour=%s")
-                .args(emotionalAgent.getLocalName(), emotionalAgent.getCurrentEmotion(), emotionalAgent.getEmotionalState());
-
-        Optional<Behaviour> behaviourOptional = Optional.ofNullable(emotionalAgent.getCurrentEmotionalBehaviour());
-
-        if (behaviourOptional.isPresent()) {
-            logWriter.args(behaviourOptional.get().getBehaviourName());
-        } else {
-            logWriter.args(NO_BEHAVIOUR);
-        }
-
-        logWriter.info(logger);
+    public void messageResponse(Agent agent, ACLMessage message) {
+        new LogWriter()
+                .message("Message response in agent \"%s\": %s")
+                .args(agent.getLocalName(), message)
+                .info(logger);
     }
 
-    public void agentEmotionalStateChanged(EmotionalAgent emotionalAgent, Stimulus stimulus) {
-        LogWriter logWriter = new LogWriter()
-                .message("Emotional state changed in agent \"%s\": stimulus=%s, emotion=%s, state=%s, behaviour=%s")
-                .args(emotionalAgent.getLocalName(), stimulus, emotionalAgent.getCurrentEmotion(), emotionalAgent.getEmotionalState());
-
-        Optional<Behaviour> behaviourOptional = Optional.ofNullable(emotionalAgent.getCurrentEmotionalBehaviour());
-
-        if (behaviourOptional.isPresent()) {
-            logWriter.args(behaviourOptional.get().getBehaviourName());
-        } else {
-            logWriter.args(NO_BEHAVIOUR);
-        }
-
-        logWriter.info(logger);
+    public void agent(Agent agent) {
+        new LogWriter()
+                .message("Agent %s: %s")
+                .args(agent.getLocalName(), agent)
+                .info(logger);
     }
 
 }

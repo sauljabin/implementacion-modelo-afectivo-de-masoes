@@ -48,7 +48,7 @@ public class FunctionalTest extends Test {
                 TestUtility.killAgent(agent, aid);
                 Thread.sleep(SLEEP_KILL_AGENT_MILLIS);
             } catch (Exception e) {
-                logger.agentException(agent, e);
+                logger.exception(agent, e);
             }
         });
     }

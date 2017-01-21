@@ -53,7 +53,7 @@ public class ShouldReceiveASettingTest extends FunctionalTest {
                     myAgent.send(testMessage);
 
                     ACLMessage msg = myAgent.blockingReceive();
-                    getLogger().agentMessage(myAgent, msg);
+                    getLogger().messageRequest(myAgent, msg);
                     SystemSettings expectedSystemSettings = new SystemSettings(new ArrayList());
                     expectedSystemSettings.getSettings().add(new Setting(ApplicationSettings.APP_NAME, ApplicationSettings.getInstance().get(ApplicationSettings.APP_NAME)));
 

@@ -56,7 +56,7 @@ public class ShouldChangeEmotionAndBehaviourTest extends FunctionalTest {
                     myAgent.send(testMessage);
 
                     ACLMessage msg = myAgent.blockingReceive();
-                    getLogger().agentMessage(myAgent, msg);
+                    getLogger().messageRequest(myAgent, msg);
 
                     firstEmotionalResponse = (AgentStatus) myAgent.getContentManager().extractContent(msg);
                 } catch (Exception e) {
@@ -84,7 +84,7 @@ public class ShouldChangeEmotionAndBehaviourTest extends FunctionalTest {
                     myAgent.send(testMessage);
 
                     ACLMessage msg = myAgent.blockingReceive();
-                    getLogger().agentMessage(myAgent, msg);
+                    getLogger().messageRequest(myAgent, msg);
 
                     ActionResult actionResult = (ActionResult) myAgent.getContentManager().extractContent(msg);
                 } catch (Exception e) {
@@ -112,7 +112,7 @@ public class ShouldChangeEmotionAndBehaviourTest extends FunctionalTest {
                     myAgent.send(testMessage);
 
                     ACLMessage msg = myAgent.blockingReceive();
-                    getLogger().agentMessage(myAgent, msg);
+                    getLogger().messageRequest(myAgent, msg);
 
                     AgentStatus agentStatus = (AgentStatus) myAgent.getContentManager().extractContent(msg);
                     assertReflectionNotEquals("Agent Status", firstEmotionalResponse, agentStatus);

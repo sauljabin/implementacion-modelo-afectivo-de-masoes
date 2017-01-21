@@ -24,6 +24,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
@@ -87,8 +88,7 @@ public class EmotionalAgentTest {
     @Test
     public void shouldLogEmotionChange() {
         spyEmotionalAgent.evaluateStimulus(stimulusMock);
-        verify(loggerMock).agentEmotionalState(spyEmotionalAgent);
-        verify(loggerMock).agentEmotionalStateChanged(spyEmotionalAgent, stimulusMock);
+        verify(loggerMock, times(2)).agent(spyEmotionalAgent);
     }
 
     private EmotionalAgent createAgent() throws Exception {
