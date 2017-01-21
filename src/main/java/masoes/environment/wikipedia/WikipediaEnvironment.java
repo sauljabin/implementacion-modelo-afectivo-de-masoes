@@ -6,15 +6,15 @@
 
 package masoes.environment.wikipedia;
 
+import jade.command.AgentCommandFormatter;
 import masoes.environment.Environment;
-import masoes.environment.EnvironmentAgentInfo;
 
 import java.util.List;
 
 public class WikipediaEnvironment extends Environment {
 
     @Override
-    public List<EnvironmentAgentInfo> getEnvironmentAgentInfoList() {
+    public List<AgentCommandFormatter> getAgentCommands() {
         return null;
     }
 

@@ -6,8 +6,8 @@
 
 package application.option;
 
+import jade.command.AgentCommandFormatter;
 import masoes.environment.Environment;
-import masoes.environment.EnvironmentAgentInfo;
 import masoes.environment.EnvironmentFactory;
 import settings.agent.SettingsAgent;
 import settings.application.ApplicationSettings;
@@ -72,24 +72,24 @@ public class EnvironmentOption extends ApplicationOption {
         return String.join(AGENT_DELIMITER, toStringList(getEnvironmentAgentInfoList(environmentFactory.createEnvironment())));
     }
 
-    private List<EnvironmentAgentInfo> getEnvironmentAgentInfoList(Environment environment) {
-        List<EnvironmentAgentInfo> environmentAgentInfoList = new ArrayList<>();
+    private List<AgentCommandFormatter> getEnvironmentAgentInfoList(Environment environment) {
+        List<AgentCommandFormatter> agentCommands = new ArrayList<>();
 
-        environmentAgentInfoList.addAll(Optional.ofNullable(environment.getEnvironmentAgentInfoList()).orElse(new ArrayList<>()));
+        agentCommands.addAll(Optional.ofNullable(environment.getAgentCommands()).orElse(new ArrayList<>()));
 
-        if (isNotPresentAgentSetting(environmentAgentInfoList)) {
-            environmentAgentInfoList.add(new EnvironmentAgentInfo("settings", SettingsAgent.class));
+        if (isNotPresentAgentSetting(agentCommands)) {
+            agentCommands.add(new AgentCommandFormatter("settings", SettingsAgent.class));
         }
 
-        return environmentAgentInfoList;
+        return agentCommands;
     }
 
-    private List<String> toStringList(List<EnvironmentAgentInfo> environmentAgentInfoList) {
-        return environmentAgentInfoList.stream().map(EnvironmentAgentInfo::toString).collect(Collectors.toList());
+    private List<String> toStringList(List<AgentCommandFormatter> agentCommandList) {
+        return agentCommandList.stream().map(AgentCommandFormatter::format).collect(Collectors.toList());
     }
 
-    private boolean isNotPresentAgentSetting(List<EnvironmentAgentInfo> environmentAgentInfoList) {
-        return !environmentAgentInfoList.stream().filter(agentInfo -> agentInfo.getAgentClass().equals(SettingsAgent.class)).findFirst().isPresent();
+    private boolean isNotPresentAgentSetting(List<AgentCommandFormatter> agentCommandList) {
+        return !agentCommandList.stream().filter(agentInfo -> agentInfo.getAgentClass().equals(SettingsAgent.class)).findFirst().isPresent();
     }
 
 }

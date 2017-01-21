@@ -6,7 +6,7 @@
 
 package masoes.environment.dummy;
 
-import masoes.environment.EnvironmentAgentInfo;
+import jade.command.AgentCommandFormatter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,18 +18,18 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 public class DummyEnvironmentTest {
 
     private DummyEnvironment dummyEnvironment;
-    private List<EnvironmentAgentInfo> expectedAgentsInfo;
+    private List<AgentCommandFormatter> expectedAgentsInfo;
 
     @Before
     public void setUp() {
         expectedAgentsInfo = new ArrayList<>();
-        expectedAgentsInfo.add(new EnvironmentAgentInfo("dummy", DummyEmotionalAgent.class));
+        expectedAgentsInfo.add(new AgentCommandFormatter("dummy", DummyEmotionalAgent.class));
         dummyEnvironment = new DummyEnvironment();
     }
 
     @Test
     public void shouldReturnAllAgentInfo() {
-        assertReflectionEquals(expectedAgentsInfo, dummyEnvironment.getEnvironmentAgentInfoList());
+        assertReflectionEquals(expectedAgentsInfo, dummyEnvironment.getAgentCommands());
     }
 
 }

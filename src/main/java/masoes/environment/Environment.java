@@ -6,10 +6,12 @@
 
 package masoes.environment;
 
+import jade.command.AgentCommandFormatter;
+
 import java.util.List;
 
 public abstract class Environment {
 
-    public abstract List<EnvironmentAgentInfo> getEnvironmentAgentInfoList();
+    public abstract List<AgentCommandFormatter> getAgentCommands();
 
 }

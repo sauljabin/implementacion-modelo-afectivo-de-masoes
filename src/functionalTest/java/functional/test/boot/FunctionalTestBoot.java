@@ -8,8 +8,8 @@ package functional.test.boot;
 
 import functional.test.core.FunctionalTesterAgent;
 import jade.boot.JadeBoot;
+import jade.command.AgentCommandFormatter;
 import logger.application.ApplicationLogger;
-import masoes.environment.EnvironmentAgentInfo;
 import org.slf4j.LoggerFactory;
 import settings.application.ApplicationSettings;
 import settings.jade.JadeSettings;
@@ -48,7 +48,7 @@ public class FunctionalTestBoot {
     }
 
     private String getEnvironmentAgentInfo() {
-        return new EnvironmentAgentInfo(FunctionalTesterAgent.class.getSimpleName(), FunctionalTesterAgent.class).toString();
+        return new AgentCommandFormatter(FunctionalTesterAgent.class.getSimpleName(), FunctionalTesterAgent.class).format();
     }
 
 }

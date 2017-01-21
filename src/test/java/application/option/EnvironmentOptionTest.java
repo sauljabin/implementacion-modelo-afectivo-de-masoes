@@ -6,9 +6,9 @@
 
 package application.option;
 
+import jade.command.AgentCommandFormatter;
 import jade.core.Agent;
 import masoes.environment.Environment;
-import masoes.environment.EnvironmentAgentInfo;
 import masoes.environment.EnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,39 +66,39 @@ public class EnvironmentOptionTest {
 
     @Test
     public void shouldInvokeEnvironmentCreation() {
-        List<EnvironmentAgentInfo> expectedJadeAgentOptionList = new ArrayList<>();
-        expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent", Agent.class, Arrays.asList("arg1", "arg2")));
-        doReturn(expectedJadeAgentOptionList).when(environmentMock).getEnvironmentAgentInfoList();
+        List<AgentCommandFormatter> expectedJadeAgentOptionList = new ArrayList<>();
+        expectedJadeAgentOptionList.add(new AgentCommandFormatter("agent", Agent.class, Arrays.asList("arg1", "arg2")));
+        doReturn(expectedJadeAgentOptionList).when(environmentMock).getAgentCommands();
 
         environmentOption.exec();
 
         verify(environmentFactoryMock).createEnvironment();
-        verify(environmentMock, atLeastOnce()).getEnvironmentAgentInfoList();
+        verify(environmentMock, atLeastOnce()).getAgentCommands();
         verify(jadeSettingsMock).set(JadeSettings.AGENTS, "agent:jade.core.Agent(arg1,arg2);settings:" + SettingsAgent.class.getName());
     }
 
     @Test
     public void shouldSetOnlySettingsAgent() {
-        doReturn(null).when(environmentMock).getEnvironmentAgentInfoList();
+        doReturn(null).when(environmentMock).getAgentCommands();
 
         environmentOption.exec();
 
         verify(environmentFactoryMock).createEnvironment();
-        verify(environmentMock, atLeastOnce()).getEnvironmentAgentInfoList();
+        verify(environmentMock, atLeastOnce()).getAgentCommands();
         verify(jadeSettingsMock).set(JadeSettings.AGENTS, "settings:" + SettingsAgent.class.getName());
     }
 
     @Test
     public void shouldInvokeEnvironmentCreationWithTwoAgents() {
-        List<EnvironmentAgentInfo> expectedJadeAgentOptionList = new ArrayList<>();
-        expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent", Agent.class, Arrays.asList("arg1", "arg2")));
-        expectedJadeAgentOptionList.add(new EnvironmentAgentInfo("agent2", Agent.class));
-        doReturn(expectedJadeAgentOptionList).when(environmentMock).getEnvironmentAgentInfoList();
+        List<AgentCommandFormatter> expectedJadeAgentOptionList = new ArrayList<>();
+        expectedJadeAgentOptionList.add(new AgentCommandFormatter("agent", Agent.class, Arrays.asList("arg1", "arg2")));
+        expectedJadeAgentOptionList.add(new AgentCommandFormatter("agent2", Agent.class));
+        doReturn(expectedJadeAgentOptionList).when(environmentMock).getAgentCommands();
 
         environmentOption.exec();
 
         verify(environmentFactoryMock).createEnvironment();
-        verify(environmentMock, atLeastOnce()).getEnvironmentAgentInfoList();
+        verify(environmentMock, atLeastOnce()).getAgentCommands();
         verify(jadeSettingsMock).set(JadeSettings.AGENTS, "agent:jade.core.Agent(arg1,arg2);agent2:jade.core.Agent;settings:" + SettingsAgent.class.getName());
     }
 
