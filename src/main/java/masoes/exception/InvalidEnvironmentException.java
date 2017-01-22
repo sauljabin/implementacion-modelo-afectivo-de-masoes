@@ -16,4 +16,8 @@ public class InvalidEnvironmentException extends RuntimeException {
         super(message, cause);
     }
 
+    public InvalidEnvironmentException(Throwable cause) {
+        super(cause);
+    }
+
 }

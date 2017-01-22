@@ -21,7 +21,7 @@ public class SettingsOntology extends BeanOntology {
         try {
             add(SettingsOntology.class.getPackage().getName());
         } catch (Exception e) {
-            throw new SetupOntologyException(e.getMessage(), e);
+            throw new SetupOntologyException(e);
         }
     }
 

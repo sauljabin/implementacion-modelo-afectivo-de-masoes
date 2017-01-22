@@ -16,6 +16,10 @@ public class RefuseRequestException extends RuntimeException {
         super(message);
     }
 
+    public RefuseRequestException(Throwable cause) {
+        super(cause);
+    }
+
     public RefuseRequestException(String message, Throwable cause) {
         super(message, cause);
     }

@@ -16,4 +16,8 @@ public class SettingsException extends RuntimeException {
         super(message, cause);
     }
 
+    public SettingsException(Throwable cause) {
+        super(cause);
+    }
+
 }

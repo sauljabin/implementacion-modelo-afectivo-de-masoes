@@ -16,6 +16,10 @@ public class FailureRequestException extends RuntimeException {
         super(message);
     }
 
+    public FailureRequestException(Throwable cause) {
+        super(cause);
+    }
+
     public FailureRequestException(String message, Throwable cause) {
         super(message, cause);
     }

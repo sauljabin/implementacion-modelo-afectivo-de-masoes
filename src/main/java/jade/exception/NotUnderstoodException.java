@@ -16,6 +16,10 @@ public class NotUnderstoodException extends RuntimeException {
         super(message);
     }
 
+    public NotUnderstoodException(Throwable cause) {
+        super(cause);
+    }
+
     public NotUnderstoodException(String message, Throwable cause) {
         super(message, cause);
     }

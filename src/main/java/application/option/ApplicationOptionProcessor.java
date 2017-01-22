@@ -34,7 +34,7 @@ public class ApplicationOptionProcessor {
             commandLine = commandLineParser.parse(applicationOptions.toOptions(), args);
             execOptions(getOptionsToExec());
         } catch (Exception e) {
-            throw new ApplicationOptionProcessorException(e.getMessage(), e);
+            throw new ApplicationOptionProcessorException(e);
         }
     }
 

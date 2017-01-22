@@ -28,7 +28,7 @@ public class SettingsLoader {
             properties.clear();
             properties.load(ClassLoader.getSystemResourceAsStream(path));
         } catch (Exception e) {
-            throw new SettingsException(e.getMessage(), e);
+            throw new SettingsException(e);
         }
     }
 

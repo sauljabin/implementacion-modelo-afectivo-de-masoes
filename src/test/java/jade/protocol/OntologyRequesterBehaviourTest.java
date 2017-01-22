@@ -49,6 +49,7 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 public class OntologyRequesterBehaviourTest {
 
     private static final String ONTOLOGY_NAME = "ONTOLOGY NAME";
+    private static final String MESSAGE = "MESSAGE";
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
     private OntologyRequesterBehaviour ontologyRequesterBehaviour;
@@ -62,7 +63,6 @@ public class OntologyRequesterBehaviourTest {
     private ArgumentCaptor<Action> actionArgumentCaptor;
     private OntologyRequesterBehaviour ontologyRequesterBehaviourSpy;
     private ACLMessage requestMock;
-    private static final String MESSAGE = "MESSAGE";
     private JadeLogger loggerMock;
 
     @Before

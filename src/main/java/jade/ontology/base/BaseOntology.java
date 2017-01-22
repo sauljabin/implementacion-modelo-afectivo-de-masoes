@@ -21,7 +21,7 @@ public class BaseOntology extends BeanOntology {
         try {
             add(BaseOntology.class.getPackage().getName());
         } catch (Exception e) {
-            throw new SetupOntologyException(e.getMessage(), e);
+            throw new SetupOntologyException(e);
         }
     }
 

@@ -21,7 +21,7 @@ public class MasoesOntology extends BeanOntology {
         try {
             add(MasoesOntology.class.getPackage().getName());
         } catch (Exception e) {
-            throw new SetupOntologyException(e.getMessage(), e);
+            throw new SetupOntologyException(e);
         }
     }
 

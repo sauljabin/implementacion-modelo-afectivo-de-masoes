@@ -6,13 +6,16 @@
 
 package application.option;
 
+import application.exception.ApplicationOptionProcessorException;
 import logger.application.ApplicationLogger;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +25,16 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class ApplicationOptionProcessorTest {
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     private ApplicationOptionProcessor applicationOptionProcessor;
     private ApplicationOptions applicationOptionsMock;
@@ -165,6 +172,15 @@ public class ApplicationOptionProcessorTest {
 
         verify(optionMock).exec();
         verify(defaultOptionMock).exec();
+    }
+
+    @Test
+    public void shouldThrowApplicationOptionExceptionIfParseThrowsAException() throws Exception {
+        String message = "MESSAGE";
+        doThrow(new RuntimeException(message)).when(commandLineParserMock).parse(any(), any());
+        expectedException.expectMessage(message);
+        expectedException.expect(ApplicationOptionProcessorException.class);
+        applicationOptionProcessor.processArgs(expectedArgs);
     }
 
     private ApplicationOption getCreateMockApplicationOption(String option, boolean isFinalOption, ArgumentType argumentType) {

@@ -16,4 +16,8 @@ public class SetupOntologyException extends RuntimeException {
         super(message, cause);
     }
 
+    public SetupOntologyException(Throwable cause) {
+        super(cause);
+    }
+
 }

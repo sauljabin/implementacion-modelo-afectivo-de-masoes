@@ -16,4 +16,8 @@ public class ApplicationOptionProcessorException extends RuntimeException {
         super(message, cause);
     }
 
+    public ApplicationOptionProcessorException(Throwable cause) {
+        super(cause);
+    }
+
 }
