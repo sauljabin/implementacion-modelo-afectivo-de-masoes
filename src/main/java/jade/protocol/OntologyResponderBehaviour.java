@@ -78,7 +78,7 @@ public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
         return true;
     }
 
-    public Predicate performAction(Action action) throws Exception {
+    public Predicate performAction(Action action) throws FailureException {
         return null;
     }
 
