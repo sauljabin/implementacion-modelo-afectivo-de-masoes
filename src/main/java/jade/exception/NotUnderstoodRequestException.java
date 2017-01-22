@@ -6,17 +6,17 @@
 
 package jade.exception;
 
-public class FailureRequestException extends RuntimeException {
+public class NotUnderstoodRequestException extends RuntimeException {
 
-    public FailureRequestException(String message) {
+    public NotUnderstoodRequestException(String message) {
         super(message);
     }
 
-    public FailureRequestException(Throwable cause) {
+    public NotUnderstoodRequestException(Throwable cause) {
         super(cause);
     }
 
-    public FailureRequestException(String message, Throwable cause) {
+    public NotUnderstoodRequestException(String message, Throwable cause) {
         super(message, cause);
     }
 

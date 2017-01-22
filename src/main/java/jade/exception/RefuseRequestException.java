@@ -6,11 +6,7 @@
 
 package jade.exception;
 
-import jade.content.Predicate;
-
 public class RefuseRequestException extends RuntimeException {
-
-    private Predicate predicate;
 
     public RefuseRequestException(String message) {
         super(message);
@@ -22,15 +18,6 @@ public class RefuseRequestException extends RuntimeException {
 
     public RefuseRequestException(String message, Throwable cause) {
         super(message, cause);
-    }
-
-    public RefuseRequestException(Predicate predicate, Throwable cause) {
-        super(cause);
-        this.predicate = predicate;
-    }
-
-    public Predicate getPredicate() {
-        return predicate;
     }
 
 }
