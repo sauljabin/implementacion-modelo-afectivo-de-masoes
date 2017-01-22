@@ -12,11 +12,11 @@
         <HowWorkTest>An agent make a request and receive the correct setting</HowWorkTest>
         <WhenTestPass>The test passes if the agent return the correct setting</WhenTestPass>
     </Test>
-    <Test name="Should receive not understood" skip="false">
-        <TestClassName>functional.test.settings.ShouldReceiveNotUnderstoodTest</TestClassName>
+    <Test name="Should receive failure" skip="false">
+        <TestClassName>functional.test.settings.ShouldReceivesFailureWhenSettingNotFoundTest</TestClassName>
         <WhatTest>Test correct response</WhatTest>
-        <HowWorkTest>An agent make a bad request and receive the not understood</HowWorkTest>
-        <WhenTestPass>The test passes if the agent return not understood</WhenTestPass>
+        <HowWorkTest>An agent make a bad request and receive failure</HowWorkTest>
+        <WhenTestPass>The test passes if the agent return failure</WhenTestPass>
     </Test>
     <Test name="Should change emotion and behaviour agent" skip="false">
         <TestClassName>functional.test.environment.dummy.ShouldChangeEmotionAndBehaviourTest</TestClassName>

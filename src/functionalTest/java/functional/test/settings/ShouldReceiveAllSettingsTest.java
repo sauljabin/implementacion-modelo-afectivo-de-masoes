@@ -7,15 +7,11 @@
 package functional.test.settings;
 
 import functional.test.core.FunctionalTest;
-import jade.content.lang.sl.SLCodec;
-import jade.content.onto.basic.Action;
+import jade.content.Predicate;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.OneShotBehaviour;
-import jade.core.behaviours.SimpleBehaviour;
-import jade.domain.FIPANames;
-import jade.lang.acl.ACLMessage;
+import jade.protocol.OntologyRequesterBehaviour;
 import jade.util.leap.ArrayList;
 import settings.agent.SettingsAgent;
 import settings.application.ApplicationSettings;
@@ -34,48 +30,30 @@ public class ShouldReceiveAllSettingsTest extends FunctionalTest {
 
         AID settingsAgentAID = createAgent(tester, SettingsAgent.class.getName());
 
-        SimpleBehaviour receiveMessageBehaviour = new OneShotBehaviour() {
+        OntologyRequesterBehaviour requestAllSettings = new OntologyRequesterBehaviour(
+                null,
+                settingsAgentAID,
+                new GetAllSettings(),
+                new SettingsOntology()) {
 
             @Override
-            public void action() {
-                try {
-                    ACLMessage testMessage = new ACLMessage(ACLMessage.REQUEST);
-                    testMessage.addReceiver(settingsAgentAID);
-                    testMessage.setOntology(SettingsOntology.ONTOLOGY_NAME);
-                    testMessage.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
-                    testMessage.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
+            protected void handleInform(Predicate predicate) {
+                SystemSettings systemSettings = (SystemSettings) predicate;
+                SystemSettings expectedSystemSettings = new SystemSettings(new ArrayList());
 
-                    myAgent.getContentManager().registerLanguage(new SLCodec());
-                    myAgent.getContentManager().registerOntology(new SettingsOntology());
+                ApplicationSettings.getInstance().toMap().forEach(
+                        (key, value) -> expectedSystemSettings.getSettings().add(new Setting(key, value))
+                );
 
-                    myAgent.getContentManager().fillContent(testMessage, new Action(myAgent.getAID(), new GetAllSettings()));
+                JadeSettings.getInstance().toMap().forEach(
+                        (key, value) -> expectedSystemSettings.getSettings().add(new Setting(key, value))
+                );
 
-                    myAgent.send(testMessage);
-
-                    ACLMessage msg = myAgent.blockingReceive();
-                    getLogger().messageRequest(myAgent, msg);
-                    SystemSettings expectedSystemSettings = new SystemSettings(new ArrayList());
-
-                    ApplicationSettings.getInstance().toMap().forEach(
-                            (key, value) -> expectedSystemSettings.getSettings().add(new Setting(key, value))
-                    );
-
-                    JadeSettings.getInstance().toMap().forEach(
-                            (key, value) -> expectedSystemSettings.getSettings().add(new Setting(key, value))
-                    );
-
-                    SystemSettings systemSettings = (SystemSettings) myAgent.getContentManager().extractContent(msg);
-
-                    assertEquals("Performative", ACLMessage.INFORM, msg.getPerformative());
-                    assertReflectionEquals("Content", expectedSystemSettings.getSettings().toArray(), systemSettings.getSettings().toArray());
-                } catch (Exception e) {
-                    throw new RuntimeException(e.getMessage(), e);
-                }
+                assertReflectionEquals("Content", expectedSystemSettings.getSettings().toArray(), systemSettings.getSettings().toArray());
             }
-
         };
 
-        return receiveMessageBehaviour;
+        return requestAllSettings;
     }
 
 }
