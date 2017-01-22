@@ -9,17 +9,49 @@ package jade.protocol;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
+import logger.jade.JadeLogger;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.slf4j.LoggerFactory;
+
+import java.util.Vector;
 
 public class ProtocolRequesterBehaviour extends SimpleAchieveREInitiator {
 
+    private JadeLogger logger;
+
     public ProtocolRequesterBehaviour(Agent agent, ACLMessage message) {
         super(agent, message);
+        logger = new JadeLogger(LoggerFactory.getLogger(ProtocolRequesterBehaviour.class));
     }
 
     public void setMessage(ACLMessage message) {
         reset(message);
+    }
+
+    @Override
+    protected final ACLMessage prepareRequest(ACLMessage request) {
+        ACLMessage requestInteraction = prepareRequestInteraction(request);
+        logger.messageRequest(myAgent, requestInteraction);
+        return requestInteraction;
+    }
+
+    protected ACLMessage prepareRequestInteraction(ACLMessage request) {
+        return null;
+    }
+
+    @Override
+    protected void handleAllResponses(Vector messages) {
+        messages.stream().forEach(
+                message -> logger.messageResponse(myAgent, (ACLMessage) message)
+        );
+    }
+
+    @Override
+    protected void handleAllResultNotifications(Vector messages) {
+        messages.stream().forEach(
+                message -> logger.messageResponse(myAgent, (ACLMessage) message)
+        );
     }
 
     @Override

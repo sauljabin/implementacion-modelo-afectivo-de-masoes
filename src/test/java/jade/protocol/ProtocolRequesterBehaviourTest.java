@@ -8,27 +8,65 @@ package jade.protocol;
 
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
+import logger.jade.JadeLogger;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Vector;
+
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class ProtocolRequesterBehaviourTest {
 
-    private ProtocolRequesterBehaviour responderBehaviourSpy;
+    private ProtocolRequesterBehaviour resquesterBehaviourSpy;
+    private JadeLogger loggerMock;
+    private ProtocolRequesterBehaviour requesterBehaviour;
+    private Agent agentMock;
+    private ACLMessage requestMock;
+    private ACLMessage responseMock;
+    private Vector messages;
 
     @Before
-    public void setUp() {
-        responderBehaviourSpy = spy(new ProtocolRequesterBehaviour(mock(Agent.class), mock(ACLMessage.class)));
+    public void setUp() throws Exception {
+        loggerMock = mock(JadeLogger.class);
+        agentMock = mock(Agent.class);
+        responseMock = mock(ACLMessage.class);
+        requestMock = mock(ACLMessage.class);
+        requesterBehaviour = new ProtocolRequesterBehaviour(agentMock, requestMock);
+        setFieldValue(requesterBehaviour, "logger", loggerMock);
+        resquesterBehaviourSpy = spy(requesterBehaviour);
+        messages = new Vector();
+        messages.add(responseMock);
     }
 
     @Test
     public void shouldInvokeReset() {
         ACLMessage messageMock = mock(ACLMessage.class);
-        responderBehaviourSpy.setMessage(messageMock);
-        verify(responderBehaviourSpy).reset(messageMock);
+        resquesterBehaviourSpy.setMessage(messageMock);
+        verify(resquesterBehaviourSpy).reset(messageMock);
+    }
+
+    @Test
+    public void shouldLogRequestAndResponseWhenPrepareResponse() {
+        doReturn(requestMock).when(resquesterBehaviourSpy).prepareRequestInteraction(requestMock);
+        resquesterBehaviourSpy.prepareRequest(requestMock);
+        verify(loggerMock).messageRequest(agentMock, requestMock);
+    }
+
+    @Test
+    public void shouldLogAllResponse() {
+        requesterBehaviour.handleAllResponses(messages);
+        verify(loggerMock).messageResponse(agentMock, responseMock);
+    }
+
+    @Test
+    public void shouldLogAllResults() {
+        requesterBehaviour.handleAllResultNotifications(messages);
+        verify(loggerMock).messageResponse(agentMock, responseMock);
     }
 
 }

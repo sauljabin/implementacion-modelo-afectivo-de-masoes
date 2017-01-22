@@ -41,7 +41,7 @@ public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
     }
 
     @Override
-    protected ACLMessage prepareResponse(ACLMessage request) {
+    protected ACLMessage prepareAcceptanceResponse(ACLMessage request) {
         contentManager.registerLanguage(new SLCodec());
         contentManager.registerOntology(ontology);
         ACLMessage response = request.createReply();
@@ -61,7 +61,7 @@ public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
     }
 
     @Override
-    protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) {
+    protected ACLMessage prepareInformResultResponse(ACLMessage request, ACLMessage response) {
         try {
             Action action = (Action) contentManager.extractContent(request);
             response.setPerformative(ACLMessage.INFORM);

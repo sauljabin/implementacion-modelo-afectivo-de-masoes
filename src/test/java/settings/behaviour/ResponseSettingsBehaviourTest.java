@@ -54,7 +54,7 @@ public class ResponseSettingsBehaviourTest {
     }
 
     @Test
-    public void shouldReturnASetting() throws Exception {
+    public void shouldReturnASetting() {
         String keyApp = "keyApp";
         String valueApp = "valueApp";
         doReturn(valueApp).when(applicationSettingsMock).get(keyApp);
@@ -62,7 +62,7 @@ public class ResponseSettingsBehaviourTest {
     }
 
     @Test
-    public void shouldReturnAJadeSetting() throws Exception {
+    public void shouldReturnAJadeSetting() {
         String keyJade = "keyJade";
         String valueJade = "valueJade";
         doReturn(valueJade).when(jadeSettingsMock).get(keyJade);
@@ -70,7 +70,7 @@ public class ResponseSettingsBehaviourTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenKeyNotFound() throws Exception {
+    public void shouldThrowExceptionWhenKeyNotFound() {
         String key = "no-key";
         expectedException.expectMessage("Setting not found " + key);
         expectedException.expect(SettingsException.class);
@@ -82,7 +82,7 @@ public class ResponseSettingsBehaviourTest {
     }
 
     @Test
-    public void shouldReturnAllSettings() throws Exception {
+    public void shouldReturnAllSettings() {
         Map<String, String> appSettingsMap = new HashMap<>();
         appSettingsMap.put("keyApp1", "valueApp1");
         appSettingsMap.put("keyApp2", "valueApp2");
@@ -118,7 +118,7 @@ public class ResponseSettingsBehaviourTest {
         assertTrue(settingsBehaviour.isValidAction(actionGetAllSettings));
     }
 
-    private void testReturnASettings(String key, String expectedValue) throws Exception {
+    private void testReturnASettings(String key, String expectedValue) {
         GetSetting getSetting = new GetSetting(key);
         Action action = new Action(new AID(), getSetting);
         SystemSettings systemSettings = (SystemSettings) settingsBehaviour.performAction(action);

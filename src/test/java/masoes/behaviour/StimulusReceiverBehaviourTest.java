@@ -33,7 +33,7 @@ public class StimulusReceiverBehaviourTest {
     }
 
     @Test
-    public void shouldEvaluateStimulus() throws Exception {
+    public void shouldEvaluateStimulus() {
         Stimulus stimulus = new Stimulus();
 
         EvaluateStimulus evaluateStimulus = new EvaluateStimulus(stimulus);

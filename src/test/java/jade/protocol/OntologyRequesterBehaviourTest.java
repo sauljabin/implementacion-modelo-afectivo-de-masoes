@@ -78,7 +78,7 @@ public class OntologyRequesterBehaviourTest {
 
     @Test
     public void shouldPrepareCorrectRequestMessage() throws Exception {
-        ACLMessage actualRequest = ontologyRequesterBehaviour.prepareRequest(request);
+        ACLMessage actualRequest = ontologyRequesterBehaviour.prepareRequestInteraction(request);
         verify(contentManagerMock).registerOntology(ontologyMock);
         verify(contentManagerMock).registerLanguage(isA(SLCodec.class));
         verify(contentManagerMock).fillContent(eq(request), actionArgumentCaptor.capture());
@@ -97,7 +97,7 @@ public class OntologyRequesterBehaviourTest {
         doThrow(new OntologyException(message)).when(contentManagerMock).fillContent(eq(request), any(AgentAction.class));
         expectedException.expectMessage(message);
         expectedException.expect(FillOntologyContentException.class);
-        ontologyRequesterBehaviour.prepareRequest(request);
+        ontologyRequesterBehaviour.prepareRequestInteraction(request);
     }
 
 }

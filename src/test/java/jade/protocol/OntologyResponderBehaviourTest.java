@@ -67,39 +67,39 @@ public class OntologyResponderBehaviourTest {
     }
 
     @Test
-    public void shouldConfigContentManager() throws Exception {
-        ontologyResponderBehaviour.prepareResponse(request);
+    public void shouldConfigContentManager() {
+        ontologyResponderBehaviour.prepareAcceptanceResponse(request);
         verify(contentManagerMock).registerOntology(ontologyMock);
         verify(contentManagerMock).registerLanguage(isA(SLCodec.class));
     }
 
     @Test
-    public void shouldReturnRefuseIfActionIsNotValid() throws Exception {
+    public void shouldReturnRefuseIfActionIsNotValid() {
         doReturn(false).when(ontologyResponderBehaviourSpy).isValidAction(actionMock);
-        ACLMessage response = ontologyResponderBehaviourSpy.prepareResponse(request);
+        ACLMessage response = ontologyResponderBehaviourSpy.prepareAcceptanceResponse(request);
         assertThat(response.getPerformative(), is(ACLMessage.REFUSE));
         assertThat(response.getContent(), is("Action no valid"));
     }
 
     @Test
-    public void shouldReturnAgreeIfActionIsValid() throws Exception {
+    public void shouldReturnAgreeIfActionIsValid() {
         doReturn(true).when(ontologyResponderBehaviourSpy).isValidAction(actionMock);
-        ACLMessage response = ontologyResponderBehaviourSpy.prepareResponse(request);
+        ACLMessage response = ontologyResponderBehaviourSpy.prepareAcceptanceResponse(request);
         assertThat(response.getPerformative(), is(ACLMessage.AGREE));
     }
 
     @Test
     public void shouldReturnRefuseIfThrowsExceptionInPrepareResponse() throws Exception {
         doThrow(new OntologyException(EXPECTED_EXCEPTION_MESSAGE)).when(contentManagerMock).extractContent(request);
-        ACLMessage response = ontologyResponderBehaviourSpy.prepareResponse(request);
+        ACLMessage response = ontologyResponderBehaviourSpy.prepareAcceptanceResponse(request);
         assertThat(response.getPerformative(), is(ACLMessage.REFUSE));
         assertThat(response.getContent(), is(EXPECTED_EXCEPTION_MESSAGE));
     }
 
     @Test
-    public void shouldReturnFailureIfThrowsExceptionInPerformAction() throws Exception {
+    public void shouldReturnFailureIfThrowsExceptionInPerformAction() {
         doThrow(new RuntimeException(EXPECTED_EXCEPTION_MESSAGE)).when(ontologyResponderBehaviourSpy).performAction(actionMock);
-        ACLMessage response = ontologyResponderBehaviourSpy.prepareResultNotification(request, request.createReply());
+        ACLMessage response = ontologyResponderBehaviourSpy.prepareInformResultResponse(request, request.createReply());
         assertThat(response.getPerformative(), is(ACLMessage.FAILURE));
         assertThat(response.getContent(), is(EXPECTED_EXCEPTION_MESSAGE));
     }
@@ -109,7 +109,7 @@ public class OntologyResponderBehaviourTest {
         Predicate predicateMock = mock(Predicate.class);
         doReturn(predicateMock).when(ontologyResponderBehaviourSpy).performAction(actionMock);
         ACLMessage response = request.createReply();
-        response = ontologyResponderBehaviourSpy.prepareResultNotification(request, response);
+        response = ontologyResponderBehaviourSpy.prepareInformResultResponse(request, response);
         assertThat(response.getPerformative(), is(ACLMessage.INFORM));
         verify(contentManagerMock).fillContent(response, predicateMock);
     }
