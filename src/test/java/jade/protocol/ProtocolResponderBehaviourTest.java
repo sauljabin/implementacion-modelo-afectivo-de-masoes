@@ -58,7 +58,7 @@ public class ProtocolResponderBehaviourTest {
     }
 
     @Test
-    public void shouldLogRequestAndResponseWhenPrepareResponse() {
+    public void shouldLogRequestAndResponseWhenPrepareResponse() throws Exception {
         doReturn(responseMock).when(responderBehaviourSpy).prepareAcceptanceResponse(requestMock);
         responderBehaviourSpy.prepareResponse(requestMock);
         verify(loggerMock).messageRequest(agentMock, requestMock);
@@ -66,53 +66,53 @@ public class ProtocolResponderBehaviourTest {
     }
 
     @Test
-    public void shouldLogRequestAndResponseWhenPrepareResultResponse() {
+    public void shouldLogRequestAndResponseWhenPrepareResultResponse() throws Exception {
         doReturn(responseMock).when(responderBehaviourSpy).prepareInformResultResponse(requestMock, responseMock);
         responderBehaviourSpy.prepareResultNotification(requestMock, responseMock);
         verify(loggerMock).messageResponse(agentMock, responseMock);
     }
 
     @Test
-    public void shouldPrepareResponseFailureWhenThrowsFailureException() {
+    public void shouldPrepareResponseFailureWhenThrowsFailureException() throws Exception {
         testResponseFromException(new FailureRequestException(EXCEPTION_MESSAGE), ACLMessage.FAILURE);
     }
 
     @Test
-    public void shouldPrepareResponseRefuseWhenThrowsRefuseException() {
+    public void shouldPrepareResponseRefuseWhenThrowsRefuseException() throws Exception {
         testResponseFromException(new RefuseRequestException(EXCEPTION_MESSAGE), ACLMessage.REFUSE);
     }
 
     @Test
-    public void shouldPrepareResponseNotUnderstoodWhenThrowsNotUnderstoodException() {
+    public void shouldPrepareResponseNotUnderstoodWhenThrowsNotUnderstoodException() throws Exception {
         testResponseFromException(new NotUnderstoodRequestException(EXCEPTION_MESSAGE), ACLMessage.NOT_UNDERSTOOD);
     }
 
     @Test
-    public void shouldPrepareResponseFailureWhenThrowsAnyException() {
+    public void shouldPrepareResponseFailureWhenThrowsAnyException() throws Exception {
         testResponseFromException(new RuntimeException(EXCEPTION_MESSAGE), ACLMessage.FAILURE);
     }
 
     @Test
-    public void shouldPrepareResultResponseFailureWhenThrowsFailureException() {
+    public void shouldPrepareResultResponseFailureWhenThrowsFailureException() throws Exception {
         testResponseResultFromException(new FailureRequestException(EXCEPTION_MESSAGE), ACLMessage.FAILURE);
     }
 
     @Test
-    public void shouldPrepareResultResponseRefuseWhenThrowsRefuseException() {
+    public void shouldPrepareResultResponseRefuseWhenThrowsRefuseException() throws Exception {
         testResponseResultFromException(new RefuseRequestException(EXCEPTION_MESSAGE), ACLMessage.REFUSE);
     }
 
     @Test
-    public void shouldPrepareResultResponseNotUnderstoodWhenThrowsNotUnderstoodException() {
+    public void shouldPrepareResultResponseNotUnderstoodWhenThrowsNotUnderstoodException() throws Exception {
         testResponseResultFromException(new NotUnderstoodRequestException(EXCEPTION_MESSAGE), ACLMessage.NOT_UNDERSTOOD);
     }
 
     @Test
-    public void shouldPrepareResultResponseFailureWhenThrowsAnyException() {
+    public void shouldPrepareResultResponseFailureWhenThrowsAnyException() throws Exception {
         testResponseResultFromException(new RuntimeException(EXCEPTION_MESSAGE), ACLMessage.FAILURE);
     }
 
-    private void testResponseFromException(Exception toBeThrown, int performative) {
+    private void testResponseFromException(Exception toBeThrown, int performative) throws Exception {
         doThrow(toBeThrown).when(responderBehaviourSpy).prepareAcceptanceResponse(request);
         ACLMessage response = responderBehaviourSpy.prepareResponse(request);
         assertThat(response.getPerformative(), is(performative));
@@ -122,7 +122,7 @@ public class ProtocolResponderBehaviourTest {
 
     }
 
-    private void testResponseResultFromException(Exception toBeThrown, int performative) {
+    private void testResponseResultFromException(Exception toBeThrown, int performative) throws Exception {
         ACLMessage response = request.createReply();
         doThrow(toBeThrown).when(responderBehaviourSpy).prepareInformResultResponse(request, response);
         response = responderBehaviourSpy.prepareResultNotification(request, response);

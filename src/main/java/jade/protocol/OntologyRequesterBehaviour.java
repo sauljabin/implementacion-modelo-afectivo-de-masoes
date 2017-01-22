@@ -55,7 +55,7 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
     }
 
     @Override
-    protected ACLMessage prepareRequestInteraction(ACLMessage message) {
+    protected final ACLMessage prepareRequestInteraction(ACLMessage message) {
         contentManager.registerLanguage(new SLCodec());
         contentManager.registerOntology(ontology);
 

@@ -71,11 +71,11 @@ public class ProtocolResponderBehaviour extends SimpleAchieveREResponder {
         }
     }
 
-    protected ACLMessage prepareAcceptanceResponse(ACLMessage request) {
+    protected ACLMessage prepareAcceptanceResponse(ACLMessage request) throws Exception {
         return null;
     }
 
-    protected ACLMessage prepareInformResultResponse(ACLMessage request, ACLMessage response) {
+    protected ACLMessage prepareInformResultResponse(ACLMessage request, ACLMessage response) throws Exception {
         return null;
     }
 

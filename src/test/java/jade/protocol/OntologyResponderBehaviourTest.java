@@ -17,10 +17,8 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.ontology.base.BaseOntology;
-import logger.jade.JadeLogger;
 import org.junit.Before;
 import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -45,7 +43,6 @@ public class OntologyResponderBehaviourTest {
     private MessageTemplate messageTemplateMock;
     private Ontology ontologyMock;
     private OntologyResponderBehaviour ontologyResponderBehaviourSpy;
-    private JadeLogger loggerMock;
 
     @Before
     public void setUp() throws Exception {
@@ -59,27 +56,25 @@ public class OntologyResponderBehaviourTest {
         ontologyMock = mock(Ontology.class);
         actionMock = mock(Action.class);
         contentManagerMock = mock(ContentManager.class);
-        loggerMock = PowerMockito.mock(JadeLogger.class);
 
         doReturn(actionMock).when(contentManagerMock).extractContent(request);
         doNothing().when(contentManagerMock).fillContent(any(), any());
 
         ontologyResponderBehaviour = new OntologyResponderBehaviour(agentMock, messageTemplateMock, ontologyMock);
         setFieldValue(ontologyResponderBehaviour, "contentManager", contentManagerMock);
-        setFieldValue(ontologyResponderBehaviour, "logger", loggerMock);
 
         ontologyResponderBehaviourSpy = spy(ontologyResponderBehaviour);
     }
 
     @Test
-    public void shouldConfigContentManager() {
+    public void shouldConfigContentManager() throws Exception {
         ontologyResponderBehaviour.prepareAcceptanceResponse(request);
         verify(contentManagerMock).registerOntology(ontologyMock);
         verify(contentManagerMock).registerLanguage(isA(SLCodec.class));
     }
 
     @Test
-    public void shouldReturnRefuseIfActionIsNotValid() {
+    public void shouldReturnRefuseIfActionIsNotValid() throws Exception {
         doReturn(false).when(ontologyResponderBehaviourSpy).isValidAction(actionMock);
         ACLMessage response = ontologyResponderBehaviourSpy.prepareAcceptanceResponse(request);
         assertThat(response.getPerformative(), is(ACLMessage.REFUSE));
@@ -87,30 +82,10 @@ public class OntologyResponderBehaviourTest {
     }
 
     @Test
-    public void shouldReturnAgreeIfActionIsValid() {
+    public void shouldReturnAgreeIfActionIsValid() throws Exception {
         doReturn(true).when(ontologyResponderBehaviourSpy).isValidAction(actionMock);
         ACLMessage response = ontologyResponderBehaviourSpy.prepareAcceptanceResponse(request);
         assertThat(response.getPerformative(), is(ACLMessage.AGREE));
-    }
-
-    @Test
-    public void shouldReturnRefuseIfThrowsExceptionInPrepareResponse() throws Exception {
-        OntologyException toBeThrown = new OntologyException(EXPECTED_EXCEPTION_MESSAGE);
-        doThrow(toBeThrown).when(contentManagerMock).extractContent(request);
-        ACLMessage response = ontologyResponderBehaviourSpy.prepareAcceptanceResponse(request);
-        assertThat(response.getPerformative(), is(ACLMessage.REFUSE));
-        assertThat(response.getContent(), is(EXPECTED_EXCEPTION_MESSAGE));
-        verify(loggerMock).exception(agentMock, toBeThrown);
-    }
-
-    @Test
-    public void shouldReturnFailureIfThrowsExceptionInPerformAction() {
-        RuntimeException toBeThrown = new RuntimeException(EXPECTED_EXCEPTION_MESSAGE);
-        doThrow(toBeThrown).when(ontologyResponderBehaviourSpy).performAction(actionMock);
-        ACLMessage response = ontologyResponderBehaviourSpy.prepareInformResultResponse(request, request.createReply());
-        assertThat(response.getPerformative(), is(ACLMessage.FAILURE));
-        assertThat(response.getContent(), is(EXPECTED_EXCEPTION_MESSAGE));
-        verify(loggerMock).exception(agentMock, toBeThrown);
     }
 
     @Test
@@ -121,6 +96,24 @@ public class OntologyResponderBehaviourTest {
         response = ontologyResponderBehaviourSpy.prepareInformResultResponse(request, response);
         assertThat(response.getPerformative(), is(ACLMessage.INFORM));
         verify(contentManagerMock).fillContent(response, predicateMock);
+    }
+
+    @Test
+    public void shouldReturnFailureIfThrowsExceptionInPrepareResponse() throws Exception {
+        OntologyException toBeThrown = new OntologyException(EXPECTED_EXCEPTION_MESSAGE);
+        doThrow(toBeThrown).when(contentManagerMock).extractContent(request);
+        ACLMessage response = ontologyResponderBehaviourSpy.prepareResponse(request);
+        assertThat(response.getPerformative(), is(ACLMessage.FAILURE));
+        assertThat(response.getContent(), is(EXPECTED_EXCEPTION_MESSAGE));
+    }
+
+    @Test
+    public void shouldReturnFailureIfThrowsExceptionInPerformAction() throws Exception {
+        RuntimeException toBeThrown = new RuntimeException(EXPECTED_EXCEPTION_MESSAGE);
+        doThrow(toBeThrown).when(ontologyResponderBehaviourSpy).performAction(actionMock);
+        ACLMessage response = ontologyResponderBehaviourSpy.prepareResultNotification(request, request.createReply());
+        assertThat(response.getPerformative(), is(ACLMessage.FAILURE));
+        assertThat(response.getContent(), is(EXPECTED_EXCEPTION_MESSAGE));
     }
 
 }
