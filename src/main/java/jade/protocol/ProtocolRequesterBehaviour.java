@@ -42,16 +42,16 @@ public class ProtocolRequesterBehaviour extends SimpleAchieveREInitiator {
 
     @Override
     protected void handleAllResponses(Vector messages) {
-        messages.stream().forEach(
-                message -> logger.messageResponse(myAgent, (ACLMessage) message)
-        );
+        for (int i = 0; i < messages.size(); i++) {
+            logger.messageResponse(myAgent, (ACLMessage) messages.get(i));
+        }
     }
 
     @Override
     protected void handleAllResultNotifications(Vector messages) {
-        messages.stream().forEach(
-                message -> logger.messageResponse(myAgent, (ACLMessage) message)
-        );
+        for (int i = 0; i < messages.size(); i++) {
+            logger.messageResponse(myAgent, (ACLMessage) messages.get(i));
+        }
     }
 
     @Override

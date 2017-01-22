@@ -26,6 +26,10 @@ public class ApplicationLogger {
         jadeSettings = JadeSettings.getInstance();
     }
 
+    public Logger getLogger() {
+        return logger;
+    }
+
     public void startingApplication(String[] args) {
         new LogWriter()
                 .message("Starting application with arguments: %s, settings: %s, jade settings: %s")

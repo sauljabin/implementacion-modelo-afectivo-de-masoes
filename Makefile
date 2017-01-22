@@ -26,10 +26,10 @@ wikipedia: ; ./gradlew -q run -Pargs="-Ewikipedia"
 uncopyrighted: ; grep --include *.java -Lr "Copyright (c)" .
 
 # target unit-tests: Exec unit test.
-unit-tests: clean ; ./gradlew test
+unit-tests: ; ./gradlew test
 
 # target functional-tests: Exec functional test.
-functional-tests: clean ; ./gradlew -q functionalTest
+functional-tests: ; ./gradlew -q functionalTest
 
 # target tests: Exec all test.
 tests: unit-tests functional-tests

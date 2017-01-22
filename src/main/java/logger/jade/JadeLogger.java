@@ -19,6 +19,10 @@ public class JadeLogger {
         this.logger = logger;
     }
 
+    public Logger getLogger() {
+        return logger;
+    }
+
     public void exception(Agent agent, Exception exception) {
         new LogWriter()
                 .message("Exception in agent \"%s\": %s")

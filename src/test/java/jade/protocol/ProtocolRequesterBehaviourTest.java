@@ -28,7 +28,7 @@ public class ProtocolRequesterBehaviourTest {
     private Agent agentMock;
     private ACLMessage requestMock;
     private ACLMessage responseMock;
-    private Vector messages;
+    private Vector<ACLMessage> messages;
 
     @Before
     public void setUp() throws Exception {
@@ -39,7 +39,7 @@ public class ProtocolRequesterBehaviourTest {
         requesterBehaviour = new ProtocolRequesterBehaviour(agentMock, requestMock);
         setFieldValue(requesterBehaviour, "logger", loggerMock);
         resquesterBehaviourSpy = spy(requesterBehaviour);
-        messages = new Vector();
+        messages = new Vector<>();
         messages.add(responseMock);
     }
 
