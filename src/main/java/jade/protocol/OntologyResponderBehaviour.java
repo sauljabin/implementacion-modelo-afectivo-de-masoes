@@ -12,6 +12,9 @@ import jade.content.lang.sl.SLCodec;
 import jade.content.onto.Ontology;
 import jade.content.onto.basic.Action;
 import jade.core.Agent;
+import jade.domain.FIPAAgentManagement.FailureException;
+import jade.domain.FIPAAgentManagement.NotUnderstoodException;
+import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
@@ -41,33 +44,41 @@ public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
     }
 
     @Override
-    protected final ACLMessage prepareAcceptanceResponse(ACLMessage request) throws Exception {
+    protected final ACLMessage prepareAcceptanceResponse(ACLMessage request) throws NotUnderstoodException, RefuseException {
         contentManager.registerLanguage(new SLCodec());
         contentManager.registerOntology(ontology);
         ACLMessage response = request.createReply();
-        Action action = (Action) contentManager.extractContent(request);
-        if (isValidAction(action)) {
-            response.setPerformative(ACLMessage.AGREE);
-        } else {
-            response.setPerformative(ACLMessage.REFUSE);
-            response.setContent("Action no valid");
+        try {
+            Action action = (Action) contentManager.extractContent(request);
+            if (isValidAction(action)) {
+                response.setPerformative(ACLMessage.AGREE);
+            } else {
+                response.setPerformative(ACLMessage.REFUSE);
+                response.setContent("Action no valid");
+            }
+            return response;
+        } catch (Exception e) {
+            throw new NotUnderstoodException(e.getMessage());
         }
-        return response;
     }
 
     @Override
-    protected final ACLMessage prepareInformResultResponse(ACLMessage request, ACLMessage response) throws Exception {
-        Action action = (Action) contentManager.extractContent(request);
-        response.setPerformative(ACLMessage.INFORM);
-        contentManager.fillContent(response, performAction(action));
-        return response;
+    protected final ACLMessage prepareInformResultResponse(ACLMessage request, ACLMessage response) throws FailureException {
+        try {
+            Action action = (Action) contentManager.extractContent(request);
+            response.setPerformative(ACLMessage.INFORM);
+            contentManager.fillContent(response, performAction(action));
+            return response;
+        } catch (Exception e) {
+            throw new FailureException(e.getMessage());
+        }
     }
 
     public boolean isValidAction(Action action) {
         return true;
     }
 
-    public Predicate performAction(Action action) {
+    public Predicate performAction(Action action) throws Exception {
         return null;
     }
 

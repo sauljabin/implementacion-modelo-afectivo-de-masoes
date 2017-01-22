@@ -114,6 +114,22 @@ public class FunctionalTest extends Test {
         return aid;
     }
 
+    public AID createAgent(Agent tester) throws TestException {
+        AID aid = TestUtility.createAgent(tester, stringGenerator.getString(RANDOM_STRING_LENGTH), TestUtility.CONFIGURABLE_AGENT, null);
+        agentsToKill.add(aid);
+        return aid;
+    }
+
+    public AID createAgent(Agent tester, String[] parameters) throws TestException {
+        AID aid = TestUtility.createAgent(tester, stringGenerator.getString(RANDOM_STRING_LENGTH), TestUtility.CONFIGURABLE_AGENT, parameters);
+        agentsToKill.add(aid);
+        return aid;
+    }
+
+    public void addBehaviour(Agent tester, AID agent, String behaviourClass) throws TestException {
+        TestUtility.addBehaviour(tester, agent, behaviourClass);
+    }
+
     public JadeLogger getLogger() {
         return logger;
     }

@@ -7,9 +7,9 @@
 package jade.protocol;
 
 import jade.core.Agent;
-import jade.exception.FailureRequestException;
-import jade.exception.NotUnderstoodRequestException;
-import jade.exception.RefuseRequestException;
+import jade.domain.FIPAAgentManagement.FailureException;
+import jade.domain.FIPAAgentManagement.NotUnderstoodException;
+import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import logger.jade.JadeLogger;
@@ -73,38 +73,23 @@ public class ProtocolResponderBehaviourTest {
     }
 
     @Test
-    public void shouldPrepareResponseFailureWhenThrowsFailureException() throws Exception {
-        testResponseFromException(new FailureRequestException(EXCEPTION_MESSAGE), ACLMessage.FAILURE);
-    }
-
-    @Test
     public void shouldPrepareResponseRefuseWhenThrowsRefuseException() throws Exception {
-        testResponseFromException(new RefuseRequestException(EXCEPTION_MESSAGE), ACLMessage.REFUSE);
-    }
-
-    @Test
-    public void shouldPrepareResponseNotUnderstoodWhenThrowsNotUnderstoodException() throws Exception {
-        testResponseFromException(new NotUnderstoodRequestException(EXCEPTION_MESSAGE), ACLMessage.NOT_UNDERSTOOD);
+        testResponseFromException(new RefuseException(EXCEPTION_MESSAGE), ACLMessage.REFUSE);
     }
 
     @Test
     public void shouldPrepareResponseFailureWhenThrowsAnyException() throws Exception {
-        testResponseFromException(new RuntimeException(EXCEPTION_MESSAGE), ACLMessage.FAILURE);
+        testResponseFromException(new RuntimeException(EXCEPTION_MESSAGE), ACLMessage.REFUSE);
+    }
+
+    @Test
+    public void shouldPrepareResponseNotUnderstoodWhenThrowsNotUnderstoodException() throws Exception {
+        testResponseFromException(new NotUnderstoodException(EXCEPTION_MESSAGE), ACLMessage.NOT_UNDERSTOOD);
     }
 
     @Test
     public void shouldPrepareResultResponseFailureWhenThrowsFailureException() throws Exception {
-        testResponseResultFromException(new FailureRequestException(EXCEPTION_MESSAGE), ACLMessage.FAILURE);
-    }
-
-    @Test
-    public void shouldPrepareResultResponseRefuseWhenThrowsRefuseException() throws Exception {
-        testResponseResultFromException(new RefuseRequestException(EXCEPTION_MESSAGE), ACLMessage.REFUSE);
-    }
-
-    @Test
-    public void shouldPrepareResultResponseNotUnderstoodWhenThrowsNotUnderstoodException() throws Exception {
-        testResponseResultFromException(new NotUnderstoodRequestException(EXCEPTION_MESSAGE), ACLMessage.NOT_UNDERSTOOD);
+        testResponseResultFromException(new FailureException(EXCEPTION_MESSAGE), ACLMessage.FAILURE);
     }
 
     @Test

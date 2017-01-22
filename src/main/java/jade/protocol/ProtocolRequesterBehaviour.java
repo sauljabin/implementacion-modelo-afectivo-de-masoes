@@ -37,7 +37,7 @@ public class ProtocolRequesterBehaviour extends SimpleAchieveREInitiator {
     }
 
     protected ACLMessage prepareRequestInteraction(ACLMessage request) {
-        return null;
+        return request;
     }
 
     @Override

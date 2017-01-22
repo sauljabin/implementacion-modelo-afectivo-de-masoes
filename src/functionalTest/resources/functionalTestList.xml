@@ -1,24 +1,42 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <TestsList>
-    <Test name="Should receive all settings" skip="false">
+    <Test name="PROTOCOL: Should receive failure" skip="false">
+        <TestClassName>functional.test.protocol.ShouldReceiveFailureWhenExceptionTest</TestClassName>
+        <WhatTest>Test correct response</WhatTest>
+        <HowWorkTest>An agent make a bad request and receive failure</HowWorkTest>
+        <WhenTestPass>The test passes if the agent return failure</WhenTestPass>
+    </Test>
+    <Test name="PROTOCOL: Should receive refuse" skip="false">
+        <TestClassName>functional.test.protocol.ShouldReceiveRefuseWhenExceptionTest</TestClassName>
+        <WhatTest>Test correct response</WhatTest>
+        <HowWorkTest>An agent make a bad request and receive refuse</HowWorkTest>
+        <WhenTestPass>The test passes if the agent return refuse</WhenTestPass>
+    </Test>
+    <Test name="PROTOCOL: Should receive not understood" skip="false">
+        <TestClassName>functional.test.protocol.ShouldReceiveNotUnderstoodWhenExceptionTest</TestClassName>
+        <WhatTest>Test correct response</WhatTest>
+        <HowWorkTest>An agent make a bad request and receive not understood</HowWorkTest>
+        <WhenTestPass>The test passes if the agent return not understood</WhenTestPass>
+    </Test>
+    <Test name="SETTINGS: Should receive all settings" skip="false">
         <TestClassName>functional.test.settings.ShouldReceiveAllSettingsTest</TestClassName>
         <WhatTest>Test the correct settings behaviour</WhatTest>
         <HowWorkTest>An agent make a request and receive all settings</HowWorkTest>
         <WhenTestPass>The test passes if the agent return the correct settings</WhenTestPass>
     </Test>
-    <Test name="Should receive a setting" skip="false">
+    <Test name="SETTINGS: Should receive a setting" skip="false">
         <TestClassName>functional.test.settings.ShouldReceiveASettingTest</TestClassName>
         <WhatTest>Test the correct settings behaviour</WhatTest>
         <HowWorkTest>An agent make a request and receive the correct setting</HowWorkTest>
         <WhenTestPass>The test passes if the agent return the correct setting</WhenTestPass>
     </Test>
-    <Test name="Should receive failure" skip="false">
-        <TestClassName>functional.test.settings.ShouldReceivesFailureWhenSettingNotFoundTest</TestClassName>
+    <Test name="SETTINGS: Should receive failure" skip="false">
+        <TestClassName>functional.test.settings.ShouldReceiveFailureWhenSettingNotFoundTest</TestClassName>
         <WhatTest>Test correct response</WhatTest>
         <HowWorkTest>An agent make a bad request and receive failure</HowWorkTest>
         <WhenTestPass>The test passes if the agent return failure</WhenTestPass>
     </Test>
-    <Test name="Should change emotion and behaviour agent" skip="false">
+    <Test name="ENVIRONMENT: Should change emotion and behaviour agent" skip="false">
         <TestClassName>functional.test.environment.dummy.ShouldChangeEmotionAndBehaviourTest</TestClassName>
         <WhatTest>Emotional agent behaviour</WhatTest>
         <HowWorkTest>An agent make request to an emotional agent and change his behaviour</HowWorkTest>

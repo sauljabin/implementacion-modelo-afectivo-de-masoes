@@ -16,7 +16,7 @@ import settings.ontology.GetSetting;
 import settings.ontology.SettingsOntology;
 import test.common.TestException;
 
-public class ShouldReceivesFailureWhenSettingNotFoundTest extends FunctionalTest {
+public class ShouldReceiveFailureWhenSettingNotFoundTest extends FunctionalTest {
 
     @Override
     public Behaviour load(Agent tester) throws TestException {

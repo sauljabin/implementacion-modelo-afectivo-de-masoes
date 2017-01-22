@@ -99,11 +99,11 @@ public class OntologyResponderBehaviourTest {
     }
 
     @Test
-    public void shouldReturnFailureIfThrowsExceptionInPrepareResponse() throws Exception {
+    public void shouldReturnNotUnderstoodIfThrowsExceptionInPrepareResponse() throws Exception {
         OntologyException toBeThrown = new OntologyException(EXPECTED_EXCEPTION_MESSAGE);
         doThrow(toBeThrown).when(contentManagerMock).extractContent(request);
         ACLMessage response = ontologyResponderBehaviourSpy.prepareResponse(request);
-        assertThat(response.getPerformative(), is(ACLMessage.FAILURE));
+        assertThat(response.getPerformative(), is(ACLMessage.NOT_UNDERSTOOD));
         assertThat(response.getContent(), is(EXPECTED_EXCEPTION_MESSAGE));
     }
 

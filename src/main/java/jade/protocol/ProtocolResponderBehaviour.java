@@ -7,8 +7,9 @@
 package jade.protocol;
 
 import jade.core.Agent;
-import jade.exception.NotUnderstoodRequestException;
-import jade.exception.RefuseRequestException;
+import jade.domain.FIPAAgentManagement.FailureException;
+import jade.domain.FIPAAgentManagement.NotUnderstoodException;
+import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
@@ -38,7 +39,13 @@ public class ProtocolResponderBehaviour extends SimpleAchieveREResponder {
             logger.messageResponse(myAgent, response);
             return response;
         } catch (Exception e) {
-            return prepareResponseFromException(e, request.createReply());
+            ACLMessage response = request.createReply();
+            if (e instanceof NotUnderstoodException) {
+                response.setPerformative(ACLMessage.NOT_UNDERSTOOD);
+            } else {
+                response.setPerformative(ACLMessage.REFUSE);
+            }
+            return prepareResponseFromException(e, response);
         }
     }
 
@@ -49,33 +56,23 @@ public class ProtocolResponderBehaviour extends SimpleAchieveREResponder {
             logger.messageResponse(myAgent, informResponse);
             return informResponse;
         } catch (Exception e) {
+            response.setPerformative(ACLMessage.FAILURE);
             return prepareResponseFromException(e, response);
         }
     }
 
     private ACLMessage prepareResponseFromException(Exception exception, ACLMessage response) {
-        response.setPerformative(calculatePerformativeFromException(exception));
         response.setContent(exception.getMessage());
         logger.exception(myAgent, exception);
         logger.messageResponse(myAgent, response);
         return response;
     }
 
-    private int calculatePerformativeFromException(Exception exception) {
-        if (exception instanceof NotUnderstoodRequestException) {
-            return ACLMessage.NOT_UNDERSTOOD;
-        } else if (exception instanceof RefuseRequestException) {
-            return ACLMessage.REFUSE;
-        } else {
-            return ACLMessage.FAILURE;
-        }
-    }
-
-    protected ACLMessage prepareAcceptanceResponse(ACLMessage request) throws Exception {
+    protected ACLMessage prepareAcceptanceResponse(ACLMessage request) throws NotUnderstoodException, RefuseException {
         return null;
     }
 
-    protected ACLMessage prepareInformResultResponse(ACLMessage request, ACLMessage response) throws Exception {
+    protected ACLMessage prepareInformResultResponse(ACLMessage request, ACLMessage response) throws FailureException {
         return null;
     }
 
