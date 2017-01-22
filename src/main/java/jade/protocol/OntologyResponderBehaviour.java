@@ -14,18 +14,22 @@ import jade.content.onto.basic.Action;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import logger.jade.JadeLogger;
+import org.slf4j.LoggerFactory;
 
 public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
 
     private final MessageTemplate messageTemplate;
     private ContentManager contentManager;
     private Ontology ontology;
+    private JadeLogger logger;
 
     public OntologyResponderBehaviour(Agent agent, MessageTemplate messageTemplate, Ontology ontology) {
         super(agent, messageTemplate);
         this.messageTemplate = messageTemplate;
         this.ontology = ontology;
         contentManager = new ContentManager();
+        logger = new JadeLogger(LoggerFactory.getLogger(OntologyResponderBehaviour.class));
     }
 
     public MessageTemplate getMessageTemplate() {
@@ -54,6 +58,7 @@ public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
                 response.setContent("Action no valid");
             }
         } catch (Exception e) {
+            logger.exception(myAgent, e);
             response.setPerformative(ACLMessage.REFUSE);
             response.setContent(e.getMessage());
         }
@@ -67,6 +72,7 @@ public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
             response.setPerformative(ACLMessage.INFORM);
             contentManager.fillContent(response, performAction(action));
         } catch (Exception e) {
+            logger.exception(myAgent, e);
             response.setPerformative(ACLMessage.FAILURE);
             response.setContent(e.getMessage());
         }

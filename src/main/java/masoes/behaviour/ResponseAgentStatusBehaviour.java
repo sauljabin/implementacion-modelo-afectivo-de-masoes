@@ -22,9 +22,9 @@ public class ResponseAgentStatusBehaviour extends OntologyResponderBehaviour {
 
     private EmotionalAgent emotionalAgent;
 
-    public ResponseAgentStatusBehaviour(EmotionalAgent agent) {
-        super(agent, new MasoesRequestMessageTemplate(), new MasoesOntology());
-        emotionalAgent = agent;
+    public ResponseAgentStatusBehaviour(EmotionalAgent emotionalAgent) {
+        super(emotionalAgent, new MasoesRequestMessageTemplate(), new MasoesOntology());
+        this.emotionalAgent = emotionalAgent;
     }
 
     @Override

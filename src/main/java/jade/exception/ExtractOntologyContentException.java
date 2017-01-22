@@ -6,17 +6,17 @@
 
 package jade.exception;
 
-public class FillOntologyContentException extends RuntimeException {
+public class ExtractOntologyContentException extends RuntimeException {
 
-    public FillOntologyContentException(String message) {
+    public ExtractOntologyContentException(String message) {
         super(message);
     }
 
-    public FillOntologyContentException(String message, Throwable cause) {
+    public ExtractOntologyContentException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public FillOntologyContentException(Throwable cause) {
+    public ExtractOntologyContentException(Throwable cause) {
         super(cause);
     }
 

@@ -31,7 +31,7 @@ public class SettingsOntologyTest {
 
     @Test
     public void shouldInitializeElements() {
-        assertThat(Arrays.asList(settingsOntology.getPredicateNames().toArray()), hasItems("ActionResult", "UnexpectedContent", "SystemSettings"));
+        assertThat(Arrays.asList(settingsOntology.getPredicateNames().toArray()), hasItems("ActionResult", "SystemSettings"));
         assertThat(Arrays.asList(settingsOntology.getConceptNames().toArray()), hasItems("Setting"));
         assertThat(Arrays.asList(settingsOntology.getActionNames().toArray()), hasItems("GetAllSettings", "GetSetting"));
     }

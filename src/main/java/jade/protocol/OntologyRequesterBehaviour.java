@@ -8,14 +8,18 @@ package jade.protocol;
 
 import jade.content.AgentAction;
 import jade.content.ContentManager;
+import jade.content.Predicate;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.Ontology;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPANames;
+import jade.exception.ExtractOntologyContentException;
 import jade.exception.FillOntologyContentException;
 import jade.lang.acl.ACLMessage;
+import logger.jade.JadeLogger;
+import org.slf4j.LoggerFactory;
 
 public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
 
@@ -23,6 +27,7 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
     private Ontology ontology;
     private AgentAction agentAction;
     private ContentManager contentManager;
+    private JadeLogger logger;
 
     public OntologyRequesterBehaviour(Agent agent, AID receiver, AgentAction agentAction, Ontology ontology) {
         super(agent, new ACLMessage(ACLMessage.REQUEST));
@@ -30,6 +35,7 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
         this.ontology = ontology;
         this.agentAction = agentAction;
         contentManager = new ContentManager();
+        logger = new JadeLogger(LoggerFactory.getLogger(OntologyRequesterBehaviour.class));
     }
 
     public AID getReceiver() {
@@ -62,10 +68,57 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
         try {
             contentManager.fillContent(message, new Action(myAgent.getAID(), agentAction));
         } catch (Exception e) {
-            throw new FillOntologyContentException(e.getMessage(), e);
+            logger.exception(myAgent, e);
+            throw new FillOntologyContentException(e);
         }
 
         return message;
+    }
+
+    @Override
+    protected final void handleAgree(ACLMessage message) {
+        handleAgree(message.getContent());
+    }
+
+    protected void handleAgree(String contentMessage) {
+    }
+
+    @Override
+    protected final void handleRefuse(ACLMessage message) {
+        handleRefuse(message.getContent());
+    }
+
+    protected void handleRefuse(String contentMessage) {
+    }
+
+    @Override
+    protected final void handleNotUnderstood(ACLMessage message) {
+        handleNotUnderstood(message.getContent());
+    }
+
+    protected void handleNotUnderstood(String contentMessage) {
+    }
+
+    @Override
+    protected final void handleFailure(ACLMessage message) {
+        handleFailure(message.getContent());
+    }
+
+    protected void handleFailure(String contentMessage) {
+    }
+
+    @Override
+    protected final void handleInform(ACLMessage message) {
+        try {
+            Predicate predicate = (Predicate) contentManager.extractContent(message);
+            handleInform(predicate);
+        } catch (Exception e) {
+            logger.exception(myAgent, e);
+            throw new ExtractOntologyContentException(e);
+        }
+    }
+
+    protected void handleInform(Predicate predicate) {
     }
 
 }
