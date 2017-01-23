@@ -31,7 +31,27 @@ public class ShouldReceiveRefuseWhenExceptionTest extends FunctionalTest {
         ProtocolRequesterBehaviour requesterBehaviour = new ProtocolRequesterBehaviour(null, request) {
             @Override
             protected void handleRefuse(ACLMessage msg) {
-                assertEquals("Refuse content", msg.getContent(), "MESSAGE REFUSE");
+                assertEquals("Refuse content", "MESSAGE REFUSE", msg.getContent());
+            }
+
+            @Override
+            protected void handleNotUnderstood(ACLMessage msg) {
+                failed("Not understood");
+            }
+
+            @Override
+            protected void handleFailure(ACLMessage msg) {
+                failed("Failure");
+            }
+
+            @Override
+            protected void handleInform(ACLMessage msg) {
+                failed("Inform");
+            }
+
+            @Override
+            protected void handleAgree(ACLMessage msg) {
+                failed("Agree");
             }
         };
 

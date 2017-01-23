@@ -76,7 +76,7 @@ public class OntologyResponderBehaviourTest {
     @Test
     public void shouldReturnRefuseIfActionIsNotValid() throws Exception {
         doReturn(false).when(ontologyResponderBehaviourSpy).isValidAction(actionMock);
-        ACLMessage response = ontologyResponderBehaviourSpy.prepareAcceptanceResponse(request);
+        ACLMessage response = ontologyResponderBehaviourSpy.prepareResponse(request);
         assertThat(response.getPerformative(), is(ACLMessage.REFUSE));
         assertThat(response.getContent(), is("Action no valid"));
     }

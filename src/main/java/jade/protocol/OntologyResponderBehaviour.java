@@ -48,18 +48,21 @@ public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
         contentManager.registerLanguage(new SLCodec());
         contentManager.registerOntology(ontology);
         ACLMessage response = request.createReply();
+        Action action;
+
         try {
-            Action action = (Action) contentManager.extractContent(request);
-            if (isValidAction(action)) {
-                response.setPerformative(ACLMessage.AGREE);
-            } else {
-                response.setPerformative(ACLMessage.REFUSE);
-                response.setContent("Action no valid");
-            }
-            return response;
+            action = (Action) contentManager.extractContent(request);
         } catch (Exception e) {
             throw new NotUnderstoodException(e.getMessage());
         }
+
+        if (isValidAction(action)) {
+            response.setPerformative(ACLMessage.AGREE);
+        } else {
+            throw new RefuseException("Action no valid");
+        }
+
+        return response;
     }
 
     @Override

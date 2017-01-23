@@ -4,15 +4,16 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.test.protocol;
+package functional.test.protocol.ontology;
 
 import functional.test.core.FunctionalTest;
+import jade.content.Predicate;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
-import jade.domain.FIPANames;
-import jade.lang.acl.ACLMessage;
-import jade.protocol.ProtocolRequesterBehaviour;
+import jade.ontology.base.BaseOntology;
+import jade.ontology.base.PerformAction;
+import jade.protocol.OntologyRequesterBehaviour;
 import test.common.TestException;
 
 public class ShouldReceiveFailureWhenExceptionTest extends FunctionalTest {
@@ -24,29 +25,26 @@ public class ShouldReceiveFailureWhenExceptionTest extends FunctionalTest {
         AID agent = createAgent(tester);
         addBehaviour(tester, agent, ExceptionFailureResponderBehaviour.class.getName());
 
-        ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
-        request.addReceiver(agent);
-        request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
-
-        ProtocolRequesterBehaviour requesterBehaviour = new ProtocolRequesterBehaviour(null, request) {
+        PerformAction agentAction = new PerformAction();
+        OntologyRequesterBehaviour requesterBehaviour = new OntologyRequesterBehaviour(null, agent, agentAction, new BaseOntology()) {
             @Override
-            protected void handleFailure(ACLMessage msg) {
-                assertEquals("Failure content", "MESSAGE FAILURE", msg.getContent());
+            protected void handleInform(Predicate predicate) {
+                failed("Inform");
             }
 
             @Override
-            protected void handleRefuse(ACLMessage msg) {
+            protected void handleRefuse(String contentMessage) {
                 failed("Refuse");
             }
 
             @Override
-            protected void handleNotUnderstood(ACLMessage msg) {
+            protected void handleNotUnderstood(String contentMessage) {
                 failed("Not understood");
             }
 
             @Override
-            protected void handleInform(ACLMessage msg) {
-                failed("Inform");
+            protected void handleFailure(String contentMessage) {
+                assertEquals("Failure content", "MESSAGE FAILURE", contentMessage);
             }
         };
 

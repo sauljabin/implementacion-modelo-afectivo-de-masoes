@@ -15,25 +15,20 @@ import jade.lang.acl.ACLMessage;
 import jade.protocol.ProtocolRequesterBehaviour;
 import test.common.TestException;
 
-public class ShouldReceiveNotUnderstoodWhenExceptionTest extends FunctionalTest {
+public class ShouldReceiveInformTest extends FunctionalTest {
 
     @Override
     public Behaviour load(Agent tester) throws TestException {
         setTimeout(TIMEOUT_DEFAULT);
 
         AID agent = createAgent(tester);
-        addBehaviour(tester, agent, ExceptionNotUnderstoodResponderBehaviour.class.getName());
+        addBehaviour(tester, agent, InformResponderBehaviour.class.getName());
 
         ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
         request.addReceiver(agent);
         request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
 
         ProtocolRequesterBehaviour requesterBehaviour = new ProtocolRequesterBehaviour(null, request) {
-            @Override
-            protected void handleNotUnderstood(ACLMessage msg) {
-                assertEquals("Not Understood content", "MESSAGE NOT UNDERSTOOD", msg.getContent());
-            }
-
             @Override
             protected void handleFailure(ACLMessage msg) {
                 failed("Failure");
@@ -45,13 +40,13 @@ public class ShouldReceiveNotUnderstoodWhenExceptionTest extends FunctionalTest 
             }
 
             @Override
-            protected void handleInform(ACLMessage msg) {
-                failed("Inform");
+            protected void handleNotUnderstood(ACLMessage msg) {
+                failed("Not understood");
             }
 
             @Override
-            protected void handleAgree(ACLMessage msg) {
-                failed("Agree");
+            protected void handleInform(ACLMessage msg) {
+                assertEquals("Inform content", "INFORM CONTENT", msg.getContent());
             }
         };
 

@@ -32,6 +32,7 @@ public class BaseOntologyTest {
     @Test
     public void shouldInitializeElements() {
         assertThat(Arrays.asList(baseOntology.getPredicateNames().toArray()), hasItems("ActionResult"));
+        assertThat(Arrays.asList(baseOntology.getActionNames().toArray()), hasItems("PerformAction"));
     }
 
 }
