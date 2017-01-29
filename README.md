@@ -158,22 +158,10 @@ Iniciar caso de estudio:
 
 ## Ejecución con make
 
-Opciones del make:
+Instalar:
 
 ```
-make targets
-```
-
-Ayuda MASOES:
-
-```
-make help
-```
-
-Buscar archivos sin copyright:
-
-```
-make uncopyrighted
+make install
 ```
 
 Crear empaquetado:
@@ -188,10 +176,22 @@ Limpiar:
 make clean
 ```
 
-Instalar:
+Opciones del make:
 
 ```
-make install
+make targets
+```
+
+Ayuda MASOES:
+
+```
+make help
+```
+
+Ejecutar sin env:
+
+```
+make run
 ```
 
 Ejecutar dummy:
@@ -204,6 +204,12 @@ Ejecutar wikipedia:
 
 ```
 make wikipedia
+```
+
+Buscar archivos sin copyright:
+
+```
+make uncopyrighted
 ```
 
 Ejecución de pruebas unitarias:
@@ -221,7 +227,7 @@ make functional-tests
 Ejecución de todas las pruebas:
 
 ```
-make all-tests
+make tests
 ```
 
 Crear imagen:

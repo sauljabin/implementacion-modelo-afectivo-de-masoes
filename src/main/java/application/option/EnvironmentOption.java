@@ -6,6 +6,7 @@
 
 package application.option;
 
+import gui.agent.RequesterGuiAgent;
 import jade.command.AgentCommandFormatter;
 import masoes.environment.Environment;
 import masoes.environment.EnvironmentFactory;
@@ -77,19 +78,41 @@ public class EnvironmentOption extends ApplicationOption {
 
         agentCommands.addAll(Optional.ofNullable(environment.getAgentCommands()).orElse(new ArrayList<>()));
 
-        if (isNotPresentAgentSetting(agentCommands)) {
+        if (!isPresentSettingAgent(agentCommands)) {
             agentCommands.add(new AgentCommandFormatter("settings", SettingsAgent.class));
         }
 
+        if (!isPresentRequesterAgent(agentCommands) && isJadeGui()) {
+            agentCommands.add(new AgentCommandFormatter("requester", RequesterGuiAgent.class));
+        }
+
+        if (!isJadeGui()) {
+            agentCommands = agentCommands.stream().filter(
+                    agentCommandFormatter -> !agentCommandFormatter.getAgentClass().equals(RequesterGuiAgent.class)
+            ).collect(Collectors.toList());
+        }
+
         return agentCommands;
+    }
+
+    private boolean isJadeGui() {
+        return Boolean.valueOf(jadeSettings.get(JadeSettings.GUI));
     }
 
     private List<String> toStringList(List<AgentCommandFormatter> agentCommandList) {
         return agentCommandList.stream().map(AgentCommandFormatter::format).collect(Collectors.toList());
     }
 
-    private boolean isNotPresentAgentSetting(List<AgentCommandFormatter> agentCommandList) {
-        return !agentCommandList.stream().filter(agentInfo -> agentInfo.getAgentClass().equals(SettingsAgent.class)).findFirst().isPresent();
+    private boolean isPresentSettingAgent(List<AgentCommandFormatter> agentCommandList) {
+        return agentCommandList.stream().filter(
+                agentInfo -> agentInfo.getAgentClass().equals(SettingsAgent.class)
+        ).findFirst().isPresent();
+    }
+
+    private boolean isPresentRequesterAgent(List<AgentCommandFormatter> agentCommandList) {
+        return agentCommandList.stream().filter(
+                agentInfo -> agentInfo.getAgentClass().equals(RequesterGuiAgent.class)
+        ).findFirst().isPresent();
     }
 
 }

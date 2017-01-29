@@ -12,8 +12,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.ExpectedSystemExit;
-import settings.application.ApplicationSettings;
-import settings.jade.JadeSettings;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.any;
@@ -28,22 +26,16 @@ public class ApplicationBootTest {
     public ExpectedSystemExit expectedSystemExit = ExpectedSystemExit.none();
     private ApplicationLogger loggerMock;
     private ApplicationOptionProcessor applicationOptionProcessorMock;
-    private ApplicationSettings applicationSettingsMock;
     private String[] args;
     private ApplicationBoot applicationBoot;
-    private JadeSettings jadeSettingsMock;
 
     @Before
     public void setUp() throws Exception {
-        jadeSettingsMock = mock(JadeSettings.class);
         loggerMock = mock(ApplicationLogger.class);
-        applicationSettingsMock = mock(ApplicationSettings.class);
         applicationOptionProcessorMock = mock(ApplicationOptionProcessor.class);
         applicationBoot = new ApplicationBoot();
         setFieldValue(applicationBoot, "logger", loggerMock);
-        setFieldValue(applicationBoot, "applicationSettings", applicationSettingsMock);
         setFieldValue(applicationBoot, "applicationOptionProcessor", applicationOptionProcessorMock);
-        setFieldValue(applicationBoot, "jadeSettings", jadeSettingsMock);
         args = new String[]{};
     }
 
