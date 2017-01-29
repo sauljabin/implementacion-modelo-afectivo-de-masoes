@@ -24,6 +24,7 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 
 public class EmotionTest {
 
+    private static final String NAME = "name";
     private Coordinate[] coordinates;
     private Emotion emotionSpy;
 
@@ -45,6 +46,12 @@ public class EmotionTest {
     public void shouldCreateGeometryPolygonWithCoordinates() {
         Polygon expectedPolygon = new GeometryFactory().createPolygon(coordinates);
         assertReflectionEquals(expectedPolygon.getCoordinates(), emotionSpy.getGeometry().getCoordinates());
+    }
+
+    @Test
+    public void shouldGetName() {
+        emotionSpy.setEmotionName(NAME);
+        assertThat(emotionSpy.getEmotionName(), is(NAME));
     }
 
     @Test

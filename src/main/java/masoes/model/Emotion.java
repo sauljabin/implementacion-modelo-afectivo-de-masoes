@@ -14,11 +14,14 @@ import com.vividsolutions.jts.shape.random.RandomPointsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.Optional;
+
 public abstract class Emotion {
 
     private RandomPointsBuilder randomPointsBuilder;
     private Geometry polygon;
     private GeometryFactory geometryFactory;
+    private String emotionName;
 
     public Emotion() {
         geometryFactory = new GeometryFactory();
@@ -33,7 +36,11 @@ public abstract class Emotion {
     }
 
     public String getEmotionName() {
-        return this.getClass().getSimpleName();
+        return Optional.ofNullable(emotionName).orElse(getClass().getSimpleName());
+    }
+
+    public void setEmotionName(String emotionName) {
+        this.emotionName = emotionName;
     }
 
     @Override
