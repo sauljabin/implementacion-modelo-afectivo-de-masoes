@@ -6,11 +6,12 @@
 
 package application.option;
 
+import application.base.ArgumentType;
 import gui.agent.RequesterGuiAgent;
-import jade.command.AgentCommandFormatter;
+import environment.base.AgentCommand;
 import jade.core.Agent;
-import masoes.environment.Environment;
-import masoes.environment.EnvironmentFactory;
+import environment.base.Environment;
+import environment.base.EnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
 import settings.agent.SettingsAgent;
@@ -70,8 +71,8 @@ public class EnvironmentOptionTest {
 
     @Test
     public void shouldInvokeEnvironmentCreation() {
-        List<AgentCommandFormatter> expectedJadeAgentOptionList = new ArrayList<>();
-        expectedJadeAgentOptionList.add(new AgentCommandFormatter("agent", Agent.class, Arrays.asList("arg1", "arg2")));
+        List<AgentCommand> expectedJadeAgentOptionList = new ArrayList<>();
+        expectedJadeAgentOptionList.add(new AgentCommand("agent", Agent.class, Arrays.asList("arg1", "arg2")));
         doReturn(expectedJadeAgentOptionList).when(environmentMock).getAgentCommands();
 
         environmentOption.exec();
@@ -83,9 +84,9 @@ public class EnvironmentOptionTest {
 
     @Test
     public void shouldInvokeEnvironmentCreationWithTwoAgents() {
-        List<AgentCommandFormatter> expectedJadeAgentOptionList = new ArrayList<>();
-        expectedJadeAgentOptionList.add(new AgentCommandFormatter("agent", Agent.class, Arrays.asList("arg1", "arg2")));
-        expectedJadeAgentOptionList.add(new AgentCommandFormatter("agent2", Agent.class));
+        List<AgentCommand> expectedJadeAgentOptionList = new ArrayList<>();
+        expectedJadeAgentOptionList.add(new AgentCommand("agent", Agent.class, Arrays.asList("arg1", "arg2")));
+        expectedJadeAgentOptionList.add(new AgentCommand("agent2", Agent.class));
         doReturn(expectedJadeAgentOptionList).when(environmentMock).getAgentCommands();
 
         environmentOption.exec();
@@ -116,8 +117,8 @@ public class EnvironmentOptionTest {
 
     @Test
     public void shouldNotAddSettingsAgentWhenHasOne() {
-        List<AgentCommandFormatter> expectedJadeAgentOptionList = new ArrayList<>();
-        expectedJadeAgentOptionList.add(new AgentCommandFormatter("alreadyExists", SettingsAgent.class));
+        List<AgentCommand> expectedJadeAgentOptionList = new ArrayList<>();
+        expectedJadeAgentOptionList.add(new AgentCommand("alreadyExists", SettingsAgent.class));
         doReturn(expectedJadeAgentOptionList).when(environmentMock).getAgentCommands();
 
         environmentOption.exec();
@@ -141,8 +142,8 @@ public class EnvironmentOptionTest {
 
     @Test
     public void shouldNotAddNewGuiAgentAgentWhenHasOne() {
-        List<AgentCommandFormatter> expectedJadeAgentOptionList = new ArrayList<>();
-        expectedJadeAgentOptionList.add(new AgentCommandFormatter("alreadyExists", RequesterGuiAgent.class));
+        List<AgentCommand> expectedJadeAgentOptionList = new ArrayList<>();
+        expectedJadeAgentOptionList.add(new AgentCommand("alreadyExists", RequesterGuiAgent.class));
         doReturn(expectedJadeAgentOptionList).when(environmentMock).getAgentCommands();
         doReturn("true").when(jadeSettingsMock).get(JadeSettings.GUI);
 
@@ -165,8 +166,8 @@ public class EnvironmentOptionTest {
 
     @Test
     public void shouldNotAddGuiAgentAgentWhenHasOneAndJadeGuiIsFalse() {
-        List<AgentCommandFormatter> expectedJadeAgentOptionList = new ArrayList<>();
-        expectedJadeAgentOptionList.add(new AgentCommandFormatter("alreadyExists", RequesterGuiAgent.class));
+        List<AgentCommand> expectedJadeAgentOptionList = new ArrayList<>();
+        expectedJadeAgentOptionList.add(new AgentCommand("alreadyExists", RequesterGuiAgent.class));
         doReturn(expectedJadeAgentOptionList).when(environmentMock).getAgentCommands();
         doReturn("false").when(jadeSettingsMock).get(JadeSettings.GUI);
 

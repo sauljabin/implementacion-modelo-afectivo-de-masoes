@@ -6,7 +6,7 @@
 
 package application.boot;
 
-import application.option.ApplicationOptionProcessor;
+import application.base.ApplicationOptionProcessor;
 import logger.writer.ApplicationLogger;
 import org.junit.Before;
 import org.junit.Rule;

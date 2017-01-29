@@ -11,7 +11,7 @@ import jade.lang.acl.MessageTemplate;
 public class MasoesRequestMessageTemplate extends MessageTemplate {
 
     public MasoesRequestMessageTemplate() {
-        super(new MasoesMatchRequestExpression());
+        super(new MasoesRequestMatchExpression());
     }
 
 }

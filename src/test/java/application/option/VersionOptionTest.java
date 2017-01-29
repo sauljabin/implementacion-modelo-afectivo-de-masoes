@@ -6,6 +6,7 @@
 
 package application.option;
 
+import application.base.ArgumentType;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

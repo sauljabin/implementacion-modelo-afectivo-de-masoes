@@ -6,8 +6,7 @@
 
 package logger.writer;
 
-import application.option.ApplicationOption;
-import logger.writer.LogWriter;
+import application.base.ApplicationOption;
 import org.slf4j.Logger;
 import settings.loader.ApplicationSettings;
 import settings.loader.JadeSettings;

@@ -6,6 +6,9 @@
 
 package application.option;
 
+import application.base.ApplicationOption;
+import application.base.ApplicationOptions;
+import application.base.ArgumentType;
 import org.apache.commons.cli.HelpFormatter;
 import settings.loader.ApplicationSettings;
 

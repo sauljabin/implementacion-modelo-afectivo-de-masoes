@@ -6,9 +6,9 @@
 
 package functional.boot;
 
-import functional.core.FunctionalTesterAgent;
+import functional.base.FunctionalTesterAgent;
 import jade.boot.JadeBoot;
-import jade.command.AgentCommandFormatter;
+import environment.base.AgentCommand;
 import logger.writer.ApplicationLogger;
 import org.slf4j.LoggerFactory;
 import settings.loader.ApplicationSettings;
@@ -48,7 +48,7 @@ public class FunctionalTestBoot {
     }
 
     private String getEnvironmentAgentInfo() {
-        return new AgentCommandFormatter(FunctionalTesterAgent.class.getSimpleName(), FunctionalTesterAgent.class).format();
+        return new AgentCommand(FunctionalTesterAgent.class.getSimpleName(), FunctionalTesterAgent.class).format();
     }
 
 }

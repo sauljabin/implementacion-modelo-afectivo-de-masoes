@@ -11,7 +11,7 @@ import jade.lang.acl.MessageTemplate;
 public class SettingsRequestMessageTemplate extends MessageTemplate {
 
     public SettingsRequestMessageTemplate() {
-        super(new SettingsMatchRequestExpression());
+        super(new SettingsRequestMatchExpression());
     }
 
 }

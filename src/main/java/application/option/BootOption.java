@@ -6,6 +6,8 @@
 
 package application.option;
 
+import application.base.ApplicationOption;
+import application.base.ArgumentType;
 import jade.boot.JadeBoot;
 
 public class BootOption extends ApplicationOption {

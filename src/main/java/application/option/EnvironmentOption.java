@@ -6,10 +6,12 @@
 
 package application.option;
 
+import application.base.ApplicationOption;
+import application.base.ArgumentType;
 import gui.agent.RequesterGuiAgent;
-import jade.command.AgentCommandFormatter;
-import masoes.environment.Environment;
-import masoes.environment.EnvironmentFactory;
+import environment.base.AgentCommand;
+import environment.base.Environment;
+import environment.base.EnvironmentFactory;
 import settings.agent.SettingsAgent;
 import settings.loader.ApplicationSettings;
 import settings.loader.JadeSettings;
@@ -73,17 +75,17 @@ public class EnvironmentOption extends ApplicationOption {
         return String.join(AGENT_DELIMITER, toStringList(getEnvironmentAgentInfoList(environmentFactory.createEnvironment())));
     }
 
-    private List<AgentCommandFormatter> getEnvironmentAgentInfoList(Environment environment) {
-        List<AgentCommandFormatter> agentCommands = new ArrayList<>();
+    private List<AgentCommand> getEnvironmentAgentInfoList(Environment environment) {
+        List<AgentCommand> agentCommands = new ArrayList<>();
 
         agentCommands.addAll(Optional.ofNullable(environment.getAgentCommands()).orElse(new ArrayList<>()));
 
         if (!isPresentSettingAgent(agentCommands)) {
-            agentCommands.add(new AgentCommandFormatter("settings", SettingsAgent.class));
+            agentCommands.add(new AgentCommand("settings", SettingsAgent.class));
         }
 
         if (!isPresentRequesterAgent(agentCommands) && isJadeGui()) {
-            agentCommands.add(new AgentCommandFormatter("requester", RequesterGuiAgent.class));
+            agentCommands.add(new AgentCommand("requester", RequesterGuiAgent.class));
         }
 
         if (!isJadeGui()) {
@@ -99,17 +101,17 @@ public class EnvironmentOption extends ApplicationOption {
         return Boolean.valueOf(jadeSettings.get(JadeSettings.GUI));
     }
 
-    private List<String> toStringList(List<AgentCommandFormatter> agentCommandList) {
-        return agentCommandList.stream().map(AgentCommandFormatter::format).collect(Collectors.toList());
+    private List<String> toStringList(List<AgentCommand> agentCommandList) {
+        return agentCommandList.stream().map(AgentCommand::format).collect(Collectors.toList());
     }
 
-    private boolean isPresentSettingAgent(List<AgentCommandFormatter> agentCommandList) {
+    private boolean isPresentSettingAgent(List<AgentCommand> agentCommandList) {
         return agentCommandList.stream().filter(
                 agentInfo -> agentInfo.getAgentClass().equals(SettingsAgent.class)
         ).findFirst().isPresent();
     }
 
-    private boolean isPresentRequesterAgent(List<AgentCommandFormatter> agentCommandList) {
+    private boolean isPresentRequesterAgent(List<AgentCommand> agentCommandList) {
         return agentCommandList.stream().filter(
                 agentInfo -> agentInfo.getAgentClass().equals(RequesterGuiAgent.class)
         ).findFirst().isPresent();

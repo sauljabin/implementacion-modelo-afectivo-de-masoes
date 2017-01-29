@@ -6,6 +6,7 @@
 
 package application.option;
 
+import application.base.ArgumentType;
 import logger.writer.ApplicationLogger;
 import org.junit.Before;
 import org.junit.Rule;
