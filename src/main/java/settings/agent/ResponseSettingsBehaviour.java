@@ -26,8 +26,8 @@ import java.util.Optional;
 
 public class ResponseSettingsBehaviour extends OntologyResponderBehaviour {
 
-    private final ApplicationSettings applicationSettings;
-    private final JadeSettings jadeSettings;
+    private ApplicationSettings applicationSettings;
+    private JadeSettings jadeSettings;
 
     public ResponseSettingsBehaviour(Agent agent) {
         super(agent, new SettingsRequestMessageTemplate(), new SettingsOntology());

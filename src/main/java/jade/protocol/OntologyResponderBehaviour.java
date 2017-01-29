@@ -20,7 +20,7 @@ import jade.lang.acl.MessageTemplate;
 
 public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
 
-    private final MessageTemplate messageTemplate;
+    private MessageTemplate messageTemplate;
     private ContentManager contentManager;
     private Ontology ontology;
 
