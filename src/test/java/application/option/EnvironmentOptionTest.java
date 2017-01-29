@@ -14,8 +14,8 @@ import masoes.environment.EnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
 import settings.agent.SettingsAgent;
-import settings.application.ApplicationSettings;
-import settings.jade.JadeSettings;
+import settings.loader.ApplicationSettings;
+import settings.loader.JadeSettings;
 
 import java.util.ArrayList;
 import java.util.Arrays;

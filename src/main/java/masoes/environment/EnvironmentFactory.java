@@ -9,7 +9,7 @@ package masoes.environment;
 import masoes.environment.dummy.DummyEnvironment;
 import masoes.environment.wikipedia.WikipediaEnvironment;
 import masoes.exception.InvalidEnvironmentException;
-import settings.application.ApplicationSettings;
+import settings.loader.ApplicationSettings;
 
 public class EnvironmentFactory {
 

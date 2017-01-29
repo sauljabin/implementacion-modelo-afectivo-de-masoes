@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
-import settings.application.ApplicationSettings;
+import settings.loader.ApplicationSettings;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;

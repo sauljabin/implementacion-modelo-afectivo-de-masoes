@@ -12,11 +12,10 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
-import logger.jade.JadeLogger;
+import logger.writer.JadeLogger;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.LoggerFactory;
-import settings.behaviour.ResponseSettingsBehaviour;
 import settings.ontology.SettingsOntology;
 
 public class SettingsAgent extends Agent {

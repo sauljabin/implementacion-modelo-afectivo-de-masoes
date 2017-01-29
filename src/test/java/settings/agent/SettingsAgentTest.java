@@ -13,7 +13,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import jade.util.leap.Iterator;
-import logger.jade.JadeLogger;
+import logger.writer.JadeLogger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,6 @@ import org.mockito.ArgumentCaptor;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import settings.behaviour.ResponseSettingsBehaviour;
 import settings.ontology.SettingsOntology;
 
 import static org.hamcrest.core.Is.is;

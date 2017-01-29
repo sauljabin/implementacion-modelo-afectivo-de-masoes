@@ -80,6 +80,6 @@ test {
 }
 
 task(functionalTest, type: JavaExec) {
-    main = 'functional.test.boot.FunctionalTestMain'
+    main = 'functional.boot.FunctionalTestMain'
     classpath = sourceSets.functionalTest.runtimeClasspath
 }

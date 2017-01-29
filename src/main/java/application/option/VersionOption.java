@@ -6,7 +6,7 @@
 
 package application.option;
 
-import settings.application.ApplicationSettings;
+import settings.loader.ApplicationSettings;
 
 public class VersionOption extends ApplicationOption {
 

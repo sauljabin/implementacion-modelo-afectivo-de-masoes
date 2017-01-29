@@ -18,7 +18,7 @@ import jade.domain.FIPANames;
 import jade.exception.ExtractOntologyContentException;
 import jade.exception.FillOntologyContentException;
 import jade.lang.acl.ACLMessage;
-import logger.jade.JadeLogger;
+import logger.writer.JadeLogger;
 import org.slf4j.LoggerFactory;
 
 public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {

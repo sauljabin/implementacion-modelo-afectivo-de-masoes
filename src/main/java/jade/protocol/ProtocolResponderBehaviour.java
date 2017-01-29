@@ -13,7 +13,7 @@ import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
-import logger.jade.JadeLogger;
+import logger.writer.JadeLogger;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.LoggerFactory;

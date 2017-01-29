@@ -10,7 +10,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.junit.Before;
 import org.junit.Test;
-import settings.application.ApplicationSettings;
+import settings.loader.ApplicationSettings;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

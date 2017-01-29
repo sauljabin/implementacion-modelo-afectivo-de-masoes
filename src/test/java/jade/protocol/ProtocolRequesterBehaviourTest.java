@@ -8,7 +8,7 @@ package jade.protocol;
 
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
-import logger.jade.JadeLogger;
+import logger.writer.JadeLogger;
 import org.junit.Before;
 import org.junit.Test;
 

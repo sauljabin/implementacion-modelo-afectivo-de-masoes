@@ -11,8 +11,8 @@ import jade.command.AgentCommandFormatter;
 import masoes.environment.Environment;
 import masoes.environment.EnvironmentFactory;
 import settings.agent.SettingsAgent;
-import settings.application.ApplicationSettings;
-import settings.jade.JadeSettings;
+import settings.loader.ApplicationSettings;
+import settings.loader.JadeSettings;
 
 import java.util.ArrayList;
 import java.util.List;

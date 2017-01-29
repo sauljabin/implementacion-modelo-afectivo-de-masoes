@@ -6,7 +6,7 @@
 
 package functional.test.settings;
 
-import functional.test.core.FunctionalTest;
+import functional.core.FunctionalTest;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;

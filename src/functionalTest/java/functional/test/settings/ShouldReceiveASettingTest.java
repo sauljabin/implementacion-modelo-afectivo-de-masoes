@@ -6,7 +6,7 @@
 
 package functional.test.settings;
 
-import functional.test.core.FunctionalTest;
+import functional.core.FunctionalTest;
 import jade.content.Predicate;
 import jade.core.AID;
 import jade.core.Agent;
@@ -14,7 +14,7 @@ import jade.core.behaviours.Behaviour;
 import jade.protocol.OntologyRequesterBehaviour;
 import jade.util.leap.ArrayList;
 import settings.agent.SettingsAgent;
-import settings.application.ApplicationSettings;
+import settings.loader.ApplicationSettings;
 import settings.ontology.GetSetting;
 import settings.ontology.Setting;
 import settings.ontology.SettingsOntology;

@@ -8,7 +8,7 @@ package settings.ontology;
 
 import jade.content.onto.BeanOntology;
 import jade.exception.SetupOntologyException;
-import jade.ontology.base.BaseOntology;
+import jade.ontology.BaseOntology;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

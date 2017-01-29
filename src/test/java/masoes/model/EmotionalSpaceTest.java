@@ -6,14 +6,14 @@
 
 package masoes.model;
 
-import masoes.emotion.AdmirationEmotion;
-import masoes.emotion.AngerEmotion;
-import masoes.emotion.CompassionEmotion;
-import masoes.emotion.DepressionEmotion;
-import masoes.emotion.HappinessEmotion;
-import masoes.emotion.JoyEmotion;
-import masoes.emotion.RejectionEmotion;
-import masoes.emotion.SadnessEmotion;
+import masoes.model.emotion.AdmirationEmotion;
+import masoes.model.emotion.AngerEmotion;
+import masoes.model.emotion.CompassionEmotion;
+import masoes.model.emotion.DepressionEmotion;
+import masoes.model.emotion.HappinessEmotion;
+import masoes.model.emotion.JoyEmotion;
+import masoes.model.emotion.RejectionEmotion;
+import masoes.model.emotion.SadnessEmotion;
 import math.random.RandomGenerator;
 import org.junit.Before;
 import org.junit.Test;

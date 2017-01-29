@@ -6,9 +6,9 @@
 
 package application.option;
 
-import logger.application.ApplicationLogger;
+import logger.writer.ApplicationLogger;
 import org.slf4j.LoggerFactory;
-import settings.application.ApplicationSettings;
+import settings.loader.ApplicationSettings;
 
 public class SettingsOption extends ApplicationOption {
 

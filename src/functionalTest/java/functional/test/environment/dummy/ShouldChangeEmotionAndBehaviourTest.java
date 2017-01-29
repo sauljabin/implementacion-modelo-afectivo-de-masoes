@@ -6,7 +6,7 @@
 
 package functional.test.environment.dummy;
 
-import functional.test.core.FunctionalTest;
+import functional.core.FunctionalTest;
 import jade.content.Predicate;
 import jade.core.AID;
 import jade.core.Agent;

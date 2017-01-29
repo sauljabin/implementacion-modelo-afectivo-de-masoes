@@ -7,7 +7,7 @@
 package application.boot;
 
 import application.option.ApplicationOptionProcessor;
-import logger.application.ApplicationLogger;
+import logger.writer.ApplicationLogger;
 import org.slf4j.LoggerFactory;
 
 public class ApplicationBoot {

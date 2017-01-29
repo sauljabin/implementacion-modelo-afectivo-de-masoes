@@ -12,7 +12,7 @@ import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import logger.jade.JadeLogger;
+import logger.writer.JadeLogger;
 import org.junit.Before;
 import org.junit.Test;
 

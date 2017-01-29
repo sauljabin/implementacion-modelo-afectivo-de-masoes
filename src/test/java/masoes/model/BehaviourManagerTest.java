@@ -7,6 +7,7 @@
 package masoes.model;
 
 import jade.core.behaviours.Behaviour;
+import masoes.agent.EmotionalAgent;
 import org.junit.Before;
 import org.junit.Test;
 

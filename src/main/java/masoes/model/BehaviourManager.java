@@ -7,6 +7,7 @@
 package masoes.model;
 
 import jade.core.behaviours.Behaviour;
+import masoes.agent.EmotionalAgent;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
