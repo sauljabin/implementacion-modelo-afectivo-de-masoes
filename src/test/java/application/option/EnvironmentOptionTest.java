@@ -7,11 +7,11 @@
 package application.option;
 
 import application.base.ArgumentType;
-import gui.agent.RequesterGuiAgent;
 import environment.base.AgentCommand;
-import jade.core.Agent;
 import environment.base.Environment;
 import environment.base.EnvironmentFactory;
+import gui.agent.RequesterGuiAgent;
+import jade.core.Agent;
 import org.junit.Before;
 import org.junit.Test;
 import settings.agent.SettingsAgent;

@@ -6,16 +6,11 @@
 
 package environment.dummy;
 
-import environment.dummy.DummyCognitiveBehaviour;
-import environment.dummy.DummyEmotionalAgent;
-import environment.dummy.DummyImitativeBehaviour;
-import environment.dummy.DummyReactiveBehaviour;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 public class DummyEmotionalAgentTest {

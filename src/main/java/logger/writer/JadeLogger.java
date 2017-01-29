@@ -8,7 +8,6 @@ package logger.writer;
 
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
-import logger.writer.LogWriter;
 import org.slf4j.Logger;
 
 public class JadeLogger {

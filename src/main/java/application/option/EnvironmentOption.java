@@ -8,10 +8,10 @@ package application.option;
 
 import application.base.ApplicationOption;
 import application.base.ArgumentType;
-import gui.agent.RequesterGuiAgent;
 import environment.base.AgentCommand;
 import environment.base.Environment;
 import environment.base.EnvironmentFactory;
+import gui.agent.RequesterGuiAgent;
 import settings.agent.SettingsAgent;
 import settings.loader.ApplicationSettings;
 import settings.loader.JadeSettings;

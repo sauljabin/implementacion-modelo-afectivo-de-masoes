@@ -6,10 +6,6 @@
 
 package application.base;
 
-import application.base.ApplicationOption;
-import application.base.ApplicationOptionProcessor;
-import application.base.ApplicationOptions;
-import application.base.ArgumentType;
 import application.exception.ApplicationOptionProcessorException;
 import logger.writer.ApplicationLogger;
 import org.apache.commons.cli.CommandLine;

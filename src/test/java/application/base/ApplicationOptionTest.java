@@ -6,8 +6,6 @@
 
 package application.base;
 
-import application.base.ApplicationOption;
-import application.base.ArgumentType;
 import org.apache.commons.cli.Option;
 import org.junit.Before;
 import org.junit.Test;

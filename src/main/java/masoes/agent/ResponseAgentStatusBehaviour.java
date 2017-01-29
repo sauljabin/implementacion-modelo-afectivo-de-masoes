@@ -9,8 +9,6 @@ package masoes.agent;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.protocol.OntologyResponderBehaviour;
-import masoes.agent.MasoesRequestMessageTemplate;
-import masoes.agent.EmotionalAgent;
 import masoes.ontology.AgentStatus;
 import masoes.ontology.EmotionStatus;
 import masoes.ontology.GetAgentStatus;

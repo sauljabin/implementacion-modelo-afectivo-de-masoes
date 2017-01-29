@@ -17,5 +17,4 @@ public class DummyEnvironment extends Environment {
         add(new AgentCommand(DUMMY_AGENT_NAME, DummyEmotionalAgent.class));
     }
 
-
 }

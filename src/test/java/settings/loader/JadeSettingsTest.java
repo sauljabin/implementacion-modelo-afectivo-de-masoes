@@ -9,7 +9,6 @@ package settings.loader;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import settings.loader.JadeSettings;
 
 import java.util.HashMap;
 import java.util.Map;
