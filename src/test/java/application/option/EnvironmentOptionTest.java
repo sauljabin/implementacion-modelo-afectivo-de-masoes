@@ -10,7 +10,7 @@ import application.ArgumentType;
 import environment.AgentCommand;
 import environment.Environment;
 import environment.EnvironmentFactory;
-import gui.agent.RequesterGuiAgent;
+import gui.RequesterGuiAgent;
 import jade.core.Agent;
 import org.junit.Before;
 import org.junit.Test;

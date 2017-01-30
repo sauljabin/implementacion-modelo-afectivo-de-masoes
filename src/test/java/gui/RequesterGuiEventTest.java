@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.view;
+package gui;
 
 import org.junit.Test;
 

@@ -4,10 +4,8 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.agent;
+package gui;
 
-import gui.view.RequesterGui;
-import gui.view.RequesterGuiEvent;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 

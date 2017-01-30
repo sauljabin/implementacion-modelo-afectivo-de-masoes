@@ -4,9 +4,8 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.view;
+package gui;
 
-import gui.agent.RequesterGuiAgent;
 import jade.gui.GuiEvent;
 
 import javax.swing.*;

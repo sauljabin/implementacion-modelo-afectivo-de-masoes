@@ -11,7 +11,7 @@ import application.ArgumentType;
 import environment.AgentCommand;
 import environment.Environment;
 import environment.EnvironmentFactory;
-import gui.agent.RequesterGuiAgent;
+import gui.RequesterGuiAgent;
 import settings.agent.SettingsAgent;
 import settings.loader.ApplicationSettings;
 import settings.loader.JadeSettings;
