@@ -11,9 +11,9 @@ import jade.content.Predicate;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
-import jade.protocol.OntologyRequesterBehaviour;
 import ontology.BaseOntology;
 import ontology.PerformAction;
+import protocol.OntologyRequesterBehaviour;
 import test.common.TestException;
 
 public class ShouldReceiveFailureWhenExceptionTest extends FunctionalTest {

@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package jade.protocol;
+package protocol;
 
 import jade.content.AgentAction;
 import jade.content.ContentManager;
@@ -17,8 +17,6 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.domain.FIPANames;
-import jade.exception.ExtractOntologyContentException;
-import jade.exception.FillOntologyContentException;
 import jade.lang.acl.ACLMessage;
 import logger.writer.JadeLogger;
 import org.junit.Before;

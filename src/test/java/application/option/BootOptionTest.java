@@ -7,7 +7,7 @@
 package application.option;
 
 import application.ArgumentType;
-import jade.boot.JadeBoot;
+import jade.JadeBoot;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

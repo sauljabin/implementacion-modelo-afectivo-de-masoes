@@ -11,9 +11,9 @@ import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
-import jade.protocol.OntologyResponderBehaviour;
 import ontology.ActionResult;
 import ontology.BaseOntology;
+import protocol.OntologyResponderBehaviour;
 
 public class ValidActionResponderBehaviour extends OntologyResponderBehaviour {
 

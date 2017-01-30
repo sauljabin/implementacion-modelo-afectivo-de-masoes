@@ -7,7 +7,7 @@
 package functional.test;
 
 import environment.AgentCommand;
-import jade.boot.JadeBoot;
+import jade.JadeBoot;
 import logger.writer.ApplicationLogger;
 import org.slf4j.LoggerFactory;
 import settings.loader.ApplicationSettings;

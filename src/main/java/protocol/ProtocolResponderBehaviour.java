@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package jade.protocol;
+package protocol;
 
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.FailureException;

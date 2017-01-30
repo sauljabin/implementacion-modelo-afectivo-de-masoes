@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package jade.protocol;
+package protocol;
 
 import jade.content.ContentManager;
 import jade.content.Predicate;

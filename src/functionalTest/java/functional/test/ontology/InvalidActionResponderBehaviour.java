@@ -8,8 +8,8 @@ package functional.test.ontology;
 
 import jade.content.onto.basic.Action;
 import jade.lang.acl.MessageTemplate;
-import jade.protocol.OntologyResponderBehaviour;
 import ontology.BaseOntology;
+import protocol.OntologyResponderBehaviour;
 
 public class InvalidActionResponderBehaviour extends OntologyResponderBehaviour {
 

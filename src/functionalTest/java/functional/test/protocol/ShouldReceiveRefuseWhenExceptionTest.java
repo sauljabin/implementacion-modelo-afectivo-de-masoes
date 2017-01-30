@@ -12,7 +12,7 @@ import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import jade.protocol.ProtocolRequesterBehaviour;
+import protocol.ProtocolRequesterBehaviour;
 import test.common.TestException;
 
 public class ShouldReceiveRefuseWhenExceptionTest extends FunctionalTest {

@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package jade.exception;
+package protocol;
 
 public class FillOntologyContentException extends RuntimeException {
 

@@ -8,10 +8,10 @@ package masoes.agent;
 
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
-import jade.protocol.OntologyResponderBehaviour;
 import masoes.ontology.EvaluateStimulus;
 import masoes.ontology.MasoesOntology;
 import ontology.ActionResult;
+import protocol.OntologyResponderBehaviour;
 
 public class StimulusReceiverBehaviour extends OntologyResponderBehaviour {
 

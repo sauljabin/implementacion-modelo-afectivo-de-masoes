@@ -10,7 +10,7 @@ import functional.test.FunctionalTest;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
-import jade.protocol.OntologyRequesterBehaviour;
+import protocol.OntologyRequesterBehaviour;
 import settings.agent.SettingsAgent;
 import settings.ontology.GetSetting;
 import settings.ontology.SettingsOntology;

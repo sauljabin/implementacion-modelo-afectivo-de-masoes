@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package jade.boot;
+package jade;
 
 import jade.core.ProfileImpl;
 import jade.core.Runtime;

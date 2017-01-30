@@ -9,7 +9,7 @@ package functional.test.protocol;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.protocol.ProtocolResponderBehaviour;
+import protocol.ProtocolResponderBehaviour;
 
 public class ExceptionNotUnderstoodResponderBehaviour extends ProtocolResponderBehaviour {
 
