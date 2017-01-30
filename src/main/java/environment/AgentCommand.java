@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.base;
+package environment;
 
 import jade.core.Agent;
 import org.apache.commons.lang3.builder.ToStringBuilder;

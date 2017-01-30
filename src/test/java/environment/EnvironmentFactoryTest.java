@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.base;
+package environment;
 
 import environment.dummy.DummyEnvironment;
 import environment.wikipedia.WikipediaEnvironment;

@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.base;
+package environment;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

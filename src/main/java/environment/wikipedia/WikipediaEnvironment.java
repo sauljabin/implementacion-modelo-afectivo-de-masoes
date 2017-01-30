@@ -6,7 +6,7 @@
 
 package environment.wikipedia;
 
-import environment.base.Environment;
+import environment.Environment;
 
 public class WikipediaEnvironment extends Environment {
 

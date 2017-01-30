@@ -6,8 +6,8 @@
 
 package environment.dummy;
 
-import environment.base.AgentCommand;
-import environment.base.Environment;
+import environment.AgentCommand;
+import environment.Environment;
 
 public class DummyEnvironment extends Environment {
 

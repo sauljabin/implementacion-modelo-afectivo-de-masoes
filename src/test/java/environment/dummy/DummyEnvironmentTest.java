@@ -6,7 +6,7 @@
 
 package environment.dummy;
 
-import environment.base.AgentCommand;
+import environment.AgentCommand;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -7,9 +7,9 @@
 package application.option;
 
 import application.ArgumentType;
-import environment.base.AgentCommand;
-import environment.base.Environment;
-import environment.base.EnvironmentFactory;
+import environment.AgentCommand;
+import environment.Environment;
+import environment.EnvironmentFactory;
 import gui.agent.RequesterGuiAgent;
 import jade.core.Agent;
 import org.junit.Before;

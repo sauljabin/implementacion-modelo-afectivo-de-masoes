@@ -6,7 +6,7 @@
 
 package functional.test;
 
-import environment.base.AgentCommand;
+import environment.AgentCommand;
 import jade.boot.JadeBoot;
 import logger.writer.ApplicationLogger;
 import org.slf4j.LoggerFactory;

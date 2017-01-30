@@ -8,9 +8,9 @@ package application.option;
 
 import application.ApplicationOption;
 import application.ArgumentType;
-import environment.base.AgentCommand;
-import environment.base.Environment;
-import environment.base.EnvironmentFactory;
+import environment.AgentCommand;
+import environment.Environment;
+import environment.EnvironmentFactory;
 import gui.agent.RequesterGuiAgent;
 import settings.agent.SettingsAgent;
 import settings.loader.ApplicationSettings;
