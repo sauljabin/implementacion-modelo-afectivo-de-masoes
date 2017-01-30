@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.base;
+package functional.test;
 
 import test.common.TestGroup;
 import test.common.TesterAgent;

@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package jade.ontology;
+package ontology;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -8,9 +8,9 @@ package masoes.agent;
 
 import jade.content.onto.basic.Action;
 import jade.core.AID;
-import jade.ontology.ActionResult;
 import masoes.ontology.EvaluateStimulus;
 import masoes.ontology.Stimulus;
+import ontology.ActionResult;
 import org.junit.Before;
 import org.junit.Test;
 

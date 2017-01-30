@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.base;
+package functional.test;
 
 import jade.core.AID;
 import jade.core.Agent;

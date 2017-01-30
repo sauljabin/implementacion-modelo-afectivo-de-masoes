@@ -4,10 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.boot;
+package functional.test;
 
 import environment.base.AgentCommand;
-import functional.base.FunctionalTesterAgent;
 import jade.boot.JadeBoot;
 import logger.writer.ApplicationLogger;
 import org.slf4j.LoggerFactory;

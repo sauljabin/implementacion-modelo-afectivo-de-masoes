@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.boot;
+package functional.test;
 
 public class FunctionalTestMain {
 

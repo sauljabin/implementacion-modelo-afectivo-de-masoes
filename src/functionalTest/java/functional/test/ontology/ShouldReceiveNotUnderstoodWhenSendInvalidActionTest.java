@@ -6,7 +6,7 @@
 
 package functional.test.ontology;
 
-import functional.base.FunctionalTest;
+import functional.test.FunctionalTest;
 import jade.content.Predicate;
 import jade.core.AID;
 import jade.core.Agent;

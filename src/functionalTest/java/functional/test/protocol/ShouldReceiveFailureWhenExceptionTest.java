@@ -6,7 +6,7 @@
 
 package functional.test.protocol;
 
-import functional.base.FunctionalTest;
+import functional.test.FunctionalTest;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;

@@ -6,15 +6,15 @@
 
 package functional.test.ontology;
 
-import functional.base.FunctionalTest;
+import functional.test.FunctionalTest;
 import jade.content.Predicate;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
-import jade.ontology.ActionResult;
-import jade.ontology.BaseOntology;
-import jade.ontology.PerformAction;
 import jade.protocol.OntologyRequesterBehaviour;
+import ontology.ActionResult;
+import ontology.BaseOntology;
+import ontology.PerformAction;
 import test.common.TestException;
 
 

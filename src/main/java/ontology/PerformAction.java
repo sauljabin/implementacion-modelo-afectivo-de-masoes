@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package jade.ontology;
+package ontology;
 
 import jade.content.AgentAction;
 import jade.util.leap.List;
