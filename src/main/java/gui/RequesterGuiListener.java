@@ -21,7 +21,7 @@ public class RequesterGuiListener extends WindowAdapter {
 
     @Override
     public void windowClosing(WindowEvent e) {
-        GuiEvent guiEvent = new GuiEvent(e.getSource(), RequesterGuiEvent.CLOSE_WINDOW.getInt());
+        GuiEvent guiEvent = new GuiEvent(e.getSource(), RequesterGuiEventType.CLOSE_WINDOW.getInt());
         requesterGui.onGuiEvent(guiEvent);
     }
 

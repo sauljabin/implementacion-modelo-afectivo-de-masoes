@@ -34,7 +34,7 @@ public class RequesterGuiListenerTest {
     @Test
     public void shouldInvokeOnGuiEvent() {
         Object sourceMock = mock(Object.class);
-        GuiEvent expectedGuiEvent = new GuiEvent(sourceMock, RequesterGuiEvent.CLOSE_WINDOW.getInt());
+        GuiEvent expectedGuiEvent = new GuiEvent(sourceMock, RequesterGuiEventType.CLOSE_WINDOW.getInt());
 
         WindowEvent windowEventMock = mock(WindowEvent.class);
         doReturn(sourceMock).when(windowEventMock).getSource();

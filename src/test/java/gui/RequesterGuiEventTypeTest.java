@@ -14,28 +14,28 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-public class RequesterGuiEventTest {
+public class RequesterGuiEventTypeTest {
 
     @Test
     public void shouldGetCorrectIntegerValue() {
-        RequesterGuiEvent[] events = RequesterGuiEvent.values();
+        RequesterGuiEventType[] events = RequesterGuiEventType.values();
         Arrays.stream(events).forEach(
-                event -> assertThat(event.getInt(), is(RequesterGuiEvent.toInt(event)))
+                event -> assertThat(event.getInt(), is(RequesterGuiEventType.toInt(event)))
         );
     }
 
     @Test
     public void shouldConvertFromIntegerValue() throws Exception {
-        RequesterGuiEvent[] events = RequesterGuiEvent.values();
+        RequesterGuiEventType[] events = RequesterGuiEventType.values();
         for (int i = 0; i < events.length; i++) {
-            assertThat(RequesterGuiEvent.fromInt(i), is(events[i]));
-            assertThat(RequesterGuiEvent.toInt(events[i]), is(i));
+            assertThat(RequesterGuiEventType.fromInt(i), is(events[i]));
+            assertThat(RequesterGuiEventType.toInt(events[i]), is(i));
         }
     }
 
     @Test
     public void shouldReturnEvenEqualsWhenInvokeIntEqueal() throws Exception {
-        RequesterGuiEvent[] events = RequesterGuiEvent.values();
+        RequesterGuiEventType[] events = RequesterGuiEventType.values();
         for (int i = 0; i < events.length; i++) {
             assertTrue(events[i].equals(i));
         }

@@ -44,7 +44,7 @@ public class RequesterGuiAgentTest {
 
     @Test
     public void shouldInvokeAgentDoDeleteOnEventClose() {
-        GuiEvent guiEvent = new GuiEvent(mock(Object.class), RequesterGuiEvent.CLOSE_WINDOW.getInt());
+        GuiEvent guiEvent = new GuiEvent(mock(Object.class), RequesterGuiEventType.CLOSE_WINDOW.getInt());
         doNothing().when(requesterGuiAgentSpy).doDelete();
         requesterGuiAgentSpy.onGuiEvent(guiEvent);
         verify(requesterGuiAgentSpy).doDelete();

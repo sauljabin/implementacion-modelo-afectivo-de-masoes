@@ -7,8 +7,8 @@
 package application;
 
 import jade.JadeSettings;
-import logger.LogWriter;
 import org.slf4j.Logger;
+import util.LogWriter;
 
 import java.util.Arrays;
 

@@ -29,7 +29,7 @@ public class RequesterGuiAgent extends GuiAgent {
 
     @Override
     protected void onGuiEvent(GuiEvent guiEvent) {
-        switch (RequesterGuiEvent.fromInt(guiEvent.getType())) {
+        switch (RequesterGuiEventType.fromInt(guiEvent.getType())) {
             case CLOSE_WINDOW:
                 doDelete();
                 break;

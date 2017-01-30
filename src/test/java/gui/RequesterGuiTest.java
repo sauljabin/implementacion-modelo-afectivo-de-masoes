@@ -49,7 +49,7 @@ public class RequesterGuiTest {
 
     @Test
     public void shouldInvokeOnGuiEvent() {
-        GuiEvent expectedGuiEvent = new GuiEvent(mock(Object.class), RequesterGuiEvent.CLOSE_WINDOW.getInt());
+        GuiEvent expectedGuiEvent = new GuiEvent(mock(Object.class), RequesterGuiEventType.CLOSE_WINDOW.getInt());
         requesterGuiSpy.onGuiEvent(expectedGuiEvent);
         verify(requesterGuiAgentMock).postGuiEvent(eq(expectedGuiEvent));
     }
