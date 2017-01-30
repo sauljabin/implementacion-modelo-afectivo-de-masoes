@@ -68,6 +68,7 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
         message.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         message.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
         message.setConversationId(stringGenerator.getString(CONVERSATION_ID_LENGTH));
+        message.setSender(myAgent.getAID());
         message.addReceiver(receiver);
 
         try {

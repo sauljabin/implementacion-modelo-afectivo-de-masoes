@@ -106,6 +106,7 @@ public class OntologyRequesterBehaviourTest {
         verify(contentManagerMock).fillContent(eq(request), actionArgumentCaptor.capture());
         assertThat(actionArgumentCaptor.getValue().getActor(), is(senderMock));
         assertThat(actionArgumentCaptor.getValue().getAction(), is(agentActionMock));
+        assertThat(actualRequest.getSender(), is(senderMock));
         assertThat(actualRequest.getPerformative(), is(ACLMessage.REQUEST));
         assertThat(actualRequest.getConversationId(), is(expectedConversationId));
         assertThat(actualRequest.getOntology(), is(ONTOLOGY_NAME));
