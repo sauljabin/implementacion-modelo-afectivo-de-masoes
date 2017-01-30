@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package application.base;
+package application;
 
 import application.option.BootOption;
 import application.option.EnvironmentOption;
@@ -22,16 +22,16 @@ import java.util.List;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
-public class ApplicationOptionsTest {
+public class OptionsContainerTest {
 
-    private ApplicationOptions applicationOptions;
+    private OptionsContainer optionsContainer;
     private List<ApplicationOption> expectedOptions;
     private Options expectedOptionsObject;
     private ApplicationOption expectedDefaultOption;
 
     @Before
     public void setUp() {
-        applicationOptions = new ApplicationOptions();
+        optionsContainer = new OptionsContainer();
         expectedOptionsObject = new Options();
         expectedDefaultOption = new BootOption();
 
@@ -49,17 +49,17 @@ public class ApplicationOptionsTest {
 
     @Test
     public void shouldReturnSortOptionList() {
-        assertReflectionEquals(expectedOptions, applicationOptions.getApplicationOptionList());
+        assertReflectionEquals(expectedOptions, optionsContainer.getApplicationOptionList());
     }
 
     @Test
     public void shouldConvertOptionListToOptions() {
-        assertReflectionEquals(expectedOptionsObject, applicationOptions.toOptions());
+        assertReflectionEquals(expectedOptionsObject, optionsContainer.toOptions());
     }
 
     @Test
     public void shouldReturnCorrectDefaultOption() {
-        assertReflectionEquals(expectedDefaultOption, applicationOptions.getDefaultApplicationOption());
+        assertReflectionEquals(expectedDefaultOption, optionsContainer.getDefaultApplicationOption());
     }
 
 }

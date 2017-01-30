@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package application.base;
+package application;
 
 import application.option.BootOption;
 import application.option.EnvironmentOption;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ApplicationOptions {
+public class OptionsContainer {
 
     public Options toOptions() {
         Options options = new Options();

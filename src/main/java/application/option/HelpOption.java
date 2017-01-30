@@ -6,9 +6,9 @@
 
 package application.option;
 
-import application.base.ApplicationOption;
-import application.base.ApplicationOptions;
-import application.base.ArgumentType;
+import application.ApplicationOption;
+import application.ArgumentType;
+import application.OptionsContainer;
 import org.apache.commons.cli.HelpFormatter;
 import settings.loader.ApplicationSettings;
 
@@ -58,7 +58,7 @@ public class HelpOption extends ApplicationOption {
     public void exec() {
         helpFormatter.setSyntaxPrefix(SYNTAX_PREFIX);
         helpFormatter.setLongOptSeparator(LONG_OPT_SEPARATOR);
-        helpFormatter.printHelp(applicationSettings.get(ApplicationSettings.APP_NAME), new ApplicationOptions().toOptions());
+        helpFormatter.printHelp(applicationSettings.get(ApplicationSettings.APP_NAME), new OptionsContainer().toOptions());
     }
 
 }

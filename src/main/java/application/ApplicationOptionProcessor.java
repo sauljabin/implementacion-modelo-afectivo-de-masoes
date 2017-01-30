@@ -4,9 +4,8 @@
  * Please see the LICENSE.txt file
  */
 
-package application.base;
+package application;
 
-import application.exception.ApplicationOptionProcessorException;
 import logger.writer.ApplicationLogger;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -19,22 +18,22 @@ import java.util.stream.Collectors;
 public class ApplicationOptionProcessor {
 
     private ApplicationLogger logger;
-    private ApplicationOptions applicationOptions;
+    private OptionsContainer optionsContainer;
     private CommandLineParser commandLineParser;
     private CommandLine commandLine;
 
     public ApplicationOptionProcessor() {
-        applicationOptions = new ApplicationOptions();
+        optionsContainer = new OptionsContainer();
         commandLineParser = new DefaultParser();
         logger = new ApplicationLogger(LoggerFactory.getLogger(ApplicationOptionProcessor.class));
     }
 
     public void processArgs(String[] args) {
         try {
-            commandLine = commandLineParser.parse(applicationOptions.toOptions(), args);
+            commandLine = commandLineParser.parse(optionsContainer.toOptions(), args);
             execOptions(getOptionsToExec());
         } catch (Exception e) {
-            throw new ApplicationOptionProcessorException(e);
+            throw new ApplicationOptionException(e);
         }
     }
 
@@ -48,20 +47,20 @@ public class ApplicationOptionProcessor {
     }
 
     private List<ApplicationOption> getOptionsToExec() {
-        List<ApplicationOption> options = applicationOptions.getApplicationOptionList()
+        List<ApplicationOption> options = optionsContainer.getApplicationOptionList()
                 .stream()
                 .filter(tempOption -> commandLine.hasOption(tempOption.getKeyOpt()))
                 .collect(Collectors.toList());
 
         if (isNotPresentOptionDefault(options)) {
-            options.add(applicationOptions.getDefaultApplicationOption());
+            options.add(optionsContainer.getDefaultApplicationOption());
         }
 
         return options;
     }
 
     private boolean isNotPresentOptionDefault(List<ApplicationOption> options) {
-        return !options.stream().filter(option -> option.getClass().equals(applicationOptions.getApplicationOptionList().getClass())).findFirst().isPresent();
+        return !options.stream().filter(option -> option.getClass().equals(optionsContainer.getApplicationOptionList().getClass())).findFirst().isPresent();
     }
 
     private void execOption(ApplicationOption option) {

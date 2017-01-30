@@ -6,7 +6,7 @@
 
 package application.option;
 
-import application.base.ArgumentType;
+import application.ArgumentType;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.junit.Before;

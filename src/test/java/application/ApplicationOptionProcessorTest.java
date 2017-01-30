@@ -4,9 +4,8 @@
  * Please see the LICENSE.txt file
  */
 
-package application.base;
+package application;
 
-import application.exception.ApplicationOptionProcessorException;
 import logger.writer.ApplicationLogger;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -37,7 +36,7 @@ public class ApplicationOptionProcessorTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     private ApplicationOptionProcessor applicationOptionProcessor;
-    private ApplicationOptions applicationOptionsMock;
+    private OptionsContainer optionsContainerMock;
     private String expectedOpt;
     private String[] expectedArgs;
     private List<ApplicationOption> applicationOptionList;
@@ -54,10 +53,10 @@ public class ApplicationOptionProcessorTest {
         commandLineParserMock = mock(DefaultParser.class);
         commandLineMock = mock(CommandLine.class);
         loggerMock = mock(ApplicationLogger.class);
-        applicationOptionsMock = mock(ApplicationOptions.class);
+        optionsContainerMock = mock(OptionsContainer.class);
 
         applicationOptionProcessor = new ApplicationOptionProcessor();
-        setFieldValue(applicationOptionProcessor, "applicationOptions", applicationOptionsMock);
+        setFieldValue(applicationOptionProcessor, "optionsContainer", optionsContainerMock);
         setFieldValue(applicationOptionProcessor, "commandLineParser", commandLineParserMock);
         setFieldValue(applicationOptionProcessor, "logger", loggerMock);
 
@@ -70,10 +69,10 @@ public class ApplicationOptionProcessorTest {
         applicationOptionList = new ArrayList<>();
         applicationOptionList.add(optionMock);
 
-        doReturn(applicationOptionList).when(applicationOptionsMock).getApplicationOptionList();
+        doReturn(applicationOptionList).when(optionsContainerMock).getApplicationOptionList();
         doReturn(commandLineMock).when(commandLineParserMock).parse(any(), any());
         doReturn(Boolean.TRUE).when(commandLineMock).hasOption(expectedOpt);
-        doReturn(defaultOptionMock).when(applicationOptionsMock).getDefaultApplicationOption();
+        doReturn(defaultOptionMock).when(optionsContainerMock).getDefaultApplicationOption();
 
         expectedArgs = new String[]{"-" + expectedOpt};
     }
@@ -81,7 +80,7 @@ public class ApplicationOptionProcessorTest {
     @Test
     public void shouldInvokeParseArgs() throws Exception {
         Options expectedOptions = new Options();
-        doReturn(expectedOptions).when(applicationOptionsMock).toOptions();
+        doReturn(expectedOptions).when(optionsContainerMock).toOptions();
 
         applicationOptionProcessor.processArgs(expectedArgs);
 
@@ -133,7 +132,7 @@ public class ApplicationOptionProcessorTest {
     @Test
     public void shouldBreakWhenOptionIsAFinalOption() {
         applicationOptionList = new ArrayList<>();
-        doReturn(applicationOptionList).when(applicationOptionsMock).getApplicationOptionList();
+        doReturn(applicationOptionList).when(optionsContainerMock).getApplicationOptionList();
 
         String expectedOpt1 = "a";
         ApplicationOption optionMock1 = getCreateMockApplicationOption(expectedOpt1, true, ArgumentType.NO_ARGS);
@@ -179,7 +178,7 @@ public class ApplicationOptionProcessorTest {
         String message = "MESSAGE";
         doThrow(new RuntimeException(message)).when(commandLineParserMock).parse(any(), any());
         expectedException.expectMessage(message);
-        expectedException.expect(ApplicationOptionProcessorException.class);
+        expectedException.expect(ApplicationOptionException.class);
         applicationOptionProcessor.processArgs(expectedArgs);
     }
 

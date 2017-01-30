@@ -6,7 +6,7 @@
 
 package application.option;
 
-import application.base.ArgumentType;
+import application.ArgumentType;
 import jade.boot.JadeBoot;
 import org.junit.Before;
 import org.junit.Rule;

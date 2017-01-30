@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package application.base;
+package application;
 
 import org.apache.commons.cli.Option;
 import org.junit.Before;

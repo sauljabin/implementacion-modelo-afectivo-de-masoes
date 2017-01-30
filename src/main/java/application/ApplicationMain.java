@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package application.boot;
+package application;
 
 public class ApplicationMain {
 

@@ -4,9 +4,8 @@
  * Please see the LICENSE.txt file
  */
 
-package application.boot;
+package application;
 
-import application.base.ApplicationOptionProcessor;
 import logger.writer.ApplicationLogger;
 import org.slf4j.LoggerFactory;
 

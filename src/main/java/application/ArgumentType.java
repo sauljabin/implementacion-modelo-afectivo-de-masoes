@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package application.base;
+package application;
 
 public enum ArgumentType {
     NO_ARGS, ONE_ARG, UNLIMITED_ARGS

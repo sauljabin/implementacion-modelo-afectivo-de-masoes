@@ -6,8 +6,8 @@
 
 package application.option;
 
-import application.base.ApplicationOption;
-import application.base.ArgumentType;
+import application.ApplicationOption;
+import application.ArgumentType;
 import environment.base.AgentCommand;
 import environment.base.Environment;
 import environment.base.EnvironmentFactory;
