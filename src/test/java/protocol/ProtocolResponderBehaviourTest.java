@@ -6,13 +6,13 @@
 
 package protocol;
 
+import jade.JadeLogger;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import logger.writer.JadeLogger;
 import org.junit.Before;
 import org.junit.Test;
 

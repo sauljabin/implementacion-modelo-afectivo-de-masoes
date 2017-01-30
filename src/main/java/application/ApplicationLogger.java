@@ -4,12 +4,11 @@
  * Please see the LICENSE.txt file
  */
 
-package logger.writer;
+package application;
 
-import application.ApplicationOption;
+import jade.JadeSettings;
+import logger.LogWriter;
 import org.slf4j.Logger;
-import settings.loader.ApplicationSettings;
-import settings.loader.JadeSettings;
 
 import java.util.Arrays;
 

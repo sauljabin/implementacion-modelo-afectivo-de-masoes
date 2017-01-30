@@ -8,7 +8,6 @@ package jade;
 
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
-import settings.loader.JadeSettings;
 
 public class JadeBoot {
 

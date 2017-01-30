@@ -6,10 +6,10 @@
 
 package environment;
 
+import application.ApplicationSettings;
 import environment.dummy.DummyEnvironment;
 import environment.wikipedia.WikipediaEnvironment;
 import masoes.exception.InvalidEnvironmentException;
-import settings.loader.ApplicationSettings;
 
 public class EnvironmentFactory {
 

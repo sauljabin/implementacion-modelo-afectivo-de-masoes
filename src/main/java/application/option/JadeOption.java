@@ -6,11 +6,11 @@
 
 package application.option;
 
+import application.ApplicationLogger;
 import application.ApplicationOption;
 import application.ArgumentType;
-import logger.writer.ApplicationLogger;
+import jade.JadeSettings;
 import org.slf4j.LoggerFactory;
-import settings.loader.JadeSettings;
 
 public class JadeOption extends ApplicationOption {
 

@@ -7,10 +7,10 @@
 package application.option;
 
 import application.ApplicationOption;
+import application.ApplicationSettings;
 import application.ArgumentType;
 import application.OptionsContainer;
 import org.apache.commons.cli.HelpFormatter;
-import settings.loader.ApplicationSettings;
 
 public class HelpOption extends ApplicationOption {
 

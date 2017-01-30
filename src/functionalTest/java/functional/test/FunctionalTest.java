@@ -6,10 +6,10 @@
 
 package functional.test;
 
+import jade.JadeLogger;
 import jade.core.AID;
 import jade.core.Agent;
 import junit.framework.AssertionFailedError;
-import logger.writer.JadeLogger;
 import org.slf4j.LoggerFactory;
 import org.unitils.reflectionassert.ReflectionAssert;
 import string.random.StringGenerator;

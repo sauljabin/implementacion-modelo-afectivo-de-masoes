@@ -4,8 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package settings.agent;
+package settings;
 
+import jade.JadeLogger;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -13,7 +14,6 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import jade.util.leap.Iterator;
-import logger.writer.JadeLogger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

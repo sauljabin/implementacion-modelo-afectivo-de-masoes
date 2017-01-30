@@ -6,12 +6,12 @@
 
 package application.option;
 
+import application.ApplicationSettings;
 import application.ArgumentType;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
-import settings.loader.ApplicationSettings;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;

@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package settings.agent;
+package settings;
 
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;

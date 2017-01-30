@@ -6,7 +6,6 @@
 
 package application;
 
-import logger.writer.ApplicationLogger;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;

@@ -11,7 +11,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import protocol.OntologyRequesterBehaviour;
-import settings.agent.SettingsAgent;
+import settings.SettingsAgent;
 import settings.ontology.GetSetting;
 import settings.ontology.SettingsOntology;
 import test.common.TestException;

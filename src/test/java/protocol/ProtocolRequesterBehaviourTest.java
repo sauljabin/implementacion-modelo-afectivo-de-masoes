@@ -6,9 +6,9 @@
 
 package protocol;
 
+import jade.JadeLogger;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
-import logger.writer.JadeLogger;
 import org.junit.Before;
 import org.junit.Test;
 

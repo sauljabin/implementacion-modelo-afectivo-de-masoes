@@ -6,13 +6,13 @@
 
 package application.option;
 
+import application.ApplicationLogger;
+import application.ApplicationSettings;
 import application.ArgumentType;
-import logger.writer.ApplicationLogger;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import settings.loader.ApplicationSettings;
 
 import java.util.Properties;
 

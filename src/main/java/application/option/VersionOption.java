@@ -7,8 +7,8 @@
 package application.option;
 
 import application.ApplicationOption;
+import application.ApplicationSettings;
 import application.ArgumentType;
-import settings.loader.ApplicationSettings;
 
 public class VersionOption extends ApplicationOption {
 

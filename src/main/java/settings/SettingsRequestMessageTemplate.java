@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package settings.agent;
+package settings;
 
 import jade.lang.acl.MessageTemplate;
 

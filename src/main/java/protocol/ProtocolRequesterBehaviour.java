@@ -6,10 +6,10 @@
 
 package protocol;
 
+import jade.JadeLogger;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
-import logger.writer.JadeLogger;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.LoggerFactory;

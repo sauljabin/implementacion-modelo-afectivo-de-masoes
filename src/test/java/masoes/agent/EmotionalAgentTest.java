@@ -6,8 +6,8 @@
 
 package masoes.agent;
 
+import jade.JadeLogger;
 import jade.core.behaviours.Behaviour;
-import logger.writer.JadeLogger;
 import masoes.model.BehaviourManager;
 import masoes.model.Emotion;
 import masoes.model.EmotionalConfigurator;

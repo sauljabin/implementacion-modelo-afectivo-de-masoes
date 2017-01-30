@@ -4,17 +4,16 @@
  * Please see the LICENSE.txt file
  */
 
-package settings.agent;
+package settings;
 
+import application.ApplicationSettings;
+import jade.JadeSettings;
 import jade.content.Concept;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.core.Agent;
 import jade.util.leap.ArrayList;
 import protocol.OntologyResponderBehaviour;
-import settings.exception.SettingsException;
-import settings.loader.ApplicationSettings;
-import settings.loader.JadeSettings;
 import settings.ontology.GetAllSettings;
 import settings.ontology.GetSetting;
 import settings.ontology.Setting;

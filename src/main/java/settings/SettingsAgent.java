@@ -4,15 +4,15 @@
  * Please see the LICENSE.txt file
  */
 
-package settings.agent;
+package settings;
 
+import jade.JadeLogger;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
-import logger.writer.JadeLogger;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.LoggerFactory;

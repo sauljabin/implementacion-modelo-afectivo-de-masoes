@@ -6,11 +6,11 @@
 
 package application.option;
 
+import application.ApplicationLogger;
 import application.ApplicationOption;
+import application.ApplicationSettings;
 import application.ArgumentType;
-import logger.writer.ApplicationLogger;
 import org.slf4j.LoggerFactory;
-import settings.loader.ApplicationSettings;
 
 public class SettingsOption extends ApplicationOption {
 

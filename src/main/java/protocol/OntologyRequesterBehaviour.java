@@ -6,6 +6,7 @@
 
 package protocol;
 
+import jade.JadeLogger;
 import jade.content.AgentAction;
 import jade.content.ContentManager;
 import jade.content.Predicate;
@@ -16,7 +17,6 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import logger.writer.JadeLogger;
 import org.slf4j.LoggerFactory;
 import string.random.StringGenerator;
 

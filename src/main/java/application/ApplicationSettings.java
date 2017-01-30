@@ -4,7 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package settings.loader;
+package application;
+
+import settings.SettingsLoader;
 
 import java.util.Optional;
 

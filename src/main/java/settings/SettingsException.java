@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package settings.exception;
+package settings;
 
 public class SettingsException extends RuntimeException {
 

@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package logger.writer;
+package logger;
 
 import org.slf4j.Logger;
 

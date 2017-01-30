@@ -10,7 +10,6 @@ import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import org.junit.Before;
 import org.junit.Test;
-import settings.loader.JadeSettings;
 
 import java.util.HashMap;
 import java.util.Map;

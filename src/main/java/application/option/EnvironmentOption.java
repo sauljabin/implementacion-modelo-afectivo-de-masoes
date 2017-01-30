@@ -7,14 +7,14 @@
 package application.option;
 
 import application.ApplicationOption;
+import application.ApplicationSettings;
 import application.ArgumentType;
 import environment.AgentCommand;
 import environment.Environment;
 import environment.EnvironmentFactory;
 import gui.RequesterGuiAgent;
-import settings.agent.SettingsAgent;
-import settings.loader.ApplicationSettings;
-import settings.loader.JadeSettings;
+import jade.JadeSettings;
+import settings.SettingsAgent;
 
 import java.util.ArrayList;
 import java.util.List;

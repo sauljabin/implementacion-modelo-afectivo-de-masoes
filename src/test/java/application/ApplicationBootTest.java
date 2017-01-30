@@ -6,7 +6,6 @@
 
 package application;
 
-import logger.writer.ApplicationLogger;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package settings.loader;
+package jade;
 
 import org.junit.After;
 import org.junit.Before;

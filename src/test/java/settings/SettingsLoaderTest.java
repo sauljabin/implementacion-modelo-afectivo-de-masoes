@@ -4,13 +4,12 @@
  * Please see the LICENSE.txt file
  */
 
-package settings.loader;
+package settings;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import settings.exception.SettingsException;
 
 import java.io.IOException;
 import java.io.InputStream;

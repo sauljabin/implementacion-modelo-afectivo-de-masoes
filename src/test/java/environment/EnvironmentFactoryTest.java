@@ -6,6 +6,7 @@
 
 package environment;
 
+import application.ApplicationSettings;
 import environment.dummy.DummyEnvironment;
 import environment.wikipedia.WikipediaEnvironment;
 import masoes.exception.InvalidEnvironmentException;
@@ -13,7 +14,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import settings.loader.ApplicationSettings;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;

@@ -4,8 +4,10 @@
  * Please see the LICENSE.txt file
  */
 
-package settings.agent;
+package settings;
 
+import application.ApplicationSettings;
+import jade.JadeSettings;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
@@ -15,9 +17,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import settings.exception.SettingsException;
-import settings.loader.ApplicationSettings;
-import settings.loader.JadeSettings;
 import settings.ontology.GetAllSettings;
 import settings.ontology.GetSetting;
 import settings.ontology.Setting;

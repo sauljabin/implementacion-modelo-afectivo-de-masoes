@@ -6,7 +6,6 @@
 
 package application;
 
-import logger.writer.ApplicationLogger;
 import org.slf4j.LoggerFactory;
 
 public class ApplicationBoot {

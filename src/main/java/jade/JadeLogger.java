@@ -4,10 +4,11 @@
  * Please see the LICENSE.txt file
  */
 
-package logger.writer;
+package jade;
 
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
+import logger.LogWriter;
 import org.slf4j.Logger;
 
 public class JadeLogger {
