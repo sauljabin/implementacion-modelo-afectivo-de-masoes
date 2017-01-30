@@ -11,10 +11,8 @@ import gui.view.RequesterGuiEvent;
 import jade.gui.GuiEvent;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InOrder;
 
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -36,10 +34,8 @@ public class RequesterGuiAgentTest {
 
     @Test
     public void shouldInvokeSetupAndShowGuiWhenStartAgent() {
-        InOrder inOrder = inOrder(requesterGuiMock);
         requesterGuiAgent.setup();
-        inOrder.verify(requesterGuiMock).setUp();
-        inOrder.verify(requesterGuiMock).showGui();
+        verify(requesterGuiMock).setUp();
     }
 
     @Test

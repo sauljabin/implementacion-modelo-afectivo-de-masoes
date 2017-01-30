@@ -21,12 +21,6 @@ public class RequesterGui extends JFrame {
         this.requesterGuiAgent = requesterGuiAgent;
     }
 
-    public static void main(String[] args) {
-        RequesterGui requesterGui = new RequesterGui(null);
-        requesterGui.setUp();
-        requesterGui.showGui();
-    }
-
     public void setUp() {
         setTitle(ONTOLOGY_REQUESTER_GUI);
         setSize(1024, 768);
@@ -34,9 +28,6 @@ public class RequesterGui extends JFrame {
         setLayout(new BorderLayout());
         addWindowListener(new RequesterGuiListener(this));
         setLocationRelativeTo(this);
-    }
-
-    public void showGui() {
         setVisible(true);
     }
 

@@ -22,7 +22,6 @@ public class RequesterGuiAgent extends GuiAgent {
     @Override
     protected void setup() {
         requesterGui.setUp();
-        requesterGui.showGui();
     }
 
     @Override
