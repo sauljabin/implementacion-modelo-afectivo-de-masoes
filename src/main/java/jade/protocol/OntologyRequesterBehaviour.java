@@ -20,9 +20,12 @@ import jade.exception.FillOntologyContentException;
 import jade.lang.acl.ACLMessage;
 import logger.writer.JadeLogger;
 import org.slf4j.LoggerFactory;
+import string.random.StringGenerator;
 
 public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
 
+    private static final int CONVERSATION_ID_LENGTH = 10;
+    private StringGenerator stringGenerator;
     private AID receiver;
     private Ontology ontology;
     private AgentAction agentAction;
@@ -36,6 +39,7 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
         this.agentAction = agentAction;
         contentManager = new ContentManager();
         logger = new JadeLogger(LoggerFactory.getLogger(OntologyRequesterBehaviour.class));
+        stringGenerator = new StringGenerator();
     }
 
     public AID getReceiver() {
@@ -63,6 +67,7 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
         message.setOntology(ontology.getName());
         message.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         message.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
+        message.setConversationId(stringGenerator.getString(CONVERSATION_ID_LENGTH));
         message.addReceiver(receiver);
 
         try {
