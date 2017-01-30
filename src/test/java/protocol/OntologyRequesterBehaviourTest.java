@@ -28,7 +28,7 @@ import org.mockito.ArgumentCaptor;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import string.random.StringGenerator;
+import util.StringGenerator;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

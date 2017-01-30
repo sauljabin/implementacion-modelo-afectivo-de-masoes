@@ -6,7 +6,7 @@
 
 package environment.dummy;
 
-import masoes.agent.EmotionalAgent;
+import masoes.EmotionalAgent;
 
 public class DummyEmotionalAgent extends EmotionalAgent {
 

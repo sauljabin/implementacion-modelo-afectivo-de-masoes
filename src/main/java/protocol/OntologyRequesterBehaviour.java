@@ -18,7 +18,7 @@ import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import org.slf4j.LoggerFactory;
-import string.random.StringGenerator;
+import util.StringGenerator;
 
 public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
 

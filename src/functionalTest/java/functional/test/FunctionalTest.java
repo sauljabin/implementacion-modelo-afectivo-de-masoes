@@ -12,10 +12,10 @@ import jade.core.Agent;
 import junit.framework.AssertionFailedError;
 import org.slf4j.LoggerFactory;
 import org.unitils.reflectionassert.ReflectionAssert;
-import string.random.StringGenerator;
 import test.common.Test;
 import test.common.TestException;
 import test.common.TestUtility;
+import util.StringGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

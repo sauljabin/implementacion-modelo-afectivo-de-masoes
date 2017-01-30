@@ -8,7 +8,7 @@ package jade;
 
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
-import masoes.agent.EmotionalAgent;
+import masoes.EmotionalAgent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
