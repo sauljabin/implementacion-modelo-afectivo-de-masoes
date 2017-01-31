@@ -74,6 +74,13 @@ public class EnvironmentTest {
     }
 
     @Test
+    public void shouldConvertOneAgentToCorrectAgentsParameterFormatWithEmptyArguments() {
+        environment.add(new AgentParameter("agent", Agent.class, Arrays.asList()));
+        assertThat(environment.toJadeParameter(), is("agent:jade.core.Agent"));
+        assertThat(environment.toJadeParameterList(), hasItem("agent:jade.core.Agent"));
+    }
+
+    @Test
     public void shouldConvertTwoAgentToCorrectAgentsParameterFormatWithArguments() {
         environment.add(new AgentParameter("agent", Agent.class, Arrays.asList("arg1", "arg2")));
         environment.add(new AgentParameter("agent2", Agent.class, Arrays.asList("arg1", "arg2")));

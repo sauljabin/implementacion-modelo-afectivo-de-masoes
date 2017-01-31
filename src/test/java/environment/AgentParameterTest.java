@@ -23,6 +23,12 @@ public class AgentParameterTest {
     }
 
     @Test
+    public void shouldGetCorrectFormatWithEmptyArguments() {
+        AgentParameter formatter = new AgentParameter("agent", Agent.class, Arrays.asList());
+        assertThat(formatter.toJadeParameter(), is("agent:jade.core.Agent"));
+    }
+
+    @Test
     public void shouldGetCorrectFormatWithoutArguments() {
         AgentParameter formatter = new AgentParameter("agent", Agent.class);
         assertThat(formatter.toJadeParameter(), is("agent:jade.core.Agent"));

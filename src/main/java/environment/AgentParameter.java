@@ -43,8 +43,9 @@ public class AgentParameter {
     }
 
     public String toJadeParameter() {
-        if (Optional.ofNullable(agentArguments).isPresent()) {
-            return String.format("%s:%s(%s)", agentName, agentClass.getCanonicalName(), String.join(",", agentArguments));
+        Optional<List<String>> agentArguments = Optional.ofNullable(this.agentArguments);
+        if (agentArguments.isPresent() && !agentArguments.get().isEmpty()) {
+            return String.format("%s:%s(%s)", agentName, agentClass.getCanonicalName(), String.join(",", this.agentArguments));
         } else {
             return String.format("%s:%s", agentName, agentClass.getCanonicalName());
         }
