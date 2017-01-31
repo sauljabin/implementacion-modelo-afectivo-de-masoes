@@ -8,28 +8,25 @@ package application.option;
 
 import application.ApplicationSettings;
 import application.ArgumentType;
-import environment.AgentCommand;
+import environment.AgentParameter;
 import environment.Environment;
 import environment.EnvironmentFactory;
 import gui.RequesterGuiAgent;
 import jade.JadeSettings;
-import jade.core.Agent;
 import org.junit.Before;
 import org.junit.Test;
 import settings.SettingsAgent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.contains;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -56,7 +53,7 @@ public class EnvironmentOptionTest {
         setFieldValue(environmentOption, "jadeSettings", jadeSettingsMock);
         setFieldValue(environmentOption, "environmentFactory", environmentFactoryMock);
 
-        doReturn(environmentMock).when(environmentFactoryMock).createEnvironment();
+        doReturn(environmentMock).when(environmentFactoryMock).createEnvironment(anyString());
     }
 
     @Test
@@ -70,112 +67,81 @@ public class EnvironmentOptionTest {
     }
 
     @Test
-    public void shouldInvokeEnvironmentCreation() {
-        List<AgentCommand> expectedJadeAgentOptionList = new ArrayList<>();
-        expectedJadeAgentOptionList.add(new AgentCommand("agent", Agent.class, Arrays.asList("arg1", "arg2")));
-        doReturn(expectedJadeAgentOptionList).when(environmentMock).getAgentCommands();
-
-        environmentOption.exec();
-
-        verify(environmentFactoryMock).createEnvironment();
-        verify(environmentMock, atLeastOnce()).getAgentCommands();
-        verify(jadeSettingsMock).set(eq(JadeSettings.AGENTS), contains("agent:jade.core.Agent(arg1,arg2)"));
-    }
-
-    @Test
-    public void shouldInvokeEnvironmentCreationWithTwoAgents() {
-        List<AgentCommand> expectedJadeAgentOptionList = new ArrayList<>();
-        expectedJadeAgentOptionList.add(new AgentCommand("agent", Agent.class, Arrays.asList("arg1", "arg2")));
-        expectedJadeAgentOptionList.add(new AgentCommand("agent2", Agent.class));
-        doReturn(expectedJadeAgentOptionList).when(environmentMock).getAgentCommands();
-
-        environmentOption.exec();
-
-        verify(environmentFactoryMock).createEnvironment();
-        verify(environmentMock, atLeastOnce()).getAgentCommands();
-        verify(jadeSettingsMock).set(eq(JadeSettings.AGENTS), contains("agent:jade.core.Agent(arg1,arg2);agent2:jade.core.Agent"));
-    }
-
-    @Test
     public void shouldSetEnvironmentSettingValue() {
         String caseStudy = "default";
         environmentOption.setValue(caseStudy);
         environmentOption.exec();
         verify(applicationSettingsMock).set(ApplicationSettings.MASOES_ENV, caseStudy);
+        verify(environmentFactoryMock).createEnvironment(caseStudy);
+    }
+
+    @Test
+    public void shouldInvokeEnvironmentCreation() {
+        String expectedParameter = "expectedParameter";
+        doReturn(expectedParameter).when(environmentMock).toJadeParameter();
+        environmentOption.exec();
+        verify(environmentFactoryMock).createEnvironment(anyString());
+        verify(environmentMock).toJadeParameter();
+        verify(jadeSettingsMock).set(eq(JadeSettings.AGENTS), eq(expectedParameter));
     }
 
     @Test
     public void shouldAddSettingsAgent() {
-        doReturn(null).when(environmentMock).getAgentCommands();
-
+        AgentParameter expectedAgentParameter = new AgentParameter("settings", SettingsAgent.class);
+        doReturn(new ArrayList<>()).when(environmentMock).getAgentParameters();
         environmentOption.exec();
-
-        verify(environmentFactoryMock).createEnvironment();
-        verify(environmentMock, atLeastOnce()).getAgentCommands();
-        verify(jadeSettingsMock).set(eq(JadeSettings.AGENTS), contains("settings:" + SettingsAgent.class.getName()));
-    }
-
-    @Test
-    public void shouldNotAddSettingsAgentWhenHasOne() {
-        List<AgentCommand> expectedJadeAgentOptionList = new ArrayList<>();
-        expectedJadeAgentOptionList.add(new AgentCommand("alreadyExists", SettingsAgent.class));
-        doReturn(expectedJadeAgentOptionList).when(environmentMock).getAgentCommands();
-
-        environmentOption.exec();
-
-        verify(environmentFactoryMock).createEnvironment();
-        verify(jadeSettingsMock).set(eq(JadeSettings.AGENTS), contains("alreadyExists:" + SettingsAgent.class.getName()));
-        verify(jadeSettingsMock, never()).set(eq(JadeSettings.AGENTS), contains("settings:" + SettingsAgent.class.getName()));
+        verify(environmentMock).add(refEq(expectedAgentParameter));
     }
 
     @Test
     public void shouldAddGuiAgent() {
-        doReturn(null).when(environmentMock).getAgentCommands();
+        AgentParameter expectedAgentParameter = new AgentParameter("requester", RequesterGuiAgent.class);
+        doReturn(new ArrayList<>()).when(environmentMock).getAgentParameters();
         doReturn("true").when(jadeSettingsMock).get(JadeSettings.GUI);
-
         environmentOption.exec();
-
-        verify(environmentFactoryMock).createEnvironment();
-        verify(environmentMock, atLeastOnce()).getAgentCommands();
-        verify(jadeSettingsMock).set(eq(JadeSettings.AGENTS), contains("requester:" + RequesterGuiAgent.class.getName()));
-    }
-
-    @Test
-    public void shouldNotAddNewGuiAgentAgentWhenHasOne() {
-        List<AgentCommand> expectedJadeAgentOptionList = new ArrayList<>();
-        expectedJadeAgentOptionList.add(new AgentCommand("alreadyExists", RequesterGuiAgent.class));
-        doReturn(expectedJadeAgentOptionList).when(environmentMock).getAgentCommands();
-        doReturn("true").when(jadeSettingsMock).get(JadeSettings.GUI);
-
-        environmentOption.exec();
-
-        verify(environmentFactoryMock).createEnvironment();
-        verify(jadeSettingsMock).set(eq(JadeSettings.AGENTS), contains("alreadyExists:" + RequesterGuiAgent.class.getName()));
-        verify(jadeSettingsMock, never()).set(eq(JadeSettings.AGENTS), contains("requester:" + RequesterGuiAgent.class.getName()));
+        verify(environmentMock).add(refEq(expectedAgentParameter));
     }
 
     @Test
     public void shouldNotAddGuiAgentWhenJadeGuiIsFalse() {
-        doReturn(null).when(environmentMock).getAgentCommands();
+        AgentParameter expectedAgentParameter = new AgentParameter("requester", RequesterGuiAgent.class);
+        doReturn(new ArrayList<>()).when(environmentMock).getAgentParameters();
         doReturn("false").when(jadeSettingsMock).get(JadeSettings.GUI);
-
         environmentOption.exec();
-
-        verify(jadeSettingsMock, never()).set(eq(JadeSettings.AGENTS), contains("requester:" + RequesterGuiAgent.class.getName()));
+        verify(environmentMock, never()).add(refEq(expectedAgentParameter));
     }
 
     @Test
-    public void shouldNotAddGuiAgentAgentWhenHasOneAndJadeGuiIsFalse() {
-        List<AgentCommand> expectedJadeAgentOptionList = new ArrayList<>();
-        expectedJadeAgentOptionList.add(new AgentCommand("alreadyExists", RequesterGuiAgent.class));
-        doReturn(expectedJadeAgentOptionList).when(environmentMock).getAgentCommands();
-        doReturn("false").when(jadeSettingsMock).get(JadeSettings.GUI);
-
+    public void shouldNotAddSettingsAgentWhenHaveOne() {
+        AgentParameter agentParameter = new AgentParameter("settings", SettingsAgent.class);
+        ArrayList<AgentParameter> agents = new ArrayList<>();
+        agents.add(agentParameter);
+        doReturn(agents).when(environmentMock).getAgentParameters();
         environmentOption.exec();
+        verify(environmentMock, never()).add(refEq(agentParameter));
+    }
 
-        verify(environmentFactoryMock).createEnvironment();
-        verify(jadeSettingsMock, never()).set(eq(JadeSettings.AGENTS), contains("alreadyExists:" + RequesterGuiAgent.class.getName()));
-        verify(jadeSettingsMock, never()).set(eq(JadeSettings.AGENTS), contains("requester:" + RequesterGuiAgent.class.getName()));
+    @Test
+    public void shouldNotAddGuiAgentWhenHaveOne() {
+        AgentParameter agentParameter = new AgentParameter("requester", RequesterGuiAgent.class);
+        ArrayList<AgentParameter> agents = new ArrayList<>();
+        agents.add(agentParameter);
+        doReturn(agents).when(environmentMock).getAgentParameters();
+        doReturn("true").when(jadeSettingsMock).get(JadeSettings.GUI);
+        environmentOption.exec();
+        verify(environmentMock, never()).add(refEq(agentParameter));
+    }
+
+    @Test
+    public void shouldNotAddGuiAgentAgentWhenHaveOneAndJadeGuiIsFalse() {
+        AgentParameter agentParameter = new AgentParameter("requester", RequesterGuiAgent.class);
+        ArrayList<AgentParameter> agents = new ArrayList<>();
+        agents.add(agentParameter);
+        doReturn(agents).when(environmentMock).getAgentParameters();
+        doReturn("false").when(jadeSettingsMock).get(JadeSettings.GUI);
+        environmentOption.exec();
+        verify(environmentMock, never()).add(refEq(agentParameter));
+        verify(environmentMock).remove(refEq(agentParameter));
     }
 
 }

@@ -6,7 +6,7 @@
 
 package environment.dummy;
 
-import environment.AgentCommand;
+import environment.AgentParameter;
 import environment.Environment;
 
 public class DummyEnvironment extends Environment {
@@ -14,7 +14,7 @@ public class DummyEnvironment extends Environment {
     private static final String DUMMY_AGENT_NAME = "dummy";
 
     public DummyEnvironment() {
-        add(new AgentCommand(DUMMY_AGENT_NAME, DummyEmotionalAgent.class));
+        add(new AgentParameter(DUMMY_AGENT_NAME, DummyEmotionalAgent.class));
     }
 
 }

@@ -13,18 +13,18 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.List;
 import java.util.Optional;
 
-public class AgentCommand {
+public class AgentParameter {
 
     private String agentName;
     private Class<? extends Agent> agentClass;
     private List<String> agentArguments;
 
-    public AgentCommand(String agentName, Class<? extends Agent> agentClass) {
+    public AgentParameter(String agentName, Class<? extends Agent> agentClass) {
         this.agentName = agentName;
         this.agentClass = agentClass;
     }
 
-    public AgentCommand(String agentName, Class<? extends Agent> agentClass, List<String> agentArguments) {
+    public AgentParameter(String agentName, Class<? extends Agent> agentClass, List<String> agentArguments) {
         this.agentName = agentName;
         this.agentClass = agentClass;
         this.agentArguments = agentArguments;
@@ -42,11 +42,11 @@ public class AgentCommand {
         return agentArguments;
     }
 
-    public String format() {
+    public String toJadeParameter() {
         if (Optional.ofNullable(agentArguments).isPresent()) {
-            return String.format("%s:%s(%s)", agentName, agentClass.getName(), String.join(",", agentArguments));
+            return String.format("%s:%s(%s)", agentName, agentClass.getCanonicalName(), String.join(",", agentArguments));
         } else {
-            return String.format("%s:%s", agentName, agentClass.getName());
+            return String.format("%s:%s", agentName, agentClass.getCanonicalName());
         }
     }
 

@@ -6,30 +6,23 @@
 
 package environment;
 
-import application.ApplicationSettings;
 import environment.dummy.DummyEnvironment;
 import environment.wikipedia.WikipediaEnvironment;
 
 public class EnvironmentFactory {
 
-    private ApplicationSettings applicationSettings;
-
-    public EnvironmentFactory() {
-        applicationSettings = ApplicationSettings.getInstance();
-    }
-
-    public Environment createEnvironment() {
-        if (isContains(DummyEnvironment.class)) {
+    public Environment createEnvironment(String environment) {
+        if (isContains(DummyEnvironment.class, environment)) {
             return new DummyEnvironment();
-        } else if (isContains(WikipediaEnvironment.class)) {
+        } else if (isContains(WikipediaEnvironment.class, environment)) {
             return new WikipediaEnvironment();
         } else {
-            throw new InvalidEnvironmentException(String.format("Invalid environment name \"%s\"", applicationSettings.get(ApplicationSettings.MASOES_ENV)));
+            throw new InvalidEnvironmentException(String.format("Invalid environment name \"%s\"", environment));
         }
     }
 
-    private boolean isContains(Class<? extends Environment> environmentClass) {
-        return environmentClass.getSimpleName().toLowerCase().contains(applicationSettings.get(ApplicationSettings.MASOES_ENV).toLowerCase());
+    private boolean isContains(Class<? extends Environment> environmentClass, String environment) {
+        return environmentClass.getSimpleName().toLowerCase().contains(environment.toLowerCase());
     }
 
 }

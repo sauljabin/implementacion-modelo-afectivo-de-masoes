@@ -9,21 +9,18 @@ package application.option;
 import application.ApplicationOption;
 import application.ApplicationSettings;
 import application.ArgumentType;
-import environment.AgentCommand;
+import environment.AgentParameter;
 import environment.Environment;
 import environment.EnvironmentFactory;
 import gui.RequesterGuiAgent;
 import jade.JadeSettings;
 import settings.SettingsAgent;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class EnvironmentOption extends ApplicationOption {
 
-    private static final String AGENT_DELIMITER = ";";
     private JadeSettings jadeSettings;
     private EnvironmentFactory environmentFactory;
     private ApplicationSettings applicationSettings;
@@ -68,53 +65,43 @@ public class EnvironmentOption extends ApplicationOption {
     @Override
     public void exec() {
         applicationSettings.set(ApplicationSettings.MASOES_ENV, getValue());
-        jadeSettings.set(JadeSettings.AGENTS, getAgents());
+
+        Environment environment = environmentFactory.createEnvironment(getValue());
+        processEnvironment(environment);
+
+        jadeSettings.set(JadeSettings.AGENTS, environment.toJadeParameter());
     }
 
-    private String getAgents() {
-        return String.join(AGENT_DELIMITER, toStringList(getEnvironmentAgentInfoList(environmentFactory.createEnvironment())));
+    private void processEnvironment(Environment environment) {
+        Optional<AgentParameter> settingAgent = findSettingAgent(environment.getAgentParameters());
+        if (!settingAgent.isPresent()) {
+            environment.add(new AgentParameter("settings", SettingsAgent.class));
+        }
+
+        Optional<AgentParameter> requesterAgent = findRequesterAgent(environment.getAgentParameters());
+        if (!requesterAgent.isPresent() && isJadeGui()) {
+            environment.add(new AgentParameter("requester", RequesterGuiAgent.class));
+        }
+
+        if (requesterAgent.isPresent() && !isJadeGui()) {
+            environment.remove(requesterAgent.get());
+        }
     }
 
-    private List<AgentCommand> getEnvironmentAgentInfoList(Environment environment) {
-        List<AgentCommand> agentCommands = new ArrayList<>();
+    private Optional<AgentParameter> findSettingAgent(List<AgentParameter> agentParameterList) {
+        return agentParameterList.stream().filter(
+                agentParameter -> agentParameter.getAgentClass().equals(SettingsAgent.class)
+        ).findFirst();
+    }
 
-        agentCommands.addAll(Optional.ofNullable(environment.getAgentCommands()).orElse(new ArrayList<>()));
-
-        if (!isPresentSettingAgent(agentCommands)) {
-            agentCommands.add(new AgentCommand("settings", SettingsAgent.class));
-        }
-
-        if (!isPresentRequesterAgent(agentCommands) && isJadeGui()) {
-            agentCommands.add(new AgentCommand("requester", RequesterGuiAgent.class));
-        }
-
-        if (!isJadeGui()) {
-            agentCommands = agentCommands.stream().filter(
-                    agentCommandFormatter -> !agentCommandFormatter.getAgentClass().equals(RequesterGuiAgent.class)
-            ).collect(Collectors.toList());
-        }
-
-        return agentCommands;
+    private Optional<AgentParameter> findRequesterAgent(List<AgentParameter> agentParameterList) {
+        return agentParameterList.stream().filter(
+                agentInfo -> agentInfo.getAgentClass().equals(RequesterGuiAgent.class)
+        ).findFirst();
     }
 
     private boolean isJadeGui() {
         return Boolean.valueOf(jadeSettings.get(JadeSettings.GUI));
-    }
-
-    private List<String> toStringList(List<AgentCommand> agentCommandList) {
-        return agentCommandList.stream().map(AgentCommand::format).collect(Collectors.toList());
-    }
-
-    private boolean isPresentSettingAgent(List<AgentCommand> agentCommandList) {
-        return agentCommandList.stream().filter(
-                agentInfo -> agentInfo.getAgentClass().equals(SettingsAgent.class)
-        ).findFirst().isPresent();
-    }
-
-    private boolean isPresentRequesterAgent(List<AgentCommand> agentCommandList) {
-        return agentCommandList.stream().filter(
-                agentInfo -> agentInfo.getAgentClass().equals(RequesterGuiAgent.class)
-        ).findFirst().isPresent();
     }
 
 }

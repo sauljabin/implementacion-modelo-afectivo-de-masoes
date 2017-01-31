@@ -6,7 +6,7 @@
 
 package environment.dummy;
 
-import environment.AgentCommand;
+import environment.AgentParameter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,18 +18,18 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 public class DummyEnvironmentTest {
 
     private DummyEnvironment dummyEnvironment;
-    private List<AgentCommand> expectedAgentsInfo;
+    private List<AgentParameter> expectedAgentsInfo;
 
     @Before
     public void setUp() {
         expectedAgentsInfo = new ArrayList<>();
-        expectedAgentsInfo.add(new AgentCommand("dummy", DummyEmotionalAgent.class));
+        expectedAgentsInfo.add(new AgentParameter("dummy", DummyEmotionalAgent.class));
         dummyEnvironment = new DummyEnvironment();
     }
 
     @Test
     public void shouldReturnAllAgentInfo() {
-        assertReflectionEquals(expectedAgentsInfo, dummyEnvironment.getAgentCommands());
+        assertReflectionEquals(expectedAgentsInfo, dummyEnvironment.getAgentParameters());
     }
 
 }

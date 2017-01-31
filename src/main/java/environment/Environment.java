@@ -12,22 +12,24 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Environment {
 
-    private ArrayList<AgentCommand> agentCommands;
+    private static final String AGENT_DELIMITER = ";";
+    private ArrayList<AgentParameter> agentParameters;
     private String environmentName;
 
     public Environment() {
-        agentCommands = new ArrayList<>();
+        agentParameters = new ArrayList<>();
     }
 
-    public List<AgentCommand> getAgentCommands() {
-        return agentCommands;
+    public List<AgentParameter> getAgentParameters() {
+        return agentParameters;
     }
 
-    public void add(AgentCommand agentCommand) {
-        agentCommands.add(agentCommand);
+    public void add(AgentParameter agentParameter) {
+        agentParameters.add(agentParameter);
     }
 
     public String getEnvironmentName() {
@@ -38,11 +40,26 @@ public class Environment {
         this.environmentName = environmentName;
     }
 
+    public String toJadeParameter() {
+        return String.join(AGENT_DELIMITER, toJadeParameterList());
+    }
+
+    public List<String> toJadeParameterList() {
+        return agentParameters.stream().map(
+                agentParameter -> agentParameter.toJadeParameter()
+        ).collect(Collectors.toList());
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("name", getEnvironmentName())
+                .append("agentParameters", agentParameters)
                 .toString();
+    }
+
+    public void remove(AgentParameter agentParameter) {
+        agentParameters.remove(agentParameter);
     }
 
 }
