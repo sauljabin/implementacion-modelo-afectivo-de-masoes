@@ -10,16 +10,13 @@ import jade.JadeLogger;
 import jade.content.Concept;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
-import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
-import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.ContainerID;
 import jade.core.behaviours.Behaviour;
-import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import jade.domain.FIPAService;
 import jade.domain.JADEAgentManagement.CreateAgent;
@@ -37,17 +34,13 @@ public abstract class FunctionalTest extends Behaviour {
 
     private static final int AGENT_NAME_LENGTH = 10;
     private static final int TIMEOUT = 4000;
-    private List<AID> agentsToKill;
-    private StringGenerator stringGenerator;
-    private JadeLogger logger;
-    private ContentManager contentManager;
+    private List<AID> agentsToKill = new ArrayList<>();
+    private StringGenerator stringGenerator = new StringGenerator();
+    private JadeLogger logger = new JadeLogger(LoggerFactory.getLogger(FunctionalTest.class));
+    private ContentManager contentManager = new ContentManager();
 
     @Override
     public void onStart() {
-        agentsToKill = new ArrayList<>();
-        logger = new JadeLogger(LoggerFactory.getLogger(FunctionalTest.class));
-        stringGenerator = new StringGenerator();
-        contentManager = new ContentManager();
         contentManager.registerOntology(JADEManagementOntology.getInstance());
         contentManager.registerLanguage(new SLCodec(0));
         setUp();
@@ -72,7 +65,7 @@ public abstract class FunctionalTest extends Behaviour {
         return true;
     }
 
-    private void sendMessageAMS(Concept concept) throws Codec.CodecException, OntologyException, FIPAException {
+    private void sendMessageAMS(Concept concept) throws Exception {
         ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
         message.setSender(myAgent.getAID());
         message.addReceiver(myAgent.getAMS());
@@ -105,14 +98,14 @@ public abstract class FunctionalTest extends Behaviour {
         }
     }
 
-    public AID createAgent(String agentName, Class<? extends Agent> agentClass, List<Object> arguments) {
+    public AID createAgent(String agentName, Class<? extends Agent> agentClass, List<String> arguments) {
         CreateAgent createAgent = new CreateAgent();
         createAgent.setAgentName(agentName);
         createAgent.setClassName(agentClass.getCanonicalName());
         createAgent.setContainer((ContainerID) myAgent.here());
 
         if (Optional.ofNullable(arguments).isPresent()) {
-            arguments.forEach(object -> createAgent.addArguments(object));
+            arguments.forEach(arg -> createAgent.addArguments(arg));
         }
 
         try {
@@ -132,7 +125,7 @@ public abstract class FunctionalTest extends Behaviour {
         return createAgent(stringGenerator.getString(AGENT_NAME_LENGTH), agentClass);
     }
 
-    public AID createAgent(Class<? extends Agent> agentClass, List<Object> arguments) {
+    public AID createAgent(Class<? extends Agent> agentClass, List<String> arguments) {
         return createAgent(stringGenerator.getString(AGENT_NAME_LENGTH), agentClass, arguments);
     }
 

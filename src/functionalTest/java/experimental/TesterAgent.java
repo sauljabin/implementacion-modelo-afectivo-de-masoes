@@ -28,11 +28,10 @@ import java.util.stream.Collectors;
 
 public class TesterAgent extends Agent {
 
-    private JadeLogger logger;
+    private JadeLogger logger = new JadeLogger(LoggerFactory.getLogger(TesterAgent.class));
 
     @Override
     protected void setup() {
-        logger = new JadeLogger(LoggerFactory.getLogger(FunctionalTest.class));
         getContentManager().registerOntology(JADEManagementOntology.getInstance());
         getContentManager().registerLanguage(new SLCodec(0));
 

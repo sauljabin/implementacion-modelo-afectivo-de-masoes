@@ -21,17 +21,10 @@ public class FunctionalTestBoot {
     private static final String FUNCTIONAL_TEST_ENV = "functionalTest";
     private static final int STATUS_FAILURE = -1;
     private static final String TESTER_AGENT_NAME = "tester";
-    private JadeSettings jadeSettings;
-    private JadeBoot jadeBoot;
-    private ApplicationLogger logger;
-    private ApplicationSettings applicationSettings;
-
-    public FunctionalTestBoot() {
-        logger = new ApplicationLogger(LoggerFactory.getLogger(FunctionalTestBoot.class));
-        applicationSettings = ApplicationSettings.getInstance();
-        jadeSettings = JadeSettings.getInstance();
-        jadeBoot = new JadeBoot();
-    }
+    private JadeSettings jadeSettings = JadeSettings.getInstance();
+    private JadeBoot jadeBoot = new JadeBoot();
+    private ApplicationLogger logger = new ApplicationLogger(LoggerFactory.getLogger(FunctionalTestBoot.class));
+    private ApplicationSettings applicationSettings = ApplicationSettings.getInstance();
 
     public void boot(String[] args) {
         try {
