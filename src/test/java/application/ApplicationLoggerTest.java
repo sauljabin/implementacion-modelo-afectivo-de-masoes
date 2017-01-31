@@ -53,7 +53,7 @@ public class ApplicationLoggerTest {
     }
 
     @Test
-    public void shouldLogStartingApp() {
+    public void shouldLogStartingAppWithArgs() {
         String[] args = {"-h"};
         applicationLogger.startingApplication(args);
         verify(loggerMock).info(eq("Starting application with arguments: [-h], settings: " + expectedApplicationSettingsMap.toString() + ", jade settings: " + expectedJadeSettingsMap.toString()));
@@ -93,6 +93,12 @@ public class ApplicationLoggerTest {
         Exception expectedException = new Exception("error");
         applicationLogger.exception(expectedException);
         verify(loggerMock).error(eq("Exception: " + expectedException.getMessage()), eq(expectedException));
+    }
+
+    @Test
+    public void shouldLogStartingApp() {
+        applicationLogger.startingApplication();
+        verify(loggerMock).info(eq("Starting application with settings: " + expectedApplicationSettingsMap.toString() + ", jade settings: " + expectedJadeSettingsMap.toString()));
     }
 
 }

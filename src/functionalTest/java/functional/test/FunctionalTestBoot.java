@@ -32,7 +32,7 @@ public class FunctionalTestBoot {
     public void boot(String[] args) {
         try {
             setSettings();
-            logger.startingApplication(args);
+            logger.startingApplication();
             jadeBoot.boot();
         } catch (Exception e) {
             logger.cantNotStartApplication(e);

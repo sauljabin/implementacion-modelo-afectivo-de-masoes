@@ -71,4 +71,11 @@ public class ApplicationLogger {
                 .error(logger);
     }
 
+    public void startingApplication() {
+        new LogWriter()
+                .message("Starting application with settings: %s, jade settings: %s")
+                .args(applicationSettings.toMap().toString(), jadeSettings.toMap().toString())
+                .info(logger);
+    }
+
 }
