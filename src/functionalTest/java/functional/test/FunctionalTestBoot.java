@@ -9,6 +9,7 @@ package functional.test;
 import application.ApplicationLogger;
 import application.ApplicationSettings;
 import environment.AgentParameter;
+import environment.Environment;
 import jade.JadeBoot;
 import jade.JadeSettings;
 import org.slf4j.LoggerFactory;
@@ -42,12 +43,14 @@ public class FunctionalTestBoot {
 
     private void setSettings() {
         applicationSettings.set(ApplicationSettings.MASOES_ENV, FUNCTIONAL_TEST_ENV);
-        jadeSettings.set(JadeSettings.AGENTS, getAgentParameter());
+        jadeSettings.set(JadeSettings.AGENTS, getAgentsParameter());
         jadeSettings.set(JadeSettings.GUI, Boolean.FALSE.toString());
     }
 
-    private String getAgentParameter() {
-        return new AgentParameter(FunctionalTesterAgent.class.getSimpleName(), FunctionalTesterAgent.class).toJadeParameter();
+    private String getAgentsParameter() {
+        Environment environment = new Environment();
+        environment.add(new AgentParameter(FunctionalTesterAgent.class.getSimpleName(), FunctionalTesterAgent.class));
+        return environment.toJadeParameter();
     }
 
 }
