@@ -26,6 +26,7 @@ dependencies {
     compile 'com.tilab.jade:jade:4.4.0'
     compile 'com.vividsolutions:jts:1.13'
     compile 'org.apache.commons:commons-lang3:3.5'
+    compile 'org.reflections:reflections:0.9.10'
     compile 'com.miglayout:miglayout-swing:5.0'
     testCompile 'junit:junit:4.12'
     testCompile 'org.hamcrest:hamcrest-library:1.3'
