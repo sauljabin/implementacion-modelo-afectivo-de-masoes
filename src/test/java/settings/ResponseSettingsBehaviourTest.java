@@ -13,14 +13,14 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.util.leap.ArrayList;
 import jade.util.leap.List;
+import ontology.settings.GetAllSettings;
+import ontology.settings.GetSetting;
+import ontology.settings.Setting;
+import ontology.settings.SystemSettings;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import settings.ontology.GetAllSettings;
-import settings.ontology.GetSetting;
-import settings.ontology.Setting;
-import settings.ontology.SystemSettings;
 
 import java.util.HashMap;
 import java.util.Map;

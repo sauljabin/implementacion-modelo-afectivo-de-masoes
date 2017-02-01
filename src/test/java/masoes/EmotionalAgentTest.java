@@ -8,11 +8,11 @@ package masoes;
 
 import agent.AgentLogger;
 import jade.core.behaviours.Behaviour;
-import masoes.model.BehaviourManager;
-import masoes.model.Emotion;
-import masoes.model.EmotionalConfigurator;
-import masoes.model.EmotionalState;
-import masoes.ontology.Stimulus;
+import masoes.conductual.BehaviourManager;
+import masoes.conductual.Emotion;
+import masoes.conductual.EmotionalConfigurator;
+import masoes.conductual.EmotionalState;
+import ontology.masoes.Stimulus;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;

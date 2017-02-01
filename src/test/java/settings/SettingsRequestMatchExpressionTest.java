@@ -8,9 +8,9 @@ package settings;
 
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
+import ontology.settings.SettingsOntology;
 import org.junit.Before;
 import org.junit.Test;
-import settings.ontology.SettingsOntology;
 
 import static org.junit.Assert.assertTrue;
 
@@ -29,7 +29,7 @@ public class SettingsRequestMatchExpressionTest {
     }
 
     @Test
-    public void shouldMatchWithMasoesMessage() {
+    public void shouldMatchWithSettingsRequestMessage() {
         assertTrue(settingsRequestMatchExpression.match(message));
     }
 

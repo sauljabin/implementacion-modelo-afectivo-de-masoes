@@ -13,11 +13,11 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SequentialBehaviour;
-import masoes.ontology.AgentStatus;
-import masoes.ontology.EvaluateStimulus;
-import masoes.ontology.GetAgentStatus;
-import masoes.ontology.MasoesOntology;
-import masoes.ontology.Stimulus;
+import ontology.masoes.AgentStatus;
+import ontology.masoes.EvaluateStimulus;
+import ontology.masoes.GetAgentStatus;
+import ontology.masoes.MasoesOntology;
+import ontology.masoes.Stimulus;
 import protocol.OntologyRequesterBehaviour;
 import test.common.TestException;
 

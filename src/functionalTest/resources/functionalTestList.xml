@@ -24,31 +24,31 @@
         <HowWorkTest>An agent make a request and receive inform</HowWorkTest>
         <WhenTestPass>The test passes if the agent return inform</WhenTestPass>
     </Test>
-    <Test name="ONTOLOGY - Should receive refuse" skip="false">
-        <TestClassName>functional.test.ontology.ShouldReceiveRefuseWhenSendInvalidActionTest</TestClassName>
-        <WhatTest>Test correct response</WhatTest>
-        <HowWorkTest>An agent make a request with invalid action and receive refuse</HowWorkTest>
-        <WhenTestPass>The test passes if the agent return refuse</WhenTestPass>
-    </Test>
-    <Test name="ONTOLOGY - Should receive inform" skip="false">
-        <TestClassName>functional.test.ontology.ShouldReceivePredicateWhenValidActionTest</TestClassName>
-        <WhatTest>Test correct response</WhatTest>
-        <HowWorkTest>An agent make a request with valid action and receive inform</HowWorkTest>
-        <WhenTestPass>The test passes if the agent return inform</WhenTestPass>
-    </Test>
-    <Test name="ONTOLOGY - Should receive failure" skip="false">
-        <TestClassName>functional.test.ontology.ShouldReceiveFailureWhenExceptionTest</TestClassName>
-        <WhatTest>Test correct response</WhatTest>
-        <HowWorkTest>An agent make a request and tha action fail</HowWorkTest>
-        <WhenTestPass>The test passes if the agent return failure</WhenTestPass>
-    </Test>
-    <Test name="ONTOLOGY - Should receive not understood" skip="false">
-        <TestClassName>functional.test.ontology.ShouldReceiveNotUnderstoodWhenSendInvalidActionTest
-        </TestClassName>
-        <WhatTest>Test correct response</WhatTest>
-        <HowWorkTest>An agent make a request with another ontology</HowWorkTest>
-        <WhenTestPass>The test passes if the agent return not understood</WhenTestPass>
-    </Test>
+    <!--<Test name="ONTOLOGY - Should receive refuse" skip="false">-->
+    <!--<TestClassName>functional.test.ontology.ShouldReceiveRefuseWhenSendInvalidActionTest</TestClassName>-->
+    <!--<WhatTest>Test correct response</WhatTest>-->
+    <!--<HowWorkTest>An agent make a request with invalid action and receive refuse</HowWorkTest>-->
+    <!--<WhenTestPass>The test passes if the agent return refuse</WhenTestPass>-->
+    <!--</Test>-->
+    <!--<Test name="ONTOLOGY - Should receive inform" skip="false">-->
+    <!--<TestClassName>functional.test.ontology.ShouldReceivePredicateWhenValidActionTest</TestClassName>-->
+    <!--<WhatTest>Test correct response</WhatTest>-->
+    <!--<HowWorkTest>An agent make a request with valid action and receive inform</HowWorkTest>-->
+    <!--<WhenTestPass>The test passes if the agent return inform</WhenTestPass>-->
+    <!--</Test>-->
+    <!--<Test name="ONTOLOGY - Should receive failure" skip="false">-->
+    <!--<TestClassName>functional.test.ontology.ShouldReceiveFailureWhenExceptionTest</TestClassName>-->
+    <!--<WhatTest>Test correct response</WhatTest>-->
+    <!--<HowWorkTest>An agent make a request and tha action fail</HowWorkTest>-->
+    <!--<WhenTestPass>The test passes if the agent return failure</WhenTestPass>-->
+    <!--</Test>-->
+    <!--<Test name="ONTOLOGY - Should receive not understood" skip="false">-->
+    <!--<TestClassName>functional.test.ontology.ShouldReceiveNotUnderstoodWhenSendInvalidActionTest-->
+    <!--</TestClassName>-->
+    <!--<WhatTest>Test correct response</WhatTest>-->
+    <!--<HowWorkTest>An agent make a request with another ontology</HowWorkTest>-->
+    <!--<WhenTestPass>The test passes if the agent return not understood</WhenTestPass>-->
+    <!--</Test>-->
     <Test name="SETTINGS - Should receive all settings" skip="false">
         <TestClassName>functional.test.settings.ShouldReceiveAllSettingsTest</TestClassName>
         <WhatTest>Test the correct settings behaviour</WhatTest>

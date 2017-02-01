@@ -8,10 +8,10 @@ package masoes;
 
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
-import masoes.ontology.AgentStatus;
-import masoes.ontology.EmotionStatus;
-import masoes.ontology.GetAgentStatus;
-import masoes.ontology.MasoesOntology;
+import ontology.masoes.AgentStatus;
+import ontology.masoes.EmotionStatus;
+import ontology.masoes.GetAgentStatus;
+import ontology.masoes.MasoesOntology;
 import protocol.OntologyResponderBehaviour;
 
 import java.util.Arrays;

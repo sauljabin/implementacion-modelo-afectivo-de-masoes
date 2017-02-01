@@ -11,9 +11,9 @@ import jade.content.Predicate;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
+import ontology.settings.GetAllSettings;
+import ontology.settings.SettingsOntology;
 import protocol.OntologyRequesterBehaviour;
-import settings.ontology.GetAllSettings;
-import settings.ontology.SettingsOntology;
 import test.common.TestException;
 
 public class ShouldReceiveNotUnderstoodWhenSendInvalidActionTest extends FunctionalTest {

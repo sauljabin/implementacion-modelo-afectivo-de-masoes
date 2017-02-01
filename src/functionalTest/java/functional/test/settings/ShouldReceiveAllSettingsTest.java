@@ -14,12 +14,12 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.util.leap.ArrayList;
+import ontology.settings.GetAllSettings;
+import ontology.settings.Setting;
+import ontology.settings.SettingsOntology;
+import ontology.settings.SystemSettings;
 import protocol.OntologyRequesterBehaviour;
 import settings.SettingsAgent;
-import settings.ontology.GetAllSettings;
-import settings.ontology.Setting;
-import settings.ontology.SettingsOntology;
-import settings.ontology.SystemSettings;
 import test.common.TestException;
 
 public class ShouldReceiveAllSettingsTest extends FunctionalTest {

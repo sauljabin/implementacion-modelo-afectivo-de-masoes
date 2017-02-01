@@ -10,8 +10,8 @@ import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.core.AID;
-import masoes.ontology.EvaluateStimulus;
-import masoes.ontology.Stimulus;
+import ontology.masoes.EvaluateStimulus;
+import ontology.masoes.Stimulus;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -9,7 +9,7 @@ package masoes;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import masoes.ontology.MasoesOntology;
+import ontology.masoes.MasoesOntology;
 
 public class MasoesRequestMatchExpression implements MessageTemplate.MatchExpression {
 

@@ -10,10 +10,10 @@ import functional.test.FunctionalTest;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
+import ontology.settings.GetSetting;
+import ontology.settings.SettingsOntology;
 import protocol.OntologyRequesterBehaviour;
 import settings.SettingsAgent;
-import settings.ontology.GetSetting;
-import settings.ontology.SettingsOntology;
 import test.common.TestException;
 
 public class ShouldReceiveFailureWhenSettingNotFoundTest extends FunctionalTest {

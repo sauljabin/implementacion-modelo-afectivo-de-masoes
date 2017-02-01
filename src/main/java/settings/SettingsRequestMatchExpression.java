@@ -9,7 +9,7 @@ package settings;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import settings.ontology.SettingsOntology;
+import ontology.settings.SettingsOntology;
 
 public class SettingsRequestMatchExpression implements MessageTemplate.MatchExpression {
 

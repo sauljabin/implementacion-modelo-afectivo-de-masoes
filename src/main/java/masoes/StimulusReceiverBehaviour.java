@@ -9,8 +9,8 @@ package masoes;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
-import masoes.ontology.EvaluateStimulus;
-import masoes.ontology.MasoesOntology;
+import ontology.masoes.EvaluateStimulus;
+import ontology.masoes.MasoesOntology;
 import protocol.OntologyResponderBehaviour;
 
 public class StimulusReceiverBehaviour extends OntologyResponderBehaviour {

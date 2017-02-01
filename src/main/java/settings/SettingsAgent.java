@@ -13,8 +13,8 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
+import ontology.settings.SettingsOntology;
 import org.slf4j.LoggerFactory;
-import settings.ontology.SettingsOntology;
 import util.ToStringBuilder;
 
 public class SettingsAgent extends Agent {

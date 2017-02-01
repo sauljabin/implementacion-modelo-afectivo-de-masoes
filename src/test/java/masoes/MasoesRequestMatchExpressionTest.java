@@ -8,7 +8,7 @@ package masoes;
 
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import masoes.ontology.MasoesOntology;
+import ontology.masoes.MasoesOntology;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,7 +29,7 @@ public class MasoesRequestMatchExpressionTest {
     }
 
     @Test
-    public void shouldMatchWithMasoesMessage() {
+    public void shouldMatchWithMasoesRequestMessage() {
         assertTrue(masoesRequestMatchExpression.match(message));
     }
 
