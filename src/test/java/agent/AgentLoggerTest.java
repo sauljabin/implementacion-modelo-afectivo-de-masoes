@@ -6,7 +6,6 @@
 
 package agent;
 
-import agent.AgentLogger;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import masoes.EmotionalAgent;

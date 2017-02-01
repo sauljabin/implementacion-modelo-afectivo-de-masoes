@@ -9,10 +9,11 @@ package util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class ToStringBuilder {
 
@@ -49,18 +50,24 @@ public class ToStringBuilder {
         return mapToString(objects);
     }
 
-    private String mapToString(Map<Object, Object> objects) {
-        List<Object> stringObjectList = objects.entrySet().stream().map(entry ->
-                String.format("%s=%s", objectToString(entry.getKey()), objectToString(entry.getValue()))
-        ).collect(Collectors.toList());
+    private String mapToString(Map objects) {
+        List<String> stringObjectList = new ArrayList<>();
+        Iterator iterator = objects.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Entry entry = (Entry) iterator.next();
+            stringObjectList.add(String.format("%s=%s", objectToString(entry.getKey()), objectToString(entry.getValue())));
+        }
 
         return listToString(stringObjectList);
     }
 
-    private String listToString(List<Object> objects) {
-        List<String> stringObjectList = objects.stream()
-                .map(object -> objectToString(object))
-                .collect(Collectors.toList());
+    private String listToString(List objects) {
+        List<String> stringObjectList = new ArrayList<>();
+
+        for (int i = 0; i < objects.size(); i++) {
+            stringObjectList.add(objectToString(objects.get(i)));
+        }
 
         return new StringBuilder()
                 .append("[")
@@ -75,9 +82,9 @@ public class ToStringBuilder {
 
     private String objectToString(Object object) {
         if (object instanceof List) {
-            return listToString((List<Object>) object);
+            return listToString((List) object);
         } else if (object instanceof Map) {
-            return mapToString((Map<Object, Object>) object);
+            return mapToString((Map) object);
         } else if (object instanceof Object[]) {
             return objectArrayToString((Object[]) object);
         } else if (object instanceof int[]) {
