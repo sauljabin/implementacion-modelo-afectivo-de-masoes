@@ -31,7 +31,7 @@ public class ConfigurableOntologyTest {
 
     @Test
     public void shouldInitializeElements() {
-        assertThat(Arrays.asList(configurableOntology.getActionNames().toArray()), hasItems("AddBehaviour", "LoadLanguage", "LoadOntology", "RemoveBehaviour"));
+        assertThat(Arrays.asList(configurableOntology.getActionNames().toArray()), hasItems("AddBehaviour", "RemoveBehaviour"));
     }
 
 }
