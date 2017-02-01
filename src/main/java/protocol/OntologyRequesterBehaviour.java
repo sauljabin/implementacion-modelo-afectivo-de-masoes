@@ -6,7 +6,7 @@
 
 package protocol;
 
-import jade.JadeLogger;
+import agent.AgentLogger;
 import jade.content.AgentAction;
 import jade.content.ContentManager;
 import jade.content.Predicate;
@@ -28,7 +28,7 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
     private Ontology ontology;
     private AgentAction agentAction;
     private ContentManager contentManager;
-    private JadeLogger logger;
+    private AgentLogger logger;
 
     public OntologyRequesterBehaviour(Agent agent, AID receiver, AgentAction agentAction, Ontology ontology) {
         super(agent, new ACLMessage(ACLMessage.REQUEST));
@@ -36,7 +36,7 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
         this.ontology = ontology;
         this.agentAction = agentAction;
         contentManager = new ContentManager();
-        logger = new JadeLogger(LoggerFactory.getLogger(OntologyRequesterBehaviour.class));
+        logger = new AgentLogger(LoggerFactory.getLogger(OntologyRequesterBehaviour.class));
         stringGenerator = new StringGenerator();
     }
 

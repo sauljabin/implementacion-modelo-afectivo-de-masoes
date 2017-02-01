@@ -6,7 +6,7 @@
 
 package protocol;
 
-import jade.JadeLogger;
+import agent.AgentLogger;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
@@ -31,7 +31,7 @@ public class ProtocolResponderBehaviourTest {
 
     private static final String EXCEPTION_MESSAGE = "MESSAGE";
     private ProtocolResponderBehaviour responderBehaviourSpy;
-    private JadeLogger loggerMock;
+    private AgentLogger loggerMock;
     private ProtocolResponderBehaviour responderBehaviour;
     private Agent agentMock;
     private ACLMessage requestMock;
@@ -40,7 +40,7 @@ public class ProtocolResponderBehaviourTest {
 
     @Before
     public void setUp() throws Exception {
-        loggerMock = mock(JadeLogger.class);
+        loggerMock = mock(AgentLogger.class);
         agentMock = mock(Agent.class);
         requestMock = mock(ACLMessage.class);
         responseMock = mock(ACLMessage.class);

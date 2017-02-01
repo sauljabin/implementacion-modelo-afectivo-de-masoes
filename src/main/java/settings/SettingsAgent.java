@@ -6,7 +6,7 @@
 
 package settings;
 
-import jade.JadeLogger;
+import agent.AgentLogger;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -19,10 +19,10 @@ import util.ToStringBuilder;
 
 public class SettingsAgent extends Agent {
 
-    private JadeLogger logger;
+    private AgentLogger logger;
 
     public SettingsAgent() {
-        logger = new JadeLogger(LoggerFactory.getLogger(SettingsAgent.class));
+        logger = new AgentLogger(LoggerFactory.getLogger(SettingsAgent.class));
     }
 
     @Override

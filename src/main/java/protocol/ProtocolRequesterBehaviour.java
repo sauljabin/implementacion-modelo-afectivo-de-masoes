@@ -6,7 +6,7 @@
 
 package protocol;
 
-import jade.JadeLogger;
+import agent.AgentLogger;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
@@ -17,11 +17,11 @@ import java.util.Vector;
 
 public class ProtocolRequesterBehaviour extends SimpleAchieveREInitiator {
 
-    private JadeLogger logger;
+    private AgentLogger logger;
 
     public ProtocolRequesterBehaviour(Agent agent, ACLMessage message) {
         super(agent, message);
-        logger = new JadeLogger(LoggerFactory.getLogger(ProtocolRequesterBehaviour.class));
+        logger = new AgentLogger(LoggerFactory.getLogger(ProtocolRequesterBehaviour.class));
     }
 
     public void setMessage(ACLMessage message) {

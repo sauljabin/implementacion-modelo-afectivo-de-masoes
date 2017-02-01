@@ -6,7 +6,7 @@
 
 package functional.test;
 
-import jade.JadeLogger;
+import agent.AgentLogger;
 import jade.core.AID;
 import jade.core.Agent;
 import junit.framework.AssertionFailedError;
@@ -28,13 +28,13 @@ public class FunctionalTest extends Test {
     private static final int SLEEP_KILL_AGENT_MILLIS = 100;
     private List<AID> agentsToKill;
     private boolean hasError;
-    private JadeLogger logger;
+    private AgentLogger logger;
     private StringGenerator stringGenerator;
 
     public FunctionalTest() {
         hasError = false;
         agentsToKill = new ArrayList<>();
-        logger = new JadeLogger(LoggerFactory.getLogger(FunctionalTest.class));
+        logger = new AgentLogger(LoggerFactory.getLogger(FunctionalTest.class));
         stringGenerator = new StringGenerator();
     }
 
@@ -130,7 +130,7 @@ public class FunctionalTest extends Test {
         TestUtility.addBehaviour(tester, agent, behaviourClass);
     }
 
-    public JadeLogger getLogger() {
+    public AgentLogger getLogger() {
         return logger;
     }
 

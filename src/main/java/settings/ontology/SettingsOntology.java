@@ -7,7 +7,6 @@
 package settings.ontology;
 
 import jade.content.onto.BeanOntology;
-import ontology.BaseOntology;
 import ontology.SetupOntologyException;
 import util.ToStringBuilder;
 
@@ -16,7 +15,7 @@ public class SettingsOntology extends BeanOntology {
     public static final String ONTOLOGY_NAME = "settings";
 
     public SettingsOntology() {
-        super(ONTOLOGY_NAME, new BaseOntology());
+        super(ONTOLOGY_NAME);
         try {
             add(SettingsOntology.class.getPackage().getName());
         } catch (Exception e) {

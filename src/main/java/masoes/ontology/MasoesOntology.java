@@ -7,7 +7,6 @@
 package masoes.ontology;
 
 import jade.content.onto.BeanOntology;
-import ontology.BaseOntology;
 import ontology.SetupOntologyException;
 import util.ToStringBuilder;
 
@@ -16,7 +15,7 @@ public class MasoesOntology extends BeanOntology {
     public static final String ONTOLOGY_NAME = "masoes";
 
     public MasoesOntology() {
-        super(ONTOLOGY_NAME, new BaseOntology());
+        super(ONTOLOGY_NAME);
         try {
             add(MasoesOntology.class.getPackage().getName());
         } catch (Exception e) {

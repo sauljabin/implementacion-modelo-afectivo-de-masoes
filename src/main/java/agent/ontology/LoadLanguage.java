@@ -4,19 +4,19 @@
  * Please see the LICENSE.txt file
  */
 
-package ontology;
+package agent.ontology;
 
 import jade.content.AgentAction;
 
-public class LoadOntology implements AgentAction {
+public class LoadLanguage implements AgentAction {
 
     private String name;
     private String className;
 
-    public LoadOntology() {
+    public LoadLanguage() {
     }
 
-    public LoadOntology(String name, String className) {
+    public LoadLanguage(String name, String className) {
         setName(name);
         setClassName(className);
     }

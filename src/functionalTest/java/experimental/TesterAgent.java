@@ -6,7 +6,7 @@
 
 package experimental;
 
-import jade.JadeLogger;
+import agent.AgentLogger;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.basic.Action;
 import jade.core.Agent;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 public class TesterAgent extends Agent {
 
-    private JadeLogger logger = new JadeLogger(LoggerFactory.getLogger(TesterAgent.class));
+    private AgentLogger logger = new AgentLogger(LoggerFactory.getLogger(TesterAgent.class));
 
     @Override
     protected void setup() {

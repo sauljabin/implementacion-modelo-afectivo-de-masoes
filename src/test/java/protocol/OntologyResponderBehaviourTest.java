@@ -9,6 +9,7 @@ package protocol;
 import jade.content.ContentManager;
 import jade.content.Predicate;
 import jade.content.lang.sl.SLCodec;
+import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
@@ -16,7 +17,6 @@ import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import ontology.BaseOntology;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,7 +47,7 @@ public class OntologyResponderBehaviourTest {
     @Before
     public void setUp() throws Exception {
         request = new ACLMessage(ACLMessage.REQUEST);
-        request.setOntology(BaseOntology.ONTOLOGY_NAME);
+        request.setOntology(BasicOntology.getInstance().getName());
         request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
 

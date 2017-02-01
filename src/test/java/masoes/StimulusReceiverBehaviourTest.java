@@ -6,19 +6,22 @@
 
 package masoes;
 
+import jade.content.Predicate;
 import jade.content.onto.basic.Action;
+import jade.content.onto.basic.Done;
 import jade.core.AID;
 import masoes.ontology.EvaluateStimulus;
 import masoes.ontology.Stimulus;
-import ontology.ActionResult;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public class StimulusReceiverBehaviourTest {
 
@@ -38,11 +41,9 @@ public class StimulusReceiverBehaviourTest {
         EvaluateStimulus evaluateStimulus = new EvaluateStimulus(stimulus);
         Action action = new Action(new AID(), evaluateStimulus);
 
-        ActionResult actionResult = (ActionResult) stimulusReceiverBehaviour.performAction(action);
-        ActionResult expectedActionResult = new ActionResult("Ok", evaluateStimulus);
-
+        Predicate predicate = stimulusReceiverBehaviour.performAction(action);
         verify(emotionalAgentMock).evaluateStimulus(any());
-        assertReflectionEquals(expectedActionResult, actionResult);
+        assertThat(predicate, is(instanceOf(Done.class)));
     }
 
     @Test

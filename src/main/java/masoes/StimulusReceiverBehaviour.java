@@ -8,9 +8,9 @@ package masoes;
 
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
+import jade.content.onto.basic.Done;
 import masoes.ontology.EvaluateStimulus;
 import masoes.ontology.MasoesOntology;
-import ontology.ActionResult;
 import protocol.OntologyResponderBehaviour;
 
 public class StimulusReceiverBehaviour extends OntologyResponderBehaviour {
@@ -31,7 +31,7 @@ public class StimulusReceiverBehaviour extends OntologyResponderBehaviour {
     public Predicate performAction(Action action) {
         EvaluateStimulus evaluateStimulus = (EvaluateStimulus) action.getAction();
         emotionalAgent.evaluateStimulus(evaluateStimulus.getStimulus());
-        return new ActionResult("Ok", evaluateStimulus);
+        return new Done();
     }
 
 }

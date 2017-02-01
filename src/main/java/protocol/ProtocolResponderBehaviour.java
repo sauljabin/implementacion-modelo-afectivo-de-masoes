@@ -6,7 +6,7 @@
 
 package protocol;
 
-import jade.JadeLogger;
+import agent.AgentLogger;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
@@ -19,11 +19,11 @@ import util.ToStringBuilder;
 
 public class ProtocolResponderBehaviour extends SimpleAchieveREResponder {
 
-    private JadeLogger logger;
+    private AgentLogger logger;
 
     public ProtocolResponderBehaviour(Agent agent, MessageTemplate messageTemplate) {
         super(agent, messageTemplate);
-        logger = new JadeLogger(LoggerFactory.getLogger(ProtocolResponderBehaviour.class));
+        logger = new AgentLogger(LoggerFactory.getLogger(ProtocolResponderBehaviour.class));
     }
 
     public void setMessageTemplate(MessageTemplate messageTemplate) {

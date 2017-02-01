@@ -6,19 +6,18 @@
 
 package functional.test.ontology;
 
-import jade.content.AgentAction;
 import jade.content.Predicate;
+import jade.content.onto.BasicOntology;
 import jade.content.onto.basic.Action;
+import jade.content.onto.basic.Done;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
-import ontology.ActionResult;
-import ontology.BaseOntology;
 import protocol.OntologyResponderBehaviour;
 
 public class ValidActionResponderBehaviour extends OntologyResponderBehaviour {
 
     public ValidActionResponderBehaviour() {
-        super(null, MessageTemplate.MatchAll(), new BaseOntology());
+        super(null, MessageTemplate.MatchAll(), BasicOntology.getInstance());
     }
 
     @Override
@@ -28,7 +27,7 @@ public class ValidActionResponderBehaviour extends OntologyResponderBehaviour {
 
     @Override
     public Predicate performAction(Action action) throws FailureException {
-        return new ActionResult("OK", (AgentAction) action.getAction());
+        return new Done();
     }
 
 }

@@ -6,7 +6,7 @@
 
 package protocol;
 
-import jade.JadeLogger;
+import agent.AgentLogger;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import org.junit.Before;
@@ -23,7 +23,7 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 public class ProtocolRequesterBehaviourTest {
 
     private ProtocolRequesterBehaviour resquesterBehaviourSpy;
-    private JadeLogger loggerMock;
+    private AgentLogger loggerMock;
     private ProtocolRequesterBehaviour requesterBehaviour;
     private Agent agentMock;
     private ACLMessage requestMock;
@@ -32,7 +32,7 @@ public class ProtocolRequesterBehaviourTest {
 
     @Before
     public void setUp() throws Exception {
-        loggerMock = mock(JadeLogger.class);
+        loggerMock = mock(AgentLogger.class);
         agentMock = mock(Agent.class);
         responseMock = mock(ACLMessage.class);
         requestMock = mock(ACLMessage.class);

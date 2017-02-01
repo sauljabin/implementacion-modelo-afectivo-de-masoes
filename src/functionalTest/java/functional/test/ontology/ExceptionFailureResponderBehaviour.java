@@ -7,16 +7,16 @@
 package functional.test.ontology;
 
 import jade.content.Predicate;
+import jade.content.onto.BasicOntology;
 import jade.content.onto.basic.Action;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
-import ontology.BaseOntology;
 import protocol.OntologyResponderBehaviour;
 
 public class ExceptionFailureResponderBehaviour extends OntologyResponderBehaviour {
 
     public ExceptionFailureResponderBehaviour() {
-        super(null, MessageTemplate.MatchAll(), new BaseOntology());
+        super(null, MessageTemplate.MatchAll(), BasicOntology.getInstance());
     }
 
     @Override

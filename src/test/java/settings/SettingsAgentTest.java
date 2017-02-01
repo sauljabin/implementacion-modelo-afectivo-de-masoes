@@ -6,7 +6,7 @@
 
 package settings;
 
-import jade.JadeLogger;
+import agent.AgentLogger;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -43,13 +43,13 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 public class SettingsAgentTest {
 
     private SettingsAgent settingsAgentSpy;
-    private JadeLogger loggerMock;
+    private AgentLogger loggerMock;
     private ArgumentCaptor<DFAgentDescription> agentDescriptionArgumentCaptor;
 
     @Before
     public void setUp() throws Exception {
         agentDescriptionArgumentCaptor = ArgumentCaptor.forClass(DFAgentDescription.class);
-        loggerMock = mock(JadeLogger.class);
+        loggerMock = mock(AgentLogger.class);
 
         SettingsAgent settingsAgent = new SettingsAgent();
         setFieldValue(settingsAgent, "logger", loggerMock);

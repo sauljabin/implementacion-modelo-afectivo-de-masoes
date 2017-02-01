@@ -4,18 +4,18 @@
  * Please see the LICENSE.txt file
  */
 
-package jade;
+package agent;
 
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import org.slf4j.Logger;
 import util.LogWriter;
 
-public class JadeLogger {
+public class AgentLogger {
 
     private Logger logger;
 
-    public JadeLogger(Logger logger) {
+    public AgentLogger(Logger logger) {
         this.logger = logger;
     }
 

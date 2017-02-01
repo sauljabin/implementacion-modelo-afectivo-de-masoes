@@ -6,7 +6,7 @@
 
 package protocol;
 
-import jade.JadeLogger;
+import agent.AgentLogger;
 import jade.content.AgentAction;
 import jade.content.ContentManager;
 import jade.content.Predicate;
@@ -63,7 +63,7 @@ public class OntologyRequesterBehaviourTest {
     private ArgumentCaptor<Action> actionArgumentCaptor;
     private OntologyRequesterBehaviour ontologyRequesterBehaviourSpy;
     private ACLMessage requestMock;
-    private JadeLogger loggerMock;
+    private AgentLogger loggerMock;
     private StringGenerator stringGeneratorMock;
 
     @Before
@@ -76,7 +76,7 @@ public class OntologyRequesterBehaviourTest {
         receiverMock = mock(AID.class);
         senderMock = mock(AID.class);
         requestMock = mock(ACLMessage.class);
-        loggerMock = mock(JadeLogger.class);
+        loggerMock = mock(AgentLogger.class);
         stringGeneratorMock = mock(StringGenerator.class);
 
         ontologyRequesterBehaviour = new OntologyRequesterBehaviour(agentMock, receiverMock, agentActionMock, ontologyMock);

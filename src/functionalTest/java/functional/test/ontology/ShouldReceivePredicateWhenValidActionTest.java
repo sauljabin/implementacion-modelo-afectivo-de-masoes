@@ -8,12 +8,12 @@ package functional.test.ontology;
 
 import functional.test.FunctionalTest;
 import jade.content.Predicate;
+import jade.content.onto.BasicOntology;
+import jade.content.onto.basic.Action;
+import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
-import ontology.ActionResult;
-import ontology.BaseOntology;
-import ontology.PerformAction;
 import protocol.OntologyRequesterBehaviour;
 import test.common.TestException;
 
@@ -27,12 +27,10 @@ public class ShouldReceivePredicateWhenValidActionTest extends FunctionalTest {
         AID agent = createAgent(tester);
         addBehaviour(tester, agent, ValidActionResponderBehaviour.class.getName());
 
-        PerformAction agentAction = new PerformAction();
-        OntologyRequesterBehaviour requesterBehaviour = new OntologyRequesterBehaviour(null, agent, agentAction, new BaseOntology()) {
+        OntologyRequesterBehaviour requesterBehaviour = new OntologyRequesterBehaviour(null, agent, new Action(), BasicOntology.getInstance()) {
             @Override
             protected void handleInform(Predicate predicate) {
-                ActionResult expectedResult = new ActionResult("OK", agentAction);
-                assertReflectionEquals("Inform content", expectedResult, predicate);
+                assertReflectionEquals("Inform content", new Done(), predicate);
             }
 
             @Override

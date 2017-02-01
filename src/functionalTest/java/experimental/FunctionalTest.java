@@ -6,7 +6,7 @@
 
 package experimental;
 
-import jade.JadeLogger;
+import agent.AgentLogger;
 import jade.content.Concept;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
@@ -36,7 +36,7 @@ public abstract class FunctionalTest extends Behaviour {
     private static final int TIMEOUT = 4000;
     private List<AID> agentsToKill = new ArrayList<>();
     private StringGenerator stringGenerator = new StringGenerator();
-    private JadeLogger logger = new JadeLogger(LoggerFactory.getLogger(FunctionalTest.class));
+    private AgentLogger logger = new AgentLogger(LoggerFactory.getLogger(FunctionalTest.class));
     private ContentManager contentManager = new ContentManager();
 
     @Override

@@ -6,7 +6,7 @@
 
 package masoes;
 
-import jade.JadeLogger;
+import agent.AgentLogger;
 import jade.core.behaviours.Behaviour;
 import masoes.model.BehaviourManager;
 import masoes.model.Emotion;
@@ -39,13 +39,13 @@ public class EmotionalAgentTest {
     private EmotionalConfigurator emotionalConfiguratorMock;
     private Emotion emotionMock;
     private Stimulus stimulusMock;
-    private JadeLogger loggerMock;
+    private AgentLogger loggerMock;
 
     @Before
     public void setUp() throws Exception {
         behaviourManagerMock = mock(BehaviourManager.class);
         emotionalConfiguratorMock = mock(EmotionalConfigurator.class);
-        loggerMock = mock(JadeLogger.class);
+        loggerMock = mock(AgentLogger.class);
         emotionalStateMock = mock(EmotionalState.class);
         behaviourMock = mock(Behaviour.class);
         emotionMock = mock(Emotion.class);

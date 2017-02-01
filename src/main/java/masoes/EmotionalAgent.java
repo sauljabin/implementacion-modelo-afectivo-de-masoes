@@ -6,7 +6,7 @@
 
 package masoes;
 
-import jade.JadeLogger;
+import agent.AgentLogger;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import masoes.model.BehaviourManager;
@@ -21,14 +21,14 @@ public class EmotionalAgent extends Agent {
 
     private BehaviourManager behaviourManager;
     private EmotionalConfigurator emotionalConfigurator;
-    private JadeLogger logger;
+    private AgentLogger logger;
 
     private Behaviour cognitiveBehaviour;
     private Behaviour imitativeBehaviour;
     private Behaviour reactiveBehaviour;
 
     public EmotionalAgent() {
-        logger = new JadeLogger(LoggerFactory.getLogger(EmotionalAgent.class));
+        logger = new AgentLogger(LoggerFactory.getLogger(EmotionalAgent.class));
         behaviourManager = new BehaviourManager();
         emotionalConfigurator = new EmotionalConfigurator();
     }

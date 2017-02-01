@@ -4,21 +4,19 @@
  * Please see the LICENSE.txt file
  */
 
-package ontology;
+package agent.ontology;
 
 import jade.content.AgentAction;
 
-public class LoadLanguage implements AgentAction {
+public class RemoveBehaviour implements AgentAction {
 
     private String name;
-    private String className;
 
-    public LoadLanguage() {
+    public RemoveBehaviour() {
     }
 
-    public LoadLanguage(String name, String className) {
+    public RemoveBehaviour(String name) {
         setName(name);
-        setClassName(className);
     }
 
     public String getName() {
@@ -27,14 +25,6 @@ public class LoadLanguage implements AgentAction {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
     }
 
 }
