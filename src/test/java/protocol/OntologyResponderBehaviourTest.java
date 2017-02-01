@@ -8,7 +8,6 @@ package protocol;
 
 import jade.content.ContentManager;
 import jade.content.Predicate;
-import jade.content.lang.sl.SLCodec;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
@@ -23,7 +22,6 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -68,9 +66,11 @@ public class OntologyResponderBehaviourTest {
 
     @Test
     public void shouldConfigContentManager() throws Exception {
-        ontologyResponderBehaviour.prepareAcceptanceResponse(request);
-        verify(contentManagerMock).registerOntology(ontologyMock);
-        verify(contentManagerMock).registerLanguage(isA(SLCodec.class));
+        String ontologyName = "ontologyName";
+        doReturn(ontologyName).when(ontologyMock).getName();
+        ontologyResponderBehaviour = new OntologyResponderBehaviour(agentMock, messageTemplateMock, ontologyMock);
+        assertThat(ontologyResponderBehaviour.getContentManager().getOntologyNames()[0], is(ontologyName));
+        assertThat(ontologyResponderBehaviour.getContentManager().getLanguageNames()[0], is(FIPANames.ContentLanguage.FIPA_SL));
     }
 
     @Test

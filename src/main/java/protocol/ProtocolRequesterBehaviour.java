@@ -18,13 +18,20 @@ import java.util.Vector;
 public class ProtocolRequesterBehaviour extends SimpleAchieveREInitiator {
 
     private AgentLogger logger;
+    private ACLMessage message;
 
     public ProtocolRequesterBehaviour(Agent agent, ACLMessage message) {
         super(agent, message);
+        this.message = message;
         logger = new AgentLogger(LoggerFactory.getLogger(ProtocolRequesterBehaviour.class));
     }
 
+    public ACLMessage getMessage() {
+        return message;
+    }
+
     public void setMessage(ACLMessage message) {
+        this.message = message;
         reset(message);
     }
 

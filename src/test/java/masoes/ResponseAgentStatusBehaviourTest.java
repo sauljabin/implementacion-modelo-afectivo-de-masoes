@@ -16,6 +16,7 @@ import masoes.conductual.EmotionalState;
 import ontology.masoes.AgentStatus;
 import ontology.masoes.EmotionStatus;
 import ontology.masoes.GetAgentStatus;
+import ontology.masoes.MasoesOntology;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,9 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -80,6 +84,12 @@ public class ResponseAgentStatusBehaviourTest {
     public void shouldReturnValidAgentAction() {
         Action action = new Action(new AID(), new GetAgentStatus());
         assertTrue(responseAgentStatusBehaviour.isValidAction(action));
+    }
+
+    @Test
+    public void shouldGetCorrectOntologyAndMessageTemplate() {
+        assertThat(responseAgentStatusBehaviour.getOntology(), is(instanceOf(MasoesOntology.class)));
+        assertThat(responseAgentStatusBehaviour.getMessageTemplate(), is(instanceOf(MasoesRequestMessageTemplate.class)));
     }
 
 }

@@ -20,19 +20,15 @@ import jade.lang.acl.MessageTemplate;
 
 public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
 
-    private MessageTemplate messageTemplate;
     private ContentManager contentManager;
     private Ontology ontology;
 
     public OntologyResponderBehaviour(Agent agent, MessageTemplate messageTemplate, Ontology ontology) {
         super(agent, messageTemplate);
-        this.messageTemplate = messageTemplate;
         this.ontology = ontology;
         contentManager = new ContentManager();
-    }
-
-    public MessageTemplate getMessageTemplate() {
-        return messageTemplate;
+        contentManager.registerLanguage(new SLCodec());
+        contentManager.registerOntology(ontology);
     }
 
     public ContentManager getContentManager() {
@@ -45,8 +41,6 @@ public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
 
     @Override
     protected final ACLMessage prepareAcceptanceResponse(ACLMessage request) throws NotUnderstoodException, RefuseException {
-        contentManager.registerLanguage(new SLCodec());
-        contentManager.registerOntology(ontology);
         ACLMessage response = request.createReply();
         Action action;
 

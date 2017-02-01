@@ -11,6 +11,7 @@ import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.core.AID;
 import ontology.masoes.EvaluateStimulus;
+import ontology.masoes.MasoesOntology;
 import ontology.masoes.Stimulus;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,6 +51,12 @@ public class StimulusReceiverBehaviourTest {
     public void shouldReturnValidAgentAction() {
         Action action = new Action(new AID(), new EvaluateStimulus());
         assertTrue(stimulusReceiverBehaviour.isValidAction(action));
+    }
+
+    @Test
+    public void shouldGetCorrectOntologyAndMessageTemplate() {
+        assertThat(stimulusReceiverBehaviour.getOntology(), is(instanceOf(MasoesOntology.class)));
+        assertThat(stimulusReceiverBehaviour.getMessageTemplate(), is(instanceOf(MasoesRequestMessageTemplate.class)));
     }
 
 }

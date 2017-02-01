@@ -16,6 +16,7 @@ import jade.util.leap.List;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.Setting;
+import ontology.settings.SettingsOntology;
 import ontology.settings.SystemSettings;
 import org.junit.Before;
 import org.junit.Rule;
@@ -25,6 +26,9 @@ import org.junit.rules.ExpectedException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -37,7 +41,7 @@ public class ResponseSettingsBehaviourTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     private Agent agentMock;
-    private ResponseSettingsBehaviour settingsBehaviour;
+    private ResponseSettingsBehaviour responseSettingsBehaviour;
     private ApplicationSettings applicationSettingsMock;
     private JadeSettings jadeSettingsMock;
 
@@ -47,9 +51,9 @@ public class ResponseSettingsBehaviourTest {
         applicationSettingsMock = mock(ApplicationSettings.class);
         jadeSettingsMock = mock(JadeSettings.class);
 
-        settingsBehaviour = new ResponseSettingsBehaviour(agentMock);
-        setFieldValue(settingsBehaviour, "applicationSettings", applicationSettingsMock);
-        setFieldValue(settingsBehaviour, "jadeSettings", jadeSettingsMock);
+        responseSettingsBehaviour = new ResponseSettingsBehaviour(agentMock);
+        setFieldValue(responseSettingsBehaviour, "applicationSettings", applicationSettingsMock);
+        setFieldValue(responseSettingsBehaviour, "jadeSettings", jadeSettingsMock);
     }
 
     @Test
@@ -77,7 +81,7 @@ public class ResponseSettingsBehaviourTest {
         doReturn(null).when(jadeSettingsMock).get(key);
         GetSetting getSetting = new GetSetting(key);
         Action action = new Action(new AID(), getSetting);
-        settingsBehaviour.performAction(action);
+        responseSettingsBehaviour.performAction(action);
     }
 
     @Test
@@ -105,7 +109,7 @@ public class ResponseSettingsBehaviourTest {
         );
 
         Action action = new Action(new AID(), new GetAllSettings());
-        SystemSettings systemSettings = (SystemSettings) settingsBehaviour.performAction(action);
+        SystemSettings systemSettings = (SystemSettings) responseSettingsBehaviour.performAction(action);
         assertReflectionEquals(expectedSetting.getSettings().toArray(), systemSettings.getSettings().toArray());
     }
 
@@ -113,16 +117,22 @@ public class ResponseSettingsBehaviourTest {
     public void shouldReturnValidAgentAction() {
         Action actionGetSetting = new Action(new AID(), new GetSetting());
         Action actionGetAllSettings = new Action(new AID(), new GetAllSettings());
-        assertTrue(settingsBehaviour.isValidAction(actionGetSetting));
-        assertTrue(settingsBehaviour.isValidAction(actionGetAllSettings));
+        assertTrue(responseSettingsBehaviour.isValidAction(actionGetSetting));
+        assertTrue(responseSettingsBehaviour.isValidAction(actionGetAllSettings));
     }
 
     private void testReturnASettings(String key, String expectedValue) {
         GetSetting getSetting = new GetSetting(key);
         Action action = new Action(new AID(), getSetting);
-        SystemSettings systemSettings = (SystemSettings) settingsBehaviour.performAction(action);
+        SystemSettings systemSettings = (SystemSettings) responseSettingsBehaviour.performAction(action);
         Setting expectedSetting = new Setting(key, expectedValue);
         assertReflectionEquals(expectedSetting, systemSettings.getSettings().get(0));
+    }
+
+    @Test
+    public void shouldGetCorrectOntologyAndMessageTemplate() {
+        assertThat(responseSettingsBehaviour.getOntology(), is(instanceOf(SettingsOntology.class)));
+        assertThat(responseSettingsBehaviour.getMessageTemplate(), is(instanceOf(SettingsRequestMessageTemplate.class)));
     }
 
 }

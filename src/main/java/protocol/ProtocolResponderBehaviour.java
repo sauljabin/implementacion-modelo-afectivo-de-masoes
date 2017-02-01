@@ -20,13 +20,20 @@ import util.ToStringBuilder;
 public class ProtocolResponderBehaviour extends SimpleAchieveREResponder {
 
     private AgentLogger logger;
+    private MessageTemplate messageTemplate;
 
     public ProtocolResponderBehaviour(Agent agent, MessageTemplate messageTemplate) {
         super(agent, messageTemplate);
+        this.messageTemplate = messageTemplate;
         logger = new AgentLogger(LoggerFactory.getLogger(ProtocolResponderBehaviour.class));
     }
 
+    public MessageTemplate getMessageTemplate() {
+        return messageTemplate;
+    }
+
     public void setMessageTemplate(MessageTemplate messageTemplate) {
+        this.messageTemplate = messageTemplate;
         reset(messageTemplate);
     }
 
