@@ -39,12 +39,12 @@ public class ApplicationLoggerTest {
         applicationLogger = new ApplicationLogger(loggerMock);
 
         expectedApplicationSettingsMap = new HashMap<>();
-        expectedApplicationSettingsMap.put("key", "value");
+        expectedApplicationSettingsMap.put("application", "value");
         doReturn(expectedApplicationSettingsMap).when(applicationSettingsMock).toMap();
         doCallRealMethod().when(applicationSettingsMock).toString();
 
         expectedJadeSettingsMap = new HashMap<>();
-        expectedJadeSettingsMap.put("key", "value");
+        expectedJadeSettingsMap.put("jade", "value");
         doReturn(expectedJadeSettingsMap).when(jadeSettingsMock).toMap();
         doCallRealMethod().when(jadeSettingsMock).toString();
 
@@ -56,7 +56,7 @@ public class ApplicationLoggerTest {
     public void shouldLogStartingAppWithArgs() {
         String[] args = {"-h"};
         applicationLogger.startingApplication(args);
-        verify(loggerMock).info(eq("Starting application with arguments: [-h], settings: " + expectedApplicationSettingsMap.toString() + ", jade settings: " + expectedJadeSettingsMap.toString()));
+        verify(loggerMock).info(eq("Starting application with arguments: [-h], settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString()));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class ApplicationLoggerTest {
     @Test
     public void shouldLogUpdatedSettings() {
         applicationLogger.updatedSettings();
-        verify(loggerMock).info(eq("Updated settings: " + expectedApplicationSettingsMap.toString() + ", jade settings: " + expectedJadeSettingsMap.toString()));
+        verify(loggerMock).info(eq("Updated settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString()));
     }
 
     @Test
@@ -98,7 +98,7 @@ public class ApplicationLoggerTest {
     @Test
     public void shouldLogStartingApp() {
         applicationLogger.startingApplication();
-        verify(loggerMock).info(eq("Starting application with settings: " + expectedApplicationSettingsMap.toString() + ", jade settings: " + expectedJadeSettingsMap.toString()));
+        verify(loggerMock).info(eq("Starting application with settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString()));
     }
 
 }

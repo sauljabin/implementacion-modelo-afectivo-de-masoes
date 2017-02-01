@@ -31,7 +31,7 @@ public class ApplicationLogger {
     public void startingApplication(String[] args) {
         new LogWriter()
                 .message("Starting application with arguments: %s, settings: %s, jade settings: %s")
-                .args(Arrays.toString(args), applicationSettings.toMap().toString(), jadeSettings.toMap().toString())
+                .args(Arrays.toString(args), applicationSettings.toString(), jadeSettings.toString())
                 .info(logger);
     }
 
@@ -59,7 +59,7 @@ public class ApplicationLogger {
     public void updatedSettings() {
         new LogWriter()
                 .message("Updated settings: %s, jade settings: %s")
-                .args(applicationSettings.toMap().toString(), jadeSettings.toMap().toString())
+                .args(applicationSettings.toString(), jadeSettings.toString())
                 .info(logger);
     }
 
@@ -74,7 +74,7 @@ public class ApplicationLogger {
     public void startingApplication() {
         new LogWriter()
                 .message("Starting application with settings: %s, jade settings: %s")
-                .args(applicationSettings.toMap().toString(), jadeSettings.toMap().toString())
+                .args(applicationSettings.toString(), jadeSettings.toString())
                 .info(logger);
     }
 
