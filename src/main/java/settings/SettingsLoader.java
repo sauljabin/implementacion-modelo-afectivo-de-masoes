@@ -6,8 +6,7 @@
 
 package settings;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import util.ToStringBuilder;
 
 import java.util.Map;
 import java.util.Optional;
@@ -56,7 +55,7 @@ public class SettingsLoader {
 
     @Override
     public synchronized String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        return new ToStringBuilder()
                 .append("settings", toMap())
                 .toString();
     }

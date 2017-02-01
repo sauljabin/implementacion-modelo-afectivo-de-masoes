@@ -13,10 +13,9 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.LoggerFactory;
 import settings.ontology.SettingsOntology;
+import util.ToStringBuilder;
 
 public class SettingsAgent extends Agent {
 
@@ -57,7 +56,7 @@ public class SettingsAgent extends Agent {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        return new ToStringBuilder()
                 .append("aid", getAID())
                 .toString();
     }

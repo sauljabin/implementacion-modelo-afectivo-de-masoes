@@ -9,8 +9,7 @@ package settings.ontology;
 import jade.content.onto.BeanOntology;
 import ontology.BaseOntology;
 import ontology.SetupOntologyException;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import util.ToStringBuilder;
 
 public class SettingsOntology extends BeanOntology {
 
@@ -27,7 +26,7 @@ public class SettingsOntology extends BeanOntology {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        return new ToStringBuilder()
                 .append("name", getName())
                 .append("actions", getActionNames().toArray())
                 .append("predicates", getPredicateNames().toArray())

@@ -7,8 +7,7 @@
 package settings.ontology;
 
 import jade.content.AgentAction;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import util.ToStringBuilder;
 
 public class GetSetting implements AgentAction {
 
@@ -31,7 +30,7 @@ public class GetSetting implements AgentAction {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        return new ToStringBuilder()
                 .append("key", key)
                 .toString();
     }

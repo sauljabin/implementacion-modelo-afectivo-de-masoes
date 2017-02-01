@@ -8,8 +8,7 @@ package ontology;
 
 import jade.content.onto.BasicOntology;
 import jade.content.onto.BeanOntology;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import util.ToStringBuilder;
 
 public class BaseOntology extends BeanOntology {
 
@@ -26,7 +25,7 @@ public class BaseOntology extends BeanOntology {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        return new ToStringBuilder()
                 .append("name", getName())
                 .append("actions", getActionNames().toArray())
                 .append("predicates", getPredicateNames().toArray())

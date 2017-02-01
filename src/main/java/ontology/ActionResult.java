@@ -8,8 +8,7 @@ package ontology;
 
 import jade.content.AgentAction;
 import jade.content.Predicate;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import util.ToStringBuilder;
 
 public class ActionResult implements Predicate {
 
@@ -42,7 +41,7 @@ public class ActionResult implements Predicate {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        return new ToStringBuilder()
                 .append("result", result)
                 .append("action", action)
                 .toString();

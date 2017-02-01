@@ -8,8 +8,7 @@ package ontology;
 
 import jade.content.AgentAction;
 import jade.util.leap.List;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import util.ToStringBuilder;
 
 public class PerformAction implements AgentAction {
 
@@ -46,7 +45,7 @@ public class PerformAction implements AgentAction {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        return new ToStringBuilder()
                 .append("action", action)
                 .append("arguments", arguments)
                 .toString();

@@ -14,9 +14,8 @@ import masoes.model.Emotion;
 import masoes.model.EmotionalConfigurator;
 import masoes.model.EmotionalState;
 import masoes.ontology.Stimulus;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.LoggerFactory;
+import util.ToStringBuilder;
 
 public class EmotionalAgent extends Agent {
 
@@ -91,7 +90,7 @@ public class EmotionalAgent extends Agent {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        return new ToStringBuilder()
                 .append("aid", getAID())
                 .append("behaviour", getCurrentEmotionalBehaviour())
                 .append("emotion", getCurrentEmotion())

@@ -28,8 +28,10 @@ public class ToStringBuilder {
         return this;
     }
 
-    public ToStringBuilder field(String name, Object object) {
-        objects.put(name, object);
+    public ToStringBuilder append(String name, Object object) {
+        if (Optional.ofNullable(object).isPresent()) {
+            objects.put(name, object);
+        }
         return this;
     }
 

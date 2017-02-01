@@ -8,9 +8,7 @@ package settings.ontology;
 
 import jade.content.Predicate;
 import jade.util.leap.List;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
+import util.ToStringBuilder;
 
 public class SystemSettings implements Predicate {
 
@@ -33,7 +31,7 @@ public class SystemSettings implements Predicate {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        return new ToStringBuilder()
                 .append("settings", settings.toArray())
                 .toString();
     }

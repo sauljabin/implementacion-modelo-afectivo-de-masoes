@@ -14,9 +14,8 @@ import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.LoggerFactory;
+import util.ToStringBuilder;
 
 public class ProtocolResponderBehaviour extends SimpleAchieveREResponder {
 
@@ -78,7 +77,7 @@ public class ProtocolResponderBehaviour extends SimpleAchieveREResponder {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        return new ToStringBuilder()
                 .append("name", getBehaviourName())
                 .toString();
     }

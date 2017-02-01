@@ -33,6 +33,11 @@ public class ToStringBuilderTest {
     }
 
     @Test
+    public void shouldNotIncludeNullField() throws Exception {
+        assertThat(toStringBuilder.append("field", null).toString(), isEmptyString());
+    }
+
+    @Test
     public void shouldIncludeClassNameInString() {
         Object object = new Object();
         assertThat(toStringBuilder.object(object).toString(), is(object.getClass().getSimpleName()));
@@ -40,15 +45,15 @@ public class ToStringBuilderTest {
 
     @Test
     public void shouldIncludeField() throws Exception {
-        String actual = toStringBuilder.field("expectedName", "expectedStringObject").toString();
+        String actual = toStringBuilder.append("expectedName", "expectedStringObject").toString();
         assertThat(actual, is("[expectedName=expectedStringObject]"));
     }
 
     @Test
     public void shouldIncludeTwoField() throws Exception {
         String actual = toStringBuilder
-                .field("expectedName", "expectedStringObject")
-                .field("expectedName2", "expectedStringObject2")
+                .append("expectedName", "expectedStringObject")
+                .append("expectedName2", "expectedStringObject2")
                 .toString();
         assertThat(actual, is("[expectedName=expectedStringObject, expectedName2=expectedStringObject2]"));
     }
@@ -58,7 +63,7 @@ public class ToStringBuilderTest {
         Object object = new Object();
         String actual = toStringBuilder
                 .object(object)
-                .field("expectedName", "expectedStringObject")
+                .append("expectedName", "expectedStringObject")
                 .toString();
         assertThat(actual, is("Object[expectedName=expectedStringObject]"));
     }
@@ -67,7 +72,7 @@ public class ToStringBuilderTest {
     public void shouldIncludeArrayField() throws Exception {
         String[] arrayObject = {"A", "B"};
         String actual = toStringBuilder
-                .field("expectedName", arrayObject)
+                .append("expectedName", arrayObject)
                 .toString();
         assertThat(actual, is("[expectedName=[A, B]]"));
     }
@@ -76,7 +81,7 @@ public class ToStringBuilderTest {
     public void shouldIncludeIntArrayField() throws Exception {
         int[] arrayObject = {1, 2};
         String actual = toStringBuilder
-                .field("expectedName", arrayObject)
+                .append("expectedName", arrayObject)
                 .toString();
         assertThat(actual, is("[expectedName=[1, 2]]"));
     }
@@ -85,7 +90,7 @@ public class ToStringBuilderTest {
     public void shouldIncludeDoubleArrayField() throws Exception {
         double[] arrayObject = {1.3, 2.};
         String actual = toStringBuilder
-                .field("expectedName", arrayObject)
+                .append("expectedName", arrayObject)
                 .toString();
         assertThat(actual, is("[expectedName=[1.3, 2.0]]"));
     }
@@ -94,7 +99,7 @@ public class ToStringBuilderTest {
     public void shouldIncludeLongArrayField() throws Exception {
         long[] arrayObject = {100, 200};
         String actual = toStringBuilder
-                .field("expectedName", arrayObject)
+                .append("expectedName", arrayObject)
                 .toString();
         assertThat(actual, is("[expectedName=[100, 200]]"));
     }
@@ -103,7 +108,7 @@ public class ToStringBuilderTest {
     public void shouldIncludeBooleanArrayField() throws Exception {
         boolean[] arrayObject = {true, false};
         String actual = toStringBuilder
-                .field("expectedName", arrayObject)
+                .append("expectedName", arrayObject)
                 .toString();
         assertThat(actual, is("[expectedName=[true, false]]"));
     }
@@ -112,7 +117,7 @@ public class ToStringBuilderTest {
     public void shouldIncludeByteArrayField() throws Exception {
         byte[] arrayObject = {1, 2};
         String actual = toStringBuilder
-                .field("expectedName", arrayObject)
+                .append("expectedName", arrayObject)
                 .toString();
         assertThat(actual, is("[expectedName=[1, 2]]"));
     }
@@ -121,7 +126,7 @@ public class ToStringBuilderTest {
     public void shouldIncludeShortArrayField() throws Exception {
         short[] arrayObject = {1, 2};
         String actual = toStringBuilder
-                .field("expectedName", arrayObject)
+                .append("expectedName", arrayObject)
                 .toString();
         assertThat(actual, is("[expectedName=[1, 2]]"));
     }
@@ -130,7 +135,7 @@ public class ToStringBuilderTest {
     public void shouldIncludeFloatArrayField() throws Exception {
         float[] arrayObject = {1.1F, 2.2F};
         String actual = toStringBuilder
-                .field("expectedName", arrayObject)
+                .append("expectedName", arrayObject)
                 .toString();
         assertThat(actual, is("[expectedName=[1.1, 2.2]]"));
     }
@@ -139,7 +144,7 @@ public class ToStringBuilderTest {
     public void shouldIncludeCharArrayField() throws Exception {
         char[] arrayObject = {'A', 'B'};
         String actual = toStringBuilder
-                .field("expectedName", arrayObject)
+                .append("expectedName", arrayObject)
                 .toString();
         assertThat(actual, is("[expectedName=[A, B]]"));
     }
@@ -147,7 +152,7 @@ public class ToStringBuilderTest {
     @Test
     public void shouldIncludeListField() throws Exception {
         String actual = toStringBuilder
-                .field("expectedName", Arrays.asList("A", "B"))
+                .append("expectedName", Arrays.asList("A", "B"))
                 .toString();
         assertThat(actual, is("[expectedName=[A, B]]"));
     }
@@ -155,7 +160,7 @@ public class ToStringBuilderTest {
     @Test
     public void shouldIncludeDoubleListField() throws Exception {
         String actual = toStringBuilder
-                .field("expectedName", Arrays.asList(1.1, 2.2))
+                .append("expectedName", Arrays.asList(1.1, 2.2))
                 .toString();
         assertThat(actual, is("[expectedName=[1.1, 2.2]]"));
     }
@@ -164,7 +169,7 @@ public class ToStringBuilderTest {
     public void shouldIncludeIntListField() throws Exception {
         List<Integer> object = Arrays.asList(1, 2);
         String actual = toStringBuilder
-                .field("expectedName", object)
+                .append("expectedName", object)
                 .toString();
         assertThat(actual, is("[expectedName=[1, 2]]"));
     }
@@ -175,7 +180,7 @@ public class ToStringBuilderTest {
         map.put("1", "A");
         map.put("2", "B");
         String actual = toStringBuilder
-                .field("expectedName", map)
+                .append("expectedName", map)
                 .toString();
         assertThat(actual, is("[expectedName=[1=A, 2=B]]"));
     }
