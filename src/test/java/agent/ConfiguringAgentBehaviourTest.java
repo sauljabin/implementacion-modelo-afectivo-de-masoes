@@ -60,13 +60,13 @@ public class ConfiguringAgentBehaviourTest {
     public void shouldAddBehavior() throws Exception {
         String behaviourName = "behaviourName";
         Action action = new Action();
-        AddBehaviour addBehaviour = new AddBehaviour(behaviourName, DummyBehaviour.class.getCanonicalName());
+        AddBehaviour addBehaviour = new AddBehaviour(behaviourName, SimpleBehaviour.class.getCanonicalName());
         action.setAction(addBehaviour);
 
         Predicate predicate = configuringAgentBehaviour.performAction(action);
 
-        verify(agentMock).addBehaviour(isA(DummyBehaviour.class));
-        verify(behavioursMock).put(eq(behaviourName), isA(DummyBehaviour.class));
+        verify(agentMock).addBehaviour(isA(SimpleBehaviour.class));
+        verify(behavioursMock).put(eq(behaviourName), isA(SimpleBehaviour.class));
         assertThat(predicate, is(instanceOf(Done.class)));
     }
 

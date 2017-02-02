@@ -34,7 +34,10 @@ public class ConfiguringAgentBehaviour extends OntologyResponderBehaviour {
 
     @Override
     public boolean isValidAction(Action action) {
-        return Arrays.asList(RemoveBehaviour.class, AddBehaviour.class).contains(action.getAction().getClass());
+        return Arrays.asList(
+                RemoveBehaviour.class,
+                AddBehaviour.class
+        ).contains(action.getAction().getClass());
     }
 
     @Override

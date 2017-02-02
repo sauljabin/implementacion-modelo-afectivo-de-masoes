@@ -8,7 +8,7 @@ package agent;
 
 import jade.core.behaviours.Behaviour;
 
-public class DummyBehaviour extends Behaviour {
+public class SimpleBehaviour extends Behaviour {
 
     @Override
     public void action() {

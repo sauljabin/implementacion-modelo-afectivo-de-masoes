@@ -6,5 +6,13 @@
 
 package agent;
 
-public class ConfigurableAgent {
+import jade.core.Agent;
+
+public class ConfigurableAgent extends Agent {
+
+    @Override
+    protected void setup() {
+        addBehaviour(new ConfiguringAgentBehaviour(this));
+    }
+
 }
