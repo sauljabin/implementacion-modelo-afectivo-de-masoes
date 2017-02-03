@@ -12,7 +12,6 @@ public class Test2 extends FunctionalTest {
 
     @Override
     public void setUp() {
-        System.out.println("========================> " + this.getClass().getCanonicalName());
     }
 
     @Override

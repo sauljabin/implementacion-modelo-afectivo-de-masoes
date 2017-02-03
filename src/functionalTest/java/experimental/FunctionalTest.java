@@ -15,25 +15,37 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class FunctionalTest extends Behaviour {
 
     private static final int TIMEOUT = 4000;
+    private static final String PASSED = "PASSED";
+    private static final String FAILED = "FAILED";
     private List<AID> agentsToKill;
     private AgentLogger logger;
     private AgentProtocolAssistant agentProtocolAssistant;
+    private boolean passed;
+    private String failedMessage;
 
     @Override
     public void onStart() {
+        passed = true;
+        failedMessage = "";
         agentsToKill = new ArrayList<>();
         logger = new AgentLogger(LoggerFactory.getLogger(FunctionalTest.class));
         agentProtocolAssistant = new AgentProtocolAssistant(myAgent, TIMEOUT);
-
-        setUp();
+        try {
+            setUp();
+        } catch (Exception e) {
+            failed(e.getMessage());
+        }
     }
 
     @Override
     public int onEnd() {
+        logResult();
+        getTesterAgent().registerTest(passed);
         agentsToKill.forEach(aid -> {
             try {
                 killAgent(aid);
@@ -44,13 +56,43 @@ public abstract class FunctionalTest extends Behaviour {
         return 0;
     }
 
+    private void logResult() {
+        log("");
+        log(String.format("%s > %s", getClass().getCanonicalName(), passed ? PASSED : FAILED));
+
+        if (!passed && !Optional.ofNullable(failedMessage).orElse("").isEmpty()) {
+            log(failedMessage);
+        }
+    }
+
+    private TesterAgent getTesterAgent() {
+        return (TesterAgent) myAgent;
+    }
+
+    public void failed() {
+        failed("");
+    }
+
+    public void failed(String message) {
+        passed = false;
+        failedMessage = message;
+    }
+
+    public void log(String message) {
+        System.out.println(message);
+    }
+
     public abstract void setUp();
 
     public abstract void performTest();
 
     @Override
     public void action() {
-        performTest();
+        try {
+            performTest();
+        } catch (Exception e) {
+            failed(e.getMessage());
+        }
     }
 
     @Override

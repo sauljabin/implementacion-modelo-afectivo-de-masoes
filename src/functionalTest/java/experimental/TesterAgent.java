@@ -19,13 +19,37 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 public class TesterAgent extends Agent {
 
-    private static final int FAILURE = -1;
+    private static final int FAILURE = 1;
     private AgentLogger logger = new AgentLogger(LoggerFactory.getLogger(TesterAgent.class));
+    private int totalTests;
+    private int failedTests;
 
     @Override
     protected void setup() {
+        totalTests = 0;
+        failedTests = 0;
+        try {
+            loadTests();
+        } catch (Exception e) {
+            logException(e);
+            doDelete();
+        }
+    }
+
+    private void logException(Exception e) {
+        log("");
+        logger.exception(this, e);
+        log("");
+    }
+
+    public void log(String message) {
+        System.out.println(message);
+    }
+
+    private void loadTests() {
         SequentialBehaviour sequentialBehaviour = new SequentialBehaviour(this);
 
         Set<Class<?>> subTypes = getTestClasses();
@@ -70,14 +94,26 @@ public class TesterAgent extends Agent {
         return classList;
     }
 
+    public void registerTest(boolean passed) {
+        totalTests++;
+        if (!passed) {
+            failedTests++;
+        }
+    }
+
     @Override
     protected void takeDown() {
         new Thread(() -> {
             try {
+                log("");
                 getContainerController().kill();
+                if (failedTests > 0) {
+                    log(String.format("%d tests completed, %d failed", totalTests, failedTests));
+                    log("");
+                    System.exit(FAILURE);
+                }
             } catch (Exception e) {
-                logger.exception(this, e);
-                System.exit(FAILURE);
+                logException(e);
             }
         }).start();
     }
