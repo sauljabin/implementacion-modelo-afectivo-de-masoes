@@ -80,6 +80,9 @@ test {
 }
 
 task(functionalTest, type: JavaExec) {
-    main = 'functional.test.FunctionalTestMain'
+    main = mainClassName
+    if (project.hasProperty(argsProperty)) {
+        args(processArguments(project.property(argsProperty)))
+    }
     classpath = sourceSets.functionalTest.runtimeClasspath
 }

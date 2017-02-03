@@ -29,7 +29,7 @@ uncopyrighted: ; @grep --include *.java -Lr "Copyright (c) 2016 Saúl Piña <sau
 unit-tests: ; @./gradlew test
 
 # target functional-tests:    Exec functional test.
-functional-tests: ; @./gradlew -q functionalTest
+functional-tests: ; @./gradlew -q functionalTest -Pargs="-Jgui=false -Smasoes.env=test -Jagents=tester:experimental.TesterAgent($(tests))"
 
 # target tests:               Exec all test.
 tests: unit-tests functional-tests

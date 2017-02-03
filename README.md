@@ -222,6 +222,7 @@ Ejecución de pruebas funcionales:
 
 ```
 make functional-tests
+make functional-tests tests=package.Class
 ```
 
 Ejecución de todas las pruebas:

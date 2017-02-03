@@ -16,7 +16,8 @@ public class Test2 extends FunctionalTest {
     }
 
     @Override
-    public void action() {
+    public void performTest() {
 
     }
+
 }

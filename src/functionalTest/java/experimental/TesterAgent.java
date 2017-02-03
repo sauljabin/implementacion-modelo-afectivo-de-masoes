@@ -15,7 +15,7 @@ import org.reflections.Reflections;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.Optional;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,20 +49,25 @@ public class TesterAgent extends Agent {
     }
 
     private Set<Class<?>> getTestClasses() {
-        Optional<Object[]> optionalArguments = Optional.ofNullable(getArguments());
-        if (optionalArguments.isPresent() && optionalArguments.get().length > 0) {
-            return Arrays.asList(optionalArguments.get()).stream().map(arg -> {
-                String className = (String) arg;
-                try {
-                    return Class.forName(className);
-                } catch (Exception e) {
-                    throw new FunctionalTestException("Error adding FunctionalTest behaviour", e);
-                }
-            }).collect(Collectors.toSet());
-        } else {
-            Reflections reflections = new Reflections("experimental");
-            return reflections.getSubTypesOf(FunctionalTest.class).stream().collect(Collectors.toSet());
+        Set<Class<?>> classList = new HashSet<>();
+        if (getArguments() != null) {
+            classList = Arrays.asList(getArguments())
+                    .stream()
+                    .filter(arg -> !arg.toString().isEmpty())
+                    .map(arg -> {
+                        String className = (String) arg;
+                        try {
+                            return Class.forName(className);
+                        } catch (Exception e) {
+                            throw new FunctionalTestException("Error adding FunctionalTest behaviour", e);
+                        }
+                    }).collect(Collectors.toSet());
         }
+        if (classList.isEmpty()) {
+            Reflections reflections = new Reflections("experimental");
+            classList = reflections.getSubTypesOf(FunctionalTest.class).stream().collect(Collectors.toSet());
+        }
+        return classList;
     }
 
     @Override
