@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.lang.reflect.Field;
 
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.unitils.util.ReflectionUtils.getFieldValue;
@@ -81,7 +82,7 @@ public class StopWatchTest {
         stopWatch.start();
         long sleep = 200L;
         Thread.sleep(sleep);
-        assertThat(stopWatch.getTime(), is(greaterThan(sleep)));
+        assertThat(stopWatch.getTime(), is(greaterThanOrEqualTo(sleep)));
     }
 
 }

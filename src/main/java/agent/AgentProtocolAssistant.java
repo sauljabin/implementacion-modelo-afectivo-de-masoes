@@ -11,6 +11,7 @@ import jade.content.ContentElement;
 import jade.content.ContentManager;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.Ontology;
+import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.core.Agent;
@@ -20,7 +21,6 @@ import jade.domain.FIPANames;
 import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
 import jade.domain.JADEAgentManagement.KillAgent;
-import jade.domain.JADEAgentManagement.KillContainer;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import ontology.configurable.AddBehaviour;
@@ -90,8 +90,10 @@ public class AgentProtocolAssistant {
     public void sendRequestAction(AID receiver, AgentAction agentAction, String ontology) {
         ACLMessage request = createRequestMessage(receiver, ontology);
 
+        Action action = new Action(receiver, agentAction);
+
         try {
-            contentManager.fillContent(request, agentAction);
+            contentManager.fillContent(request, action);
         } catch (Exception e) {
             throw new FillOntologyContentException(e);
         }
@@ -131,18 +133,6 @@ public class AgentProtocolAssistant {
 
         if (!(contentElement instanceof Done)) {
             throw new InvalidResponseException("Unknown notification: " + response.getContent());
-        }
-    }
-
-    public void killContainer() {
-        try {
-            ACLMessage request = createRequestMessage(agent.getAMS(), JADEManagementOntology.NAME);
-            KillContainer content = new KillContainer();
-            content.setContainer((ContainerID) agent.here());
-            contentManager.fillContent(request, content);
-            agent.send(request);
-        } catch (Exception e) {
-            throw new FillOntologyContentException(e);
         }
     }
 

@@ -7,17 +7,10 @@
 package experimental;
 
 import agent.AgentLogger;
-import jade.content.lang.sl.SLCodec;
-import jade.content.onto.basic.Action;
 import jade.core.Agent;
-import jade.core.ContainerID;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
-import jade.domain.FIPANames;
-import jade.domain.JADEAgentManagement.JADEManagementOntology;
-import jade.domain.JADEAgentManagement.KillContainer;
-import jade.lang.acl.ACLMessage;
 import org.reflections.Reflections;
 import org.slf4j.LoggerFactory;
 
@@ -28,13 +21,11 @@ import java.util.stream.Collectors;
 
 public class TesterAgent extends Agent {
 
+    private static final int FAILURE = -1;
     private AgentLogger logger = new AgentLogger(LoggerFactory.getLogger(TesterAgent.class));
 
     @Override
     protected void setup() {
-        getContentManager().registerOntology(JADEManagementOntology.getInstance());
-        getContentManager().registerLanguage(new SLCodec(0));
-
         SequentialBehaviour sequentialBehaviour = new SequentialBehaviour(this);
 
         Set<Class<?>> subTypes = getTestClasses();
@@ -76,22 +67,14 @@ public class TesterAgent extends Agent {
 
     @Override
     protected void takeDown() {
-        ContainerID container = (ContainerID) here();
-        KillContainer killContainer = new KillContainer();
-        killContainer.setContainer(container);
-
-        try {
-            ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-            message.setSender(getAID());
-            message.addReceiver(getAMS());
-            message.setOntology(JADEManagementOntology.NAME);
-            message.setLanguage(FIPANames.ContentLanguage.FIPA_SL0);
-            getContentManager().fillContent(message, new Action(getAMS(), killContainer));
-            send(message);
-        } catch (Exception e) {
-            logger.exception(this, e);
-            throw new FunctionalTestException(String.format("Error killing container \"%s\"", container), e);
-        }
+        new Thread(() -> {
+            try {
+                getContainerController().kill();
+            } catch (Exception e) {
+                logger.exception(this, e);
+                System.exit(FAILURE);
+            }
+        }).start();
     }
 
 }

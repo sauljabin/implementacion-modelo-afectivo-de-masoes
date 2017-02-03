@@ -15,7 +15,7 @@ public class Test1 extends FunctionalTest {
     public void setUp() {
         System.out.println("========================> " + this.getClass().getCanonicalName());
         createAgent("newAgent", Agent.class);
-        myAgent.blockingReceive(5000);
+        myAgent.blockingReceive(1000);
     }
 
     @Override
