@@ -10,6 +10,7 @@ import jade.content.AgentAction;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
 import jade.content.lang.sl.SLCodec;
+import jade.content.onto.Ontology;
 import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.core.Agent;
@@ -25,9 +26,9 @@ import jade.lang.acl.MessageTemplate;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
-import org.apache.commons.lang.time.StopWatch;
 import protocol.ExtractOntologyContentException;
 import protocol.FillOntologyContentException;
+import util.StopWatch;
 import util.StringGenerator;
 
 import java.util.List;
@@ -70,7 +71,11 @@ public class AgentProtocolAssistant {
         return contentManager;
     }
 
-    public ACLMessage createRequestMessage(String ontology, AID receiver) {
+    public void registerOntology(Ontology ontology) {
+        contentManager.registerOntology(ontology);
+    }
+
+    public ACLMessage createRequestMessage(AID receiver, String ontology) {
         ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
         message.setSender(agent.getAID());
         message.addReceiver(receiver);
@@ -82,8 +87,8 @@ public class AgentProtocolAssistant {
         return message;
     }
 
-    public void sendRequestAction(String ontology, AgentAction agentAction, AID receiver) {
-        ACLMessage request = createRequestMessage(ontology, receiver);
+    public void sendRequestAction(AID receiver, AgentAction agentAction, String ontology) {
+        ACLMessage request = createRequestMessage(receiver, ontology);
 
         try {
             contentManager.fillContent(request, agentAction);
@@ -131,7 +136,7 @@ public class AgentProtocolAssistant {
 
     public void killContainer() {
         try {
-            ACLMessage request = createRequestMessage(JADEManagementOntology.NAME, agent.getAMS());
+            ACLMessage request = createRequestMessage(agent.getAMS(), JADEManagementOntology.NAME);
             KillContainer content = new KillContainer();
             content.setContainer((ContainerID) agent.here());
             contentManager.fillContent(request, content);
@@ -144,7 +149,7 @@ public class AgentProtocolAssistant {
     public void killAgent(AID agentToKill) {
         KillAgent content = new KillAgent();
         content.setAgent(agentToKill);
-        sendRequestAction(JADEManagementOntology.NAME, content, agent.getAMS());
+        sendRequestAction(agent.getAMS(), content, JADEManagementOntology.NAME);
     }
 
     public AID createAgent(String agentName, Class<? extends Agent> agentClass, List<String> arguments) {
@@ -157,7 +162,7 @@ public class AgentProtocolAssistant {
             arguments.forEach(arg -> content.addArguments(arg));
         }
 
-        sendRequestAction(JADEManagementOntology.NAME, content, agent.getAMS());
+        sendRequestAction(agent.getAMS(), content, JADEManagementOntology.NAME);
         return agent.getAID(agentName);
     }
 
@@ -191,7 +196,7 @@ public class AgentProtocolAssistant {
 
     public String addBehaviour(AID agent, String behaviourName, Class<? extends Behaviour> behaviourClass) {
         AddBehaviour content = new AddBehaviour(behaviourName, behaviourClass.getCanonicalName());
-        sendRequestAction(ConfigurableOntology.ONTOLOGY_NAME, content, agent);
+        sendRequestAction(agent, content, ConfigurableOntology.ONTOLOGY_NAME);
         return behaviourName;
     }
 
@@ -201,7 +206,7 @@ public class AgentProtocolAssistant {
 
     public void removeBehaviour(AID agent, String behaviourName) {
         RemoveBehaviour content = new RemoveBehaviour(behaviourName);
-        sendRequestAction(ConfigurableOntology.ONTOLOGY_NAME, content, agent);
+        sendRequestAction(agent, content, ConfigurableOntology.ONTOLOGY_NAME);
     }
 
 }

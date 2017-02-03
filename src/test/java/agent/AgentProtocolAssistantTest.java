@@ -9,6 +9,7 @@ package agent;
 import jade.content.AgentAction;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
+import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Done;
 import jade.core.AID;
@@ -25,7 +26,6 @@ import jade.lang.acl.MessageTemplate;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
-import org.apache.commons.lang.time.StopWatch;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -38,6 +38,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import protocol.ExtractOntologyContentException;
 import protocol.FillOntologyContentException;
+import util.StopWatch;
 import util.StringGenerator;
 
 import java.util.Arrays;
@@ -121,7 +122,7 @@ public class AgentProtocolAssistantTest {
     @Test
     public void shouldCreateCorrectMessageRequest() {
         String expectedOntology = "expectedOntology";
-        ACLMessage actual = agentProtocolAssistant.createRequestMessage(expectedOntology, aidAmsMock);
+        ACLMessage actual = agentProtocolAssistant.createRequestMessage(aidAmsMock, expectedOntology);
         assertThat(actual.getLanguage(), is(FIPANames.ContentLanguage.FIPA_SL));
         assertThat(actual.getOntology(), is(expectedOntology));
         assertThat(actual.getPerformative(), is(ACLMessage.REQUEST));
@@ -141,15 +142,15 @@ public class AgentProtocolAssistantTest {
         ACLMessage requestMock = mock(ACLMessage.class);
         ACLMessage responseMock = mock(ACLMessage.class);
 
-        doReturn(requestMock).when(agentProtocolAssistantSpy).createRequestMessage(expectedOntology, aidAmsMock);
+        doReturn(requestMock).when(agentProtocolAssistantSpy).createRequestMessage(aidAmsMock, expectedOntology);
         doReturn(expectedReplyWith).when(requestMock).getReplyWith();
         doReturn(ACLMessage.INFORM).when(responseMock).getPerformative();
         doReturn(responseMock).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
         doReturn(new Done()).when(contentManagerMock).extractContent(responseMock);
 
-        agentProtocolAssistantSpy.sendRequestAction(expectedOntology, agentActionMock, aidAmsMock);
+        agentProtocolAssistantSpy.sendRequestAction(aidAmsMock, agentActionMock, expectedOntology);
 
-        verify(agentProtocolAssistantSpy).createRequestMessage(expectedOntology, aidAmsMock);
+        verify(agentProtocolAssistantSpy).createRequestMessage(aidAmsMock, expectedOntology);
         verify(contentManagerMock).fillContent(requestMock, agentActionMock);
         verify(agentMock).send(requestMock);
 
@@ -172,7 +173,7 @@ public class AgentProtocolAssistantTest {
         doReturn(delayInAgree).when(stopWatchMock).getTime();
 
         agentProtocolAssistantSpy.setTimeout(timeout);
-        agentProtocolAssistantSpy.sendRequestAction("expectedOntology", mock(AgentAction.class), aidAmsMock);
+        agentProtocolAssistantSpy.sendRequestAction(aidAmsMock, mock(AgentAction.class), "expectedOntology");
 
         InOrder inOrder = inOrder(stopWatchMock, agentMock);
         inOrder.verify(stopWatchMock).reset();
@@ -184,6 +185,13 @@ public class AgentProtocolAssistantTest {
     }
 
     @Test
+    public void shouldRegisterOntologyIsNotExist() {
+        Ontology ontologyMock = mock(Ontology.class);
+        agentProtocolAssistantSpy.registerOntology(ontologyMock);
+        verify(contentManagerMock).registerOntology(ontologyMock);
+    }
+
+    @Test
     public void shouldWaitForInformAfterAgreeInSendRequestAction() throws Exception {
         ACLMessage responseMock = mock(ACLMessage.class);
         doReturn(ACLMessage.AGREE)
@@ -192,7 +200,7 @@ public class AgentProtocolAssistantTest {
                 .getPerformative();
         doReturn(responseMock).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
         doReturn(new Done()).when(contentManagerMock).extractContent(responseMock);
-        agentProtocolAssistantSpy.sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        agentProtocolAssistantSpy.sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
         verify(agentMock, times(2)).blockingReceive(any(MessageTemplate.class), anyLong());
     }
 
@@ -202,7 +210,7 @@ public class AgentProtocolAssistantTest {
         doThrow(new OntologyException(expectedMessage)).when(contentManagerMock).fillContent(any(ACLMessage.class), any(AgentAction.class));
         expectedException.expect(FillOntologyContentException.class);
         expectedException.expectMessage(expectedMessage);
-        agentProtocolAssistantSpy.sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        agentProtocolAssistantSpy.sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
     }
 
     @Test
@@ -211,7 +219,7 @@ public class AgentProtocolAssistantTest {
         doReturn(null).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
         expectedException.expect(TimeoutResponseException.class);
         expectedException.expectMessage(expectedMessage);
-        agentProtocolAssistantSpy.sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        agentProtocolAssistantSpy.sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
     }
 
     @Test
@@ -225,7 +233,7 @@ public class AgentProtocolAssistantTest {
                 .blockingReceive(any(MessageTemplate.class), anyLong());
         expectedException.expect(TimeoutResponseException.class);
         expectedException.expectMessage(expectedMessage);
-        agentProtocolAssistantSpy.sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        agentProtocolAssistantSpy.sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
     }
 
     @Test
@@ -235,7 +243,7 @@ public class AgentProtocolAssistantTest {
         ACLMessage responseMock = mock(ACLMessage.class);
         doReturn(ACLMessage.NOT_UNDERSTOOD).when(responseMock).getPerformative();
         doReturn(responseMock).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
-        agentProtocolAssistantSpy.sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        agentProtocolAssistantSpy.sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
     }
 
     @Test
@@ -247,7 +255,7 @@ public class AgentProtocolAssistantTest {
         doReturn(responseMock).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
         expectedException.expect(ExtractOntologyContentException.class);
         expectedException.expectMessage(expectedMessage);
-        agentProtocolAssistantSpy.sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        agentProtocolAssistantSpy.sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
     }
 
     @Test
@@ -260,15 +268,15 @@ public class AgentProtocolAssistantTest {
         doReturn(mock(ContentElement.class)).when(contentManagerMock).extractContent(responseMock);
         expectedException.expect(InvalidResponseException.class);
         expectedException.expectMessage("Unknown notification: " + expectedContent);
-        agentProtocolAssistantSpy.sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        agentProtocolAssistantSpy.sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
     }
 
     @Test
     public void shouldSendKillContainerMessage() throws Exception {
         ACLMessage requestMock = mock(ACLMessage.class);
-        doReturn(requestMock).when(agentProtocolAssistantSpy).createRequestMessage(JADEManagementOntology.NAME, aidAmsMock);
+        doReturn(requestMock).when(agentProtocolAssistantSpy).createRequestMessage(aidAmsMock, JADEManagementOntology.NAME);
         agentProtocolAssistantSpy.killContainer();
-        verify(agentProtocolAssistantSpy).createRequestMessage(JADEManagementOntology.NAME, aidAmsMock);
+        verify(agentProtocolAssistantSpy).createRequestMessage(aidAmsMock, JADEManagementOntology.NAME);
         verify(contentManagerMock).fillContent(eq(requestMock), agentActionArgumentCaptor.capture());
         verify(agentMock).send(requestMock);
 
@@ -290,10 +298,10 @@ public class AgentProtocolAssistantTest {
 
     @Test
     public void shouldSendKillAgentMessage() {
-        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
         AID aidToKillMock = mock(AID.class);
         agentProtocolAssistantSpy.killAgent(aidToKillMock);
-        verify(agentProtocolAssistantSpy).sendRequestAction(eq(JADEManagementOntology.NAME), agentActionArgumentCaptor.capture(), eq(aidAmsMock));
+        verify(agentProtocolAssistantSpy).sendRequestAction(eq(aidAmsMock), agentActionArgumentCaptor.capture(), eq(JADEManagementOntology.NAME));
         ContentElement contentElement = agentActionArgumentCaptor.getValue();
         assertThat(contentElement, is(instanceOf(KillAgent.class)));
         KillAgent killAgent = (KillAgent) contentElement;
@@ -308,11 +316,11 @@ public class AgentProtocolAssistantTest {
         Class<Agent> expectedAgentClass = Agent.class;
         String arg1 = "arg1";
 
-        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
         doReturn(newAgentMock).when(agentMock).getAID(expectedAgentName);
 
         AID newAgent = agentProtocolAssistantSpy.createAgent(expectedAgentName, expectedAgentClass, Arrays.asList(arg1));
-        verify(agentProtocolAssistantSpy).sendRequestAction(eq(JADEManagementOntology.NAME), agentActionArgumentCaptor.capture(), eq(aidAmsMock));
+        verify(agentProtocolAssistantSpy).sendRequestAction(eq(aidAmsMock), agentActionArgumentCaptor.capture(), eq(JADEManagementOntology.NAME));
 
         ContentElement contentElement = agentActionArgumentCaptor.getValue();
         assertThat(contentElement, is(instanceOf(CreateAgent.class)));
@@ -330,10 +338,10 @@ public class AgentProtocolAssistantTest {
         String expectedAgentName = "expectedAgentName";
         Class<Agent> expectedAgentClass = Agent.class;
 
-        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
 
         agentProtocolAssistantSpy.createAgent(expectedAgentName, expectedAgentClass, null);
-        verify(agentProtocolAssistantSpy).sendRequestAction(eq(JADEManagementOntology.NAME), agentActionArgumentCaptor.capture(), eq(aidAmsMock));
+        verify(agentProtocolAssistantSpy).sendRequestAction(eq(aidAmsMock), agentActionArgumentCaptor.capture(), eq(JADEManagementOntology.NAME));
 
         ContentElement contentElement = agentActionArgumentCaptor.getValue();
         assertThat(contentElement, is(instanceOf(CreateAgent.class)));
@@ -346,7 +354,7 @@ public class AgentProtocolAssistantTest {
     public void shouldSendCreateAgentWithoutArguments() {
         String expectedAgentName = "expectedAgentName";
         Class<Agent> expectedAgentClass = Agent.class;
-        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
         agentProtocolAssistantSpy.createAgent(expectedAgentName, expectedAgentClass);
         verify(agentProtocolAssistantSpy).createAgent(expectedAgentName, expectedAgentClass, null);
     }
@@ -354,7 +362,7 @@ public class AgentProtocolAssistantTest {
     @Test
     public void shouldCreateAgentWithRandomNameAndWithoutArguments() {
         Class<Agent> expectedAgentClass = Agent.class;
-        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
         agentProtocolAssistantSpy.createAgent(expectedAgentClass);
         verify(agentProtocolAssistantSpy).createAgent(RANDOM_STRING, expectedAgentClass, null);
     }
@@ -362,7 +370,7 @@ public class AgentProtocolAssistantTest {
     @Test
     public void shouldCreateAgentWithRandomName() {
         Class<Agent> expectedAgentClass = Agent.class;
-        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
         List argumentsMock = mock(List.class);
         agentProtocolAssistantSpy.createAgent(expectedAgentClass, argumentsMock);
         verify(agentProtocolAssistantSpy).createAgent(RANDOM_STRING, expectedAgentClass, argumentsMock);
@@ -371,14 +379,14 @@ public class AgentProtocolAssistantTest {
     @Test
     public void shouldSendCreateConfigurableAgentWithName() {
         String expectedAgentName = "expectedAgentName";
-        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
         agentProtocolAssistantSpy.createAgent(expectedAgentName);
         verify(agentProtocolAssistantSpy).createAgent(expectedAgentName, ConfigurableAgent.class, null);
     }
 
     @Test
     public void shouldSendCreateConfigurableAgent() {
-        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
         agentProtocolAssistantSpy.createAgent();
         verify(agentProtocolAssistantSpy).createAgent(RANDOM_STRING, ConfigurableAgent.class, null);
     }
@@ -386,7 +394,7 @@ public class AgentProtocolAssistantTest {
     @Test
     public void shouldSendCreateConfigurableAgentWithArguments() {
         List argumentsMock = mock(List.class);
-        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
         agentProtocolAssistantSpy.createAgent(argumentsMock);
         verify(agentProtocolAssistantSpy).createAgent(RANDOM_STRING, ConfigurableAgent.class, argumentsMock);
     }
@@ -395,7 +403,7 @@ public class AgentProtocolAssistantTest {
     public void shouldSendCreateConfigurableAgentWithArgumentsAndName() {
         List argumentsMock = mock(List.class);
         String expectedAgentName = "expectedAgentName";
-        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
         agentProtocolAssistantSpy.createAgent(expectedAgentName, argumentsMock);
         verify(agentProtocolAssistantSpy).createAgent(expectedAgentName, ConfigurableAgent.class, argumentsMock);
     }
@@ -405,11 +413,11 @@ public class AgentProtocolAssistantTest {
         AID aidConfigurableAgentMock = mock(AID.class);
         String expectedBehaviourName = "expectedBehaviourName";
 
-        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
 
         String behaviourName = agentProtocolAssistantSpy.addBehaviour(aidConfigurableAgentMock, expectedBehaviourName, Behaviour.class);
 
-        verify(agentProtocolAssistantSpy).sendRequestAction(eq(ConfigurableOntology.ONTOLOGY_NAME), agentActionArgumentCaptor.capture(), eq(aidConfigurableAgentMock));
+        verify(agentProtocolAssistantSpy).sendRequestAction(eq(aidConfigurableAgentMock), agentActionArgumentCaptor.capture(), eq(ConfigurableOntology.ONTOLOGY_NAME));
 
         ContentElement contentElement = agentActionArgumentCaptor.getValue();
         assertThat(contentElement, is(instanceOf(AddBehaviour.class)));
@@ -422,7 +430,7 @@ public class AgentProtocolAssistantTest {
 
     @Test
     public void shouldAddBehaviourWithoutName() {
-        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
         AID aidMock = mock(AID.class);
         Class<Behaviour> expectedClass = Behaviour.class;
         String behaviourName = agentProtocolAssistantSpy.addBehaviour(aidMock, expectedClass);
@@ -435,11 +443,11 @@ public class AgentProtocolAssistantTest {
         AID aidConfigurableAgentMock = mock(AID.class);
         String expectedBehaviourName = "expectedBehaviourName";
 
-        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
 
         agentProtocolAssistantSpy.removeBehaviour(aidConfigurableAgentMock, expectedBehaviourName);
 
-        verify(agentProtocolAssistantSpy).sendRequestAction(eq(ConfigurableOntology.ONTOLOGY_NAME), agentActionArgumentCaptor.capture(), eq(aidConfigurableAgentMock));
+        verify(agentProtocolAssistantSpy).sendRequestAction(eq(aidConfigurableAgentMock), agentActionArgumentCaptor.capture(), eq(ConfigurableOntology.ONTOLOGY_NAME));
 
         ContentElement contentElement = agentActionArgumentCaptor.getValue();
         assertThat(contentElement, is(instanceOf(RemoveBehaviour.class)));
