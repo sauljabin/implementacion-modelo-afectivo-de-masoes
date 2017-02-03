@@ -15,6 +15,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.ContainerID;
 import jade.domain.FIPANames;
+import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
 import jade.domain.JADEAgentManagement.KillAgent;
 import jade.domain.JADEAgentManagement.KillContainer;
@@ -34,8 +35,12 @@ import protocol.ExtractOntologyContentException;
 import protocol.FillOntologyContentException;
 import util.StringGenerator;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -261,6 +266,106 @@ public class AgentProtocolAssistantTest {
         assertThat(contentElement, is(instanceOf(KillAgent.class)));
         KillAgent killAgent = (KillAgent) contentElement;
         assertThat(killAgent.getAgent(), is(aidToKillMock));
+    }
+
+    @Test
+    public void shouldSendCreateAgentMessage() {
+        AID newAgentMock = mock(AID.class);
+
+        String expectedAgentName = "expectedAgentName";
+        Class<Agent> expectedAgentClass = Agent.class;
+        String arg1 = "arg1";
+
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        doReturn(newAgentMock).when(agentMock).getAID(expectedAgentName);
+
+        AID newAgent = agentProtocolAssistantSpy.createAgent(expectedAgentName, expectedAgentClass, Arrays.asList(arg1));
+        verify(agentProtocolAssistantSpy).sendRequestAction(eq(JADEManagementOntology.NAME), agentActionArgumentCaptor.capture(), eq(aidAmsMock));
+
+        ContentElement contentElement = agentActionArgumentCaptor.getValue();
+        assertThat(contentElement, is(instanceOf(CreateAgent.class)));
+
+        CreateAgent createAgent = (CreateAgent) contentElement;
+        assertThat(createAgent.getAgentName(), is(expectedAgentName));
+        assertThat(createAgent.getClassName(), is(Agent.class.getCanonicalName()));
+        assertThat(createAgent.getContainer(), is(containerIdMock));
+        assertThat(createAgent.getAllArguments().next(), is(arg1));
+        assertThat(newAgent, is(newAgentMock));
+    }
+
+    @Test
+    public void shouldSendCreateAgentWithNullArguments() {
+        String expectedAgentName = "expectedAgentName";
+        Class<Agent> expectedAgentClass = Agent.class;
+
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+
+        agentProtocolAssistantSpy.createAgent(expectedAgentName, expectedAgentClass, null);
+        verify(agentProtocolAssistantSpy).sendRequestAction(eq(JADEManagementOntology.NAME), agentActionArgumentCaptor.capture(), eq(aidAmsMock));
+
+        ContentElement contentElement = agentActionArgumentCaptor.getValue();
+        assertThat(contentElement, is(instanceOf(CreateAgent.class)));
+
+        CreateAgent createAgent = (CreateAgent) contentElement;
+        assertFalse(createAgent.getAllArguments().hasNext());
+    }
+
+    @Test
+    public void shouldSendCreateAgentWithoutArguments() {
+        String expectedAgentName = "expectedAgentName";
+        Class<Agent> expectedAgentClass = Agent.class;
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        agentProtocolAssistantSpy.createAgent(expectedAgentName, expectedAgentClass);
+        verify(agentProtocolAssistantSpy).createAgent(expectedAgentName, expectedAgentClass, null);
+    }
+
+    @Test
+    public void shouldCreateAgentWithRandomNameAndWithoutArguments() {
+        Class<Agent> expectedAgentClass = Agent.class;
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        agentProtocolAssistantSpy.createAgent(expectedAgentClass);
+        verify(agentProtocolAssistantSpy).createAgent(RANDOM_STRING, expectedAgentClass, null);
+    }
+
+    @Test
+    public void shouldCreateAgentWithRandomName() {
+        Class<Agent> expectedAgentClass = Agent.class;
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        List argumentsMock = mock(List.class);
+        agentProtocolAssistantSpy.createAgent(expectedAgentClass, argumentsMock);
+        verify(agentProtocolAssistantSpy).createAgent(RANDOM_STRING, expectedAgentClass, argumentsMock);
+    }
+
+    @Test
+    public void shouldSendCreateConfigurableAgentWithName() {
+        String expectedAgentName = "expectedAgentName";
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        agentProtocolAssistantSpy.createAgent(expectedAgentName);
+        verify(agentProtocolAssistantSpy).createAgent(expectedAgentName, ConfigurableAgent.class, null);
+    }
+
+    @Test
+    public void shouldSendCreateConfigurableAgent() {
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        agentProtocolAssistantSpy.createAgent();
+        verify(agentProtocolAssistantSpy).createAgent(RANDOM_STRING, ConfigurableAgent.class, null);
+    }
+
+    @Test
+    public void shouldSendCreateConfigurableAgentWithArguments() {
+        List argumentsMock = mock(List.class);
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        agentProtocolAssistantSpy.createAgent(argumentsMock);
+        verify(agentProtocolAssistantSpy).createAgent(RANDOM_STRING, ConfigurableAgent.class, argumentsMock);
+    }
+
+    @Test
+    public void shouldSendCreateConfigurableAgentWithArgumentsAndName() {
+        List argumentsMock = mock(List.class);
+        String expectedAgentName = "expectedAgentName";
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        agentProtocolAssistantSpy.createAgent(expectedAgentName, argumentsMock);
+        verify(agentProtocolAssistantSpy).createAgent(expectedAgentName, ConfigurableAgent.class, argumentsMock);
     }
 
 }
