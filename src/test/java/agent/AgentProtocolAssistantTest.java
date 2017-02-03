@@ -25,12 +25,14 @@ import jade.lang.acl.MessageTemplate;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
+import org.apache.commons.lang.time.StopWatch;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -52,6 +54,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -78,6 +81,7 @@ public class AgentProtocolAssistantTest {
     private ContentManager contentManagerMock;
     private ContainerID containerIdMock;
     private AgentProtocolAssistant agentProtocolAssistantSpy;
+    private StopWatch stopWatchMock;
 
     @Before
     public void setUp() throws Exception {
@@ -90,6 +94,7 @@ public class AgentProtocolAssistantTest {
         stringGeneratorMock = mock(StringGenerator.class);
         contentManagerMock = mock(ContentManager.class);
         containerIdMock = mock(ContainerID.class);
+        stopWatchMock = mock(StopWatch.class);
 
         agentProtocolAssistant = new AgentProtocolAssistant(agentMock);
 
@@ -100,6 +105,7 @@ public class AgentProtocolAssistantTest {
 
         setFieldValue(agentProtocolAssistant, "stringGenerator", stringGeneratorMock);
         setFieldValue(agentProtocolAssistant, "contentManager", contentManagerMock);
+        setFieldValue(agentProtocolAssistant, "stopWatch", stopWatchMock);
 
         agentProtocolAssistantSpy = spy(agentProtocolAssistant);
     }
@@ -152,6 +158,29 @@ public class AgentProtocolAssistantTest {
         assertReflectionEquals(expectedMessageTemplate, messageTemplateArgumentCaptor.getValue());
 
         verify(contentManagerMock).extractContent(responseMock);
+    }
+
+    @Test
+    public void shouldVerifyTimeoutControl() throws Exception {
+        long timeout = 10000L;
+        long delayInAgree = 2000L;
+        ACLMessage responseMock = mock(ACLMessage.class);
+
+        doReturn(ACLMessage.AGREE).doReturn(ACLMessage.INFORM).when(responseMock).getPerformative();
+        doReturn(responseMock).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
+        doReturn(new Done()).when(contentManagerMock).extractContent(responseMock);
+        doReturn(delayInAgree).when(stopWatchMock).getTime();
+
+        agentProtocolAssistantSpy.setTimeout(timeout);
+        agentProtocolAssistantSpy.sendRequestAction("expectedOntology", mock(AgentAction.class), aidAmsMock);
+
+        InOrder inOrder = inOrder(stopWatchMock, agentMock);
+        inOrder.verify(stopWatchMock).reset();
+        inOrder.verify(stopWatchMock).start();
+        inOrder.verify(agentMock).blockingReceive(any(MessageTemplate.class), eq(timeout));
+        inOrder.verify(stopWatchMock).stop();
+        inOrder.verify(stopWatchMock).getTime();
+        inOrder.verify(agentMock).blockingReceive(any(MessageTemplate.class), eq(timeout - delayInAgree));
     }
 
     @Test

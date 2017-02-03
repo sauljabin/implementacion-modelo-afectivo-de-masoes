@@ -25,6 +25,7 @@ import jade.lang.acl.MessageTemplate;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
+import org.apache.commons.lang.time.StopWatch;
 import protocol.ExtractOntologyContentException;
 import protocol.FillOntologyContentException;
 import util.StringGenerator;
@@ -39,23 +40,29 @@ public class AgentProtocolAssistant {
     private ContentManager contentManager;
     private StringGenerator stringGenerator;
     private Agent agent;
-    private int timeout;
+    private long timeout;
+    private StopWatch stopWatch;
 
     public AgentProtocolAssistant(Agent agent) {
+        this(agent, DEFAULT_TIMEOUT);
+    }
+
+    public AgentProtocolAssistant(Agent agent, int timeout) {
         this.agent = agent;
-        timeout = DEFAULT_TIMEOUT;
+        this.timeout = timeout;
         stringGenerator = new StringGenerator();
+        stopWatch = new StopWatch();
         contentManager = new ContentManager();
         contentManager.registerLanguage(new SLCodec());
         contentManager.registerOntology(JADEManagementOntology.getInstance());
         contentManager.registerOntology(new ConfigurableOntology());
     }
 
-    public int getTimeout() {
+    public long getTimeout() {
         return timeout;
     }
 
-    public void setTimeout(int timeout) {
+    public void setTimeout(long timeout) {
         this.timeout = timeout;
     }
 
@@ -87,14 +94,18 @@ public class AgentProtocolAssistant {
         agent.send(request);
 
         MessageTemplate messageTemplate = MessageTemplate.MatchInReplyTo(request.getReplyWith());
+
+        stopWatch.reset();
+        stopWatch.start();
         ACLMessage response = agent.blockingReceive(messageTemplate, timeout);
+        stopWatch.stop();
 
         if (!Optional.ofNullable(response).isPresent()) {
             throw new TimeoutResponseException("The agent did not respond");
         }
 
         if (response.getPerformative() == ACLMessage.AGREE) {
-            response = agent.blockingReceive(messageTemplate, timeout);
+            response = agent.blockingReceive(messageTemplate, timeout - stopWatch.getTime());
         }
 
         if (!Optional.ofNullable(response).isPresent()) {
