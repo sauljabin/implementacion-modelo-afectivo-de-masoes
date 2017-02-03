@@ -42,7 +42,7 @@ public abstract class FunctionalTest extends Behaviour {
     @Override
     public void onStart() {
         contentManager.registerOntology(JADEManagementOntology.getInstance());
-        contentManager.registerLanguage(new SLCodec(0));
+        contentManager.registerLanguage(new SLCodec());
         setUp();
     }
 
@@ -70,7 +70,7 @@ public abstract class FunctionalTest extends Behaviour {
         message.setSender(myAgent.getAID());
         message.addReceiver(myAgent.getAMS());
         message.setOntology(JADEManagementOntology.NAME);
-        message.setLanguage(FIPANames.ContentLanguage.FIPA_SL0);
+        message.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
 
         contentManager.fillContent(message, new Action(myAgent.getAMS(), concept));
         ACLMessage response = FIPAService.doFipaRequestClient(myAgent, message, TIMEOUT);
