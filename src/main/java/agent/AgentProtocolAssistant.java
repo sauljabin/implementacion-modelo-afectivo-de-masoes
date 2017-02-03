@@ -14,6 +14,7 @@ import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.ContainerID;
+import jade.core.behaviours.Behaviour;
 import jade.domain.FIPANames;
 import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
@@ -21,7 +22,9 @@ import jade.domain.JADEAgentManagement.KillAgent;
 import jade.domain.JADEAgentManagement.KillContainer;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
+import ontology.configurable.RemoveBehaviour;
 import protocol.ExtractOntologyContentException;
 import protocol.FillOntologyContentException;
 import util.StringGenerator;
@@ -127,9 +130,9 @@ public class AgentProtocolAssistant {
         }
     }
 
-    public void killAgent(AID aid) {
+    public void killAgent(AID agentToKill) {
         KillAgent content = new KillAgent();
-        content.setAgent(aid);
+        content.setAgent(agentToKill);
         sendRequestAction(JADEManagementOntology.NAME, content, agent.getAMS());
     }
 
@@ -173,6 +176,21 @@ public class AgentProtocolAssistant {
 
     public AID createAgent() {
         return createAgent(stringGenerator.getString(RANDOM_STRING_LENGTH), ConfigurableAgent.class, null);
+    }
+
+    public String addBehaviour(AID agent, String behaviourName, Class<? extends Behaviour> behaviourClass) {
+        AddBehaviour content = new AddBehaviour(behaviourName, behaviourClass.getCanonicalName());
+        sendRequestAction(ConfigurableOntology.ONTOLOGY_NAME, content, agent);
+        return behaviourName;
+    }
+
+    public String addBehaviour(AID agent, Class<? extends Behaviour> behaviourClass) {
+        return addBehaviour(agent, stringGenerator.getString(RANDOM_STRING_LENGTH), behaviourClass);
+    }
+
+    public void removeBehaviour(AID agent, String behaviourName) {
+        RemoveBehaviour content = new RemoveBehaviour(behaviourName);
+        sendRequestAction(ConfigurableOntology.ONTOLOGY_NAME, content, agent);
     }
 
 }

@@ -14,6 +14,7 @@ import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.ContainerID;
+import jade.core.behaviours.Behaviour;
 import jade.domain.FIPANames;
 import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
@@ -21,7 +22,9 @@ import jade.domain.JADEAgentManagement.KillAgent;
 import jade.domain.JADEAgentManagement.KillContainer;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
+import ontology.configurable.RemoveBehaviour;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -366,6 +369,54 @@ public class AgentProtocolAssistantTest {
         doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
         agentProtocolAssistantSpy.createAgent(expectedAgentName, argumentsMock);
         verify(agentProtocolAssistantSpy).createAgent(expectedAgentName, ConfigurableAgent.class, argumentsMock);
+    }
+
+    @Test
+    public void shouldAddBehaviour() {
+        AID aidConfigurableAgentMock = mock(AID.class);
+        String expectedBehaviourName = "expectedBehaviourName";
+
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+
+        String behaviourName = agentProtocolAssistantSpy.addBehaviour(aidConfigurableAgentMock, expectedBehaviourName, Behaviour.class);
+
+        verify(agentProtocolAssistantSpy).sendRequestAction(eq(ConfigurableOntology.ONTOLOGY_NAME), agentActionArgumentCaptor.capture(), eq(aidConfigurableAgentMock));
+
+        ContentElement contentElement = agentActionArgumentCaptor.getValue();
+        assertThat(contentElement, is(instanceOf(AddBehaviour.class)));
+
+        AddBehaviour addBehaviour = (AddBehaviour) contentElement;
+        assertThat(addBehaviour.getClassName(), is(Behaviour.class.getCanonicalName()));
+        assertThat(addBehaviour.getName(), is(expectedBehaviourName));
+        assertThat(behaviourName, is(expectedBehaviourName));
+    }
+
+    @Test
+    public void shouldAddBehaviourWithoutName() {
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+        AID aidMock = mock(AID.class);
+        Class<Behaviour> expectedClass = Behaviour.class;
+        String behaviourName = agentProtocolAssistantSpy.addBehaviour(aidMock, expectedClass);
+        verify(agentProtocolAssistantSpy).addBehaviour(aidMock, RANDOM_STRING, expectedClass);
+        assertThat(behaviourName, is(RANDOM_STRING));
+    }
+
+    @Test
+    public void shouldRemoveBehaviour() {
+        AID aidConfigurableAgentMock = mock(AID.class);
+        String expectedBehaviourName = "expectedBehaviourName";
+
+        doNothing().when(agentProtocolAssistantSpy).sendRequestAction(anyString(), any(AgentAction.class), any(AID.class));
+
+        agentProtocolAssistantSpy.removeBehaviour(aidConfigurableAgentMock, expectedBehaviourName);
+
+        verify(agentProtocolAssistantSpy).sendRequestAction(eq(ConfigurableOntology.ONTOLOGY_NAME), agentActionArgumentCaptor.capture(), eq(aidConfigurableAgentMock));
+
+        ContentElement contentElement = agentActionArgumentCaptor.getValue();
+        assertThat(contentElement, is(instanceOf(RemoveBehaviour.class)));
+
+        RemoveBehaviour removeBehaviour = (RemoveBehaviour) contentElement;
+        assertThat(removeBehaviour.getName(), is(expectedBehaviourName));
     }
 
 }
