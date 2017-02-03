@@ -38,7 +38,7 @@ public abstract class FunctionalTest extends Behaviour {
         try {
             setUp();
         } catch (Exception e) {
-            failed(e.getMessage());
+            failed(e.getMessage().trim());
         }
     }
 
@@ -90,8 +90,8 @@ public abstract class FunctionalTest extends Behaviour {
     public void action() {
         try {
             performTest();
-        } catch (Exception e) {
-            failed(e.getMessage());
+        } catch (AssertionError | Exception e) {
+            failed(e.getMessage().trim());
         }
     }
 

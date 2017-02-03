@@ -8,6 +8,9 @@ package experimental.test;
 
 import experimental.FunctionalTest;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
 public class Test2 extends FunctionalTest {
 
     @Override
@@ -16,7 +19,7 @@ public class Test2 extends FunctionalTest {
 
     @Override
     public void performTest() {
-
+        assertThat("x", is("y"));
     }
 
 }

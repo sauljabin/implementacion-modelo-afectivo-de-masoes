@@ -103,17 +103,21 @@ public class TesterAgent extends Agent {
 
     @Override
     protected void takeDown() {
+        log("");
+        if (failedTests > 0) {
+            log(String.format("%d tests completed, %d failed", totalTests, failedTests));
+            log("");
+        }
+
         new Thread(() -> {
             try {
-                log("");
-                getContainerController().kill();
                 if (failedTests > 0) {
-                    log(String.format("%d tests completed, %d failed", totalTests, failedTests));
-                    log("");
                     System.exit(FAILURE);
                 }
+                getContainerController().kill();
             } catch (Exception e) {
                 logException(e);
+                System.exit(FAILURE);
             }
         }).start();
     }
