@@ -17,6 +17,7 @@ import jade.lang.acl.MessageTemplate;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
+import protocol.OntologyMatchExpression;
 import protocol.OntologyResponderBehaviour;
 
 import java.util.Arrays;
@@ -29,7 +30,7 @@ public class ConfiguringAgentBehaviour extends OntologyResponderBehaviour {
     private Map<String, Behaviour> behaviours;
 
     public ConfiguringAgentBehaviour(Agent agent) {
-        super(agent, new MessageTemplate(new ConfiguringAgentMatchExpression()), new ConfigurableOntology());
+        super(agent, new MessageTemplate(new OntologyMatchExpression(ConfigurableOntology.ONTOLOGY_NAME)), new ConfigurableOntology());
         behaviours = new HashMap<>();
     }
 

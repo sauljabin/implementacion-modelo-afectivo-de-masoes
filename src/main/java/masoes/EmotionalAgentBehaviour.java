@@ -17,6 +17,7 @@ import ontology.masoes.EmotionStatus;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetAgentStatus;
 import ontology.masoes.MasoesOntology;
+import protocol.OntologyMatchExpression;
 import protocol.OntologyResponderBehaviour;
 
 import java.util.Arrays;
@@ -26,7 +27,7 @@ public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
     private EmotionalAgent emotionalAgent;
 
     public EmotionalAgentBehaviour(EmotionalAgent emotionalAgent) {
-        super(emotionalAgent, new MessageTemplate(new MasoesMatchExpression()), new MasoesOntology());
+        super(emotionalAgent, new MessageTemplate(new OntologyMatchExpression(MasoesOntology.ONTOLOGY_NAME)), new MasoesOntology());
         this.emotionalAgent = emotionalAgent;
     }
 

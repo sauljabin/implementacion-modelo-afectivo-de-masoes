@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import protocol.OntologyMatchExpression;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -133,7 +134,7 @@ public class ResponseSettingsBehaviourTest {
     @Test
     public void shouldGetCorrectOntologyAndMessageTemplate() {
         assertThat(responseSettingsBehaviour.getOntology(), is(instanceOf(SettingsOntology.class)));
-        assertReflectionEquals(new MessageTemplate(new SettingsMatchExpression()), responseSettingsBehaviour.getMessageTemplate());
+        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(SettingsOntology.ONTOLOGY_NAME)), responseSettingsBehaviour.getMessageTemplate());
     }
 
 }

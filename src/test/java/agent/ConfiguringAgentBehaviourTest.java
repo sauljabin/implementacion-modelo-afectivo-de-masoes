@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import protocol.OntologyMatchExpression;
 
 import java.util.Map;
 
@@ -55,7 +56,7 @@ public class ConfiguringAgentBehaviourTest {
     @Test
     public void shouldGetCorrectOntologyAndMessageTemplate() {
         assertThat(configuringAgentBehaviour.getOntology(), is(instanceOf(ConfigurableOntology.class)));
-        assertReflectionEquals(new MessageTemplate(new ConfiguringAgentMatchExpression()), configuringAgentBehaviour.getMessageTemplate());
+        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(ConfigurableOntology.ONTOLOGY_NAME)), configuringAgentBehaviour.getMessageTemplate());
     }
 
     @Test

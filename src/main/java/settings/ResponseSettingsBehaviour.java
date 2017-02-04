@@ -19,6 +19,7 @@ import ontology.settings.GetSetting;
 import ontology.settings.Setting;
 import ontology.settings.SettingsOntology;
 import ontology.settings.SystemSettings;
+import protocol.OntologyMatchExpression;
 import protocol.OntologyResponderBehaviour;
 
 import java.util.Arrays;
@@ -30,7 +31,7 @@ public class ResponseSettingsBehaviour extends OntologyResponderBehaviour {
     private JadeSettings jadeSettings;
 
     public ResponseSettingsBehaviour(Agent agent) {
-        super(agent, new MessageTemplate(new SettingsMatchExpression()), new SettingsOntology());
+        super(agent, new MessageTemplate(new OntologyMatchExpression(SettingsOntology.ONTOLOGY_NAME)), new SettingsOntology());
         applicationSettings = ApplicationSettings.getInstance();
         jadeSettings = JadeSettings.getInstance();
     }

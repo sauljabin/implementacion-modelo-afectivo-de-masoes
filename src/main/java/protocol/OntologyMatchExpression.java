@@ -4,14 +4,19 @@
  * Please see the LICENSE.txt file
  */
 
-package agent;
+package protocol;
 
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import ontology.configurable.ConfigurableOntology;
 
-public class ConfiguringAgentMatchExpression implements MessageTemplate.MatchExpression {
+public class OntologyMatchExpression implements MessageTemplate.MatchExpression {
+
+    private String ontologyName;
+
+    public OntologyMatchExpression(String ontologyName) {
+        this.ontologyName = ontologyName;
+    }
 
     @Override
     public boolean match(ACLMessage message) {
@@ -27,7 +32,7 @@ public class ConfiguringAgentMatchExpression implements MessageTemplate.MatchExp
             return false;
         }
 
-        if (message.getOntology() == null || !message.getOntology().equals(ConfigurableOntology.ONTOLOGY_NAME)) {
+        if (message.getOntology() == null || !message.getOntology().equals(ontologyName)) {
             return false;
         }
 
