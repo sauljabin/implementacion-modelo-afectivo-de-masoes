@@ -37,13 +37,14 @@ public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
         if (agentAction instanceof GetAgentStatus) {
             return responseAgentStatus();
         } else {
-            return responseEvaluateStimulus((EvaluateStimulus) action.getAction());
+            return responseEvaluateStimulus(action);
         }
     }
 
-    private Predicate responseEvaluateStimulus(EvaluateStimulus evaluateStimulus) {
-        emotionalAgent.evaluateStimulus(evaluateStimulus.getStimulus());
-        return new Done();
+    private Predicate responseEvaluateStimulus(Action action) {
+        EvaluateStimulus agentAction = (EvaluateStimulus) action.getAction();
+        emotionalAgent.evaluateStimulus(agentAction.getStimulus());
+        return new Done(action);
     }
 
     private Predicate responseAgentStatus() {
