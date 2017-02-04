@@ -4,33 +4,33 @@
  * Please see the LICENSE.txt file
  */
 
-package settings;
+package masoes;
 
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import ontology.settings.SettingsOntology;
+import ontology.masoes.MasoesOntology;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class SettingsRequestMatchExpressionTest {
+public class MasoesMatchExpressionTest {
 
-    private SettingsRequestMatchExpression settingsRequestMatchExpression;
+    private MasoesMatchExpression masoesMatchExpression;
     private ACLMessage message;
 
     @Before
     public void setUp() {
-        settingsRequestMatchExpression = new SettingsRequestMatchExpression();
+        masoesMatchExpression = new MasoesMatchExpression();
         message = new ACLMessage(ACLMessage.REQUEST);
         message.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         message.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
-        message.setOntology(SettingsOntology.ONTOLOGY_NAME);
+        message.setOntology(MasoesOntology.ONTOLOGY_NAME);
     }
 
     @Test
-    public void shouldMatchWithSettingsRequestMessage() {
-        assertTrue(settingsRequestMatchExpression.match(message));
+    public void shouldMatchWithMasoesRequestMessage() {
+        assertTrue(masoesMatchExpression.match(message));
     }
 
 }

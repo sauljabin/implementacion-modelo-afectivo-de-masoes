@@ -4,14 +4,14 @@
  * Please see the LICENSE.txt file
  */
 
-package settings;
+package masoes;
 
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import ontology.settings.SettingsOntology;
+import ontology.masoes.MasoesOntology;
 
-public class SettingsRequestMatchExpression implements MessageTemplate.MatchExpression {
+public class MasoesMatchExpression implements MessageTemplate.MatchExpression {
 
     @Override
     public boolean match(ACLMessage message) {
@@ -27,7 +27,7 @@ public class SettingsRequestMatchExpression implements MessageTemplate.MatchExpr
             return false;
         }
 
-        if (!message.getOntology().equals(SettingsOntology.ONTOLOGY_NAME)) {
+        if (!message.getOntology().equals(MasoesOntology.ONTOLOGY_NAME)) {
             return false;
         }
 

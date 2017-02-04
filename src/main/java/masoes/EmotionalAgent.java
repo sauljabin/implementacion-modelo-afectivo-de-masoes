@@ -36,8 +36,7 @@ public class EmotionalAgent extends Agent {
     @Override
     protected final void setup() {
         setUp();
-        addBehaviour(new ResponseAgentStatusBehaviour(this));
-        addBehaviour(new StimulusReceiverBehaviour(this));
+        addBehaviour(new EmotionalAgentBehaviour(this));
         behaviourManager.updateBehaviour(this);
     }
 

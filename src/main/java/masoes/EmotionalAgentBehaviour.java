@@ -6,27 +6,47 @@
 
 package masoes;
 
+import jade.content.Concept;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
+import jade.content.onto.basic.Done;
+import jade.domain.FIPAAgentManagement.FailureException;
+import jade.lang.acl.MessageTemplate;
 import ontology.masoes.AgentStatus;
 import ontology.masoes.EmotionStatus;
+import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetAgentStatus;
 import ontology.masoes.MasoesOntology;
 import protocol.OntologyResponderBehaviour;
 
 import java.util.Arrays;
 
-public class ResponseAgentStatusBehaviour extends OntologyResponderBehaviour {
+public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
 
     private EmotionalAgent emotionalAgent;
 
-    public ResponseAgentStatusBehaviour(EmotionalAgent emotionalAgent) {
-        super(emotionalAgent, new MasoesRequestMessageTemplate(), new MasoesOntology());
+    public EmotionalAgentBehaviour(EmotionalAgent emotionalAgent) {
+        super(emotionalAgent, new MessageTemplate(new MasoesMatchExpression()), new MasoesOntology());
         this.emotionalAgent = emotionalAgent;
     }
 
     @Override
-    public Predicate performAction(Action action) {
+    public Predicate performAction(Action action) throws FailureException {
+        Concept agentAction = action.getAction();
+
+        if (agentAction instanceof GetAgentStatus) {
+            return responseAgentStatus();
+        } else {
+            return responseEvaluateStimulus((EvaluateStimulus) action.getAction());
+        }
+    }
+
+    private Predicate responseEvaluateStimulus(EvaluateStimulus evaluateStimulus) {
+        emotionalAgent.evaluateStimulus(evaluateStimulus.getStimulus());
+        return new Done();
+    }
+
+    private Predicate responseAgentStatus() {
         AgentStatus agentStatus = new AgentStatus();
         agentStatus.setEmotionName(emotionalAgent.getCurrentEmotion().getEmotionName());
         agentStatus.setBehaviourName(emotionalAgent.getCurrentEmotionalBehaviour().getBehaviourName());
@@ -37,7 +57,7 @@ public class ResponseAgentStatusBehaviour extends OntologyResponderBehaviour {
 
     @Override
     public boolean isValidAction(Action action) {
-        return Arrays.asList(GetAgentStatus.class)
+        return Arrays.asList(GetAgentStatus.class, EvaluateStimulus.class)
                 .contains(action.getAction().getClass());
     }
 

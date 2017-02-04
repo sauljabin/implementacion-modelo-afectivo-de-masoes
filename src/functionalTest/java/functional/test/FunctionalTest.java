@@ -7,131 +7,197 @@
 package functional.test;
 
 import agent.AgentLogger;
+import agent.AgentProtocolAssistant;
 import jade.core.AID;
 import jade.core.Agent;
-import junit.framework.AssertionFailedError;
+import jade.core.behaviours.Behaviour;
+import jade.lang.acl.ACLMessage;
 import org.slf4j.LoggerFactory;
-import org.unitils.reflectionassert.ReflectionAssert;
-import test.common.Test;
-import test.common.TestException;
-import test.common.TestUtility;
-import util.StringGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class FunctionalTest extends Test {
+public abstract class FunctionalTest extends Behaviour {
 
-    protected static final int TIMEOUT_DEFAULT = 6000;
-    private static final int RANDOM_STRING_LENGTH = 20;
-    private static final int SLEEP_KILL_AGENT_MILLIS = 100;
+    private static final int TIMEOUT = 4000;
+    private static final String PASSED = "PASSED";
+    private static final String FAILED = "FAILED";
     private List<AID> agentsToKill;
-    private boolean hasError;
     private AgentLogger logger;
-    private StringGenerator stringGenerator;
+    private AgentProtocolAssistant agentProtocolAssistant;
+    private boolean passed;
+    private String failedMessage;
 
-    public FunctionalTest() {
-        hasError = false;
+    @Override
+    public void onStart() {
+        passed = true;
+        failedMessage = "";
         agentsToKill = new ArrayList<>();
         logger = new AgentLogger(LoggerFactory.getLogger(FunctionalTest.class));
-        stringGenerator = new StringGenerator();
+        agentProtocolAssistant = new AgentProtocolAssistant(myAgent, TIMEOUT);
+        try {
+            setUp();
+        } catch (Exception e) {
+            failedFromException(e);
+        }
     }
 
     @Override
-    public void clean(Agent agent) {
-        if (agent instanceof FunctionalTesterAgent && hasError) {
-            ((FunctionalTesterAgent) agent).setHasError();
+    public void action() {
+        try {
+            performTest();
+        } catch (AssertionError | Exception e) {
+            failedFromException(e);
         }
+    }
+
+    private void failedFromException(Throwable e) {
+        String line = "Unknown";
+        for (int i = 0; i < e.getStackTrace().length; i++) {
+            if (e.getStackTrace()[i].getClassName().equals(getClass().getName())) {
+                line = String.valueOf(e.getStackTrace()[i].getLineNumber());
+                break;
+            }
+        }
+        failed(String.format("Line: %s\n%s", line, e.getMessage().trim()));
+    }
+
+    @Override
+    public int onEnd() {
+        logResult();
+        getTesterAgent().registerTest(passed);
         agentsToKill.forEach(aid -> {
             try {
-                TestUtility.killAgent(agent, aid);
-                Thread.sleep(SLEEP_KILL_AGENT_MILLIS);
+                killAgent(aid);
             } catch (Exception e) {
-                logger.exception(agent, e);
+                logger.exception(myAgent, e);
             }
         });
+        return 0;
     }
 
-    public void assertNotNull(String message, Object actual) {
-        if (Optional.ofNullable(actual).isPresent()) {
-            assertPass(String.format("Assert not null: %s", message));
-        } else {
-            assertError(String.format("Assertion error: Expected not null for %s and was null", message));
+    private void logResult() {
+        log("");
+        log(String.format("%s > %s", getClass().getCanonicalName(), passed ? PASSED : FAILED));
+
+        if (!passed && !Optional.ofNullable(failedMessage).orElse("").isEmpty()) {
+            log(failedMessage);
         }
     }
 
-    public void assertEquals(String message, Object expected, Object actual) {
-        if (actual.equals(expected)) {
-            assertPass(String.format("Assert equals: %s", message));
-        } else {
-            assertError(String.format("Assertion error: %s\nExpected: %s \n and was: %s", message, expected, actual));
-        }
+    private TesterAgent getTesterAgent() {
+        return (TesterAgent) myAgent;
     }
 
-    public void assertReflectionEquals(String message, Object expected, Object actual) {
-        try {
-            ReflectionAssert.assertReflectionEquals(expected, actual);
-            assertPass(String.format("Assert equals: %s", message));
-        } catch (AssertionFailedError e) {
-            assertError(String.format("Assertion error: %s\n%s", message, e.getMessage()));
-        }
+    public void failed() {
+        failed("");
     }
 
-    public void assertReflectionNotEquals(String message, Object expected, Object actual) {
-        try {
-            ReflectionAssert.assertReflectionEquals(expected, actual);
-            assertError(String.format("Assertion error: Expected different to %s and was equal", message));
-        } catch (AssertionFailedError e) {
-            assertPass(String.format("Assert not equals: %s", message));
-        }
+    public void failed(String message) {
+        passed = false;
+        failedMessage = message;
     }
 
-    public void assertNotEquals(String message, Object first, Object second) {
-        if (!first.equals(second)) {
-            assertPass(String.format("Assert not equals: %s", message));
-        } else {
-            assertError(String.format("Assertion error: Expected different to %s and was equal", message));
-        }
+    public void log(String message) {
+        System.out.println(message);
     }
 
-    private void assertPass(String message) {
-        if (!hasError) {
-            passed(message);
-        }
+    public abstract void setUp();
+
+    public abstract void performTest() throws Exception;
+
+    @Override
+    public boolean done() {
+        return true;
     }
 
-    private void assertError(String message) {
-        if (!hasError) {
-            hasError = true;
-            failed(message);
-        }
+    public void killAgent(AID agentToKill) {
+        agentProtocolAssistant.killAgent(agentToKill);
     }
 
-    public AID createAgent(Agent tester, String agentClass) throws TestException {
-        AID aid = TestUtility.createAgent(tester, stringGenerator.getString(RANDOM_STRING_LENGTH), agentClass, null);
-        agentsToKill.add(aid);
-        return aid;
+    public AID createAgent(String agentName, Class<? extends Agent> agentClass, List<String> arguments) {
+        AID agent = agentProtocolAssistant.createAgent(agentName, agentClass, arguments);
+        agentsToKill.add(agent);
+        return agent;
     }
 
-    public AID createAgent(Agent tester) throws TestException {
-        AID aid = TestUtility.createAgent(tester, stringGenerator.getString(RANDOM_STRING_LENGTH), TestUtility.CONFIGURABLE_AGENT, null);
-        agentsToKill.add(aid);
-        return aid;
+    public AID createAgent(Class<? extends Agent> agentClass, List<String> arguments) {
+        AID agent = agentProtocolAssistant.createAgent(agentClass, arguments);
+        agentsToKill.add(agent);
+        return agent;
     }
 
-    public AID createAgent(Agent tester, String[] parameters) throws TestException {
-        AID aid = TestUtility.createAgent(tester, stringGenerator.getString(RANDOM_STRING_LENGTH), TestUtility.CONFIGURABLE_AGENT, parameters);
-        agentsToKill.add(aid);
-        return aid;
+    public AID createAgent(String agentName, Class<? extends Agent> agentClass) {
+        AID agent = agentProtocolAssistant.createAgent(agentName, agentClass);
+        agentsToKill.add(agent);
+        return agent;
     }
 
-    public void addBehaviour(Agent tester, AID agent, String behaviourClass) throws TestException {
-        TestUtility.addBehaviour(tester, agent, behaviourClass);
+    public AID createAgent(Class<? extends Agent> agentClass) {
+        AID agent = agentProtocolAssistant.createAgent(agentClass);
+        agentsToKill.add(agent);
+        return agent;
     }
 
-    public AgentLogger getLogger() {
-        return logger;
+    public AID createAgent(List<String> arguments) {
+        AID agent = agentProtocolAssistant.createAgent(arguments);
+        agentsToKill.add(agent);
+        return agent;
+    }
+
+    public AID createAgent(String agentName) {
+        AID agent = agentProtocolAssistant.createAgent(agentName);
+        agentsToKill.add(agent);
+        return agent;
+    }
+
+    public AID createAgent(String agentName, List<String> arguments) {
+        AID agent = agentProtocolAssistant.createAgent(agentName, arguments);
+        agentsToKill.add(agent);
+        return agent;
+    }
+
+    public AID createAgent() {
+        AID agent = agentProtocolAssistant.createAgent();
+        agentsToKill.add(agent);
+        return agent;
+    }
+
+    public String addBehaviour(AID agent, String behaviourName, Class<? extends Behaviour> behaviourClass) {
+        return agentProtocolAssistant.addBehaviour(agent, behaviourName, behaviourClass);
+    }
+
+    public String addBehaviour(AID agent, Class<? extends Behaviour> behaviourClass) {
+        return agentProtocolAssistant.addBehaviour(agent, behaviourClass);
+    }
+
+    public void removeBehaviour(AID agent, String behaviourName) {
+        agentProtocolAssistant.removeBehaviour(agent, behaviourName);
+    }
+
+    public ACLMessage createRequestMessage(AID receiver, String ontology) {
+        return agentProtocolAssistant.createRequestMessage(receiver, ontology);
+    }
+
+    public void sendMessage(ACLMessage message) {
+        myAgent.send(message);
+    }
+
+    public ACLMessage blockingReceive(long millis) {
+        return myAgent.blockingReceive(millis);
+    }
+
+    public ACLMessage receive() {
+        return myAgent.receive();
+    }
+
+    public AID getAID() {
+        return myAgent.getAID();
+    }
+
+    public AID getAID(String name) {
+        return myAgent.getAID(name);
     }
 
 }

@@ -13,6 +13,7 @@ import jade.content.onto.basic.Done;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.domain.FIPAAgentManagement.FailureException;
+import jade.lang.acl.MessageTemplate;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
@@ -32,6 +33,7 @@ import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class ConfiguringAgentBehaviourTest {
@@ -53,7 +55,7 @@ public class ConfiguringAgentBehaviourTest {
     @Test
     public void shouldGetCorrectOntologyAndMessageTemplate() {
         assertThat(configuringAgentBehaviour.getOntology(), is(instanceOf(ConfigurableOntology.class)));
-        assertThat(configuringAgentBehaviour.getMessageTemplate(), is(instanceOf(ConfiguringAgentRequestMessageTemplate.class)));
+        assertReflectionEquals(new MessageTemplate(new ConfiguringAgentMatchExpression()), configuringAgentBehaviour.getMessageTemplate());
     }
 
     @Test

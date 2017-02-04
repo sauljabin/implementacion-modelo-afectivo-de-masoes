@@ -63,8 +63,7 @@ public class EmotionalAgentTest {
 
     @Test
     public void shouldAddBasicBehaviors() {
-        verify(spyEmotionalAgent).addBehaviour(isA(ResponseAgentStatusBehaviour.class));
-        verify(spyEmotionalAgent).addBehaviour(isA(StimulusReceiverBehaviour.class));
+        verify(spyEmotionalAgent).addBehaviour(isA(EmotionalAgentBehaviour.class));
         assertThat(spyEmotionalAgent.getCurrentEmotionalBehaviour(), is(behaviourMock));
         assertThat(spyEmotionalAgent.getCurrentEmotion(), is(emotionMock));
 

@@ -4,33 +4,33 @@
  * Please see the LICENSE.txt file
  */
 
-package agent;
+package settings;
 
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import ontology.configurable.ConfigurableOntology;
+import ontology.settings.SettingsOntology;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class ConfiguringAgentRequestMatchExpressionTest {
+public class SettingsMatchExpressionTest {
 
-    private ConfiguringAgentRequestMatchExpression configuringAgentRequestMatchExpression;
+    private SettingsMatchExpression settingsMatchExpression;
     private ACLMessage message;
 
     @Before
     public void setUp() {
-        configuringAgentRequestMatchExpression = new ConfiguringAgentRequestMatchExpression();
+        settingsMatchExpression = new SettingsMatchExpression();
         message = new ACLMessage(ACLMessage.REQUEST);
         message.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         message.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
-        message.setOntology(ConfigurableOntology.ONTOLOGY_NAME);
+        message.setOntology(SettingsOntology.ONTOLOGY_NAME);
     }
 
     @Test
-    public void shouldMatchWithConfigurableRequestMessage() {
-        assertTrue(configuringAgentRequestMatchExpression.match(message));
+    public void shouldMatchWithSettingsRequestMessage() {
+        assertTrue(settingsMatchExpression.match(message));
     }
 
 }

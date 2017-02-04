@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package experimental;
+package functional.test;
 
 import agent.AgentLogger;
 import jade.core.Agent;
@@ -88,7 +88,7 @@ public class TesterAgent extends Agent {
                     }).collect(Collectors.toSet());
         }
         if (classList.isEmpty()) {
-            Reflections reflections = new Reflections("experimental");
+            Reflections reflections = new Reflections(getClass().getPackage().getName());
             classList = reflections.getSubTypesOf(FunctionalTest.class).stream().collect(Collectors.toSet());
         }
         return classList;

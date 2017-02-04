@@ -12,6 +12,7 @@ import jade.content.Concept;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.core.Agent;
+import jade.lang.acl.MessageTemplate;
 import jade.util.leap.ArrayList;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
@@ -29,7 +30,7 @@ public class ResponseSettingsBehaviour extends OntologyResponderBehaviour {
     private JadeSettings jadeSettings;
 
     public ResponseSettingsBehaviour(Agent agent) {
-        super(agent, new SettingsRequestMessageTemplate(), new SettingsOntology());
+        super(agent, new MessageTemplate(new SettingsMatchExpression()), new SettingsOntology());
         applicationSettings = ApplicationSettings.getInstance();
         jadeSettings = JadeSettings.getInstance();
     }

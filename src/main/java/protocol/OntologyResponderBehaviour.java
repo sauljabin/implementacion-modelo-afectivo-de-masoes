@@ -72,7 +72,7 @@ public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
     }
 
     public boolean isValidAction(Action action) {
-        return true;
+        return false;
     }
 
     public Predicate performAction(Action action) throws FailureException {

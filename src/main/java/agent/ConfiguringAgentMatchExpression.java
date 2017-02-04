@@ -11,7 +11,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import ontology.configurable.ConfigurableOntology;
 
-public class ConfiguringAgentRequestMatchExpression implements MessageTemplate.MatchExpression {
+public class ConfiguringAgentMatchExpression implements MessageTemplate.MatchExpression {
 
     @Override
     public boolean match(ACLMessage message) {

@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package experimental;
+package functional.test;
 
 public class FunctionalTestException extends RuntimeException {
 

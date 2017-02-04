@@ -11,6 +11,7 @@ import jade.JadeSettings;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.lang.acl.MessageTemplate;
 import jade.util.leap.ArrayList;
 import jade.util.leap.List;
 import ontology.settings.GetAllSettings;
@@ -132,7 +133,7 @@ public class ResponseSettingsBehaviourTest {
     @Test
     public void shouldGetCorrectOntologyAndMessageTemplate() {
         assertThat(responseSettingsBehaviour.getOntology(), is(instanceOf(SettingsOntology.class)));
-        assertThat(responseSettingsBehaviour.getMessageTemplate(), is(instanceOf(SettingsRequestMessageTemplate.class)));
+        assertReflectionEquals(new MessageTemplate(new SettingsMatchExpression()), responseSettingsBehaviour.getMessageTemplate());
     }
 
 }
