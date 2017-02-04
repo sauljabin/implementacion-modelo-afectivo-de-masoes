@@ -19,15 +19,15 @@ public class ConfiguringAgentMatchExpression implements MessageTemplate.MatchExp
             return false;
         }
 
-        if (!message.getProtocol().equals(FIPANames.InteractionProtocol.FIPA_REQUEST)) {
+        if (message.getProtocol() == null || !message.getProtocol().equals(FIPANames.InteractionProtocol.FIPA_REQUEST)) {
             return false;
         }
 
-        if (!message.getLanguage().equals(FIPANames.ContentLanguage.FIPA_SL)) {
+        if (message.getLanguage() == null || !message.getLanguage().equals(FIPANames.ContentLanguage.FIPA_SL)) {
             return false;
         }
 
-        if (!message.getOntology().equals(ConfigurableOntology.ONTOLOGY_NAME)) {
+        if (message.getOntology() == null || !message.getOntology().equals(ConfigurableOntology.ONTOLOGY_NAME)) {
             return false;
         }
 

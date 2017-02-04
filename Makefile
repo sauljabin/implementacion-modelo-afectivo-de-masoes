@@ -26,10 +26,10 @@ wikipedia: ; @./gradlew -q run -Pargs="-Ewikipedia"
 uncopyrighted: ; @grep --include *.java -Lr "Copyright (c) 2016 Saúl Piña <sauljabin@gmail.com>" .
 
 # target unit-tests:          Exec unit test.
-unit-tests: ; @./gradlew test
+unit-tests: ; @./gradlew test $(args)
 
 # target functional-tests:    Exec functional test.
-functional-tests: ; @./gradlew -q functionalTest -Pargs="-Jgui=false -Smasoes.env=test -Jagents=tester:functional.test.TesterAgent($(tests))"
+functional-tests: ; @./gradlew functional $(args)
 
 # target tests:               Exec all test.
 tests: unit-tests functional-tests

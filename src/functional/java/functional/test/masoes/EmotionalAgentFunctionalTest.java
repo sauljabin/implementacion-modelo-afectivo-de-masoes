@@ -4,10 +4,10 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.test.environment.dummy;
+package functional.test.masoes;
 
 import environment.dummy.DummyEmotionalAgent;
-import functional.test.FunctionalTest;
+import functional.test.AbstractFunctionalTest;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
 import jade.content.lang.sl.SLCodec;
@@ -20,6 +20,8 @@ import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetAgentStatus;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.Stimulus;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
@@ -27,12 +29,12 @@ import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
-public class ShouldChangeEmotionAndBehaviourTest extends FunctionalTest {
+public class EmotionalAgentFunctionalTest extends AbstractFunctionalTest {
 
     private AID dummyAgentAID;
     private ContentManager contentManager;
 
-    @Override
+    @Before
     public void setUp() {
         dummyAgentAID = createAgent(DummyEmotionalAgent.class);
         contentManager = new ContentManager();
@@ -40,8 +42,8 @@ public class ShouldChangeEmotionAndBehaviourTest extends FunctionalTest {
         contentManager.registerLanguage(new SLCodec());
     }
 
-    @Override
-    public void performTest() throws Exception {
+    @Test
+    public void shouldChangeAgentEmotion() throws Exception {
         ACLMessage requestMessage = createRequestMessage(dummyAgentAID, MasoesOntology.ONTOLOGY_NAME);
         AgentStatus firstEmotionalResponse = testGetStatus(requestMessage);
         testEvaluateStimulus(requestMessage);

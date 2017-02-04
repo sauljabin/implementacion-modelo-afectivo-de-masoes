@@ -45,30 +45,32 @@ public class ConfiguringAgentBehaviour extends OntologyResponderBehaviour {
     public Predicate performAction(Action action) throws FailureException {
         Concept agentAction = action.getAction();
         if (agentAction instanceof AddBehaviour) {
-            return addBehaviour((AddBehaviour) agentAction);
+            return addBehaviour(action);
         } else if (agentAction instanceof RemoveBehaviour) {
-            return removeBehaviour((RemoveBehaviour) agentAction);
+            return removeBehaviour(action);
         } else {
             throw new FailureException("Unknown action " + agentAction);
         }
     }
 
-    private Predicate removeBehaviour(RemoveBehaviour removeBehaviour) {
+    private Predicate removeBehaviour(Action action) {
+        RemoveBehaviour removeBehaviour = (RemoveBehaviour) action.getAction();
         String name = removeBehaviour.getName();
         if (Optional.ofNullable(name).isPresent()) {
             myAgent.removeBehaviour(behaviours.get(name));
         }
-        return new Done();
+        return new Done(action);
     }
 
-    private Predicate addBehaviour(AddBehaviour addBehaviour) throws FailureException {
+    private Predicate addBehaviour(Action action) throws FailureException {
+        AddBehaviour addBehaviour = (AddBehaviour) action.getAction();
         String name = addBehaviour.getName();
         if (!Optional.ofNullable(name).orElse("").isEmpty()) {
             try {
                 Behaviour behaviour = (Behaviour) Class.forName(addBehaviour.getClassName()).newInstance();
                 behaviours.put(name, behaviour);
                 myAgent.addBehaviour(behaviour);
-                return new Done();
+                return new Done(action);
             } catch (Exception e) {
                 throw new FailureException(e.getMessage());
             }

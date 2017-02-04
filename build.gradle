@@ -56,16 +56,21 @@ run {
 }
 
 sourceSets {
-    functionalTest {
+    functional {
         java {
-            srcDirs = ['src/functionalTest/java']
+            srcDirs = ['src/functional/java']
         }
         resources {
-            srcDirs = ['src/functionalTest/resources']
+            srcDirs = ['src/functional/resources']
         }
-        compileClasspath += sourceSets.test.compileClasspath
-        runtimeClasspath += sourceSets.test.runtimeClasspath
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
     }
+}
+
+configurations {
+    functionalCompile.extendsFrom testCompile
+    functionalRuntime.extendsFrom testRuntime
 }
 
 test {
@@ -78,10 +83,14 @@ test {
     }
 }
 
-task(functionalTest, type: JavaExec) {
-    main = mainClassName
-    if (project.hasProperty(argsProperty)) {
-        args(processArguments(project.property(argsProperty)))
+task functional(type: Test) {
+    testClassesDir = sourceSets.functional.output.classesDir
+    classpath = sourceSets.functional.runtimeClasspath
+    testLogging {
+        showExceptions true
+        showCauses true
+        showStackTraces true
+        exceptionFormat 'full'
+        events 'passed', 'skipped', 'failed'
     }
-    classpath = sourceSets.functionalTest.runtimeClasspath
 }
