@@ -6,17 +6,17 @@
 
 package agent;
 
-public class TimeoutResponseException extends RuntimeException {
+public class TimeoutException extends RuntimeException {
 
-    public TimeoutResponseException(String message) {
+    public TimeoutException(String message) {
         super(message);
     }
 
-    public TimeoutResponseException(String message, Throwable cause) {
+    public TimeoutException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public TimeoutResponseException(Throwable cause) {
+    public TimeoutException(Throwable cause) {
         super(cause);
     }
 

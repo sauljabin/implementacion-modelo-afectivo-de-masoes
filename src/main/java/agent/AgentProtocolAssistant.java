@@ -108,7 +108,7 @@ public class AgentProtocolAssistant {
         stopWatch.stop();
 
         if (!Optional.ofNullable(response).isPresent()) {
-            throw new TimeoutResponseException("The agent did not respond");
+            throw new TimeoutException("The agent did not respond");
         }
 
         if (response.getPerformative() == ACLMessage.AGREE) {
@@ -116,7 +116,7 @@ public class AgentProtocolAssistant {
         }
 
         if (!Optional.ofNullable(response).isPresent()) {
-            throw new TimeoutResponseException("The agent did not respond");
+            throw new TimeoutException("The agent did not respond");
         }
 
         if (response.getPerformative() != ACLMessage.INFORM) {

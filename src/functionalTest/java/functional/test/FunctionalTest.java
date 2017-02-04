@@ -8,6 +8,7 @@ package functional.test;
 
 import agent.AgentLogger;
 import agent.AgentProtocolAssistant;
+import agent.TimeoutException;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
@@ -184,11 +185,15 @@ public abstract class FunctionalTest extends Behaviour {
     }
 
     public ACLMessage blockingReceive(long millis) {
-        return myAgent.blockingReceive(millis);
+        ACLMessage message = myAgent.blockingReceive(millis);
+        if (message == null) {
+            throw new TimeoutException("Timeout receiving message");
+        }
+        return message;
     }
 
     public ACLMessage blockingReceive() {
-        return myAgent.blockingReceive(timeout);
+        return blockingReceive(timeout);
     }
 
     public ACLMessage receive() {

@@ -224,7 +224,7 @@ public class AgentProtocolAssistantTest {
     public void shouldThrowTimeoutExceptionInSendRequestActionWhenResponseIsNull() throws Exception {
         String expectedMessage = "The agent did not respond";
         doReturn(null).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
-        expectedException.expect(TimeoutResponseException.class);
+        expectedException.expect(TimeoutException.class);
         expectedException.expectMessage(expectedMessage);
         agentProtocolAssistantSpy.sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
     }
@@ -238,7 +238,7 @@ public class AgentProtocolAssistantTest {
                 .doReturn(null)
                 .when(agentMock)
                 .blockingReceive(any(MessageTemplate.class), anyLong());
-        expectedException.expect(TimeoutResponseException.class);
+        expectedException.expect(TimeoutException.class);
         expectedException.expectMessage(expectedMessage);
         agentProtocolAssistantSpy.sendRequestAction(any(AID.class), any(AgentAction.class), anyString());
     }
