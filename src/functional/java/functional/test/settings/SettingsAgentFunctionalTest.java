@@ -7,7 +7,7 @@
 package functional.test.settings;
 
 import application.ApplicationSettings;
-import functional.test.AbstractFunctionalTest;
+import functional.test.FunctionalTest;
 import jade.JadeSettings;
 import jade.content.ContentElement;
 import jade.core.AID;
@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
-public class SettingsAgentFunctionalTest extends AbstractFunctionalTest {
+public class SettingsAgentFunctionalTest extends FunctionalTest {
 
     private AID settingsAgentAID;
 

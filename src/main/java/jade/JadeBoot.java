@@ -49,4 +49,7 @@ public class JadeBoot {
         }
     }
 
+    public AgentContainer getMainContainer() {
+        return mainContainer;
+    }
 }

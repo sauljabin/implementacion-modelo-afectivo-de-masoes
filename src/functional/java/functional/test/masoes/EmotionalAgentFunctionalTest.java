@@ -7,7 +7,7 @@
 package functional.test.masoes;
 
 import environment.dummy.DummyEmotionalAgent;
-import functional.test.AbstractFunctionalTest;
+import functional.test.FunctionalTest;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
 import jade.content.lang.sl.SLCodec;
@@ -29,7 +29,7 @@ import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
-public class EmotionalAgentFunctionalTest extends AbstractFunctionalTest {
+public class EmotionalAgentFunctionalTest extends FunctionalTest {
 
     private AID dummyAgentAID;
     private ContentManager contentManager;

@@ -18,12 +18,13 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
+import jade.wrapper.AgentContainer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import java.util.List;
 
-public abstract class AbstractFunctionalTest {
+public abstract class FunctionalTest {
 
     private static ApplicationSettings applicationSettings = ApplicationSettings.getInstance();
     private static JadeSettings jadeSettings = JadeSettings.getInstance();
@@ -46,6 +47,10 @@ public abstract class AbstractFunctionalTest {
     public static void tearDownJade() throws Exception {
         jadeBoot.kill();
         Thread.sleep(1500);
+    }
+
+    public static AgentContainer getContainer() {
+        return jadeBoot.getMainContainer();
     }
 
     public void killAgent(AID agentToKill) {
