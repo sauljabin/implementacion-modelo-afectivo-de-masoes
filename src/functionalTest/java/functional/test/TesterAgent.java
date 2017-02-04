@@ -15,7 +15,6 @@ import org.reflections.Reflections;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -73,25 +72,17 @@ public class TesterAgent extends Agent {
     }
 
     private Set<Class<?>> getTestClasses() {
-        Set<Class<?>> classList = new HashSet<>();
-        if (getArguments() != null) {
-            classList = Arrays.asList(getArguments())
-                    .stream()
-                    .filter(arg -> !arg.toString().isEmpty())
-                    .map(arg -> {
-                        String className = (String) arg;
-                        try {
-                            return Class.forName(className);
-                        } catch (Exception e) {
-                            throw new FunctionalTestException("Error adding FunctionalTest behaviour", e);
-                        }
-                    }).collect(Collectors.toSet());
+        Reflections reflections = new Reflections(getClass().getPackage().getName());
+        Set<Class<?>> classList = reflections.getSubTypesOf(FunctionalTest.class).stream().collect(Collectors.toSet());
+        Set<String> args = Arrays.asList(getArguments()).stream().filter(arg -> !arg.toString().isEmpty()).map(Object::toString).collect(Collectors.toSet());
+
+        if (args.isEmpty()) {
+            return classList;
         }
-        if (classList.isEmpty()) {
-            Reflections reflections = new Reflections(getClass().getPackage().getName());
-            classList = reflections.getSubTypesOf(FunctionalTest.class).stream().collect(Collectors.toSet());
-        }
-        return classList;
+
+        String pattern = String.join("|", args).replace(".", "\\.").replace("*", ".*");
+
+        return classList.stream().filter(aClass -> aClass.getName().matches(pattern)).collect(Collectors.toSet());
     }
 
     public void registerTest(boolean passed) {
