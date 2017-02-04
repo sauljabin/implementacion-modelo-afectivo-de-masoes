@@ -48,7 +48,7 @@ public class AgentProtocolAssistant {
         this(agent, DEFAULT_TIMEOUT);
     }
 
-    public AgentProtocolAssistant(Agent agent, int timeout) {
+    public AgentProtocolAssistant(Agent agent, long timeout) {
         this.agent = agent;
         this.timeout = timeout;
         stringGenerator = new StringGenerator();

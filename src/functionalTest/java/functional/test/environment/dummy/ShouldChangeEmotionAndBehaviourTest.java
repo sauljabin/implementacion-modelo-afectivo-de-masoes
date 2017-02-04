@@ -29,7 +29,6 @@ import static org.junit.Assert.assertThat;
 
 public class ShouldChangeEmotionAndBehaviourTest extends FunctionalTest {
 
-    private static final int MILLIS = 6000;
     private AID dummyAgentAID;
     private ContentManager contentManager;
 
@@ -79,12 +78,12 @@ public class ShouldChangeEmotionAndBehaviourTest extends FunctionalTest {
     }
 
     private ACLMessage testMessage(ACLMessage requestMessage) {
-        ACLMessage response = blockingReceive(MILLIS);
+        ACLMessage response = blockingReceive();
         assertThat(response, is(notNullValue()));
         assertThat(response.getPerformative(), is(ACLMessage.AGREE));
         assertThat(response.getConversationId(), is(requestMessage.getConversationId()));
 
-        response = blockingReceive(MILLIS);
+        response = blockingReceive();
         assertThat(response, is(notNullValue()));
         assertThat(response.getPerformative(), is(ACLMessage.INFORM));
         assertThat(response.getConversationId(), is(requestMessage.getConversationId()));

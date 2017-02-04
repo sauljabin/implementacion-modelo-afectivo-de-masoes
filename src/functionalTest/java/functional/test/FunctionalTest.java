@@ -20,7 +20,6 @@ import java.util.Optional;
 
 public abstract class FunctionalTest extends Behaviour {
 
-    private static final int TIMEOUT = 4000;
     private static final String PASSED = "PASSED";
     private static final String FAILED = "FAILED";
     private List<AID> agentsToKill;
@@ -28,14 +27,16 @@ public abstract class FunctionalTest extends Behaviour {
     private AgentProtocolAssistant agentProtocolAssistant;
     private boolean passed;
     private String failedMessage;
+    private long timeout;
 
     @Override
     public void onStart() {
+        timeout = 5000L;
         passed = true;
         failedMessage = "";
         agentsToKill = new ArrayList<>();
         logger = new AgentLogger(LoggerFactory.getLogger(FunctionalTest.class));
-        agentProtocolAssistant = new AgentProtocolAssistant(myAgent, TIMEOUT);
+        agentProtocolAssistant = new AgentProtocolAssistant(myAgent, timeout);
         try {
             setUp();
         } catch (Exception e) {
@@ -66,7 +67,8 @@ public abstract class FunctionalTest extends Behaviour {
     @Override
     public int onEnd() {
         logResult();
-        getTesterAgent().registerTest(passed);
+        TesterAgent testerAgent = (TesterAgent) myAgent;
+        testerAgent.registerTest(passed);
         agentsToKill.forEach(aid -> {
             try {
                 killAgent(aid);
@@ -86,9 +88,6 @@ public abstract class FunctionalTest extends Behaviour {
         }
     }
 
-    private TesterAgent getTesterAgent() {
-        return (TesterAgent) myAgent;
-    }
 
     public void failed() {
         failed("");
@@ -188,6 +187,10 @@ public abstract class FunctionalTest extends Behaviour {
         return myAgent.blockingReceive(millis);
     }
 
+    public ACLMessage blockingReceive() {
+        return myAgent.blockingReceive(timeout);
+    }
+
     public ACLMessage receive() {
         return myAgent.receive();
     }
@@ -198,6 +201,15 @@ public abstract class FunctionalTest extends Behaviour {
 
     public AID getAID(String name) {
         return myAgent.getAID(name);
+    }
+
+    public long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(long timeout) {
+        this.timeout = timeout;
+        agentProtocolAssistant.setTimeout(timeout);
     }
 
 }
