@@ -31,8 +31,8 @@ unit-test: ; @./gradlew unitTest
 # target functional-test:     Exec functional test.
 functional-test: ; @./gradlew functionalTest
 
-# target all-test:            Exec all test.
-all-test: ; @./gradlew test
+# target test:                Exec all test.
+test: ; @./gradlew test
 
 # target docker-build:        Make docker image.
 docker-build: install ; @docker-compose build

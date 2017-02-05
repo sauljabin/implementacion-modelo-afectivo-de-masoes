@@ -227,7 +227,7 @@ make functional-test
 Ejecución de todas las pruebas:
 
 ```
-make all-test
+make test
 ```
 
 Crear imagen:

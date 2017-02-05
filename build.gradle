@@ -55,29 +55,15 @@ run {
     }
 }
 
-test {
-    testLogging {
-        showExceptions true
-        showCauses true
-        showStackTraces true
-        exceptionFormat 'full'
-        events 'passed', 'skipped', 'failed'
-    }
-}
-
 task unitTest(type: Test) {
     exclude '**/*FunctionalTest*'
-    testLogging {
-        showExceptions true
-        showCauses true
-        showStackTraces true
-        exceptionFormat 'full'
-        events 'passed', 'skipped', 'failed'
-    }
 }
 
 task functionalTest(type: Test) {
     include '**/*FunctionalTest*'
+}
+
+tasks.withType(Test) {
     testLogging {
         showExceptions true
         showCauses true
