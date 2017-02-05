@@ -9,7 +9,6 @@ package protocol;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import protocol.ProtocolResponderBehaviour;
 
 public class ProtocolResponderInformBehaviour extends ProtocolResponderBehaviour {
 

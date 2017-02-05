@@ -7,7 +7,6 @@
 package settings;
 
 import application.ApplicationSettings;
-import test.FunctionalTest;
 import jade.JadeSettings;
 import jade.content.ContentElement;
 import jade.core.AID;
@@ -19,6 +18,7 @@ import ontology.settings.SettingsOntology;
 import ontology.settings.SystemSettings;
 import org.junit.Before;
 import org.junit.Test;
+import test.FunctionalTest;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;

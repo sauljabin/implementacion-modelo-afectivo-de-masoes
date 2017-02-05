@@ -43,7 +43,7 @@ public class JadeBoot {
         }
     }
 
-    public AgentController getAgent(String name){
+    public AgentController getAgent(String name) {
         try {
             return mainContainer.getAgent(name);
         } catch (ControllerException e) {

@@ -7,7 +7,6 @@
 package masoes;
 
 import environment.dummy.DummyEmotionalAgent;
-import test.FunctionalTest;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
 import jade.content.lang.sl.SLCodec;
@@ -22,6 +21,7 @@ import ontology.masoes.MasoesOntology;
 import ontology.masoes.Stimulus;
 import org.junit.Before;
 import org.junit.Test;
+import test.FunctionalTest;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;

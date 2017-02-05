@@ -23,12 +23,14 @@ public class RequesterGuiListenerTest {
     private RequesterGuiListener requesterGuiListener;
     private RequesterGui requesterGuiMock;
     private ArgumentCaptor<GuiEvent> guiEventArgumentCaptor;
+    private RequesterGuiAgent requesterGuiAgentMock;
 
     @Before
     public void setUp() {
         guiEventArgumentCaptor = ArgumentCaptor.forClass(GuiEvent.class);
         requesterGuiMock = mock(RequesterGui.class);
-        requesterGuiListener = new RequesterGuiListener(requesterGuiMock);
+        requesterGuiAgentMock = mock(RequesterGuiAgent.class);
+        requesterGuiListener = new RequesterGuiListener(requesterGuiMock, requesterGuiAgentMock);
     }
 
     @Test
@@ -41,7 +43,7 @@ public class RequesterGuiListenerTest {
 
         requesterGuiListener.windowClosing(windowEventMock);
 
-        verify(requesterGuiMock).onGuiEvent(guiEventArgumentCaptor.capture());
+        verify(requesterGuiAgentMock).postGuiEvent(guiEventArgumentCaptor.capture());
         assertReflectionEquals(expectedGuiEvent, guiEventArgumentCaptor.getValue());
     }
 

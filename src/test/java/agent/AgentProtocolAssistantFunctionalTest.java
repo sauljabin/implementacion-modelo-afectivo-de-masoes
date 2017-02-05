@@ -6,10 +6,10 @@
 
 package agent;
 
-import test.FunctionalTest;
 import jade.core.AID;
 import jade.wrapper.ControllerException;
 import org.junit.Test;
+import test.FunctionalTest;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;

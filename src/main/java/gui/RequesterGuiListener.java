@@ -8,21 +8,30 @@ package gui;
 
 import jade.gui.GuiEvent;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class RequesterGuiListener extends WindowAdapter {
+public class RequesterGuiListener extends WindowAdapter implements ActionListener {
 
     private RequesterGui requesterGui;
+    private RequesterGuiAgent requesterGuiAgent;
 
-    public RequesterGuiListener(RequesterGui requesterGui) {
+    public RequesterGuiListener(RequesterGui requesterGui, RequesterGuiAgent requesterGuiAgent) {
         this.requesterGui = requesterGui;
+        this.requesterGuiAgent = requesterGuiAgent;
     }
 
     @Override
     public void windowClosing(WindowEvent e) {
         GuiEvent guiEvent = new GuiEvent(e.getSource(), RequesterGuiEventType.CLOSE_WINDOW.getInt());
-        requesterGui.onGuiEvent(guiEvent);
+        requesterGuiAgent.postGuiEvent(guiEvent);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 
 }

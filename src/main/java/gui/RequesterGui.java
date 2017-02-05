@@ -6,26 +6,18 @@
 
 package gui;
 
-import jade.gui.GuiEvent;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class RequesterGui extends JFrame {
 
     private static final String ONTOLOGY_REQUESTER_GUI = "Requester GUI";
-    private RequesterGuiAgent requesterGuiAgent;
-
-    public RequesterGui(RequesterGuiAgent requesterGuiAgent) {
-        this.requesterGuiAgent = requesterGuiAgent;
-    }
 
     public void setUp() {
         setTitle(ONTOLOGY_REQUESTER_GUI);
         setSize(1024, 768);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
-        addWindowListener(new RequesterGuiListener(this));
         setLocationRelativeTo(this);
         setVisible(true);
     }
@@ -33,10 +25,6 @@ public class RequesterGui extends JFrame {
     public void closeGui() {
         setVisible(false);
         dispose();
-    }
-
-    public void onGuiEvent(GuiEvent guiEvent) {
-        requesterGuiAgent.postGuiEvent(guiEvent);
     }
 
 }

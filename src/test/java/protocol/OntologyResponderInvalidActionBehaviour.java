@@ -9,7 +9,6 @@ package protocol;
 import jade.content.onto.basic.Action;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
 import jade.lang.acl.MessageTemplate;
-import protocol.OntologyResponderBehaviour;
 
 public class OntologyResponderInvalidActionBehaviour extends OntologyResponderBehaviour {
 

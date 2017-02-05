@@ -6,11 +6,11 @@
 
 package agent;
 
-import test.FunctionalTest;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import org.junit.Before;
 import org.junit.Test;
+import test.FunctionalTest;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

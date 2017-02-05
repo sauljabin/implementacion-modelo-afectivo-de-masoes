@@ -9,7 +9,6 @@ package protocol;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import protocol.ProtocolResponderBehaviour;
 
 public class ProtocolResponderNotUnderstoodBehaviour extends ProtocolResponderBehaviour {
 

@@ -12,7 +12,6 @@ import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
-import protocol.OntologyResponderBehaviour;
 
 public class OntologyResponderNotUnderstoodBehaviour extends OntologyResponderBehaviour {
 

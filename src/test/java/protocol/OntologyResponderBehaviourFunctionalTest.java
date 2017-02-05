@@ -6,7 +6,6 @@
 
 package protocol;
 
-import test.FunctionalTest;
 import jade.content.ContentElement;
 import jade.content.onto.basic.Done;
 import jade.core.AID;
@@ -16,6 +15,7 @@ import jade.lang.acl.ACLMessage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import test.FunctionalTest;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;

@@ -12,9 +12,11 @@ import jade.gui.GuiEvent;
 public class RequesterGuiAgent extends GuiAgent {
 
     private RequesterGui requesterGui;
+    private RequesterGuiListener requesterGuiListener;
 
     public RequesterGuiAgent() {
-        requesterGui = new RequesterGui(this);
+        requesterGui = new RequesterGui();
+        requesterGuiListener = new RequesterGuiListener(requesterGui, this);
     }
 
     @Override
