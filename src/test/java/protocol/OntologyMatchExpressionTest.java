@@ -11,6 +11,7 @@ import jade.lang.acl.ACLMessage;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class OntologyMatchExpressionTest {
@@ -31,6 +32,24 @@ public class OntologyMatchExpressionTest {
     @Test
     public void shouldMatchWithConfigurableRequestMessage() {
         assertTrue(configuringAgentMatchExpression.match(message));
+    }
+
+    @Test
+    public void shouldGetFalseMatchForNullLanguage() {
+        message.setLanguage(null);
+        assertFalse(configuringAgentMatchExpression.match(message));
+    }
+
+    @Test
+    public void shouldGetFalseMatchForNullOntology() {
+        message.setOntology(null);
+        assertFalse(configuringAgentMatchExpression.match(message));
+    }
+
+    @Test
+    public void shouldGetFalseMatchForNullProtocol() {
+        message.setProtocol(null);
+        assertFalse(configuringAgentMatchExpression.match(message));
     }
 
 }

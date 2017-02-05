@@ -21,7 +21,7 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 
-public class OntologyResponderFunctionalTest extends FunctionalTest {
+public class OntologyResponderBehaviourFunctionalTest extends FunctionalTest {
 
     private AID agent;
 

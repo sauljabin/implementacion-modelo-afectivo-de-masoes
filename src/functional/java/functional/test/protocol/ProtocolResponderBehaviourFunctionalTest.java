@@ -16,7 +16,7 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class ProtocolResponderFunctionalTest extends FunctionalTest {
+public class ProtocolResponderBehaviourFunctionalTest extends FunctionalTest {
 
     private AID agent;
 
