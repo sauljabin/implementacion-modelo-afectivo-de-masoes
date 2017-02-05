@@ -4,10 +4,10 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.test.masoes;
+package masoes;
 
 import environment.dummy.DummyEmotionalAgent;
-import functional.test.FunctionalTest;
+import test.FunctionalTest;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
 import jade.content.lang.sl.SLCodec;

@@ -215,20 +215,19 @@ make uncopyrighted
 Ejecución de pruebas unitarias:
 
 ```
-make unit-tests
+make unit-test
 ```
 
 Ejecución de pruebas funcionales:
 
 ```
-make functional-tests
-make functional-tests tests=package.Class
+make functional-test
 ```
 
 Ejecución de todas las pruebas:
 
 ```
-make tests
+make all-test
 ```
 
 Crear imagen:

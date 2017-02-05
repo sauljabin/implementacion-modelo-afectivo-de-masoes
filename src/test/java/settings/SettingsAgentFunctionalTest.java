@@ -4,10 +4,10 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.test.settings;
+package settings;
 
 import application.ApplicationSettings;
-import functional.test.FunctionalTest;
+import test.FunctionalTest;
 import jade.JadeSettings;
 import jade.content.ContentElement;
 import jade.core.AID;
@@ -19,7 +19,6 @@ import ontology.settings.SettingsOntology;
 import ontology.settings.SystemSettings;
 import org.junit.Before;
 import org.junit.Test;
-import settings.SettingsAgent;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;

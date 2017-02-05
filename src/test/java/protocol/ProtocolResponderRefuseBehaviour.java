@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.test.protocol;
+package protocol;
 
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;

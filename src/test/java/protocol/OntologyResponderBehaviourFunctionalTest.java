@@ -4,9 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.test.protocol;
+package protocol;
 
-import functional.test.FunctionalTest;
+import test.FunctionalTest;
 import jade.content.ContentElement;
 import jade.content.onto.basic.Done;
 import jade.core.AID;

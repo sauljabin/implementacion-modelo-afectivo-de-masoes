@@ -55,24 +55,6 @@ run {
     }
 }
 
-sourceSets {
-    functional {
-        java {
-            srcDirs = ['src/functional/java']
-        }
-        resources {
-            srcDirs = ['src/functional/resources']
-        }
-        compileClasspath += main.output + test.output
-        runtimeClasspath += main.output + test.output
-    }
-}
-
-configurations {
-    functionalCompile.extendsFrom testCompile
-    functionalRuntime.extendsFrom testRuntime
-}
-
 test {
     testLogging {
         showExceptions true
@@ -83,9 +65,19 @@ test {
     }
 }
 
-task functional(type: Test) {
-    testClassesDir = sourceSets.functional.output.classesDir
-    classpath = sourceSets.functional.runtimeClasspath
+task unitTest(type: Test) {
+    exclude '**/*FunctionalTest*'
+    testLogging {
+        showExceptions true
+        showCauses true
+        showStackTraces true
+        exceptionFormat 'full'
+        events 'passed', 'skipped', 'failed'
+    }
+}
+
+task functionalTest(type: Test) {
+    include '**/*FunctionalTest*'
     testLogging {
         showExceptions true
         showCauses true

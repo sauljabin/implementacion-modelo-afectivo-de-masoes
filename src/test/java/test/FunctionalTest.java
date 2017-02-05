@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.test;
+package test;
 
 import agent.AgentProtocolAssistant;
 import agent.TimeoutException;
@@ -33,12 +33,12 @@ public abstract class FunctionalTest {
 
     @BeforeClass
     public static void setUpJade() throws Exception {
+        JadeSettings.getInstance().set(JadeSettings.GUI, "false");
+        ApplicationSettings.getInstance().set(ApplicationSettings.MASOES_ENV, "functional-tests");
+
         if (jadeBoot != null) {
             return;
         }
-
-        JadeSettings.getInstance().set(JadeSettings.GUI, "false");
-        ApplicationSettings.getInstance().set(ApplicationSettings.MASOES_ENV, "functional-tests");
 
         jadeBoot = new JadeBoot();
         jadeBoot.boot();

@@ -4,9 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.test.agent;
+package agent;
 
-import functional.test.FunctionalTest;
+import test.FunctionalTest;
 import jade.core.AID;
 import jade.wrapper.ControllerException;
 import org.junit.Test;

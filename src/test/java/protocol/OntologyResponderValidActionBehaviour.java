@@ -4,18 +4,19 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.test.protocol;
+package protocol;
 
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
+import jade.content.onto.basic.Done;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
 import jade.lang.acl.MessageTemplate;
 import protocol.OntologyResponderBehaviour;
 
-public class OntologyResponderFailureBehaviour extends OntologyResponderBehaviour {
+public class OntologyResponderValidActionBehaviour extends OntologyResponderBehaviour {
 
-    public OntologyResponderFailureBehaviour() {
+    public OntologyResponderValidActionBehaviour() {
         super(null, MessageTemplate.MatchAll(), JADEManagementOntology.getInstance());
     }
 
@@ -26,7 +27,7 @@ public class OntologyResponderFailureBehaviour extends OntologyResponderBehaviou
 
     @Override
     public Predicate performAction(Action action) throws FailureException {
-        throw new FailureException("MESSAGE FAILURE");
+        return new Done(action);
     }
 
 }

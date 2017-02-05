@@ -4,11 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.test.agent;
+package agent;
 
-import agent.SimpleBehaviour;
-import agent.TimeoutException;
-import functional.test.FunctionalTest;
+import test.FunctionalTest;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import org.junit.Before;

@@ -4,20 +4,20 @@
  * Please see the LICENSE.txt file
  */
 
-package functional.test.protocol;
+package protocol;
 
 import jade.content.Predicate;
+import jade.content.onto.BasicOntology;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.domain.FIPAAgentManagement.FailureException;
-import jade.domain.JADEAgentManagement.JADEManagementOntology;
 import jade.lang.acl.MessageTemplate;
 import protocol.OntologyResponderBehaviour;
 
-public class OntologyResponderValidActionBehaviour extends OntologyResponderBehaviour {
+public class OntologyResponderNotUnderstoodBehaviour extends OntologyResponderBehaviour {
 
-    public OntologyResponderValidActionBehaviour() {
-        super(null, MessageTemplate.MatchAll(), JADEManagementOntology.getInstance());
+    public OntologyResponderNotUnderstoodBehaviour() {
+        super(null, MessageTemplate.MatchAll(), BasicOntology.getInstance());
     }
 
     @Override
