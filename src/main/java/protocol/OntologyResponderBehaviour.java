@@ -53,7 +53,7 @@ public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
         if (isValidAction(action)) {
             response.setPerformative(ACLMessage.AGREE);
         } else {
-            throw new RefuseException("Action no valid");
+            throw new RefuseException("Invalid action");
         }
 
         return response;

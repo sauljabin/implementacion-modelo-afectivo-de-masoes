@@ -9,6 +9,7 @@ package agent;
 import jade.content.AgentAction;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
+import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
@@ -47,6 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.collection.IsArrayContaining.hasItemInArray;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -118,9 +120,10 @@ public class AgentProtocolAssistantTest {
     @Test
     public void shouldConfigContentManager() throws Exception {
         agentProtocolAssistant = new AgentProtocolAssistant(agentMock);
-        assertThat(agentProtocolAssistant.getContentManager().getOntologyNames()[0], is(JADEManagementOntology.NAME));
-        assertThat(agentProtocolAssistant.getContentManager().getOntologyNames()[1], is(ConfigurableOntology.ONTOLOGY_NAME));
-        assertThat(agentProtocolAssistant.getContentManager().getLanguageNames()[0], is(FIPANames.ContentLanguage.FIPA_SL));
+        assertThat(agentProtocolAssistant.getContentManager().getOntologyNames(), hasItemInArray(ConfigurableOntology.ONTOLOGY_NAME));
+        assertThat(agentProtocolAssistant.getContentManager().getOntologyNames(), hasItemInArray(JADEManagementOntology.NAME));
+        assertThat(agentProtocolAssistant.getContentManager().getOntologyNames(), hasItemInArray(BasicOntology.getInstance().getName()));
+        assertThat(agentProtocolAssistant.getContentManager().getLanguageNames(), hasItemInArray(FIPANames.ContentLanguage.FIPA_SL));
     }
 
     @Test

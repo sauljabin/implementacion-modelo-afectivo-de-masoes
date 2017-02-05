@@ -10,6 +10,7 @@ import jade.content.AgentAction;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
 import jade.content.lang.sl.SLCodec;
+import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
@@ -57,8 +58,9 @@ public class AgentProtocolAssistant {
         stopWatch = new StopWatch();
         contentManager = new ContentManager();
         contentManager.registerLanguage(new SLCodec());
-        contentManager.registerOntology(JADEManagementOntology.getInstance());
         contentManager.registerOntology(new ConfigurableOntology());
+        contentManager.registerOntology(JADEManagementOntology.getInstance());
+        contentManager.registerOntology(BasicOntology.getInstance());
     }
 
     public long getTimeout() {

@@ -34,7 +34,6 @@ public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
     @Override
     public Predicate performAction(Action action) throws FailureException {
         Concept agentAction = action.getAction();
-
         if (agentAction instanceof GetAgentStatus) {
             return responseAgentStatus();
         } else {
