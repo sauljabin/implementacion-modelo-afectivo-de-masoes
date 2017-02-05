@@ -6,25 +6,108 @@
 
 package gui;
 
+import net.miginfocom.swing.MigLayout;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class RequesterGui extends JFrame {
 
-    private static final String ONTOLOGY_REQUESTER_GUI = "Requester GUI";
+    private JPanel westPanel;
+    private JPanel centerPanel;
+    private JPanel settingsPanel;
+    private JLabel senderAgentLabel;
+    private JLabel senderAgentTitleLabel;
+    private JLabel receiverAgentTitleLabel;
+    private JTextField receiverAgentTextField;
+    private JButton sendRequestButton;
+    private JTabbedPane messageTabbedPane;
+    private JComboBox settingsActionsComboBox;
+    private JLabel settingsActionsLabel;
+    private JLabel settingsKeyLabel;
+    private JTextField settingsKeyTextField;
+    private JTextPane messageTextPane;
+    private JScrollPane messageScrollPane;
 
     public void setUp() {
-        setTitle(ONTOLOGY_REQUESTER_GUI);
+        setTitle("Requester GUI");
         setSize(1024, 768);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
+        addComponents();
         setLocationRelativeTo(this);
         setVisible(true);
+    }
+
+    private void addComponents() {
+        createPrincipalPanels();
+        createAgentsComponents();
+        createSettingsComponents();
+        createMessageLogComponent();
+        createSenderButton();
+    }
+
+    private void createPrincipalPanels() {
+        westPanel = new JPanel(new MigLayout("insets 10"));
+        add(westPanel, BorderLayout.WEST);
+        centerPanel = new JPanel(new MigLayout("insets 10 0 10 10"));
+        add(centerPanel, BorderLayout.CENTER);
+    }
+
+    private void createAgentsComponents() {
+        senderAgentTitleLabel = new JLabel("Sender Agent:");
+        westPanel.add(senderAgentTitleLabel, "w 250, wrap");
+
+        senderAgentLabel = new JLabel("requester");
+        senderAgentLabel.setForeground(Color.BLUE);
+        westPanel.add(senderAgentLabel, "grow, wrap");
+
+        receiverAgentTitleLabel = new JLabel("Receiver Agent:");
+        westPanel.add(receiverAgentTitleLabel, "grow, wrap");
+
+        receiverAgentTextField = new JTextField();
+        westPanel.add(receiverAgentTextField, "grow, wrap");
+
+        messageTabbedPane = new JTabbedPane();
+        westPanel.add(messageTabbedPane, "grow, wrap 20");
+    }
+
+    private void createSettingsComponents() {
+        settingsPanel = new JPanel(new MigLayout("insets 10"));
+        messageTabbedPane.addTab("Settings", settingsPanel);
+
+        settingsActionsLabel = new JLabel("Action:");
+        settingsPanel.add(settingsActionsLabel, "w 30");
+
+        settingsActionsComboBox = new JComboBox();
+        settingsPanel.add(settingsActionsComboBox, "w 100%, wrap");
+
+        settingsKeyLabel = new JLabel("Key:");
+        settingsPanel.add(settingsKeyLabel, "grow");
+
+        settingsKeyTextField = new JTextField();
+        settingsPanel.add(settingsKeyTextField, "grow, wrap");
+    }
+
+    private void createMessageLogComponent() {
+        messageTextPane = new JTextPane();
+        messageScrollPane = new JScrollPane(messageTextPane);
+        centerPanel.add(messageScrollPane, "h 100%, w 100%");
+    }
+
+    private void createSenderButton() {
+        sendRequestButton = new JButton("Send Request");
+        westPanel.add(sendRequestButton, "h 30, grow");
     }
 
     public void closeGui() {
         setVisible(false);
         dispose();
+    }
+
+    public static void main(String[] args) {
+        RequesterGui requesterGui = new RequesterGui();
+        requesterGui.setUp();
     }
 
 }

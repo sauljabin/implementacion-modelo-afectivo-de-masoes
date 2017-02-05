@@ -16,7 +16,7 @@ public class RemoveBehaviour implements AgentAction {
     }
 
     public RemoveBehaviour(String name) {
-        setName(name);
+        this.name = name;
     }
 
     public String getName() {

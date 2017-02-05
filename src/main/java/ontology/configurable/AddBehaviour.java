@@ -17,8 +17,8 @@ public class AddBehaviour implements AgentAction {
     }
 
     public AddBehaviour(String name, String className) {
-        setName(name);
-        setClassName(className);
+        this.name = name;
+        this.className = className;
     }
 
     public String getName() {
