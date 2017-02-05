@@ -166,34 +166,6 @@ public class AgentProtocolAssistant {
         return agent.getAID(agentName);
     }
 
-    public AID createAgent(Class<? extends Agent> agentClass, List<String> arguments) {
-        return createAgent(stringGenerator.getString(RANDOM_STRING_LENGTH), agentClass, arguments);
-    }
-
-    public AID createAgent(String agentName, Class<? extends Agent> agentClass) {
-        return createAgent(agentName, agentClass, null);
-    }
-
-    public AID createAgent(Class<? extends Agent> agentClass) {
-        return createAgent(stringGenerator.getString(RANDOM_STRING_LENGTH), agentClass);
-    }
-
-    public AID createAgent(List<String> arguments) {
-        return createAgent(stringGenerator.getString(RANDOM_STRING_LENGTH), ConfigurableAgent.class, arguments);
-    }
-
-    public AID createAgent(String agentName) {
-        return createAgent(agentName, ConfigurableAgent.class, null);
-    }
-
-    public AID createAgent(String agentName, List<String> arguments) {
-        return createAgent(agentName, ConfigurableAgent.class, arguments);
-    }
-
-    public AID createAgent() {
-        return createAgent(stringGenerator.getString(RANDOM_STRING_LENGTH), ConfigurableAgent.class, null);
-    }
-
     public String addBehaviour(AID agent, String behaviourName, Class<? extends Behaviour> behaviourClass) {
         AddBehaviour content = new AddBehaviour(behaviourName, behaviourClass.getCanonicalName());
         sendActionAndWaitDone(agent, content, ConfigurableOntology.ONTOLOGY_NAME);
@@ -232,6 +204,34 @@ public class AgentProtocolAssistant {
             throw new FillOntologyContentException(e);
         }
         agent.send(requestMessage);
+    }
+
+    public AID createAgent(Class<? extends Agent> agentClass, List<String> arguments) {
+        return createAgent(stringGenerator.getString(RANDOM_STRING_LENGTH), agentClass, arguments);
+    }
+
+    public AID createAgent(String agentName, Class<? extends Agent> agentClass) {
+        return createAgent(agentName, agentClass, null);
+    }
+
+    public AID createAgent(Class<? extends Agent> agentClass) {
+        return createAgent(stringGenerator.getString(RANDOM_STRING_LENGTH), agentClass);
+    }
+
+    public AID createAgent(List<String> arguments) {
+        return createAgent(stringGenerator.getString(RANDOM_STRING_LENGTH), ConfigurableAgent.class, arguments);
+    }
+
+    public AID createAgent(String agentName) {
+        return createAgent(agentName, ConfigurableAgent.class, null);
+    }
+
+    public AID createAgent(String agentName, List<String> arguments) {
+        return createAgent(agentName, ConfigurableAgent.class, arguments);
+    }
+
+    public AID createAgent() {
+        return createAgent(stringGenerator.getString(RANDOM_STRING_LENGTH), ConfigurableAgent.class, null);
     }
 
 }

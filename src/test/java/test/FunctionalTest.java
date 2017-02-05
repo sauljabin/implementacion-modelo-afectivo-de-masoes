@@ -69,8 +69,8 @@ public abstract class FunctionalTest {
     }
 
     public void killAgent(AID agentToKill) {
-        agentProtocolAssistant.killAgent(agentToKill);
         agentsToKill.remove(agentToKill);
+        agentProtocolAssistant.killAgent(agentToKill);
     }
 
     public AID createAgent(Class<? extends Agent> agentClass) {
