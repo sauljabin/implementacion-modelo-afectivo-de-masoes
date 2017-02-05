@@ -98,7 +98,7 @@ public class JadeBootTest {
     public void shouldThrowJadeBootExceptionWhenErrorInAddAgent() throws Exception {
         String expectedMessage = "expectedMessage";
         doThrow(new RuntimeException(expectedMessage)).when(agentContainerMock).acceptNewAgent(anyString(), any(Agent.class));
-        expectedException.expect(AcceptNewAgentException.class);
+        expectedException.expect(AgentOperationException.class);
         expectedException.expectMessage(expectedMessage);
         jadeBoot.boot();
         jadeBoot.addAgent(anyString(), any(Agent.class));
@@ -119,6 +119,14 @@ public class JadeBootTest {
         expectedException.expectMessage(expectedMessage);
         jadeBoot.boot();
         jadeBoot.kill();
+    }
+
+    @Test
+    public void shouldGetAgentFromName() throws Exception {
+        jadeBoot.boot();
+        String expectedName = "expectedName";
+        jadeBoot.getAgent(expectedName);
+        verify(agentContainerMock).getAgent(expectedName);
     }
 
 }

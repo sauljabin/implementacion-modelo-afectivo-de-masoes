@@ -18,79 +18,71 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
-import jade.wrapper.AgentContainer;
+import jade.wrapper.AgentController;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import java.util.List;
+import java.util.Vector;
 
 public abstract class FunctionalTest {
 
-    private static ApplicationSettings applicationSettings = ApplicationSettings.getInstance();
-    private static JadeSettings jadeSettings = JadeSettings.getInstance();
     private static JadeBoot jadeBoot;
     private static Agent testerAgent;
     private static AgentProtocolAssistant agentProtocolAssistant;
+    private static Vector<AID> agentsToKill;
 
     @BeforeClass
     public static void setUpJade() throws Exception {
-        jadeSettings.set(JadeSettings.GUI, "false");
-        applicationSettings.set(ApplicationSettings.MASOES_ENV, "functional-tests");
+        if (jadeBoot != null) {
+            return;
+        }
+
+        JadeSettings.getInstance().set(JadeSettings.GUI, "false");
+        ApplicationSettings.getInstance().set(ApplicationSettings.MASOES_ENV, "functional-tests");
+
         jadeBoot = new JadeBoot();
         jadeBoot.boot();
+
         testerAgent = new Agent();
         jadeBoot.addAgent("tester", testerAgent);
+
         agentProtocolAssistant = new AgentProtocolAssistant(testerAgent, 10000);
+        agentsToKill = new Vector<>();
     }
 
     @AfterClass
     public static void tearDownJade() throws Exception {
-        jadeBoot.kill();
-        Thread.sleep(1500);
+        while (!agentsToKill.isEmpty()) {
+            AID aid = agentsToKill.firstElement();
+            try {
+                agentProtocolAssistant.killAgent(aid);
+            } catch (Exception e) {
+                System.out.println("Fail kill: " + aid);
+            }
+            agentsToKill.remove(aid);
+            System.out.println("Kill: " + aid);
+        }
     }
 
-    public static AgentContainer getContainer() {
-        return jadeBoot.getMainContainer();
+    public static AgentController getAgent(String name) {
+        return jadeBoot.getAgent(name);
     }
 
     public void killAgent(AID agentToKill) {
         agentProtocolAssistant.killAgent(agentToKill);
-    }
-
-    public AID createAgent(String agentName, Class<? extends Agent> agentClass, List<String> arguments) {
-        return agentProtocolAssistant.createAgent(agentName, agentClass, arguments);
-    }
-
-    public AID createAgent(Class<? extends Agent> agentClass, List<String> arguments) {
-        return agentProtocolAssistant.createAgent(agentClass, arguments);
-    }
-
-    public AID createAgent(String agentName, Class<? extends Agent> agentClass) {
-        return agentProtocolAssistant.createAgent(agentName, agentClass);
+        agentsToKill.remove(agentToKill);
     }
 
     public AID createAgent(Class<? extends Agent> agentClass) {
-        return agentProtocolAssistant.createAgent(agentClass);
-    }
-
-    public AID createAgent(List<String> arguments) {
-        return agentProtocolAssistant.createAgent(arguments);
-    }
-
-    public AID createAgent(String agentName) {
-        return agentProtocolAssistant.createAgent(agentName);
-    }
-
-    public AID createAgent(String agentName, List<String> arguments) {
-        return agentProtocolAssistant.createAgent(agentName, arguments);
+        AID agent = agentProtocolAssistant.createAgent(agentClass);
+        agentsToKill.add(agent);
+        return agent;
     }
 
     public AID createAgent() {
-        return agentProtocolAssistant.createAgent();
-    }
-
-    public String addBehaviour(AID agent, String behaviourName, Class<? extends Behaviour> behaviourClass) {
-        return agentProtocolAssistant.addBehaviour(agent, behaviourName, behaviourClass);
+        AID agent = agentProtocolAssistant.createAgent();
+        agentsToKill.add(agent);
+        return agent;
     }
 
     public String addBehaviour(AID agent, Class<? extends Behaviour> behaviourClass) {
@@ -99,10 +91,6 @@ public abstract class FunctionalTest {
 
     public void removeBehaviour(AID agent, String behaviourName) {
         agentProtocolAssistant.removeBehaviour(agent, behaviourName);
-    }
-
-    public ACLMessage createRequestMessage(AID receiver, String ontology) {
-        return agentProtocolAssistant.createRequestMessage(receiver, ontology);
     }
 
     public void sendMessage(ACLMessage message) {
@@ -121,16 +109,8 @@ public abstract class FunctionalTest {
         return blockingReceive(agentProtocolAssistant.getTimeout());
     }
 
-    public ACLMessage receive() {
-        return testerAgent.receive();
-    }
-
-    public AID getAID() {
-        return testerAgent.getAID();
-    }
-
-    public AID getAID(String name) {
-        return testerAgent.getAID(name);
+    public void registerOntology(Ontology ontology) {
+        agentProtocolAssistant.registerOntology(ontology);
     }
 
     public ContentElement sendActionAndWaitContent(AID receiver, AgentAction agentAction, String ontology) {
@@ -141,8 +121,8 @@ public abstract class FunctionalTest {
         return agentProtocolAssistant.sendActionAndWaitMessage(receiver, agentAction, ontology);
     }
 
-    public void registerOntology(Ontology ontology) {
-        agentProtocolAssistant.registerOntology(ontology);
+    public ACLMessage createRequestMessage(AID receiver, String ontology) {
+        return agentProtocolAssistant.createRequestMessage(receiver, ontology);
     }
 
 }

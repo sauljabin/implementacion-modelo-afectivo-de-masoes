@@ -6,17 +6,17 @@
 
 package jade;
 
-public class AcceptNewAgentException extends RuntimeException {
+public class AgentOperationException extends RuntimeException {
 
-    public AcceptNewAgentException(String message) {
+    public AgentOperationException(String message) {
         super(message);
     }
 
-    public AcceptNewAgentException(String message, Throwable cause) {
+    public AgentOperationException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public AcceptNewAgentException(Throwable cause) {
+    public AgentOperationException(Throwable cause) {
         super(cause);
     }
 

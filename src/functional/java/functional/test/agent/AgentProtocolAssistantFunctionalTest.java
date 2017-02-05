@@ -19,11 +19,11 @@ public class AgentProtocolAssistantFunctionalTest extends FunctionalTest {
     @Test
     public void shouldCreateAndKillAgent() throws ControllerException {
         AID agent = createAgent();
-        getContainer().getAgent(agent.getLocalName());
+        getAgent(agent.getLocalName());
         killAgent(agent);
         try {
-            getContainer().getAgent(agent.getLocalName());
-        } catch (ControllerException e) {
+            getAgent(agent.getLocalName());
+        } catch (Exception e) {
             assertThat(e.getMessage(), containsString(agent.getName()));
         }
     }

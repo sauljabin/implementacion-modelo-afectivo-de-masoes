@@ -10,6 +10,8 @@ import jade.core.Agent;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
+import jade.wrapper.AgentController;
+import jade.wrapper.ControllerException;
 
 public class JadeBoot {
 
@@ -37,7 +39,15 @@ public class JadeBoot {
         try {
             mainContainer.acceptNewAgent(agentName, agent);
         } catch (Exception e) {
-            throw new AcceptNewAgentException(e);
+            throw new AgentOperationException(e);
+        }
+    }
+
+    public AgentController getAgent(String name){
+        try {
+            return mainContainer.getAgent(name);
+        } catch (ControllerException e) {
+            throw new AgentOperationException(e);
         }
     }
 
@@ -49,7 +59,4 @@ public class JadeBoot {
         }
     }
 
-    public AgentContainer getMainContainer() {
-        return mainContainer;
-    }
 }
