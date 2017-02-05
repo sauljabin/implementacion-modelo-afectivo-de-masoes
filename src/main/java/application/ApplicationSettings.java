@@ -8,8 +8,6 @@ package application;
 
 import settings.SettingsLoader;
 
-import java.util.Optional;
-
 public class ApplicationSettings extends SettingsLoader {
 
     public static final String OS_NAME = "os.name";
@@ -32,7 +30,7 @@ public class ApplicationSettings extends SettingsLoader {
     }
 
     public synchronized static ApplicationSettings getInstance() {
-        if (!Optional.ofNullable(INSTANCE).isPresent()) {
+        if (INSTANCE == null) {
             INSTANCE = new ApplicationSettings();
         }
         return INSTANCE;

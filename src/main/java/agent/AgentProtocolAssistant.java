@@ -35,7 +35,6 @@ import util.StopWatch;
 import util.StringGenerator;
 
 import java.util.List;
-import java.util.Optional;
 
 public class AgentProtocolAssistant {
 
@@ -132,7 +131,7 @@ public class AgentProtocolAssistant {
         ACLMessage response = agent.blockingReceive(messageTemplate, timeout);
         stopWatch.stop();
 
-        if (!Optional.ofNullable(response).isPresent()) {
+        if (response == null) {
             throw new TimeoutException("The agent did not respond");
         }
 
@@ -140,7 +139,7 @@ public class AgentProtocolAssistant {
             response = agent.blockingReceive(messageTemplate, timeout - stopWatch.getTime());
         }
 
-        if (!Optional.ofNullable(response).isPresent()) {
+        if (response == null) {
             throw new TimeoutException("The agent did not respond");
         }
 
@@ -159,7 +158,7 @@ public class AgentProtocolAssistant {
         content.setClassName(agentClass.getCanonicalName());
         content.setContainer((ContainerID) agent.here());
 
-        if (Optional.ofNullable(arguments).isPresent()) {
+        if (arguments != null) {
             arguments.forEach(arg -> content.addArguments(arg));
         }
 

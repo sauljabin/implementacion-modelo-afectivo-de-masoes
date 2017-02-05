@@ -23,7 +23,6 @@ import protocol.OntologyMatchExpression;
 import protocol.OntologyResponderBehaviour;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 public class ResponseSettingsBehaviour extends OntologyResponderBehaviour {
 
@@ -70,11 +69,11 @@ public class ResponseSettingsBehaviour extends OntologyResponderBehaviour {
         Predicate contentElement;
         String setting = applicationSettings.get(getSetting.getKey());
 
-        if (!Optional.ofNullable(setting).isPresent()) {
+        if (setting == null) {
             setting = jadeSettings.get(getSetting.getKey());
         }
 
-        if (Optional.ofNullable(setting).isPresent()) {
+        if (setting != null) {
             SystemSettings systemSettings = new SystemSettings(new ArrayList());
             systemSettings.getSettings().add(new Setting(getSetting.getKey(), setting));
             contentElement = systemSettings;

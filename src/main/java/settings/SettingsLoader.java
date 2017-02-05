@@ -9,7 +9,6 @@ package settings;
 import util.ToStringBuilder;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
@@ -31,7 +30,7 @@ public class SettingsLoader {
     }
 
     public synchronized void set(String key, String value) {
-        if (!Optional.ofNullable(value).isPresent()) {
+        if (value == null) {
             properties.remove(key);
         } else {
             properties.put(key, value);
@@ -40,14 +39,14 @@ public class SettingsLoader {
 
     public synchronized String get(String key, String defaultValue) {
         String value = get(key);
-        if (!Optional.ofNullable(value).isPresent()) {
+        if (value == null) {
             return defaultValue;
         }
         return value;
     }
 
     public synchronized String get(String key) {
-        if (!Optional.ofNullable(key).isPresent()) {
+        if (key == null) {
             return null;
         }
         return properties.getProperty(key);

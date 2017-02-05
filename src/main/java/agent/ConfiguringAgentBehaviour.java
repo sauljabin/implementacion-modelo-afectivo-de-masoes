@@ -57,7 +57,7 @@ public class ConfiguringAgentBehaviour extends OntologyResponderBehaviour {
     private Predicate removeBehaviour(Action action) {
         RemoveBehaviour removeBehaviour = (RemoveBehaviour) action.getAction();
         String name = removeBehaviour.getName();
-        if (Optional.ofNullable(name).isPresent()) {
+        if (name != null) {
             myAgent.removeBehaviour(behaviours.get(name));
         }
         return new Done(action);

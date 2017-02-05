@@ -8,8 +8,6 @@ package jade;
 
 import settings.SettingsLoader;
 
-import java.util.Optional;
-
 public class JadeSettings extends SettingsLoader {
 
     public static final String GUI = "gui";
@@ -27,7 +25,7 @@ public class JadeSettings extends SettingsLoader {
     }
 
     public synchronized static JadeSettings getInstance() {
-        if (!Optional.ofNullable(INSTANCE).isPresent()) {
+        if (INSTANCE == null) {
             INSTANCE = new JadeSettings();
         }
         return INSTANCE;

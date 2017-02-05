@@ -10,8 +10,6 @@ import jade.core.behaviours.Behaviour;
 import masoes.EmotionalAgent;
 import util.ToStringBuilder;
 
-import java.util.Optional;
-
 public class BehaviourManager {
 
     private Behaviour behaviour;
@@ -34,13 +32,13 @@ public class BehaviourManager {
     }
 
     public void updateBehaviour(EmotionalAgent agent) {
-        if (Optional.ofNullable(behaviour).isPresent()) {
+        if (behaviour != null) {
             agent.removeBehaviour(behaviour);
         }
 
         behaviour = calculateBehaviour(agent);
 
-        if (Optional.ofNullable(behaviour).isPresent()) {
+        if (behaviour != null) {
             agent.addBehaviour(behaviour);
         }
     }

@@ -10,7 +10,6 @@ import jade.core.Agent;
 import util.ToStringBuilder;
 
 import java.util.List;
-import java.util.Optional;
 
 public class AgentParameter {
 
@@ -42,9 +41,8 @@ public class AgentParameter {
     }
 
     public String toJadeParameter() {
-        Optional<List<String>> agentArguments = Optional.ofNullable(this.agentArguments);
-        if (agentArguments.isPresent() && !agentArguments.get().isEmpty()) {
-            return String.format("%s:%s(%s)", agentName, agentClass.getCanonicalName(), String.join(",", this.agentArguments));
+        if (agentArguments != null && !agentArguments.isEmpty()) {
+            return String.format("%s:%s(%s)", agentName, agentClass.getCanonicalName(), String.join(",", agentArguments));
         } else {
             return String.format("%s:%s", agentName, agentClass.getCanonicalName());
         }

@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 
 public class ToStringBuilder {
 
@@ -30,7 +29,7 @@ public class ToStringBuilder {
     }
 
     public ToStringBuilder append(String name, Object object) {
-        if (Optional.ofNullable(object).isPresent()) {
+        if (object != null) {
             objects.put(name, object);
         }
         return this;
@@ -38,7 +37,7 @@ public class ToStringBuilder {
 
     @Override
     public String toString() {
-        String objectName = Optional.ofNullable(object).isPresent() ? object.getClass().getSimpleName() : "";
+        String objectName = object != null ? object.getClass().getSimpleName() : "";
         return String.format("%s%s", objectName, getFieldsString());
     }
 
