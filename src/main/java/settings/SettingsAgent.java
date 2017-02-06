@@ -50,7 +50,7 @@ public class SettingsAgent extends Agent {
         serviceDescription.setType(getLocalName() + "-" + serviceName);
         serviceDescription.addProtocols(FIPANames.InteractionProtocol.FIPA_REQUEST);
         serviceDescription.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
-        serviceDescription.addOntologies(SettingsOntology.ONTOLOGY_NAME);
+        serviceDescription.addOntologies(SettingsOntology.NAME);
         return serviceDescription;
     }
 

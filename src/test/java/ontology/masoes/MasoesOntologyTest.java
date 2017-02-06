@@ -21,7 +21,7 @@ public class MasoesOntologyTest {
 
     @Before
     public void setUp() {
-        masoesOntology = new MasoesOntology();
+        masoesOntology = MasoesOntology.getInstance();
     }
 
     @Test

@@ -12,15 +12,23 @@ import util.ToStringBuilder;
 
 public class MasoesOntology extends BeanOntology {
 
-    public static final String ONTOLOGY_NAME = "masoes";
+    public static final String NAME = "masoes";
+    private static MasoesOntology INSTANCE;
 
-    public MasoesOntology() {
-        super(ONTOLOGY_NAME);
+    private MasoesOntology() {
+        super(NAME);
         try {
             add(MasoesOntology.class.getPackage().getName());
         } catch (Exception e) {
             throw new SetupOntologyException(e);
         }
+    }
+
+    public synchronized static MasoesOntology getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new MasoesOntology();
+        }
+        return INSTANCE;
     }
 
     @Override

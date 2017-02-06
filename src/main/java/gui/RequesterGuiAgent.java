@@ -21,7 +21,7 @@ public class RequesterGuiAgent extends GuiAgent {
 
     @Override
     protected void setup() {
-        requesterGui.setUp();
+        requesterGui.showGui();
     }
 
     @Override
@@ -31,13 +31,20 @@ public class RequesterGuiAgent extends GuiAgent {
 
     @Override
     protected void onGuiEvent(GuiEvent guiEvent) {
-        switch (RequesterGuiEventType.fromInt(guiEvent.getType())) {
+        switch (RequesterGuiAction.fromInt(guiEvent.getType())) {
             case CLOSE_WINDOW:
                 doDelete();
+                break;
+            case SEND_MESSAGE:
+                sendMessage();
                 break;
             default:
                 break;
         }
+    }
+
+    private void sendMessage() {
+
     }
 
 }

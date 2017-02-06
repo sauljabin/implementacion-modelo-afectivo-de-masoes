@@ -19,6 +19,8 @@ import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
+import ontology.ExtractOntologyContentException;
+import ontology.FillOntologyContentException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -79,7 +81,7 @@ public class OntologyRequesterBehaviourTest {
         loggerMock = mock(AgentLogger.class);
         stringGeneratorMock = mock(StringGenerator.class);
 
-        ontologyRequesterBehaviour = new OntologyRequesterBehaviour(agentMock, receiverMock, agentActionMock, ontologyMock);
+        ontologyRequesterBehaviour = new OntologyRequesterBehaviour(agentMock, receiverMock, ontologyMock, agentActionMock);
         request = new ACLMessage(ACLMessage.REQUEST);
 
         doReturn(ONTOLOGY_NAME).when(ontologyMock).getName();
@@ -159,6 +161,13 @@ public class OntologyRequesterBehaviourTest {
         doReturn(MESSAGE).when(requestMock).getContent();
         ontologyRequesterBehaviourSpy.handleNotUnderstood(requestMock);
         verify(ontologyRequesterBehaviourSpy).handleNotUnderstood(MESSAGE);
+    }
+
+    @Test
+    public void shouldInvokeHandleOutOfSequenceWithContentMessage() {
+        doReturn(MESSAGE).when(requestMock).getContent();
+        ontologyRequesterBehaviourSpy.handleOutOfSequence(requestMock);
+        verify(ontologyRequesterBehaviourSpy).handleOutOfSequence(MESSAGE);
     }
 
     @Test

@@ -17,6 +17,8 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
+import ontology.ExtractOntologyContentException;
+import ontology.FillOntologyContentException;
 import org.slf4j.LoggerFactory;
 import util.StringGenerator;
 
@@ -30,7 +32,7 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
     private ContentManager contentManager;
     private AgentLogger logger;
 
-    public OntologyRequesterBehaviour(Agent agent, AID receiver, AgentAction agentAction, Ontology ontology) {
+    public OntologyRequesterBehaviour(Agent agent, AID receiver, Ontology ontology, AgentAction agentAction) {
         super(agent, new ACLMessage(ACLMessage.REQUEST));
         this.receiver = receiver;
         this.ontology = ontology;
@@ -123,6 +125,14 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
     }
 
     protected void handleInform(Predicate predicate) {
+    }
+
+    @Override
+    protected final void handleOutOfSequence(ACLMessage message) {
+        handleOutOfSequence(message.getContent());
+    }
+
+    protected void handleOutOfSequence(String contentMessage) {
     }
 
 }

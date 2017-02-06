@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 
 import static org.mockito.Mockito.doReturn;
@@ -34,14 +35,32 @@ public class RequesterGuiListenerTest {
     }
 
     @Test
+    public void shouldSetUpWindowsListenerListener() {
+        verify(requesterGuiMock).addWindowListener(requesterGuiListener);
+        verify(requesterGuiMock).addActionListener(requesterGuiListener);
+    }
+
+    @Test
     public void shouldInvokeOnGuiEvent() {
-        Object sourceMock = mock(Object.class);
-        GuiEvent expectedGuiEvent = new GuiEvent(sourceMock, RequesterGuiEventType.CLOSE_WINDOW.getInt());
+        GuiEvent expectedGuiEvent = new GuiEvent(requesterGuiMock, RequesterGuiAction.CLOSE_WINDOW.getInt());
 
         WindowEvent windowEventMock = mock(WindowEvent.class);
-        doReturn(sourceMock).when(windowEventMock).getSource();
+        doReturn(requesterGuiMock).when(windowEventMock).getSource();
 
         requesterGuiListener.windowClosing(windowEventMock);
+
+        verify(requesterGuiAgentMock).postGuiEvent(guiEventArgumentCaptor.capture());
+        assertReflectionEquals(expectedGuiEvent, guiEventArgumentCaptor.getValue());
+    }
+
+    @Test
+    public void shouldInvokeOnGuiEventWhenUserClicks() {
+        GuiEvent expectedGuiEvent = new GuiEvent(requesterGuiMock, RequesterGuiAction.SEND_MESSAGE.getInt());
+
+        ActionEvent actionEvent = mock(ActionEvent.class);
+        doReturn(RequesterGuiAction.SEND_MESSAGE.toString()).when(actionEvent).getActionCommand();
+
+        requesterGuiListener.actionPerformed(actionEvent);
 
         verify(requesterGuiAgentMock).postGuiEvent(guiEventArgumentCaptor.capture());
         assertReflectionEquals(expectedGuiEvent, guiEventArgumentCaptor.getValue());

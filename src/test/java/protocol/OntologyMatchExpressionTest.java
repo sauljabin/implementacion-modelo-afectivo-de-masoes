@@ -6,6 +6,7 @@
 
 package protocol;
 
+import jade.content.onto.Ontology;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import org.junit.Before;
@@ -13,6 +14,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 public class OntologyMatchExpressionTest {
 
@@ -22,7 +25,9 @@ public class OntologyMatchExpressionTest {
     @Before
     public void setUp() {
         String expectedOntology = "expectedOntology";
-        configuringAgentMatchExpression = new OntologyMatchExpression(expectedOntology);
+        Ontology ontologyMock = mock(Ontology.class);
+        doReturn(expectedOntology).when(ontologyMock).getName();
+        configuringAgentMatchExpression = new OntologyMatchExpression(ontologyMock);
         message = new ACLMessage(ACLMessage.REQUEST);
         message.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         message.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);

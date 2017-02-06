@@ -96,7 +96,7 @@ public class EmotionalAgentBehaviourTest {
     @Test
     public void shouldGetCorrectOntologyAndMessageTemplate() {
         assertThat(emotionalAgentBehaviour.getOntology(), is(instanceOf(MasoesOntology.class)));
-        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(MasoesOntology.ONTOLOGY_NAME)), emotionalAgentBehaviour.getMessageTemplate());
+        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), emotionalAgentBehaviour.getMessageTemplate());
     }
 
     @Test

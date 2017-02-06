@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package agent;
+package protocol;
 
 import jade.core.AID;
 import jade.wrapper.ControllerException;
@@ -14,7 +14,7 @@ import test.FunctionalTest;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;
 
-public class AgentProtocolAssistantFunctionalTest extends FunctionalTest {
+public class ProtocolAssistantFunctionalTest extends FunctionalTest {
 
     @Test
     public void shouldCreateAndKillAgent() throws ControllerException {

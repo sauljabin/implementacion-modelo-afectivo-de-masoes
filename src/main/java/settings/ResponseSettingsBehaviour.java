@@ -30,7 +30,7 @@ public class ResponseSettingsBehaviour extends OntologyResponderBehaviour {
     private JadeSettings jadeSettings;
 
     public ResponseSettingsBehaviour(Agent agent) {
-        super(agent, new MessageTemplate(new OntologyMatchExpression(SettingsOntology.ONTOLOGY_NAME)), new SettingsOntology());
+        super(agent, new MessageTemplate(new OntologyMatchExpression(SettingsOntology.getInstance())), SettingsOntology.getInstance());
         applicationSettings = ApplicationSettings.getInstance();
         jadeSettings = JadeSettings.getInstance();
     }

@@ -134,7 +134,7 @@ public class ResponseSettingsBehaviourTest {
     @Test
     public void shouldGetCorrectOntologyAndMessageTemplate() {
         assertThat(responseSettingsBehaviour.getOntology(), is(instanceOf(SettingsOntology.class)));
-        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(SettingsOntology.ONTOLOGY_NAME)), responseSettingsBehaviour.getMessageTemplate());
+        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(SettingsOntology.getInstance())), responseSettingsBehaviour.getMessageTemplate());
     }
 
 }

@@ -12,15 +12,23 @@ import util.ToStringBuilder;
 
 public class ConfigurableOntology extends BeanOntology {
 
-    public static final String ONTOLOGY_NAME = "configurable";
+    public static final String NAME = "configurable";
+    private static ConfigurableOntology INSTANCE;
 
-    public ConfigurableOntology() {
-        super(ONTOLOGY_NAME);
+    private ConfigurableOntology() {
+        super(NAME);
         try {
             add(ConfigurableOntology.class.getPackage().getName());
         } catch (Exception e) {
             throw new SetupOntologyException(e);
         }
+    }
+
+    public synchronized static ConfigurableOntology getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new ConfigurableOntology();
+        }
+        return INSTANCE;
     }
 
     @Override

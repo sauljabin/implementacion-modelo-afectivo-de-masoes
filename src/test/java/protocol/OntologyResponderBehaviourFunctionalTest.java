@@ -40,7 +40,7 @@ public class OntologyResponderBehaviourFunctionalTest extends FunctionalTest {
         addBehaviour(agent, OntologyResponderValidActionBehaviour.class);
         KillAgent action = new KillAgent();
         action.setAgent(agent);
-        ContentElement contentElement = sendActionAndWaitContent(agent, action, JADEManagementOntology.NAME);
+        ContentElement contentElement = sendActionAndWaitContent(agent, JADEManagementOntology.getInstance(), action);
         assertThat(contentElement, is(instanceOf(Done.class)));
     }
 
@@ -49,7 +49,7 @@ public class OntologyResponderBehaviourFunctionalTest extends FunctionalTest {
         addBehaviour(agent, OntologyResponderNotUnderstoodBehaviour.class);
         KillAgent action = new KillAgent();
         action.setAgent(agent);
-        ACLMessage message = sendActionAndWaitMessage(agent, action, JADEManagementOntology.NAME);
+        ACLMessage message = sendActionAndWaitMessage(agent, JADEManagementOntology.getInstance(), action);
         assertThat(message.getContent(), is("Unknown ontology JADE-Agent-Management"));
         assertThat(message.getPerformative(), is(ACLMessage.NOT_UNDERSTOOD));
     }
@@ -59,7 +59,7 @@ public class OntologyResponderBehaviourFunctionalTest extends FunctionalTest {
         addBehaviour(agent, OntologyResponderInvalidActionBehaviour.class);
         KillAgent action = new KillAgent();
         action.setAgent(agent);
-        ACLMessage message = sendActionAndWaitMessage(agent, action, JADEManagementOntology.NAME);
+        ACLMessage message = sendActionAndWaitMessage(agent, JADEManagementOntology.getInstance(), action);
         assertThat(message.getContent(), is("Invalid action"));
         assertThat(message.getPerformative(), is(ACLMessage.REFUSE));
     }
@@ -69,7 +69,7 @@ public class OntologyResponderBehaviourFunctionalTest extends FunctionalTest {
         addBehaviour(agent, OntologyResponderFailureBehaviour.class);
         KillAgent action = new KillAgent();
         action.setAgent(agent);
-        ACLMessage message = sendActionAndWaitMessage(agent, action, JADEManagementOntology.NAME);
+        ACLMessage message = sendActionAndWaitMessage(agent, JADEManagementOntology.getInstance(), action);
         assertThat(message.getContent(), is("MESSAGE FAILURE"));
         assertThat(message.getPerformative(), is(ACLMessage.FAILURE));
     }

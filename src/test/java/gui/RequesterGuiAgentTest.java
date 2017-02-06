@@ -24,8 +24,8 @@ public class RequesterGuiAgentTest {
 
     @Before
     public void setUp() throws Exception {
-        requesterGuiAgent = new RequesterGuiAgent();
         requesterGuiMock = mock(RequesterGui.class);
+        requesterGuiAgent = new RequesterGuiAgent();
         setFieldValue(requesterGuiAgent, "requesterGui", requesterGuiMock);
         requesterGuiAgentSpy = spy(requesterGuiAgent);
     }
@@ -33,7 +33,7 @@ public class RequesterGuiAgentTest {
     @Test
     public void shouldInvokeSetupAndShowGuiWhenStartAgent() {
         requesterGuiAgent.setup();
-        verify(requesterGuiMock).setUp();
+        verify(requesterGuiMock).showGui();
     }
 
     @Test
@@ -44,7 +44,7 @@ public class RequesterGuiAgentTest {
 
     @Test
     public void shouldInvokeAgentDoDeleteOnEventClose() {
-        GuiEvent guiEvent = new GuiEvent(mock(Object.class), RequesterGuiEventType.CLOSE_WINDOW.getInt());
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiAction.CLOSE_WINDOW.getInt());
         doNothing().when(requesterGuiAgentSpy).doDelete();
         requesterGuiAgentSpy.onGuiEvent(guiEvent);
         verify(requesterGuiAgentSpy).doDelete();

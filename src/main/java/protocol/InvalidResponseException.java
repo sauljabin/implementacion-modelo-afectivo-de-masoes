@@ -6,17 +6,17 @@
 
 package protocol;
 
-public class FillOntologyContentException extends RuntimeException {
+public class InvalidResponseException extends RuntimeException {
 
-    public FillOntologyContentException(String message) {
+    public InvalidResponseException(String message) {
         super(message);
     }
 
-    public FillOntologyContentException(String message, Throwable cause) {
+    public InvalidResponseException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public FillOntologyContentException(Throwable cause) {
+    public InvalidResponseException(Throwable cause) {
         super(cause);
     }
 

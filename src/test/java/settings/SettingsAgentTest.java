@@ -96,7 +96,7 @@ public class SettingsAgentTest {
         assertThat(actualService.getType(), is("settings-" + name));
         assertThat(actualService.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
         assertThat(actualService.getAllLanguages().next(), is(FIPANames.ContentLanguage.FIPA_SL));
-        assertThat(actualService.getAllOntologies().next(), is(SettingsOntology.ONTOLOGY_NAME));
+        assertThat(actualService.getAllOntologies().next(), is(SettingsOntology.NAME));
     }
 
 }

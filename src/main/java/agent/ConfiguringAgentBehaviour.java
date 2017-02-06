@@ -30,7 +30,7 @@ public class ConfiguringAgentBehaviour extends OntologyResponderBehaviour {
     private Map<String, Behaviour> behaviours;
 
     public ConfiguringAgentBehaviour(Agent agent) {
-        super(agent, new MessageTemplate(new OntologyMatchExpression(ConfigurableOntology.ONTOLOGY_NAME)), new ConfigurableOntology());
+        super(agent, new MessageTemplate(new OntologyMatchExpression(ConfigurableOntology.getInstance())), ConfigurableOntology.getInstance());
         behaviours = new HashMap<>();
     }
 

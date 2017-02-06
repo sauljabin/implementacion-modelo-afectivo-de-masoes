@@ -6,16 +6,17 @@
 
 package protocol;
 
+import jade.content.onto.Ontology;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 public class OntologyMatchExpression implements MessageTemplate.MatchExpression {
 
-    private String ontologyName;
+    private Ontology ontology;
 
-    public OntologyMatchExpression(String ontologyName) {
-        this.ontologyName = ontologyName;
+    public OntologyMatchExpression(Ontology ontology) {
+        this.ontology = ontology;
     }
 
     @Override
@@ -32,7 +33,7 @@ public class OntologyMatchExpression implements MessageTemplate.MatchExpression 
             return false;
         }
 
-        if (message.getOntology() == null || !message.getOntology().equals(ontologyName)) {
+        if (message.getOntology() == null || !message.getOntology().equals(ontology.getName())) {
             return false;
         }
 

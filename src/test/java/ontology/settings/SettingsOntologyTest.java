@@ -21,7 +21,7 @@ public class SettingsOntologyTest {
 
     @Before
     public void setUp() {
-        settingsOntology = new SettingsOntology();
+        settingsOntology = SettingsOntology.getInstance();
     }
 
     @Test

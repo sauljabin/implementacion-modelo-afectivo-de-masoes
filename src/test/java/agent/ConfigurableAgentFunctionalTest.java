@@ -10,6 +10,7 @@ import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import org.junit.Before;
 import org.junit.Test;
+import protocol.TimeoutRequestException;
 import test.FunctionalTest;
 
 import static org.hamcrest.core.Is.is;
@@ -42,8 +43,8 @@ public class ConfigurableAgentFunctionalTest extends FunctionalTest {
         try {
             sendMessage(message);
             blockingReceive(1000);
-            fail("Expected TimeoutException");
-        } catch (TimeoutException e) {
+            fail("Expected TimeoutRequestException");
+        } catch (TimeoutRequestException e) {
         }
     }
 

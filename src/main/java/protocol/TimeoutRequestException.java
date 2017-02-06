@@ -6,17 +6,17 @@
 
 package protocol;
 
-public class ExtractOntologyContentException extends RuntimeException {
+public class TimeoutRequestException extends RuntimeException {
 
-    public ExtractOntologyContentException(String message) {
+    public TimeoutRequestException(String message) {
         super(message);
     }
 
-    public ExtractOntologyContentException(String message, Throwable cause) {
+    public TimeoutRequestException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public ExtractOntologyContentException(Throwable cause) {
+    public TimeoutRequestException(Throwable cause) {
         super(cause);
     }
 

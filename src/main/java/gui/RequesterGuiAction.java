@@ -9,17 +9,17 @@ package gui;
 import java.util.Arrays;
 import java.util.List;
 
-public enum RequesterGuiEventType {
+public enum RequesterGuiAction {
 
-    CLOSE_WINDOW;
+    CLOSE_WINDOW, SEND_MESSAGE;
 
-    private static List<RequesterGuiEventType> events = Arrays.asList(RequesterGuiEventType.values());
+    private static List<RequesterGuiAction> events = Arrays.asList(RequesterGuiAction.values());
 
-    public static RequesterGuiEventType fromInt(int i) {
+    public static RequesterGuiAction fromInt(int i) {
         return events.get(i);
     }
 
-    public static int toInt(RequesterGuiEventType event) {
+    public static int toInt(RequesterGuiAction event) {
         return events.indexOf(event);
     }
 

@@ -32,13 +32,13 @@ public class SettingsAgentFunctionalTest extends FunctionalTest {
 
     @Before
     public void setUp() {
-        registerOntology(new SettingsOntology());
+        registerOntology(SettingsOntology.getInstance());
         settingsAgentAID = createAgent(SettingsAgent.class);
     }
 
     @Test
     public void shouldReceiveAllSettings() {
-        ContentElement contentElement = sendActionAndWaitContent(settingsAgentAID, new GetAllSettings(), SettingsOntology.ONTOLOGY_NAME);
+        ContentElement contentElement = sendActionAndWaitContent(settingsAgentAID, SettingsOntology.getInstance(), new GetAllSettings());
         assertThat(contentElement, is(instanceOf(SystemSettings.class)));
 
         SystemSettings systemSettings = (SystemSettings) contentElement;
@@ -58,7 +58,7 @@ public class SettingsAgentFunctionalTest extends FunctionalTest {
 
     @Test
     public void shouldReceiveOneSetting() {
-        ContentElement contentElement = sendActionAndWaitContent(settingsAgentAID, new GetSetting(ApplicationSettings.APP_NAME), SettingsOntology.ONTOLOGY_NAME);
+        ContentElement contentElement = sendActionAndWaitContent(settingsAgentAID, SettingsOntology.getInstance(), new GetSetting(ApplicationSettings.APP_NAME));
         assertThat(contentElement, is(instanceOf(SystemSettings.class)));
         SystemSettings systemSettings = (SystemSettings) contentElement;
         SystemSettings expectedSystemSettings = new SystemSettings();
@@ -68,7 +68,7 @@ public class SettingsAgentFunctionalTest extends FunctionalTest {
 
     @Test
     public void shouldReceiveFailure() {
-        ACLMessage contentMessage = sendActionAndWaitMessage(settingsAgentAID, new GetSetting("no-key"), SettingsOntology.ONTOLOGY_NAME);
+        ACLMessage contentMessage = sendActionAndWaitMessage(settingsAgentAID, SettingsOntology.getInstance(), new GetSetting("no-key"));
         assertEquals("Content", "Setting not found no-key", contentMessage.getContent());
     }
 

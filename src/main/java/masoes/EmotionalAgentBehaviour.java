@@ -27,7 +27,7 @@ public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
     private EmotionalAgent emotionalAgent;
 
     public EmotionalAgentBehaviour(EmotionalAgent emotionalAgent) {
-        super(emotionalAgent, new MessageTemplate(new OntologyMatchExpression(MasoesOntology.ONTOLOGY_NAME)), new MasoesOntology());
+        super(emotionalAgent, new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), MasoesOntology.getInstance());
         this.emotionalAgent = emotionalAgent;
     }
 

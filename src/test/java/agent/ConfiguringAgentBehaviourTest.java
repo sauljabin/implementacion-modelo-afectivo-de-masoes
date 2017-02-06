@@ -56,7 +56,7 @@ public class ConfiguringAgentBehaviourTest {
     @Test
     public void shouldGetCorrectOntologyAndMessageTemplate() {
         assertThat(configuringAgentBehaviour.getOntology(), is(instanceOf(ConfigurableOntology.class)));
-        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(ConfigurableOntology.ONTOLOGY_NAME)), configuringAgentBehaviour.getMessageTemplate());
+        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(ConfigurableOntology.getInstance())), configuringAgentBehaviour.getMessageTemplate());
     }
 
     @Test

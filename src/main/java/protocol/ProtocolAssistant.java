@@ -4,8 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package agent;
+package protocol;
 
+import agent.ConfigurableAgent;
 import jade.content.AgentAction;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
@@ -26,17 +27,17 @@ import jade.domain.JADEAgentManagement.KillContainer;
 import jade.domain.JADEAgentManagement.ShutdownPlatform;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import ontology.ExtractOntologyContentException;
+import ontology.FillOntologyContentException;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
-import protocol.ExtractOntologyContentException;
-import protocol.FillOntologyContentException;
 import util.StopWatch;
 import util.StringGenerator;
 
 import java.util.List;
 
-public class AgentProtocolAssistant {
+public class ProtocolAssistant {
 
     public static final int DEFAULT_TIMEOUT = 4000;
     private static final int RANDOM_STRING_LENGTH = 10;
@@ -46,18 +47,18 @@ public class AgentProtocolAssistant {
     private long timeout;
     private StopWatch stopWatch;
 
-    public AgentProtocolAssistant(Agent agent) {
+    public ProtocolAssistant(Agent agent) {
         this(agent, DEFAULT_TIMEOUT);
     }
 
-    public AgentProtocolAssistant(Agent agent, long timeout) {
+    public ProtocolAssistant(Agent agent, long timeout) {
         this.agent = agent;
         this.timeout = timeout;
         stringGenerator = new StringGenerator();
         stopWatch = new StopWatch();
         contentManager = new ContentManager();
         contentManager.registerLanguage(new SLCodec());
-        contentManager.registerOntology(new ConfigurableOntology());
+        contentManager.registerOntology(ConfigurableOntology.getInstance());
         contentManager.registerOntology(JADEManagementOntology.getInstance());
         contentManager.registerOntology(BasicOntology.getInstance());
     }
@@ -78,11 +79,11 @@ public class AgentProtocolAssistant {
         contentManager.registerOntology(ontology);
     }
 
-    public ACLMessage createRequestMessage(AID receiver, String ontology) {
+    public ACLMessage createRequestMessage(AID receiver, Ontology ontology) {
         ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
         message.setSender(agent.getAID());
         message.addReceiver(receiver);
-        message.setOntology(ontology);
+        message.setOntology(ontology.getName());
         message.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         message.setConversationId(stringGenerator.getString(RANDOM_STRING_LENGTH));
         message.setReplyWith(stringGenerator.getString(RANDOM_STRING_LENGTH));
@@ -90,16 +91,16 @@ public class AgentProtocolAssistant {
         return message;
     }
 
-    public void sendActionAndWaitDone(AID receiver, AgentAction agentAction, String ontology) {
-        ContentElement contentElement = sendActionAndWaitContent(receiver, agentAction, ontology);
+    public void sendActionAndWaitDone(AID receiver, Ontology ontology, AgentAction agentAction) {
+        ContentElement contentElement = sendActionAndWaitContent(receiver, ontology, agentAction);
 
         if (!(contentElement instanceof Done)) {
             throw new InvalidResponseException("Unknown notification: " + contentElement);
         }
     }
 
-    public ContentElement sendActionAndWaitContent(AID receiver, AgentAction agentAction, String ontology) {
-        ACLMessage response = sendActionAndWaitMessage(receiver, agentAction, ontology);
+    public ContentElement sendActionAndWaitContent(AID receiver, Ontology ontology, AgentAction agentAction) {
+        ACLMessage response = sendActionAndWaitMessage(receiver, ontology, agentAction);
         if (response.getPerformative() != ACLMessage.INFORM) {
             throw new InvalidResponseException("No inform response: " + ACLMessage.getPerformative(response.getPerformative()));
         }
@@ -111,7 +112,32 @@ public class AgentProtocolAssistant {
         }
     }
 
-    public ACLMessage sendActionAndWaitMessage(AID receiver, AgentAction agentAction, String ontology) {
+    public ACLMessage sendActionAndWaitMessage(AID receiver, Ontology ontology, AgentAction agentAction) {
+        ACLMessage request = sendAction(receiver, ontology, agentAction);
+
+        MessageTemplate messageTemplate = MessageTemplate.MatchInReplyTo(request.getReplyWith());
+
+        stopWatch.reset();
+        stopWatch.start();
+        ACLMessage response = agent.blockingReceive(messageTemplate, timeout);
+        stopWatch.stop();
+
+        if (response == null) {
+            throw new TimeoutRequestException("The agent did not respond");
+        }
+
+        if (response.getPerformative() == ACLMessage.AGREE) {
+            response = agent.blockingReceive(messageTemplate, timeout - stopWatch.getTime());
+        }
+
+        if (response == null) {
+            throw new TimeoutRequestException("The agent did not respond");
+        }
+
+        return response;
+    }
+
+    public ACLMessage sendAction(AID receiver, Ontology ontology, AgentAction agentAction) {
         ACLMessage request = createRequestMessage(receiver, ontology);
 
         Action action = new Action(receiver, agentAction);
@@ -123,33 +149,13 @@ public class AgentProtocolAssistant {
         }
 
         agent.send(request);
-
-        MessageTemplate messageTemplate = MessageTemplate.MatchInReplyTo(request.getReplyWith());
-
-        stopWatch.reset();
-        stopWatch.start();
-        ACLMessage response = agent.blockingReceive(messageTemplate, timeout);
-        stopWatch.stop();
-
-        if (response == null) {
-            throw new TimeoutException("The agent did not respond");
-        }
-
-        if (response.getPerformative() == ACLMessage.AGREE) {
-            response = agent.blockingReceive(messageTemplate, timeout - stopWatch.getTime());
-        }
-
-        if (response == null) {
-            throw new TimeoutException("The agent did not respond");
-        }
-
-        return response;
+        return request;
     }
 
     public void killAgent(AID agentToKill) {
         KillAgent content = new KillAgent();
         content.setAgent(agentToKill);
-        sendActionAndWaitDone(agent.getAMS(), content, JADEManagementOntology.NAME);
+        sendActionAndWaitDone(agent.getAMS(), JADEManagementOntology.getInstance(), content);
     }
 
     public AID createAgent(String agentName, Class<? extends Agent> agentClass, List<String> arguments) {
@@ -162,13 +168,13 @@ public class AgentProtocolAssistant {
             arguments.forEach(arg -> content.addArguments(arg));
         }
 
-        sendActionAndWaitDone(agent.getAMS(), content, JADEManagementOntology.NAME);
+        sendActionAndWaitDone(agent.getAMS(), JADEManagementOntology.getInstance(), content);
         return agent.getAID(agentName);
     }
 
     public String addBehaviour(AID agent, String behaviourName, Class<? extends Behaviour> behaviourClass) {
         AddBehaviour content = new AddBehaviour(behaviourName, behaviourClass.getCanonicalName());
-        sendActionAndWaitDone(agent, content, ConfigurableOntology.ONTOLOGY_NAME);
+        sendActionAndWaitDone(agent, ConfigurableOntology.getInstance(), content);
         return behaviourName;
     }
 
@@ -178,32 +184,18 @@ public class AgentProtocolAssistant {
 
     public void removeBehaviour(AID agent, String behaviourName) {
         RemoveBehaviour content = new RemoveBehaviour(behaviourName);
-        sendActionAndWaitDone(agent, content, ConfigurableOntology.ONTOLOGY_NAME);
+        sendActionAndWaitDone(agent, ConfigurableOntology.getInstance(), content);
     }
 
     public void killContainer() {
         KillContainer content = new KillContainer();
         content.setContainer((ContainerID) agent.here());
-        ACLMessage requestMessage = createRequestMessage(agent.getAMS(), JADEManagementOntology.NAME);
-        Action action = new Action(agent.getAMS(), content);
-        try {
-            contentManager.fillContent(requestMessage, action);
-        } catch (Exception e) {
-            throw new FillOntologyContentException(e);
-        }
-        agent.send(requestMessage);
+        sendAction(agent.getAMS(), JADEManagementOntology.getInstance(), content);
     }
 
     public void shutDownPlatform() {
         ShutdownPlatform content = new ShutdownPlatform();
-        ACLMessage requestMessage = createRequestMessage(agent.getAMS(), JADEManagementOntology.NAME);
-        Action action = new Action(agent.getAMS(), content);
-        try {
-            contentManager.fillContent(requestMessage, action);
-        } catch (Exception e) {
-            throw new FillOntologyContentException(e);
-        }
-        agent.send(requestMessage);
+        sendAction(agent.getAMS(), JADEManagementOntology.getInstance(), content);
     }
 
     public AID createAgent(Class<? extends Agent> agentClass, List<String> arguments) {

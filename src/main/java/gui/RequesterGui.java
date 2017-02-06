@@ -10,6 +10,7 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class RequesterGui extends JFrame {
 
@@ -29,14 +30,22 @@ public class RequesterGui extends JFrame {
     private JTextPane messageTextPane;
     private JScrollPane messageScrollPane;
 
-    public void setUp() {
+    public RequesterGui() {
+        setUp();
+    }
+
+    public static void main(String[] args) {
+        RequesterGui requesterGui = new RequesterGui();
+        requesterGui.showGui();
+    }
+
+    private void setUp() {
         setTitle("Requester GUI");
         setSize(1024, 768);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
         addComponents();
         setLocationRelativeTo(this);
-        setVisible(true);
     }
 
     private void addComponents() {
@@ -97,6 +106,7 @@ public class RequesterGui extends JFrame {
 
     private void createSenderButton() {
         sendRequestButton = new JButton("Send Request");
+        sendRequestButton.setActionCommand(RequesterGuiAction.SEND_MESSAGE.toString());
         westPanel.add(sendRequestButton, "h 30, grow");
     }
 
@@ -105,9 +115,16 @@ public class RequesterGui extends JFrame {
         dispose();
     }
 
-    public static void main(String[] args) {
-        RequesterGui requesterGui = new RequesterGui();
-        requesterGui.setUp();
+    public void showGui() {
+        setVisible(true);
+    }
+
+    public void addActionListener(ActionListener actionListener) {
+        sendRequestButton.addActionListener(actionListener);
+    }
+
+    public String getReceiverAgentName() {
+        return receiverAgentTextField.getText();
     }
 
 }

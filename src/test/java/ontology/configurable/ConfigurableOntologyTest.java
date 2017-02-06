@@ -21,7 +21,7 @@ public class ConfigurableOntologyTest {
 
     @Before
     public void setUp() {
-        configurableOntology = new ConfigurableOntology();
+        configurableOntology = ConfigurableOntology.getInstance();
     }
 
     @Test

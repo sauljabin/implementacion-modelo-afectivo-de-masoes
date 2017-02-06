@@ -38,13 +38,13 @@ public class EmotionalAgentFunctionalTest extends FunctionalTest {
     public void setUp() {
         dummyAgentAID = createAgent(DummyEmotionalAgent.class);
         contentManager = new ContentManager();
-        contentManager.registerOntology(new MasoesOntology());
+        contentManager.registerOntology(MasoesOntology.getInstance());
         contentManager.registerLanguage(new SLCodec());
     }
 
     @Test
     public void shouldChangeAgentEmotion() throws Exception {
-        ACLMessage requestMessage = createRequestMessage(dummyAgentAID, MasoesOntology.ONTOLOGY_NAME);
+        ACLMessage requestMessage = createRequestMessage(dummyAgentAID, MasoesOntology.getInstance());
         AgentStatus firstEmotionalResponse = testGetStatus(requestMessage);
         testEvaluateStimulus(requestMessage);
         AgentStatus secondEmotionalResponse = testGetStatus(requestMessage);
