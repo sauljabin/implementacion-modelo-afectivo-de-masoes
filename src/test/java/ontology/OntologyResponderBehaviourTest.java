@@ -13,11 +13,16 @@ import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.Agent;
+import jade.domain.FIPAAgentManagement.FailureException;
+import jade.domain.FIPAAgentManagement.NotUnderstoodException;
+import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -33,6 +38,8 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 public class OntologyResponderBehaviourTest {
 
     private static final String EXPECTED_EXCEPTION_MESSAGE = "EXCEPTION MESSAGE";
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
     private Agent agentMock;
     private OntologyResponderBehaviour ontologyResponderBehaviour;
     private ACLMessage request;
@@ -75,10 +82,10 @@ public class OntologyResponderBehaviourTest {
 
     @Test
     public void shouldReturnRefuseIfActionIsNotValid() throws Exception {
+        expectedException.expect(RefuseException.class);
+        expectedException.expectMessage("Invalid action");
         doReturn(false).when(ontologyResponderBehaviourSpy).isValidAction(actionMock);
-        ACLMessage response = ontologyResponderBehaviourSpy.prepareResponse(request);
-        assertThat(response.getPerformative(), is(ACLMessage.REFUSE));
-        assertThat(response.getContent(), is("Invalid action"));
+        ontologyResponderBehaviourSpy.prepareAcceptanceResponse(request);
     }
 
     @Test
@@ -100,20 +107,20 @@ public class OntologyResponderBehaviourTest {
 
     @Test
     public void shouldReturnNotUnderstoodIfThrowsExceptionInPrepareResponse() throws Exception {
+        expectedException.expect(NotUnderstoodException.class);
+        expectedException.expectMessage(EXPECTED_EXCEPTION_MESSAGE);
         OntologyException toBeThrown = new OntologyException(EXPECTED_EXCEPTION_MESSAGE);
         doThrow(toBeThrown).when(contentManagerMock).extractContent(request);
-        ACLMessage response = ontologyResponderBehaviourSpy.prepareResponse(request);
-        assertThat(response.getPerformative(), is(ACLMessage.NOT_UNDERSTOOD));
-        assertThat(response.getContent(), is(EXPECTED_EXCEPTION_MESSAGE));
+        ontologyResponderBehaviourSpy.prepareAcceptanceResponse(request);
     }
 
     @Test
     public void shouldReturnFailureIfThrowsExceptionInPerformAction() throws Exception {
+        expectedException.expect(FailureException.class);
+        expectedException.expectMessage(EXPECTED_EXCEPTION_MESSAGE);
         RuntimeException toBeThrown = new RuntimeException(EXPECTED_EXCEPTION_MESSAGE);
         doThrow(toBeThrown).when(ontologyResponderBehaviourSpy).performAction(actionMock);
-        ACLMessage response = ontologyResponderBehaviourSpy.prepareResultNotification(request, request.createReply());
-        assertThat(response.getPerformative(), is(ACLMessage.FAILURE));
-        assertThat(response.getContent(), is(EXPECTED_EXCEPTION_MESSAGE));
+        ontologyResponderBehaviourSpy.prepareInformResultResponse(request, request.createReply());
     }
 
 }

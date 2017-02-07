@@ -78,7 +78,6 @@ public class AgentManagementAssistantFunctionalTest extends FunctionalTest {
 
     @Test
     public void shouldCreateAndKillAgentWithAssistant() throws ControllerException {
-
         AID agent = createAgent(ConfigurableAgent.class, null);
         getAgent(agent.getLocalName());
         killAgent(agent);
