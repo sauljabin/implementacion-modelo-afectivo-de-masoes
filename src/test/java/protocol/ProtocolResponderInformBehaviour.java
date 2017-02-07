@@ -18,9 +18,9 @@ public class ProtocolResponderInformBehaviour extends ProtocolResponderBehaviour
 
     @Override
     protected ACLMessage prepareAcceptanceResponse(ACLMessage request) {
-        ACLMessage reply = request.createReply();
-        reply.setPerformative(ACLMessage.AGREE);
-        return reply;
+        ACLMessage response = request.createReply();
+        response.setPerformative(ACLMessage.AGREE);
+        return response;
     }
 
     @Override

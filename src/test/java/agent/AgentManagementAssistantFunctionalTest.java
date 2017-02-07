@@ -26,13 +26,13 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 
-public class AgentManagementSystemFunctionalTest extends FunctionalTest {
+public class AgentManagementAssistantFunctionalTest extends FunctionalTest {
 
     private static final String CONVERSATION_ID = "conversationID";
     private static final String AGENT_NAME = "agentName";
 
     @Test
-    public void shouldCreateAndKillAgent() throws Exception {
+    public void shouldCreateAndKillAgentWithoutWrapper() throws Exception {
         ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
 
         request.addReceiver(getAMS());
@@ -78,6 +78,7 @@ public class AgentManagementSystemFunctionalTest extends FunctionalTest {
 
     @Test
     public void shouldCreateAndKillAgentWithAssistant() throws ControllerException {
+
         AID agent = createAgent(ConfigurableAgent.class, null);
         getAgent(agent.getLocalName());
         killAgent(agent);

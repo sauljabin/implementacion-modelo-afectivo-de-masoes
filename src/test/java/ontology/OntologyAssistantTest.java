@@ -39,9 +39,9 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 @PrepareForTest(Agent.class)
 public class OntologyAssistantTest {
 
+    private static final String CONTENT = "((action (agent-identifier :name \"\") (GetAllSettings)))";
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
-    private static final String CONTENT = "((action (agent-identifier :name \"\") (GetAllSettings)))";
     private OntologyAssistant ontologyAssistant;
     private AID aidMock;
     private Agent agentMock;
