@@ -91,7 +91,7 @@ public class AgentManagementAssistantTest {
     @Test
     public void shouldSendShutdownToAMSAgent() throws Exception {
         agentManagementAssistant.shutdownPlatform();
-        ContentElement contentElement = testSendBasicMessageToAMSAgent(JADEManagementOntology.getInstance());
+        ContentElement contentElement = testSendBasicMessageToAMSAgent(JADEManagementOntology.getInstance(), false);
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(ShutdownPlatform.class)));
     }
@@ -99,7 +99,7 @@ public class AgentManagementAssistantTest {
     @Test
     public void shouldSendKillContainerToAMSAgent() throws Exception {
         agentManagementAssistant.killContainer();
-        ContentElement contentElement = testSendBasicMessageToAMSAgent(JADEManagementOntology.getInstance());
+        ContentElement contentElement = testSendBasicMessageToAMSAgent(JADEManagementOntology.getInstance(), false);
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(KillContainer.class)));
         KillContainer killContainer = (KillContainer) action.getAction();
@@ -109,7 +109,7 @@ public class AgentManagementAssistantTest {
     @Test
     public void shouldSendKillAgentToAMSAgent() throws Exception {
         agentManagementAssistant.killAgent(agentAID);
-        ContentElement contentElement = testSendBasicMessageToAMSAgent(JADEManagementOntology.getInstance());
+        ContentElement contentElement = testSendBasicMessageToAMSAgent(JADEManagementOntology.getInstance(), true);
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(KillAgent.class)));
         KillAgent killAgent = (KillAgent) action.getAction();
@@ -120,7 +120,7 @@ public class AgentManagementAssistantTest {
     public void shouldSendCreateAgentToAMSAgent() throws Exception {
         String arg1 = "arg1";
         agentManagementAssistant.createAgent(AGENT_NAME, Agent.class, Arrays.asList(arg1));
-        ContentElement contentElement = testSendBasicMessageToAMSAgent(JADEManagementOntology.getInstance());
+        ContentElement contentElement = testSendBasicMessageToAMSAgent(JADEManagementOntology.getInstance(), true);
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(CreateAgent.class)));
         CreateAgent createAgent = (CreateAgent) action.getAction();
@@ -133,7 +133,7 @@ public class AgentManagementAssistantTest {
     public void shouldSendCreateAgentToAMSAgentWithRandomName() throws Exception {
         String arg1 = "arg1";
         agentManagementAssistant.createAgent(Agent.class, Arrays.asList(arg1));
-        ContentElement contentElement = testSendBasicMessageToAMSAgent(JADEManagementOntology.getInstance());
+        ContentElement contentElement = testSendBasicMessageToAMSAgent(JADEManagementOntology.getInstance(), true);
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(CreateAgent.class)));
         CreateAgent createAgent = (CreateAgent) action.getAction();
@@ -153,7 +153,7 @@ public class AgentManagementAssistantTest {
                 .build();
         doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
         agentManagementAssistant.removeBehaviour(amsAID, behaviourName);
-        ContentElement contentElement = testSendBasicMessageToAMSAgent(ConfigurableOntology.getInstance());
+        ContentElement contentElement = testSendBasicMessageToAMSAgent(ConfigurableOntology.getInstance(), true);
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(RemoveBehaviour.class)));
 
@@ -172,7 +172,7 @@ public class AgentManagementAssistantTest {
                 .build();
         doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
         agentManagementAssistant.addBehaviour(amsAID, behaviourName, SimpleBehaviour.class);
-        ContentElement contentElement = testSendBasicMessageToAMSAgent(ConfigurableOntology.getInstance());
+        ContentElement contentElement = testSendBasicMessageToAMSAgent(ConfigurableOntology.getInstance(), true);
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(AddBehaviour.class)));
 
@@ -191,7 +191,7 @@ public class AgentManagementAssistantTest {
                 .build();
         doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
         agentManagementAssistant.addBehaviour(amsAID, SimpleBehaviour.class);
-        ContentElement contentElement = testSendBasicMessageToAMSAgent(ConfigurableOntology.getInstance());
+        ContentElement contentElement = testSendBasicMessageToAMSAgent(ConfigurableOntology.getInstance(), true);
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(AddBehaviour.class)));
 
@@ -236,8 +236,12 @@ public class AgentManagementAssistantTest {
         agentManagementAssistant.removeBehaviour(amsAID, "");
     }
 
-    private ContentElement testSendBasicMessageToAMSAgent(Ontology ontology) throws Exception {
+    private ContentElement testSendBasicMessageToAMSAgent(Ontology ontology, boolean verifyReceive) throws Exception {
         verify(agentMock).send(messageArgumentCaptor.capture());
+
+        if (verifyReceive) {
+            verify(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
+        }
 
         ACLMessage message = messageArgumentCaptor.getValue();
 
