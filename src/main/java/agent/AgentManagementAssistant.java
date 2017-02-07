@@ -73,19 +73,10 @@ public class AgentManagementAssistant {
         agent.send(message);
     }
 
-    public void removeBehaviour(AID receiver, String behaviourName) {
-        RemoveBehaviour content = new RemoveBehaviour(behaviourName);
-        sendRequestAndVerifyDone(receiver, content, ontologyAssistantConfigurable);
-    }
-
-    public String addBehaviour(AID receiver, String behaviourName, Class<? extends Behaviour> behaviourClass) {
-        AddBehaviour content = new AddBehaviour(behaviourName, behaviourClass.getCanonicalName());
-        sendRequestAndVerifyDone(receiver, content, ontologyAssistantConfigurable);
-        return behaviourName;
-    }
-
-    public String addBehaviour(AID agent, Class<? extends Behaviour> behaviourClass) {
-        return addBehaviour(agent, stringGenerator.getString(RANDOM_STRING_LENGTH), behaviourClass);
+    public void killAgent(AID agentToKill) {
+        KillAgent content = new KillAgent();
+        content.setAgent(agentToKill);
+        sendRequestAndVerifyDone(agent.getAMS(), content, ontologyAssistantManagement);
     }
 
     public AID createAgent(String agentName, Class<? extends Agent> agentClass, List<String> arguments) {
@@ -106,10 +97,19 @@ public class AgentManagementAssistant {
         return createAgent(stringGenerator.getString(RANDOM_STRING_LENGTH), agentClass, arguments);
     }
 
-    public void killAgent(AID agentToKill) {
-        KillAgent content = new KillAgent();
-        content.setAgent(agentToKill);
-        sendRequestAndVerifyDone(agent.getAMS(), content, ontologyAssistantManagement);
+    public void removeBehaviour(AID receiver, String behaviourName) {
+        RemoveBehaviour content = new RemoveBehaviour(behaviourName);
+        sendRequestAndVerifyDone(receiver, content, ontologyAssistantConfigurable);
+    }
+
+    public String addBehaviour(AID receiver, String behaviourName, Class<? extends Behaviour> behaviourClass) {
+        AddBehaviour content = new AddBehaviour(behaviourName, behaviourClass.getCanonicalName());
+        sendRequestAndVerifyDone(receiver, content, ontologyAssistantConfigurable);
+        return behaviourName;
+    }
+
+    public String addBehaviour(AID agent, Class<? extends Behaviour> behaviourClass) {
+        return addBehaviour(agent, stringGenerator.getString(RANDOM_STRING_LENGTH), behaviourClass);
     }
 
     private void sendRequestAndVerifyDone(AID receiver, AgentAction content, OntologyAssistant ontologyAssistant) {
