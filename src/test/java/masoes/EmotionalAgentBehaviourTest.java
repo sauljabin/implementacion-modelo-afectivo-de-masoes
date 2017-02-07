@@ -15,6 +15,7 @@ import jade.core.behaviours.Behaviour;
 import jade.lang.acl.MessageTemplate;
 import masoes.conductual.Emotion;
 import masoes.conductual.EmotionalState;
+import ontology.OntologyMatchExpression;
 import ontology.masoes.AgentStatus;
 import ontology.masoes.EmotionStatus;
 import ontology.masoes.EvaluateStimulus;
@@ -27,7 +28,6 @@ import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import protocol.OntologyMatchExpression;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;

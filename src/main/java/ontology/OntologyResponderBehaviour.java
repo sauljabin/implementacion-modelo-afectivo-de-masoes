@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package protocol;
+package ontology;
 
 import jade.content.ContentManager;
 import jade.content.Predicate;
@@ -17,6 +17,7 @@ import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import protocol.ProtocolResponderBehaviour;
 
 public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
 

@@ -14,6 +14,7 @@ import jade.core.Agent;
 import jade.lang.acl.MessageTemplate;
 import jade.util.leap.ArrayList;
 import jade.util.leap.List;
+import ontology.OntologyMatchExpression;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.Setting;
@@ -23,7 +24,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import protocol.OntologyMatchExpression;
 
 import java.util.HashMap;
 import java.util.Map;

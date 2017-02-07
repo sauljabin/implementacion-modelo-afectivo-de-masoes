@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package protocol;
+package ontology;
 
 import jade.content.ContentManager;
 import jade.content.Predicate;

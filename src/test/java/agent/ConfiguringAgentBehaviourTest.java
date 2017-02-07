@@ -14,6 +14,7 @@ import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
+import ontology.OntologyMatchExpression;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
@@ -21,7 +22,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import protocol.OntologyMatchExpression;
 
 import java.util.Map;
 

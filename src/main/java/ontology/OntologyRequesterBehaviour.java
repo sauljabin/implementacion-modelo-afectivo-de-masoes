@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package protocol;
+package ontology;
 
 import agent.AgentLogger;
 import jade.content.AgentAction;
@@ -17,9 +17,8 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import ontology.ExtractOntologyContentException;
-import ontology.FillOntologyContentException;
 import org.slf4j.LoggerFactory;
+import protocol.ProtocolRequesterBehaviour;
 import util.StringGenerator;
 
 public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {

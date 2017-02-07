@@ -12,13 +12,13 @@ import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
+import ontology.OntologyMatchExpression;
+import ontology.OntologyResponderBehaviour;
 import ontology.masoes.AgentStatus;
 import ontology.masoes.EmotionStatus;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetAgentStatus;
 import ontology.masoes.MasoesOntology;
-import protocol.OntologyMatchExpression;
-import protocol.OntologyResponderBehaviour;
 
 import java.util.Arrays;
 

@@ -14,11 +14,11 @@ import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
+import ontology.OntologyMatchExpression;
+import ontology.OntologyResponderBehaviour;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
-import protocol.OntologyMatchExpression;
-import protocol.OntologyResponderBehaviour;
 
 import java.util.Arrays;
 import java.util.HashMap;

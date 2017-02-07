@@ -14,13 +14,13 @@ import jade.content.onto.basic.Action;
 import jade.core.Agent;
 import jade.lang.acl.MessageTemplate;
 import jade.util.leap.ArrayList;
+import ontology.OntologyMatchExpression;
+import ontology.OntologyResponderBehaviour;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.Setting;
 import ontology.settings.SettingsOntology;
 import ontology.settings.SystemSettings;
-import protocol.OntologyMatchExpression;
-import protocol.OntologyResponderBehaviour;
 
 import java.util.Arrays;
 

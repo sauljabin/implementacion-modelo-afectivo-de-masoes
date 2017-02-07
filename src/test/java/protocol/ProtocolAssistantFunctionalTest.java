@@ -41,6 +41,7 @@ public class ProtocolAssistantFunctionalTest extends FunctionalTest {
 
         assertThat(response.getPerformative(), is(ACLMessage.INFORM));
         assertThat(response.getContent(), is("INFORM CONTENT"));
+        assertThat(request.getReplyWith(), is(response.getInReplyTo()));
     }
 
 }

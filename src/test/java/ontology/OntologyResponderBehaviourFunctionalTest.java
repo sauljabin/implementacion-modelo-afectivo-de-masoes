@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package protocol;
+package ontology;
 
 import agent.ConfigurableAgent;
 import jade.content.ContentElement;
@@ -13,10 +13,10 @@ import jade.core.AID;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
 import jade.domain.JADEAgentManagement.KillAgent;
 import jade.lang.acl.ACLMessage;
-import ontology.OntologyAssistant;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import protocol.ProtocolAssistant;
 import test.FunctionalTest;
 
 import static org.hamcrest.core.Is.is;
