@@ -20,25 +20,55 @@ import util.MessageBuilder;
 public class OntologyAssistant {
 
     private Agent agent;
+    private Ontology ontology;
+    private ContentManager contentManager;
 
-    public OntologyAssistant(Agent agent) {
+    public OntologyAssistant(Agent agent, Ontology ontology) {
         this.agent = agent;
+        this.ontology = ontology;
+        contentManager = new ContentManager();
+        contentManager.registerLanguage(SemanticLanguage.getInstance());
+        contentManager.registerOntology(ontology);
     }
 
-    public ACLMessage createRequestMessage(AID receiver, Ontology ontology, AgentAction agentAction) {
+    public ACLMessage createRequestAction(AID receiver, AgentAction agentAction) {
         Action action = new Action(receiver, agentAction);
-        return new MessageBuilder().request()
-                .sender(agent.getAID()).receiver(receiver)
-                .ontology(ontology).fipaSL().fipaRequest()
-                .conversationId().replyWith()
+        return new MessageBuilder()
+                .request()
+                .sender(agent.getAID())
+                .receiver(receiver)
+                .ontology(ontology)
+                .fipaSL()
+                .fipaRequest()
+                .conversationId()
+                .replyWith()
                 .content(action)
                 .build();
     }
 
-    public ContentElement extractContentMessage(Ontology ontology, ACLMessage message) {
-        ContentManager contentManager = new ContentManager();
-        contentManager.registerOntology(ontology);
-        contentManager.registerLanguage(SemanticLanguage.getInstance());
+    public ACLMessage createRequestMessage(AID receiver, ContentElement contentElement) {
+        return new MessageBuilder()
+                .request()
+                .sender(agent.getAID())
+                .receiver(receiver)
+                .ontology(ontology)
+                .fipaSL()
+                .fipaRequest()
+                .conversationId()
+                .replyWith()
+                .content(contentElement)
+                .build();
+    }
+
+    public void fillMessageContent(ACLMessage message, ContentElement contentElement) {
+        try {
+            contentManager.fillContent(message, contentElement);
+        } catch (Exception e) {
+            throw new FillOntologyContentException(e);
+        }
+    }
+
+    public ContentElement extractMessageContent(ACLMessage message) {
         try {
             return contentManager.extractContent(message);
         } catch (Exception e) {

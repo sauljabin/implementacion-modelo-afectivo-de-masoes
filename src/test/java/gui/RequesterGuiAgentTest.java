@@ -50,4 +50,6 @@ public class RequesterGuiAgentTest {
         verify(requesterGuiAgentSpy).doDelete();
     }
 
+    // TODO: TERMINAR PRUEBAS
+
 }

@@ -23,7 +23,7 @@ public class ConfigurableAgentFunctionalTest extends FunctionalTest {
 
     @Before
     public void setUp() {
-        configurableAid = createAgent();
+        configurableAid = createAgent(ConfigurableAgent.class, null);
     }
 
     @Test

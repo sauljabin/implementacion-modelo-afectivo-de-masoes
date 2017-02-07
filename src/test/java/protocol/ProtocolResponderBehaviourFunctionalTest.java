@@ -6,6 +6,7 @@
 
 package protocol;
 
+import agent.ConfigurableAgent;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import org.junit.After;
@@ -22,7 +23,7 @@ public class ProtocolResponderBehaviourFunctionalTest extends FunctionalTest {
 
     @Before
     public void setUp() {
-        agent = createAgent();
+        agent = createAgent(ConfigurableAgent.class, null);
     }
 
     @After

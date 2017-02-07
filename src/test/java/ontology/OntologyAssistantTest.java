@@ -9,6 +9,8 @@ package ontology;
 
 import jade.content.ContentElement;
 import jade.content.onto.basic.Action;
+import jade.content.onto.basic.Done;
+import jade.content.onto.basic.TrueProposition;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPANames;
@@ -17,11 +19,14 @@ import language.SemanticLanguage;
 import ontology.settings.GetAllSettings;
 import ontology.settings.SettingsOntology;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import util.MessageBuilder;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
@@ -34,6 +39,8 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 @PrepareForTest(Agent.class)
 public class OntologyAssistantTest {
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
     private static final String CONTENT = "((action (agent-identifier :name \"\") (GetAllSettings)))";
     private OntologyAssistant ontologyAssistant;
     private AID aidMock;
@@ -45,18 +52,31 @@ public class OntologyAssistantTest {
         agentMock = mock(Agent.class);
         aidMock = mock(AID.class);
         doReturn(aidMock).when(agentMock).getAID();
-        ontologyAssistant = new OntologyAssistant(agentMock);
+        ontologyAssistant = new OntologyAssistant(agentMock, SettingsOntology.getInstance());
         receiver = new AID();
+    }
+
+    @Test
+    public void shouldCreateActionAndFillContent() throws Exception {
+        GetAllSettings content = new GetAllSettings();
+        ACLMessage actualMessage = ontologyAssistant.createRequestAction(receiver, content);
+
+        assertThat(actualMessage.getAllReceiver().next(), is(receiver));
+        testBasicMessage(actualMessage);
     }
 
     @Test
     public void shouldCreateMessageAndFillContent() throws Exception {
         GetAllSettings content = new GetAllSettings();
-        ACLMessage actualMessage = ontologyAssistant.createRequestMessage(receiver, SettingsOntology.getInstance(), content);
+        Action action = new Action(receiver, content);
+        ACLMessage actualMessage = ontologyAssistant.createRequestMessage(receiver, action);
 
+        testBasicMessage(actualMessage);
+    }
+
+    private void testBasicMessage(ACLMessage actualMessage) {
         assertThat(actualMessage.getPerformative(), is(ACLMessage.REQUEST));
         assertThat(actualMessage.getSender(), is(aidMock));
-        assertThat(actualMessage.getAllReceiver().next(), is(receiver));
         assertThat(actualMessage.getOntology(), is(SettingsOntology.getInstance().getName()));
         assertThat(actualMessage.getLanguage(), is(SemanticLanguage.getInstance().getName()));
         assertThat(actualMessage.getProtocol(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
@@ -71,11 +91,34 @@ public class OntologyAssistantTest {
         message.setContent(CONTENT);
         message.setLanguage(SemanticLanguage.getInstance().getName());
         message.setOntology(SettingsOntology.getInstance().getName());
-        ContentElement contentElement = ontologyAssistant.extractContentMessage(SettingsOntology.getInstance(), message);
+        ContentElement contentElement = ontologyAssistant.extractMessageContent(message);
         assertThat(contentElement, is(instanceOf(Action.class)));
 
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(GetAllSettings.class)));
+    }
+
+    @Test
+    public void shouldThrowExtractContentException() {
+        expectedException.expect(ExtractOntologyContentException.class);
+        ontologyAssistant.extractMessageContent(new ACLMessage(ACLMessage.REQUEST));
+    }
+
+    @Test
+    public void shouldFillContentWhenContentIsNotString() {
+        ACLMessage message = new MessageBuilder()
+                .ontology(SettingsOntology.getInstance())
+                .fipaSL()
+                .build();
+
+        ontologyAssistant.fillMessageContent(message, new TrueProposition());
+        assertThat(message.getContent(), is("(true)"));
+    }
+
+    @Test
+    public void shouldThrowFillContentException() {
+        expectedException.expect(FillOntologyContentException.class);
+        ontologyAssistant.fillMessageContent(new ACLMessage(ACLMessage.REQUEST), new Done());
     }
 
 }

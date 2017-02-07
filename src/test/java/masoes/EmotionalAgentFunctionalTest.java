@@ -14,6 +14,7 @@ import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
+import ontology.OntologyAssistant;
 import ontology.masoes.AgentStatus;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetAgentStatus;
@@ -22,6 +23,7 @@ import ontology.masoes.Stimulus;
 import org.junit.Before;
 import org.junit.Test;
 import test.FunctionalTest;
+import util.MessageBuilder;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
@@ -33,10 +35,11 @@ public class EmotionalAgentFunctionalTest extends FunctionalTest {
 
     private AID dummyAgentAID;
     private ContentManager contentManager;
+    private OntologyAssistant ontologyAssistant;
 
     @Before
     public void setUp() {
-        dummyAgentAID = createAgent(DummyEmotionalAgent.class);
+        dummyAgentAID = createAgent(DummyEmotionalAgent.class, null);
         contentManager = new ContentManager();
         contentManager.registerOntology(MasoesOntology.getInstance());
         contentManager.registerLanguage(new SLCodec());
@@ -44,7 +47,12 @@ public class EmotionalAgentFunctionalTest extends FunctionalTest {
 
     @Test
     public void shouldChangeAgentEmotion() throws Exception {
-        ACLMessage requestMessage = createRequestMessage(dummyAgentAID, MasoesOntology.getInstance());
+        ACLMessage requestMessage = new MessageBuilder().request()
+                .fipaSL()
+                .fipaRequest()
+                .receiver(dummyAgentAID)
+                .ontology(MasoesOntology.getInstance())
+                .build();
         AgentStatus firstEmotionalResponse = testGetStatus(requestMessage);
         testEvaluateStimulus(requestMessage);
         AgentStatus secondEmotionalResponse = testGetStatus(requestMessage);

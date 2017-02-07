@@ -6,33 +6,35 @@
 
 package test;
 
+import agent.AgentManagementAssistant;
 import application.ApplicationSettings;
 import jade.JadeBoot;
 import jade.JadeSettings;
-import jade.content.AgentAction;
-import jade.content.ContentElement;
 import jade.content.onto.Ontology;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.core.ContainerID;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
+import ontology.OntologyAssistant;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import protocol.ProtocolAssistant;
 import protocol.TimeoutRequestException;
 
+import java.util.List;
 import java.util.Vector;
 
 public abstract class FunctionalTest {
 
     private static JadeBoot jadeBoot;
     private static Agent testerAgent;
-    private static ProtocolAssistant protocolAssistant;
     private static Vector<AID> agentsToKill;
+    private static AgentManagementAssistant agentManagementAssistant;
 
     @BeforeClass
-    public static void setUpJade() throws Exception {
+    public static void setUpJade() {
         JadeSettings.getInstance().set(JadeSettings.GUI, "false");
         ApplicationSettings.getInstance().set(ApplicationSettings.MASOES_ENV, "functional-tests");
 
@@ -46,16 +48,16 @@ public abstract class FunctionalTest {
         testerAgent = new Agent();
         jadeBoot.addAgent("tester", testerAgent);
 
-        protocolAssistant = new ProtocolAssistant(testerAgent, 10000);
+        agentManagementAssistant = new AgentManagementAssistant(testerAgent);
         agentsToKill = new Vector<>();
     }
 
     @AfterClass
-    public static void tearDownJade() throws Exception {
+    public static void tearDownJade() {
         while (!agentsToKill.isEmpty()) {
             AID aid = agentsToKill.firstElement();
             try {
-                protocolAssistant.killAgent(aid);
+                agentManagementAssistant.killAgent(aid);
             } catch (Exception e) {
                 System.out.println("Fail kill: " + aid);
             }
@@ -70,27 +72,21 @@ public abstract class FunctionalTest {
 
     public void killAgent(AID agentToKill) {
         agentsToKill.remove(agentToKill);
-        protocolAssistant.killAgent(agentToKill);
+        agentManagementAssistant.killAgent(agentToKill);
     }
 
-    public AID createAgent(Class<? extends Agent> agentClass) {
-        AID agent = protocolAssistant.createAgent(agentClass);
-        agentsToKill.add(agent);
-        return agent;
-    }
-
-    public AID createAgent() {
-        AID agent = protocolAssistant.createAgent();
+    public AID createAgent(Class<? extends Agent> agentClass, List<String> arguments) {
+        AID agent = agentManagementAssistant.createAgent(agentClass, arguments);
         agentsToKill.add(agent);
         return agent;
     }
 
     public String addBehaviour(AID agent, Class<? extends Behaviour> behaviourClass) {
-        return protocolAssistant.addBehaviour(agent, behaviourClass);
+        return agentManagementAssistant.addBehaviour(agent, behaviourClass);
     }
 
     public void removeBehaviour(AID agent, String behaviourName) {
-        protocolAssistant.removeBehaviour(agent, behaviourName);
+        agentManagementAssistant.removeBehaviour(agent, behaviourName);
     }
 
     public void sendMessage(ACLMessage message) {
@@ -105,24 +101,32 @@ public abstract class FunctionalTest {
         return message;
     }
 
+    public AID getAMS() {
+        return testerAgent.getAMS();
+    }
+
+    public ContainerID getContainerID() {
+        return (ContainerID) testerAgent.here();
+    }
+
     public ACLMessage blockingReceive() {
-        return blockingReceive(protocolAssistant.getTimeout());
+        return blockingReceive(agentManagementAssistant.getTimeout());
     }
 
-    public void registerOntology(Ontology ontology) {
-        protocolAssistant.registerOntology(ontology);
+    public AID getAID() {
+        return testerAgent.getAID();
     }
 
-    public ContentElement sendActionAndWaitContent(AID receiver, Ontology ontology, AgentAction agentAction) {
-        return protocolAssistant.sendActionAndWaitContent(receiver, ontology, agentAction);
+    public AID getAID(String name) {
+        return testerAgent.getAID(name);
     }
 
-    public ACLMessage sendActionAndWaitMessage(AID receiver, Ontology ontology, AgentAction agentAction) {
-        return protocolAssistant.sendActionAndWaitMessage(receiver, ontology, agentAction);
+    public ProtocolAssistant createProtocolAssistant() {
+        return new ProtocolAssistant(testerAgent, agentManagementAssistant.getTimeout());
     }
 
-    public ACLMessage createRequestMessage(AID receiver, Ontology ontology) {
-        return protocolAssistant.createRequestMessage(receiver, ontology);
+    public OntologyAssistant createOntologyAssistant(Ontology ontology) {
+        return new OntologyAssistant(testerAgent, ontology);
     }
 
 }

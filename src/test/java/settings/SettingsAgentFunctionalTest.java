@@ -8,9 +8,11 @@ package settings;
 
 import application.ApplicationSettings;
 import jade.JadeSettings;
+import jade.content.AgentAction;
 import jade.content.ContentElement;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
+import ontology.OntologyAssistant;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.Setting;
@@ -18,6 +20,7 @@ import ontology.settings.SettingsOntology;
 import ontology.settings.SystemSettings;
 import org.junit.Before;
 import org.junit.Test;
+import protocol.ProtocolAssistant;
 import test.FunctionalTest;
 
 import static org.hamcrest.core.Is.is;
@@ -29,16 +32,22 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 public class SettingsAgentFunctionalTest extends FunctionalTest {
 
     private AID settingsAgentAID;
+    private OntologyAssistant ontologyAssistant;
+    private ProtocolAssistant protocolAssistant;
 
     @Before
     public void setUp() {
-        registerOntology(SettingsOntology.getInstance());
-        settingsAgentAID = createAgent(SettingsAgent.class);
+        settingsAgentAID = createAgent(SettingsAgent.class, null);
+        ontologyAssistant = createOntologyAssistant(SettingsOntology.getInstance());
+        protocolAssistant = createProtocolAssistant();
     }
 
     @Test
     public void shouldReceiveAllSettings() {
-        ContentElement contentElement = sendActionAndWaitContent(settingsAgentAID, SettingsOntology.getInstance(), new GetAllSettings());
+
+        GetAllSettings action = new GetAllSettings();
+        ContentElement contentElement = sendAction(action);
+
         assertThat(contentElement, is(instanceOf(SystemSettings.class)));
 
         SystemSettings systemSettings = (SystemSettings) contentElement;
@@ -56,9 +65,15 @@ public class SettingsAgentFunctionalTest extends FunctionalTest {
         assertReflectionEquals("Content", expectedSystemSettings.getSettings().toArray(), systemSettings.getSettings().toArray());
     }
 
+    private ContentElement sendAction(AgentAction action) {
+        ACLMessage requestAction = ontologyAssistant.createRequestAction(settingsAgentAID, action);
+        ACLMessage message = protocolAssistant.sendRequest(requestAction, ACLMessage.INFORM);
+        return ontologyAssistant.extractMessageContent(message);
+    }
+
     @Test
     public void shouldReceiveOneSetting() {
-        ContentElement contentElement = sendActionAndWaitContent(settingsAgentAID, SettingsOntology.getInstance(), new GetSetting(ApplicationSettings.APP_NAME));
+        ContentElement contentElement = sendAction(new GetSetting(ApplicationSettings.APP_NAME));
         assertThat(contentElement, is(instanceOf(SystemSettings.class)));
         SystemSettings systemSettings = (SystemSettings) contentElement;
         SystemSettings expectedSystemSettings = new SystemSettings();
@@ -68,8 +83,10 @@ public class SettingsAgentFunctionalTest extends FunctionalTest {
 
     @Test
     public void shouldReceiveFailure() {
-        ACLMessage contentMessage = sendActionAndWaitMessage(settingsAgentAID, SettingsOntology.getInstance(), new GetSetting("no-key"));
-        assertEquals("Content", "Setting not found no-key", contentMessage.getContent());
+        GetSetting action = new GetSetting("no-key");
+        ACLMessage requestAction = ontologyAssistant.createRequestAction(settingsAgentAID, action);
+        ACLMessage response = protocolAssistant.sendRequest(requestAction, ACLMessage.FAILURE);
+        assertEquals("Content", "Setting not found no-key", response.getContent());
     }
 
 }
