@@ -16,17 +16,14 @@ public class RequesterGui extends JFrame {
 
     private JPanel westPanel;
     private JPanel centerPanel;
-    private JPanel settingsPanel;
     private JLabel senderAgentLabel;
     private JLabel senderAgentTitleLabel;
     private JLabel receiverAgentTitleLabel;
     private JTextField receiverAgentTextField;
     private JButton sendRequestButton;
-    private JTabbedPane messageTabbedPane;
-    private JComboBox settingsActionsComboBox;
-    private JLabel settingsActionsLabel;
-    private JLabel settingsKeyLabel;
-    private JTextField settingsKeyTextField;
+    private JPanel dynamicCanvan;
+    private JComboBox actionsComboBox;
+    private JLabel actionsLabel;
     private JTextPane messageTextPane;
     private JScrollPane messageScrollPane;
 
@@ -51,7 +48,6 @@ public class RequesterGui extends JFrame {
     private void addComponents() {
         createPrincipalPanels();
         createAgentsComponents();
-        createSettingsComponents();
         createMessageLogComponent();
         createSenderButton();
     }
@@ -65,37 +61,26 @@ public class RequesterGui extends JFrame {
 
     private void createAgentsComponents() {
         senderAgentTitleLabel = new JLabel("Sender Agent:");
-        westPanel.add(senderAgentTitleLabel, "w 250, wrap");
+        westPanel.add(senderAgentTitleLabel, "w 110");
 
         senderAgentLabel = new JLabel("requester");
         senderAgentLabel.setForeground(Color.BLUE);
-        westPanel.add(senderAgentLabel, "grow, wrap");
+        westPanel.add(senderAgentLabel, "w 150, wrap");
 
         receiverAgentTitleLabel = new JLabel("Receiver Agent:");
-        westPanel.add(receiverAgentTitleLabel, "grow, wrap");
+        westPanel.add(receiverAgentTitleLabel, "grow");
 
         receiverAgentTextField = new JTextField();
         westPanel.add(receiverAgentTextField, "grow, wrap");
 
-        messageTabbedPane = new JTabbedPane();
-        westPanel.add(messageTabbedPane, "grow, wrap 20");
-    }
+        actionsLabel = new JLabel("Action:");
+        westPanel.add(actionsLabel, "grow");
 
-    private void createSettingsComponents() {
-        settingsPanel = new JPanel(new MigLayout("insets 10"));
-        messageTabbedPane.addTab("Settings", settingsPanel);
+        actionsComboBox = new JComboBox();
+        westPanel.add(actionsComboBox, "grow, wrap");
 
-        settingsActionsLabel = new JLabel("Action:");
-        settingsPanel.add(settingsActionsLabel, "w 30");
-
-        settingsActionsComboBox = new JComboBox();
-        settingsPanel.add(settingsActionsComboBox, "w 100%, wrap");
-
-        settingsKeyLabel = new JLabel("Key:");
-        settingsPanel.add(settingsKeyLabel, "grow");
-
-        settingsKeyTextField = new JTextField();
-        settingsPanel.add(settingsKeyTextField, "grow, wrap");
+        dynamicCanvan = new JPanel();
+        westPanel.add(dynamicCanvan, "span 2, grow, wrap 20");
     }
 
     private void createMessageLogComponent() {
@@ -107,7 +92,7 @@ public class RequesterGui extends JFrame {
     private void createSenderButton() {
         sendRequestButton = new JButton("Send Request");
         sendRequestButton.setActionCommand(RequesterGuiAction.SEND_MESSAGE.toString());
-        westPanel.add(sendRequestButton, "h 30, grow");
+        westPanel.add(sendRequestButton, "span 2, h 30, grow");
     }
 
     public void closeGui() {
@@ -123,8 +108,8 @@ public class RequesterGui extends JFrame {
         sendRequestButton.addActionListener(actionListener);
     }
 
-    public String getReceiverAgentName() {
-        return receiverAgentTextField.getText();
+    public void setSenderAgentName(String name) {
+        senderAgentLabel.setText(name);
     }
 
 }

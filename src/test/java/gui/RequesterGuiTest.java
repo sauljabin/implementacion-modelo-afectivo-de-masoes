@@ -25,15 +25,20 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class RequesterGuiTest {
 
+    private JLabel senderAgentLabelMock;
     private RequesterGui requesterGuiSpy;
     private RequesterGui requesterGui;
-    private JButton buttonMock;
+    private JButton sendRequestButtonMock;
 
     @Before
     public void setUp() throws Exception {
+        sendRequestButtonMock = mock(JButton.class);
+        senderAgentLabelMock = mock(JLabel.class);
+
         requesterGui = new RequesterGui();
-        buttonMock = mock(JButton.class);
-        setFieldValue(requesterGui, "sendRequestButton", buttonMock);
+        setFieldValue(requesterGui, "sendRequestButton", sendRequestButtonMock);
+        setFieldValue(requesterGui, "senderAgentLabel", senderAgentLabelMock);
+
         requesterGuiSpy = spy(requesterGui);
         doNothing().when(requesterGuiSpy).setVisible(anyBoolean());
         doNothing().when(requesterGuiSpy).dispose();
@@ -66,9 +71,14 @@ public class RequesterGuiTest {
     public void shouldAddActionListenerToButton() {
         ActionListener actionListenerMock = mock(ActionListener.class);
         requesterGui.addActionListener(actionListenerMock);
-        verify(buttonMock).addActionListener(actionListenerMock);
+        verify(sendRequestButtonMock).addActionListener(actionListenerMock);
     }
 
-    // TODO: TERMINAR PRUEBAS
+    @Test
+    public void shouldSetSenderAgentName() {
+        String expectedName = "expectedName";
+        requesterGui.setSenderAgentName(expectedName);
+        verify(senderAgentLabelMock).setText(expectedName);
+    }
 
 }

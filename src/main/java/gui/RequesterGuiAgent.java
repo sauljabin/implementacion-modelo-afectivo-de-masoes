@@ -21,6 +21,7 @@ public class RequesterGuiAgent extends GuiAgent {
 
     @Override
     protected void setup() {
+        requesterGui.setSenderAgentName(getName());
         requesterGui.showGui();
     }
 

@@ -6,16 +6,25 @@
 
 package gui;
 
+import jade.core.Agent;
 import jade.gui.GuiEvent;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
+@RunWith(PowerMockRunner.class)
+@PowerMockIgnore({"javax.management.*", "javax.swing.*"})
+@PrepareForTest(Agent.class)
 public class RequesterGuiAgentTest {
 
     private RequesterGuiAgent requesterGuiAgent;
@@ -50,6 +59,12 @@ public class RequesterGuiAgentTest {
         verify(requesterGuiAgentSpy).doDelete();
     }
 
-    // TODO: TERMINAR PRUEBAS
+    @Test
+    public void shouldSetSenderAgentName() {
+        String expectedName = "expectedName";
+        doReturn(expectedName).when(requesterGuiAgentSpy).getName();
+        requesterGuiAgentSpy.setup();
+        verify(requesterGuiMock).setSenderAgentName(expectedName);
+    }
 
 }
