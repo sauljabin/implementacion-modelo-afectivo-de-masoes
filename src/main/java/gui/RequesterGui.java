@@ -40,6 +40,9 @@ public class RequesterGui extends JFrame {
     private List<Color> colors;
     private Iterator<Color> colorIterator;
     private LinkedHashMap<String, Color> conversations;
+    private JButton saveLogButton;
+    private JButton clearButton;
+    private JLabel messageTextTitleLabel;
 
     public RequesterGui() {
         prepareColors();
@@ -52,7 +55,13 @@ public class RequesterGui extends JFrame {
     }
 
     private void prepareColors() {
-        colors = Arrays.asList(new Color(30, 90, 255), new Color(255, 10, 20), new Color(250, 10, 255), new Color(0, 200, 100), new Color(255, 110, 40));
+        colors = Arrays.asList(
+                new Color(30, 90, 255),
+                new Color(255, 10, 20),
+                new Color(250, 10, 255),
+                new Color(0, 200, 100),
+                new Color(255, 110, 40)
+        );
         colorIterator = colors.iterator();
         conversations = new LinkedHashMap<>();
     }
@@ -68,9 +77,8 @@ public class RequesterGui extends JFrame {
 
     private void addComponents() {
         createPrincipalPanels();
-        createAgentsComponents();
-        createMessageLogComponent();
-        createSenderButton();
+        createWestComponents();
+        createCenterComponent();
     }
 
     private void createPrincipalPanels() {
@@ -80,7 +88,7 @@ public class RequesterGui extends JFrame {
         add(centerPanel, BorderLayout.CENTER);
     }
 
-    private void createAgentsComponents() {
+    private void createWestComponents() {
         senderAgentTitleLabel = new JLabel("Sender agent:");
         westPanel.add(senderAgentTitleLabel, "w 110");
 
@@ -103,21 +111,28 @@ public class RequesterGui extends JFrame {
 
         dynamicCanvas = new JPanel();
         westPanel.add(dynamicCanvas, "span 2, grow, wrap 20");
+
+        sendRequestButton = new JButton("Send request");
+        sendRequestButton.setActionCommand(RequesterGuiEvent.SEND_MESSAGE.toString());
+        westPanel.add(sendRequestButton, "span 2, h 30, grow");
     }
 
-    private void createMessageLogComponent() {
+    private void createCenterComponent() {
+        messageTextTitleLabel = new JLabel("Messages:");
+        centerPanel.add(messageTextTitleLabel, "w 100%");
+
+        saveLogButton = new JButton("Save");
+        centerPanel.add(saveLogButton);
+
+        clearButton = new JButton("Clear");
+        centerPanel.add(clearButton, "wrap");
+
         messageTextPane = new JTextPane();
         messageTextPane.setEditable(false);
         messageTextWrapPanel = new JPanel(new BorderLayout());
         messageTextWrapPanel.add(messageTextPane);
         messageTextScrollPane = new JScrollPane(messageTextWrapPanel);
-        centerPanel.add(messageTextScrollPane, "h 100%, w 100%");
-    }
-
-    private void createSenderButton() {
-        sendRequestButton = new JButton("Send request");
-        sendRequestButton.setActionCommand(RequesterGuiEvent.SEND_MESSAGE.toString());
-        westPanel.add(sendRequestButton, "span 2, h 30, grow");
+        centerPanel.add(messageTextScrollPane, "span 3, h 100%, w 100%");
     }
 
     public void closeGui() {
