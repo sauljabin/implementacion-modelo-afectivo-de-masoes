@@ -6,6 +6,7 @@
 
 package gui;
 
+import agent.AgentLogger;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
 import jade.content.lang.Codec;
@@ -31,8 +32,11 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.spy;
@@ -45,21 +49,24 @@ public class RequesterGuiAgentTest {
 
     private static final String RECEIVER_AGENT_NAME = "receiverAgentName";
     private static final String SENDER_AGENT_NAME = "senderAgentName";
-    ArgumentCaptor<ACLMessage> messageArgumentCaptor;
+    private ArgumentCaptor<ACLMessage> messageArgumentCaptor;
     private RequesterGuiAgent requesterGuiAgent;
     private RequesterGuiAgent requesterGuiAgentSpy;
     private RequesterGui requesterGuiMock;
     private AID senderAgentAID;
     private AID receiverAgentAID;
+    private AgentLogger logguerMock;
 
     @Before
     public void setUp() throws Exception {
         messageArgumentCaptor = ArgumentCaptor.forClass(ACLMessage.class);
 
         requesterGuiMock = mock(RequesterGui.class);
+        logguerMock = mock(AgentLogger.class);
 
         requesterGuiAgent = new RequesterGuiAgent();
         setFieldValue(requesterGuiAgent, "requesterGui", requesterGuiMock);
+        setFieldValue(requesterGuiAgent, "logger", logguerMock);
 
         requesterGuiAgentSpy = spy(requesterGuiAgent);
 
@@ -75,6 +82,12 @@ public class RequesterGuiAgentTest {
     public void shouldInvokeSetupAndShowGuiWhenStartAgent() {
         requesterGuiAgent.setup();
         verify(requesterGuiMock).showGui();
+    }
+
+    @Test
+    public void shouldAddResponseHandlerBehaviour() {
+        requesterGuiAgentSpy.setup();
+        verify(requesterGuiAgentSpy).addBehaviour(isA(GuiResponseHandlerBehaviour.class));
     }
 
     @Test
@@ -97,6 +110,17 @@ public class RequesterGuiAgentTest {
         doReturn(expectedName).when(requesterGuiAgentSpy).getLocalName();
         requesterGuiAgentSpy.setup();
         verify(requesterGuiMock).setSenderAgentName(expectedName);
+    }
+
+    @Test
+    public void shouldLogExceptionWhenErrorInEventMethod() {
+        RuntimeException expectedException = new RuntimeException("message");
+        doThrow(expectedException).when(requesterGuiMock).logMessage(any(ACLMessage.class));
+        doReturn(RequesterGuiAction.GET_ALL_SETTINGS).when(requesterGuiMock).getSelectedAction();
+
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+        verify(logguerMock).exception(requesterGuiAgentSpy, expectedException);
     }
 
     @Test

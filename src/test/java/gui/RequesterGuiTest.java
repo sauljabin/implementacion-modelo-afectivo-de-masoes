@@ -6,19 +6,29 @@
 
 package gui;
 
+import jade.lang.acl.ACLMessage;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import javax.swing.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -26,12 +36,15 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class RequesterGuiTest {
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
     private JComboBox actionsComboBoxMock;
     private JLabel senderAgentLabelMock;
     private RequesterGui requesterGuiSpy;
     private RequesterGui requesterGui;
     private JButton sendRequestButtonMock;
     private JTextField receiverAgentTextField;
+    private JTextPane messageTextPaneMock;
 
     @Before
     public void setUp() throws Exception {
@@ -39,12 +52,14 @@ public class RequesterGuiTest {
         senderAgentLabelMock = mock(JLabel.class);
         actionsComboBoxMock = mock(JComboBox.class);
         receiverAgentTextField = mock(JTextField.class);
+        messageTextPaneMock = mock(JTextPane.class);
 
         requesterGui = new RequesterGui();
         setFieldValue(requesterGui, "sendRequestButton", sendRequestButtonMock);
         setFieldValue(requesterGui, "senderAgentLabel", senderAgentLabelMock);
         setFieldValue(requesterGui, "actionsComboBox", actionsComboBoxMock);
         setFieldValue(requesterGui, "receiverAgentTextField", receiverAgentTextField);
+        setFieldValue(requesterGui, "messageTextPane", messageTextPaneMock);
 
         requesterGuiSpy = spy(requesterGui);
         doNothing().when(requesterGuiSpy).setVisible(anyBoolean());
@@ -102,5 +117,34 @@ public class RequesterGuiTest {
         assertThat(requesterGui.getReceiverAgentName(), is(expectedText));
     }
 
+    @Test
+    public void shouldLogMessage() throws Exception {
+        StyledDocument styledDocumentMock = mock(StyledDocument.class);
+        doReturn(styledDocumentMock).when(messageTextPaneMock).getStyledDocument();
 
+        ACLMessage messageMock = mock(ACLMessage.class);
+        String expectedMessageToString = "expectedMesage";
+        String expectedConversationId = "expectedConversationId";
+        doReturn(expectedMessageToString).when(messageMock).toString();
+        doReturn(expectedConversationId).when(messageMock).getConversationId();
+
+        requesterGui.logMessage(messageMock);
+
+        verify(styledDocumentMock).insertString(anyInt(), eq("Conversation: " + expectedConversationId + "\n"), any(AttributeSet.class));
+        verify(styledDocumentMock).insertString(anyInt(), eq(expectedMessageToString + "\n\n"), any(AttributeSet.class));
+    }
+
+    @Test
+    public void shouldThrowGuiExceptionInLogMessageWhenErrorInPane() throws Exception {
+        String expectedMessage = "expectedMessage";
+        expectedException.expectMessage(expectedMessage);
+        expectedException.expect(GuiException.class);
+
+        StyledDocument styledDocumentMock = mock(StyledDocument.class);
+        doReturn(styledDocumentMock).when(messageTextPaneMock).getStyledDocument();
+        doThrow(new RuntimeException(expectedMessage)).when(styledDocumentMock).insertString(anyInt(), anyString(), any(AttributeSet.class));
+
+        ACLMessage messageMock = mock(ACLMessage.class);
+        requesterGui.logMessage(messageMock);
+    }
 }

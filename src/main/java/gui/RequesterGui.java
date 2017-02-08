@@ -10,6 +10,9 @@ import jade.lang.acl.ACLMessage;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -26,7 +29,8 @@ public class RequesterGui extends JFrame {
     private JComboBox<RequesterGuiAction> actionsComboBox;
     private JLabel actionsLabel;
     private JTextPane messageTextPane;
-    private JScrollPane messageScrollPane;
+    private JScrollPane messageTextScrollPane;
+    private JPanel messageTextWrapPanel;
 
     public RequesterGui() {
         setUp();
@@ -87,8 +91,11 @@ public class RequesterGui extends JFrame {
 
     private void createMessageLogComponent() {
         messageTextPane = new JTextPane();
-        messageScrollPane = new JScrollPane(messageTextPane);
-        centerPanel.add(messageScrollPane, "h 100%, w 100%");
+        messageTextPane.setEditable(false);
+        messageTextWrapPanel = new JPanel(new BorderLayout());
+        messageTextWrapPanel.add(messageTextPane);
+        messageTextScrollPane = new JScrollPane(messageTextWrapPanel);
+        centerPanel.add(messageTextScrollPane, "h 100%, w 100%");
     }
 
     private void createSenderButton() {
@@ -124,7 +131,20 @@ public class RequesterGui extends JFrame {
     }
 
     public void logMessage(ACLMessage message) {
+        StyledDocument document = messageTextPane.getStyledDocument();
+        try {
+            SimpleAttributeSet attributeSet = new SimpleAttributeSet();
 
+            attributeSet.addAttribute(StyleConstants.Bold, Boolean.TRUE);
+            attributeSet.addAttribute(StyleConstants.Foreground, Color.BLUE);
+            document.insertString(document.getLength(), "Conversation: " + message.getConversationId() + "\n", attributeSet);
+
+            attributeSet.addAttribute(StyleConstants.Bold, Boolean.FALSE);
+            attributeSet.addAttribute(StyleConstants.Foreground, Color.BLACK);
+            document.insertString(document.getLength(), message.toString() + "\n\n", attributeSet);
+        } catch (Exception e) {
+            throw new GuiException(e);
+        }
     }
 
 }

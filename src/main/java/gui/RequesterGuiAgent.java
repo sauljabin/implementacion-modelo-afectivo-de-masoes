@@ -6,6 +6,7 @@
 
 package gui;
 
+import agent.AgentLogger;
 import jade.core.AID;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
@@ -13,19 +14,23 @@ import jade.lang.acl.ACLMessage;
 import ontology.OntologyAssistant;
 import ontology.settings.GetAllSettings;
 import ontology.settings.SettingsOntology;
+import org.slf4j.LoggerFactory;
 
 public class RequesterGuiAgent extends GuiAgent {
 
+    private AgentLogger logger;
     private RequesterGui requesterGui;
     private RequesterGuiListener requesterGuiListener;
 
     public RequesterGuiAgent() {
         requesterGui = new RequesterGui();
         requesterGuiListener = new RequesterGuiListener(requesterGui, this);
+        logger = new AgentLogger(LoggerFactory.getLogger(RequesterGuiAgent.class));
     }
 
     @Override
     protected void setup() {
+        addBehaviour(new GuiResponseHandlerBehaviour(this, requesterGui));
         requesterGui.setSenderAgentName(getLocalName());
         requesterGui.showGui();
     }
@@ -37,15 +42,19 @@ public class RequesterGuiAgent extends GuiAgent {
 
     @Override
     protected void onGuiEvent(GuiEvent guiEvent) {
-        switch (RequesterGuiEvent.fromInt(guiEvent.getType())) {
-            case CLOSE_WINDOW:
-                doDelete();
-                break;
-            case SEND_MESSAGE:
-                sendMessage();
-                break;
-            default:
-                break;
+        try {
+            switch (RequesterGuiEvent.fromInt(guiEvent.getType())) {
+                case CLOSE_WINDOW:
+                    doDelete();
+                    break;
+                case SEND_MESSAGE:
+                    sendMessage();
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            logger.exception(this, e);
         }
     }
 
