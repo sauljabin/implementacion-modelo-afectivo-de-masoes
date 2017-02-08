@@ -18,6 +18,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -25,25 +26,30 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class RequesterGuiTest {
 
+    private JComboBox actionsComboBoxMock;
     private JLabel senderAgentLabelMock;
     private RequesterGui requesterGuiSpy;
     private RequesterGui requesterGui;
     private JButton sendRequestButtonMock;
+    private JTextField receiverAgentTextField;
 
     @Before
     public void setUp() throws Exception {
         sendRequestButtonMock = mock(JButton.class);
         senderAgentLabelMock = mock(JLabel.class);
+        actionsComboBoxMock = mock(JComboBox.class);
+        receiverAgentTextField = mock(JTextField.class);
 
         requesterGui = new RequesterGui();
         setFieldValue(requesterGui, "sendRequestButton", sendRequestButtonMock);
         setFieldValue(requesterGui, "senderAgentLabel", senderAgentLabelMock);
+        setFieldValue(requesterGui, "actionsComboBox", actionsComboBoxMock);
+        setFieldValue(requesterGui, "receiverAgentTextField", receiverAgentTextField);
 
         requesterGuiSpy = spy(requesterGui);
         doNothing().when(requesterGuiSpy).setVisible(anyBoolean());
         doNothing().when(requesterGuiSpy).dispose();
     }
-
 
     @Test
     public void shouldSetupViewConfiguration() {
@@ -72,6 +78,7 @@ public class RequesterGuiTest {
         ActionListener actionListenerMock = mock(ActionListener.class);
         requesterGui.addActionListener(actionListenerMock);
         verify(sendRequestButtonMock).addActionListener(actionListenerMock);
+        verify(actionsComboBoxMock).addActionListener(actionListenerMock);
     }
 
     @Test
@@ -80,5 +87,20 @@ public class RequesterGuiTest {
         requesterGui.setSenderAgentName(expectedName);
         verify(senderAgentLabelMock).setText(expectedName);
     }
+
+    @Test
+    public void shouldReturnSelectedItem() {
+        RequesterGuiAction requesterGuiAction = RequesterGuiAction.ADD_BEHAVIOUR;
+        doReturn(requesterGuiAction).when(actionsComboBoxMock).getSelectedItem();
+        assertThat(requesterGui.getSelectedAction(), is(requesterGuiAction));
+    }
+
+    @Test
+    public void shouldGetReceiverAgentName() {
+        String expectedText = "expectedText";
+        doReturn(expectedText).when(receiverAgentTextField).getText();
+        assertThat(requesterGui.getReceiverAgentName(), is(expectedText));
+    }
+
 
 }

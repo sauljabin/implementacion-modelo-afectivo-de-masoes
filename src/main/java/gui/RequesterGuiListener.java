@@ -31,13 +31,13 @@ public class RequesterGuiListener extends WindowAdapter implements ActionListene
 
     @Override
     public void windowClosing(WindowEvent e) {
-        GuiEvent guiEvent = new GuiEvent(requesterGui, RequesterGuiAction.CLOSE_WINDOW.getInt());
+        GuiEvent guiEvent = new GuiEvent(requesterGui, RequesterGuiEvent.CLOSE_WINDOW.getInt());
         requesterGuiAgent.postGuiEvent(guiEvent);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        GuiEvent guiEvent = new GuiEvent(requesterGui, RequesterGuiAction.valueOf(e.getActionCommand()).getInt());
+        GuiEvent guiEvent = new GuiEvent(requesterGui, RequesterGuiEvent.valueOf(e.getActionCommand()).getInt());
         requesterGuiAgent.postGuiEvent(guiEvent);
     }
 

@@ -6,6 +6,7 @@
 
 package gui;
 
+import jade.lang.acl.ACLMessage;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -21,8 +22,8 @@ public class RequesterGui extends JFrame {
     private JLabel receiverAgentTitleLabel;
     private JTextField receiverAgentTextField;
     private JButton sendRequestButton;
-    private JPanel dynamicCanvan;
-    private JComboBox actionsComboBox;
+    private JPanel dynamicCanvas;
+    private JComboBox<RequesterGuiAction> actionsComboBox;
     private JLabel actionsLabel;
     private JTextPane messageTextPane;
     private JScrollPane messageScrollPane;
@@ -60,14 +61,14 @@ public class RequesterGui extends JFrame {
     }
 
     private void createAgentsComponents() {
-        senderAgentTitleLabel = new JLabel("Sender Agent:");
+        senderAgentTitleLabel = new JLabel("Sender agent:");
         westPanel.add(senderAgentTitleLabel, "w 110");
 
-        senderAgentLabel = new JLabel("requester");
+        senderAgentLabel = new JLabel();
         senderAgentLabel.setForeground(Color.BLUE);
         westPanel.add(senderAgentLabel, "w 150, wrap");
 
-        receiverAgentTitleLabel = new JLabel("Receiver Agent:");
+        receiverAgentTitleLabel = new JLabel("Receiver agent:");
         westPanel.add(receiverAgentTitleLabel, "grow");
 
         receiverAgentTextField = new JTextField();
@@ -76,11 +77,12 @@ public class RequesterGui extends JFrame {
         actionsLabel = new JLabel("Action:");
         westPanel.add(actionsLabel, "grow");
 
-        actionsComboBox = new JComboBox();
+        actionsComboBox = new JComboBox<>(RequesterGuiAction.values());
+        actionsComboBox.setActionCommand(RequesterGuiEvent.CHANGE_ACTION.toString());
         westPanel.add(actionsComboBox, "grow, wrap");
 
-        dynamicCanvan = new JPanel();
-        westPanel.add(dynamicCanvan, "span 2, grow, wrap 20");
+        dynamicCanvas = new JPanel();
+        westPanel.add(dynamicCanvas, "span 2, grow, wrap 20");
     }
 
     private void createMessageLogComponent() {
@@ -90,8 +92,8 @@ public class RequesterGui extends JFrame {
     }
 
     private void createSenderButton() {
-        sendRequestButton = new JButton("Send Request");
-        sendRequestButton.setActionCommand(RequesterGuiAction.SEND_MESSAGE.toString());
+        sendRequestButton = new JButton("Send request");
+        sendRequestButton.setActionCommand(RequesterGuiEvent.SEND_MESSAGE.toString());
         westPanel.add(sendRequestButton, "span 2, h 30, grow");
     }
 
@@ -106,10 +108,23 @@ public class RequesterGui extends JFrame {
 
     public void addActionListener(ActionListener actionListener) {
         sendRequestButton.addActionListener(actionListener);
+        actionsComboBox.addActionListener(actionListener);
     }
 
     public void setSenderAgentName(String name) {
         senderAgentLabel.setText(name);
+    }
+
+    public RequesterGuiAction getSelectedAction() {
+        return (RequesterGuiAction) actionsComboBox.getSelectedItem();
+    }
+
+    public String getReceiverAgentName() {
+        return receiverAgentTextField.getText();
+    }
+
+    public void logMessage(ACLMessage message) {
+
     }
 
 }

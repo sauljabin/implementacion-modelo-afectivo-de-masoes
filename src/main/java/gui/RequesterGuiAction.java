@@ -6,29 +6,25 @@
 
 package gui;
 
-import java.util.Arrays;
-import java.util.List;
-
 public enum RequesterGuiAction {
 
-    CLOSE_WINDOW, SEND_MESSAGE;
+    GET_ALL_SETTINGS("Get all settings"),
+    GET_SETTING("Get setting"),
+    ADD_BEHAVIOUR("Add behaviour"),
+    REMOVE_BEHAVIOUR("Remove behaviour"),
+    GET_EMOTIONAL_STATE("Get emotional state"),
+    EVALUATE_STIMULUS("Evaluate stimulus"),
+    SEND_SIMPLE_CONTENT("Send simple content");
 
-    private static List<RequesterGuiAction> events = Arrays.asList(RequesterGuiAction.values());
+    private String name;
 
-    public static RequesterGuiAction fromInt(int i) {
-        return events.get(i);
+    RequesterGuiAction(String name) {
+        this.name = name;
     }
 
-    public static int toInt(RequesterGuiAction event) {
-        return events.indexOf(event);
-    }
-
-    public int getInt() {
-        return toInt(this);
-    }
-
-    public boolean equals(int i) {
-        return i == toInt(this);
+    @Override
+    public String toString() {
+        return name;
     }
 
 }

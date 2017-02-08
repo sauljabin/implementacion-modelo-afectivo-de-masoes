@@ -42,7 +42,7 @@ public class RequesterGuiListenerTest {
 
     @Test
     public void shouldInvokeOnGuiEvent() {
-        GuiEvent expectedGuiEvent = new GuiEvent(requesterGuiMock, RequesterGuiAction.CLOSE_WINDOW.getInt());
+        GuiEvent expectedGuiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.CLOSE_WINDOW.getInt());
 
         WindowEvent windowEventMock = mock(WindowEvent.class);
         doReturn(requesterGuiMock).when(windowEventMock).getSource();
@@ -55,10 +55,10 @@ public class RequesterGuiListenerTest {
 
     @Test
     public void shouldInvokeOnGuiEventWhenUserClicks() {
-        GuiEvent expectedGuiEvent = new GuiEvent(requesterGuiMock, RequesterGuiAction.SEND_MESSAGE.getInt());
+        GuiEvent expectedGuiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
 
         ActionEvent actionEvent = mock(ActionEvent.class);
-        doReturn(RequesterGuiAction.SEND_MESSAGE.toString()).when(actionEvent).getActionCommand();
+        doReturn(RequesterGuiEvent.SEND_MESSAGE.toString()).when(actionEvent).getActionCommand();
 
         requesterGuiListener.actionPerformed(actionEvent);
 
