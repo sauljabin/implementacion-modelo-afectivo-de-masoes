@@ -50,12 +50,23 @@ public class RequesterGuiAgent extends GuiAgent {
                 case SEND_MESSAGE:
                     sendMessage();
                     break;
+                case CHANGE_ACTION:
+                    break;
+                case SAVE_MESSAGE_LOGS:
+                    break;
+                case CLEAR_MESSAGE_LOGS:
+                    clearMessageLogs();
+                    break;
                 default:
                     break;
             }
         } catch (Exception e) {
             logger.exception(this, e);
         }
+    }
+
+    private void clearMessageLogs() {
+        requesterGui.clearMessageLogs();
     }
 
     private void sendMessage() {

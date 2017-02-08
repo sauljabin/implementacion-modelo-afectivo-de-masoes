@@ -11,7 +11,7 @@ import java.util.List;
 
 public enum RequesterGuiEvent {
 
-    CLOSE_WINDOW, SEND_MESSAGE, CHANGE_ACTION;
+    CLOSE_WINDOW, SEND_MESSAGE, CHANGE_ACTION, SAVE_MESSAGE_LOGS, CLEAR_MESSAGE_LOGS;
 
     private static List<RequesterGuiEvent> events = Arrays.asList(RequesterGuiEvent.values());
 

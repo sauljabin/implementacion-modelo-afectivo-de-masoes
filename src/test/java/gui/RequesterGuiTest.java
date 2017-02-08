@@ -43,22 +43,28 @@ public class RequesterGuiTest {
     private RequesterGui requesterGuiSpy;
     private RequesterGui requesterGui;
     private JButton sendRequestButtonMock;
-    private JTextField receiverAgentTextField;
+    private JTextField receiverAgentTextFieldMock;
     private JTextPane messageTextPaneMock;
+    private JButton saveMessageLogsButtonMock;
+    private JButton clearMessageLogsButtonMock;
 
     @Before
     public void setUp() throws Exception {
         sendRequestButtonMock = mock(JButton.class);
         senderAgentLabelMock = mock(JLabel.class);
         actionsComboBoxMock = mock(JComboBox.class);
-        receiverAgentTextField = mock(JTextField.class);
+        receiverAgentTextFieldMock = mock(JTextField.class);
         messageTextPaneMock = mock(JTextPane.class);
+        saveMessageLogsButtonMock = mock(JButton.class);
+        clearMessageLogsButtonMock = mock(JButton.class);
 
         requesterGui = new RequesterGui();
         setFieldValue(requesterGui, "sendRequestButton", sendRequestButtonMock);
+        setFieldValue(requesterGui, "saveMessageLogsButton", saveMessageLogsButtonMock);
+        setFieldValue(requesterGui, "clearMessageLogsButton", clearMessageLogsButtonMock);
         setFieldValue(requesterGui, "senderAgentLabel", senderAgentLabelMock);
         setFieldValue(requesterGui, "actionsComboBox", actionsComboBoxMock);
-        setFieldValue(requesterGui, "receiverAgentTextField", receiverAgentTextField);
+        setFieldValue(requesterGui, "receiverAgentTextField", receiverAgentTextFieldMock);
         setFieldValue(requesterGui, "messageTextPane", messageTextPaneMock);
 
         requesterGuiSpy = spy(requesterGui);
@@ -94,6 +100,8 @@ public class RequesterGuiTest {
         requesterGui.addActionListener(actionListenerMock);
         verify(sendRequestButtonMock).addActionListener(actionListenerMock);
         verify(actionsComboBoxMock).addActionListener(actionListenerMock);
+        verify(clearMessageLogsButtonMock).addActionListener(actionListenerMock);
+        verify(saveMessageLogsButtonMock).addActionListener(actionListenerMock);
     }
 
     @Test
@@ -113,7 +121,7 @@ public class RequesterGuiTest {
     @Test
     public void shouldGetReceiverAgentName() {
         String expectedText = "expectedText";
-        doReturn(expectedText).when(receiverAgentTextField).getText();
+        doReturn(expectedText).when(receiverAgentTextFieldMock).getText();
         assertThat(requesterGui.getReceiverAgentName(), is(expectedText));
     }
 
@@ -132,6 +140,12 @@ public class RequesterGuiTest {
 
         verify(styledDocumentMock).insertString(anyInt(), eq("Conversation: " + expectedConversationId + "\n"), any(AttributeSet.class));
         verify(styledDocumentMock).insertString(anyInt(), eq(expectedMessageToString + "\n\n"), any(AttributeSet.class));
+    }
+
+    @Test
+    public void shouldClearLogMessage() {
+        requesterGui.clearMessageLogs();
+        verify(messageTextPaneMock).setText("");
     }
 
     @Test

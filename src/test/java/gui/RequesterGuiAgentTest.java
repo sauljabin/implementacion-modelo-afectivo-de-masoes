@@ -124,6 +124,13 @@ public class RequesterGuiAgentTest {
     }
 
     @Test
+    public void shouldClearMessageLogsInWindows() {
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.CLEAR_MESSAGE_LOGS.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+        verify(requesterGuiMock).clearMessageLogs();
+    }
+
+    @Test
     public void shouldSendGetAllSettingsToAgent() throws Exception {
         doReturn(RequesterGuiAction.GET_ALL_SETTINGS).when(requesterGuiMock).getSelectedAction();
 
