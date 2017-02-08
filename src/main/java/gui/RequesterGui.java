@@ -15,9 +15,14 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class RequesterGui extends JFrame {
 
+    private static final int CONVERSATIONS_CACHE = 10;
     private JPanel westPanel;
     private JPanel centerPanel;
     private JLabel senderAgentLabel;
@@ -32,13 +37,24 @@ public class RequesterGui extends JFrame {
     private JScrollPane messageTextScrollPane;
     private JPanel messageTextWrapPanel;
 
+    private List<Color> colors;
+    private Iterator<Color> colorIterator;
+    private LinkedHashMap<String, Color> conversations;
+
     public RequesterGui() {
+        prepareColors();
         setUp();
     }
 
     public static void main(String[] args) {
         RequesterGui requesterGui = new RequesterGui();
         requesterGui.showGui();
+    }
+
+    private void prepareColors() {
+        colors = Arrays.asList(new Color(30, 90, 255), new Color(255, 10, 20), new Color(250, 10, 255), new Color(0, 200, 100), new Color(255, 110, 40));
+        colorIterator = colors.iterator();
+        conversations = new LinkedHashMap<>();
     }
 
     private void setUp() {
@@ -131,12 +147,25 @@ public class RequesterGui extends JFrame {
     }
 
     public void logMessage(ACLMessage message) {
+
+        if (!colorIterator.hasNext()) {
+            colorIterator = colors.iterator();
+        }
+
+        if (conversations.get(message.getConversationId()) == null) {
+            if (conversations.size() >= CONVERSATIONS_CACHE) {
+                String key = conversations.keySet().iterator().next();
+                conversations.remove(key);
+            }
+            conversations.put(message.getConversationId(), colorIterator.next());
+        }
+
         StyledDocument document = messageTextPane.getStyledDocument();
         try {
             SimpleAttributeSet attributeSet = new SimpleAttributeSet();
 
             attributeSet.addAttribute(StyleConstants.Bold, Boolean.TRUE);
-            attributeSet.addAttribute(StyleConstants.Foreground, Color.BLUE);
+            attributeSet.addAttribute(StyleConstants.Foreground, conversations.get(message.getConversationId()));
             document.insertString(document.getLength(), "Conversation: " + message.getConversationId() + "\n", attributeSet);
 
             attributeSet.addAttribute(StyleConstants.Bold, Boolean.FALSE);
