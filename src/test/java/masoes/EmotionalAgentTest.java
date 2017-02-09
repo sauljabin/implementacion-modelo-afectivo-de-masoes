@@ -8,10 +8,10 @@ package masoes;
 
 import agent.AgentLogger;
 import jade.core.behaviours.Behaviour;
-import masoes.conductual.BehaviourManager;
-import masoes.conductual.Emotion;
-import masoes.conductual.EmotionalConfigurator;
-import masoes.conductual.EmotionalState;
+import masoes.behavioural.BehaviourManager;
+import masoes.behavioural.Emotion;
+import masoes.behavioural.EmotionalConfigurator;
+import masoes.behavioural.EmotionalState;
 import ontology.masoes.Stimulus;
 import org.junit.Before;
 import org.junit.Test;
