@@ -39,6 +39,8 @@ public class RequesterGui extends JFrame {
     private JButton clearMessagesLogButton;
     private JTextField keySettingTextField;
     private JTextField simpleContentTextField;
+    private JTextField behaviourNameTextField;
+    private JTextField behaviourClassNameTextField;
 
     public RequesterGui() {
         prepareColors();
@@ -242,6 +244,14 @@ public class RequesterGui extends JFrame {
         return simpleContentTextField.getText();
     }
 
+    public String getBehaviourName() {
+        return behaviourNameTextField.getText();
+    }
+
+    public String getBehaviourClassName() {
+        return behaviourClassNameTextField.getText();
+    }
+
     public void setGetAllSettingsActionComponents() {
         refreshDynamicCanvas(() -> {
         });
@@ -275,17 +285,30 @@ public class RequesterGui extends JFrame {
         });
     }
 
-    private void setRemoveBehaviourActionComponents() {
+    public void setRemoveBehaviourActionComponents() {
         refreshDynamicCanvas(() -> {
+            JLabel nameTitleLabel = new JLabel("Name:");
+            dynamicCanvasPanel.add(nameTitleLabel, "w 110");
+            behaviourNameTextField = new JTextField();
+            dynamicCanvasPanel.add(behaviourNameTextField, "w 175, wrap");
         });
     }
 
-    private void setAddBehaviourActionComponents() {
+    public void setAddBehaviourActionComponents() {
         refreshDynamicCanvas(() -> {
+            JLabel nameTitleLabel = new JLabel("Name:");
+            dynamicCanvasPanel.add(nameTitleLabel, "w 110");
+            behaviourNameTextField = new JTextField();
+            dynamicCanvasPanel.add(behaviourNameTextField, "w 175, wrap");
+
+            JLabel classNameTitleLabel = new JLabel("Class name:");
+            dynamicCanvasPanel.add(classNameTitleLabel, "w 110");
+            behaviourClassNameTextField = new JTextField();
+            dynamicCanvasPanel.add(behaviourClassNameTextField, "w 175, wrap");
         });
     }
 
-    private void refreshDynamicCanvas(Runnable runnable) {
+    public void refreshDynamicCanvas(Runnable runnable) {
         dynamicCanvasPanel.removeAll();
         runnable.run();
         revalidate();

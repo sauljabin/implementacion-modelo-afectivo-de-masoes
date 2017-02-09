@@ -14,6 +14,9 @@ import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
 import ontology.OntologyAssistant;
+import ontology.configurable.AddBehaviour;
+import ontology.configurable.ConfigurableOntology;
+import ontology.configurable.RemoveBehaviour;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
@@ -103,8 +106,12 @@ public class RequesterGuiAgent extends GuiAgent {
                 sendOntologyMessage(aid, SettingsOntology.getInstance(), new GetSetting(requesterGui.getKeySetting()));
                 break;
             case ADD_BEHAVIOUR:
+                AddBehaviour addBehaviour = new AddBehaviour(requesterGui.getBehaviourName(), requesterGui.getBehaviourClassName());
+                sendOntologyMessage(aid, ConfigurableOntology.getInstance(), addBehaviour);
                 break;
             case REMOVE_BEHAVIOUR:
+                RemoveBehaviour removeBehaviour = new RemoveBehaviour(requesterGui.getBehaviourName());
+                sendOntologyMessage(aid, ConfigurableOntology.getInstance(), removeBehaviour);
                 break;
             case GET_EMOTIONAL_STATE:
                 sendOntologyMessage(aid, MasoesOntology.getInstance(), new GetEmotionalState());

@@ -17,6 +17,9 @@ import jade.domain.FIPANames;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
 import language.SemanticLanguage;
+import ontology.configurable.AddBehaviour;
+import ontology.configurable.ConfigurableOntology;
+import ontology.configurable.RemoveBehaviour;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
@@ -188,6 +191,46 @@ public class RequesterGuiAgentTest {
 
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(EvaluateStimulus.class)));
+    }
+
+    @Test
+    public void shouldSendAddBehaviourToAgent() throws Exception {
+        String expectedBehaviourClassName = "expectedBehaviourClassName";
+        String expectedBehaviourName = "expectedBehaviourName";
+
+        doReturn(expectedBehaviourName).when(requesterGuiMock).getBehaviourName();
+        doReturn(expectedBehaviourClassName).when(requesterGuiMock).getBehaviourClassName();
+        doReturn(RequesterGuiAction.ADD_BEHAVIOUR).when(requesterGuiMock).getSelectedAction();
+
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+
+        ContentElement contentElement = testRequestAction(ConfigurableOntology.getInstance());
+
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(AddBehaviour.class)));
+
+        AddBehaviour addBehaviour = (AddBehaviour) action.getAction();
+        assertThat(addBehaviour.getClassName(), is(expectedBehaviourClassName));
+        assertThat(addBehaviour.getName(), is(expectedBehaviourName));
+    }
+
+    @Test
+    public void shouldSendRemoveBehaviourToAgent() throws Exception {
+        String expectedBehaviourName = "expectedBehaviourName";
+        doReturn(expectedBehaviourName).when(requesterGuiMock).getBehaviourName();
+        doReturn(RequesterGuiAction.REMOVE_BEHAVIOUR).when(requesterGuiMock).getSelectedAction();
+
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+
+        ContentElement contentElement = testRequestAction(ConfigurableOntology.getInstance());
+
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(RemoveBehaviour.class)));
+
+        RemoveBehaviour removeBehaviour = (RemoveBehaviour) action.getAction();
+        assertThat(removeBehaviour.getName(), is(expectedBehaviourName));
     }
 
     @Test

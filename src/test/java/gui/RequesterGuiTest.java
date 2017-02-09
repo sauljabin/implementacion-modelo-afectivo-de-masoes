@@ -32,6 +32,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
@@ -51,6 +52,8 @@ public class RequesterGuiTest {
     private JTextField keySettingTextFieldMock;
     private JPanel dynamicCanvasPanelMock;
     private JTextField simpleContentTextFieldMock;
+    private JTextField behaviourNameTextFieldMock;
+    private JTextField behaviourClassNameTextFieldMock;
 
     @Before
     public void setUp() throws Exception {
@@ -64,6 +67,8 @@ public class RequesterGuiTest {
         keySettingTextFieldMock = mock(JTextField.class);
         dynamicCanvasPanelMock = mock(JPanel.class);
         simpleContentTextFieldMock = mock(JTextField.class);
+        behaviourNameTextFieldMock = mock(JTextField.class);
+        behaviourClassNameTextFieldMock = mock(JTextField.class);
 
         requesterGui = new RequesterGui();
         setFieldValue(requesterGui, "sendRequestButton", sendRequestButtonMock);
@@ -76,6 +81,8 @@ public class RequesterGuiTest {
         setFieldValue(requesterGui, "keySettingTextField", keySettingTextFieldMock);
         setFieldValue(requesterGui, "dynamicCanvasPanel", dynamicCanvasPanelMock);
         setFieldValue(requesterGui, "simpleContentTextField", simpleContentTextFieldMock);
+        setFieldValue(requesterGui, "behaviourNameTextField", behaviourNameTextFieldMock);
+        setFieldValue(requesterGui, "behaviourClassNameTextField", behaviourClassNameTextFieldMock);
 
         requesterGuiSpy = spy(requesterGui);
         doNothing().when(requesterGuiSpy).setVisible(anyBoolean());
@@ -176,6 +183,18 @@ public class RequesterGuiTest {
     }
 
     @Test
+    public void shouldGetNameBehaviour() {
+        requesterGui.getBehaviourName();
+        verify(behaviourNameTextFieldMock).getText();
+    }
+
+    @Test
+    public void shouldGetClassNameBehaviour() {
+        requesterGui.getBehaviourClassName();
+        verify(behaviourClassNameTextFieldMock).getText();
+    }
+
+    @Test
     public void shouldThrowGuiExceptionInLogMessageWhenErrorInPane() throws Exception {
         String expectedMessage = "expectedMessage";
         expectedException.expectMessage(expectedMessage);
@@ -218,6 +237,22 @@ public class RequesterGuiTest {
     @Test
     public void shouldAddSimpleContentWhenActionIsSendSimpleContent() {
         requesterGuiSpy.setSimpleContentActionComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock).add(isA(JTextField.class), anyString());
+    }
+
+    @Test
+    public void shouldAddNameAndClassNameWhenActionIsAddBehavior() {
+        requesterGuiSpy.setAddBehaviourActionComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
+    }
+
+    @Test
+    public void shouldAddNameWhenActionIsRemoveBehavior() {
+        requesterGuiSpy.setRemoveBehaviourActionComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock).add(isA(JLabel.class), anyString());
         verify(dynamicCanvasPanelMock).add(isA(JTextField.class), anyString());
