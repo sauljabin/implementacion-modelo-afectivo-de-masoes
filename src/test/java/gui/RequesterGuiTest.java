@@ -50,6 +50,7 @@ public class RequesterGuiTest {
     private JButton clearMessageLogsButtonMock;
     private JTextField keySettingTextFieldMock;
     private JPanel dynamicCanvasPanelMock;
+    private JTextField simpleContentTextFieldMock;
 
     @Before
     public void setUp() throws Exception {
@@ -62,6 +63,7 @@ public class RequesterGuiTest {
         clearMessageLogsButtonMock = mock(JButton.class);
         keySettingTextFieldMock = mock(JTextField.class);
         dynamicCanvasPanelMock = mock(JPanel.class);
+        simpleContentTextFieldMock = mock(JTextField.class);
 
         requesterGui = new RequesterGui();
         setFieldValue(requesterGui, "sendRequestButton", sendRequestButtonMock);
@@ -73,6 +75,7 @@ public class RequesterGuiTest {
         setFieldValue(requesterGui, "messageTextPane", messageTextPaneMock);
         setFieldValue(requesterGui, "keySettingTextField", keySettingTextFieldMock);
         setFieldValue(requesterGui, "dynamicCanvasPanel", dynamicCanvasPanelMock);
+        setFieldValue(requesterGui, "simpleContentTextField", simpleContentTextFieldMock);
 
         requesterGuiSpy = spy(requesterGui);
         doNothing().when(requesterGuiSpy).setVisible(anyBoolean());
@@ -106,7 +109,6 @@ public class RequesterGuiTest {
         ActionListener actionListenerMock = mock(ActionListener.class);
         requesterGui.addActionListener(actionListenerMock);
         verify(sendRequestButtonMock).addActionListener(actionListenerMock);
-        verify(actionsComboBoxMock).addActionListener(actionListenerMock);
         verify(clearMessageLogsButtonMock).addActionListener(actionListenerMock);
         verify(saveMessageLogsButtonMock).addActionListener(actionListenerMock);
     }
@@ -168,6 +170,12 @@ public class RequesterGuiTest {
     }
 
     @Test
+    public void shouldGetSimpleContent() {
+        requesterGui.getSimpleContent();
+        verify(simpleContentTextFieldMock).getText();
+    }
+
+    @Test
     public void shouldThrowGuiExceptionInLogMessageWhenErrorInPane() throws Exception {
         String expectedMessage = "expectedMessage";
         expectedException.expectMessage(expectedMessage);
@@ -184,19 +192,41 @@ public class RequesterGuiTest {
     @Test
     public void shouldRemoveAllWhenActionIsGetAllSettings() {
         requesterGuiSpy.setGetAllSettingsActionComponents();
-        verify(dynamicCanvasPanelMock).removeAll();
-        verify(requesterGuiSpy).revalidate();
-        verify(requesterGuiSpy).repaint();
+        testDynamicContentRepaint();
+    }
+
+    @Test
+    public void shouldRemoveAllWhenActionIsGetEmotionalState() {
+        requesterGuiSpy.setGetEmotionalStateActionComponents();
+        testDynamicContentRepaint();
+    }
+
+    @Test
+    public void shouldRemoveAllWhenActionIsEvaluateStimulus() {
+        requesterGuiSpy.setEvaluateStimulusActionComponents();
+        testDynamicContentRepaint();
     }
 
     @Test
     public void shouldAddKeyWhenActionIsGetAllSettings() {
         requesterGuiSpy.setGetSettingActionComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock).add(isA(JTextField.class), anyString());
+    }
+
+    @Test
+    public void shouldAddSimpleContentWhenActionIsSendSimpleContent() {
+        requesterGuiSpy.setSimpleContentActionComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock).add(isA(JTextField.class), anyString());
+    }
+
+    private void testDynamicContentRepaint() {
         verify(dynamicCanvasPanelMock).removeAll();
         verify(requesterGuiSpy).revalidate();
         verify(requesterGuiSpy).repaint();
-        verify(dynamicCanvasPanelMock).add(isA(JLabel.class), anyString());
-        verify(dynamicCanvasPanelMock).add(isA(JTextField.class), anyString());
     }
 
 }

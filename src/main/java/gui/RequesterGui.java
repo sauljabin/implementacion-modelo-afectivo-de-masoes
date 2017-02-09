@@ -38,6 +38,7 @@ public class RequesterGui extends JFrame {
     private JButton saveMessagesLogButton;
     private JButton clearMessagesLogButton;
     private JTextField keySettingTextField;
+    private JTextField simpleContentTextField;
 
     public RequesterGui() {
         prepareColors();
@@ -103,6 +104,37 @@ public class RequesterGui extends JFrame {
 
         actionsComboBox = new JComboBox<>(RequesterGuiAction.values());
         actionsComboBox.setActionCommand(RequesterGuiEvent.CHANGE_ACTION.toString());
+        actionsComboBox.addActionListener(e -> {
+
+            if (!RequesterGuiEvent.valueOf(e.getActionCommand()).equals(RequesterGuiEvent.CHANGE_ACTION)) {
+                return;
+            }
+
+            switch (getSelectedAction()) {
+                case GET_ALL_SETTINGS:
+                    setGetAllSettingsActionComponents();
+                    break;
+                case GET_SETTING:
+                    setGetSettingActionComponents();
+                    break;
+                case ADD_BEHAVIOUR:
+                    setAddBehaviourActionComponents();
+                    break;
+                case REMOVE_BEHAVIOUR:
+                    setRemoveBehaviourActionComponents();
+                    break;
+                case GET_EMOTIONAL_STATE:
+                    setGetEmotionalStateActionComponents();
+                    break;
+                case EVALUATE_STIMULUS:
+                    setEvaluateStimulusActionComponents();
+                    break;
+                case SEND_SIMPLE_CONTENT:
+                    setSimpleContentActionComponents();
+                    break;
+            }
+
+        });
         westPanel.add(actionsComboBox, "grow, wrap");
 
         dynamicCanvasPanel = new JPanel(new MigLayout("insets 0"));
@@ -148,7 +180,6 @@ public class RequesterGui extends JFrame {
 
     public void addActionListener(ActionListener actionListener) {
         sendRequestButton.addActionListener(actionListener);
-        actionsComboBox.addActionListener(actionListener);
         saveMessagesLogButton.addActionListener(actionListener);
         clearMessagesLogButton.addActionListener(actionListener);
     }
@@ -207,6 +238,10 @@ public class RequesterGui extends JFrame {
         return keySettingTextField.getText();
     }
 
+    public String getSimpleContent() {
+        return simpleContentTextField.getText();
+    }
+
     public void setGetAllSettingsActionComponents() {
         refreshDynamicCanvas(() -> {
         });
@@ -218,6 +253,35 @@ public class RequesterGui extends JFrame {
             dynamicCanvasPanel.add(keySettingTitleLabel, "w 110");
             keySettingTextField = new JTextField();
             dynamicCanvasPanel.add(keySettingTextField, "w 175, wrap");
+        });
+    }
+
+    public void setGetEmotionalStateActionComponents() {
+        refreshDynamicCanvas(() -> {
+        });
+    }
+
+    public void setEvaluateStimulusActionComponents() {
+        refreshDynamicCanvas(() -> {
+        });
+    }
+
+    public void setSimpleContentActionComponents() {
+        refreshDynamicCanvas(() -> {
+            JLabel contentTitleLabel = new JLabel("Content:");
+            dynamicCanvasPanel.add(contentTitleLabel, "w 110");
+            simpleContentTextField = new JTextField();
+            dynamicCanvasPanel.add(simpleContentTextField, "w 175, wrap");
+        });
+    }
+
+    private void setRemoveBehaviourActionComponents() {
+        refreshDynamicCanvas(() -> {
+        });
+    }
+
+    private void setAddBehaviourActionComponents() {
+        refreshDynamicCanvas(() -> {
         });
     }
 

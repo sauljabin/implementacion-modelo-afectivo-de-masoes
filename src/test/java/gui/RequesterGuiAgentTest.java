@@ -132,22 +132,6 @@ public class RequesterGuiAgentTest {
     }
 
     @Test
-    public void shouldChangeComponentToGetAllSettingsAction() {
-        doReturn(RequesterGuiAction.GET_ALL_SETTINGS).when(requesterGuiMock).getSelectedAction();
-        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.CHANGE_ACTION.getInt());
-        requesterGuiAgentSpy.onGuiEvent(guiEvent);
-        verify(requesterGuiMock).setGetAllSettingsActionComponents();
-    }
-
-    @Test
-    public void shouldChangeComponentToGetSettingAction() {
-        doReturn(RequesterGuiAction.GET_SETTING).when(requesterGuiMock).getSelectedAction();
-        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.CHANGE_ACTION.getInt());
-        requesterGuiAgentSpy.onGuiEvent(guiEvent);
-        verify(requesterGuiMock).setGetSettingActionComponents();
-    }
-
-    @Test
     public void shouldSendGetAllSettingsToAgent() throws Exception {
         doReturn(RequesterGuiAction.GET_ALL_SETTINGS).when(requesterGuiMock).getSelectedAction();
 
@@ -176,6 +160,27 @@ public class RequesterGuiAgentTest {
 
         GetSetting getSetting = (GetSetting) action.getAction();
         assertThat(getSetting.getKey(), is(expectedKey));
+    }
+
+    @Test
+    public void shouldSendSimpleContentToAgent() throws Exception {
+        String expectedContent = "expectedContent";
+        doReturn(expectedContent).when(requesterGuiMock).getSimpleContent();
+        doReturn(RequesterGuiAction.SEND_SIMPLE_CONTENT).when(requesterGuiMock).getSelectedAction();
+
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+
+        verify(requesterGuiMock).logMessage(messageArgumentCaptor.capture());
+        verify(requesterGuiAgentSpy).send(messageArgumentCaptor.getValue());
+
+        ACLMessage message = messageArgumentCaptor.getValue();
+        assertThat(message.getPerformative(), is(ACLMessage.REQUEST));
+        assertThat(message.getReplyWith(), is(notNullValue()));
+        assertThat(message.getConversationId(), is(notNullValue()));
+        assertThat(message.getSender(), is(senderAgentAID));
+        assertThat(message.getAllReceiver().next(), is(receiverAgentAID));
+        assertThat(message.getContent(), is(expectedContent));
     }
 
     private ContentElement testRequestAction() throws Codec.CodecException, OntologyException {

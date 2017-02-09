@@ -18,6 +18,7 @@ import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.SettingsOntology;
 import org.slf4j.LoggerFactory;
+import util.MessageBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,28 +59,15 @@ public class RequesterGuiAgent extends GuiAgent {
                 case SEND_MESSAGE:
                     sendMessage();
                     break;
-                case CHANGE_ACTION:
-                    changeAction();
-                    break;
                 case SAVE_MESSAGE_LOGS:
                     saveMessageLogs();
                     break;
                 case CLEAR_MESSAGE_LOGS:
                     clearMessagesLog();
                     break;
-                default:
-                    break;
             }
         } catch (Exception e) {
             logger.exception(this, e);
-        }
-    }
-
-    private void changeAction() {
-        if (requesterGui.getSelectedAction().equals(RequesterGuiAction.GET_ALL_SETTINGS)) {
-            requesterGui.setGetAllSettingsActionComponents();
-        } else if (requesterGui.getSelectedAction().equals(RequesterGuiAction.GET_SETTING)) {
-            requesterGui.setGetSettingActionComponents();
         }
     }
 
@@ -101,20 +89,45 @@ public class RequesterGuiAgent extends GuiAgent {
     }
 
     private void sendMessage() {
-        AgentAction agentAction = null;
-        Ontology ontology = null;
+        AID aid = getAID(requesterGui.getReceiverAgentName());
 
-        if (requesterGui.getSelectedAction().equals(RequesterGuiAction.GET_ALL_SETTINGS)) {
-            agentAction = new GetAllSettings();
-            ontology = SettingsOntology.getInstance();
-        } else if (requesterGui.getSelectedAction().equals(RequesterGuiAction.GET_SETTING)) {
-            agentAction = new GetSetting(requesterGui.getKeySetting());
-            ontology = SettingsOntology.getInstance();
+        switch (requesterGui.getSelectedAction()) {
+            case GET_ALL_SETTINGS:
+                sendOntologyMessage(aid, SettingsOntology.getInstance(), new GetAllSettings());
+                break;
+            case GET_SETTING:
+                sendOntologyMessage(aid, SettingsOntology.getInstance(), new GetSetting(requesterGui.getKeySetting()));
+                break;
+            case ADD_BEHAVIOUR:
+                break;
+            case REMOVE_BEHAVIOUR:
+                break;
+            case GET_EMOTIONAL_STATE:
+                break;
+            case EVALUATE_STIMULUS:
+                break;
+            case SEND_SIMPLE_CONTENT:
+                ACLMessage message = new MessageBuilder()
+                        .request()
+                        .conversationId()
+                        .replyWith()
+                        .sender(getAID())
+                        .receiver(aid)
+                        .content(requesterGui.getSimpleContent())
+                        .build();
+                sendMessage(message);
+                break;
         }
 
-        AID receiver = getAID(requesterGui.getReceiverAgentName());
+    }
+
+    private void sendOntologyMessage(AID receiver, Ontology ontology, AgentAction agentAction) {
         OntologyAssistant ontologyAssistant = new OntologyAssistant(this, ontology);
         ACLMessage requestAction = ontologyAssistant.createRequestAction(receiver, agentAction);
+        sendMessage(requestAction);
+    }
+
+    private void sendMessage(ACLMessage requestAction) {
         requesterGui.logMessage(requestAction);
         send(requestAction);
     }
