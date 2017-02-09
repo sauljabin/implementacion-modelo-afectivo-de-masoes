@@ -19,6 +19,7 @@ import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
 import language.SemanticLanguage;
 import ontology.settings.GetAllSettings;
+import ontology.settings.GetSetting;
 import ontology.settings.SettingsOntology;
 import org.junit.Before;
 import org.junit.Test;
@@ -131,6 +132,22 @@ public class RequesterGuiAgentTest {
     }
 
     @Test
+    public void shouldChangeComponentToGetAllSettingsAction() {
+        doReturn(RequesterGuiAction.GET_ALL_SETTINGS).when(requesterGuiMock).getSelectedAction();
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.CHANGE_ACTION.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+        verify(requesterGuiMock).setGetAllSettingsActionComponents();
+    }
+
+    @Test
+    public void shouldChangeComponentToGetSettingAction() {
+        doReturn(RequesterGuiAction.GET_SETTING).when(requesterGuiMock).getSelectedAction();
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.CHANGE_ACTION.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+        verify(requesterGuiMock).setGetSettingActionComponents();
+    }
+
+    @Test
     public void shouldSendGetAllSettingsToAgent() throws Exception {
         doReturn(RequesterGuiAction.GET_ALL_SETTINGS).when(requesterGuiMock).getSelectedAction();
 
@@ -141,6 +158,24 @@ public class RequesterGuiAgentTest {
 
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(GetAllSettings.class)));
+    }
+
+    @Test
+    public void shouldSendGetASettingToAgent() throws Exception {
+        String expectedKey = "expectedSetting";
+        doReturn(expectedKey).when(requesterGuiMock).getKeySetting();
+        doReturn(RequesterGuiAction.GET_SETTING).when(requesterGuiMock).getSelectedAction();
+
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+
+        ContentElement contentElement = testRequestAction();
+
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(GetSetting.class)));
+
+        GetSetting getSetting = (GetSetting) action.getAction();
+        assertThat(getSetting.getKey(), is(expectedKey));
     }
 
     private ContentElement testRequestAction() throws Codec.CodecException, OntologyException {

@@ -26,6 +26,7 @@ import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -47,6 +48,8 @@ public class RequesterGuiTest {
     private JTextPane messageTextPaneMock;
     private JButton saveMessageLogsButtonMock;
     private JButton clearMessageLogsButtonMock;
+    private JTextField keySettingTextFieldMock;
+    private JPanel dynamicCanvasPanelMock;
 
     @Before
     public void setUp() throws Exception {
@@ -57,6 +60,8 @@ public class RequesterGuiTest {
         messageTextPaneMock = mock(JTextPane.class);
         saveMessageLogsButtonMock = mock(JButton.class);
         clearMessageLogsButtonMock = mock(JButton.class);
+        keySettingTextFieldMock = mock(JTextField.class);
+        dynamicCanvasPanelMock = mock(JPanel.class);
 
         requesterGui = new RequesterGui();
         setFieldValue(requesterGui, "sendRequestButton", sendRequestButtonMock);
@@ -66,6 +71,8 @@ public class RequesterGuiTest {
         setFieldValue(requesterGui, "actionsComboBox", actionsComboBoxMock);
         setFieldValue(requesterGui, "receiverAgentTextField", receiverAgentTextFieldMock);
         setFieldValue(requesterGui, "messageTextPane", messageTextPaneMock);
+        setFieldValue(requesterGui, "keySettingTextField", keySettingTextFieldMock);
+        setFieldValue(requesterGui, "dynamicCanvasPanel", dynamicCanvasPanelMock);
 
         requesterGuiSpy = spy(requesterGui);
         doNothing().when(requesterGuiSpy).setVisible(anyBoolean());
@@ -155,6 +162,12 @@ public class RequesterGuiTest {
     }
 
     @Test
+    public void shouldGetKeySetting() {
+        requesterGui.getKeySetting();
+        verify(keySettingTextFieldMock).getText();
+    }
+
+    @Test
     public void shouldThrowGuiExceptionInLogMessageWhenErrorInPane() throws Exception {
         String expectedMessage = "expectedMessage";
         expectedException.expectMessage(expectedMessage);
@@ -166,6 +179,24 @@ public class RequesterGuiTest {
 
         ACLMessage messageMock = mock(ACLMessage.class);
         requesterGui.logMessage(messageMock);
+    }
+
+    @Test
+    public void shouldRemoveAllWhenActionIsGetAllSettings() {
+        requesterGuiSpy.setGetAllSettingsActionComponents();
+        verify(dynamicCanvasPanelMock).removeAll();
+        verify(requesterGuiSpy).revalidate();
+        verify(requesterGuiSpy).repaint();
+    }
+
+    @Test
+    public void shouldAddKeyWhenActionIsGetAllSettings() {
+        requesterGuiSpy.setGetSettingActionComponents();
+        verify(dynamicCanvasPanelMock).removeAll();
+        verify(requesterGuiSpy).revalidate();
+        verify(requesterGuiSpy).repaint();
+        verify(dynamicCanvasPanelMock).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock).add(isA(JTextField.class), anyString());
     }
 
 }

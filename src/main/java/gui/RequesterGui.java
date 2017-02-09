@@ -27,23 +27,17 @@ public class RequesterGui extends JFrame {
     private JPanel westPanel;
     private JPanel centerPanel;
     private JLabel senderAgentLabel;
-    private JLabel senderAgentTitleLabel;
-    private JLabel receiverAgentTitleLabel;
     private JTextField receiverAgentTextField;
     private JButton sendRequestButton;
-    private JPanel dynamicCanvas;
+    private JPanel dynamicCanvasPanel;
     private JComboBox<RequesterGuiAction> actionsComboBox;
-    private JLabel actionsLabel;
     private JTextPane messageTextPane;
-    private JScrollPane messageTextScrollPane;
-    private JPanel messageTextWrapPanel;
-
     private List<Color> colors;
     private Iterator<Color> colorIterator;
     private LinkedHashMap<String, Color> conversations;
     private JButton saveMessagesLogButton;
     private JButton clearMessagesLogButton;
-    private JLabel messageTextTitleLabel;
+    private JTextField keySettingTextField;
 
     public RequesterGui() {
         prepareColors();
@@ -91,28 +85,28 @@ public class RequesterGui extends JFrame {
     }
 
     private void createWestComponents() {
-        senderAgentTitleLabel = new JLabel("Sender agent:");
+        JLabel senderAgentTitleLabel = new JLabel("Sender agent:");
         westPanel.add(senderAgentTitleLabel, "w 110");
 
         senderAgentLabel = new JLabel();
         senderAgentLabel.setForeground(Color.BLUE);
         westPanel.add(senderAgentLabel, "w 150, wrap");
 
-        receiverAgentTitleLabel = new JLabel("Receiver agent:");
+        JLabel receiverAgentTitleLabel = new JLabel("Receiver agent:");
         westPanel.add(receiverAgentTitleLabel, "grow");
 
         receiverAgentTextField = new JTextField();
         westPanel.add(receiverAgentTextField, "grow, wrap");
 
-        actionsLabel = new JLabel("Action:");
+        JLabel actionsLabel = new JLabel("Action:");
         westPanel.add(actionsLabel, "grow");
 
         actionsComboBox = new JComboBox<>(RequesterGuiAction.values());
         actionsComboBox.setActionCommand(RequesterGuiEvent.CHANGE_ACTION.toString());
         westPanel.add(actionsComboBox, "grow, wrap");
 
-        dynamicCanvas = new JPanel();
-        westPanel.add(dynamicCanvas, "span 2, grow, wrap 20");
+        dynamicCanvasPanel = new JPanel(new MigLayout("insets 0"));
+        westPanel.add(dynamicCanvasPanel, "span 2, grow, wrap 20");
 
         sendRequestButton = new JButton("Send request");
         sendRequestButton.setActionCommand(RequesterGuiEvent.SEND_MESSAGE.toString());
@@ -120,7 +114,7 @@ public class RequesterGui extends JFrame {
     }
 
     private void createCenterComponent() {
-        messageTextTitleLabel = new JLabel("Messages:");
+        JLabel messageTextTitleLabel = new JLabel("Messages:");
         centerPanel.add(messageTextTitleLabel, "w 100%");
 
         saveMessagesLogButton = new JButton("Save");
@@ -136,10 +130,10 @@ public class RequesterGui extends JFrame {
         DefaultCaret caret = (DefaultCaret) messageTextPane.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
-        messageTextWrapPanel = new JPanel(new BorderLayout());
+        JPanel messageTextWrapPanel = new JPanel(new BorderLayout());
         messageTextWrapPanel.add(messageTextPane);
 
-        messageTextScrollPane = new JScrollPane(messageTextWrapPanel);
+        JScrollPane messageTextScrollPane = new JScrollPane(messageTextWrapPanel);
         centerPanel.add(messageTextScrollPane, "span 3, h 100%, w 100%");
     }
 
@@ -207,6 +201,31 @@ public class RequesterGui extends JFrame {
 
     public String getMessagesLog() {
         return messageTextPane.getText();
+    }
+
+    public String getKeySetting() {
+        return keySettingTextField.getText();
+    }
+
+    public void setGetAllSettingsActionComponents() {
+        refreshDynamicCanvas(() -> {
+        });
+    }
+
+    public void setGetSettingActionComponents() {
+        refreshDynamicCanvas(() -> {
+            JLabel keySettingTitleLabel = new JLabel("Key:");
+            dynamicCanvasPanel.add(keySettingTitleLabel, "w 110");
+            keySettingTextField = new JTextField();
+            dynamicCanvasPanel.add(keySettingTextField, "w 175, wrap");
+        });
+    }
+
+    private void refreshDynamicCanvas(Runnable runnable) {
+        dynamicCanvasPanel.removeAll();
+        runnable.run();
+        revalidate();
+        repaint();
     }
 
 }

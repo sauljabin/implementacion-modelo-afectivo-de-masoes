@@ -7,12 +7,15 @@
 package gui;
 
 import agent.AgentLogger;
+import jade.content.AgentAction;
+import jade.content.onto.Ontology;
 import jade.core.AID;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
 import ontology.OntologyAssistant;
 import ontology.settings.GetAllSettings;
+import ontology.settings.GetSetting;
 import ontology.settings.SettingsOntology;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +59,7 @@ public class RequesterGuiAgent extends GuiAgent {
                     sendMessage();
                     break;
                 case CHANGE_ACTION:
+                    changeAction();
                     break;
                 case SAVE_MESSAGE_LOGS:
                     saveMessageLogs();
@@ -68,6 +72,14 @@ public class RequesterGuiAgent extends GuiAgent {
             }
         } catch (Exception e) {
             logger.exception(this, e);
+        }
+    }
+
+    private void changeAction() {
+        if (requesterGui.getSelectedAction().equals(RequesterGuiAction.GET_ALL_SETTINGS)) {
+            requesterGui.setGetAllSettingsActionComponents();
+        } else if (requesterGui.getSelectedAction().equals(RequesterGuiAction.GET_SETTING)) {
+            requesterGui.setGetSettingActionComponents();
         }
     }
 
@@ -89,13 +101,20 @@ public class RequesterGuiAgent extends GuiAgent {
     }
 
     private void sendMessage() {
-        AID receiver = getAID(requesterGui.getReceiverAgentName());
-        GetAllSettings agentAction = new GetAllSettings();
-        SettingsOntology ontology = SettingsOntology.getInstance();
+        AgentAction agentAction = null;
+        Ontology ontology = null;
 
+        if (requesterGui.getSelectedAction().equals(RequesterGuiAction.GET_ALL_SETTINGS)) {
+            agentAction = new GetAllSettings();
+            ontology = SettingsOntology.getInstance();
+        } else if (requesterGui.getSelectedAction().equals(RequesterGuiAction.GET_SETTING)) {
+            agentAction = new GetSetting(requesterGui.getKeySetting());
+            ontology = SettingsOntology.getInstance();
+        }
+
+        AID receiver = getAID(requesterGui.getReceiverAgentName());
         OntologyAssistant ontologyAssistant = new OntologyAssistant(this, ontology);
         ACLMessage requestAction = ontologyAssistant.createRequestAction(receiver, agentAction);
-
         requesterGui.logMessage(requestAction);
         send(requestAction);
     }
