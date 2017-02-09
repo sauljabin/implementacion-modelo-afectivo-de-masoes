@@ -23,7 +23,7 @@ import java.util.List;
 
 public class RequesterGui extends JFrame {
 
-    private static final int CONVERSATIONS_CACHE = 10;
+    private static final int CONVERSATIONS_CACHE = 100;
     private JPanel westPanel;
     private JPanel centerPanel;
     private JLabel senderAgentLabel;
