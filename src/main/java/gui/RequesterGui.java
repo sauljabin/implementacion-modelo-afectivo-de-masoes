@@ -59,7 +59,10 @@ public class RequesterGui extends JFrame {
                 new Color(250, 10, 255),
                 new Color(0, 200, 100),
                 new Color(255, 110, 40),
-                new Color(255, 15, 101)
+                new Color(255, 107, 173),
+                new Color(178, 91, 255),
+                new Color(32, 195, 255),
+                new Color(190, 106, 31)
         );
         colorIterator = colors.iterator();
         conversations = new LinkedHashMap<>();
