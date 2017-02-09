@@ -11,7 +11,6 @@ import application.ArgumentType;
 import environment.AgentParameter;
 import environment.Environment;
 import environment.EnvironmentFactory;
-import gui.RequesterGuiAgent;
 import jade.JadeSettings;
 import org.junit.Before;
 import org.junit.Test;
@@ -94,24 +93,6 @@ public class EnvironmentOptionTest {
     }
 
     @Test
-    public void shouldAddGuiAgent() {
-        AgentParameter expectedAgentParameter = new AgentParameter("requester", RequesterGuiAgent.class);
-        doReturn(new ArrayList<>()).when(environmentMock).getAgentParameters();
-        doReturn("true").when(jadeSettingsMock).get(JadeSettings.GUI);
-        environmentOption.exec();
-        verify(environmentMock).add(refEq(expectedAgentParameter));
-    }
-
-    @Test
-    public void shouldNotAddGuiAgentWhenJadeGuiIsFalse() {
-        AgentParameter expectedAgentParameter = new AgentParameter("requester", RequesterGuiAgent.class);
-        doReturn(new ArrayList<>()).when(environmentMock).getAgentParameters();
-        doReturn("false").when(jadeSettingsMock).get(JadeSettings.GUI);
-        environmentOption.exec();
-        verify(environmentMock, never()).add(refEq(expectedAgentParameter));
-    }
-
-    @Test
     public void shouldNotAddSettingsAgentWhenHaveOne() {
         AgentParameter agentParameter = new AgentParameter("settings", SettingsAgent.class);
         ArrayList<AgentParameter> agents = new ArrayList<>();
@@ -119,29 +100,6 @@ public class EnvironmentOptionTest {
         doReturn(agents).when(environmentMock).getAgentParameters();
         environmentOption.exec();
         verify(environmentMock, never()).add(refEq(agentParameter));
-    }
-
-    @Test
-    public void shouldNotAddGuiAgentWhenHaveOne() {
-        AgentParameter agentParameter = new AgentParameter("requester", RequesterGuiAgent.class);
-        ArrayList<AgentParameter> agents = new ArrayList<>();
-        agents.add(agentParameter);
-        doReturn(agents).when(environmentMock).getAgentParameters();
-        doReturn("true").when(jadeSettingsMock).get(JadeSettings.GUI);
-        environmentOption.exec();
-        verify(environmentMock, never()).add(refEq(agentParameter));
-    }
-
-    @Test
-    public void shouldNotAddGuiAgentAgentWhenHaveOneAndJadeGuiIsFalse() {
-        AgentParameter agentParameter = new AgentParameter("requester", RequesterGuiAgent.class);
-        ArrayList<AgentParameter> agents = new ArrayList<>();
-        agents.add(agentParameter);
-        doReturn(agents).when(environmentMock).getAgentParameters();
-        doReturn("false").when(jadeSettingsMock).get(JadeSettings.GUI);
-        environmentOption.exec();
-        verify(environmentMock, never()).add(refEq(agentParameter));
-        verify(environmentMock).remove(refEq(agentParameter));
     }
 
 }

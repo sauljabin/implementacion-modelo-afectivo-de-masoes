@@ -12,7 +12,6 @@ import application.ArgumentType;
 import environment.AgentParameter;
 import environment.Environment;
 import environment.EnvironmentFactory;
-import gui.RequesterGuiAgent;
 import jade.JadeSettings;
 import settings.SettingsAgent;
 
@@ -65,10 +64,8 @@ public class EnvironmentOption extends ApplicationOption {
     @Override
     public void exec() {
         applicationSettings.set(ApplicationSettings.MASOES_ENV, getValue());
-
         Environment environment = environmentFactory.createEnvironment(getValue());
         processEnvironment(environment);
-
         jadeSettings.set(JadeSettings.AGENTS, environment.toJadeParameter());
     }
 
@@ -77,31 +74,12 @@ public class EnvironmentOption extends ApplicationOption {
         if (!settingAgent.isPresent()) {
             environment.add(new AgentParameter("settings", SettingsAgent.class));
         }
-
-        Optional<AgentParameter> requesterAgent = findRequesterAgent(environment.getAgentParameters());
-        if (!requesterAgent.isPresent() && isJadeGui()) {
-            environment.add(new AgentParameter("requester", RequesterGuiAgent.class));
-        }
-
-        if (requesterAgent.isPresent() && !isJadeGui()) {
-            environment.remove(requesterAgent.get());
-        }
     }
 
     private Optional<AgentParameter> findSettingAgent(List<AgentParameter> agentParameterList) {
         return agentParameterList.stream().filter(
                 agentParameter -> agentParameter.getAgentClass().equals(SettingsAgent.class)
         ).findFirst();
-    }
-
-    private Optional<AgentParameter> findRequesterAgent(List<AgentParameter> agentParameterList) {
-        return agentParameterList.stream().filter(
-                agentInfo -> agentInfo.getAgentClass().equals(RequesterGuiAgent.class)
-        ).findFirst();
-    }
-
-    private boolean isJadeGui() {
-        return Boolean.valueOf(jadeSettings.get(JadeSettings.GUI));
     }
 
 }
