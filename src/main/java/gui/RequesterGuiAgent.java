@@ -16,6 +16,11 @@ import ontology.settings.GetAllSettings;
 import ontology.settings.SettingsOntology;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class RequesterGuiAgent extends GuiAgent {
 
     private AgentLogger logger;
@@ -53,9 +58,10 @@ public class RequesterGuiAgent extends GuiAgent {
                 case CHANGE_ACTION:
                     break;
                 case SAVE_MESSAGE_LOGS:
+                    saveMessageLogs();
                     break;
                 case CLEAR_MESSAGE_LOGS:
-                    clearMessageLogs();
+                    clearMessagesLog();
                     break;
                 default:
                     break;
@@ -65,8 +71,21 @@ public class RequesterGuiAgent extends GuiAgent {
         }
     }
 
-    private void clearMessageLogs() {
-        requesterGui.clearMessageLogs();
+    private void saveMessageLogs() throws IOException {
+        String fileNameFormat = "messages%s.log";
+        File file = new File(String.format(fileNameFormat, ""));
+
+        int sequence = 1;
+        while (file.exists()) {
+            file = new File(String.format(fileNameFormat, sequence));
+            sequence++;
+        }
+
+        Files.write(Paths.get(file.getPath()), requesterGui.getMessagesLog().getBytes());
+    }
+
+    private void clearMessagesLog() {
+        requesterGui.clearMessagesLog();
     }
 
     private void sendMessage() {

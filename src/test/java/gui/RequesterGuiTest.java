@@ -60,8 +60,8 @@ public class RequesterGuiTest {
 
         requesterGui = new RequesterGui();
         setFieldValue(requesterGui, "sendRequestButton", sendRequestButtonMock);
-        setFieldValue(requesterGui, "saveMessageLogsButton", saveMessageLogsButtonMock);
-        setFieldValue(requesterGui, "clearMessageLogsButton", clearMessageLogsButtonMock);
+        setFieldValue(requesterGui, "saveMessagesLogButton", saveMessageLogsButtonMock);
+        setFieldValue(requesterGui, "clearMessagesLogButton", clearMessageLogsButtonMock);
         setFieldValue(requesterGui, "senderAgentLabel", senderAgentLabelMock);
         setFieldValue(requesterGui, "actionsComboBox", actionsComboBoxMock);
         setFieldValue(requesterGui, "receiverAgentTextField", receiverAgentTextFieldMock);
@@ -144,8 +144,14 @@ public class RequesterGuiTest {
 
     @Test
     public void shouldClearLogMessage() {
-        requesterGui.clearMessageLogs();
+        requesterGui.clearMessagesLog();
         verify(messageTextPaneMock).setText("");
+    }
+
+    @Test
+    public void shouldGetLogMessage() {
+        requesterGui.getMessagesLog();
+        verify(messageTextPaneMock).getText();
     }
 
     @Test
@@ -161,4 +167,5 @@ public class RequesterGuiTest {
         ACLMessage messageMock = mock(ACLMessage.class);
         requesterGui.logMessage(messageMock);
     }
+
 }

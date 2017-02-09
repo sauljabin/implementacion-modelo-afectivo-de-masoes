@@ -127,7 +127,7 @@ public class RequesterGuiAgentTest {
     public void shouldClearMessageLogsInWindows() {
         GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.CLEAR_MESSAGE_LOGS.getInt());
         requesterGuiAgentSpy.onGuiEvent(guiEvent);
-        verify(requesterGuiMock).clearMessageLogs();
+        verify(requesterGuiMock).clearMessagesLog();
     }
 
     @Test

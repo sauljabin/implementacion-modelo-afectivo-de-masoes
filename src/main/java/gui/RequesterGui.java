@@ -40,8 +40,8 @@ public class RequesterGui extends JFrame {
     private List<Color> colors;
     private Iterator<Color> colorIterator;
     private LinkedHashMap<String, Color> conversations;
-    private JButton saveMessageLogsButton;
-    private JButton clearMessageLogsButton;
+    private JButton saveMessagesLogButton;
+    private JButton clearMessagesLogButton;
     private JLabel messageTextTitleLabel;
 
     public RequesterGui() {
@@ -122,13 +122,13 @@ public class RequesterGui extends JFrame {
         messageTextTitleLabel = new JLabel("Messages:");
         centerPanel.add(messageTextTitleLabel, "w 100%");
 
-        saveMessageLogsButton = new JButton("Save");
-        saveMessageLogsButton.setActionCommand(RequesterGuiEvent.SAVE_MESSAGE_LOGS.toString());
-        centerPanel.add(saveMessageLogsButton);
+        saveMessagesLogButton = new JButton("Save");
+        saveMessagesLogButton.setActionCommand(RequesterGuiEvent.SAVE_MESSAGE_LOGS.toString());
+        centerPanel.add(saveMessagesLogButton);
 
-        clearMessageLogsButton = new JButton("Clear");
-        clearMessageLogsButton.setActionCommand(RequesterGuiEvent.CLEAR_MESSAGE_LOGS.toString());
-        centerPanel.add(clearMessageLogsButton, "wrap");
+        clearMessagesLogButton = new JButton("Clear");
+        clearMessagesLogButton.setActionCommand(RequesterGuiEvent.CLEAR_MESSAGE_LOGS.toString());
+        centerPanel.add(clearMessagesLogButton, "wrap");
 
         messageTextPane = new JTextPane();
         messageTextPane.setEditable(false);
@@ -150,8 +150,8 @@ public class RequesterGui extends JFrame {
     public void addActionListener(ActionListener actionListener) {
         sendRequestButton.addActionListener(actionListener);
         actionsComboBox.addActionListener(actionListener);
-        saveMessageLogsButton.addActionListener(actionListener);
-        clearMessageLogsButton.addActionListener(actionListener);
+        saveMessagesLogButton.addActionListener(actionListener);
+        clearMessagesLogButton.addActionListener(actionListener);
     }
 
     public void setSenderAgentName(String name) {
@@ -196,8 +196,12 @@ public class RequesterGui extends JFrame {
         }
     }
 
-    public void clearMessageLogs() {
+    public void clearMessagesLog() {
         messageTextPane.setText("");
+    }
+
+    public String getMessagesLog() {
+        return messageTextPane.getText();
     }
 
 }
