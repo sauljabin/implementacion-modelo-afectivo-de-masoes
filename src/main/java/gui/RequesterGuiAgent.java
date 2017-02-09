@@ -14,6 +14,10 @@ import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
 import ontology.OntologyAssistant;
+import ontology.masoes.EvaluateStimulus;
+import ontology.masoes.GetEmotionalState;
+import ontology.masoes.MasoesOntology;
+import ontology.masoes.Stimulus;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.SettingsOntology;
@@ -103,8 +107,10 @@ public class RequesterGuiAgent extends GuiAgent {
             case REMOVE_BEHAVIOUR:
                 break;
             case GET_EMOTIONAL_STATE:
+                sendOntologyMessage(aid, MasoesOntology.getInstance(), new GetEmotionalState());
                 break;
             case EVALUATE_STIMULUS:
+                sendOntologyMessage(aid, MasoesOntology.getInstance(), new EvaluateStimulus(new Stimulus()));
                 break;
             case SEND_SIMPLE_CONTENT:
                 ACLMessage message = new MessageBuilder()

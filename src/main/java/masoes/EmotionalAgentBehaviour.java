@@ -14,10 +14,10 @@ import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
 import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
-import ontology.masoes.AgentStatus;
-import ontology.masoes.EmotionStatus;
+import ontology.masoes.AgentState;
+import ontology.masoes.EmotionState;
 import ontology.masoes.EvaluateStimulus;
-import ontology.masoes.GetAgentStatus;
+import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
 
 import java.util.Arrays;
@@ -34,7 +34,7 @@ public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
     @Override
     public Predicate performAction(Action action) throws FailureException {
         Concept agentAction = action.getAction();
-        if (agentAction instanceof GetAgentStatus) {
+        if (agentAction instanceof GetEmotionalState) {
             return responseAgentStatus();
         } else {
             return responseEvaluateStimulus(action);
@@ -48,17 +48,17 @@ public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
     }
 
     private Predicate responseAgentStatus() {
-        AgentStatus agentStatus = new AgentStatus();
-        agentStatus.setEmotionName(emotionalAgent.getCurrentEmotion().getEmotionName());
-        agentStatus.setBehaviourName(emotionalAgent.getCurrentEmotionalBehaviour().getBehaviourName());
-        agentStatus.setAgent(emotionalAgent.getAID());
-        agentStatus.setEmotionStatus(new EmotionStatus(emotionalAgent.getEmotionalState().getActivation(), emotionalAgent.getEmotionalState().getSatisfaction()));
-        return agentStatus;
+        AgentState agentState = new AgentState();
+        agentState.setEmotionName(emotionalAgent.getCurrentEmotion().getEmotionName());
+        agentState.setBehaviourName(emotionalAgent.getCurrentEmotionalBehaviour().getBehaviourName());
+        agentState.setAgent(emotionalAgent.getAID());
+        agentState.setEmotionState(new EmotionState(emotionalAgent.getEmotionalState().getActivation(), emotionalAgent.getEmotionalState().getSatisfaction()));
+        return agentState;
     }
 
     @Override
     public boolean isValidAction(Action action) {
-        return Arrays.asList(GetAgentStatus.class, EvaluateStimulus.class)
+        return Arrays.asList(GetEmotionalState.class, EvaluateStimulus.class)
                 .contains(action.getAction().getClass());
     }
 

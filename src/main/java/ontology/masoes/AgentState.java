@@ -10,29 +10,29 @@ import jade.content.Predicate;
 import jade.core.AID;
 import util.ToStringBuilder;
 
-public class AgentStatus implements Predicate {
+public class AgentState implements Predicate {
 
     private AID agent;
     private String behaviourName;
     private String emotionName;
-    private EmotionStatus emotionStatus;
+    private EmotionState emotionState;
 
-    public AgentStatus() {
+    public AgentState() {
     }
 
-    public AgentStatus(AID agent, String behaviourName, String emotionName, EmotionStatus emotionStatus) {
+    public AgentState(AID agent, String behaviourName, String emotionName, EmotionState emotionState) {
         this.agent = agent;
         this.behaviourName = behaviourName;
         this.emotionName = emotionName;
-        this.emotionStatus = emotionStatus;
+        this.emotionState = emotionState;
     }
 
-    public EmotionStatus getEmotionStatus() {
-        return emotionStatus;
+    public EmotionState getEmotionState() {
+        return emotionState;
     }
 
-    public void setEmotionStatus(EmotionStatus emotionStatus) {
-        this.emotionStatus = emotionStatus;
+    public void setEmotionState(EmotionState emotionState) {
+        this.emotionState = emotionState;
     }
 
     public AID getAgent() {
@@ -65,7 +65,7 @@ public class AgentStatus implements Predicate {
                 .append("agent", agent)
                 .append("behaviourName", behaviourName)
                 .append("emotionName", emotionName)
-                .append("emotionStatus", emotionStatus)
+                .append("emotionState", emotionState)
                 .toString();
     }
 

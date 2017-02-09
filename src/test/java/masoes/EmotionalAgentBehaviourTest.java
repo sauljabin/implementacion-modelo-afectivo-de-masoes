@@ -16,10 +16,10 @@ import jade.lang.acl.MessageTemplate;
 import masoes.conductual.Emotion;
 import masoes.conductual.EmotionalState;
 import ontology.OntologyMatchExpression;
-import ontology.masoes.AgentStatus;
-import ontology.masoes.EmotionStatus;
+import ontology.masoes.AgentState;
+import ontology.masoes.EmotionState;
 import ontology.masoes.EvaluateStimulus;
-import ontology.masoes.GetAgentStatus;
+import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.Stimulus;
 import org.junit.Before;
@@ -73,23 +73,23 @@ public class EmotionalAgentBehaviourTest {
         EmotionalState emotionalState = new EmotionalState();
         doReturn(emotionalState).when(emotionalAgentMock).getEmotionalState();
 
-        GetAgentStatus getAgentStatus = new GetAgentStatus();
-        Action action = new Action(aid, getAgentStatus);
+        GetEmotionalState getEmotionalState = new GetEmotionalState();
+        Action action = new Action(aid, getEmotionalState);
 
         Predicate agentStatus = emotionalAgentBehaviour.performAction(action);
 
-        AgentStatus expectedAgentStatus = new AgentStatus();
-        expectedAgentStatus.setBehaviourName(BEHAVIOUR_NAME);
-        expectedAgentStatus.setEmotionName(EMOTION_NAME);
-        expectedAgentStatus.setAgent(aid);
-        expectedAgentStatus.setEmotionStatus(new EmotionStatus(emotionalState.getActivation(), emotionalState.getSatisfaction()));
+        AgentState expectedAgentState = new AgentState();
+        expectedAgentState.setBehaviourName(BEHAVIOUR_NAME);
+        expectedAgentState.setEmotionName(EMOTION_NAME);
+        expectedAgentState.setAgent(aid);
+        expectedAgentState.setEmotionState(new EmotionState(emotionalState.getActivation(), emotionalState.getSatisfaction()));
 
-        assertReflectionEquals(expectedAgentStatus, agentStatus);
+        assertReflectionEquals(expectedAgentState, agentStatus);
     }
 
     @Test
     public void shouldReturnValidGetAgentStatus() {
-        Action action = new Action(new AID(), new GetAgentStatus());
+        Action action = new Action(new AID(), new GetEmotionalState());
         assertTrue(emotionalAgentBehaviour.isValidAction(action));
     }
 

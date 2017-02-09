@@ -9,15 +9,15 @@ package ontology.masoes;
 import jade.content.Concept;
 import util.ToStringBuilder;
 
-public class EmotionStatus implements Concept {
+public class EmotionState implements Concept {
 
     private double activation;
     private double satisfaction;
 
-    public EmotionStatus() {
+    public EmotionState() {
     }
 
-    public EmotionStatus(double activation, double satisfaction) {
+    public EmotionState(double activation, double satisfaction) {
         this.activation = activation;
         this.satisfaction = satisfaction;
     }

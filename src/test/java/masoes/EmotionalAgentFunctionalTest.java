@@ -15,9 +15,9 @@ import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import ontology.OntologyAssistant;
-import ontology.masoes.AgentStatus;
+import ontology.masoes.AgentState;
 import ontology.masoes.EvaluateStimulus;
-import ontology.masoes.GetAgentStatus;
+import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.Stimulus;
 import org.junit.Before;
@@ -53,12 +53,12 @@ public class EmotionalAgentFunctionalTest extends FunctionalTest {
                 .receiver(dummyAgentAID)
                 .ontology(MasoesOntology.getInstance())
                 .build();
-        AgentStatus firstEmotionalResponse = testGetStatus(requestMessage);
+        AgentState firstEmotionalResponse = testGetStatus(requestMessage);
         testEvaluateStimulus(requestMessage);
-        AgentStatus secondEmotionalResponse = testGetStatus(requestMessage);
+        AgentState secondEmotionalResponse = testGetStatus(requestMessage);
         assertThat(secondEmotionalResponse.getAgent(), is(firstEmotionalResponse.getAgent()));
-        assertThat(secondEmotionalResponse.getEmotionStatus().getActivation(), is(not(firstEmotionalResponse.getEmotionStatus().getActivation())));
-        assertThat(secondEmotionalResponse.getEmotionStatus().getSatisfaction(), is(not(firstEmotionalResponse.getEmotionStatus().getSatisfaction())));
+        assertThat(secondEmotionalResponse.getEmotionState().getActivation(), is(not(firstEmotionalResponse.getEmotionState().getActivation())));
+        assertThat(secondEmotionalResponse.getEmotionState().getSatisfaction(), is(not(firstEmotionalResponse.getEmotionState().getSatisfaction())));
     }
 
     private Done testEvaluateStimulus(ACLMessage requestMessage) throws Exception {
@@ -74,17 +74,17 @@ public class EmotionalAgentFunctionalTest extends FunctionalTest {
         return (Done) contentElement;
     }
 
-    private AgentStatus testGetStatus(ACLMessage requestMessage) throws Exception {
-        GetAgentStatus getAgentStatus = new GetAgentStatus();
-        Action action = new Action(dummyAgentAID, getAgentStatus);
+    private AgentState testGetStatus(ACLMessage requestMessage) throws Exception {
+        GetEmotionalState getEmotionalState = new GetEmotionalState();
+        Action action = new Action(dummyAgentAID, getEmotionalState);
         contentManager.fillContent(requestMessage, action);
         sendMessage(requestMessage);
 
         ACLMessage response = testMessage(requestMessage);
 
         ContentElement contentElement = contentManager.extractContent(response);
-        assertThat(contentElement, is(instanceOf(AgentStatus.class)));
-        return (AgentStatus) contentElement;
+        assertThat(contentElement, is(instanceOf(AgentState.class)));
+        return (AgentState) contentElement;
     }
 
     private ACLMessage testMessage(ACLMessage requestMessage) {

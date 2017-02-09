@@ -9,7 +9,7 @@ package ontology.masoes;
 import jade.content.AgentAction;
 import util.ToStringBuilder;
 
-public class GetAgentStatus implements AgentAction {
+public class GetEmotionalState implements AgentAction {
 
     @Override
     public String toString() {

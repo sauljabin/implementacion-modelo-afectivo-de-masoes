@@ -9,8 +9,7 @@ package gui;
 import agent.AgentLogger;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
-import jade.content.lang.Codec;
-import jade.content.onto.OntologyException;
+import jade.content.onto.Ontology;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
@@ -18,6 +17,9 @@ import jade.domain.FIPANames;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
 import language.SemanticLanguage;
+import ontology.masoes.EvaluateStimulus;
+import ontology.masoes.GetEmotionalState;
+import ontology.masoes.MasoesOntology;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.SettingsOntology;
@@ -138,7 +140,7 @@ public class RequesterGuiAgentTest {
         GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
         requesterGuiAgentSpy.onGuiEvent(guiEvent);
 
-        ContentElement contentElement = testRequestAction();
+        ContentElement contentElement = testRequestAction(SettingsOntology.getInstance());
 
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(GetAllSettings.class)));
@@ -153,13 +155,39 @@ public class RequesterGuiAgentTest {
         GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
         requesterGuiAgentSpy.onGuiEvent(guiEvent);
 
-        ContentElement contentElement = testRequestAction();
+        ContentElement contentElement = testRequestAction(SettingsOntology.getInstance());
 
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(GetSetting.class)));
 
         GetSetting getSetting = (GetSetting) action.getAction();
         assertThat(getSetting.getKey(), is(expectedKey));
+    }
+
+    @Test
+    public void shouldSendGetEmotionalStateToAgent() throws Exception {
+        doReturn(RequesterGuiAction.GET_EMOTIONAL_STATE).when(requesterGuiMock).getSelectedAction();
+
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+
+        ContentElement contentElement = testRequestAction(MasoesOntology.getInstance());
+
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(GetEmotionalState.class)));
+    }
+
+    @Test
+    public void shouldSendEvaluateStimulusToAgent() throws Exception {
+        doReturn(RequesterGuiAction.EVALUATE_STIMULUS).when(requesterGuiMock).getSelectedAction();
+
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+
+        ContentElement contentElement = testRequestAction(MasoesOntology.getInstance());
+
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(EvaluateStimulus.class)));
     }
 
     @Test
@@ -183,8 +211,7 @@ public class RequesterGuiAgentTest {
         assertThat(message.getContent(), is(expectedContent));
     }
 
-    private ContentElement testRequestAction() throws Codec.CodecException, OntologyException {
-        SettingsOntology ontology = SettingsOntology.getInstance();
+    private ContentElement testRequestAction(Ontology ontology) throws Exception {
         SemanticLanguage language = SemanticLanguage.getInstance();
 
         verify(requesterGuiMock).logMessage(messageArgumentCaptor.capture());
