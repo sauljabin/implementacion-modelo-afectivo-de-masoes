@@ -10,6 +10,7 @@ import jade.lang.acl.ACLMessage;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -132,8 +133,12 @@ public class RequesterGui extends JFrame {
 
         messageTextPane = new JTextPane();
         messageTextPane.setEditable(false);
+        DefaultCaret caret = (DefaultCaret) messageTextPane.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
         messageTextWrapPanel = new JPanel(new BorderLayout());
         messageTextWrapPanel.add(messageTextPane);
+
         messageTextScrollPane = new JScrollPane(messageTextWrapPanel);
         centerPanel.add(messageTextScrollPane, "span 3, h 100%, w 100%");
     }
