@@ -16,6 +16,7 @@ import masoes.behavioural.BehaviouralComponent;
 import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
 import ontology.masoes.AgentState;
+import ontology.masoes.BehaviourState;
 import ontology.masoes.EmotionState;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
@@ -53,12 +54,17 @@ public class BasicEmotionalAgentBehaviour extends OntologyResponderBehaviour {
     }
 
     private Predicate responseAgentStatus() {
-        AgentState agentState = new AgentState();
-        agentState.setEmotionName(behaviouralComponent.getCurrentEmotion().getName());
-        agentState.setBehaviourName(behaviouralComponent.getCurrentEmotionalBehaviour().getBehaviourName());
-        agentState.setAgent(emotionalAgent.getAID());
-        agentState.setEmotionState(new EmotionState(behaviouralComponent.getEmotionalState().getActivation(), behaviouralComponent.getEmotionalState().getSatisfaction()));
-        return agentState;
+        EmotionState emotionState = new EmotionState();
+        emotionState.setName(behaviouralComponent.getCurrentEmotion().getName());
+        emotionState.setClassName(behaviouralComponent.getCurrentEmotion().getClass().getSimpleName());
+        emotionState.setActivation(behaviouralComponent.getEmotionalState().getActivation());
+        emotionState.setSatisfaction(behaviouralComponent.getEmotionalState().getSatisfaction());
+
+        BehaviourState behaviourState = new BehaviourState();
+        behaviourState.setName(behaviouralComponent.getCurrentEmotionalBehaviour().getName());
+        behaviourState.setClassName(behaviouralComponent.getCurrentEmotionalBehaviour().getClass().getSimpleName());
+
+        return new AgentState(emotionalAgent.getAID(), emotionState, behaviourState);
     }
 
     @Override

@@ -13,26 +13,16 @@ import util.ToStringBuilder;
 public class AgentState implements Predicate {
 
     private AID agent;
-    private String behaviourName;
-    private String emotionName;
     private EmotionState emotionState;
+    private BehaviourState behaviourState;
 
     public AgentState() {
     }
 
-    public AgentState(AID agent, String behaviourName, String emotionName, EmotionState emotionState) {
+    public AgentState(AID agent, EmotionState emotionState, BehaviourState behaviourState) {
         this.agent = agent;
-        this.behaviourName = behaviourName;
-        this.emotionName = emotionName;
         this.emotionState = emotionState;
-    }
-
-    public EmotionState getEmotionState() {
-        return emotionState;
-    }
-
-    public void setEmotionState(EmotionState emotionState) {
-        this.emotionState = emotionState;
+        this.behaviourState = behaviourState;
     }
 
     public AID getAgent() {
@@ -43,28 +33,27 @@ public class AgentState implements Predicate {
         this.agent = agent;
     }
 
-    public String getBehaviourName() {
-        return behaviourName;
+    public EmotionState getEmotionState() {
+        return emotionState;
     }
 
-    public void setBehaviourName(String behaviourName) {
-        this.behaviourName = behaviourName;
+    public void setEmotionState(EmotionState emotionState) {
+        this.emotionState = emotionState;
     }
 
-    public String getEmotionName() {
-        return emotionName;
+    public BehaviourState getBehaviourState() {
+        return behaviourState;
     }
 
-    public void setEmotionName(String emotionName) {
-        this.emotionName = emotionName;
+    public void setBehaviourState(BehaviourState behaviourState) {
+        this.behaviourState = behaviourState;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder()
                 .append("agent", agent)
-                .append("behaviourName", behaviourName)
-                .append("emotionName", emotionName)
+                .append("emotionState", emotionState)
                 .append("emotionState", emotionState)
                 .toString();
     }

@@ -9,37 +9,17 @@ package ontology.masoes;
 import jade.content.Concept;
 import util.ToStringBuilder;
 
-public class EmotionState implements Concept {
+public class BehaviourState implements Concept {
 
-    private double activation;
-    private double satisfaction;
     private String className;
     private String name;
 
-    public EmotionState() {
-    }
-
-    public EmotionState(String name, String className, double activation, double satisfaction) {
-        this.activation = activation;
-        this.satisfaction = satisfaction;
+    public BehaviourState(String name, String className) {
         this.className = className;
         this.name = name;
     }
 
-    public double getActivation() {
-        return activation;
-    }
-
-    public void setActivation(double activation) {
-        this.activation = activation;
-    }
-
-    public double getSatisfaction() {
-        return satisfaction;
-    }
-
-    public void setSatisfaction(double satisfaction) {
-        this.satisfaction = satisfaction;
+    public BehaviourState() {
     }
 
     public String getClassName() {
@@ -63,8 +43,6 @@ public class EmotionState implements Concept {
         return new ToStringBuilder()
                 .append("name", name)
                 .append("className", className)
-                .append("activation", activation)
-                .append("satisfaction", satisfaction)
                 .toString();
     }
 

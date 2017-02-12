@@ -33,7 +33,7 @@ public class MasoesOntologyTest {
     public void shouldInitializeElements() {
         assertThat(Arrays.asList(masoesOntology.getPredicateNames().toArray()), hasItems("AgentState"));
         assertThat(Arrays.asList(masoesOntology.getActionNames().toArray()), hasItems("EvaluateStimulus", "GetEmotionalState"));
-        assertThat(Arrays.asList(masoesOntology.getConceptNames().toArray()), hasItems("EmotionState", "Stimulus"));
+        assertThat(Arrays.asList(masoesOntology.getConceptNames().toArray()), hasItems("EmotionState", "Stimulus", "BehaviourState"));
     }
 
 }
