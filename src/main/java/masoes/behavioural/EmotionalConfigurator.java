@@ -6,15 +6,21 @@
 
 package masoes.behavioural;
 
+import alice.tuprolog.SolveInfo;
+import knowledge.KnowledgeBaseException;
 import ontology.masoes.Stimulus;
 import util.ToStringBuilder;
+
+// TODO: UNIT-TEST
 
 public class EmotionalConfigurator {
 
     private EmotionalState emotionalState;
     private EmotionalSpace emotionalSpace;
+    private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
 
-    public EmotionalConfigurator() {
+    public EmotionalConfigurator(BehaviouralKnowledgeBase behaviouralKnowledgeBase) {
+        this.behaviouralKnowledgeBase = behaviouralKnowledgeBase;
         emotionalState = new EmotionalState();
         emotionalSpace = new EmotionalSpace();
     }
@@ -31,8 +37,23 @@ public class EmotionalConfigurator {
         emotionalState = calculateEmotionalState(stimulus);
     }
 
-    protected EmotionalState calculateEmotionalState(Stimulus stimulus) {
-        return new EmotionalState();
+    private EmotionalState calculateEmotionalState(Stimulus stimulus) {
+        try {
+            String actorName = stimulus.getActor().getLocalName().toLowerCase();
+            String actionName = stimulus.getActionName().toLowerCase();
+
+            SolveInfo solveActivation = behaviouralKnowledgeBase.solve(String.format("activation(%s,%s,X).", actorName, actionName));
+            SolveInfo solveSatisfaction = behaviouralKnowledgeBase.solve(String.format("satisfaction(%s,%s,X).", actorName, actionName));
+
+            if (solveActivation.isSuccess() && solveSatisfaction.isSuccess()) {
+                double activation = Double.parseDouble(solveActivation.getTerm("X").toString());
+                double satisfaction = Double.parseDouble(solveSatisfaction.getTerm("X").toString());
+                return new EmotionalState(activation, satisfaction);
+            }
+            return new EmotionalState();
+        } catch (Exception e) {
+            throw new KnowledgeBaseException(e);
+        }
     }
 
     @Override

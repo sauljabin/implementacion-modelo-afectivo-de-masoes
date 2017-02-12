@@ -6,9 +6,9 @@
 
 package environment.dummy;
 
-import jade.core.behaviours.Behaviour;
+import masoes.CognitiveBehaviour;
 
-public class DummyCognitiveBehaviour extends Behaviour {
+public class DummyCognitiveBehaviour extends CognitiveBehaviour {
 
     @Override
     public void action() {
@@ -18,6 +18,11 @@ public class DummyCognitiveBehaviour extends Behaviour {
     @Override
     public boolean done() {
         return false;
+    }
+
+    @Override
+    public String getName() {
+        return "dummyCognitive";
     }
 
 }

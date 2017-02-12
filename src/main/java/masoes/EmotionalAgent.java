@@ -8,93 +8,47 @@ package masoes;
 
 import agent.AgentLogger;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
-import masoes.behavioural.BehaviourManager;
-import masoes.behavioural.Emotion;
-import masoes.behavioural.EmotionalConfigurator;
-import masoes.behavioural.EmotionalState;
-import ontology.masoes.Stimulus;
+import masoes.behavioural.BehaviouralComponent;
 import org.slf4j.LoggerFactory;
 import util.ToStringBuilder;
 
-public class EmotionalAgent extends Agent {
+// TODO: UNIT-TEST
 
-    private BehaviourManager behaviourManager;
-    private EmotionalConfigurator emotionalConfigurator;
+public abstract class EmotionalAgent extends Agent {
+
     private AgentLogger logger;
-
-    private Behaviour cognitiveBehaviour;
-    private Behaviour imitativeBehaviour;
-    private Behaviour reactiveBehaviour;
+    private BehaviouralComponent behaviouralComponent;
 
     public EmotionalAgent() {
         logger = new AgentLogger(LoggerFactory.getLogger(EmotionalAgent.class));
-        behaviourManager = new BehaviourManager();
-        emotionalConfigurator = new EmotionalConfigurator();
     }
 
     @Override
     protected final void setup() {
         setUp();
-        addBehaviour(new EmotionalAgentBehaviour(this));
-        behaviourManager.updateBehaviour(this);
-    }
-
-    public Emotion getCurrentEmotion() {
-        return emotionalConfigurator.getEmotion();
-    }
-
-    public Behaviour getCurrentEmotionalBehaviour() {
-        return behaviourManager.getBehaviour();
-    }
-
-    public EmotionalState getEmotionalState() {
-        return emotionalConfigurator.getEmotionalState();
-    }
-
-    public void evaluateStimulus(Stimulus stimulus) {
-        logger.agent(this);
-        emotionalConfigurator.updateEmotion(stimulus);
-        behaviourManager.updateBehaviour(this);
-        logger.agent(this);
-    }
-
-    public Behaviour getCognitiveBehaviour() {
-        return cognitiveBehaviour;
-    }
-
-    public void setCognitiveBehaviour(Behaviour cognitiveBehaviour) {
-        this.cognitiveBehaviour = cognitiveBehaviour;
-    }
-
-    public Behaviour getImitativeBehaviour() {
-        return imitativeBehaviour;
-    }
-
-    public void setImitativeBehaviour(Behaviour imitativeBehaviour) {
-        this.imitativeBehaviour = imitativeBehaviour;
-    }
-
-    public Behaviour getReactiveBehaviour() {
-        return reactiveBehaviour;
-    }
-
-    public void setReactiveBehaviour(Behaviour reactiveBehaviour) {
-        this.reactiveBehaviour = reactiveBehaviour;
-    }
-
-    protected void setUp() {
-
+        behaviouralComponent = new BehaviouralComponent(this);
+        addBehaviour(new BasicEmotionalAgentBehaviour(this));
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder()
                 .append("aid", getAID())
-                .append("behaviour", getCurrentEmotionalBehaviour())
-                .append("emotion", getCurrentEmotion())
-                .append("emotionalState", getEmotionalState())
                 .toString();
     }
+
+    public BehaviouralComponent getBehaviouralComponent() {
+        return behaviouralComponent;
+    }
+
+    public abstract void setUp();
+
+    public abstract String getKnowledgePath();
+
+    public abstract ImitativeBehaviour getImitativeBehaviour();
+
+    public abstract ReactiveBehaviour getReactiveBehaviour();
+
+    public abstract CognitiveBehaviour getCognitiveBehaviour();
 
 }

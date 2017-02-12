@@ -6,9 +6,9 @@
 
 package environment.dummy;
 
-import jade.core.behaviours.Behaviour;
+import masoes.ReactiveBehaviour;
 
-public class DummyReactiveBehaviour extends Behaviour {
+public class DummyReactiveBehaviour extends ReactiveBehaviour {
 
     @Override
     public void action() {
@@ -18,6 +18,11 @@ public class DummyReactiveBehaviour extends Behaviour {
     @Override
     public boolean done() {
         return false;
+    }
+
+    @Override
+    public String getName() {
+        return "dummyReactive";
     }
 
 }

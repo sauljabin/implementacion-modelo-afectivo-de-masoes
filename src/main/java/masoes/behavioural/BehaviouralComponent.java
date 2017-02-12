@@ -8,18 +8,39 @@ package masoes.behavioural;
 
 // TODO: UNIT-TEST
 
-import alice.tuprolog.Prolog;
+import masoes.EmotionalAgent;
+import masoes.EmotionalBehaviour;
+import ontology.masoes.Stimulus;
 
 public class BehaviouralComponent {
 
     private BehaviourManager behaviourManager;
     private EmotionalConfigurator emotionalConfigurator;
-    private KnowledgeBase knowledgeBase;
+    private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
+    private EmotionalAgent emotionalAgent;
 
-    private Prolog prolog;
+    public BehaviouralComponent(EmotionalAgent emotionalAgent) {
+        this.emotionalAgent = emotionalAgent;
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(emotionalAgent);
+        emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
+        behaviourManager = new BehaviourManager(emotionalAgent, emotionalConfigurator, behaviouralKnowledgeBase);
+    }
 
-    public BehaviouralComponent() {
-        prolog = new Prolog();
+    public Emotion getCurrentEmotion() {
+        return emotionalConfigurator.getEmotion();
+    }
+
+    public EmotionalBehaviour getCurrentEmotionalBehaviour() {
+        return behaviourManager.getBehaviour();
+    }
+
+    public EmotionalState getEmotionalState() {
+        return emotionalConfigurator.getEmotionalState();
+    }
+
+    public void evaluateStimulus(Stimulus stimulus) {
+        emotionalConfigurator.updateEmotion(stimulus);
+        behaviourManager.updateBehaviour();
     }
 
 }

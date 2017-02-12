@@ -61,18 +61,18 @@ public class RequesterGuiAgentTest {
     private RequesterGui requesterGuiMock;
     private AID senderAgentAID;
     private AID receiverAgentAID;
-    private AgentLogger logguerMock;
+    private AgentLogger logger;
 
     @Before
     public void setUp() throws Exception {
         messageArgumentCaptor = ArgumentCaptor.forClass(ACLMessage.class);
 
         requesterGuiMock = mock(RequesterGui.class);
-        logguerMock = mock(AgentLogger.class);
+        logger = mock(AgentLogger.class);
 
         requesterGuiAgent = new RequesterGuiAgent();
         setFieldValue(requesterGuiAgent, "requesterGui", requesterGuiMock);
-        setFieldValue(requesterGuiAgent, "logger", logguerMock);
+        setFieldValue(requesterGuiAgent, "logger", logger);
 
         requesterGuiAgentSpy = spy(requesterGuiAgent);
 
@@ -126,7 +126,7 @@ public class RequesterGuiAgentTest {
 
         GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
         requesterGuiAgentSpy.onGuiEvent(guiEvent);
-        verify(logguerMock).exception(requesterGuiAgentSpy, expectedException);
+        verify(logger).exception(requesterGuiAgentSpy, expectedException);
     }
 
     @Test
@@ -183,6 +183,9 @@ public class RequesterGuiAgentTest {
     @Test
     public void shouldSendEvaluateStimulusToAgent() throws Exception {
         doReturn(RequesterGuiAction.EVALUATE_STIMULUS).when(requesterGuiMock).getSelectedAction();
+        doReturn(RECEIVER_AGENT_NAME).when(requesterGuiMock).getActorName();
+        String expectedActionName = "expectedActionName";
+        doReturn(expectedActionName).when(requesterGuiMock).getActionName();
 
         GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
         requesterGuiAgentSpy.onGuiEvent(guiEvent);
@@ -191,6 +194,10 @@ public class RequesterGuiAgentTest {
 
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(EvaluateStimulus.class)));
+
+        EvaluateStimulus evaluateStimulus = (EvaluateStimulus) action.getAction();
+        assertThat(evaluateStimulus.getStimulus().getActor().getName(), is(RECEIVER_AGENT_NAME));
+        assertThat(evaluateStimulus.getStimulus().getActionName(), is(expectedActionName));
     }
 
     @Test

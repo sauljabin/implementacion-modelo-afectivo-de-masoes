@@ -14,12 +14,12 @@ import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
-import ontology.OntologyAssistant;
 import ontology.masoes.AgentState;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.Stimulus;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import test.FunctionalTest;
@@ -27,7 +27,6 @@ import util.MessageBuilder;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
@@ -35,7 +34,6 @@ public class EmotionalAgentFunctionalTest extends FunctionalTest {
 
     private AID dummyAgentAID;
     private ContentManager contentManager;
-    private OntologyAssistant ontologyAssistant;
 
     @Before
     public void setUp() {
@@ -43,6 +41,11 @@ public class EmotionalAgentFunctionalTest extends FunctionalTest {
         contentManager = new ContentManager();
         contentManager.registerOntology(MasoesOntology.getInstance());
         contentManager.registerLanguage(new SLCodec());
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        killAgent(dummyAgentAID);
     }
 
     @Test
@@ -53,16 +56,31 @@ public class EmotionalAgentFunctionalTest extends FunctionalTest {
                 .receiver(dummyAgentAID)
                 .ontology(MasoesOntology.getInstance())
                 .build();
+        testEvaluateStimulus(requestMessage, "bye");
         AgentState firstEmotionalResponse = testGetStatus(requestMessage);
-        testEvaluateStimulus(requestMessage);
+        assertThat(firstEmotionalResponse.getEmotionName(), is("depression"));
+        testEvaluateStimulus(requestMessage, "hello");
         AgentState secondEmotionalResponse = testGetStatus(requestMessage);
         assertThat(secondEmotionalResponse.getAgent(), is(firstEmotionalResponse.getAgent()));
-        assertThat(secondEmotionalResponse.getEmotionState().getActivation(), is(not(firstEmotionalResponse.getEmotionState().getActivation())));
-        assertThat(secondEmotionalResponse.getEmotionState().getSatisfaction(), is(not(firstEmotionalResponse.getEmotionState().getSatisfaction())));
+        assertThat(secondEmotionalResponse.getEmotionName(), is("happiness"));
     }
 
-    private Done testEvaluateStimulus(ACLMessage requestMessage) throws Exception {
-        EvaluateStimulus evaluateStimulus = new EvaluateStimulus(new Stimulus());
+    @Test
+    public void shouldGetRandomValueFromGetStatus() throws Exception {
+        ACLMessage requestMessage = new MessageBuilder().request()
+                .fipaSL()
+                .fipaRequest()
+                .receiver(dummyAgentAID)
+                .ontology(MasoesOntology.getInstance())
+                .build();
+        testGetStatus(requestMessage);
+    }
+
+    private Done testEvaluateStimulus(ACLMessage requestMessage, String actionName) throws Exception {
+        Stimulus stimulus = new Stimulus();
+        stimulus.setActor(getAID());
+        stimulus.setActionName(actionName);
+        EvaluateStimulus evaluateStimulus = new EvaluateStimulus(stimulus);
         Action action = new Action(dummyAgentAID, evaluateStimulus);
         contentManager.fillContent(requestMessage, action);
         sendMessage(requestMessage);

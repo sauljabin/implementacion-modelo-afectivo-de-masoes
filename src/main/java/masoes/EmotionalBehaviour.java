@@ -4,11 +4,12 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.behavioural;
+package masoes;
 
 // TODO: UNIT-TEST
 
 import jade.core.behaviours.Behaviour;
+import masoes.behavioural.BehaviourType;
 
 public abstract class EmotionalBehaviour extends Behaviour {
 

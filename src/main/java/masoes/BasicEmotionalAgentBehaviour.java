@@ -12,6 +12,7 @@ import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
+import masoes.behavioural.BehaviouralComponent;
 import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
 import ontology.masoes.AgentState;
@@ -22,13 +23,17 @@ import ontology.masoes.MasoesOntology;
 
 import java.util.Arrays;
 
-public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
+// TODO: UNIT-TEST
+
+public class BasicEmotionalAgentBehaviour extends OntologyResponderBehaviour {
 
     private EmotionalAgent emotionalAgent;
+    private BehaviouralComponent behaviouralComponent;
 
-    public EmotionalAgentBehaviour(EmotionalAgent emotionalAgent) {
+    public BasicEmotionalAgentBehaviour(EmotionalAgent emotionalAgent) {
         super(emotionalAgent, new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), MasoesOntology.getInstance());
         this.emotionalAgent = emotionalAgent;
+        behaviouralComponent = emotionalAgent.getBehaviouralComponent();
     }
 
     @Override
@@ -43,16 +48,16 @@ public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
 
     private Predicate responseEvaluateStimulus(Action action) {
         EvaluateStimulus agentAction = (EvaluateStimulus) action.getAction();
-        emotionalAgent.evaluateStimulus(agentAction.getStimulus());
+        behaviouralComponent.evaluateStimulus(agentAction.getStimulus());
         return new Done(action);
     }
 
     private Predicate responseAgentStatus() {
         AgentState agentState = new AgentState();
-        agentState.setEmotionName(emotionalAgent.getCurrentEmotion().getName());
-        agentState.setBehaviourName(emotionalAgent.getCurrentEmotionalBehaviour().getBehaviourName());
+        agentState.setEmotionName(behaviouralComponent.getCurrentEmotion().getName());
+        agentState.setBehaviourName(behaviouralComponent.getCurrentEmotionalBehaviour().getBehaviourName());
         agentState.setAgent(emotionalAgent.getAID());
-        agentState.setEmotionState(new EmotionState(emotionalAgent.getEmotionalState().getActivation(), emotionalAgent.getEmotionalState().getSatisfaction()));
+        agentState.setEmotionState(new EmotionState(behaviouralComponent.getEmotionalState().getActivation(), behaviouralComponent.getEmotionalState().getSatisfaction()));
         return agentState;
     }
 

@@ -117,7 +117,10 @@ public class RequesterGuiAgent extends GuiAgent {
                 sendOntologyMessage(aid, MasoesOntology.getInstance(), new GetEmotionalState());
                 break;
             case EVALUATE_STIMULUS:
-                sendOntologyMessage(aid, MasoesOntology.getInstance(), new EvaluateStimulus(new Stimulus()));
+                Stimulus stimulus = new Stimulus();
+                stimulus.setActor(getAID(requesterGui.getActorName()));
+                stimulus.setActionName(requesterGui.getActionName());
+                sendOntologyMessage(aid, MasoesOntology.getInstance(), new EvaluateStimulus(stimulus));
                 break;
             case SEND_SIMPLE_CONTENT:
                 ACLMessage message = new MessageBuilder()

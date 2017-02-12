@@ -6,9 +6,9 @@
 
 package environment.dummy;
 
-import jade.core.behaviours.Behaviour;
+import masoes.ImitativeBehaviour;
 
-public class DummyImitativeBehaviour extends Behaviour {
+public class DummyImitativeBehaviour extends ImitativeBehaviour {
 
     @Override
     public void action() {
@@ -18,6 +18,11 @@ public class DummyImitativeBehaviour extends Behaviour {
     @Override
     public boolean done() {
         return false;
+    }
+
+    @Override
+    public String getName() {
+        return "dummyImitative";
     }
 
 }
