@@ -20,12 +20,12 @@ public class Environment {
     private String name;
 
     public Environment(String name) {
+        this();
         this.name = name;
-        agentParameters = new ArrayList<>();
     }
 
     public Environment() {
-        this(null);
+        agentParameters = new ArrayList<>();
     }
 
     public List<AgentParameter> getAgentParameters() {
