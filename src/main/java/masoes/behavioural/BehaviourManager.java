@@ -45,13 +45,8 @@ public class BehaviourManager {
     }
 
     public BehaviourType getBehaviourTypeAssociated(Emotion emotion) {
-        if (emotion == null) {
-            return BehaviourType.IMITATIVE;
-        }
-
-        String emotionName = emotion.getName().toLowerCase();
-
         try {
+            String emotionName = emotion.getName().toLowerCase();
             SolveInfo solve = behaviouralKnowledgeBase.solve(String.format("behaviourPriority(%s,X).", emotionName));
             if (solve.isSuccess()) {
                 String priority = solve.getTerm("X").toString().toUpperCase();
