@@ -58,11 +58,11 @@ public class EmotionalAgentFunctionalTest extends FunctionalTest {
                 .build();
         testEvaluateStimulus(requestMessage, "bye");
         AgentState firstEmotionalResponse = testGetStatus(requestMessage);
-        assertThat(firstEmotionalResponse.getEmotionName(), is("depression"));
+        assertThat(firstEmotionalResponse.getEmotionState().getName(), is("depression"));
         testEvaluateStimulus(requestMessage, "hello");
         AgentState secondEmotionalResponse = testGetStatus(requestMessage);
         assertThat(secondEmotionalResponse.getAgent(), is(firstEmotionalResponse.getAgent()));
-        assertThat(secondEmotionalResponse.getEmotionName(), is("happiness"));
+        assertThat(secondEmotionalResponse.getEmotionState().getName(), is("happiness"));
     }
 
     @Test

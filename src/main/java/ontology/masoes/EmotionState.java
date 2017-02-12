@@ -11,19 +11,21 @@ import util.ToStringBuilder;
 
 public class EmotionState implements Concept {
 
+    private String name;
+    private String className;
+    private String type;
     private double activation;
     private double satisfaction;
-    private String className;
-    private String name;
 
     public EmotionState() {
     }
 
-    public EmotionState(String name, String className, double activation, double satisfaction) {
+    public EmotionState(String name, String className, String type, double activation, double satisfaction) {
+        this.name = name;
+        this.className = className;
+        this.type = type;
         this.activation = activation;
         this.satisfaction = satisfaction;
-        this.className = className;
-        this.name = name;
     }
 
     public double getActivation() {
@@ -58,11 +60,20 @@ public class EmotionState implements Concept {
         this.name = name;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder()
                 .append("name", name)
                 .append("className", className)
+                .append("type", type)
                 .append("activation", activation)
                 .append("satisfaction", satisfaction)
                 .toString();
