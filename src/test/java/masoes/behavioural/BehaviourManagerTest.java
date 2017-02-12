@@ -34,7 +34,7 @@ public class BehaviourManagerTest {
         behaviourMock = mock(Behaviour.class);
         emotionMock = mock(Emotion.class);
         doReturn(emotionMock).when(emotionalAgentMock).getCurrentEmotion();
-        doReturn(EmotionType.NEGATIVE_LOW).when(emotionMock).getEmotionType();
+        doReturn(EmotionType.NEGATIVE_LOW).when(emotionMock).getType();
         doReturn(behaviourMock).when(emotionalAgentMock).getCognitiveBehaviour();
     }
 
@@ -47,7 +47,7 @@ public class BehaviourManagerTest {
 
     @Test
     public void shouldUpdateCognitiveBehaviour() {
-        doReturn(EmotionType.NEGATIVE_LOW).when(emotionMock).getEmotionType();
+        doReturn(EmotionType.NEGATIVE_LOW).when(emotionMock).getType();
         doReturn(behaviourMock).when(emotionalAgentMock).getCognitiveBehaviour();
         behaviourManager.updateBehaviour(emotionalAgentMock);
         verify(emotionalAgentMock).getCognitiveBehaviour();
@@ -56,7 +56,7 @@ public class BehaviourManagerTest {
 
     @Test
     public void shouldUpdateImitativeBehaviour() {
-        doReturn(EmotionType.POSITIVE).when(emotionMock).getEmotionType();
+        doReturn(EmotionType.POSITIVE).when(emotionMock).getType();
         doReturn(behaviourMock).when(emotionalAgentMock).getImitativeBehaviour();
         behaviourManager.updateBehaviour(emotionalAgentMock);
         verify(emotionalAgentMock).getImitativeBehaviour();
@@ -65,7 +65,7 @@ public class BehaviourManagerTest {
 
     @Test
     public void shouldUpdateReactiveBehaviour() {
-        doReturn(EmotionType.NEGATIVE_HIGH).when(emotionMock).getEmotionType();
+        doReturn(EmotionType.NEGATIVE_HIGH).when(emotionMock).getType();
         doReturn(behaviourMock).when(emotionalAgentMock).getReactiveBehaviour();
         behaviourManager.updateBehaviour(emotionalAgentMock);
         verify(emotionalAgentMock).getReactiveBehaviour();

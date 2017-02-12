@@ -14,6 +14,11 @@ import masoes.behavioural.EmotionType;
 public class JoyEmotion extends Emotion {
 
     @Override
+    public String getName() {
+        return "joy";
+    }
+
+    @Override
     public Coordinate[] getCoordinates() {
         return new Coordinate[]{
                 new Coordinate(0, 0),
@@ -25,12 +30,12 @@ public class JoyEmotion extends Emotion {
     }
 
     @Override
-    public EmotionType getEmotionType() {
+    public EmotionType getType() {
         return EmotionType.POSITIVE;
     }
 
     @Override
-    public EmotionLevel getEmotionLevel() {
+    public EmotionLevel getLevel() {
         return EmotionLevel.INDIVIDUAL;
     }
 

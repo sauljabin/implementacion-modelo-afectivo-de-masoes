@@ -63,9 +63,9 @@ public class RejectionEmotionTest {
     public void shouldReturnCorrectConfiguration() {
         Polygon expectedPolygon = geometryFactory.createPolygon(coordinates);
         assertReflectionEquals(expectedPolygon.getCoordinates(), rejectionEmotion.getGeometry().getCoordinates());
-        assertThat(rejectionEmotion.getEmotionName(), is("RejectionEmotion"));
-        assertThat(rejectionEmotion.getEmotionLevel(), is(EmotionLevel.COLLECTIVE));
-        assertThat(rejectionEmotion.getEmotionType(), is(EmotionType.NEGATIVE_LOW));
+        assertThat(rejectionEmotion.getName(), is("rejection"));
+        assertThat(rejectionEmotion.getLevel(), is(EmotionLevel.COLLECTIVE));
+        assertThat(rejectionEmotion.getType(), is(EmotionType.NEGATIVE_LOW));
     }
 
 }

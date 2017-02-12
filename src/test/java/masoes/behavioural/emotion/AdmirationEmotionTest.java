@@ -64,9 +64,9 @@ public class AdmirationEmotionTest {
     public void shouldReturnCorrectConfiguration() {
         Polygon expectedPolygon = geometryFactory.createPolygon(coordinates);
         assertReflectionEquals(expectedPolygon.getCoordinates(), admirationEmotion.getGeometry().getCoordinates());
-        assertThat(admirationEmotion.getEmotionName(), is("AdmirationEmotion"));
-        assertThat(admirationEmotion.getEmotionLevel(), is(EmotionLevel.COLLECTIVE));
-        assertThat(admirationEmotion.getEmotionType(), is(EmotionType.POSITIVE));
+        assertThat(admirationEmotion.getName(), is("admiration"));
+        assertThat(admirationEmotion.getLevel(), is(EmotionLevel.COLLECTIVE));
+        assertThat(admirationEmotion.getType(), is(EmotionType.POSITIVE));
     }
 
 }

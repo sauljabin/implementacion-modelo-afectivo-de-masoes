@@ -24,7 +24,6 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 
 public class EmotionTest {
 
-    private static final String NAME = "name";
     private Coordinate[] coordinates;
     private Emotion emotionSpy;
 
@@ -49,12 +48,6 @@ public class EmotionTest {
     }
 
     @Test
-    public void shouldGetName() {
-        emotionSpy.setEmotionName(NAME);
-        assertThat(emotionSpy.getEmotionName(), is(NAME));
-    }
-
-    @Test
     public void shouldGetRandomPointInsideGeometry() {
         IntStream.range(0, 1000).forEach(i -> {
             Point pointA = emotionSpy.getRandomPoint();
@@ -69,17 +62,22 @@ public class EmotionTest {
     private Emotion createDummyEmotion(Coordinate[] coordinates) {
         return new Emotion() {
             @Override
+            public String getName() {
+                return null;
+            }
+
+            @Override
             public Coordinate[] getCoordinates() {
                 return coordinates;
             }
 
             @Override
-            public EmotionType getEmotionType() {
+            public EmotionType getType() {
                 return null;
             }
 
             @Override
-            public EmotionLevel getEmotionLevel() {
+            public EmotionLevel getLevel() {
                 return null;
             }
         };

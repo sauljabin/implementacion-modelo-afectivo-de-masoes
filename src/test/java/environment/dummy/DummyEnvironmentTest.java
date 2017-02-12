@@ -13,6 +13,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public class DummyEnvironmentTest {
@@ -30,6 +32,11 @@ public class DummyEnvironmentTest {
     @Test
     public void shouldReturnAllAgentInfo() {
         assertReflectionEquals(expectedAgentsInfo, dummyEnvironment.getAgentParameters());
+    }
+
+    @Test
+    public void shouldReturnName() {
+        assertThat(dummyEnvironment.getName(), is("dummy"));
     }
 
 }

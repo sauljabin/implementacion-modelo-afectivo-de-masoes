@@ -57,7 +57,7 @@ public class EmotionalAgentBehaviourTest {
         emotionalAgentBehaviour = new EmotionalAgentBehaviour(emotionalAgentMock);
 
         emotionMock = mock(Emotion.class);
-        doReturn(EMOTION_NAME).when(emotionMock).getEmotionName();
+        doReturn(EMOTION_NAME).when(emotionMock).getName();
         doReturn(emotionMock).when(emotionalAgentMock).getCurrentEmotion();
 
         behaviourMock = mock(Behaviour.class);

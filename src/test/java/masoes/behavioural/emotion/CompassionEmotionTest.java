@@ -65,9 +65,9 @@ public class CompassionEmotionTest {
     public void shouldReturnCorrectConfiguration() {
         Polygon expectedPolygon = geometryFactory.createPolygon(coordinates);
         assertReflectionEquals(expectedPolygon.getCoordinates(), compassionEmotion.getGeometry().getCoordinates());
-        assertThat(compassionEmotion.getEmotionName(), is("CompassionEmotion"));
-        assertThat(compassionEmotion.getEmotionLevel(), is(EmotionLevel.COLLECTIVE));
-        assertThat(compassionEmotion.getEmotionType(), is(EmotionType.POSITIVE));
+        assertThat(compassionEmotion.getName(), is("compassion"));
+        assertThat(compassionEmotion.getLevel(), is(EmotionLevel.COLLECTIVE));
+        assertThat(compassionEmotion.getType(), is(EmotionType.POSITIVE));
     }
 
 }

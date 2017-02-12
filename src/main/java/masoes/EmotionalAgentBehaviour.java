@@ -49,7 +49,7 @@ public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
 
     private Predicate responseAgentStatus() {
         AgentState agentState = new AgentState();
-        agentState.setEmotionName(emotionalAgent.getCurrentEmotion().getEmotionName());
+        agentState.setEmotionName(emotionalAgent.getCurrentEmotion().getName());
         agentState.setBehaviourName(emotionalAgent.getCurrentEmotionalBehaviour().getBehaviourName());
         agentState.setAgent(emotionalAgent.getAID());
         agentState.setEmotionState(new EmotionState(emotionalAgent.getEmotionalState().getActivation(), emotionalAgent.getEmotionalState().getSatisfaction()));

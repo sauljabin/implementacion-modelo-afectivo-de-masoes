@@ -44,7 +44,7 @@ public class BehaviourManager {
     }
 
     protected Behaviour calculateBehaviour(EmotionalAgent agent) {
-        switch (getBehaviourTypeAssociated(agent.getCurrentEmotion().getEmotionType())) {
+        switch (getBehaviourTypeAssociated(agent.getCurrentEmotion().getType())) {
             case COGNITIVE:
                 return agent.getCognitiveBehaviour();
             case IMITATIVE:

@@ -34,9 +34,9 @@ public class EnvironmentTest {
 
     @Test
     public void shouldGetNameWhenSetAndNotSet() {
-        assertThat(environment.getEnvironmentName(), is("Environment"));
-        environment.setEnvironmentName(NAME);
-        assertThat(environment.getEnvironmentName(), is(NAME));
+        assertThat(environment.getName(), is("Environment"));
+        environment.setName(NAME);
+        assertThat(environment.getName(), is(NAME));
     }
 
     @Test

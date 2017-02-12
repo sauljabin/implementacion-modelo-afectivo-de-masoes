@@ -65,9 +65,9 @@ public class AngerEmotionTest {
     public void shouldReturnCorrectConfiguration() {
         Polygon expectedPolygon = geometryFactory.createPolygon(coordinates);
         assertReflectionEquals(expectedPolygon.getCoordinates(), angerEmotion.getGeometry().getCoordinates());
-        assertThat(angerEmotion.getEmotionName(), is("AngerEmotion"));
-        assertThat(angerEmotion.getEmotionLevel(), is(EmotionLevel.COLLECTIVE));
-        assertThat(angerEmotion.getEmotionType(), is(EmotionType.NEGATIVE_HIGH));
+        assertThat(angerEmotion.getName(), is("anger"));
+        assertThat(angerEmotion.getLevel(), is(EmotionLevel.COLLECTIVE));
+        assertThat(angerEmotion.getType(), is(EmotionType.NEGATIVE_HIGH));
     }
 
 }

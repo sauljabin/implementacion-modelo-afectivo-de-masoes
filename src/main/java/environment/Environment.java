@@ -17,10 +17,15 @@ public class Environment {
 
     private static final String AGENT_DELIMITER = ";";
     private ArrayList<AgentParameter> agentParameters;
-    private String environmentName;
+    private String name;
+
+    public Environment(String name) {
+        this.name = name;
+        agentParameters = new ArrayList<>();
+    }
 
     public Environment() {
-        agentParameters = new ArrayList<>();
+        this(null);
     }
 
     public List<AgentParameter> getAgentParameters() {
@@ -31,12 +36,12 @@ public class Environment {
         agentParameters.add(agentParameter);
     }
 
-    public String getEnvironmentName() {
-        return Optional.ofNullable(environmentName).orElse(getClass().getSimpleName());
+    public String getName() {
+        return Optional.ofNullable(name).orElse(getClass().getSimpleName());
     }
 
-    public void setEnvironmentName(String environmentName) {
-        this.environmentName = environmentName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String toJadeParameter() {
@@ -52,7 +57,7 @@ public class Environment {
     @Override
     public String toString() {
         return new ToStringBuilder()
-                .append("name", getEnvironmentName())
+                .append("name", getName())
                 .append("agentParameters", agentParameters)
                 .toString();
     }
