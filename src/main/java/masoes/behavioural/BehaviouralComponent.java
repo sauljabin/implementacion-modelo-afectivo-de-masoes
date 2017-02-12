@@ -6,5 +6,20 @@
 
 package masoes.behavioural;
 
+// TODO: UNIT-TEST
+
+import alice.tuprolog.Prolog;
+
 public class BehaviouralComponent {
+
+    private BehaviourManager behaviourManager;
+    private EmotionalConfigurator emotionalConfigurator;
+    private KnowledgeBase knowledgeBase;
+
+    private Prolog prolog;
+
+    public BehaviouralComponent() {
+        prolog = new Prolog();
+    }
+
 }
