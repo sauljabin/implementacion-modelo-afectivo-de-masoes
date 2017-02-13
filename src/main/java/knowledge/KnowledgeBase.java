@@ -6,13 +6,10 @@
 
 package knowledge;
 
-// TODO: UNIT-TEST
-
 import alice.tuprolog.Prolog;
 import alice.tuprolog.Theory;
 
 public class KnowledgeBase extends Prolog {
-
 
     public void addTheory(String theory) {
         try {

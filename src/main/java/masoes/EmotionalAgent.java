@@ -16,8 +16,8 @@ public abstract class EmotionalAgent extends Agent {
 
     @Override
     protected final void setup() {
-        behaviouralComponent = new BehaviouralComponent(this);
         setUp();
+        behaviouralComponent = new BehaviouralComponent(this);
         addBehaviour(new BasicEmotionalAgentBehaviour(this));
     }
 

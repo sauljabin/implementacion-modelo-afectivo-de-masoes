@@ -137,7 +137,7 @@ public class AgentManagementAssistantTest {
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(CreateAgent.class)));
         CreateAgent createAgent = (CreateAgent) action.getAction();
-        assertThat(createAgent.getAgentName().length(), is(20));
+        assertThat(createAgent.getAgentName().length(), is(30));
         assertThat(createAgent.getClassName(), is(Agent.class.getCanonicalName()));
         assertThat(createAgent.getAllArguments().next(), is(arg1));
     }
@@ -196,7 +196,7 @@ public class AgentManagementAssistantTest {
         assertThat(action.getAction(), is(instanceOf(AddBehaviour.class)));
 
         AddBehaviour addBehaviour = (AddBehaviour) action.getAction();
-        assertThat(addBehaviour.getName().length(), is(20));
+        assertThat(addBehaviour.getName().length(), is(30));
         assertThat(addBehaviour.getClassName(), is(SimpleBehaviour.class.getCanonicalName()));
     }
 

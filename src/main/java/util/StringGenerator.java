@@ -11,7 +11,8 @@ import java.util.stream.IntStream;
 
 public class StringGenerator {
 
-    private static final String CHARACTERS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private static final String ALPHA_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private static final String ALPHA_NUMERIC_CHARACTERS = "0123456789" + ALPHA_CHARACTERS;
     private Random random;
 
     public StringGenerator() {
@@ -19,13 +20,22 @@ public class StringGenerator {
     }
 
     public String getString(int length) {
+        return getString(length, false);
+    }
+
+    public String getString(int length, boolean alphanumeric) {
         StringBuilder stringBuilder = new StringBuilder();
-        IntStream.range(0, length).forEach(i -> stringBuilder.append(getCharacter()));
+        IntStream.range(0, length).forEach(i -> stringBuilder.append(getCharacter(alphanumeric)));
         return stringBuilder.toString();
     }
 
     public char getCharacter() {
-        return CHARACTERS.charAt(random.nextInt(CHARACTERS.length()));
+        return getCharacter(false);
+    }
+
+    public char getCharacter(boolean alphanumeric) {
+        String base = alphanumeric ? ALPHA_NUMERIC_CHARACTERS : ALPHA_CHARACTERS;
+        return base.charAt(random.nextInt(base.length()));
     }
 
 }

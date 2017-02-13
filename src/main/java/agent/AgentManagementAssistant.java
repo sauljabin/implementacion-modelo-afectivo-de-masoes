@@ -31,7 +31,7 @@ import java.util.List;
 
 public class AgentManagementAssistant {
 
-    private static final int RANDOM_STRING_LENGTH = 20;
+    private static final int RANDOM_STRING_LENGTH = 30;
     private StringGenerator stringGenerator;
     private Agent agent;
     private OntologyAssistant ontologyAssistantManagement;
@@ -94,7 +94,7 @@ public class AgentManagementAssistant {
     }
 
     public AID createAgent(Class<? extends Agent> agentClass, List<String> arguments) {
-        return createAgent(stringGenerator.getString(RANDOM_STRING_LENGTH), agentClass, arguments);
+        return createAgent(stringGenerator.getString(RANDOM_STRING_LENGTH).toLowerCase(), agentClass, arguments);
     }
 
     public void removeBehaviour(AID receiver, String behaviourName) {
@@ -109,7 +109,7 @@ public class AgentManagementAssistant {
     }
 
     public String addBehaviour(AID agent, Class<? extends Behaviour> behaviourClass) {
-        return addBehaviour(agent, stringGenerator.getString(RANDOM_STRING_LENGTH), behaviourClass);
+        return addBehaviour(agent, stringGenerator.getString(RANDOM_STRING_LENGTH).toLowerCase(), behaviourClass);
     }
 
     private void sendRequestAndVerifyDone(AID receiver, AgentAction content, OntologyAssistant ontologyAssistant) {
