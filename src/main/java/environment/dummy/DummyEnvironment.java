@@ -14,8 +14,8 @@ public class DummyEnvironment extends Environment {
     private static final String DUMMY_AGENT_NAME = "dummy";
 
     public DummyEnvironment() {
-        add(new AgentParameter(DUMMY_AGENT_NAME, DummyEmotionalAgent.class));
         setName(DUMMY_AGENT_NAME);
+        add(new AgentParameter(DUMMY_AGENT_NAME, DummyEmotionalAgent.class));
     }
 
 }

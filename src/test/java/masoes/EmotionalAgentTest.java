@@ -55,7 +55,6 @@ public class EmotionalAgentTest {
         return new EmotionalAgent() {
             @Override
             public void setUp() {
-
             }
 
             @Override
