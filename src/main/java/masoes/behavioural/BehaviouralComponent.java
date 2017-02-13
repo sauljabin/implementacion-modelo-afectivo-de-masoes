@@ -22,9 +22,17 @@ public class BehaviouralComponent {
 
     public BehaviouralComponent(EmotionalAgent emotionalAgent) {
         this.emotionalAgent = emotionalAgent;
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(emotionalAgent);
+
+        String agentName = "X";
+        if (emotionalAgent.getLocalName() != null) {
+            agentName = emotionalAgent.getLocalName().toLowerCase();
+        }
+
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentName, emotionalAgent.getKnowledgePath());
         emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
-        behaviourManager = new BehaviourManager(emotionalAgent, emotionalConfigurator, behaviouralKnowledgeBase);
+
+        behaviourManager = new BehaviourManager(behaviouralKnowledgeBase);
+        behaviourManager.updateBehaviour(emotionalAgent, emotionalConfigurator.getEmotion());
     }
 
     public Emotion getCurrentEmotion() {
@@ -41,7 +49,7 @@ public class BehaviouralComponent {
 
     public void evaluateStimulus(Stimulus stimulus) {
         emotionalConfigurator.updateEmotion(stimulus);
-        behaviourManager.updateBehaviour();
+        behaviourManager.updateBehaviour(emotionalAgent, emotionalConfigurator.getEmotion());
     }
 
     @Override
@@ -51,6 +59,18 @@ public class BehaviouralComponent {
                 .append("emotionalConfigurator", emotionalConfigurator)
                 .append("behaviouralKnowledgeBase", behaviouralKnowledgeBase)
                 .toString();
+    }
+
+    public BehaviourManager getBehaviourManager() {
+        return behaviourManager;
+    }
+
+    public EmotionalConfigurator getEmotionalConfigurator() {
+        return emotionalConfigurator;
+    }
+
+    public BehaviouralKnowledgeBase getBehaviouralKnowledgeBase() {
+        return behaviouralKnowledgeBase;
     }
 
 }

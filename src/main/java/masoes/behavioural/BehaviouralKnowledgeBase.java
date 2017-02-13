@@ -9,21 +9,19 @@ package masoes.behavioural;
 // TODO: UNIT-TEST
 
 import knowledge.KnowledgeBase;
-import masoes.EmotionalAgent;
 import util.ToStringBuilder;
 
 public class BehaviouralKnowledgeBase extends KnowledgeBase {
 
-    public BehaviouralKnowledgeBase(EmotionalAgent emotionalAgent) {
-        String agentName = emotionalAgent.getLocalName().toLowerCase();
-
-        addTheory(String.format("self(%s).", agentName));
-        addTheory("other(X) :- not self(X).");
-        addTheoryFromPath("theories/behaviourManager.pl");
-
-        if (emotionalAgent.getKnowledgePath() != null) {
-            addTheoryFromPath(emotionalAgent.getKnowledgePath());
+    public BehaviouralKnowledgeBase(String agentName, String agentKnowledgePath) {
+        if (agentName != null) {
+            addTheory(String.format("self(%s).", agentName));
+            addTheory("other(X) :- not self(X).");
+            if (agentKnowledgePath != null) {
+                addTheoryFromPath(agentKnowledgePath);
+            }
         }
+        addTheoryFromPath("theories/behaviourManager.pl");
     }
 
     @Override

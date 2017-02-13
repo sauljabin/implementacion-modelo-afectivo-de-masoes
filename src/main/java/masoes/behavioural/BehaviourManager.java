@@ -17,27 +17,22 @@ import util.ToStringBuilder;
 public class BehaviourManager {
 
     private EmotionalBehaviour behaviour;
-    private EmotionalAgent emotionalAgent;
-    private EmotionalConfigurator emotionalConfigurator;
     private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
 
-    public BehaviourManager(EmotionalAgent emotionalAgent, EmotionalConfigurator emotionalConfigurator, BehaviouralKnowledgeBase behaviouralKnowledgeBase) {
-        this.emotionalAgent = emotionalAgent;
-        this.emotionalConfigurator = emotionalConfigurator;
+    public BehaviourManager(BehaviouralKnowledgeBase behaviouralKnowledgeBase) {
         this.behaviouralKnowledgeBase = behaviouralKnowledgeBase;
-        updateBehaviour();
     }
 
     public EmotionalBehaviour getBehaviour() {
         return behaviour;
     }
 
-    public void updateBehaviour() {
+    public void updateBehaviour(EmotionalAgent emotionalAgent, Emotion emotion) {
         if (behaviour != null) {
             emotionalAgent.removeBehaviour(behaviour);
         }
 
-        behaviour = calculateBehaviour();
+        behaviour = calculateBehaviour(emotionalAgent, emotion);
 
         if (behaviour != null) {
             emotionalAgent.addBehaviour(behaviour);
@@ -58,8 +53,8 @@ public class BehaviourManager {
         }
     }
 
-    private EmotionalBehaviour calculateBehaviour() {
-        switch (getBehaviourTypeAssociated(emotionalConfigurator.getEmotion())) {
+    private EmotionalBehaviour calculateBehaviour(EmotionalAgent emotionalAgent, Emotion emotion) {
+        switch (getBehaviourTypeAssociated(emotion)) {
             case COGNITIVE:
                 return emotionalAgent.getCognitiveBehaviour();
             case IMITATIVE:
