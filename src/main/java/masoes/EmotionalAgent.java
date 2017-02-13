@@ -6,27 +6,18 @@
 
 package masoes;
 
-import agent.AgentLogger;
 import jade.core.Agent;
 import masoes.behavioural.BehaviouralComponent;
-import org.slf4j.LoggerFactory;
 import util.ToStringBuilder;
-
-// TODO: UNIT-TEST
 
 public abstract class EmotionalAgent extends Agent {
 
-    private AgentLogger logger;
     private BehaviouralComponent behaviouralComponent;
-
-    public EmotionalAgent() {
-        logger = new AgentLogger(LoggerFactory.getLogger(EmotionalAgent.class));
-    }
 
     @Override
     protected final void setup() {
-        setUp();
         behaviouralComponent = new BehaviouralComponent(this);
+        setUp();
         addBehaviour(new BasicEmotionalAgentBehaviour(this));
     }
 
@@ -34,6 +25,7 @@ public abstract class EmotionalAgent extends Agent {
     public String toString() {
         return new ToStringBuilder()
                 .append("aid", getAID())
+                .append("behaviouralComponent", behaviouralComponent)
                 .toString();
     }
 

@@ -11,6 +11,7 @@ package masoes.behavioural;
 import masoes.EmotionalAgent;
 import masoes.EmotionalBehaviour;
 import ontology.masoes.Stimulus;
+import util.ToStringBuilder;
 
 public class BehaviouralComponent {
 
@@ -41,6 +42,15 @@ public class BehaviouralComponent {
     public void evaluateStimulus(Stimulus stimulus) {
         emotionalConfigurator.updateEmotion(stimulus);
         behaviourManager.updateBehaviour();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder()
+                .append("behaviourManager", behaviourManager)
+                .append("emotionalConfigurator", emotionalConfigurator)
+                .append("behaviouralKnowledgeBase", behaviouralKnowledgeBase)
+                .toString();
     }
 
 }

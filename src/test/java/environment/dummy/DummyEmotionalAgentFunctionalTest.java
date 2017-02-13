@@ -4,9 +4,8 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes;
+package environment.dummy;
 
-import environment.dummy.DummyEmotionalAgent;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
 import jade.content.lang.sl.SLCodec;
@@ -30,7 +29,7 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
-public class EmotionalAgentFunctionalTest extends FunctionalTest {
+public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
 
     private AID dummyAgentAID;
     private ContentManager contentManager;
@@ -56,13 +55,18 @@ public class EmotionalAgentFunctionalTest extends FunctionalTest {
                 .receiver(dummyAgentAID)
                 .ontology(MasoesOntology.getInstance())
                 .build();
-        testEvaluateStimulus(requestMessage, "bye");
+
+        testEvaluateStimulus(requestMessage, "bye", getAID());
         AgentState firstEmotionalResponse = testGetStatus(requestMessage);
         assertThat(firstEmotionalResponse.getEmotionState().getName(), is("depression"));
-        testEvaluateStimulus(requestMessage, "hello");
+
+        testEvaluateStimulus(requestMessage, "hello", getAID());
         AgentState secondEmotionalResponse = testGetStatus(requestMessage);
-        assertThat(secondEmotionalResponse.getAgent(), is(firstEmotionalResponse.getAgent()));
         assertThat(secondEmotionalResponse.getEmotionState().getName(), is("happiness"));
+
+        testEvaluateStimulus(requestMessage, "sleep", dummyAgentAID);
+        AgentState thirdEmotionalResponse = testGetStatus(requestMessage);
+        assertThat(thirdEmotionalResponse.getEmotionState().getName(), is("joy"));
     }
 
     @Test
@@ -76,9 +80,9 @@ public class EmotionalAgentFunctionalTest extends FunctionalTest {
         testGetStatus(requestMessage);
     }
 
-    private Done testEvaluateStimulus(ACLMessage requestMessage, String actionName) throws Exception {
+    private Done testEvaluateStimulus(ACLMessage requestMessage, String actionName, AID aid) throws Exception {
         Stimulus stimulus = new Stimulus();
-        stimulus.setActor(getAID());
+        stimulus.setActor(aid);
         stimulus.setActionName(actionName);
         EvaluateStimulus evaluateStimulus = new EvaluateStimulus(stimulus);
         Action action = new Action(dummyAgentAID, evaluateStimulus);

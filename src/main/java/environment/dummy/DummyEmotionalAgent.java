@@ -11,12 +11,17 @@ import masoes.EmotionalAgent;
 import masoes.ImitativeBehaviour;
 import masoes.ReactiveBehaviour;
 
-// TODO: UNIT-TEST
-
 public class DummyEmotionalAgent extends EmotionalAgent {
+
+    private DummyReactiveBehaviour dummyReactiveBehaviour;
+    private DummyImitativeBehaviour dummyImitativeBehaviour;
+    private DummyCognitiveBehaviour dummyCognitiveBehaviour;
 
     @Override
     public void setUp() {
+        dummyImitativeBehaviour = new DummyImitativeBehaviour();
+        dummyReactiveBehaviour = new DummyReactiveBehaviour();
+        dummyCognitiveBehaviour = new DummyCognitiveBehaviour();
     }
 
     @Override
@@ -26,17 +31,17 @@ public class DummyEmotionalAgent extends EmotionalAgent {
 
     @Override
     public ImitativeBehaviour getImitativeBehaviour() {
-        return new DummyImitativeBehaviour();
+        return dummyImitativeBehaviour;
     }
 
     @Override
     public ReactiveBehaviour getReactiveBehaviour() {
-        return new DummyReactiveBehaviour();
+        return dummyReactiveBehaviour;
     }
 
     @Override
     public CognitiveBehaviour getCognitiveBehaviour() {
-        return new DummyCognitiveBehaviour();
+        return dummyCognitiveBehaviour;
     }
 
 }

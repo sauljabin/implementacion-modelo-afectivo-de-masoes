@@ -6,8 +6,6 @@
 
 package masoes;
 
-// TODO: UNIT-TEST
-
 import jade.core.behaviours.Behaviour;
 import masoes.behavioural.BehaviourType;
 

@@ -6,8 +6,6 @@
 
 package masoes;
 
-// TODO: UNIT-TEST
-
 import masoes.behavioural.BehaviourType;
 
 public abstract class CognitiveBehaviour extends EmotionalBehaviour {

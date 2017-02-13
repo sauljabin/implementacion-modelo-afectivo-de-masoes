@@ -10,6 +10,7 @@ package masoes.behavioural;
 
 import knowledge.KnowledgeBase;
 import masoes.EmotionalAgent;
+import util.ToStringBuilder;
 
 public class BehaviouralKnowledgeBase extends KnowledgeBase {
 
@@ -23,6 +24,13 @@ public class BehaviouralKnowledgeBase extends KnowledgeBase {
         if (emotionalAgent.getKnowledgePath() != null) {
             addTheoryFromPath(emotionalAgent.getKnowledgePath());
         }
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder()
+                .append("version", getVersion())
+                .toString();
     }
 
 }

@@ -59,6 +59,7 @@ public class EmotionalConfigurator {
     @Override
     public String toString() {
         return new ToStringBuilder()
+                .append("emotion", getEmotion())
                 .append("emotionalState", emotionalState)
                 .toString();
     }
