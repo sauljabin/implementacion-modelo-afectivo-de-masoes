@@ -87,6 +87,12 @@ Ejecución de pruebas:
 ./gradlew test
 ```
 
+Ejecución de pruebas unitarias:
+
+```
+./gradlew unitTest
+```
+
 Ejecución de pruebas funcionales:
 
 ```
