@@ -10,7 +10,11 @@ import jade.content.lang.sl.SLCodec;
 
 public class SemanticLanguage extends SLCodec {
 
+    public static final String NAME = "fipa-sl";
     private static SemanticLanguage INSTANCE;
+
+    private SemanticLanguage() {
+    }
 
     public synchronized static SemanticLanguage getInstance() {
         if (INSTANCE == null) {
