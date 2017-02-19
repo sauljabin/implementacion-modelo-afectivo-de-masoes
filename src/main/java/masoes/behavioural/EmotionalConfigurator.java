@@ -7,6 +7,7 @@
 package masoes.behavioural;
 
 import alice.tuprolog.SolveInfo;
+import com.vividsolutions.jts.geom.Point;
 import knowledge.KnowledgeBaseException;
 import ontology.masoes.Stimulus;
 import util.ToStringBuilder;
@@ -14,6 +15,9 @@ import util.ToStringBuilder;
 // TODO: UNIT-TEST
 
 public class EmotionalConfigurator {
+
+    private static final String ANSWER_VAR_NAME = "X";
+    private static final String KNOWLEDGE_QUESTION = "emotion(%s,%s," + ANSWER_VAR_NAME + ").";
 
     private EmotionalState emotionalState;
     private EmotionalSpace emotionalSpace;
@@ -42,13 +46,12 @@ public class EmotionalConfigurator {
             String actorName = stimulus.getActor().getLocalName().toLowerCase();
             String actionName = stimulus.getActionName().toLowerCase();
 
-            SolveInfo solveActivation = behaviouralKnowledgeBase.solve(String.format("activation(%s,%s,X).", actorName, actionName));
-            SolveInfo solveSatisfaction = behaviouralKnowledgeBase.solve(String.format("satisfaction(%s,%s,X).", actorName, actionName));
+            SolveInfo solveEmotion = behaviouralKnowledgeBase.solve(String.format(KNOWLEDGE_QUESTION, actorName, actionName));
 
-            if (solveActivation.isSuccess() && solveSatisfaction.isSuccess()) {
-                double activation = Double.parseDouble(solveActivation.getTerm("X").toString());
-                double satisfaction = Double.parseDouble(solveSatisfaction.getTerm("X").toString());
-                return new EmotionalState(activation, satisfaction);
+            if (solveEmotion.isSuccess()) {
+                String emotionName = solveEmotion.getTerm(ANSWER_VAR_NAME).toString();
+                Point randomPoint = emotionalSpace.searchEmotion(emotionName).getRandomPoint();
+                return new EmotionalState(randomPoint);
             }
             return new EmotionalState();
         } catch (Exception e) {

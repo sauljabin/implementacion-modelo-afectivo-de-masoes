@@ -13,7 +13,20 @@ import util.ToStringBuilder;
 
 public class BehaviouralKnowledgeBase extends KnowledgeBase {
 
+    private static final String PATH_THEORY_BEHAVIOUR_MANAGER = "theories/behaviourManager.prolog";
+    private static final String PATH_THEORY_EMOTIONAL_CONFIGURATOR = "theories/emotionalConfigurator.prolog";
+    private final String agentName;
+    private final String agentKnowledgePath;
+
     public BehaviouralKnowledgeBase(String agentName, String agentKnowledgePath) {
+        this.agentName = agentName;
+        this.agentKnowledgePath = agentKnowledgePath;
+        addAgentKnowledge(agentName, agentKnowledgePath);
+        addTheoryFromPath(PATH_THEORY_BEHAVIOUR_MANAGER);
+        addTheoryFromPath(PATH_THEORY_EMOTIONAL_CONFIGURATOR);
+    }
+
+    private void addAgentKnowledge(String agentName, String agentKnowledgePath) {
         if (agentName != null) {
             addTheory(String.format("self(%s).", agentName));
             addTheory("other(X) :- not self(X).");
@@ -21,13 +34,15 @@ public class BehaviouralKnowledgeBase extends KnowledgeBase {
                 addTheoryFromPath(agentKnowledgePath);
             }
         }
-        addTheoryFromPath("theories/behaviourManager.prolog");
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder()
-                .append("version", getVersion())
+                .append("agentName", agentName)
+                .append("agentKnowledgePath", agentKnowledgePath)
+                .append("behaviourManagerKnowledgePath", PATH_THEORY_BEHAVIOUR_MANAGER)
+                .append("emotionalConfiguratorKnowledgePath", PATH_THEORY_EMOTIONAL_CONFIGURATOR)
                 .toString();
     }
 

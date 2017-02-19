@@ -33,6 +33,10 @@ public class EmotionalState {
         this.satisfaction = satisfaction;
     }
 
+    public EmotionalState(Point point) {
+        this(point.getX(), point.getY());
+    }
+
     public double getActivation() {
         return activation;
     }

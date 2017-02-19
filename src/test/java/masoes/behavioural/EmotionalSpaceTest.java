@@ -43,27 +43,8 @@ public class EmotionalSpaceTest {
     }
 
     @Test
-    public void shouldReturnJoyEmotion() {
-        EmotionalState randomPoint = getRandomPointForBasicEmotion(0, 0.5, 0, 0.5);
-        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(JoyEmotion.class)));
-    }
-
-    @Test
-    public void shouldReturnAdmirationEmotion() {
-        EmotionalState randomPoint = getRandomPointForBasicEmotion(-0.5, 0, 0, 0.5);
-        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(AdmirationEmotion.class)));
-    }
-
-    @Test
-    public void shouldReturnSadnessEmotion() {
-        EmotionalState randomPoint = getRandomPointForBasicEmotion(-0.5, 0, -0.5, 0);
-        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(SadnessEmotion.class)));
-    }
-
-    @Test
-    public void shouldReturnRejectionEmotion() {
-        EmotionalState randomPoint = getRandomPointForBasicEmotion(0, 0.5, -0.5, 0);
-        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(RejectionEmotion.class)));
+    public void shouldReturnDefaultHappinessEmotionFromString() {
+        assertThat(emotionalSpace.searchEmotion("no-emotion"), is(instanceOf(HappinessEmotion.class)));
     }
 
     @Test
@@ -73,9 +54,63 @@ public class EmotionalSpaceTest {
     }
 
     @Test
+    public void shouldReturnHappinessEmotionFromString() {
+        assertThat(emotionalSpace.searchEmotion("happiness"), is(instanceOf(HappinessEmotion.class)));
+    }
+
+    @Test
+    public void shouldReturnJoyEmotion() {
+        EmotionalState randomPoint = getRandomPointForBasicEmotion(0, 0.5, 0, 0.5);
+        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(JoyEmotion.class)));
+    }
+
+    @Test
+    public void shouldReturnJoyEmotionFromString() {
+        assertThat(emotionalSpace.searchEmotion("joy"), is(instanceOf(JoyEmotion.class)));
+    }
+
+    @Test
+    public void shouldReturnAdmirationEmotion() {
+        EmotionalState randomPoint = getRandomPointForBasicEmotion(-0.5, 0, 0, 0.5);
+        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(AdmirationEmotion.class)));
+    }
+
+    @Test
+    public void shouldReturnAdmirationEmotionFromString() {
+        assertThat(emotionalSpace.searchEmotion("admiration"), is(instanceOf(AdmirationEmotion.class)));
+    }
+
+    @Test
+    public void shouldReturnSadnessEmotion() {
+        EmotionalState randomPoint = getRandomPointForBasicEmotion(-0.5, 0, -0.5, 0);
+        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(SadnessEmotion.class)));
+    }
+
+    @Test
+    public void shouldReturnSadnessEmotionFromString() {
+        assertThat(emotionalSpace.searchEmotion("sadness"), is(instanceOf(SadnessEmotion.class)));
+    }
+
+    @Test
+    public void shouldReturnRejectionEmotion() {
+        EmotionalState randomPoint = getRandomPointForBasicEmotion(0, 0.5, -0.5, 0);
+        assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(RejectionEmotion.class)));
+    }
+
+    @Test
+    public void shouldReturnRejectionEmotionFromString() {
+        assertThat(emotionalSpace.searchEmotion("rejection"), is(instanceOf(RejectionEmotion.class)));
+    }
+
+    @Test
     public void shouldReturnCompassionEmotion() {
         EmotionalState randomPoint = getRandomPointForExternalEmotion(NEGATIVE_SIGN, POSITIVE_SIGN);
         assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(CompassionEmotion.class)));
+    }
+
+    @Test
+    public void shouldReturnCompassionEmotionFromString() {
+        assertThat(emotionalSpace.searchEmotion("compassion"), is(instanceOf(CompassionEmotion.class)));
     }
 
     @Test
@@ -85,9 +120,19 @@ public class EmotionalSpaceTest {
     }
 
     @Test
-    public void shouldReturnDissatisfactionEmotion() {
+    public void shouldReturnDepressionEmotionFromString() {
+        assertThat(emotionalSpace.searchEmotion("depression"), is(instanceOf(DepressionEmotion.class)));
+    }
+
+    @Test
+    public void shouldReturnAngerEmotion() {
         EmotionalState randomPoint = getRandomPointForExternalEmotion(POSITIVE_SIGN, NEGATIVE_SIGN);
         assertThat(emotionalSpace.searchEmotion(randomPoint), is(instanceOf(AngerEmotion.class)));
+    }
+
+    @Test
+    public void shouldReturnAngerEmotionFromString() {
+        assertThat(emotionalSpace.searchEmotion("anger"), is(instanceOf(AngerEmotion.class)));
     }
 
     private EmotionalState getRandomPointForExternalEmotion(double xSign, double ySign) {

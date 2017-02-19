@@ -1,6 +1,8 @@
-activation(AGENT, hello, 0.6) :- other(AGENT).
-satisfaction(AGENT, hello, 0.6) :- other(AGENT).
-activation(AGENT, bye, -0.6) :- other(AGENT).
-satisfaction(AGENT, bye, -0.6) :- other(AGENT).
-activation(AGENT, sleep, 0.4) :- self(AGENT).
-satisfaction(AGENT, sleep, 0.4) :- self(AGENT).
+satisfaction(AGENT, greeting, positive_high) :- other(AGENT).
+satisfaction(AGENT, smile, positive_low) :- other(AGENT).
+satisfaction(AGENT, run, negative_low) :- other(AGENT).
+satisfaction(AGENT, bye, negative_high) :- other(AGENT).
+satisfaction(AGENT, eat, positive_high) :- self(AGENT).
+satisfaction(AGENT, sleep, positive_low) :- self(AGENT).
+satisfaction(AGENT, wake, negative_low) :- self(AGENT).
+satisfaction(AGENT, pay, negative_high) :- self(AGENT).

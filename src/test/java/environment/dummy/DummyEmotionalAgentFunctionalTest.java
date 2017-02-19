@@ -56,17 +56,15 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
                 .ontology(MasoesOntology.getInstance())
                 .build();
 
-        testEvaluateStimulus(requestMessage, "bye", getAID());
-        AgentState firstEmotionalResponse = testGetStatus(requestMessage);
-        assertThat(firstEmotionalResponse.getEmotionState().getName(), is("depression"));
+        testEvaluateStimulus(requestMessage, "greeting", getAID(), "compassion", "IMITATIVE");
+        testEvaluateStimulus(requestMessage, "smile",  getAID(), "admiration", "IMITATIVE");
+        testEvaluateStimulus(requestMessage, "run", getAID(), "rejection", "COGNITIVE");
+        testEvaluateStimulus(requestMessage, "bye", getAID(), "anger", "REACTIVE");
 
-        testEvaluateStimulus(requestMessage, "hello", getAID());
-        AgentState secondEmotionalResponse = testGetStatus(requestMessage);
-        assertThat(secondEmotionalResponse.getEmotionState().getName(), is("happiness"));
-
-        testEvaluateStimulus(requestMessage, "sleep", dummyAgentAID);
-        AgentState thirdEmotionalResponse = testGetStatus(requestMessage);
-        assertThat(thirdEmotionalResponse.getEmotionState().getName(), is("joy"));
+        testEvaluateStimulus(requestMessage, "eat", dummyAgentAID, "happiness", "IMITATIVE");
+        testEvaluateStimulus(requestMessage, "sleep", dummyAgentAID, "joy", "IMITATIVE");
+        testEvaluateStimulus(requestMessage, "wake", dummyAgentAID, "sadness", "COGNITIVE");
+        testEvaluateStimulus(requestMessage, "pay", dummyAgentAID, "depression", "REACTIVE");
     }
 
     @Test
@@ -80,7 +78,7 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
         testGetStatus(requestMessage);
     }
 
-    private Done testEvaluateStimulus(ACLMessage requestMessage, String actionName, AID aid) throws Exception {
+    private void testEvaluateStimulus(ACLMessage requestMessage, String actionName, AID aid, String expectedEmotion, String behaviourType) throws Exception {
         Stimulus stimulus = new Stimulus();
         stimulus.setActor(aid);
         stimulus.setActionName(actionName);
@@ -93,7 +91,10 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
 
         ContentElement contentElement = contentManager.extractContent(response);
         assertThat(contentElement, is(instanceOf(Done.class)));
-        return (Done) contentElement;
+
+        AgentState secondEmotionalResponse = testGetStatus(requestMessage);
+        assertThat(secondEmotionalResponse.getEmotionState().getName(), is(expectedEmotion));
+        assertThat(secondEmotionalResponse.getBehaviourState().getType(), is(behaviourType.toUpperCase()));
     }
 
     private AgentState testGetStatus(ACLMessage requestMessage) throws Exception {

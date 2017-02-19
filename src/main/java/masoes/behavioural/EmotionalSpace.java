@@ -42,4 +42,12 @@ public class EmotionalSpace {
                 .orElse(new HappinessEmotion());
     }
 
+    public Emotion searchEmotion(String name) {
+        return emotions
+                .stream()
+                .filter(emotion -> emotion.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(new HappinessEmotion());
+    }
+
 }
