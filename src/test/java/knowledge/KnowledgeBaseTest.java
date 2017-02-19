@@ -38,7 +38,7 @@ public class KnowledgeBaseTest {
 
     @Test
     public void shouldAddFileTheory() throws Exception {
-        String expectedTheory = "theories/behaviourManager.pl";
+        String expectedTheory = "theories/behaviourManager.prolog";
         knowledgeBaseSpy.addTheoryFromPath(expectedTheory);
         verify(knowledgeBaseSpy).addTheory(theoryArgumentCaptor.capture());
         assertThat(theoryArgumentCaptor.getValue().toString(), containsString("emotionType(admiration, positive)"));

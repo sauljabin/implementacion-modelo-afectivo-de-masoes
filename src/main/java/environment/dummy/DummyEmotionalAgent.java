@@ -26,7 +26,7 @@ public class DummyEmotionalAgent extends EmotionalAgent {
 
     @Override
     public String getKnowledgePath() {
-        return "theories/dummy/dummyEmotionalAgent.pl";
+        return "theories/dummy/dummyEmotionalAgent.prolog";
     }
 
     @Override

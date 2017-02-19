@@ -21,7 +21,7 @@ public class BehaviouralKnowledgeBase extends KnowledgeBase {
                 addTheoryFromPath(agentKnowledgePath);
             }
         }
-        addTheoryFromPath("theories/behaviourManager.pl");
+        addTheoryFromPath("theories/behaviourManager.prolog");
     }
 
     @Override

@@ -25,7 +25,7 @@ public class DummyEmotionalAgentTest {
 
     @Test
     public void shouldGetCorrectConfig() throws Exception {
-        assertThat(dummyEmotionalAgent.getKnowledgePath(), is("theories/dummy/dummyEmotionalAgent.pl"));
+        assertThat(dummyEmotionalAgent.getKnowledgePath(), is("theories/dummy/dummyEmotionalAgent.prolog"));
         assertThat(dummyEmotionalAgent.getCognitiveBehaviour(), is(instanceOf(DummyCognitiveBehaviour.class)));
         assertThat(dummyEmotionalAgent.getImitativeBehaviour(), is(instanceOf(DummyImitativeBehaviour.class)));
         assertThat(dummyEmotionalAgent.getReactiveBehaviour(), is(instanceOf(DummyReactiveBehaviour.class)));
