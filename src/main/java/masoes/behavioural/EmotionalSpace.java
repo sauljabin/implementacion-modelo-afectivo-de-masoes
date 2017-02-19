@@ -14,6 +14,7 @@ import masoes.behavioural.emotion.HappinessEmotion;
 import masoes.behavioural.emotion.JoyEmotion;
 import masoes.behavioural.emotion.RejectionEmotion;
 import masoes.behavioural.emotion.SadnessEmotion;
+import util.ToStringBuilder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,6 +49,13 @@ public class EmotionalSpace {
                 .filter(emotion -> emotion.getName().equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(new HappinessEmotion());
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder()
+                .append("emotions", emotions)
+                .toString();
     }
 
 }

@@ -44,6 +44,10 @@ public abstract class Emotion {
         return randomPointsBuilder.getGeometry().getInteriorPoint();
     }
 
+    public EmotionalState getRandomEmotionalState() {
+        return new EmotionalState(getRandomPoint());
+    }
+
     public abstract String getName();
 
     public abstract Coordinate[] getCoordinates();

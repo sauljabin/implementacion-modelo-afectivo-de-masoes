@@ -57,7 +57,7 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
                 .build();
 
         testEvaluateStimulus(requestMessage, "greeting", getAID(), "compassion", "IMITATIVE");
-        testEvaluateStimulus(requestMessage, "smile",  getAID(), "admiration", "IMITATIVE");
+        testEvaluateStimulus(requestMessage, "smile", getAID(), "admiration", "IMITATIVE");
         testEvaluateStimulus(requestMessage, "run", getAID(), "rejection", "COGNITIVE");
         testEvaluateStimulus(requestMessage, "bye", getAID(), "anger", "REACTIVE");
 

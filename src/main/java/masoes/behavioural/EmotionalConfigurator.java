@@ -7,7 +7,6 @@
 package masoes.behavioural;
 
 import alice.tuprolog.SolveInfo;
-import com.vividsolutions.jts.geom.Point;
 import knowledge.KnowledgeBaseException;
 import ontology.masoes.Stimulus;
 import util.ToStringBuilder;
@@ -50,8 +49,7 @@ public class EmotionalConfigurator {
 
             if (solveEmotion.isSuccess()) {
                 String emotionName = solveEmotion.getTerm(ANSWER_VAR_NAME).toString();
-                Point randomPoint = emotionalSpace.searchEmotion(emotionName).getRandomPoint();
-                return new EmotionalState(randomPoint);
+                return emotionalSpace.searchEmotion(emotionName).getRandomEmotionalState();
             }
             return new EmotionalState();
         } catch (Exception e) {
@@ -64,6 +62,8 @@ public class EmotionalConfigurator {
         return new ToStringBuilder()
                 .append("emotion", getEmotion())
                 .append("emotionalState", emotionalState)
+                .append("emotionalSpace", emotionalSpace)
+                .append("behaviouralKnowledgeBase", behaviouralKnowledgeBase)
                 .toString();
     }
 

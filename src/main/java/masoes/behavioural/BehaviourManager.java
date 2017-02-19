@@ -16,6 +16,8 @@ import util.ToStringBuilder;
 
 public class BehaviourManager {
 
+    private static final String ANSWER_VAR_NAME = "X";
+    private static final String KNOWLEDGE_QUESTION = "behaviourPriority(%s," + ANSWER_VAR_NAME + ").";
     private EmotionalBehaviour behaviour;
     private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
 
@@ -42,9 +44,9 @@ public class BehaviourManager {
     public BehaviourType getBehaviourTypeAssociated(Emotion emotion) {
         try {
             String emotionName = emotion.getName().toLowerCase();
-            SolveInfo solve = behaviouralKnowledgeBase.solve(String.format("behaviourPriority(%s,X).", emotionName));
+            SolveInfo solve = behaviouralKnowledgeBase.solve(String.format(KNOWLEDGE_QUESTION, emotionName));
             if (solve.isSuccess()) {
-                String priority = solve.getTerm("X").toString().toUpperCase();
+                String priority = solve.getTerm(ANSWER_VAR_NAME).toString().toUpperCase();
                 return BehaviourType.valueOf(priority);
             }
             return BehaviourType.IMITATIVE;
@@ -69,6 +71,7 @@ public class BehaviourManager {
     public String toString() {
         return new ToStringBuilder()
                 .append("behaviour", behaviour)
+                .append("behaviouralKnowledgeBase", behaviouralKnowledgeBase)
                 .toString();
     }
 

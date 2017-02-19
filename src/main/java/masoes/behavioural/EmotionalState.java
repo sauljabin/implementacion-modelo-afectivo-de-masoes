@@ -56,4 +56,5 @@ public class EmotionalState {
                 .append("satisfaction", satisfaction)
                 .toString();
     }
+
 }
