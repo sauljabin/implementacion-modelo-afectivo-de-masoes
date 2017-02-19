@@ -11,7 +11,7 @@ import masoes.behavioural.BehaviourType;
 public abstract class CognitiveBehaviour extends EmotionalBehaviour {
 
     @Override
-    public final BehaviourType getType() {
+    public BehaviourType getType() {
         return BehaviourType.COGNITIVE;
     }
 

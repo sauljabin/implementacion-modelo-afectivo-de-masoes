@@ -15,8 +15,8 @@ public class BehaviouralKnowledgeBase extends KnowledgeBase {
 
     private static final String PATH_THEORY_BEHAVIOUR_MANAGER = "theories/behaviourManager.prolog";
     private static final String PATH_THEORY_EMOTIONAL_CONFIGURATOR = "theories/emotionalConfigurator.prolog";
-    private final String agentName;
-    private final String agentKnowledgePath;
+    private String agentName;
+    private String agentKnowledgePath;
 
     public BehaviouralKnowledgeBase(String agentName, String agentKnowledgePath) {
         this.agentName = agentName;
