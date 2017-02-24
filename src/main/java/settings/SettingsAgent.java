@@ -7,11 +7,9 @@
 package settings;
 
 import agent.AgentLogger;
+import agent.AgentManagementAssistant;
 import jade.core.Agent;
-import jade.domain.DFService;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import ontology.settings.SettingsOntology;
 import org.slf4j.LoggerFactory;
@@ -20,24 +18,21 @@ import util.ToStringBuilder;
 public class SettingsAgent extends Agent {
 
     private AgentLogger logger;
+    private AgentManagementAssistant agentManagementAssistant;
 
     public SettingsAgent() {
         logger = new AgentLogger(LoggerFactory.getLogger(SettingsAgent.class));
+        agentManagementAssistant = new AgentManagementAssistant(this);
     }
 
     @Override
     protected void setup() {
         try {
-            ServiceDescription getSetting = createService("GetSetting");
-            ServiceDescription getAllSettings = createService("GetAllSettings");
-
-            DFAgentDescription agentDescription = new DFAgentDescription();
-            agentDescription.setName(getAID());
-            agentDescription.addServices(getSetting);
-            agentDescription.addServices(getAllSettings);
-
-            DFService.register(this, agentDescription);
-        } catch (FIPAException e) {
+            agentManagementAssistant.register(
+                    createService("GetSetting"),
+                    createService("GetAllSettings")
+            );
+        } catch (Exception e) {
             logger.exception(this, e);
         }
 

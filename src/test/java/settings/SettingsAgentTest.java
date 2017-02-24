@@ -7,13 +7,12 @@
 package settings;
 
 import agent.AgentLogger;
+import agent.AgentManagementAssistant;
 import jade.core.Agent;
 import jade.domain.DFService;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
-import jade.util.leap.Iterator;
 import ontology.settings.SettingsOntology;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,25 +33,27 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.spy;
-import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
-@PrepareForTest({Agent.class, DFService.class})
+@PrepareForTest(Agent.class)
 public class SettingsAgentTest {
 
     private SettingsAgent settingsAgentSpy;
     private AgentLogger loggerMock;
-    private ArgumentCaptor<DFAgentDescription> agentDescriptionArgumentCaptor;
+    private AgentManagementAssistant agentManagementAssistantMock;
+    private ArgumentCaptor<ServiceDescription> serviceDescriptionCaptor;
 
     @Before
     public void setUp() throws Exception {
-        agentDescriptionArgumentCaptor = ArgumentCaptor.forClass(DFAgentDescription.class);
+        serviceDescriptionCaptor = ArgumentCaptor.forClass(ServiceDescription.class);
         loggerMock = mock(AgentLogger.class);
+        agentManagementAssistantMock = mock(AgentManagementAssistant.class);
 
         SettingsAgent settingsAgent = new SettingsAgent();
         setFieldValue(settingsAgent, "logger", loggerMock);
+        setFieldValue(settingsAgent, "agentManagementAssistant", agentManagementAssistantMock);
 
         settingsAgentSpy = spy(settingsAgent);
     }
@@ -67,17 +68,14 @@ public class SettingsAgentTest {
     public void shouldRegisterAgent() throws Exception {
         doReturn("settings").when(settingsAgentSpy).getLocalName();
 
-        mockStatic(DFService.class);
         settingsAgentSpy.setup();
-        verifyStatic();
-        DFService.register(eq(settingsAgentSpy), agentDescriptionArgumentCaptor.capture());
 
-        Iterator allServices = agentDescriptionArgumentCaptor.getValue().getAllServices();
+        verify(agentManagementAssistantMock).register(serviceDescriptionCaptor.capture());
 
-        ServiceDescription serviceGetSetting = (ServiceDescription) allServices.next();
+        ServiceDescription serviceGetSetting = serviceDescriptionCaptor.getAllValues().get(0);
         testService(serviceGetSetting, "GetSetting");
 
-        ServiceDescription serviceGetAllSettings = (ServiceDescription) allServices.next();
+        ServiceDescription serviceGetAllSettings = serviceDescriptionCaptor.getAllValues().get(1);
         testService(serviceGetAllSettings, "GetAllSettings");
     }
 

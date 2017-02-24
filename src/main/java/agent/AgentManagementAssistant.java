@@ -13,6 +13,11 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.ContainerID;
 import jade.core.behaviours.Behaviour;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
 import jade.domain.JADEAgentManagement.KillAgent;
@@ -27,17 +32,19 @@ import protocol.InvalidResponseException;
 import protocol.ProtocolAssistant;
 import util.StringGenerator;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class AgentManagementAssistant {
 
     private static final int RANDOM_STRING_LENGTH = 30;
+    private long timeout;
     private StringGenerator stringGenerator;
     private Agent agent;
     private OntologyAssistant ontologyAssistantManagement;
-    private long timeout;
     private OntologyAssistant ontologyAssistantConfigurable;
     private ProtocolAssistant protocolAssistant;
+    private OntologyAssistant ontologyAssistantFIPA;
 
     public AgentManagementAssistant(Agent agent) {
         this(agent, 5000);
@@ -47,9 +54,10 @@ public class AgentManagementAssistant {
         this.agent = agent;
         this.timeout = timeout;
         stringGenerator = new StringGenerator();
+        protocolAssistant = new ProtocolAssistant(agent, timeout);
         ontologyAssistantManagement = new OntologyAssistant(agent, JADEManagementOntology.getInstance());
         ontologyAssistantConfigurable = new OntologyAssistant(agent, ConfigurableOntology.getInstance());
-        protocolAssistant = new ProtocolAssistant(agent, timeout);
+        ontologyAssistantFIPA = new OntologyAssistant(agent, FIPAManagementOntology.getInstance());
     }
 
     public long getTimeout() {
@@ -110,6 +118,17 @@ public class AgentManagementAssistant {
 
     public String addBehaviour(AID agent, Class<? extends Behaviour> behaviourClass) {
         return addBehaviour(agent, stringGenerator.getString(RANDOM_STRING_LENGTH).toLowerCase(), behaviourClass);
+    }
+
+    public void register(ServiceDescription... serviceDescriptions) {
+        try {
+            DFAgentDescription agentDescription = new DFAgentDescription();
+            agentDescription.setName(agent.getAID());
+            Arrays.stream(serviceDescriptions).forEach(serviceDescription -> agentDescription.addServices(serviceDescription));
+            DFService.register(agent, agentDescription);
+        } catch (FIPAException e) {
+            throw new InvalidResponseException(e);
+        }
     }
 
     private void sendRequestAndVerifyDone(AID receiver, AgentAction content, OntologyAssistant ontologyAssistant) {
