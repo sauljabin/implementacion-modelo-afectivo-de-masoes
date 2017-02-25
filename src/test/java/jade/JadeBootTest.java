@@ -98,7 +98,7 @@ public class JadeBootTest {
     public void shouldThrowJadeBootExceptionWhenErrorInAddAgent() throws Exception {
         String expectedMessage = "expectedMessage";
         doThrow(new RuntimeException(expectedMessage)).when(agentContainerMock).acceptNewAgent(anyString(), any(Agent.class));
-        expectedException.expect(AgentOperationException.class);
+        expectedException.expect(AgentException.class);
         expectedException.expectMessage(expectedMessage);
         jadeBoot.boot();
         jadeBoot.addAgent(anyString(), any(Agent.class));
@@ -115,7 +115,7 @@ public class JadeBootTest {
     public void shouldThrowJadeBootExceptionWhenErrorKill() throws Exception {
         String expectedMessage = "expectedMessage";
         doThrow(new RuntimeException(expectedMessage)).when(platformController).kill();
-        expectedException.expect(KillContainerException.class);
+        expectedException.expect(ContainerException.class);
         expectedException.expectMessage(expectedMessage);
         jadeBoot.boot();
         jadeBoot.kill();

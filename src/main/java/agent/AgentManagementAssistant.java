@@ -6,6 +6,7 @@
 
 package agent;
 
+import jade.AgentException;
 import jade.content.AgentAction;
 import jade.content.ContentElement;
 import jade.content.onto.basic.Done;
@@ -104,7 +105,13 @@ public class AgentManagementAssistant {
         }
 
         sendRequestAndVerifyDone(agent.getAMS(), content, ontologyAssistantManagement);
-        return agent.getAID(agentName);
+
+        try {
+            Thread.sleep(100);
+            return agent.getAID(agentName);
+        } catch (Exception e) {
+            throw new AgentException(e);
+        }
     }
 
     public AID createAgent(Class<? extends Agent> agentClass, List<String> arguments) {

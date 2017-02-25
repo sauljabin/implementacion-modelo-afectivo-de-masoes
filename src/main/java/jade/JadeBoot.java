@@ -39,7 +39,7 @@ public class JadeBoot {
         try {
             mainContainer.acceptNewAgent(agentName, agent);
         } catch (Exception e) {
-            throw new AgentOperationException(e);
+            throw new AgentException(e);
         }
     }
 
@@ -47,7 +47,7 @@ public class JadeBoot {
         try {
             return mainContainer.getAgent(name);
         } catch (ControllerException e) {
-            throw new AgentOperationException(e);
+            throw new AgentException(e);
         }
     }
 
@@ -55,7 +55,7 @@ public class JadeBoot {
         try {
             mainContainer.getPlatformController().kill();
         } catch (Exception e) {
-            throw new KillContainerException(e);
+            throw new ContainerException(e);
         }
     }
 

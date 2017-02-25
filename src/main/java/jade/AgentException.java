@@ -6,17 +6,17 @@
 
 package jade;
 
-public class AgentOperationException extends RuntimeException {
+public class AgentException extends RuntimeException {
 
-    public AgentOperationException(String message) {
+    public AgentException(String message) {
         super(message);
     }
 
-    public AgentOperationException(String message, Throwable cause) {
+    public AgentException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public AgentOperationException(Throwable cause) {
+    public AgentException(Throwable cause) {
         super(cause);
     }
 

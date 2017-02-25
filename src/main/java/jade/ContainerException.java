@@ -6,17 +6,17 @@
 
 package jade;
 
-public class KillContainerException extends RuntimeException {
+public class ContainerException extends RuntimeException {
 
-    public KillContainerException(String message) {
+    public ContainerException(String message) {
         super(message);
     }
 
-    public KillContainerException(String message, Throwable cause) {
+    public ContainerException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public KillContainerException(Throwable cause) {
+    public ContainerException(Throwable cause) {
         super(cause);
     }
 

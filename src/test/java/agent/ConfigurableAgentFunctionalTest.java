@@ -7,12 +7,18 @@
 package agent;
 
 import jade.core.AID;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
+import ontology.configurable.ConfigurableOntology;
 import org.junit.Before;
 import org.junit.Test;
 import protocol.TimeoutRequestException;
 import test.FunctionalTest;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -24,6 +30,13 @@ public class ConfigurableAgentFunctionalTest extends FunctionalTest {
     @Before
     public void setUp() {
         configurableAid = createAgent(ConfigurableAgent.class, null);
+    }
+
+    @Test
+    public void shouldGetAllServicesFromDF() {
+        List<ServiceDescription> services = services(configurableAid);
+        List<String> results = services.stream().map(ServiceDescription::getName).collect(Collectors.toList());
+        assertThat(results, hasItems(ConfigurableOntology.ACTION_ADD_BEHAVIOUR, ConfigurableOntology.ACTION_REMOVE_BEHAVIOUR));
     }
 
     @Test
