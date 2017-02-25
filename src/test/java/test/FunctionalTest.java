@@ -122,20 +122,20 @@ public abstract class FunctionalTest {
         return testerAgent.getAID(name);
     }
 
-    public void register(ServiceDescription... serviceDescriptions) {
-        agentManagementAssistant.register(serviceDescriptions);
-    }
-
     public void register(AID agentName, ServiceDescription... serviceDescriptions) {
         agentManagementAssistant.register(agentName, serviceDescriptions);
     }
 
-    public List<AID> search(ServiceDescription serviceDescription) {
-        return agentManagementAssistant.search(serviceDescription);
+    public List<AID> agents() {
+        return agentManagementAssistant.agents();
     }
 
-    public List<AID> search(String type) {
-        return agentManagementAssistant.search(type);
+    public List<ServiceDescription> services(AID agentName) {
+        return agentManagementAssistant.services(agentName);
+    }
+
+    public List<AID> search(ServiceDescription serviceDescription) {
+        return agentManagementAssistant.search(serviceDescription);
     }
 
     public ProtocolAssistant createProtocolAssistant() {

@@ -13,9 +13,12 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.ContainerID;
 import jade.core.behaviours.Behaviour;
+import jade.domain.AMSService;
 import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
+import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
@@ -31,6 +34,7 @@ import protocol.InvalidResponseException;
 import protocol.ProtocolAssistant;
 import util.StringGenerator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -137,18 +141,49 @@ public class AgentManagementAssistant {
         register(agent.getAID(), serviceDescriptions);
     }
 
-    public List<AID> search(String type) {
-        ServiceDescription serviceDescription = new ServiceDescription();
-        serviceDescription.setType(type);
-        return search(serviceDescription);
+    public List<ServiceDescription> services(AID agentName) {
+        try {
+            DFAgentDescription agentDescription = new DFAgentDescription();
+            agentDescription.setName(agentName);
+            SearchConstraints constraints = new SearchConstraints();
+            constraints.setMaxResults(-1L);
+            DFAgentDescription[] results = DFService.search(agent, agentDescription, constraints);
+
+            if (results.length > 0) {
+                DFAgentDescription description = results[0];
+                List<ServiceDescription> list = new ArrayList<>();
+                description.getAllServices().forEachRemaining(o -> list.add((ServiceDescription) o));
+                return list;
+            }
+
+            return null;
+        } catch (Exception e) {
+            throw new InvalidResponseException(e);
+        }
     }
 
     public List<AID> search(ServiceDescription serviceDescription) {
         try {
             DFAgentDescription agentDescription = new DFAgentDescription();
             agentDescription.addServices(serviceDescription);
-            DFAgentDescription[] results = DFService.search(agent, agentDescription);
+            SearchConstraints constraints = new SearchConstraints();
+            constraints.setMaxResults(-1L);
+            DFAgentDescription[] results = DFService.search(agent, agentDescription, constraints);
             return Arrays.stream(results).map(DFAgentDescription::getName).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new InvalidResponseException(e);
+        }
+    }
+
+    public List<AID> agents() {
+        try {
+            AMSAgentDescription amsAgentDescription = new AMSAgentDescription();
+            SearchConstraints constraints = new SearchConstraints();
+            constraints.setMaxResults(-1L);
+            AMSAgentDescription[] results = AMSService.search(agent, amsAgentDescription, constraints);
+            return Arrays.stream(results).filter(
+                    description -> !description.getName().getLocalName().matches("ams|df")
+            ).map(AMSAgentDescription::getName).collect(Collectors.toList());
         } catch (Exception e) {
             throw new InvalidResponseException(e);
         }

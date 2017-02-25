@@ -17,6 +17,7 @@ import jade.core.Agent;
 import jade.core.ContainerID;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
@@ -60,6 +61,7 @@ import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
@@ -270,40 +272,6 @@ public class AgentManagementAssistantTest {
     }
 
     @Test
-    public void shouldSendSearchServiceInDF() throws Exception {
-        prepareTestSearch();
-        List<AID> search = agentManagementAssistant.search(serviceDescription);
-        testSearch(search);
-    }
-
-    private void prepareTestSearch() throws Exception {
-        DFAgentDescription[] results = new DFAgentDescription[1];
-        results[0] = new DFAgentDescription();
-        results[0].setName(agentAID);
-
-        mockStatic(DFService.class);
-        doReturn(results).when(DFService.class, "search", any(Agent.class), any(DFAgentDescription.class));
-    }
-
-    @Test
-    public void shouldSendSearchServiceWithTypeInDF() throws Exception {
-        prepareTestSearch();
-        List<AID> search = agentManagementAssistant.search(SERVICE_TYPE);
-        testSearch(search);
-    }
-
-    private void testSearch(List<AID> search) throws FIPAException {
-        verifyStatic();
-
-        DFService.search(eq(agentMock), agentDescriptionArgumentCaptor.capture());
-        assertThat(search.get(0), is(agentAID));
-
-        Iterator allServices = agentDescriptionArgumentCaptor.getValue().getAllServices();
-        ServiceDescription actualService = (ServiceDescription) allServices.next();
-        assertThat(actualService.getType(), is(SERVICE_TYPE));
-    }
-
-    @Test
     public void shouldSendSubscribeServiceWithAgentNameInDF() throws Exception {
         mockStatic(DFService.class);
         agentManagementAssistant.register(agentAID, serviceDescription);
@@ -341,21 +309,34 @@ public class AgentManagementAssistantTest {
     }
 
     @Test
+    public void shouldSendSearchServiceInDF() throws Exception {
+        DFAgentDescription[] results = new DFAgentDescription[1];
+        results[0] = new DFAgentDescription();
+        results[0].setName(agentAID);
+
+        mockStatic(DFService.class);
+        when(DFService.search(any(Agent.class), any(DFAgentDescription.class), any(SearchConstraints.class))).thenReturn(results);
+
+        List<AID> search = agentManagementAssistant.search(serviceDescription);
+        verifyStatic();
+
+        DFService.search(eq(agentMock), agentDescriptionArgumentCaptor.capture(), any(SearchConstraints.class));
+        assertThat(search.get(0), is(agentAID));
+
+        Iterator allServices = agentDescriptionArgumentCaptor.getValue().getAllServices();
+        ServiceDescription actualService = (ServiceDescription) allServices.next();
+        assertThat(actualService.getType(), is(SERVICE_TYPE));
+    }
+
+    @Test
     public void shouldThrowExceptionWhenErrorInSearch() throws Exception {
         prepareDFExceptionTest();
-        DFService.search(eq(agentMock), any());
+        DFService.search(eq(agentMock), any(), (SearchConstraints) any());
         ServiceDescription serviceDescription = new ServiceDescription();
         agentManagementAssistant.search(serviceDescription);
     }
 
-    @Test
-    public void shouldThrowExceptionWhenErrorInSearchWithName() throws Exception {
-        prepareDFExceptionTest();
-        DFService.search(eq(agentMock), any());
-        agentManagementAssistant.search(SERVICE_TYPE);
-    }
-
-    private void prepareDFExceptionTest() throws FIPAException {
+    private void prepareDFExceptionTest() {
         String message = "error";
         expectedException.expectMessage(containsString(message));
         expectedException.expect(InvalidResponseException.class);
