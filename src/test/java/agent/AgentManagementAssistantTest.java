@@ -351,6 +351,23 @@ public class AgentManagementAssistantTest {
         assertThat(search.get(0), is(agentAID));
     }
 
+    @Test
+    public void shouldSearchAllServiceOfAgent() throws Exception {
+        DFAgentDescription[] results = new DFAgentDescription[1];
+        results[0] = new DFAgentDescription();
+        ServiceDescription serviceDescription = new ServiceDescription();
+        results[0].addServices(serviceDescription);
+
+        mockStatic(DFService.class);
+        when(DFService.search(any(Agent.class), any(DFAgentDescription.class), any(SearchConstraints.class))).thenReturn(results);
+
+        List<ServiceDescription> search = agentManagementAssistant.services(agentAID);
+        verifyStatic();
+
+        DFService.search(eq(agentMock), any(DFAgentDescription.class), any(SearchConstraints.class));
+        assertThat(search.get(0), is(serviceDescription));
+    }
+
     private void testRegister() throws FIPAException {
         verifyStatic();
         DFService.register(eq(agentMock), dfDescriptorArgumentCaptor.capture());

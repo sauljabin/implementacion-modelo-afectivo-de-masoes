@@ -17,7 +17,6 @@ import jade.domain.AMSService;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
 import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.JADEAgentManagement.CreateAgent;
@@ -48,7 +47,6 @@ public class AgentManagementAssistant {
     private OntologyAssistant ontologyAssistantManagement;
     private OntologyAssistant ontologyAssistantConfigurable;
     private ProtocolAssistant protocolAssistant;
-    private OntologyAssistant ontologyAssistantFIPA;
 
     public AgentManagementAssistant(Agent agent) {
         this(agent, 5000);
@@ -61,7 +59,6 @@ public class AgentManagementAssistant {
         protocolAssistant = new ProtocolAssistant(agent, timeout);
         ontologyAssistantManagement = new OntologyAssistant(agent, JADEManagementOntology.getInstance());
         ontologyAssistantConfigurable = new OntologyAssistant(agent, ConfigurableOntology.getInstance());
-        ontologyAssistantFIPA = new OntologyAssistant(agent, FIPAManagementOntology.getInstance());
     }
 
     public long getTimeout() {
