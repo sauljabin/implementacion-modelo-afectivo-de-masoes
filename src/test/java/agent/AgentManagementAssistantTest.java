@@ -45,6 +45,7 @@ import protocol.InvalidResponseException;
 import util.MessageBuilder;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
@@ -69,6 +70,9 @@ public class AgentManagementAssistantTest {
     private static final String AGENT_NAME = "agentName";
     private static final String DF_NAME = "agentName";
     private static final String CONTAINER_NAME = "containerName";
+    private static final String SERVICE_NAME = "serviceName";
+    private static final String SERVICE_TYPE = "serviceType";
+    private static final String ONTOLOGY_NAME = "ontologyName";
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
     private AID amsAID = new AID(AMS_NAME, AID.ISGUID);
@@ -79,6 +83,7 @@ public class AgentManagementAssistantTest {
     private ACLMessage response;
     private ArgumentCaptor<ACLMessage> messageArgumentCaptor;
     private ArgumentCaptor<DFAgentDescription> agentDescriptionArgumentCaptor;
+    private ServiceDescription serviceDescription;
 
     @Before
     public void setUp() {
@@ -100,6 +105,13 @@ public class AgentManagementAssistantTest {
                 .content(new Done(new Action(agentAID, new ShutdownPlatform())))
                 .build();
         doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
+
+        serviceDescription = new ServiceDescription();
+        serviceDescription.setName(SERVICE_NAME);
+        serviceDescription.setType(SERVICE_TYPE);
+        serviceDescription.addProtocols(FIPANames.InteractionProtocol.FIPA_REQUEST);
+        serviceDescription.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
+        serviceDescription.addOntologies(ONTOLOGY_NAME);
     }
 
     @Test
@@ -252,43 +264,104 @@ public class AgentManagementAssistantTest {
 
     @Test
     public void shouldSendSubscribeServiceInDF() throws Exception {
-        String serviceName = "serviceName";
-        String serviceType = "serviceType";
-        String ontologyName = "ontologyName";
-
-        ServiceDescription serviceDescription = new ServiceDescription();
-        serviceDescription.setName(serviceName);
-        serviceDescription.setType(serviceType);
-        serviceDescription.addProtocols(FIPANames.InteractionProtocol.FIPA_REQUEST);
-        serviceDescription.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
-        serviceDescription.addOntologies(ontologyName);
-
         mockStatic(DFService.class);
         agentManagementAssistant.register(serviceDescription);
+        testRegister();
+    }
+
+    @Test
+    public void shouldSendSearchServiceInDF() throws Exception {
+        prepareTestSearch();
+        List<AID> search = agentManagementAssistant.search(serviceDescription);
+        testSearch(search);
+    }
+
+    private void prepareTestSearch() throws Exception {
+        DFAgentDescription[] results = new DFAgentDescription[1];
+        results[0] = new DFAgentDescription();
+        results[0].setName(agentAID);
+
+        mockStatic(DFService.class);
+        doReturn(results).when(DFService.class, "search", any(Agent.class), any(DFAgentDescription.class));
+    }
+
+    @Test
+    public void shouldSendSearchServiceWithTypeInDF() throws Exception {
+        prepareTestSearch();
+        List<AID> search = agentManagementAssistant.search(SERVICE_TYPE);
+        testSearch(search);
+    }
+
+    private void testSearch(List<AID> search) throws FIPAException {
+        verifyStatic();
+
+        DFService.search(eq(agentMock), agentDescriptionArgumentCaptor.capture());
+        assertThat(search.get(0), is(agentAID));
+
+        Iterator allServices = agentDescriptionArgumentCaptor.getValue().getAllServices();
+        ServiceDescription actualService = (ServiceDescription) allServices.next();
+        assertThat(actualService.getType(), is(SERVICE_TYPE));
+    }
+
+    @Test
+    public void shouldSendSubscribeServiceWithAgentNameInDF() throws Exception {
+        mockStatic(DFService.class);
+        agentManagementAssistant.register(agentAID, serviceDescription);
+        testRegister();
+    }
+
+    private void testRegister() throws FIPAException {
         verifyStatic();
         DFService.register(eq(agentMock), agentDescriptionArgumentCaptor.capture());
 
         Iterator allServices = agentDescriptionArgumentCaptor.getValue().getAllServices();
 
         ServiceDescription actualService = (ServiceDescription) allServices.next();
-        assertThat(actualService.getName(), is(serviceName));
-        assertThat(actualService.getType(), is(serviceType));
+        assertThat(actualService.getName(), is(SERVICE_NAME));
+        assertThat(actualService.getType(), is(SERVICE_TYPE));
         assertThat(actualService.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
         assertThat(actualService.getAllLanguages().next(), is(FIPANames.ContentLanguage.FIPA_SL));
-        assertThat(actualService.getAllOntologies().next(), is(ontologyName));
+        assertThat(actualService.getAllOntologies().next(), is(ONTOLOGY_NAME));
     }
 
     @Test
     public void shouldThrowExceptionWhenErrorInRegister() throws Exception {
+        prepareDFExceptionTest();
+        DFService.register(eq(agentMock), any());
+        ServiceDescription serviceDescription = new ServiceDescription();
+        agentManagementAssistant.register(serviceDescription);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenErrorInRegisterWithName() throws Exception {
+        prepareDFExceptionTest();
+        DFService.register(eq(agentMock), any());
+        ServiceDescription serviceDescription = new ServiceDescription();
+        agentManagementAssistant.register(agentAID, serviceDescription);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenErrorInSearch() throws Exception {
+        prepareDFExceptionTest();
+        DFService.search(eq(agentMock), any());
+        ServiceDescription serviceDescription = new ServiceDescription();
+        agentManagementAssistant.search(serviceDescription);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenErrorInSearchWithName() throws Exception {
+        prepareDFExceptionTest();
+        DFService.search(eq(agentMock), any());
+        agentManagementAssistant.search(SERVICE_TYPE);
+    }
+
+    private void prepareDFExceptionTest() throws FIPAException {
         String message = "error";
         expectedException.expectMessage(containsString(message));
         expectedException.expect(InvalidResponseException.class);
         FIPAException expectedException = new FIPAException(message);
         mockStatic(DFService.class);
         doThrow(expectedException).when(DFService.class);
-        DFService.register(eq(agentMock), any());
-        ServiceDescription serviceDescription = new ServiceDescription();
-        agentManagementAssistant.register(serviceDescription);
     }
 
     private ContentElement testSendBasicMessage(Ontology ontology) throws Exception {

@@ -9,9 +9,7 @@ package settings;
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import jade.core.Agent;
-import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import ontology.settings.SettingsOntology;
 import org.junit.Before;
@@ -27,11 +25,9 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
@@ -81,17 +77,15 @@ public class SettingsAgentTest {
 
     @Test
     public void shouldLogErrorWhenRegisterThrowsException() throws Exception {
-        FIPAException expectedException = new FIPAException("error");
-        mockStatic(DFService.class);
-        doThrow(expectedException).when(DFService.class);
-        DFService.register(eq(settingsAgentSpy), any());
+        RuntimeException expectedException = new RuntimeException("error");
+        doThrow(expectedException).when(agentManagementAssistantMock).register(any(ServiceDescription.class), any(ServiceDescription.class));
         settingsAgentSpy.setup();
         verify(loggerMock).exception(settingsAgentSpy, expectedException);
     }
 
     private void testService(ServiceDescription actualService, String name) {
         assertThat(actualService.getName(), is(name));
-        assertThat(actualService.getType(), is("settings-" + name));
+        assertThat(actualService.getType(), is(name));
         assertThat(actualService.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
         assertThat(actualService.getAllLanguages().next(), is(FIPANames.ContentLanguage.FIPA_SL));
         assertThat(actualService.getAllOntologies().next(), is(SettingsOntology.NAME));

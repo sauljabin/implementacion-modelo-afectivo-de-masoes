@@ -17,7 +17,6 @@ import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.domain.FIPAException;
 import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
 import jade.domain.JADEAgentManagement.KillAgent;
@@ -34,6 +33,7 @@ import util.StringGenerator;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AgentManagementAssistant {
 
@@ -120,13 +120,36 @@ public class AgentManagementAssistant {
         return addBehaviour(agent, stringGenerator.getString(RANDOM_STRING_LENGTH).toLowerCase(), behaviourClass);
     }
 
-    public void register(ServiceDescription... serviceDescriptions) {
+    public void register(AID agentName, ServiceDescription... serviceDescriptions) {
         try {
             DFAgentDescription agentDescription = new DFAgentDescription();
-            agentDescription.setName(agent.getAID());
-            Arrays.stream(serviceDescriptions).forEach(serviceDescription -> agentDescription.addServices(serviceDescription));
+            agentDescription.setName(agentName);
+            Arrays.stream(serviceDescriptions).forEach(
+                    serviceDescription -> agentDescription.addServices(serviceDescription)
+            );
             DFService.register(agent, agentDescription);
-        } catch (FIPAException e) {
+        } catch (Exception e) {
+            throw new InvalidResponseException(e);
+        }
+    }
+
+    public void register(ServiceDescription... serviceDescriptions) {
+        register(agent.getAID(), serviceDescriptions);
+    }
+
+    public List<AID> search(String type) {
+        ServiceDescription serviceDescription = new ServiceDescription();
+        serviceDescription.setType(type);
+        return search(serviceDescription);
+    }
+
+    public List<AID> search(ServiceDescription serviceDescription) {
+        try {
+            DFAgentDescription agentDescription = new DFAgentDescription();
+            agentDescription.addServices(serviceDescription);
+            DFAgentDescription[] results = DFService.search(agent, agentDescription);
+            return Arrays.stream(results).map(DFAgentDescription::getName).collect(Collectors.toList());
+        } catch (Exception e) {
             throw new InvalidResponseException(e);
         }
     }

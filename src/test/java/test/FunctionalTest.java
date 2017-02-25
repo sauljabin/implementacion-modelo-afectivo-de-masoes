@@ -15,6 +15,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.ContainerID;
 import jade.core.behaviours.Behaviour;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
 import ontology.OntologyAssistant;
@@ -121,12 +122,32 @@ public abstract class FunctionalTest {
         return testerAgent.getAID(name);
     }
 
+    public void register(ServiceDescription... serviceDescriptions) {
+        agentManagementAssistant.register(serviceDescriptions);
+    }
+
+    public void register(AID agentName, ServiceDescription... serviceDescriptions) {
+        agentManagementAssistant.register(agentName, serviceDescriptions);
+    }
+
+    public List<AID> search(ServiceDescription serviceDescription) {
+        return agentManagementAssistant.search(serviceDescription);
+    }
+
+    public List<AID> search(String type) {
+        return agentManagementAssistant.search(type);
+    }
+
     public ProtocolAssistant createProtocolAssistant() {
         return new ProtocolAssistant(testerAgent, agentManagementAssistant.getTimeout());
     }
 
     public OntologyAssistant createOntologyAssistant(Ontology ontology) {
         return new OntologyAssistant(testerAgent, ontology);
+    }
+
+    public AgentManagementAssistant createAgentManagementAssistant() {
+        return new AgentManagementAssistant(testerAgent);
     }
 
 }

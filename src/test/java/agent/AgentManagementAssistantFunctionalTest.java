@@ -11,18 +11,21 @@ import jade.content.ContentManager;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.core.AID;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPANames;
 import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
 import jade.domain.JADEAgentManagement.KillAgent;
 import jade.lang.acl.ACLMessage;
-import jade.wrapper.ControllerException;
 import language.SemanticLanguage;
 import org.junit.Test;
 import test.FunctionalTest;
 
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 
@@ -77,7 +80,7 @@ public class AgentManagementAssistantFunctionalTest extends FunctionalTest {
     }
 
     @Test
-    public void shouldCreateAndKillAgentWithAssistant() throws ControllerException {
+    public void shouldCreateAndKillAgentWithAssistant() {
         AID agent = createAgent(ConfigurableAgent.class, null);
         getAgent(agent.getLocalName());
         killAgent(agent);
@@ -86,6 +89,30 @@ public class AgentManagementAssistantFunctionalTest extends FunctionalTest {
         } catch (Exception e) {
             assertThat(e.getMessage(), containsString(agent.getName()));
         }
+    }
+
+    @Test
+    public void shouldRegisterAgentOnDF() throws Exception {
+        String nameService = "nameService";
+
+        AID agentA = createAgent(ConfigurableAgent.class, null);
+        registerService(nameService, agentA);
+
+        AID agentB = createAgent(ConfigurableAgent.class, null);
+        registerService(nameService, agentB);
+
+        AID agentC = createAgent(ConfigurableAgent.class, null);
+        registerService(nameService, agentC);
+
+        List<AID> result = search(nameService);
+        assertThat(result, hasItems(agentA, agentB, agentC));
+    }
+
+    private void registerService(String nameService, AID agentA) {
+        ServiceDescription serviceDescriptionA = new ServiceDescription();
+        serviceDescriptionA.setType(nameService);
+        serviceDescriptionA.setName(nameService);
+        register(agentA, serviceDescriptionA);
     }
 
 }

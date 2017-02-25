@@ -42,7 +42,7 @@ public class SettingsAgent extends Agent {
     private ServiceDescription createService(String serviceName) {
         ServiceDescription serviceDescription = new ServiceDescription();
         serviceDescription.setName(serviceName);
-        serviceDescription.setType(getLocalName() + "-" + serviceName);
+        serviceDescription.setType(serviceName);
         serviceDescription.addProtocols(FIPANames.InteractionProtocol.FIPA_REQUEST);
         serviceDescription.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
         serviceDescription.addOntologies(SettingsOntology.NAME);
