@@ -15,7 +15,9 @@ import jade.content.onto.basic.TrueProposition;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.ContainerID;
+import jade.domain.AMSService;
 import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -49,6 +51,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
@@ -65,12 +68,12 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
-@PrepareForTest({Agent.class, DFService.class})
+@PrepareForTest({Agent.class, DFService.class, AMSService.class})
 public class AgentManagementAssistantTest {
 
-    private static final String AMS_NAME = "amsName";
+    private static final String AMS_NAME = "ams";
     private static final String AGENT_NAME = "agentName";
-    private static final String DF_NAME = "agentName";
+    private static final String DF_NAME = "df";
     private static final String CONTAINER_NAME = "containerName";
     private static final String SERVICE_NAME = "serviceName";
     private static final String SERVICE_TYPE = "serviceType";
@@ -84,13 +87,15 @@ public class AgentManagementAssistantTest {
     private Agent agentMock;
     private ACLMessage response;
     private ArgumentCaptor<ACLMessage> messageArgumentCaptor;
-    private ArgumentCaptor<DFAgentDescription> agentDescriptionArgumentCaptor;
+    private ArgumentCaptor<DFAgentDescription> dfDescriptorArgumentCaptor;
+    private ArgumentCaptor<AMSAgentDescription> amsDescriptorArgumentCaptor;
     private ServiceDescription serviceDescription;
 
     @Before
     public void setUp() {
         messageArgumentCaptor = ArgumentCaptor.forClass(ACLMessage.class);
-        agentDescriptionArgumentCaptor = ArgumentCaptor.forClass(DFAgentDescription.class);
+        dfDescriptorArgumentCaptor = ArgumentCaptor.forClass(DFAgentDescription.class);
+        amsDescriptorArgumentCaptor = ArgumentCaptor.forClass(AMSAgentDescription.class);
 
         agentMock = mock(Agent.class);
         doReturn(agentAID).when(agentMock).getAID();
@@ -278,20 +283,6 @@ public class AgentManagementAssistantTest {
         testRegister();
     }
 
-    private void testRegister() throws FIPAException {
-        verifyStatic();
-        DFService.register(eq(agentMock), agentDescriptionArgumentCaptor.capture());
-
-        Iterator allServices = agentDescriptionArgumentCaptor.getValue().getAllServices();
-
-        ServiceDescription actualService = (ServiceDescription) allServices.next();
-        assertThat(actualService.getName(), is(SERVICE_NAME));
-        assertThat(actualService.getType(), is(SERVICE_TYPE));
-        assertThat(actualService.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
-        assertThat(actualService.getAllLanguages().next(), is(FIPANames.ContentLanguage.FIPA_SL));
-        assertThat(actualService.getAllOntologies().next(), is(ONTOLOGY_NAME));
-    }
-
     @Test
     public void shouldThrowExceptionWhenErrorInRegister() throws Exception {
         prepareDFExceptionTest();
@@ -320,10 +311,10 @@ public class AgentManagementAssistantTest {
         List<AID> search = agentManagementAssistant.search(serviceDescription);
         verifyStatic();
 
-        DFService.search(eq(agentMock), agentDescriptionArgumentCaptor.capture(), any(SearchConstraints.class));
+        DFService.search(eq(agentMock), dfDescriptorArgumentCaptor.capture(), any(SearchConstraints.class));
         assertThat(search.get(0), is(agentAID));
 
-        Iterator allServices = agentDescriptionArgumentCaptor.getValue().getAllServices();
+        Iterator allServices = dfDescriptorArgumentCaptor.getValue().getAllServices();
         ServiceDescription actualService = (ServiceDescription) allServices.next();
         assertThat(actualService.getType(), is(SERVICE_TYPE));
     }
@@ -334,6 +325,44 @@ public class AgentManagementAssistantTest {
         DFService.search(eq(agentMock), any(), (SearchConstraints) any());
         ServiceDescription serviceDescription = new ServiceDescription();
         agentManagementAssistant.search(serviceDescription);
+    }
+
+    @Test
+    public void shouldSendSearchAllAgentsInAMS() throws Exception {
+        AMSAgentDescription[] results = new AMSAgentDescription[3];
+        results[0] = new AMSAgentDescription();
+        results[0].setName(agentAID);
+
+        results[1] = new AMSAgentDescription();
+        results[1].setName(amsAID);
+
+        results[2] = new AMSAgentDescription();
+        results[2].setName(dfAID);
+
+        mockStatic(AMSService.class);
+        when(AMSService.search(any(Agent.class), any(AMSAgentDescription.class), any(SearchConstraints.class))).thenReturn(results);
+
+        List<AID> search = agentManagementAssistant.agents();
+
+        verifyStatic();
+        AMSService.search(eq(agentMock), any(AMSAgentDescription.class), any(SearchConstraints.class));
+
+        assertThat(search, hasSize(1));
+        assertThat(search.get(0), is(agentAID));
+    }
+
+    private void testRegister() throws FIPAException {
+        verifyStatic();
+        DFService.register(eq(agentMock), dfDescriptorArgumentCaptor.capture());
+
+        Iterator allServices = dfDescriptorArgumentCaptor.getValue().getAllServices();
+
+        ServiceDescription actualService = (ServiceDescription) allServices.next();
+        assertThat(actualService.getName(), is(SERVICE_NAME));
+        assertThat(actualService.getType(), is(SERVICE_TYPE));
+        assertThat(actualService.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
+        assertThat(actualService.getAllLanguages().next(), is(FIPANames.ContentLanguage.FIPA_SL));
+        assertThat(actualService.getAllOntologies().next(), is(ONTOLOGY_NAME));
     }
 
     private void prepareDFExceptionTest() {

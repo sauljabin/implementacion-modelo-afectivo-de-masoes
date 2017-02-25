@@ -137,7 +137,7 @@ public class AgentManagementAssistantFunctionalTest extends FunctionalTest {
     }
 
     @Test
-    public void shouldSearchAgent() {
+    public void shouldSearchAllAgents() {
         AID agentA = createAgent(ConfigurableAgent.class, null);
         AID agentB = createAgent(ConfigurableAgent.class, null);
         AID agentC = createAgent(ConfigurableAgent.class, null);

@@ -152,11 +152,11 @@ public class AgentManagementAssistant {
             if (results.length > 0) {
                 DFAgentDescription description = results[0];
                 List<ServiceDescription> list = new ArrayList<>();
-                description.getAllServices().forEachRemaining(o -> list.add((ServiceDescription) o));
+                description.getAllServices().forEachRemaining(service -> list.add((ServiceDescription) service));
                 return list;
             }
 
-            return null;
+            return new ArrayList<>();
         } catch (Exception e) {
             throw new InvalidResponseException(e);
         }
