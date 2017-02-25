@@ -6,7 +6,6 @@
 
 package agent;
 
-import jade.AgentException;
 import jade.content.AgentAction;
 import jade.content.ContentElement;
 import jade.content.onto.basic.Done;
@@ -35,6 +34,7 @@ import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
 import protocol.InvalidResponseException;
 import protocol.ProtocolAssistant;
+import util.StopWatch;
 import util.StringGenerator;
 
 import java.util.ArrayList;
@@ -92,6 +92,7 @@ public class AgentManagementAssistant {
         KillAgent content = new KillAgent();
         content.setAgent(agentToKill);
         sendRequestAndVerifyDone(agent.getAMS(), content, ontologyAssistantManagement);
+        delay();
     }
 
     public AID createAgent(String agentName, Class<? extends Agent> agentClass, List<String> arguments) {
@@ -105,13 +106,8 @@ public class AgentManagementAssistant {
         }
 
         sendRequestAndVerifyDone(agent.getAMS(), content, ontologyAssistantManagement);
-
-        try {
-            Thread.sleep(100);
-            return agent.getAID(agentName);
-        } catch (Exception e) {
-            throw new AgentException(e);
-        }
+        delay();
+        return agent.getAID(agentName);
     }
 
     public AID createAgent(Class<? extends Agent> agentClass, List<String> arguments) {
@@ -138,81 +134,65 @@ public class AgentManagementAssistant {
     }
 
     public void register(AID agentName, ServiceDescription... serviceDescriptions) {
-        try {
-            DFAgentDescription agentDescription = new DFAgentDescription();
-            agentDescription.setName(agentName);
-            Arrays.stream(serviceDescriptions).forEach(
-                    serviceDescription -> agentDescription.addServices(serviceDescription)
-            );
+        DFAgentDescription agentDescription = new DFAgentDescription();
+        agentDescription.setName(agentName);
+        Arrays.stream(serviceDescriptions).forEach(
+                serviceDescription -> agentDescription.addServices(serviceDescription)
+        );
 
-            Register register = new Register();
-            register.setDescription(agentDescription);
+        Register register = new Register();
+        register.setDescription(agentDescription);
 
-            sendRequestAndVerifyDone(agent.getDefaultDF(), register, ontologyAssistantFIPA);
-        } catch (Exception e) {
-            throw new InvalidResponseException(e);
-        }
+        sendRequestAndVerifyDone(agent.getDefaultDF(), register, ontologyAssistantFIPA);
+        delay();
     }
 
     public List<ServiceDescription> services(AID agentName) {
-        try {
-            DFAgentDescription dfAgentDescription = new DFAgentDescription();
-            dfAgentDescription.setName(agentName);
+        DFAgentDescription dfAgentDescription = new DFAgentDescription();
+        dfAgentDescription.setName(agentName);
 
-            List<ServiceDescription> serviceDescriptionList = new ArrayList<>();
-            Iterator iterator = searchAgents(agent.getDefaultDF(), dfAgentDescription).getItems().iterator();
+        List<ServiceDescription> serviceDescriptionList = new ArrayList<>();
+        Iterator iterator = searchAgents(agent.getDefaultDF(), dfAgentDescription).getItems().iterator();
 
-            while (iterator.hasNext()) {
-                DFAgentDescription agentDescription = (DFAgentDescription) iterator.next();
-                Iterator iteratorServices = agentDescription.getAllServices();
-                while (iteratorServices.hasNext()) {
-                    serviceDescriptionList.add((ServiceDescription) iteratorServices.next());
-                }
+        while (iterator.hasNext()) {
+            DFAgentDescription agentDescription = (DFAgentDescription) iterator.next();
+            Iterator iteratorServices = agentDescription.getAllServices();
+            while (iteratorServices.hasNext()) {
+                serviceDescriptionList.add((ServiceDescription) iteratorServices.next());
             }
-
-            return serviceDescriptionList;
-        } catch (Exception e) {
-            throw new InvalidResponseException(e);
         }
+        return serviceDescriptionList;
     }
 
     public List<AID> search(ServiceDescription serviceDescription) {
-        try {
-            DFAgentDescription dfAgentDescription = new DFAgentDescription();
-            dfAgentDescription.addServices(serviceDescription);
+        DFAgentDescription dfAgentDescription = new DFAgentDescription();
+        dfAgentDescription.addServices(serviceDescription);
 
-            List<AID> listAID = new ArrayList<>();
-            Iterator iterator = searchAgents(agent.getDefaultDF(), dfAgentDescription).getItems().iterator();
+        List<AID> listAID = new ArrayList<>();
+        Iterator iterator = searchAgents(agent.getDefaultDF(), dfAgentDescription).getItems().iterator();
 
-            while (iterator.hasNext()) {
-                DFAgentDescription agentDescription = (DFAgentDescription) iterator.next();
-                listAID.add(agentDescription.getName());
-            }
-
-            return listAID;
-        } catch (Exception e) {
-            throw new InvalidResponseException(e);
+        while (iterator.hasNext()) {
+            DFAgentDescription agentDescription = (DFAgentDescription) iterator.next();
+            listAID.add(agentDescription.getName());
         }
+
+        return listAID;
     }
 
     public List<AID> agents() {
-        try {
-            AMSAgentDescription amsAgentDescription = new AMSAgentDescription();
+        AMSAgentDescription amsAgentDescription = new AMSAgentDescription();
 
-            List<AID> listAID = new ArrayList<>();
-            Iterator iterator = searchAgents(agent.getAMS(), amsAgentDescription).getItems().iterator();
+        List<AID> listAID = new ArrayList<>();
+        Iterator iterator = searchAgents(agent.getAMS(), amsAgentDescription).getItems().iterator();
 
-            while (iterator.hasNext()) {
-                AMSAgentDescription agentDescription = (AMSAgentDescription) iterator.next();
-                if (!agentDescription.getName().getLocalName().matches("ams|df")) {
-                    listAID.add(agentDescription.getName());
-                }
+        while (iterator.hasNext()) {
+            AMSAgentDescription agentDescription = (AMSAgentDescription) iterator.next();
+            if (!agentDescription.getName().getLocalName().matches("ams|df")) {
+                listAID.add(agentDescription.getName());
             }
-
-            return listAID;
-        } catch (Exception e) {
-            throw new InvalidResponseException(e);
         }
+
+        return listAID;
     }
 
     private Result searchAgents(AID receiver, Object description) {
@@ -241,6 +221,15 @@ public class AgentManagementAssistant {
         if (!(contentElement instanceof Done)) {
             throw new InvalidResponseException("Unknown notification: " + contentElement);
         }
+    }
+
+    private void delay() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        while (stopWatch.getTime() < 150) {
+            continue;
+        }
+        stopWatch.stop();
     }
 
 }

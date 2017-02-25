@@ -75,8 +75,11 @@ public class SettingsAgentTest {
     public void shouldLogErrorWhenRegisterThrowsException() throws Exception {
         RuntimeException expectedException = new RuntimeException("error");
         doThrow(expectedException).when(agentManagementAssistantMock).register(any(ServiceDescription.class), any(ServiceDescription.class));
-        settingsAgentSpy.setup();
-        verify(loggerMock).exception(settingsAgentSpy, expectedException);
+        try {
+            settingsAgentSpy.setup();
+        } catch (Exception e) {
+            verify(loggerMock).exception(settingsAgentSpy, expectedException);
+        }
     }
 
 }

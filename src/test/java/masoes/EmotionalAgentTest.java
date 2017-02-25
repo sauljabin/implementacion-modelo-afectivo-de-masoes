@@ -77,8 +77,11 @@ public class EmotionalAgentTest {
     public void shouldLogErrorWhenRegisterThrowsException() throws Exception {
         RuntimeException expectedException = new RuntimeException("error");
         doThrow(expectedException).when(agentManagementAssistantMock).register(any(ServiceDescription.class), any(ServiceDescription.class));
-        emotionalAgentSpy.setup();
-        verify(loggerMock).exception(emotionalAgentSpy, expectedException);
+        try {
+            emotionalAgentSpy.setup();
+        } catch (Exception e) {
+            verify(loggerMock).exception(emotionalAgentSpy, expectedException);
+        }
     }
 
     @Test

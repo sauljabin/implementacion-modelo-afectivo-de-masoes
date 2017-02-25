@@ -12,6 +12,7 @@ import jade.content.lang.sl.SLCodec;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.core.AID;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import ontology.masoes.AgentState;
 import ontology.masoes.EvaluateStimulus;
@@ -24,8 +25,12 @@ import org.junit.Test;
 import test.FunctionalTest;
 import util.MessageBuilder;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
@@ -45,6 +50,13 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
     @After
     public void tearDown() throws Exception {
         killAgent(dummyAgentAID);
+    }
+
+    @Test
+    public void shouldGetAllEmotionalServicesFromDF() {
+        List<ServiceDescription> services = services(dummyAgentAID);
+        List<String> results = services.stream().map(ServiceDescription::getName).collect(Collectors.toList());
+        assertThat(results, hasItems(MasoesOntology.ACTION_EVALUATE_STIMULUS, MasoesOntology.ACTION_GET_EMOTIONAL_STATE));
     }
 
     @Test

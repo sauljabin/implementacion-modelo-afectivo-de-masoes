@@ -11,6 +11,7 @@ import jade.JadeSettings;
 import jade.content.AgentAction;
 import jade.content.ContentElement;
 import jade.core.AID;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import ontology.OntologyAssistant;
 import ontology.settings.GetAllSettings;
@@ -18,12 +19,17 @@ import ontology.settings.GetSetting;
 import ontology.settings.Setting;
 import ontology.settings.SettingsOntology;
 import ontology.settings.SystemSettings;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import protocol.ProtocolAssistant;
 import test.FunctionalTest;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -40,6 +46,18 @@ public class SettingsAgentFunctionalTest extends FunctionalTest {
         settingsAgentAID = createAgent(SettingsAgent.class, null);
         ontologyAssistant = createOntologyAssistant(SettingsOntology.getInstance());
         protocolAssistant = createProtocolAssistant();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        killAgent(settingsAgentAID);
+    }
+
+    @Test
+    public void shouldGetAllServicesFromDF() {
+        List<ServiceDescription> services = services(settingsAgentAID);
+        List<String> results = services.stream().map(ServiceDescription::getName).collect(Collectors.toList());
+        assertThat(results, hasItems(SettingsOntology.ACTION_GET_ALL_SETTINGS, SettingsOntology.ACTION_GET_SETTING));
     }
 
     @Test

@@ -66,8 +66,11 @@ public class ConfigurableAgentTest {
     public void shouldLogErrorWhenRegisterThrowsException() throws Exception {
         RuntimeException expectedException = new RuntimeException("error");
         doThrow(expectedException).when(agentManagementAssistantMock).register(any(ServiceDescription.class), any(ServiceDescription.class));
-        configurableAgentSpy.setup();
-        verify(loggerMock).exception(configurableAgentSpy, expectedException);
+        try {
+            configurableAgentSpy.setup();
+        } catch (Exception e) {
+            verify(loggerMock).exception(configurableAgentSpy, expectedException);
+        }
     }
 
 }

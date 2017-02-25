@@ -35,6 +35,7 @@ public class SettingsAgent extends Agent {
             );
         } catch (Exception e) {
             logger.exception(this, e);
+            throw e;
         }
     }
 

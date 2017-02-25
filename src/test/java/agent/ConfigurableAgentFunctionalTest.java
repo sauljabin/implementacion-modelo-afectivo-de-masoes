@@ -10,6 +10,7 @@ import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import ontology.configurable.ConfigurableOntology;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import protocol.TimeoutRequestException;
@@ -30,6 +31,11 @@ public class ConfigurableAgentFunctionalTest extends FunctionalTest {
     @Before
     public void setUp() {
         configurableAid = createAgent(ConfigurableAgent.class, null);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        killAgent(configurableAid);
     }
 
     @Test

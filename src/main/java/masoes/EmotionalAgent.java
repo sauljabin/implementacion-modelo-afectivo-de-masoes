@@ -40,6 +40,7 @@ public abstract class EmotionalAgent extends Agent {
             );
         } catch (Exception e) {
             logger.exception(this, e);
+            throw e;
         }
     }
 
