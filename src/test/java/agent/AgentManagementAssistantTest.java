@@ -16,14 +16,13 @@ import jade.content.onto.basic.TrueProposition;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.ContainerID;
-import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
+import jade.domain.FIPAAgentManagement.Register;
 import jade.domain.FIPAAgentManagement.Search;
 import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
@@ -33,7 +32,6 @@ import jade.domain.JADEAgentManagement.ShutdownPlatform;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.leap.ArrayList;
-import jade.util.leap.Iterator;
 import language.SemanticLanguage;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
@@ -60,18 +58,13 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
-import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.verifyStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
-@PrepareForTest({Agent.class, DFService.class})
+@PrepareForTest(Agent.class)
 public class AgentManagementAssistantTest {
 
     private static final String AMS_NAME = "ams";
@@ -81,24 +74,24 @@ public class AgentManagementAssistantTest {
     private static final String SERVICE_NAME = "serviceName";
     private static final String SERVICE_TYPE = "serviceType";
     private static final String ONTOLOGY_NAME = "ontologyName";
+    private static final String OTHER_NAME = "otherName";
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
     private AID amsAID = new AID(AMS_NAME, AID.ISGUID);
     private AID dfAID = new AID(DF_NAME, AID.ISGUID);
     private AID agentAID = new AID(AGENT_NAME, AID.ISGUID);
+    private AID otherAID = new AID(OTHER_NAME, AID.ISGUID);
     private AgentManagementAssistant agentManagementAssistant;
     private Agent agentMock;
     private ACLMessage response;
     private ArgumentCaptor<ACLMessage> messageArgumentCaptor;
     private ArgumentCaptor<DFAgentDescription> dfDescriptorArgumentCaptor;
-    private ArgumentCaptor<AMSAgentDescription> amsDescriptorArgumentCaptor;
     private ServiceDescription serviceDescription;
 
     @Before
     public void setUp() {
         messageArgumentCaptor = ArgumentCaptor.forClass(ACLMessage.class);
         dfDescriptorArgumentCaptor = ArgumentCaptor.forClass(DFAgentDescription.class);
-        amsDescriptorArgumentCaptor = ArgumentCaptor.forClass(AMSAgentDescription.class);
 
         agentMock = mock(Agent.class);
         doReturn(agentAID).when(agentMock).getAID();
@@ -127,7 +120,7 @@ public class AgentManagementAssistantTest {
     @Test
     public void shouldSendShutdownToAMSAgent() throws Exception {
         agentManagementAssistant.shutdownPlatform();
-        ContentElement contentElement = testSendBasicMessage(JADEManagementOntology.getInstance());
+        ContentElement contentElement = testSendBasicMessage(AMS_NAME, JADEManagementOntology.getInstance());
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(ShutdownPlatform.class)));
     }
@@ -135,7 +128,7 @@ public class AgentManagementAssistantTest {
     @Test
     public void shouldSendKillContainerToAMSAgent() throws Exception {
         agentManagementAssistant.killContainer();
-        ContentElement contentElement = testSendBasicMessage(JADEManagementOntology.getInstance());
+        ContentElement contentElement = testSendBasicMessage(AMS_NAME, JADEManagementOntology.getInstance());
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(KillContainer.class)));
         KillContainer killContainer = (KillContainer) action.getAction();
@@ -145,7 +138,7 @@ public class AgentManagementAssistantTest {
     @Test
     public void shouldSendKillAgentToAMSAgent() throws Exception {
         agentManagementAssistant.killAgent(agentAID);
-        ContentElement contentElement = testSendAndResponseBasicMessage(JADEManagementOntology.getInstance());
+        ContentElement contentElement = testSendAndResponseBasicMessage(AMS_NAME, JADEManagementOntology.getInstance());
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(KillAgent.class)));
         KillAgent killAgent = (KillAgent) action.getAction();
@@ -159,10 +152,10 @@ public class AgentManagementAssistantTest {
     }
 
     @Test
-    public void shouldSendCreateAgentToAMSAgent() throws Exception {
+    public void shouldSendCreateAgent() throws Exception {
         String arg1 = "arg1";
         agentManagementAssistant.createAgent(AGENT_NAME, Agent.class, Arrays.asList(arg1));
-        ContentElement contentElement = testSendAndResponseBasicMessage(JADEManagementOntology.getInstance());
+        ContentElement contentElement = testSendAndResponseBasicMessage(AMS_NAME, JADEManagementOntology.getInstance());
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(CreateAgent.class)));
         CreateAgent createAgent = (CreateAgent) action.getAction();
@@ -172,16 +165,16 @@ public class AgentManagementAssistantTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInCreateAgentWithName() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInCreateAgent() throws Exception {
         prepareTestException(JADEManagementOntology.getInstance());
         agentManagementAssistant.createAgent("name", Agent.class, Arrays.asList("arg1"));
     }
 
     @Test
-    public void shouldSendCreateAgentToAMSAgentWithRandomName() throws Exception {
+    public void shouldSendCreateAgentWithRandomName() throws Exception {
         String arg1 = "arg1";
         agentManagementAssistant.createAgent(Agent.class, Arrays.asList(arg1));
-        ContentElement contentElement = testSendAndResponseBasicMessage(JADEManagementOntology.getInstance());
+        ContentElement contentElement = testSendAndResponseBasicMessage(AMS_NAME, JADEManagementOntology.getInstance());
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(CreateAgent.class)));
         CreateAgent createAgent = (CreateAgent) action.getAction();
@@ -191,13 +184,13 @@ public class AgentManagementAssistantTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInCreateAgent() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInCreateAgentWithRandomName() throws Exception {
         prepareTestException(JADEManagementOntology.getInstance());
         agentManagementAssistant.createAgent(Agent.class, Arrays.asList("arg1"));
     }
 
     @Test
-    public void shouldSendRemoveBehaviourToAgent() throws Exception {
+    public void shouldSendRemoveBehaviour() throws Exception {
         String behaviourName = "behaviourName";
         response = new MessageBuilder()
                 .performative(ACLMessage.INFORM)
@@ -207,7 +200,7 @@ public class AgentManagementAssistantTest {
                 .build();
         doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
         agentManagementAssistant.removeBehaviour(amsAID, behaviourName);
-        ContentElement contentElement = testSendAndResponseBasicMessage(ConfigurableOntology.getInstance());
+        ContentElement contentElement = testSendAndResponseBasicMessage(AMS_NAME, ConfigurableOntology.getInstance());
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(RemoveBehaviour.class)));
 
@@ -222,7 +215,7 @@ public class AgentManagementAssistantTest {
     }
 
     @Test
-    public void shouldSendAddBehaviourToAgent() throws Exception {
+    public void shouldSendAddBehaviour() throws Exception {
         String behaviourName = "behaviourName";
         response = new MessageBuilder()
                 .performative(ACLMessage.INFORM)
@@ -232,7 +225,7 @@ public class AgentManagementAssistantTest {
                 .build();
         doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
         agentManagementAssistant.addBehaviour(amsAID, behaviourName, SimpleBehaviour.class);
-        ContentElement contentElement = testSendAndResponseBasicMessage(ConfigurableOntology.getInstance());
+        ContentElement contentElement = testSendAndResponseBasicMessage(AMS_NAME, ConfigurableOntology.getInstance());
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(AddBehaviour.class)));
 
@@ -242,13 +235,13 @@ public class AgentManagementAssistantTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInAddBehaviorWithName() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInAddBehavior() throws Exception {
         prepareTestException(ConfigurableOntology.getInstance());
         agentManagementAssistant.addBehaviour(amsAID, "name", SimpleBehaviour.class);
     }
 
     @Test
-    public void shouldSendAddBehaviourToAgentWithoutName() throws Exception {
+    public void shouldSendAddBehaviourWithRandomName() throws Exception {
         response = new MessageBuilder()
                 .performative(ACLMessage.INFORM)
                 .fipaSL()
@@ -257,7 +250,7 @@ public class AgentManagementAssistantTest {
                 .build();
         doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
         agentManagementAssistant.addBehaviour(amsAID, SimpleBehaviour.class);
-        ContentElement contentElement = testSendAndResponseBasicMessage(ConfigurableOntology.getInstance());
+        ContentElement contentElement = testSendAndResponseBasicMessage(AMS_NAME, ConfigurableOntology.getInstance());
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(AddBehaviour.class)));
 
@@ -267,71 +260,167 @@ public class AgentManagementAssistantTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInAddBehavior() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInAddBehaviorWithRandomName() throws Exception {
         prepareTestException(ConfigurableOntology.getInstance());
         agentManagementAssistant.addBehaviour(amsAID, SimpleBehaviour.class);
     }
 
     @Test
-    public void shouldSendSubscribeServiceInDF() throws Exception {
-        mockStatic(DFService.class);
-        agentManagementAssistant.register(serviceDescription);
-        testRegister();
+    public void shouldSendRegisterAgent() throws Exception {
+        response = new MessageBuilder()
+                .performative(ACLMessage.INFORM)
+                .fipaSL()
+                .ontology(FIPAManagementOntology.getInstance())
+                .content(new Done(new Action(agentAID, new ShutdownPlatform())))
+                .build();
+        doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
+
+        agentManagementAssistant.register(new ServiceDescription());
+        ContentElement contentElement = testSendAndResponseBasicMessage(DF_NAME, FIPAManagementOntology.getInstance());
+
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(Register.class)));
+
+        Register register = (Register) action.getAction();
+        DFAgentDescription description = (DFAgentDescription) register.getDescription();
+        assertThat(description.getName(), is(agentAID));
     }
 
     @Test
-    public void shouldSendSubscribeServiceWithAgentNameInDF() throws Exception {
-        mockStatic(DFService.class);
-        agentManagementAssistant.register(agentAID, serviceDescription);
-        testRegister();
+    public void shouldThrowExceptionWhenIsNotDoneInRegisterAgent() throws Exception {
+        prepareTestException(FIPAManagementOntology.getInstance());
+        agentManagementAssistant.register(new ServiceDescription());
     }
 
     @Test
-    public void shouldThrowExceptionWhenErrorInRegister() throws Exception {
-        prepareDFExceptionTest();
-        DFService.register(eq(agentMock), any());
-        ServiceDescription serviceDescription = new ServiceDescription();
-        agentManagementAssistant.register(serviceDescription);
+    public void shouldSendRegisterAgentWithName() throws Exception {
+        response = new MessageBuilder()
+                .performative(ACLMessage.INFORM)
+                .fipaSL()
+                .ontology(FIPAManagementOntology.getInstance())
+                .content(new Done(new Action(agentAID, new ShutdownPlatform())))
+                .build();
+        doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
+
+        agentManagementAssistant.register(otherAID, new ServiceDescription());
+        ContentElement contentElement = testSendAndResponseBasicMessage(DF_NAME, FIPAManagementOntology.getInstance());
+
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(Register.class)));
+
+        Register register = (Register) action.getAction();
+        DFAgentDescription description = (DFAgentDescription) register.getDescription();
+        assertThat(description.getName(), is(otherAID));
     }
 
     @Test
-    public void shouldThrowExceptionWhenErrorInRegisterWithName() throws Exception {
-        prepareDFExceptionTest();
-        DFService.register(eq(agentMock), any());
-        ServiceDescription serviceDescription = new ServiceDescription();
-        agentManagementAssistant.register(agentAID, serviceDescription);
+    public void shouldThrowExceptionWhenIsNotDoneInRegisterAgentWithName() throws Exception {
+        prepareTestException(FIPAManagementOntology.getInstance());
+        agentManagementAssistant.register(otherAID, new ServiceDescription());
     }
 
     @Test
-    public void shouldSendSearchServiceInDF() throws Exception {
-        DFAgentDescription[] results = new DFAgentDescription[1];
-        results[0] = new DFAgentDescription();
-        results[0].setName(agentAID);
+    public void shouldSendSearchServicesAgent() throws Exception {
+        SearchConstraints constraints = new SearchConstraints();
+        constraints.setMaxResults(-1L);
 
-        mockStatic(DFService.class);
-        when(DFService.search(any(Agent.class), any(DFAgentDescription.class), any(SearchConstraints.class))).thenReturn(results);
+        Search search = new Search();
+        search.setDescription("description");
+        search.setConstraints(constraints);
 
-        List<AID> search = agentManagementAssistant.search(serviceDescription);
-        verifyStatic();
+        Action actionResult = new Action(agentAID, search);
 
-        DFService.search(eq(agentMock), dfDescriptorArgumentCaptor.capture(), any(SearchConstraints.class));
-        assertThat(search.get(0), is(agentAID));
+        ArrayList items = new ArrayList();
+        DFAgentDescription description = new DFAgentDescription();
+        description.setName(agentAID);
 
-        Iterator allServices = dfDescriptorArgumentCaptor.getValue().getAllServices();
-        ServiceDescription actualService = (ServiceDescription) allServices.next();
-        assertThat(actualService.getType(), is(SERVICE_TYPE));
+        ServiceDescription expectedServiceDescription = new ServiceDescription();
+        description.addServices(expectedServiceDescription);
+        String expectedServiceName = "expectedServiceName";
+        expectedServiceDescription.setName(expectedServiceName);
+
+        items.add(description);
+
+        Result result = new Result();
+        result.setAction(actionResult);
+        result.setItems(items);
+
+        response = new MessageBuilder()
+                .performative(ACLMessage.INFORM)
+                .fipaSL()
+                .ontology(FIPAManagementOntology.getInstance())
+                .content(result)
+                .build();
+        doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
+
+        List<ServiceDescription> services = agentManagementAssistant.services(agentAID);
+
+        ContentElement contentElement = testSendAndResponseBasicMessage(DF_NAME, FIPAManagementOntology.getInstance());
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(Search.class)));
+
+        Search addBehaviour = (Search) action.getAction();
+        assertThat(addBehaviour.getConstraints().getMaxResults(), is(-1L));
+
+        assertThat(services, hasSize(1));
+        assertThat(services.get(0).getName(), is(expectedServiceName));
     }
 
     @Test
-    public void shouldThrowExceptionWhenErrorInSearch() throws Exception {
-        prepareDFExceptionTest();
-        DFService.search(eq(agentMock), any(), (SearchConstraints) any());
-        ServiceDescription serviceDescription = new ServiceDescription();
-        agentManagementAssistant.search(serviceDescription);
+    public void shouldThrowExceptionWhenIsNotDoneInSearchServiceAgent() throws Exception {
+        prepareTestException(FIPAManagementOntology.getInstance());
+        agentManagementAssistant.services(agentAID);
     }
 
     @Test
-    public void shouldSendSearchAllAgentsInAMS() throws Exception {
+    public void shouldSendSearchAgent() throws Exception {
+        SearchConstraints constraints = new SearchConstraints();
+        constraints.setMaxResults(-1L);
+
+        Search search = new Search();
+        search.setDescription("description");
+        search.setConstraints(constraints);
+
+        Action actionResult = new Action(agentAID, search);
+
+        ArrayList items = new ArrayList();
+        DFAgentDescription description = new DFAgentDescription();
+        description.setName(agentAID);
+        items.add(description);
+
+        Result result = new Result();
+        result.setAction(actionResult);
+        result.setItems(items);
+
+        response = new MessageBuilder()
+                .performative(ACLMessage.INFORM)
+                .fipaSL()
+                .ontology(FIPAManagementOntology.getInstance())
+                .content(result)
+                .build();
+        doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
+
+        List<AID> agents = agentManagementAssistant.search(new ServiceDescription());
+
+        ContentElement contentElement = testSendAndResponseBasicMessage(DF_NAME, FIPAManagementOntology.getInstance());
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(Search.class)));
+
+        Search addBehaviour = (Search) action.getAction();
+        assertThat(addBehaviour.getConstraints().getMaxResults(), is(-1L));
+
+        assertThat(agents, hasSize(1));
+        assertThat(agents.get(0), is(agentAID));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenIsNotDoneInSearchAgent() throws Exception {
+        prepareTestException(FIPAManagementOntology.getInstance());
+        agentManagementAssistant.search(new ServiceDescription());
+    }
+
+    @Test
+    public void shouldSendSearchAgents() throws Exception {
         SearchConstraints constraints = new SearchConstraints();
         constraints.setMaxResults(-1L);
 
@@ -364,11 +453,11 @@ public class AgentManagementAssistantTest {
                 .ontology(FIPAManagementOntology.getInstance())
                 .content(result)
                 .build();
-
         doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
+
         List<AID> agents = agentManagementAssistant.agents();
 
-        ContentElement contentElement = testSendAndResponseBasicMessage(FIPAManagementOntology.getInstance());
+        ContentElement contentElement = testSendAndResponseBasicMessage(AMS_NAME, FIPAManagementOntology.getInstance());
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(Search.class)));
 
@@ -380,46 +469,12 @@ public class AgentManagementAssistantTest {
     }
 
     @Test
-    public void shouldSearchAllServiceOfAgent() throws Exception {
-        DFAgentDescription[] results = new DFAgentDescription[1];
-        results[0] = new DFAgentDescription();
-        ServiceDescription serviceDescription = new ServiceDescription();
-        results[0].addServices(serviceDescription);
-
-        mockStatic(DFService.class);
-        when(DFService.search(any(Agent.class), any(DFAgentDescription.class), any(SearchConstraints.class))).thenReturn(results);
-
-        List<ServiceDescription> search = agentManagementAssistant.services(agentAID);
-        verifyStatic();
-
-        DFService.search(eq(agentMock), any(DFAgentDescription.class), any(SearchConstraints.class));
-        assertThat(search.get(0), is(serviceDescription));
+    public void shouldThrowExceptionWhenIsNotDoneInSearchAgents() throws Exception {
+        prepareTestException(FIPAManagementOntology.getInstance());
+        agentManagementAssistant.agents();
     }
 
-    private void testRegister() throws FIPAException {
-        verifyStatic();
-        DFService.register(eq(agentMock), dfDescriptorArgumentCaptor.capture());
-
-        Iterator allServices = dfDescriptorArgumentCaptor.getValue().getAllServices();
-
-        ServiceDescription actualService = (ServiceDescription) allServices.next();
-        assertThat(actualService.getName(), is(SERVICE_NAME));
-        assertThat(actualService.getType(), is(SERVICE_TYPE));
-        assertThat(actualService.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
-        assertThat(actualService.getAllLanguages().next(), is(FIPANames.ContentLanguage.FIPA_SL));
-        assertThat(actualService.getAllOntologies().next(), is(ONTOLOGY_NAME));
-    }
-
-    private void prepareDFExceptionTest() {
-        String message = "error";
-        expectedException.expectMessage(containsString(message));
-        expectedException.expect(InvalidResponseException.class);
-        FIPAException expectedException = new FIPAException(message);
-        mockStatic(DFService.class);
-        doThrow(expectedException).when(DFService.class);
-    }
-
-    private ContentElement testSendBasicMessage(Ontology ontology) throws Exception {
+    private ContentElement testSendBasicMessage(String receiver, Ontology ontology) throws Exception {
         verify(agentMock).send(messageArgumentCaptor.capture());
 
         ACLMessage message = messageArgumentCaptor.getValue();
@@ -428,7 +483,7 @@ public class AgentManagementAssistantTest {
         assertThat(message.getOntology(), is(ontology.getName()));
         assertThat(message.getLanguage(), is(SemanticLanguage.getInstance().getName()));
         assertThat(message.getProtocol(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
-        assertThat(((AID) message.getAllReceiver().next()).getName(), is(AMS_NAME));
+        assertThat(((AID) message.getAllReceiver().next()).getName(), is(receiver));
         assertThat(message.getSender().getName(), is(AGENT_NAME));
 
         ContentManager contentManager = new ContentManager();
@@ -440,9 +495,9 @@ public class AgentManagementAssistantTest {
         return contentElement;
     }
 
-    private ContentElement testSendAndResponseBasicMessage(Ontology ontology) throws Exception {
+    private ContentElement testSendAndResponseBasicMessage(String receiver, Ontology ontology) throws Exception {
         verify(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
-        return testSendBasicMessage(ontology);
+        return testSendBasicMessage(receiver, ontology);
     }
 
     private void prepareTestException(Ontology ontology) {

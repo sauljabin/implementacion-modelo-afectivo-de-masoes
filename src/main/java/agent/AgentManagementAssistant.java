@@ -14,10 +14,10 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.ContainerID;
 import jade.core.behaviours.Behaviour;
-import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
+import jade.domain.FIPAAgentManagement.Register;
 import jade.domain.FIPAAgentManagement.Search;
 import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -39,7 +39,6 @@ import util.StringGenerator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AgentManagementAssistant {
 
@@ -127,6 +126,10 @@ public class AgentManagementAssistant {
         return addBehaviour(agent, stringGenerator.getString(RANDOM_STRING_LENGTH).toLowerCase(), behaviourClass);
     }
 
+    public void register(ServiceDescription... serviceDescriptions) {
+        register(agent.getAID(), serviceDescriptions);
+    }
+
     public void register(AID agentName, ServiceDescription... serviceDescriptions) {
         try {
             DFAgentDescription agentDescription = new DFAgentDescription();
@@ -134,32 +137,33 @@ public class AgentManagementAssistant {
             Arrays.stream(serviceDescriptions).forEach(
                     serviceDescription -> agentDescription.addServices(serviceDescription)
             );
-            DFService.register(agent, agentDescription);
+
+            Register register = new Register();
+            register.setDescription(agentDescription);
+
+            sendRequestAndVerifyDone(agent.getDefaultDF(), register, ontologyAssistantFIPA);
         } catch (Exception e) {
             throw new InvalidResponseException(e);
         }
     }
 
-    public void register(ServiceDescription... serviceDescriptions) {
-        register(agent.getAID(), serviceDescriptions);
-    }
-
     public List<ServiceDescription> services(AID agentName) {
         try {
-            DFAgentDescription agentDescription = new DFAgentDescription();
-            agentDescription.setName(agentName);
-            SearchConstraints constraints = new SearchConstraints();
-            constraints.setMaxResults(-1L);
-            DFAgentDescription[] results = DFService.search(agent, agentDescription, constraints);
+            DFAgentDescription dfAgentDescription = new DFAgentDescription();
+            dfAgentDescription.setName(agentName);
 
-            if (results.length > 0) {
-                DFAgentDescription description = results[0];
-                List<ServiceDescription> list = new ArrayList<>();
-                description.getAllServices().forEachRemaining(service -> list.add((ServiceDescription) service));
-                return list;
+            List<ServiceDescription> serviceDescriptionList = new ArrayList<>();
+            Iterator iterator = searchAgents(agent.getDefaultDF(), dfAgentDescription).getItems().iterator();
+
+            while (iterator.hasNext()) {
+                DFAgentDescription agentDescription = (DFAgentDescription) iterator.next();
+                Iterator iteratorServices = agentDescription.getAllServices();
+                while (iteratorServices.hasNext()) {
+                    serviceDescriptionList.add((ServiceDescription) iteratorServices.next());
+                }
             }
 
-            return new ArrayList<>();
+            return serviceDescriptionList;
         } catch (Exception e) {
             throw new InvalidResponseException(e);
         }
@@ -167,12 +171,18 @@ public class AgentManagementAssistant {
 
     public List<AID> search(ServiceDescription serviceDescription) {
         try {
-            DFAgentDescription agentDescription = new DFAgentDescription();
-            agentDescription.addServices(serviceDescription);
-            SearchConstraints constraints = new SearchConstraints();
-            constraints.setMaxResults(-1L);
-            DFAgentDescription[] results = DFService.search(agent, agentDescription, constraints);
-            return Arrays.stream(results).map(DFAgentDescription::getName).collect(Collectors.toList());
+            DFAgentDescription dfAgentDescription = new DFAgentDescription();
+            dfAgentDescription.addServices(serviceDescription);
+
+            List<AID> listAID = new ArrayList<>();
+            Iterator iterator = searchAgents(agent.getDefaultDF(), dfAgentDescription).getItems().iterator();
+
+            while (iterator.hasNext()) {
+                DFAgentDescription agentDescription = (DFAgentDescription) iterator.next();
+                listAID.add(agentDescription.getName());
+            }
+
+            return listAID;
         } catch (Exception e) {
             throw new InvalidResponseException(e);
         }
@@ -181,26 +191,9 @@ public class AgentManagementAssistant {
     public List<AID> agents() {
         try {
             AMSAgentDescription amsAgentDescription = new AMSAgentDescription();
-            SearchConstraints constraints = new SearchConstraints();
-            constraints.setMaxResults(-1L);
-
-            Search search = new Search();
-            search.setDescription(amsAgentDescription);
-            search.setConstraints(constraints);
-
-            ACLMessage requestAction = ontologyAssistantFIPA.createRequestAction(agent.getAMS(), search);
-            ACLMessage response = protocolAssistant.sendRequest(requestAction, ACLMessage.INFORM);
-
-            ContentElement contentElement = ontologyAssistantFIPA.extractMessageContent(response);
-
-            if (!(contentElement instanceof Result)) {
-                throw new InvalidResponseException("Unknown notification: " + contentElement);
-            }
-
-            Result result = (Result) contentElement;
 
             List<AID> listAID = new ArrayList<>();
-            Iterator iterator = result.getItems().iterator();
+            Iterator iterator = searchAgents(agent.getAMS(), amsAgentDescription).getItems().iterator();
 
             while (iterator.hasNext()) {
                 AMSAgentDescription agentDescription = (AMSAgentDescription) iterator.next();
@@ -213,6 +206,25 @@ public class AgentManagementAssistant {
         } catch (Exception e) {
             throw new InvalidResponseException(e);
         }
+    }
+
+    private Result searchAgents(AID receiver, Object description) {
+        SearchConstraints constraints = new SearchConstraints();
+        constraints.setMaxResults(-1L);
+        Search search = new Search();
+        search.setDescription(description);
+        search.setConstraints(constraints);
+
+        ACLMessage requestAction = ontologyAssistantFIPA.createRequestAction(receiver, search);
+        ACLMessage response = protocolAssistant.sendRequest(requestAction, ACLMessage.INFORM);
+
+        ContentElement contentElement = ontologyAssistantFIPA.extractMessageContent(response);
+
+        if (!(contentElement instanceof Result)) {
+            throw new InvalidResponseException("Unknown notification: " + contentElement);
+        }
+
+        return (Result) contentElement;
     }
 
     private void sendRequestAndVerifyDone(AID receiver, AgentAction content, OntologyAssistant ontologyAssistant) {
