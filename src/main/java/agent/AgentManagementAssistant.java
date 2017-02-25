@@ -9,14 +9,16 @@ package agent;
 import jade.content.AgentAction;
 import jade.content.ContentElement;
 import jade.content.onto.basic.Done;
+import jade.content.onto.basic.Result;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.ContainerID;
 import jade.core.behaviours.Behaviour;
-import jade.domain.AMSService;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
+import jade.domain.FIPAAgentManagement.Search;
 import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.JADEAgentManagement.CreateAgent;
@@ -25,6 +27,7 @@ import jade.domain.JADEAgentManagement.KillAgent;
 import jade.domain.JADEAgentManagement.KillContainer;
 import jade.domain.JADEAgentManagement.ShutdownPlatform;
 import jade.lang.acl.ACLMessage;
+import jade.util.leap.Iterator;
 import ontology.OntologyAssistant;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
@@ -46,6 +49,7 @@ public class AgentManagementAssistant {
     private Agent agent;
     private OntologyAssistant ontologyAssistantManagement;
     private OntologyAssistant ontologyAssistantConfigurable;
+    private OntologyAssistant ontologyAssistantFIPA;
     private ProtocolAssistant protocolAssistant;
 
     public AgentManagementAssistant(Agent agent) {
@@ -59,6 +63,7 @@ public class AgentManagementAssistant {
         protocolAssistant = new ProtocolAssistant(agent, timeout);
         ontologyAssistantManagement = new OntologyAssistant(agent, JADEManagementOntology.getInstance());
         ontologyAssistantConfigurable = new OntologyAssistant(agent, ConfigurableOntology.getInstance());
+        ontologyAssistantFIPA = new OntologyAssistant(agent, FIPAManagementOntology.getInstance());
     }
 
     public long getTimeout() {
@@ -67,6 +72,7 @@ public class AgentManagementAssistant {
 
     public void setTimeout(long timeout) {
         this.timeout = timeout;
+        protocolAssistant.setTimeout(timeout);
     }
 
     public void shutdownPlatform() {
@@ -177,10 +183,33 @@ public class AgentManagementAssistant {
             AMSAgentDescription amsAgentDescription = new AMSAgentDescription();
             SearchConstraints constraints = new SearchConstraints();
             constraints.setMaxResults(-1L);
-            AMSAgentDescription[] results = AMSService.search(agent, amsAgentDescription, constraints);
-            return Arrays.stream(results).filter(
-                    description -> !description.getName().getLocalName().matches("ams|df")
-            ).map(AMSAgentDescription::getName).collect(Collectors.toList());
+
+            Search search = new Search();
+            search.setDescription(amsAgentDescription);
+            search.setConstraints(constraints);
+
+            ACLMessage requestAction = ontologyAssistantFIPA.createRequestAction(agent.getAMS(), search);
+            ACLMessage response = protocolAssistant.sendRequest(requestAction, ACLMessage.INFORM);
+
+            ContentElement contentElement = ontologyAssistantFIPA.extractMessageContent(response);
+
+            if (!(contentElement instanceof Result)) {
+                throw new InvalidResponseException("Unknown notification: " + contentElement);
+            }
+
+            Result result = (Result) contentElement;
+
+            List<AID> listAID = new ArrayList<>();
+            Iterator iterator = result.getItems().iterator();
+
+            while (iterator.hasNext()) {
+                AMSAgentDescription agentDescription = (AMSAgentDescription) iterator.next();
+                if (!agentDescription.getName().getLocalName().matches("ams|df")) {
+                    listAID.add(agentDescription.getName());
+                }
+            }
+
+            return listAID;
         } catch (Exception e) {
             throw new InvalidResponseException(e);
         }

@@ -82,6 +82,12 @@ public abstract class FunctionalTest {
         return agent;
     }
 
+    public AID createAgent(String name, Class<? extends Agent> agentClass, List<String> arguments) {
+        AID agent = agentManagementAssistant.createAgent(name, agentClass, arguments);
+        agentsToKill.add(agent);
+        return agent;
+    }
+
     public String addBehaviour(AID agent, Class<? extends Behaviour> behaviourClass) {
         return agentManagementAssistant.addBehaviour(agent, behaviourClass);
     }
@@ -104,6 +110,10 @@ public abstract class FunctionalTest {
 
     public AID getAMS() {
         return testerAgent.getAMS();
+    }
+
+    public AID getDF() {
+        return testerAgent.getDefaultDF();
     }
 
     public ContainerID getContainerID() {

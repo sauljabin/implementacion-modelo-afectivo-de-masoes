@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
@@ -141,8 +142,10 @@ public class AgentManagementAssistantFunctionalTest extends FunctionalTest {
         AID agentA = createAgent(ConfigurableAgent.class, null);
         AID agentB = createAgent(ConfigurableAgent.class, null);
         AID agentC = createAgent(ConfigurableAgent.class, null);
+        AID agentD = createAgent("dfx", ConfigurableAgent.class, null);
         List<AID> results = agents();
-        assertThat(results, hasItems(agentA, agentB, agentC));
+        assertThat(results, hasItems(agentA, agentB, agentC, agentD));
+        assertThat(results, not(hasItems(getAMS(), getDF())));
     }
 
     private void registerService(String nameService, AID agent) {

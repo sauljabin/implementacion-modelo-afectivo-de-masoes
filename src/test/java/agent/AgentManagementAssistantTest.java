@@ -11,14 +11,16 @@ import jade.content.ContentManager;
 import jade.content.onto.Ontology;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
+import jade.content.onto.basic.Result;
 import jade.content.onto.basic.TrueProposition;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.ContainerID;
-import jade.domain.AMSService;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
+import jade.domain.FIPAAgentManagement.Search;
 import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
@@ -30,6 +32,7 @@ import jade.domain.JADEAgentManagement.KillContainer;
 import jade.domain.JADEAgentManagement.ShutdownPlatform;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.util.leap.ArrayList;
 import jade.util.leap.Iterator;
 import language.SemanticLanguage;
 import ontology.configurable.AddBehaviour;
@@ -68,7 +71,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
-@PrepareForTest({Agent.class, DFService.class, AMSService.class})
+@PrepareForTest({Agent.class, DFService.class})
 public class AgentManagementAssistantTest {
 
     private static final String AMS_NAME = "ams";
@@ -329,26 +332,51 @@ public class AgentManagementAssistantTest {
 
     @Test
     public void shouldSendSearchAllAgentsInAMS() throws Exception {
-        AMSAgentDescription[] results = new AMSAgentDescription[3];
-        results[0] = new AMSAgentDescription();
-        results[0].setName(agentAID);
+        SearchConstraints constraints = new SearchConstraints();
+        constraints.setMaxResults(-1L);
 
-        results[1] = new AMSAgentDescription();
-        results[1].setName(amsAID);
+        Search search = new Search();
+        search.setDescription("description");
+        search.setConstraints(constraints);
 
-        results[2] = new AMSAgentDescription();
-        results[2].setName(dfAID);
+        Action actionResult = new Action(agentAID, search);
 
-        mockStatic(AMSService.class);
-        when(AMSService.search(any(Agent.class), any(AMSAgentDescription.class), any(SearchConstraints.class))).thenReturn(results);
+        ArrayList items = new ArrayList();
+        AMSAgentDescription amsAgentDescription1 = new AMSAgentDescription();
+        amsAgentDescription1.setName(agentAID);
+        items.add(amsAgentDescription1);
 
-        List<AID> search = agentManagementAssistant.agents();
+        AMSAgentDescription amsAgentDescription2 = new AMSAgentDescription();
+        amsAgentDescription2.setName(amsAID);
+        items.add(amsAgentDescription2);
 
-        verifyStatic();
-        AMSService.search(eq(agentMock), any(AMSAgentDescription.class), any(SearchConstraints.class));
+        AMSAgentDescription amsAgentDescription3 = new AMSAgentDescription();
+        amsAgentDescription3.setName(dfAID);
+        items.add(amsAgentDescription3);
 
-        assertThat(search, hasSize(1));
-        assertThat(search.get(0), is(agentAID));
+        Result result = new Result();
+        result.setAction(actionResult);
+        result.setItems(items);
+
+        response = new MessageBuilder()
+                .performative(ACLMessage.INFORM)
+                .fipaSL()
+                .ontology(FIPAManagementOntology.getInstance())
+                .content(result)
+                .build();
+
+        doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
+        List<AID> agents = agentManagementAssistant.agents();
+
+        ContentElement contentElement = testSendAndResponseBasicMessage(FIPAManagementOntology.getInstance());
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(Search.class)));
+
+        Search addBehaviour = (Search) action.getAction();
+        assertThat(addBehaviour.getConstraints().getMaxResults(), is(-1L));
+
+        assertThat(agents, hasSize(1));
+        assertThat(agents.get(0), is(agentAID));
     }
 
     @Test
