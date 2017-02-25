@@ -10,9 +10,9 @@ import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.domain.FIPANames;
 import ontology.settings.SettingsOntology;
 import org.slf4j.LoggerFactory;
+import util.ServiceBuilder;
 import util.ToStringBuilder;
 
 public class SettingsAgent extends Agent {
@@ -28,25 +28,23 @@ public class SettingsAgent extends Agent {
     @Override
     protected void setup() {
         try {
+            addBehaviour(new ResponseSettingsBehaviour(this));
             agentManagementAssistant.register(
-                    createService("GetSetting"),
-                    createService("GetAllSettings")
+                    createService(SettingsOntology.ACTION_GET_SETTING),
+                    createService(SettingsOntology.ACTION_GET_ALL_SETTINGS)
             );
         } catch (Exception e) {
             logger.exception(this, e);
         }
-
-        addBehaviour(new ResponseSettingsBehaviour(this));
     }
 
     private ServiceDescription createService(String serviceName) {
-        ServiceDescription serviceDescription = new ServiceDescription();
-        serviceDescription.setName(serviceName);
-        serviceDescription.setType(serviceName);
-        serviceDescription.addProtocols(FIPANames.InteractionProtocol.FIPA_REQUEST);
-        serviceDescription.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
-        serviceDescription.addOntologies(SettingsOntology.NAME);
-        return serviceDescription;
+        return new ServiceBuilder()
+                .fipaRequest()
+                .fipaSL()
+                .ontology(SettingsOntology.getInstance())
+                .name(serviceName)
+                .build();
     }
 
     @Override

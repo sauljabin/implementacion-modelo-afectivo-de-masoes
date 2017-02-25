@@ -13,6 +13,8 @@ import util.ToStringBuilder;
 public class SettingsOntology extends BeanOntology {
 
     public static final String NAME = "settings";
+    public static final String ACTION_GET_ALL_SETTINGS = "GetAllSettings";
+    public static final String ACTION_GET_SETTING = "GetSetting";
     private static SettingsOntology INSTANCE;
 
     private SettingsOntology() {

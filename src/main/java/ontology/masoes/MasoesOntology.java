@@ -13,6 +13,8 @@ import util.ToStringBuilder;
 public class MasoesOntology extends BeanOntology {
 
     public static final String NAME = "masoes";
+    public static final String ACTION_GET_EMOTIONAL_STATE = "GetEmotionalState";
+    public static final String ACTION_EVALUATE_STIMULUS = "EvaluateStimulus";
     private static MasoesOntology INSTANCE;
 
     private MasoesOntology() {

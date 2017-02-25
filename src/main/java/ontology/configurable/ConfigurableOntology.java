@@ -13,6 +13,8 @@ import util.ToStringBuilder;
 public class ConfigurableOntology extends BeanOntology {
 
     public static final String NAME = "configurable";
+    public static final String ACTION_ADD_BEHAVIOUR = "AddBehaviour";
+    public static final String ACTION_REMOVE_BEHAVIOUR = "RemoveBehaviour";
     private static ConfigurableOntology INSTANCE;
 
     private ConfigurableOntology() {

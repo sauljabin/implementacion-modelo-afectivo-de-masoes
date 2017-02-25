@@ -11,6 +11,7 @@ import jade.content.ContentManager;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.core.AID;
+import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPANames;
 import jade.domain.JADEAgentManagement.CreateAgent;
@@ -97,13 +98,13 @@ public class AgentManagementAssistantFunctionalTest extends FunctionalTest {
     public void shouldRegisterAgentOnDF() {
         String nameService = "nameService";
 
-        AID agentA = createAgent(ConfigurableAgent.class, null);
+        AID agentA = createAgent(Agent.class, null);
         registerService(nameService, agentA);
 
-        AID agentB = createAgent(ConfigurableAgent.class, null);
+        AID agentB = createAgent(Agent.class, null);
         registerService(nameService, agentB);
 
-        AID agentC = createAgent(ConfigurableAgent.class, null);
+        AID agentC = createAgent(Agent.class, null);
         registerService(nameService, agentC);
 
         ServiceDescription serviceDescription = new ServiceDescription();
@@ -118,7 +119,7 @@ public class AgentManagementAssistantFunctionalTest extends FunctionalTest {
         String nameServiceA = "nameServiceA";
         String nameServiceB = "nameServiceB";
 
-        AID agentA = createAgent(ConfigurableAgent.class, null);
+        AID agentA = createAgent(Agent.class, null);
 
         ServiceDescription serviceDescriptionA = new ServiceDescription();
         serviceDescriptionA.setType(nameServiceA);

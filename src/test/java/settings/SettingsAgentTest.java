@@ -10,7 +10,6 @@ import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.domain.FIPANames;
 import ontology.settings.SettingsOntology;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +23,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
@@ -62,17 +60,15 @@ public class SettingsAgentTest {
 
     @Test
     public void shouldRegisterAgent() throws Exception {
-        doReturn("settings").when(settingsAgentSpy).getLocalName();
-
         settingsAgentSpy.setup();
 
         verify(agentManagementAssistantMock).register(serviceDescriptionCaptor.capture());
 
         ServiceDescription serviceGetSetting = serviceDescriptionCaptor.getAllValues().get(0);
-        testService(serviceGetSetting, "GetSetting");
+        assertThat(serviceGetSetting.getName(), is(SettingsOntology.ACTION_GET_SETTING));
 
         ServiceDescription serviceGetAllSettings = serviceDescriptionCaptor.getAllValues().get(1);
-        testService(serviceGetAllSettings, "GetAllSettings");
+        assertThat(serviceGetAllSettings.getName(), is(SettingsOntology.ACTION_GET_ALL_SETTINGS));
     }
 
     @Test
@@ -81,14 +77,6 @@ public class SettingsAgentTest {
         doThrow(expectedException).when(agentManagementAssistantMock).register(any(ServiceDescription.class), any(ServiceDescription.class));
         settingsAgentSpy.setup();
         verify(loggerMock).exception(settingsAgentSpy, expectedException);
-    }
-
-    private void testService(ServiceDescription actualService, String name) {
-        assertThat(actualService.getName(), is(name));
-        assertThat(actualService.getType(), is(name));
-        assertThat(actualService.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
-        assertThat(actualService.getAllLanguages().next(), is(FIPANames.ContentLanguage.FIPA_SL));
-        assertThat(actualService.getAllOntologies().next(), is(SettingsOntology.NAME));
     }
 
 }
