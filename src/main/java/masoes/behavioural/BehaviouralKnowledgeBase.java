@@ -17,14 +17,14 @@ public class BehaviouralKnowledgeBase extends KnowledgeBase {
     private String agentKnowledgePath;
 
     public BehaviouralKnowledgeBase(String agentName, String agentKnowledgePath) {
-        this.agentName = agentName;
+        this.agentName = agentName.toLowerCase();
         this.agentKnowledgePath = agentKnowledgePath;
-        addAgentKnowledge(agentName, agentKnowledgePath);
+        addAgentKnowledge();
         addTheoryFromPath(PATH_THEORY_BEHAVIOUR_MANAGER);
         addTheoryFromPath(PATH_THEORY_EMOTIONAL_CONFIGURATOR);
     }
 
-    private void addAgentKnowledge(String agentName, String agentKnowledgePath) {
+    private void addAgentKnowledge() {
         if (agentName != null) {
             addTheory(String.format("self(%s).", agentName));
             addTheory("other(X) :- not self(X).");

@@ -15,16 +15,18 @@ import static org.hamcrest.core.Is.is;
 
 public class BehaviouralKnowledgeBaseTest {
 
-    private static final String AGENT_NAME = "agentName";
+    private static final String AGENT_NAME = "agent";
+    private static final String AGENT_KNOWLEDGE_PATH = "theories/dummy/dummyEmotionalAgent.prolog";
     private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
 
     @Before
     public void setUp() {
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(AGENT_NAME, null);
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(AGENT_NAME, AGENT_KNOWLEDGE_PATH);
     }
 
     @Test
     public void shouldSolveCorrectlySelfAndOtherAgent() throws Exception {
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(AGENT_NAME.toUpperCase(), AGENT_KNOWLEDGE_PATH);
         SolveInfo solveSelf = behaviouralKnowledgeBase.solve("self(X).");
         assertThat(solveSelf.getVarValue("X").toString(), is(AGENT_NAME));
         SolveInfo solveOther = behaviouralKnowledgeBase.solve("other(otherAgent).");
@@ -50,18 +52,17 @@ public class BehaviouralKnowledgeBaseTest {
 
     @Test
     public void shouldSolveCorrectlyEmotionalConfiguratorQuestions() throws Exception {
-        testEmotion("other", "greeting", "compassion", "satisfaction(AGENT, greeting, positive_high) :- other(AGENT).");
-        testEmotion("other", "smile", "admiration", "satisfaction(AGENT, smile, positive_low) :- other(AGENT).");
-        testEmotion("other", "run", "rejection", "satisfaction(AGENT, run, negative_low) :- other(AGENT).");
-        testEmotion("other", "bye", "anger", "satisfaction(AGENT, bye, negative_high) :- other(AGENT).");
-        testEmotion(AGENT_NAME, "eat", "happiness", "satisfaction(AGENT, eat, positive_high) :- self(AGENT).");
-        testEmotion(AGENT_NAME, "sleep", "joy", "satisfaction(AGENT, sleep, positive_low) :- self(AGENT).");
-        testEmotion(AGENT_NAME, "wake", "sadness", "satisfaction(AGENT, wake, negative_low) :- self(AGENT).");
-        testEmotion(AGENT_NAME, "pay", "depression", "satisfaction(AGENT, pay, negative_high) :- self(AGENT).");
+        testEmotion("other", "greeting", "compassion");
+        testEmotion("other", "smile", "admiration");
+        testEmotion("other", "run", "rejection");
+        testEmotion("other", "bye", "anger");
+        testEmotion(AGENT_NAME, "eat", "happiness");
+        testEmotion(AGENT_NAME, "sleep", "joy");
+        testEmotion(AGENT_NAME, "wake", "sadness");
+        testEmotion(AGENT_NAME, "pay", "depression");
     }
 
-    private void testEmotion(String agent, String action, String expectedEmotion, String theory) throws Exception {
-        behaviouralKnowledgeBase.addTheory(theory);
+    private void testEmotion(String agent, String action, String expectedEmotion) throws Exception {
         SolveInfo solve = behaviouralKnowledgeBase.solve("emotion(" + agent + ", " + action + ", X).");
         assertThat(solve.getVarValue("X").toString(), is(expectedEmotion));
     }

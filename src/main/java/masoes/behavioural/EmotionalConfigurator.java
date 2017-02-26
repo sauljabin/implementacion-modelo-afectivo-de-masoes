@@ -11,8 +11,6 @@ import knowledge.KnowledgeBaseException;
 import ontology.masoes.Stimulus;
 import util.ToStringBuilder;
 
-// TODO: UNIT-TEST
-
 public class EmotionalConfigurator {
 
     private static final String ANSWER_VAR_NAME = "X";
