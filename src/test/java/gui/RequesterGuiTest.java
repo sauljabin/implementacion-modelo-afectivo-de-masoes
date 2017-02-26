@@ -304,6 +304,12 @@ public class RequesterGuiTest {
         verify(dynamicCanvasPanelMock).add(isA(JTextField.class), anyString());
     }
 
+    @Test
+    public void shouldRemoveAllWhenActionIsGetAgents() {
+        requesterGuiSpy.setGetAgentsActionComponents();
+        testDynamicContentRepaint();
+    }
+
     private void testDynamicContentRepaint() {
         verify(dynamicCanvasPanelMock).removeAll();
         verify(requesterGuiSpy).revalidate();

@@ -75,9 +75,15 @@ public class RequesterGuiComboBoxListenerTest {
     }
 
     @Test
-    public void shouldInvokeGetService() {
+    public void shouldInvokeGetServices() {
         prepareTest(RequesterGuiAction.GET_SERVICES);
         verify(requesterGuiMock).setGetServicesActionComponents();
+    }
+
+    @Test
+    public void shouldInvokeGetAgents() {
+        prepareTest(RequesterGuiAction.GET_AGENTS);
+        verify(requesterGuiMock).setGetAgentsActionComponents();
     }
 
     private void prepareTest(RequesterGuiAction action) {
