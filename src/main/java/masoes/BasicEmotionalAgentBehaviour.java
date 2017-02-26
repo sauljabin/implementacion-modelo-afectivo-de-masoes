@@ -24,8 +24,6 @@ import ontology.masoes.MasoesOntology;
 
 import java.util.Arrays;
 
-// TODO: UNIT-TEST
-
 public class BasicEmotionalAgentBehaviour extends OntologyResponderBehaviour {
 
     private EmotionalAgent emotionalAgent;
