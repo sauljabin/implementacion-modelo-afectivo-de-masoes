@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -54,6 +55,26 @@ public class AgentManagementAssistantFunctionalTest extends FunctionalTest {
 
         List<AID> results = search(serviceDescription);
         assertThat(results, hasItems(agentA, agentB, agentC));
+    }
+
+    @Test
+    public void shouldDeRegisterAgentOnDF() {
+        String nameService = "nameService";
+
+        AID agent = createAgent(Agent.class, null);
+        registerService(nameService, agent);
+
+
+        ServiceDescription serviceDescription = new ServiceDescription();
+        serviceDescription.setName(nameService);
+
+        List<AID> results = search(serviceDescription);
+        assertThat(results, hasSize(1));
+
+        deRegister(agent);
+
+        results = search(serviceDescription);
+        assertThat(results, hasSize(0));
     }
 
     @Test

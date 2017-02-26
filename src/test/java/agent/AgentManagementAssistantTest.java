@@ -18,6 +18,7 @@ import jade.core.Agent;
 import jade.core.ContainerID;
 import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.Deregister;
 import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
 import jade.domain.FIPAAgentManagement.Register;
 import jade.domain.FIPAAgentManagement.Search;
@@ -467,6 +468,61 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
         prepareTestException(FIPAManagementOntology.getInstance());
         agentManagementAssistant.agents();
     }
+
+    @Test
+    public void shouldSendDeRegisterAgent() throws Exception {
+        response = new MessageBuilder()
+                .performative(ACLMessage.INFORM)
+                .fipaSL()
+                .ontology(FIPAManagementOntology.getInstance())
+                .content(new Done(new Action(agentAID, new ShutdownPlatform())))
+                .build();
+        doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
+
+        agentManagementAssistant.deRegister();
+        ContentElement contentElement = testSendAndResponseBasicMessage(DF_NAME, FIPAManagementOntology.getInstance());
+
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(Deregister.class)));
+
+        Deregister deregister = (Deregister) action.getAction();
+        DFAgentDescription description = (DFAgentDescription) deregister.getDescription();
+        assertThat(description.getName(), is(agentAID));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenIsNotDoneInDRegisterAgent() throws Exception {
+        prepareTestException(FIPAManagementOntology.getInstance());
+        agentManagementAssistant.deRegister();
+    }
+
+    @Test
+    public void shouldSendDeRegisterAgentWithName() throws Exception {
+        response = new MessageBuilder()
+                .performative(ACLMessage.INFORM)
+                .fipaSL()
+                .ontology(FIPAManagementOntology.getInstance())
+                .content(new Done(new Action(agentAID, new ShutdownPlatform())))
+                .build();
+        doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
+
+        agentManagementAssistant.deRegister(otherAID);
+        ContentElement contentElement = testSendAndResponseBasicMessage(DF_NAME, FIPAManagementOntology.getInstance());
+
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(Deregister.class)));
+
+        Deregister deregister = (Deregister) action.getAction();
+        DFAgentDescription description = (DFAgentDescription) deregister.getDescription();
+        assertThat(description.getName(), is(otherAID));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenIsNotDoneInDeRegisterAgentWithName() throws Exception {
+        prepareTestException(FIPAManagementOntology.getInstance());
+        agentManagementAssistant.deRegister(otherAID);
+    }
+
 
     private ContentElement testSendBasicMessage(String receiver, Ontology ontology) throws Exception {
         verify(agentMock).send(messageArgumentCaptor.capture());

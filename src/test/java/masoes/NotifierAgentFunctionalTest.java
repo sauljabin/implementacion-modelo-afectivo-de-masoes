@@ -71,6 +71,7 @@ public class NotifierAgentFunctionalTest extends FunctionalTest {
         assertThat(contentElement, is(instanceOf(Done.class)));
 
         ACLMessage stimulus = blockingReceive();
+        deRegister();
 
         Action action = (Action) ontologyAssistant.extractMessageContent(stimulus);
 

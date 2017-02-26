@@ -16,6 +16,7 @@ import jade.core.ContainerID;
 import jade.core.behaviours.Behaviour;
 import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.Deregister;
 import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
 import jade.domain.FIPAAgentManagement.Register;
 import jade.domain.FIPAAgentManagement.Search;
@@ -144,6 +145,21 @@ public class AgentManagementAssistant {
         register.setDescription(agentDescription);
 
         sendRequestAndVerifyDone(agent.getDefaultDF(), register, ontologyAssistantFIPA);
+        delay();
+    }
+
+    public void deRegister() {
+        deRegister(agent.getAID());
+    }
+
+    public void deRegister(AID agentName) {
+        DFAgentDescription agentDescription = new DFAgentDescription();
+        agentDescription.setName(agentName);
+
+        Deregister deregister = new Deregister();
+        deregister.setDescription(agentDescription);
+
+        sendRequestAndVerifyDone(agent.getDefaultDF(), deregister, ontologyAssistantFIPA);
         delay();
     }
 

@@ -6,8 +6,13 @@
 
 package masoes;
 
+import environment.Environment;
 import jade.core.behaviours.Behaviour;
+import jade.lang.acl.ACLMessage;
 import masoes.behavioural.BehaviourType;
+import ontology.OntologyAssistant;
+import ontology.masoes.MasoesOntology;
+import ontology.masoes.NotifyAction;
 
 public abstract class EmotionalBehaviour extends Behaviour {
 
@@ -16,7 +21,10 @@ public abstract class EmotionalBehaviour extends Behaviour {
     public abstract BehaviourType getType();
 
     public void notifyAction(String actionName) {
-
+        OntologyAssistant ontologyAssistant = new OntologyAssistant(myAgent, MasoesOntology.getInstance());
+        NotifyAction notifyAction = new NotifyAction(myAgent.getAID(), actionName);
+        ACLMessage requestAction = ontologyAssistant.createRequestAction(myAgent.getAID(Environment.NOTIFIER_AGENT), notifyAction);
+        myAgent.send(requestAction);
     }
 
 }
