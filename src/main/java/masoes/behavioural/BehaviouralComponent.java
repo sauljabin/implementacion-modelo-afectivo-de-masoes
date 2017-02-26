@@ -25,7 +25,7 @@ public class BehaviouralComponent {
 
         String agentName = "X";
         if (emotionalAgent.getLocalName() != null) {
-            agentName = emotionalAgent.getLocalName().toLowerCase();
+            agentName = emotionalAgent.getLocalName();
         }
 
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentName, emotionalAgent.getKnowledgePath());

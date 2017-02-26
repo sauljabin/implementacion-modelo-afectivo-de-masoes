@@ -50,6 +50,25 @@ public class EmotionalConfiguratorTest {
         testUpdateEmotion("pay", DepressionEmotion.class, AGENT_NAME);
     }
 
+    @Test
+    public void shouldUpdateCorrectlyTheEmotionWithUpperAgent() {
+        String agentName = "AGENT_NAME";
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentName, AGENT_KNOWLEDGE_PATH);
+        emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
+        testUpdateEmotion("eat", HappinessEmotion.class, agentName);
+        testUpdateEmotion("sleep", JoyEmotion.class, agentName);
+        testUpdateEmotion("wake", SadnessEmotion.class, agentName);
+        testUpdateEmotion("pay", DepressionEmotion.class, agentName);
+    }
+
+    @Test
+    public void shouldUpdateCorrectlyTheEmotionWithUpperAction() {
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(AGENT_NAME, AGENT_KNOWLEDGE_PATH);
+        emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
+        behaviouralKnowledgeBase.addTheory("satisfaction(AGENT, \"Eat\", positive_high) :- self(AGENT).");
+        testUpdateEmotion("Eat", HappinessEmotion.class, AGENT_NAME);
+    }
+
     private void testUpdateEmotion(String actionName, Class<? extends Emotion> expectedEmotion, String agentName) {
         emotionalConfigurator.updateEmotion(new Stimulus(new AID(agentName, AID.ISGUID), actionName));
         assertThat(emotionalConfigurator.getEmotion(), is(instanceOf(expectedEmotion)));

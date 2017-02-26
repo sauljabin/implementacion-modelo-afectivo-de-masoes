@@ -10,6 +10,7 @@ import alice.tuprolog.SolveInfo;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -26,11 +27,18 @@ public class BehaviouralKnowledgeBaseTest {
 
     @Test
     public void shouldSolveCorrectlySelfAndOtherAgent() throws Exception {
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(AGENT_NAME.toUpperCase(), AGENT_KNOWLEDGE_PATH);
         SolveInfo solveSelf = behaviouralKnowledgeBase.solve("self(X).");
         assertThat(solveSelf.getVarValue("X").toString(), is(AGENT_NAME));
         SolveInfo solveOther = behaviouralKnowledgeBase.solve("other(otherAgent).");
         assertThat(solveOther.toString(), is("yes."));
+    }
+
+    @Test
+    public void shouldSolveSelfAgentWithUpperName() throws Exception {
+        String nameUpper = "NAME_UPPER";
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(nameUpper, AGENT_KNOWLEDGE_PATH);
+        SolveInfo solveSelf = behaviouralKnowledgeBase.solve("self(" + nameUpper + ").");
+        assertThat(solveSelf.toString(), containsString("yes."));
     }
 
     @Test

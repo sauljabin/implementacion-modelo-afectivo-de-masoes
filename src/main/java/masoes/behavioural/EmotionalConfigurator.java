@@ -14,7 +14,7 @@ import util.ToStringBuilder;
 public class EmotionalConfigurator {
 
     private static final String ANSWER_VAR_NAME = "X";
-    private static final String KNOWLEDGE_QUESTION = "emotion(%s,%s," + ANSWER_VAR_NAME + ").";
+    private static final String KNOWLEDGE_QUESTION = "emotion(\"%s\",\"%s\"," + ANSWER_VAR_NAME + ").";
 
     private EmotionalState emotionalState;
     private EmotionalSpace emotionalSpace;
@@ -40,13 +40,13 @@ public class EmotionalConfigurator {
 
     private EmotionalState calculateEmotionalState(Stimulus stimulus) {
         try {
-            String actorName = stimulus.getActor().getLocalName().toLowerCase();
-            String actionName = stimulus.getActionName().toLowerCase();
+            String actorName = stimulus.getActor().getLocalName();
+            String actionName = stimulus.getActionName();
 
             SolveInfo solveEmotion = behaviouralKnowledgeBase.solve(String.format(KNOWLEDGE_QUESTION, actorName, actionName));
 
             if (solveEmotion.isSuccess()) {
-                String emotionName = solveEmotion.getTerm(ANSWER_VAR_NAME).toString();
+                String emotionName = solveEmotion.getTerm(ANSWER_VAR_NAME).toString().replace("'", "").toLowerCase();
                 return emotionalSpace.searchEmotion(emotionName).getRandomEmotionalState();
             }
             return new EmotionalState();

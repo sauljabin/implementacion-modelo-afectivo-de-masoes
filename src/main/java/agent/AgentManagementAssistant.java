@@ -112,7 +112,7 @@ public class AgentManagementAssistant {
     }
 
     public AID createAgent(Class<? extends Agent> agentClass, List<String> arguments) {
-        return createAgent(stringGenerator.getString(RANDOM_STRING_LENGTH).toLowerCase(), agentClass, arguments);
+        return createAgent(stringGenerator.getString(RANDOM_STRING_LENGTH), agentClass, arguments);
     }
 
     public void removeBehaviour(AID receiver, String behaviourName) {
@@ -127,7 +127,7 @@ public class AgentManagementAssistant {
     }
 
     public String addBehaviour(AID agent, Class<? extends Behaviour> behaviourClass) {
-        return addBehaviour(agent, stringGenerator.getString(RANDOM_STRING_LENGTH).toLowerCase(), behaviourClass);
+        return addBehaviour(agent, stringGenerator.getString(RANDOM_STRING_LENGTH), behaviourClass);
     }
 
     public void register(ServiceDescription... serviceDescriptions) {
