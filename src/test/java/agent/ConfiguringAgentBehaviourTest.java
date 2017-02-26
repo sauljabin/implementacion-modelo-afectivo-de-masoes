@@ -41,6 +41,7 @@ public class ConfiguringAgentBehaviourTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
     private ConfiguringAgentBehaviour configuringAgentBehaviour;
     private Agent agentMock;
     private Map behavioursMock;

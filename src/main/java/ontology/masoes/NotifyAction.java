@@ -7,16 +7,19 @@
 package ontology.masoes;
 
 import jade.content.AgentAction;
+import jade.core.AID;
 import util.ToStringBuilder;
 
 public class NotifyAction implements AgentAction {
 
+    private AID actor;
     private String actionName;
 
     public NotifyAction() {
     }
 
-    public NotifyAction(String actionName) {
+    public NotifyAction(AID actor, String actionName) {
+        this.actor = actor;
         this.actionName = actionName;
     }
 
@@ -28,9 +31,18 @@ public class NotifyAction implements AgentAction {
         this.actionName = actionName;
     }
 
+    public AID getActor() {
+        return actor;
+    }
+
+    public void setActor(AID actor) {
+        this.actor = actor;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder()
+                .append("actor", actor)
                 .append("actionName", actionName)
                 .toString();
     }

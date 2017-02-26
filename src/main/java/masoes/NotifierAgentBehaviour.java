@@ -6,25 +6,44 @@
 
 package masoes;
 
+import agent.AgentManagementAssistant;
+import jade.content.ContentElement;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
+import jade.content.onto.basic.Done;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.FailureException;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import ontology.OntologyAssistant;
 import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
+import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.NotifyAction;
+import ontology.masoes.Stimulus;
+import protocol.InvalidResponseException;
+import protocol.ProtocolAssistant;
+import util.ServiceBuilder;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class NotifierAgentBehaviour extends OntologyResponderBehaviour {
 
+    private final AgentManagementAssistant agentManagementAssistant;
+    private final OntologyAssistant ontologyAssistant;
+    private final ProtocolAssistant protocolAssistant;
     private Agent agent;
 
     public NotifierAgentBehaviour(Agent agent) {
         super(agent, new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), MasoesOntology.getInstance());
         this.agent = agent;
+        agentManagementAssistant = new AgentManagementAssistant(agent);
+        ontologyAssistant = new OntologyAssistant(agent, MasoesOntology.getInstance());
+        protocolAssistant = new ProtocolAssistant(agent);
     }
 
     @Override
@@ -35,7 +54,31 @@ public class NotifierAgentBehaviour extends OntologyResponderBehaviour {
 
     @Override
     public Predicate performAction(Action action) throws FailureException {
-        return super.performAction(action);
+        try {
+            NotifyAction notifyAction = (NotifyAction) action.getAction();
+
+            ServiceDescription serviceDescription = new ServiceBuilder()
+                    .name(MasoesOntology.ACTION_EVALUATE_STIMULUS)
+                    .build();
+
+            List<AID> emotionalAgents = agentManagementAssistant.search(serviceDescription);
+
+            emotionalAgents.forEach(aid -> {
+                Stimulus stimulus = new Stimulus(notifyAction.getActor(), notifyAction.getActionName());
+                EvaluateStimulus evaluateStimulus = new EvaluateStimulus(stimulus);
+
+                ACLMessage requestAction = ontologyAssistant.createRequestAction(aid, evaluateStimulus);
+                ACLMessage response = protocolAssistant.sendRequest(requestAction, ACLMessage.INFORM);
+
+                ContentElement contentElement = ontologyAssistant.extractMessageContent(response);
+                if (!(contentElement instanceof Done)) {
+                    throw new InvalidResponseException("Expected Done Response");
+                }
+            });
+        } catch (Exception e) {
+            throw new FailureException(e.getMessage());
+        }
+        return new Done(action);
     }
 
 }

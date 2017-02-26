@@ -22,6 +22,7 @@ public class ApplicationBootTest {
 
     @Rule
     public ExpectedSystemExit expectedSystemExit = ExpectedSystemExit.none();
+
     private ApplicationLogger loggerMock;
     private ApplicationOptionProcessor applicationOptionProcessorMock;
     private String[] args;

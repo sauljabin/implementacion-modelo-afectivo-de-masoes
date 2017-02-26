@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 
 public abstract class Environment {
 
+    public static final String SETTINGS_AGENT = "settings";
+    public static final String NOTIFIER_AGENT = "notifier";
     private static final String AGENT_DELIMITER = ";";
 
     public abstract List<AgentParameter> getAgentParameters();
@@ -33,8 +35,8 @@ public abstract class Environment {
             agentParameters.addAll(getAgentParameters());
         }
 
-        agentParameters.add(new AgentParameter("settings", SettingsAgent.class));
-        agentParameters.add(new AgentParameter("notifier", NotifierAgent.class));
+        agentParameters.add(new AgentParameter(SETTINGS_AGENT, SettingsAgent.class));
+        agentParameters.add(new AgentParameter(NOTIFIER_AGENT, NotifierAgent.class));
 
         return agentParameters.stream().map(
                 agentParameter -> agentParameter.toJadeParameter()

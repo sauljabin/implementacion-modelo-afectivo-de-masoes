@@ -32,6 +32,7 @@ public class MessageBuilderTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
     private MessageBuilder messageBuilder;
 
     @Before

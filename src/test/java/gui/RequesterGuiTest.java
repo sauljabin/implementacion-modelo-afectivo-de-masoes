@@ -40,6 +40,7 @@ public class RequesterGuiTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
     private JComboBox actionsComboBoxMock;
     private JLabel senderAgentLabelMock;
     private RequesterGui requesterGuiSpy;

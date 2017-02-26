@@ -31,6 +31,7 @@ public class JadeBootTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
     private PlatformController platformController;
     private ProfileImpl jadeProfileMock;
     private Runtime jadeRuntimeMock;
