@@ -16,6 +16,7 @@ import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
 import jade.domain.FIPAAgentManagement.Search;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPANames;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
@@ -261,9 +262,11 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
 
     @Test
     public void shouldSendNotifyAction() throws Exception {
-        doReturn(RequesterGuiAction.NOTIFY_ACTION).when(requesterGuiMock).getSelectedAction();
-        doReturn(RECEIVER_AGENT_NAME).when(requesterGuiMock).getActorName();
+        String expectedActor = "expectedActor";
         String expectedActionName = "expectedActionName";
+        doReturn(new AID(expectedActor, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedActor);
+        doReturn(RequesterGuiAction.NOTIFY_ACTION).when(requesterGuiMock).getSelectedAction();
+        doReturn(expectedActor).when(requesterGuiMock).getActorName();
         doReturn(expectedActionName).when(requesterGuiMock).getActionName();
 
         GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
@@ -275,14 +278,16 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         assertThat(action.getAction(), is(instanceOf(NotifyAction.class)));
 
         NotifyAction notifyAction = (NotifyAction) action.getAction();
-        assertThat(notifyAction.getActor().getName(), is(RECEIVER_AGENT_NAME));
+        assertThat(notifyAction.getActor().getName(), is(expectedActor));
         assertThat(notifyAction.getActionName(), is(expectedActionName));
     }
 
     @Test
     public void shouldSendGetServices() throws Exception {
+        String expectedAgentName = "expectedAgentName";
+        doReturn(new AID(expectedAgentName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedAgentName);
         doReturn(RequesterGuiAction.GET_SERVICES).when(requesterGuiMock).getSelectedAction();
-        doReturn(RECEIVER_AGENT_NAME).when(requesterGuiMock).getAgentName();
+        doReturn(expectedAgentName).when(requesterGuiMock).getAgentName();
 
         GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
         requesterGuiAgentSpy.onGuiEvent(guiEvent);
@@ -296,7 +301,7 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         assertThat(notifyAction.getDescription(), is(instanceOf(DFAgentDescription.class)));
 
         DFAgentDescription description = (DFAgentDescription) notifyAction.getDescription();
-        assertThat(description.getName().getLocalName(), is(RECEIVER_AGENT_NAME));
+        assertThat(description.getName().getLocalName(), is(expectedAgentName));
     }
 
     @Test
@@ -313,6 +318,28 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
 
         Search notifyAction = (Search) action.getAction();
         assertThat(notifyAction.getDescription(), is(instanceOf(AMSAgentDescription.class)));
+    }
+
+    @Test
+    public void shouldSendSearchAgent() throws Exception {
+        String expectedServiceName = "expectedServiceName";
+        doReturn(RequesterGuiAction.SEARCH_AGENT).when(requesterGuiMock).getSelectedAction();
+        doReturn(expectedServiceName).when(requesterGuiMock).getServiceName();
+
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+
+        ContentElement contentElement = testRequestAction(FIPAManagementOntology.getInstance());
+
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(Search.class)));
+
+        Search notifyAction = (Search) action.getAction();
+        assertThat(notifyAction.getDescription(), is(instanceOf(DFAgentDescription.class)));
+
+        DFAgentDescription description = (DFAgentDescription) notifyAction.getDescription();
+        ServiceDescription serviceDescriptor = (ServiceDescription) description.getAllServices().next();
+        assertThat(serviceDescriptor.getName(), is(expectedServiceName));
     }
 
     private ContentElement testRequestAction(Ontology ontology) throws Exception {

@@ -15,6 +15,7 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
 import jade.domain.FIPAAgentManagement.Search;
 import jade.domain.FIPAAgentManagement.SearchConstraints;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
@@ -106,66 +107,123 @@ public class RequesterGuiAgent extends GuiAgent {
 
         switch (requesterGui.getSelectedAction()) {
             case GET_ALL_SETTINGS:
-                sendOntologyMessage(aid, SettingsOntology.getInstance(), new GetAllSettings());
+                sendGetAllSettings(aid);
                 break;
             case GET_SETTING:
-                sendOntologyMessage(aid, SettingsOntology.getInstance(), new GetSetting(requesterGui.getKeySetting()));
+                sendGetSetting(aid);
                 break;
             case ADD_BEHAVIOUR:
-                AddBehaviour addBehaviour = new AddBehaviour(requesterGui.getBehaviourName(), requesterGui.getBehaviourClassName());
-                sendOntologyMessage(aid, ConfigurableOntology.getInstance(), addBehaviour);
+                sendAddBehaviour(aid);
                 break;
             case REMOVE_BEHAVIOUR:
-                RemoveBehaviour removeBehaviour = new RemoveBehaviour(requesterGui.getBehaviourName());
-                sendOntologyMessage(aid, ConfigurableOntology.getInstance(), removeBehaviour);
+                sendRemoveBehaviour(aid);
                 break;
             case GET_EMOTIONAL_STATE:
-                sendOntologyMessage(aid, MasoesOntology.getInstance(), new GetEmotionalState());
+                sendGetEmotionalState(aid);
                 break;
             case EVALUATE_STIMULUS:
-                Stimulus stimulus = new Stimulus();
-                stimulus.setActor(getAID(requesterGui.getActorName()));
-                stimulus.setActionName(requesterGui.getActionName());
-                sendOntologyMessage(aid, MasoesOntology.getInstance(), new EvaluateStimulus(stimulus));
+                sendEvaluateStimulus(aid);
                 break;
             case SEND_SIMPLE_CONTENT:
-                ACLMessage message = new MessageBuilder()
-                        .request()
-                        .conversationId()
-                        .replyWith()
-                        .sender(getAID())
-                        .receiver(aid)
-                        .content(requesterGui.getSimpleContent())
-                        .build();
-                sendMessage(message);
+                sendSimpleContent(aid);
                 break;
             case NOTIFY_ACTION:
-                NotifyAction notifyAction = new NotifyAction();
-                notifyAction.setActor(getAID(requesterGui.getActorName()));
-                notifyAction.setActionName(requesterGui.getActionName());
-                sendOntologyMessage(aid, MasoesOntology.getInstance(), notifyAction);
+                sendNotifyAction(aid);
                 break;
             case GET_SERVICES:
-                DFAgentDescription dfAgentDescription = new DFAgentDescription();
-                dfAgentDescription.setName(getAID(requesterGui.getAgentName()));
-                SearchConstraints constraints = new SearchConstraints();
-                constraints.setMaxResults(-1L);
-                Search search = new Search();
-                search.setDescription(dfAgentDescription);
-                search.setConstraints(constraints);
-                sendOntologyMessage(aid, FIPAManagementOntology.getInstance(), search);
+                sendGetServices(aid);
                 break;
             case GET_AGENTS:
-                AMSAgentDescription agentDescription = new AMSAgentDescription();
-                SearchConstraints constraintsAgents = new SearchConstraints();
-                constraintsAgents.setMaxResults(-1L);
-                Search searchAgents = new Search();
-                searchAgents.setDescription(agentDescription);
-                searchAgents.setConstraints(constraintsAgents);
+                Search searchAgents = sendGetAgents();
                 sendOntologyMessage(aid, FIPAManagementOntology.getInstance(), searchAgents);
+                break;
+            case SEARCH_AGENT:
+                sendSearchAgent(aid);
                 break;
         }
 
+    }
+
+    private void sendSearchAgent(AID aid) {
+        ServiceDescription serviceDescription = new ServiceDescription();
+        serviceDescription.setName(requesterGui.getServiceName());
+        DFAgentDescription dfAgentDescription = new DFAgentDescription();
+        dfAgentDescription.addServices(serviceDescription);
+        SearchConstraints constraints = new SearchConstraints();
+        constraints.setMaxResults(-1L);
+        Search search = new Search();
+        search.setDescription(dfAgentDescription);
+        search.setConstraints(constraints);
+        sendOntologyMessage(aid, FIPAManagementOntology.getInstance(), search);
+    }
+
+    private Search sendGetAgents() {
+        AMSAgentDescription amsAgentDescription = new AMSAgentDescription();
+        SearchConstraints constraints = new SearchConstraints();
+        constraints.setMaxResults(-1L);
+        Search search = new Search();
+        search.setDescription(amsAgentDescription);
+        search.setConstraints(constraints);
+        return search;
+    }
+
+    private void sendGetServices(AID aid) {
+        DFAgentDescription dfAgentDescription = new DFAgentDescription();
+        dfAgentDescription.setName(getAID(requesterGui.getAgentName()));
+        SearchConstraints constraints = new SearchConstraints();
+        constraints.setMaxResults(-1L);
+        Search search = new Search();
+        search.setDescription(dfAgentDescription);
+        search.setConstraints(constraints);
+        sendOntologyMessage(aid, FIPAManagementOntology.getInstance(), search);
+    }
+
+    private void sendNotifyAction(AID aid) {
+        NotifyAction notifyAction = new NotifyAction();
+        notifyAction.setActor(getAID(requesterGui.getActorName()));
+        notifyAction.setActionName(requesterGui.getActionName());
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), notifyAction);
+    }
+
+    private void sendSimpleContent(AID aid) {
+        ACLMessage message = new MessageBuilder()
+                .request()
+                .conversationId()
+                .replyWith()
+                .sender(getAID())
+                .receiver(aid)
+                .content(requesterGui.getSimpleContent())
+                .build();
+        sendMessage(message);
+    }
+
+    private void sendEvaluateStimulus(AID aid) {
+        Stimulus stimulus = new Stimulus();
+        stimulus.setActor(getAID(requesterGui.getActorName()));
+        stimulus.setActionName(requesterGui.getActionName());
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), new EvaluateStimulus(stimulus));
+    }
+
+    private void sendGetEmotionalState(AID aid) {
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), new GetEmotionalState());
+    }
+
+    private void sendRemoveBehaviour(AID aid) {
+        RemoveBehaviour removeBehaviour = new RemoveBehaviour(requesterGui.getBehaviourName());
+        sendOntologyMessage(aid, ConfigurableOntology.getInstance(), removeBehaviour);
+    }
+
+    private void sendAddBehaviour(AID aid) {
+        AddBehaviour addBehaviour = new AddBehaviour(requesterGui.getBehaviourName(), requesterGui.getBehaviourClassName());
+        sendOntologyMessage(aid, ConfigurableOntology.getInstance(), addBehaviour);
+    }
+
+    private void sendGetSetting(AID aid) {
+        sendOntologyMessage(aid, SettingsOntology.getInstance(), new GetSetting(requesterGui.getKeySetting()));
+    }
+
+    private void sendGetAllSettings(AID aid) {
+        sendOntologyMessage(aid, SettingsOntology.getInstance(), new GetAllSettings());
     }
 
     private void sendOntologyMessage(AID receiver, Ontology ontology, AgentAction agentAction) {

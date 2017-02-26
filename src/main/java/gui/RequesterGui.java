@@ -44,6 +44,7 @@ public class RequesterGui extends JFrame {
     private JTextField actorNameTextField;
     private JTextField actionNameTextField;
     private JTextField agentNameTextField;
+    private JTextField serviceNameTextField;
 
     public RequesterGui() {
         prepareColors();
@@ -232,6 +233,10 @@ public class RequesterGui extends JFrame {
         return actorNameTextField.getText();
     }
 
+    public String getServiceName() {
+        return serviceNameTextField.getText();
+    }
+
     public String getActionName() {
         return actionNameTextField.getText();
     }
@@ -316,6 +321,15 @@ public class RequesterGui extends JFrame {
 
     public void setGetAgentsActionComponents() {
         refreshDynamicCanvas(() -> {
+        });
+    }
+
+    public void setSearchAgentActionComponents() {
+        refreshDynamicCanvas(() -> {
+            JLabel nameTitleLabel = new JLabel("Service name:");
+            dynamicCanvasPanel.add(nameTitleLabel, "w 110");
+            serviceNameTextField = new JTextField();
+            dynamicCanvasPanel.add(serviceNameTextField, "w 175, wrap");
         });
     }
 

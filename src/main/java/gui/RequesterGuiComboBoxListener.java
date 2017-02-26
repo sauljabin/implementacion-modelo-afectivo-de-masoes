@@ -54,6 +54,9 @@ public class RequesterGuiComboBoxListener implements ActionListener {
             case GET_AGENTS:
                 requesterGui.setGetAgentsActionComponents();
                 break;
+            case SEARCH_AGENT:
+                requesterGui.setSearchAgentActionComponents();
+                break;
         }
 
     }
