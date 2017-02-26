@@ -47,7 +47,7 @@ public class AgentLoggerTest {
     @Test
     public void shouldLogAgentException() {
         Exception expectedException = new Exception("error");
-        String expectedMessage = String.format("Exception in agent \"%s\": %s", EXPECTED_AGENT_NAME, expectedException.getMessage());
+        String expectedMessage = String.format("Exception in agent \"%s\", class \"%s\": %s", EXPECTED_AGENT_NAME, agentMock.getClass().getName(), expectedException.getMessage());
         agentLogger.exception(agentMock, expectedException);
         verify(loggerMock).error(eq(expectedMessage), eq(expectedException));
     }

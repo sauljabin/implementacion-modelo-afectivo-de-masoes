@@ -136,6 +136,10 @@ public abstract class FunctionalTest {
         agentManagementAssistant.register(agentName, serviceDescriptions);
     }
 
+    public void register(ServiceDescription... serviceDescriptions) {
+        agentManagementAssistant.register(serviceDescriptions);
+    }
+
     public List<AID> agents() {
         return agentManagementAssistant.agents();
     }

@@ -51,15 +51,23 @@ public class ServiceBuilder {
 
     public ServiceDescription build() {
         ServiceDescription serviceDescription = new ServiceDescription();
-        serviceDescription.addProtocols(protocol);
+
+        if (protocol != null) {
+            serviceDescription.addProtocols(protocol);
+        }
+
         if (ontology != null) {
             serviceDescription.addOntologies(ontology.getName());
         }
+
         if (language != null) {
             serviceDescription.addLanguages(language.getName());
         }
-        serviceDescription.setName(name);
-        serviceDescription.setType(name);
+
+        if (name != null) {
+            serviceDescription.setName(name);
+            serviceDescription.setType(name);
+        }
         return serviceDescription;
     }
 

@@ -15,12 +15,9 @@ import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
-import language.SemanticLanguage;
 import ontology.OntologyAssistant;
-import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.NotifyAction;
-import ontology.masoes.Stimulus;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Rule;
@@ -31,8 +28,6 @@ import org.mockito.ArgumentCaptor;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import protocol.ProtocolAssistant;
-import util.MessageBuilder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +37,6 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -65,7 +59,6 @@ public class NotifierAgentBehaviourTest {
     private ArgumentCaptor<ACLMessage> messageArgumentCaptor;
     private Action action;
     private OntologyAssistant ontologyAssistantMock;
-    private ProtocolAssistant protocolAssistantMock;
 
     @Before
     public void setUp() throws Exception {
@@ -74,12 +67,10 @@ public class NotifierAgentBehaviourTest {
         agentMock = mock(Agent.class);
         agentManagementAssistantMock = mock(AgentManagementAssistant.class);
         ontologyAssistantMock = new OntologyAssistant(agentMock, MasoesOntology.getInstance());
-        protocolAssistantMock = mock(ProtocolAssistant.class);
 
         notifierAgentBehaviour = new NotifierAgentBehaviour(agentMock);
         setFieldValue(notifierAgentBehaviour, "agentManagementAssistant", agentManagementAssistantMock);
         setFieldValue(notifierAgentBehaviour, "ontologyAssistant", ontologyAssistantMock);
-        setFieldValue(notifierAgentBehaviour, "protocolAssistant", protocolAssistantMock);
 
         NotifyAction notifyAction = new NotifyAction();
         notifyAction.setActionName(ACTION_NAME);
@@ -104,22 +95,14 @@ public class NotifierAgentBehaviourTest {
         );
         doReturn(agents).when(agentManagementAssistantMock).search(any());
 
-        Action actionDone = new Action(agentA, new EvaluateStimulus(new Stimulus(agentA, "actionName")));
-        ACLMessage message = new MessageBuilder()
-                .content(new Done(actionDone))
-                .ontology(MasoesOntology.getInstance())
-                .language(SemanticLanguage.getInstance())
-                .build();
-
-        doReturn(message).when(protocolAssistantMock).sendRequest(any(), anyInt());
-
         Predicate predicate = notifierAgentBehaviour.performAction(action);
         assertThat(predicate, is(CoreMatchers.instanceOf(Done.class)));
 
         verify(agentManagementAssistantMock).search(serviceDescriptionArgumentCaptor.capture());
         assertThat(serviceDescriptionArgumentCaptor.getValue().getName(), is(MasoesOntology.ACTION_EVALUATE_STIMULUS));
 
-        verify(protocolAssistantMock, times(2)).sendRequest(messageArgumentCaptor.capture(), anyInt());
+        verify(agentMock, times(2)).send(messageArgumentCaptor.capture());
+
         assertThat(messageArgumentCaptor.getAllValues().get(0).getContent(), containsString("EvaluateStimulus"));
         assertThat(messageArgumentCaptor.getAllValues().get(0).getContent(), containsString("agentA"));
         assertThat(messageArgumentCaptor.getAllValues().get(1).getContent(), containsString("EvaluateStimulus"));

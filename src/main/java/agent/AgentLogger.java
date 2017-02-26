@@ -25,8 +25,8 @@ public class AgentLogger {
 
     public void exception(Agent agent, Exception exception) {
         new LogWriter()
-                .message("Exception in agent \"%s\": %s")
-                .args(agent.getLocalName(), exception.getMessage())
+                .message("Exception in agent \"%s\", class \"%s\": %s")
+                .args(agent.getLocalName(), agent.getClass().getName(), exception.getMessage())
                 .exception(exception)
                 .error(logger);
     }

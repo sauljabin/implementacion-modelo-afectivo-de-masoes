@@ -7,7 +7,6 @@
 package masoes;
 
 import agent.AgentManagementAssistant;
-import jade.content.ContentElement;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
@@ -24,8 +23,6 @@ import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.NotifyAction;
 import ontology.masoes.Stimulus;
-import protocol.InvalidResponseException;
-import protocol.ProtocolAssistant;
 import util.ServiceBuilder;
 
 import java.util.Arrays;
@@ -35,7 +32,6 @@ public class NotifierAgentBehaviour extends OntologyResponderBehaviour {
 
     private final AgentManagementAssistant agentManagementAssistant;
     private final OntologyAssistant ontologyAssistant;
-    private final ProtocolAssistant protocolAssistant;
     private Agent agent;
 
     public NotifierAgentBehaviour(Agent agent) {
@@ -43,7 +39,6 @@ public class NotifierAgentBehaviour extends OntologyResponderBehaviour {
         this.agent = agent;
         agentManagementAssistant = new AgentManagementAssistant(agent);
         ontologyAssistant = new OntologyAssistant(agent, MasoesOntology.getInstance());
-        protocolAssistant = new ProtocolAssistant(agent);
     }
 
     @Override
@@ -68,12 +63,7 @@ public class NotifierAgentBehaviour extends OntologyResponderBehaviour {
                 EvaluateStimulus evaluateStimulus = new EvaluateStimulus(stimulus);
 
                 ACLMessage requestAction = ontologyAssistant.createRequestAction(aid, evaluateStimulus);
-                ACLMessage response = protocolAssistant.sendRequest(requestAction, ACLMessage.INFORM);
-
-                ContentElement contentElement = ontologyAssistant.extractMessageContent(response);
-                if (!(contentElement instanceof Done)) {
-                    throw new InvalidResponseException("Expected Done Response");
-                }
+                agent.send(requestAction);
             });
         } catch (Exception e) {
             throw new FailureException(e.getMessage());
