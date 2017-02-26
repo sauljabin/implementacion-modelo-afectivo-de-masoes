@@ -92,6 +92,12 @@ public class RequesterGuiComboBoxListenerTest {
         verify(requesterGuiMock).setSearchAgentActionComponents();
     }
 
+    @Test
+    public void shouldInvokeDeregisterAgent() {
+        prepareTest(RequesterGuiAction.DEREGISTER_AGENT);
+        verify(requesterGuiMock).setDeregisterAgentActionComponents();
+    }
+
     private void prepareTest(RequesterGuiAction action) {
         doReturn(action).when(requesterGuiMock).getSelectedAction();
         ActionEvent actionEvent = new ActionEvent(requesterGuiMock, RequesterGuiEvent.CHANGE_ACTION.getInt(), RequesterGuiEvent.CHANGE_ACTION.toString());

@@ -12,6 +12,7 @@ import jade.content.onto.Ontology;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.Deregister;
 import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
 import jade.domain.FIPAAgentManagement.Search;
 import jade.domain.FIPAAgentManagement.SearchConstraints;
@@ -140,8 +141,19 @@ public class RequesterGuiAgent extends GuiAgent {
             case SEARCH_AGENT:
                 sendSearchAgent(aid);
                 break;
+            case DEREGISTER_AGENT:
+                sendDeregisterAgent(aid);
+                break;
         }
 
+    }
+
+    private void sendDeregisterAgent(AID aid) {
+        DFAgentDescription dfAgentDescription = new DFAgentDescription();
+        dfAgentDescription.setName(getAID(requesterGui.getAgentName()));
+        Deregister deregister = new Deregister();
+        deregister.setDescription(dfAgentDescription);
+        sendOntologyMessage(aid, FIPAManagementOntology.getInstance(), deregister);
     }
 
     private void sendSearchAgent(AID aid) {

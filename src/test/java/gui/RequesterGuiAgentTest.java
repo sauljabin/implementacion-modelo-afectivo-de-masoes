@@ -14,6 +14,7 @@ import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.Deregister;
 import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
 import jade.domain.FIPAAgentManagement.Search;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -340,6 +341,28 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         DFAgentDescription description = (DFAgentDescription) notifyAction.getDescription();
         ServiceDescription serviceDescriptor = (ServiceDescription) description.getAllServices().next();
         assertThat(serviceDescriptor.getName(), is(expectedServiceName));
+    }
+
+    @Test
+    public void shouldSendDeregisterAgent() throws Exception {
+        String expectedAgentName = "expectedAgentName";
+        doReturn(new AID(expectedAgentName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedAgentName);
+        doReturn(RequesterGuiAction.DEREGISTER_AGENT).when(requesterGuiMock).getSelectedAction();
+        doReturn(expectedAgentName).when(requesterGuiMock).getAgentName();
+
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+
+        ContentElement contentElement = testRequestAction(FIPAManagementOntology.getInstance());
+
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(Deregister.class)));
+
+        Deregister deregister = (Deregister) action.getAction();
+        assertThat(deregister.getDescription(), is(instanceOf(DFAgentDescription.class)));
+
+        DFAgentDescription description = (DFAgentDescription) deregister.getDescription();
+        assertThat(description.getName().getLocalName(), is(expectedAgentName));
     }
 
     private ContentElement testRequestAction(Ontology ontology) throws Exception {

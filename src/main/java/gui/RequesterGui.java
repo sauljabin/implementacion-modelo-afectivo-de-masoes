@@ -333,6 +333,10 @@ public class RequesterGui extends JFrame {
         });
     }
 
+    public void setDeregisterAgentActionComponents() {
+        setGetServicesActionComponents();
+    }
+
     public void refreshDynamicCanvas(Runnable runnable) {
         dynamicCanvasPanel.removeAll();
         runnable.run();

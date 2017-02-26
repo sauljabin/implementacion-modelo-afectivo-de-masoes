@@ -327,6 +327,14 @@ public class RequesterGuiTest {
         verify(dynamicCanvasPanelMock).add(isA(JTextField.class), anyString());
     }
 
+    @Test
+    public void shouldAddAgentNameWhenActionDeregisterAgent() {
+        requesterGuiSpy.setDeregisterAgentActionComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock).add(isA(JTextField.class), anyString());
+    }
+
     private void testDynamicContentRepaint() {
         verify(dynamicCanvasPanelMock).removeAll();
         verify(requesterGuiSpy).revalidate();
