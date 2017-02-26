@@ -16,18 +16,14 @@ import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import test.PowerMockitoTest;
 import util.StringGenerator;
 
 import static org.hamcrest.core.Is.is;
@@ -43,10 +39,7 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore("javax.management.*")
-@PrepareForTest({Agent.class, Behaviour.class})
-public class OntologyRequesterBehaviourTest {
+public class OntologyRequesterBehaviourTest extends PowerMockitoTest {
 
     private static final String ONTOLOGY_NAME = "ONTOLOGY NAME";
     private static final String MESSAGE = "MESSAGE";

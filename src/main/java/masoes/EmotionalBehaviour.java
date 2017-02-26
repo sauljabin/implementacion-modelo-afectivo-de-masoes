@@ -15,4 +15,8 @@ public abstract class EmotionalBehaviour extends Behaviour {
 
     public abstract BehaviourType getType();
 
+    public void notifyAction(String actionName) {
+
+    }
+
 }

@@ -40,12 +40,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import protocol.InvalidResponseException;
+import test.PowerMockitoTest;
 import util.MessageBuilder;
 
 import java.util.Arrays;
@@ -62,10 +59,7 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore("javax.management.*")
-@PrepareForTest(Agent.class)
-public class AgentManagementAssistantTest {
+public class AgentManagementAssistantTest extends PowerMockitoTest {
 
     private static final String AMS_NAME = "ams";
     private static final String AGENT_NAME = "agentName";

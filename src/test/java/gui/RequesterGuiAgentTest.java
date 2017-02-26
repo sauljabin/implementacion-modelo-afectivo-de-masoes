@@ -12,7 +12,6 @@ import jade.content.ContentManager;
 import jade.content.onto.Ontology;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
-import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
@@ -28,11 +27,8 @@ import ontology.settings.GetSetting;
 import ontology.settings.SettingsOntology;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import test.PowerMockitoTest;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -48,10 +44,7 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"javax.management.*", "javax.swing.*"})
-@PrepareForTest(Agent.class)
-public class RequesterGuiAgentTest {
+public class RequesterGuiAgentTest extends PowerMockitoTest {
 
     private static final String RECEIVER_AGENT_NAME = "receiverAgentName";
     private static final String SENDER_AGENT_NAME = "senderAgentName";

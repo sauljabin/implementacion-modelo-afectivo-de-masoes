@@ -22,10 +22,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import test.PowerMockitoTest;
 import util.MessageBuilder;
 
 import static org.hamcrest.core.Is.is;
@@ -34,10 +31,7 @@ import static org.junit.Assert.assertThat;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore("javax.management.*")
-@PrepareForTest(Agent.class)
-public class OntologyAssistantTest {
+public class OntologyAssistantTest extends PowerMockitoTest {
 
     private static final String CONTENT = "((action (agent-identifier :name \"\") (GetAllSettings)))";
     @Rule

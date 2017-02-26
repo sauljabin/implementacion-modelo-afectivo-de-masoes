@@ -8,19 +8,15 @@ package masoes;
 
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
-import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPANames;
 import language.SemanticLanguage;
 import ontology.masoes.MasoesOntology;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import test.PowerMockitoTest;
 
 import java.lang.reflect.Field;
 
@@ -36,10 +32,7 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.spy;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore("javax.management.*")
-@PrepareForTest(Agent.class)
-public class EmotionalAgentTest {
+public class EmotionalAgentTest extends PowerMockitoTest {
 
     private static final String LOCAL_NAME = "localName";
     private EmotionalAgent emotionalAgentSpy;

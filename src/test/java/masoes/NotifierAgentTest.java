@@ -8,18 +8,14 @@ package masoes;
 
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
-import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPANames;
 import language.SemanticLanguage;
 import ontology.masoes.MasoesOntology;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import test.PowerMockitoTest;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -31,10 +27,7 @@ import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore("javax.management.*")
-@PrepareForTest(Agent.class)
-public class NotifierAgentTest {
+public class NotifierAgentTest extends PowerMockitoTest {
 
     private NotifierAgent notifierAgent;
     private NotifierAgent notifierAgentSpy;

@@ -6,26 +6,19 @@
 
 package agent;
 
-import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import masoes.EmotionalAgent;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
+import test.PowerMockitoTest;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore("javax.management.*")
-@PrepareForTest(Agent.class)
-public class AgentLoggerTest {
+public class AgentLoggerTest extends PowerMockitoTest {
 
     private static final String EXPECTED_AGENT_NAME = "AGENT";
     private Logger loggerMock;

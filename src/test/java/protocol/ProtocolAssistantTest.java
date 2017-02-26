@@ -15,11 +15,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.mockito.InOrder;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import test.PowerMockitoTest;
 import util.StopWatch;
 
 import static org.hamcrest.core.Is.is;
@@ -34,10 +31,7 @@ import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore("javax.management.*")
-@PrepareForTest(Agent.class)
-public class ProtocolAssistantTest {
+public class ProtocolAssistantTest extends PowerMockitoTest {
 
     private static final String AGENT_NAME = "agentName";
     private static final String RECEIVER_NAME = "receiverName";
