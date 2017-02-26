@@ -6,8 +6,6 @@
 
 package masoes.behavioural;
 
-// TODO: UNIT-TEST
-
 import knowledge.KnowledgeBase;
 import util.ToStringBuilder;
 
