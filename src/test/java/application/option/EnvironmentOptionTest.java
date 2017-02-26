@@ -12,6 +12,7 @@ import environment.AgentParameter;
 import environment.Environment;
 import environment.EnvironmentFactory;
 import jade.JadeSettings;
+import masoes.NotifierAgent;
 import org.junit.Before;
 import org.junit.Test;
 import settings.SettingsAgent;
@@ -95,6 +96,24 @@ public class EnvironmentOptionTest {
     @Test
     public void shouldNotAddSettingsAgentWhenHaveOne() {
         AgentParameter agentParameter = new AgentParameter("settings", SettingsAgent.class);
+        ArrayList<AgentParameter> agents = new ArrayList<>();
+        agents.add(agentParameter);
+        doReturn(agents).when(environmentMock).getAgentParameters();
+        environmentOption.exec();
+        verify(environmentMock, never()).add(refEq(agentParameter));
+    }
+
+    @Test
+    public void shouldAddNotifierAgent() {
+        AgentParameter expectedAgentParameter = new AgentParameter("notifier", NotifierAgent.class);
+        doReturn(new ArrayList<>()).when(environmentMock).getAgentParameters();
+        environmentOption.exec();
+        verify(environmentMock).add(refEq(expectedAgentParameter));
+    }
+
+    @Test
+    public void shouldNotAddNotifierAgentWhenHaveOne() {
+        AgentParameter agentParameter = new AgentParameter("notifier", NotifierAgent.class);
         ArrayList<AgentParameter> agents = new ArrayList<>();
         agents.add(agentParameter);
         doReturn(agents).when(environmentMock).getAgentParameters();

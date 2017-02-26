@@ -7,6 +7,8 @@
 package agent;
 
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPANames;
+import language.SemanticLanguage;
 import ontology.configurable.ConfigurableOntology;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,10 +58,17 @@ public class ConfigurableAgentTest {
         verify(agentManagementAssistantMock).register(serviceDescriptionCaptor.capture());
 
         ServiceDescription addBehaviour = serviceDescriptionCaptor.getAllValues().get(0);
-        assertThat(addBehaviour.getName(), is(ConfigurableOntology.ACTION_ADD_BEHAVIOUR));
+        testService(addBehaviour, ConfigurableOntology.ACTION_ADD_BEHAVIOUR);
 
         ServiceDescription removeBehaviour = serviceDescriptionCaptor.getAllValues().get(1);
-        assertThat(removeBehaviour.getName(), is(ConfigurableOntology.ACTION_REMOVE_BEHAVIOUR));
+        testService(removeBehaviour, ConfigurableOntology.ACTION_REMOVE_BEHAVIOUR);
+    }
+
+    private void testService(ServiceDescription description, String name) {
+        assertThat(description.getName(), is(name));
+        assertThat(description.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
+        assertThat(description.getAllOntologies().next(), is(ConfigurableOntology.NAME));
+        assertThat(description.getAllLanguages().next(), is(SemanticLanguage.NAME));
     }
 
     @Test
@@ -69,6 +78,7 @@ public class ConfigurableAgentTest {
         try {
             configurableAgentSpy.setup();
         } catch (Exception e) {
+        } finally {
             verify(loggerMock).exception(configurableAgentSpy, expectedException);
         }
     }

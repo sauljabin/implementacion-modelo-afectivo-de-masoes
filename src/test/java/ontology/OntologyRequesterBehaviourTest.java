@@ -129,6 +129,7 @@ public class OntologyRequesterBehaviourTest {
         try {
             ontologyRequesterBehaviour.prepareRequestInteraction(request);
         } catch (Exception e) {
+        } finally {
             verify(loggerMock).exception(eq(agentMock), eq(toBeThrown));
         }
     }
@@ -192,6 +193,7 @@ public class OntologyRequesterBehaviourTest {
         try {
             ontologyRequesterBehaviour.handleInform(request);
         } catch (Exception e) {
+        } finally {
             verify(loggerMock).exception(eq(agentMock), eq(toBeThrown));
         }
     }

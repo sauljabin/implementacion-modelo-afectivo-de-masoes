@@ -13,6 +13,7 @@ import environment.AgentParameter;
 import environment.Environment;
 import environment.EnvironmentFactory;
 import jade.JadeSettings;
+import masoes.NotifierAgent;
 import settings.SettingsAgent;
 
 import java.util.List;
@@ -74,11 +75,22 @@ public class EnvironmentOption extends ApplicationOption {
         if (!settingAgent.isPresent()) {
             environment.add(new AgentParameter("settings", SettingsAgent.class));
         }
+
+        Optional<AgentParameter> notifierAgent = findNotifierAgent(environment.getAgentParameters());
+        if (!notifierAgent.isPresent()) {
+            environment.add(new AgentParameter("notifier", NotifierAgent.class));
+        }
     }
 
     private Optional<AgentParameter> findSettingAgent(List<AgentParameter> agentParameterList) {
         return agentParameterList.stream().filter(
                 agentParameter -> agentParameter.getAgentClass().equals(SettingsAgent.class)
+        ).findFirst();
+    }
+
+    private Optional<AgentParameter> findNotifierAgent(List<AgentParameter> agentParameterList) {
+        return agentParameterList.stream().filter(
+                agentParameter -> agentParameter.getAgentClass().equals(NotifierAgent.class)
         ).findFirst();
     }
 

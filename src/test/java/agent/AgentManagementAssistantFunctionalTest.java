@@ -19,6 +19,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class AgentManagementAssistantFunctionalTest extends FunctionalTest {
 
@@ -29,6 +30,7 @@ public class AgentManagementAssistantFunctionalTest extends FunctionalTest {
         killAgent(agent);
         try {
             getAgent(agent.getLocalName());
+            fail("Agent not killed");
         } catch (Exception e) {
             assertThat(e.getMessage(), containsString(agent.getName()));
         }

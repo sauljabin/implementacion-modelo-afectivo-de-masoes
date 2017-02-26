@@ -10,6 +10,8 @@ import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPANames;
+import language.SemanticLanguage;
 import ontology.masoes.MasoesOntology;
 import org.junit.Before;
 import org.junit.Test;
@@ -80,6 +82,7 @@ public class EmotionalAgentTest {
         try {
             emotionalAgentSpy.setup();
         } catch (Exception e) {
+        } finally {
             verify(loggerMock).exception(emotionalAgentSpy, expectedException);
         }
     }
@@ -97,10 +100,17 @@ public class EmotionalAgentTest {
         verify(agentManagementAssistantMock).register(serviceDescriptionCaptor.capture());
 
         ServiceDescription evaluate = serviceDescriptionCaptor.getAllValues().get(0);
-        assertThat(evaluate.getName(), is(MasoesOntology.ACTION_EVALUATE_STIMULUS));
+        testService(evaluate, MasoesOntology.ACTION_EVALUATE_STIMULUS);
 
         ServiceDescription getState = serviceDescriptionCaptor.getAllValues().get(1);
-        assertThat(getState.getName(), is(MasoesOntology.ACTION_GET_EMOTIONAL_STATE));
+        testService(getState, MasoesOntology.ACTION_GET_EMOTIONAL_STATE);
+    }
+
+    private void testService(ServiceDescription description, String name) {
+        assertThat(description.getName(), is(name));
+        assertThat(description.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
+        assertThat(description.getAllOntologies().next(), is(MasoesOntology.NAME));
+        assertThat(description.getAllLanguages().next(), is(SemanticLanguage.NAME));
     }
 
     private EmotionalAgent createAgent() {

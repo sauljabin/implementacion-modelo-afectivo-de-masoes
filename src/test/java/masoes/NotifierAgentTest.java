@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package settings;
+package masoes;
 
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
@@ -12,7 +12,7 @@ import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPANames;
 import language.SemanticLanguage;
-import ontology.settings.SettingsOntology;
+import ontology.masoes.MasoesOntology;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,9 +34,10 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
 @PrepareForTest(Agent.class)
-public class SettingsAgentTest {
+public class NotifierAgentTest {
 
-    private SettingsAgent settingsAgentSpy;
+    private NotifierAgent notifierAgent;
+    private NotifierAgent notifierAgentSpy;
     private AgentLogger loggerMock;
     private AgentManagementAssistant agentManagementAssistantMock;
     private ArgumentCaptor<ServiceDescription> serviceDescriptionCaptor;
@@ -46,49 +47,40 @@ public class SettingsAgentTest {
         serviceDescriptionCaptor = ArgumentCaptor.forClass(ServiceDescription.class);
         loggerMock = mock(AgentLogger.class);
         agentManagementAssistantMock = mock(AgentManagementAssistant.class);
-
-        SettingsAgent settingsAgent = new SettingsAgent();
-        setFieldValue(settingsAgent, "logger", loggerMock);
-        setFieldValue(settingsAgent, "agentManagementAssistant", agentManagementAssistantMock);
-
-        settingsAgentSpy = spy(settingsAgent);
+        notifierAgent = new NotifierAgent();
+        setFieldValue(notifierAgent, "logger", loggerMock);
+        setFieldValue(notifierAgent, "agentManagementAssistant", agentManagementAssistantMock);
+        notifierAgentSpy = spy(notifierAgent);
     }
 
     @Test
-    public void shouldAddSettingsBehaviour() {
-        settingsAgentSpy.setup();
-        verify(settingsAgentSpy).addBehaviour(isA(ResponseSettingsBehaviour.class));
+    public void shouldAddBasicBehaviors() {
+        notifierAgentSpy.setup();
+        verify(notifierAgentSpy).addBehaviour(isA(NotifierAgentBehaviour.class));
     }
 
     @Test
     public void shouldRegisterAgent() throws Exception {
-        settingsAgentSpy.setup();
+        notifierAgentSpy.setup();
 
         verify(agentManagementAssistantMock).register(serviceDescriptionCaptor.capture());
 
         ServiceDescription serviceGetSetting = serviceDescriptionCaptor.getAllValues().get(0);
-        testService(serviceGetSetting, SettingsOntology.ACTION_GET_SETTING);
-
-        ServiceDescription serviceGetAllSettings = serviceDescriptionCaptor.getAllValues().get(1);
-        testService(serviceGetAllSettings, SettingsOntology.ACTION_GET_ALL_SETTINGS);
-    }
-
-    private void testService(ServiceDescription description, String name) {
-        assertThat(description.getName(), is(name));
-        assertThat(description.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
-        assertThat(description.getAllOntologies().next(), is(SettingsOntology.NAME));
-        assertThat(description.getAllLanguages().next(), is(SemanticLanguage.NAME));
+        assertThat(serviceGetSetting.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
+        assertThat(serviceGetSetting.getAllOntologies().next(), is(MasoesOntology.NAME));
+        assertThat(serviceGetSetting.getAllLanguages().next(), is(SemanticLanguage.NAME));
+        assertThat(serviceGetSetting.getName(), is(MasoesOntology.ACTION_NOTIFY_ACTION));
     }
 
     @Test
     public void shouldLogErrorWhenRegisterThrowsException() throws Exception {
         RuntimeException expectedException = new RuntimeException("error");
-        doThrow(expectedException).when(agentManagementAssistantMock).register(any(ServiceDescription.class), any(ServiceDescription.class));
+        doThrow(expectedException).when(agentManagementAssistantMock).register(any(ServiceDescription.class));
         try {
-            settingsAgentSpy.setup();
+            notifierAgentSpy.setup();
         } catch (Exception e) {
         } finally {
-            verify(loggerMock).exception(settingsAgentSpy, expectedException);
+            verify(loggerMock).exception(notifierAgentSpy, expectedException);
         }
     }
 
