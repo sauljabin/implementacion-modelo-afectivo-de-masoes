@@ -258,7 +258,7 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldAddKeyWhenActionIsGetAllSettings() {
+    public void shouldAddKeyWhenActionIsGetSetting() {
         requesterGuiSpy.setGetSettingActionComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock).add(isA(JLabel.class), anyString());
@@ -274,7 +274,7 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldAddNameAndClassNameWhenActionIsAddBehavior() {
+    public void shouldAddBehaviourNameAndClassNameWhenActionIsAddBehavior() {
         requesterGuiSpy.setAddBehaviourActionComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
@@ -282,7 +282,7 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldAddNameWhenActionIsRemoveBehavior() {
+    public void shouldAddBehaviourNameWhenActionIsRemoveBehavior() {
         requesterGuiSpy.setRemoveBehaviourActionComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock).add(isA(JLabel.class), anyString());
@@ -298,7 +298,7 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldAddActorAndActionWhenActionNotifyAction() {
+    public void shouldAddActorAndActionWhenActionIsNotifyAction() {
         requesterGuiSpy.setNotifyActionComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
@@ -306,7 +306,7 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldAddAgentNameWhenActionGetServices() {
+    public void shouldAddAgentNameWhenActionIsGetServices() {
         requesterGuiSpy.setGetServicesActionComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock).add(isA(JLabel.class), anyString());
@@ -320,7 +320,7 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldAddAgentNameWhenActionSearchAgent() {
+    public void shouldAddServiceNameWhenActionIsSearchAgent() {
         requesterGuiSpy.setSearchAgentActionComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock).add(isA(JLabel.class), anyString());
@@ -328,11 +328,19 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldAddAgentNameWhenActionDeregisterAgent() {
+    public void shouldAddAgentNameWhenActionIsDeregisterAgent() {
         requesterGuiSpy.setDeregisterAgentActionComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock).add(isA(JLabel.class), anyString());
         verify(dynamicCanvasPanelMock).add(isA(JTextField.class), anyString());
+    }
+
+    @Test
+    public void shouldAddServiceNameWhenActionIsRegisterAgent() {
+        requesterGuiSpy.setRegisterAgentActionComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
     }
 
     private void testDynamicContentRepaint() {

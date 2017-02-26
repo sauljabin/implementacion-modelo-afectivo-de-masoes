@@ -60,6 +60,9 @@ public class RequesterGuiComboBoxListener implements ActionListener {
             case DEREGISTER_AGENT:
                 requesterGui.setDeregisterAgentActionComponents();
                 break;
+            case REGISTER_AGENT:
+                requesterGui.setRegisterAgentActionComponents();
+                break;
         }
 
     }

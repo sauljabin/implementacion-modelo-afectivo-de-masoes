@@ -14,6 +14,7 @@ import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.Deregister;
 import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
+import jade.domain.FIPAAgentManagement.Register;
 import jade.domain.FIPAAgentManagement.Search;
 import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -144,8 +145,26 @@ public class RequesterGuiAgent extends GuiAgent {
             case DEREGISTER_AGENT:
                 sendDeregisterAgent(aid);
                 break;
+            case REGISTER_AGENT:
+                sendRegisterAgent(aid);
+                break;
         }
 
+    }
+
+    private void sendRegisterAgent(AID aid) {
+        ServiceDescription serviceDescription = new ServiceDescription();
+        serviceDescription.setName(requesterGui.getServiceName());
+        serviceDescription.setType(requesterGui.getServiceName());
+
+        DFAgentDescription dfAgentDescription = new DFAgentDescription();
+        dfAgentDescription.setName(getAID(requesterGui.getAgentName()));
+        dfAgentDescription.addServices(serviceDescription);
+
+        Register register = new Register();
+        register.setDescription(dfAgentDescription);
+
+        sendOntologyMessage(aid, FIPAManagementOntology.getInstance(), register);
     }
 
     private void sendDeregisterAgent(AID aid) {

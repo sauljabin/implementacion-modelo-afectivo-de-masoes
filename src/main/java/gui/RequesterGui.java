@@ -337,6 +337,20 @@ public class RequesterGui extends JFrame {
         setGetServicesActionComponents();
     }
 
+    public void setRegisterAgentActionComponents() {
+        refreshDynamicCanvas(() -> {
+            JLabel agentNameTitle = new JLabel("Agent name:");
+            dynamicCanvasPanel.add(agentNameTitle, "w 110");
+            agentNameTextField = new JTextField();
+            dynamicCanvasPanel.add(agentNameTextField, "w 175, wrap");
+
+            JLabel serviceNameTitle = new JLabel("Service name:");
+            dynamicCanvasPanel.add(serviceNameTitle, "w 110");
+            serviceNameTextField = new JTextField();
+            dynamicCanvasPanel.add(serviceNameTextField, "w 175, wrap");
+        });
+    }
+
     public void refreshDynamicCanvas(Runnable runnable) {
         dynamicCanvasPanel.removeAll();
         runnable.run();
