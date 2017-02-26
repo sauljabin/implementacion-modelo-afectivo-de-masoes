@@ -8,16 +8,11 @@ package application.option;
 
 import application.ApplicationSettings;
 import application.ArgumentType;
-import environment.AgentParameter;
 import environment.Environment;
 import environment.EnvironmentFactory;
 import jade.JadeSettings;
-import masoes.NotifierAgent;
 import org.junit.Before;
 import org.junit.Test;
-import settings.SettingsAgent;
-
-import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -26,10 +21,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
@@ -83,42 +76,6 @@ public class EnvironmentOptionTest {
         verify(environmentFactoryMock).createEnvironment(anyString());
         verify(environmentMock).toJadeParameter();
         verify(jadeSettingsMock).set(eq(JadeSettings.AGENTS), eq(expectedParameter));
-    }
-
-    @Test
-    public void shouldAddSettingsAgent() {
-        AgentParameter expectedAgentParameter = new AgentParameter("settings", SettingsAgent.class);
-        doReturn(new ArrayList<>()).when(environmentMock).getAgentParameters();
-        environmentOption.exec();
-        verify(environmentMock).add(refEq(expectedAgentParameter));
-    }
-
-    @Test
-    public void shouldNotAddSettingsAgentWhenHaveOne() {
-        AgentParameter agentParameter = new AgentParameter("settings", SettingsAgent.class);
-        ArrayList<AgentParameter> agents = new ArrayList<>();
-        agents.add(agentParameter);
-        doReturn(agents).when(environmentMock).getAgentParameters();
-        environmentOption.exec();
-        verify(environmentMock, never()).add(refEq(agentParameter));
-    }
-
-    @Test
-    public void shouldAddNotifierAgent() {
-        AgentParameter expectedAgentParameter = new AgentParameter("notifier", NotifierAgent.class);
-        doReturn(new ArrayList<>()).when(environmentMock).getAgentParameters();
-        environmentOption.exec();
-        verify(environmentMock).add(refEq(expectedAgentParameter));
-    }
-
-    @Test
-    public void shouldNotAddNotifierAgentWhenHaveOne() {
-        AgentParameter agentParameter = new AgentParameter("notifier", NotifierAgent.class);
-        ArrayList<AgentParameter> agents = new ArrayList<>();
-        agents.add(agentParameter);
-        doReturn(agents).when(environmentMock).getAgentParameters();
-        environmentOption.exec();
-        verify(environmentMock, never()).add(refEq(agentParameter));
     }
 
 }

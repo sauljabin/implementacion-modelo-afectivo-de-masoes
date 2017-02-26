@@ -6,49 +6,36 @@
 
 package environment;
 
+import masoes.NotifierAgent;
+import settings.SettingsAgent;
 import util.ToStringBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class Environment {
+public abstract class Environment {
 
     private static final String AGENT_DELIMITER = ";";
-    private ArrayList<AgentParameter> agentParameters;
-    private String name;
 
-    public Environment(String name) {
-        this();
-        this.name = name;
-    }
+    public abstract List<AgentParameter> getAgentParameters();
 
-    public Environment() {
-        agentParameters = new ArrayList<>();
-    }
-
-    public List<AgentParameter> getAgentParameters() {
-        return agentParameters;
-    }
-
-    public void add(AgentParameter agentParameter) {
-        agentParameters.add(agentParameter);
-    }
-
-    public String getName() {
-        return Optional.ofNullable(name).orElse(getClass().getSimpleName());
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    public abstract String getName();
 
     public String toJadeParameter() {
         return String.join(AGENT_DELIMITER, toJadeParameterList());
     }
 
-    public List<String> toJadeParameterList() {
+    private List<String> toJadeParameterList() {
+        List<AgentParameter> agentParameters = new ArrayList<>();
+
+        if (getAgentParameters() != null) {
+            agentParameters.addAll(getAgentParameters());
+        }
+
+        agentParameters.add(new AgentParameter("settings", SettingsAgent.class));
+        agentParameters.add(new AgentParameter("notifier", NotifierAgent.class));
+
         return agentParameters.stream().map(
                 agentParameter -> agentParameter.toJadeParameter()
         ).collect(Collectors.toList());
@@ -58,12 +45,8 @@ public class Environment {
     public String toString() {
         return new ToStringBuilder()
                 .append("name", getName())
-                .append("agentParameters", agentParameters)
+                .append("agentParameters", getAgentParameters())
                 .toString();
-    }
-
-    public void remove(AgentParameter agentParameter) {
-        agentParameters.remove(agentParameter);
     }
 
 }

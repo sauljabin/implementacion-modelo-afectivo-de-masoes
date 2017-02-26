@@ -6,8 +6,23 @@
 
 package environment.wikipedia;
 
+import environment.AgentParameter;
 import environment.Environment;
 
+import java.util.List;
+
 public class WikipediaEnvironment extends Environment {
+
+    private static final String WIKIPEDIA = "wikipedia";
+
+    @Override
+    public List<AgentParameter> getAgentParameters() {
+        return null;
+    }
+
+    @Override
+    public String getName() {
+        return WIKIPEDIA;
+    }
 
 }

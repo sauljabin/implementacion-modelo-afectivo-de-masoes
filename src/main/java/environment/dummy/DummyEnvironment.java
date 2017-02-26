@@ -9,13 +9,21 @@ package environment.dummy;
 import environment.AgentParameter;
 import environment.Environment;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class DummyEnvironment extends Environment {
 
-    private static final String DUMMY_AGENT_NAME = "dummy";
+    private static final String DUMMY = "dummy";
 
-    public DummyEnvironment() {
-        setName(DUMMY_AGENT_NAME);
-        add(new AgentParameter(DUMMY_AGENT_NAME, DummyEmotionalAgent.class));
+    @Override
+    public List<AgentParameter> getAgentParameters() {
+        return Arrays.asList(new AgentParameter(DUMMY, DummyEmotionalAgent.class));
+    }
+
+    @Override
+    public String getName() {
+        return DUMMY;
     }
 
 }
