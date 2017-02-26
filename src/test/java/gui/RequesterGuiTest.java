@@ -57,6 +57,7 @@ public class RequesterGuiTest {
     private JTextField behaviourClassNameTextFieldMock;
     private JTextField actorNameTextFieldMock;
     private JTextField actionNameTextFieldMock;
+    private JTextField agentNameTextFieldMock;
 
     @Before
     public void setUp() throws Exception {
@@ -74,6 +75,7 @@ public class RequesterGuiTest {
         behaviourClassNameTextFieldMock = mock(JTextField.class);
         actorNameTextFieldMock = mock(JTextField.class);
         actionNameTextFieldMock = mock(JTextField.class);
+        agentNameTextFieldMock = mock(JTextField.class);
 
         requesterGui = new RequesterGui();
         setFieldValue(requesterGui, "sendRequestButton", sendRequestButtonMock);
@@ -90,6 +92,7 @@ public class RequesterGuiTest {
         setFieldValue(requesterGui, "behaviourClassNameTextField", behaviourClassNameTextFieldMock);
         setFieldValue(requesterGui, "actorNameTextField", actorNameTextFieldMock);
         setFieldValue(requesterGui, "actionNameTextField", actionNameTextFieldMock);
+        setFieldValue(requesterGui, "agentNameTextField", agentNameTextFieldMock);
 
         requesterGuiSpy = spy(requesterGui);
         doNothing().when(requesterGuiSpy).setVisible(anyBoolean());
@@ -208,6 +211,12 @@ public class RequesterGuiTest {
     }
 
     @Test
+    public void shouldGetAgentName() {
+        requesterGui.getAgentName();
+        verify(agentNameTextFieldMock).getText();
+    }
+
+    @Test
     public void shouldGetClassNameBehaviour() {
         requesterGui.getBehaviourClassName();
         verify(behaviourClassNameTextFieldMock).getText();
@@ -285,6 +294,14 @@ public class RequesterGuiTest {
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
+    }
+
+    @Test
+    public void shouldAddAgentNameWhenActionGetServices() {
+        requesterGuiSpy.setGetServicesActionComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock).add(isA(JTextField.class), anyString());
     }
 
     private void testDynamicContentRepaint() {

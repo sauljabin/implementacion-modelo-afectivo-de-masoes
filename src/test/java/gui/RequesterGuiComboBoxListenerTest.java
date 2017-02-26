@@ -74,6 +74,12 @@ public class RequesterGuiComboBoxListenerTest {
         verify(requesterGuiMock).setNotifyActionComponents();
     }
 
+    @Test
+    public void shouldInvokeGetService() {
+        prepareTest(RequesterGuiAction.GET_SERVICES);
+        verify(requesterGuiMock).setGetServicesActionComponents();
+    }
+
     private void prepareTest(RequesterGuiAction action) {
         doReturn(action).when(requesterGuiMock).getSelectedAction();
         ActionEvent actionEvent = new ActionEvent(requesterGuiMock, RequesterGuiEvent.CHANGE_ACTION.getInt(), RequesterGuiEvent.CHANGE_ACTION.toString());

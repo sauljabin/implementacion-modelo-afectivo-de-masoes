@@ -48,6 +48,9 @@ public class RequesterGuiComboBoxListener implements ActionListener {
             case NOTIFY_ACTION:
                 requesterGui.setNotifyActionComponents();
                 break;
+            case GET_SERVICES:
+                requesterGui.setGetServicesActionComponents();
+                break;
         }
 
     }

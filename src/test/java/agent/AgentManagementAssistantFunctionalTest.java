@@ -59,11 +59,10 @@ public class AgentManagementAssistantFunctionalTest extends FunctionalTest {
 
     @Test
     public void shouldDeRegisterAgentOnDF() {
-        String nameService = "nameService";
+        String nameService = "nameServiceToDeregister";
 
         AID agent = createAgent(Agent.class, null);
         registerService(nameService, agent);
-
 
         ServiceDescription serviceDescription = new ServiceDescription();
         serviceDescription.setName(nameService);

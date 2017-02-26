@@ -12,6 +12,9 @@ import jade.content.ContentManager;
 import jade.content.onto.Ontology;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
+import jade.domain.FIPAAgentManagement.Search;
 import jade.domain.FIPANames;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
@@ -273,6 +276,26 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         NotifyAction notifyAction = (NotifyAction) action.getAction();
         assertThat(notifyAction.getActor().getName(), is(RECEIVER_AGENT_NAME));
         assertThat(notifyAction.getActionName(), is(expectedActionName));
+    }
+
+    @Test
+    public void shouldSendGetService() throws Exception {
+        doReturn(RequesterGuiAction.GET_SERVICES).when(requesterGuiMock).getSelectedAction();
+        doReturn(RECEIVER_AGENT_NAME).when(requesterGuiMock).getAgentName();
+
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+
+        ContentElement contentElement = testRequestAction(FIPAManagementOntology.getInstance());
+
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(Search.class)));
+
+        Search notifyAction = (Search) action.getAction();
+        assertThat(notifyAction.getDescription(), is(instanceOf(DFAgentDescription.class)));
+
+        DFAgentDescription description = (DFAgentDescription) notifyAction.getDescription();
+        assertThat(description.getName().getLocalName(), is(RECEIVER_AGENT_NAME));
     }
 
     private ContentElement testRequestAction(Ontology ontology) throws Exception {

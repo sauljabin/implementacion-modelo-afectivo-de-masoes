@@ -10,6 +10,10 @@ import agent.AgentLogger;
 import jade.content.AgentAction;
 import jade.content.onto.Ontology;
 import jade.core.AID;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.FIPAManagementOntology;
+import jade.domain.FIPAAgentManagement.Search;
+import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
@@ -139,6 +143,16 @@ public class RequesterGuiAgent extends GuiAgent {
                 notifyAction.setActor(getAID(requesterGui.getActorName()));
                 notifyAction.setActionName(requesterGui.getActionName());
                 sendOntologyMessage(aid, MasoesOntology.getInstance(), notifyAction);
+                break;
+            case GET_SERVICES:
+                DFAgentDescription dfAgentDescription = new DFAgentDescription();
+                dfAgentDescription.setName(getAID(requesterGui.getAgentName()));
+                SearchConstraints constraints = new SearchConstraints();
+                constraints.setMaxResults(-1L);
+                Search search = new Search();
+                search.setDescription(dfAgentDescription);
+                search.setConstraints(constraints);
+                sendOntologyMessage(aid, FIPAManagementOntology.getInstance(), search);
                 break;
         }
 

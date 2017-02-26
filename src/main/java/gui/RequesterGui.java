@@ -43,6 +43,7 @@ public class RequesterGui extends JFrame {
     private JTextField behaviourClassNameTextField;
     private JTextField actorNameTextField;
     private JTextField actionNameTextField;
+    private JTextField agentNameTextField;
 
     public RequesterGui() {
         prepareColors();
@@ -304,11 +305,24 @@ public class RequesterGui extends JFrame {
         setEvaluateStimulusActionComponents();
     }
 
+    public void setGetServicesActionComponents() {
+        refreshDynamicCanvas(() -> {
+            JLabel nameTitleLabel = new JLabel("Agent name:");
+            dynamicCanvasPanel.add(nameTitleLabel, "w 110");
+            agentNameTextField = new JTextField();
+            dynamicCanvasPanel.add(agentNameTextField, "w 175, wrap");
+        });
+    }
+
     public void refreshDynamicCanvas(Runnable runnable) {
         dynamicCanvasPanel.removeAll();
         runnable.run();
         revalidate();
         repaint();
+    }
+
+    public String getAgentName() {
+        return agentNameTextField.getText();
     }
 
 }
