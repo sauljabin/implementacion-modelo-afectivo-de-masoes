@@ -45,7 +45,7 @@ public class EmotionalBehaviourFunctionalTest extends FunctionalTest {
         OntologyAssistant ontologyAssistant = createOntologyAssistant(MasoesOntology.getInstance());
 
         ACLMessage stimulus = blockingReceive();
-        deRegister();
+        deregister();
 
         Action action = (Action) ontologyAssistant.extractMessageContent(stimulus);
 

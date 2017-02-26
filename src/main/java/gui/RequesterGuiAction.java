@@ -14,7 +14,13 @@ public enum RequesterGuiAction {
     REMOVE_BEHAVIOUR("Remove behaviour"),
     GET_EMOTIONAL_STATE("Get emotional state"),
     EVALUATE_STIMULUS("Evaluate stimulus"),
-    SEND_SIMPLE_CONTENT("Send simple content");
+    SEND_SIMPLE_CONTENT("Send simple content"),
+    NOTIFY_ACTION("Notify action"),
+    GET_SERVICES("Get agent services"),
+    GET_AGENTS("Get agents"),
+    REGISTER_AGENT("Register agent"),
+    DEREGISTER_AGENT("Deregister agent"),
+    SEARCH_AGENT("Search agent in DF");
 
     private String name;
 

@@ -52,7 +52,7 @@ public class NotifierAgentBehaviourTest extends PowerMockitoTest {
     private ArgumentCaptor<ServiceDescription> serviceDescriptionArgumentCaptor;
     private ArgumentCaptor<ACLMessage> messageArgumentCaptor;
     private Action action;
-    private OntologyAssistant ontologyAssistantMock;
+    private OntologyAssistant ontologyAssistant;
 
     @Before
     public void setUp() throws Exception {
@@ -60,11 +60,11 @@ public class NotifierAgentBehaviourTest extends PowerMockitoTest {
         messageArgumentCaptor = ArgumentCaptor.forClass(ACLMessage.class);
         agentMock = mock(Agent.class);
         agentManagementAssistantMock = mock(AgentManagementAssistant.class);
-        ontologyAssistantMock = new OntologyAssistant(agentMock, MasoesOntology.getInstance());
+        ontologyAssistant = new OntologyAssistant(agentMock, MasoesOntology.getInstance());
 
         notifierAgentBehaviour = new NotifierAgentBehaviour(agentMock);
         setFieldValue(notifierAgentBehaviour, "agentManagementAssistant", agentManagementAssistantMock);
-        setFieldValue(notifierAgentBehaviour, "ontologyAssistant", ontologyAssistantMock);
+        setFieldValue(notifierAgentBehaviour, "ontologyAssistant", ontologyAssistant);
 
         NotifyAction notifyAction = new NotifyAction();
         notifyAction.setActionName(ACTION_NAME);

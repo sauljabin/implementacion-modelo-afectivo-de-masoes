@@ -71,7 +71,7 @@ public class AgentManagementAssistantFunctionalTest extends FunctionalTest {
         List<AID> results = search(serviceDescription);
         assertThat(results, hasSize(1));
 
-        deRegister(agent);
+        deregister(agent);
 
         results = search(serviceDescription);
         assertThat(results, hasSize(0));

@@ -111,37 +111,7 @@ public class RequesterGui extends JFrame {
 
         actionsComboBox = new JComboBox<>(RequesterGuiAction.values());
         actionsComboBox.setActionCommand(RequesterGuiEvent.CHANGE_ACTION.toString());
-        actionsComboBox.addActionListener(e -> {
-
-            if (!RequesterGuiEvent.valueOf(e.getActionCommand()).equals(RequesterGuiEvent.CHANGE_ACTION)) {
-                return;
-            }
-
-            switch (getSelectedAction()) {
-                case GET_ALL_SETTINGS:
-                    setGetAllSettingsActionComponents();
-                    break;
-                case GET_SETTING:
-                    setGetSettingActionComponents();
-                    break;
-                case ADD_BEHAVIOUR:
-                    setAddBehaviourActionComponents();
-                    break;
-                case REMOVE_BEHAVIOUR:
-                    setRemoveBehaviourActionComponents();
-                    break;
-                case GET_EMOTIONAL_STATE:
-                    setGetEmotionalStateActionComponents();
-                    break;
-                case EVALUATE_STIMULUS:
-                    setEvaluateStimulusActionComponents();
-                    break;
-                case SEND_SIMPLE_CONTENT:
-                    setSimpleContentActionComponents();
-                    break;
-            }
-
-        });
+        actionsComboBox.addActionListener(new RequesterGuiComboBoxListener(this));
         westPanel.add(actionsComboBox, "grow, wrap");
 
         dynamicCanvasPanel = new JPanel(new MigLayout("insets 0"));
@@ -328,6 +298,10 @@ public class RequesterGui extends JFrame {
             behaviourClassNameTextField = new JTextField();
             dynamicCanvasPanel.add(behaviourClassNameTextField, "w 175, wrap");
         });
+    }
+
+    public void setNotifyActionComponents() {
+        setEvaluateStimulusActionComponents();
     }
 
     public void refreshDynamicCanvas(Runnable runnable) {

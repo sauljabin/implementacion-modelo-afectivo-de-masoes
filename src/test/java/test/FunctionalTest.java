@@ -140,12 +140,12 @@ public abstract class FunctionalTest {
         agentManagementAssistant.register(serviceDescriptions);
     }
 
-    public void deRegister(AID agentName) {
-        agentManagementAssistant.deRegister(agentName);
+    public void deregister(AID agentName) {
+        agentManagementAssistant.deregister(agentName);
     }
 
-    public void deRegister() {
-        agentManagementAssistant.deRegister();
+    public void deregister() {
+        agentManagementAssistant.deregister();
     }
 
     public List<AID> agents() {

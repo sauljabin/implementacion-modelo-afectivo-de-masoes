@@ -479,7 +479,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
                 .build();
         doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
 
-        agentManagementAssistant.deRegister();
+        agentManagementAssistant.deregister();
         ContentElement contentElement = testSendAndResponseBasicMessage(DF_NAME, FIPAManagementOntology.getInstance());
 
         Action action = (Action) contentElement;
@@ -493,7 +493,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
     @Test
     public void shouldThrowExceptionWhenIsNotDoneInDRegisterAgent() throws Exception {
         prepareTestException(FIPAManagementOntology.getInstance());
-        agentManagementAssistant.deRegister();
+        agentManagementAssistant.deregister();
     }
 
     @Test
@@ -506,7 +506,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
                 .build();
         doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
 
-        agentManagementAssistant.deRegister(otherAID);
+        agentManagementAssistant.deregister(otherAID);
         ContentElement contentElement = testSendAndResponseBasicMessage(DF_NAME, FIPAManagementOntology.getInstance());
 
         Action action = (Action) contentElement;
@@ -520,7 +520,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
     @Test
     public void shouldThrowExceptionWhenIsNotDoneInDeRegisterAgentWithName() throws Exception {
         prepareTestException(FIPAManagementOntology.getInstance());
-        agentManagementAssistant.deRegister(otherAID);
+        agentManagementAssistant.deregister(otherAID);
     }
 
 

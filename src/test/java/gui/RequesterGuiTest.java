@@ -240,12 +240,6 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldRemoveAllWhenActionIsEvaluateStimulus() {
-        requesterGuiSpy.setEvaluateStimulusActionComponents();
-        testDynamicContentRepaint();
-    }
-
-    @Test
     public void shouldAddKeyWhenActionIsGetAllSettings() {
         requesterGuiSpy.setGetSettingActionComponents();
         testDynamicContentRepaint();
@@ -278,8 +272,16 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldAddActionAndActionWhenActionIsAddBehavior() {
+    public void shouldAddActorAndActionWhenActionIsEvaluateStimulus() {
         requesterGuiSpy.setEvaluateStimulusActionComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
+    }
+
+    @Test
+    public void shouldAddActorAndActionWhenActionNotifyAction() {
+        requesterGuiSpy.setNotifyActionComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());

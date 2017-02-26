@@ -20,6 +20,7 @@ import ontology.configurable.RemoveBehaviour;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
+import ontology.masoes.NotifyAction;
 import ontology.masoes.Stimulus;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
@@ -132,6 +133,12 @@ public class RequesterGuiAgent extends GuiAgent {
                         .content(requesterGui.getSimpleContent())
                         .build();
                 sendMessage(message);
+                break;
+            case NOTIFY_ACTION:
+                NotifyAction notifyAction = new NotifyAction();
+                notifyAction.setActor(getAID(requesterGui.getActorName()));
+                notifyAction.setActionName(requesterGui.getActionName());
+                sendOntologyMessage(aid, MasoesOntology.getInstance(), notifyAction);
                 break;
         }
 

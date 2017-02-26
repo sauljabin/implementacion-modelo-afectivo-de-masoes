@@ -148,11 +148,11 @@ public class AgentManagementAssistant {
         delay();
     }
 
-    public void deRegister() {
-        deRegister(agent.getAID());
+    public void deregister() {
+        deregister(agent.getAID());
     }
 
-    public void deRegister(AID agentName) {
+    public void deregister(AID agentName) {
         DFAgentDescription agentDescription = new DFAgentDescription();
         agentDescription.setName(agentName);
 

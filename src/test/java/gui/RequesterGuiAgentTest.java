@@ -22,6 +22,7 @@ import ontology.configurable.RemoveBehaviour;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
+import ontology.masoes.NotifyAction;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.SettingsOntology;
@@ -252,6 +253,26 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         assertThat(message.getSender(), is(senderAgentAID));
         assertThat(message.getAllReceiver().next(), is(receiverAgentAID));
         assertThat(message.getContent(), is(expectedContent));
+    }
+
+    @Test
+    public void shouldSendNotifyAction() throws Exception {
+        doReturn(RequesterGuiAction.NOTIFY_ACTION).when(requesterGuiMock).getSelectedAction();
+        doReturn(RECEIVER_AGENT_NAME).when(requesterGuiMock).getActorName();
+        String expectedActionName = "expectedActionName";
+        doReturn(expectedActionName).when(requesterGuiMock).getActionName();
+
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+
+        ContentElement contentElement = testRequestAction(MasoesOntology.getInstance());
+
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(NotifyAction.class)));
+
+        NotifyAction notifyAction = (NotifyAction) action.getAction();
+        assertThat(notifyAction.getActor().getName(), is(RECEIVER_AGENT_NAME));
+        assertThat(notifyAction.getActionName(), is(expectedActionName));
     }
 
     private ContentElement testRequestAction(Ontology ontology) throws Exception {
