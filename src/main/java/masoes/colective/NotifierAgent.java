@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes;
+package masoes.colective;
 
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;

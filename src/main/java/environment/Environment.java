@@ -6,7 +6,7 @@
 
 package environment;
 
-import masoes.NotifierAgent;
+import masoes.colective.NotifierAgent;
 import settings.SettingsAgent;
 import util.ToStringBuilder;
 

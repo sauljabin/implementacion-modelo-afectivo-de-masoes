@@ -13,6 +13,7 @@ import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
+import masoes.colective.NotifierAgent;
 import ontology.OntologyAssistant;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.MasoesOntology;

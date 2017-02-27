@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes;
+package masoes.colective;
 
 import jade.content.ContentElement;
 import jade.content.onto.basic.Action;
