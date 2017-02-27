@@ -33,17 +33,7 @@ public class OntologyAssistant {
 
     public ACLMessage createRequestAction(AID receiver, AgentAction agentAction) {
         Action action = new Action(receiver, agentAction);
-        return new MessageBuilder()
-                .request()
-                .sender(agent.getAID())
-                .receiver(receiver)
-                .ontology(ontology)
-                .fipaSL()
-                .fipaRequest()
-                .conversationId()
-                .replyWith()
-                .content(action)
-                .build();
+        return createRequestMessage(receiver, action);
     }
 
     public ACLMessage createRequestMessage(AID receiver, ContentElement contentElement) {

@@ -7,6 +7,7 @@
 package ontology.configurable;
 
 import jade.content.AgentAction;
+import util.ToStringBuilder;
 
 public class RemoveBehaviour implements AgentAction {
 
@@ -25,6 +26,13 @@ public class RemoveBehaviour implements AgentAction {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder()
+                .append("name", name)
+                .toString();
     }
 
 }
