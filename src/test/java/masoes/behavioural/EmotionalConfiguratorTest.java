@@ -65,7 +65,7 @@ public class EmotionalConfiguratorTest {
     public void shouldUpdateCorrectlyTheEmotionWithUpperAction() {
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(AGENT_NAME, AGENT_KNOWLEDGE_PATH);
         emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
-        behaviouralKnowledgeBase.addTheory("satisfaction(AGENT, \"Eat\", positive_high) :- self(AGENT).");
+        behaviouralKnowledgeBase.addTheory("satisfaction(AGENT, 'Eat', positive_high) :- self(AGENT).");
         testUpdateEmotion("Eat", HappinessEmotion.class, AGENT_NAME);
     }
 

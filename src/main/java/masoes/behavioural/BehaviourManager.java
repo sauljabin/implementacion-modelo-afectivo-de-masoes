@@ -12,12 +12,10 @@ import masoes.EmotionalAgent;
 import masoes.EmotionalBehaviour;
 import util.ToStringBuilder;
 
-// TODO: UNIT-TEST
-
 public class BehaviourManager {
 
     private static final String ANSWER_VAR_NAME = "X";
-    private static final String KNOWLEDGE_QUESTION = "behaviourPriority(%s," + ANSWER_VAR_NAME + ").";
+    private static final String KNOWLEDGE_QUESTION = "behaviourPriority('%s'," + ANSWER_VAR_NAME + ").";
     private EmotionalBehaviour behaviour;
     private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
 
@@ -41,7 +39,19 @@ public class BehaviourManager {
         }
     }
 
-    public BehaviourType getBehaviourTypeAssociated(Emotion emotion) {
+    private EmotionalBehaviour calculateBehaviour(EmotionalAgent emotionalAgent, Emotion emotion) {
+        switch (getBehaviourTypeAssociated(emotion)) {
+            case COGNITIVE:
+                return emotionalAgent.getCognitiveBehaviour();
+            case IMITATIVE:
+                return emotionalAgent.getImitativeBehaviour();
+            case REACTIVE:
+            default:
+                return emotionalAgent.getReactiveBehaviour();
+        }
+    }
+
+    private BehaviourType getBehaviourTypeAssociated(Emotion emotion) {
         try {
             String emotionName = emotion.getName().toLowerCase();
             SolveInfo solve = behaviouralKnowledgeBase.solve(String.format(KNOWLEDGE_QUESTION, emotionName));
@@ -52,18 +62,6 @@ public class BehaviourManager {
             return BehaviourType.IMITATIVE;
         } catch (Exception e) {
             throw new KnowledgeBaseException(e);
-        }
-    }
-
-    private EmotionalBehaviour calculateBehaviour(EmotionalAgent emotionalAgent, Emotion emotion) {
-        switch (getBehaviourTypeAssociated(emotion)) {
-            case COGNITIVE:
-                return emotionalAgent.getCognitiveBehaviour();
-            case IMITATIVE:
-                return emotionalAgent.getImitativeBehaviour();
-            case REACTIVE:
-            default:
-                return emotionalAgent.getReactiveBehaviour();
         }
     }
 
