@@ -55,8 +55,8 @@ public class BasicEmotionalAgentBehaviour extends OntologyResponderBehaviour {
         EmotionState emotionState = new EmotionState();
         emotionState.setName(behaviouralComponent.getCurrentEmotion().getName());
         emotionState.setClassName(behaviouralComponent.getCurrentEmotion().getClass().getSimpleName());
-        emotionState.setActivation(behaviouralComponent.getEmotionalState().getActivation());
-        emotionState.setSatisfaction(behaviouralComponent.getEmotionalState().getSatisfaction());
+        emotionState.setActivation(behaviouralComponent.getCurrentEmotionalState().getActivation());
+        emotionState.setSatisfaction(behaviouralComponent.getCurrentEmotionalState().getSatisfaction());
         emotionState.setType(behaviouralComponent.getCurrentEmotion().getType().toString());
 
         BehaviourState behaviourState = new BehaviourState();

@@ -6,8 +6,6 @@
 
 package masoes.behavioural;
 
-// TODO: UNIT-TEST
-
 import masoes.EmotionalAgent;
 import masoes.EmotionalBehaviour;
 import ontology.masoes.Stimulus;
@@ -21,16 +19,12 @@ public class BehaviouralComponent {
     private EmotionalAgent emotionalAgent;
 
     public BehaviouralComponent(EmotionalAgent emotionalAgent) {
-        this.emotionalAgent = emotionalAgent;
-
-        String agentName = "X";
-        if (emotionalAgent.getLocalName() != null) {
-            agentName = emotionalAgent.getLocalName();
+        if (emotionalAgent.getLocalName() == null) {
+            throw new BehaviouralComponentException("No agent name, create in setup agent method");
         }
-
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentName, emotionalAgent.getKnowledgePath());
+        this.emotionalAgent = emotionalAgent;
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(emotionalAgent.getLocalName(), emotionalAgent.getKnowledgePath());
         emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
-
         behaviourManager = new BehaviourManager(behaviouralKnowledgeBase);
         behaviourManager.updateBehaviour(emotionalAgent, emotionalConfigurator.getEmotion());
     }
@@ -43,7 +37,7 @@ public class BehaviouralComponent {
         return behaviourManager.getBehaviour();
     }
 
-    public EmotionalState getEmotionalState() {
+    public EmotionalState getCurrentEmotionalState() {
         return emotionalConfigurator.getEmotionalState();
     }
 

@@ -92,7 +92,7 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
         doReturn(emotion).when(behaviouralComponentMock).getCurrentEmotion();
 
         EmotionalState emotionalState = emotion.getRandomEmotionalState();
-        doReturn(emotionalState).when(behaviouralComponentMock).getEmotionalState();
+        doReturn(emotionalState).when(behaviouralComponentMock).getCurrentEmotionalState();
 
         DummyCognitiveBehaviour behaviour = new DummyCognitiveBehaviour();
         doReturn(behaviour).when(behaviouralComponentMock).getCurrentEmotionalBehaviour();
