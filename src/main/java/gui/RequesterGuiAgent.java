@@ -146,8 +146,7 @@ public class RequesterGuiAgent extends GuiAgent {
                 sendGetServices(aid);
                 break;
             case GET_AGENTS:
-                Search searchAgents = sendGetAgents();
-                sendOntologyMessage(aid, FIPAManagementOntology.getInstance(), searchAgents);
+                sendGetAgents(aid);
                 break;
             case SEARCH_AGENT:
                 sendSearchAgent(aid);
@@ -198,14 +197,14 @@ public class RequesterGuiAgent extends GuiAgent {
         sendOntologyMessage(aid, FIPAManagementOntology.getInstance(), search);
     }
 
-    private Search sendGetAgents() {
+    private void sendGetAgents(AID aid) {
         AMSAgentDescription amsAgentDescription = new AMSAgentDescription();
         SearchConstraints constraints = new SearchConstraints();
         constraints.setMaxResults(-1L);
         Search search = new Search();
         search.setDescription(amsAgentDescription);
         search.setConstraints(constraints);
-        return search;
+        sendOntologyMessage(aid, FIPAManagementOntology.getInstance(), search);
     }
 
     private void sendGetServices(AID aid) {
@@ -246,7 +245,6 @@ public class RequesterGuiAgent extends GuiAgent {
         stimulus.setActionName(requesterGui.getActionName());
         sendOntologyMessage(aid, MasoesOntology.getInstance(), new EvaluateStimulus(stimulus));
     }
-
 
     private void sendEvaluateObjectStimulus(AID aid) {
         ObjectStimulus objectStimulus = new ObjectStimulus();
