@@ -40,7 +40,10 @@ public class RequesterGuiComboBoxListener implements ActionListener {
                 requesterGui.setGetEmotionalStateActionComponents();
                 break;
             case EVALUATE_ACTION_STIMULUS:
-                requesterGui.setEvaluateStimulusActionComponents();
+                requesterGui.setEvaluateActionStimulusComponents();
+                break;
+            case EVALUATE_OBJECT_STIMULUS:
+                requesterGui.setEvaluateObjectStimulusComponents();
                 break;
             case SEND_SIMPLE_CONTENT:
                 requesterGui.setSimpleContentActionComponents();

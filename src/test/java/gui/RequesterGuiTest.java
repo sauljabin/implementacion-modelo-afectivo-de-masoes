@@ -46,38 +46,20 @@ public class RequesterGuiTest {
     private RequesterGui requesterGuiSpy;
     private RequesterGui requesterGui;
     private JButton sendRequestButtonMock;
-    private JTextField receiverAgentTextFieldMock;
     private JTextPane messageTextPaneMock;
     private JButton saveMessageLogsButtonMock;
     private JButton clearMessageLogsButtonMock;
-    private JTextField keySettingTextFieldMock;
     private JPanel dynamicCanvasPanelMock;
-    private JTextField simpleContentTextFieldMock;
-    private JTextField behaviourNameTextFieldMock;
-    private JTextField behaviourClassNameTextFieldMock;
-    private JTextField actorNameTextFieldMock;
-    private JTextField actionNameTextFieldMock;
-    private JTextField agentNameTextFieldMock;
-    private JTextField serviceNameTextFieldMock;
 
     @Before
     public void setUp() throws Exception {
         sendRequestButtonMock = mock(JButton.class);
         senderAgentLabelMock = mock(JLabel.class);
         actionsComboBoxMock = mock(JComboBox.class);
-        receiverAgentTextFieldMock = mock(JTextField.class);
         messageTextPaneMock = mock(JTextPane.class);
         saveMessageLogsButtonMock = mock(JButton.class);
         clearMessageLogsButtonMock = mock(JButton.class);
-        keySettingTextFieldMock = mock(JTextField.class);
         dynamicCanvasPanelMock = mock(JPanel.class);
-        simpleContentTextFieldMock = mock(JTextField.class);
-        behaviourNameTextFieldMock = mock(JTextField.class);
-        behaviourClassNameTextFieldMock = mock(JTextField.class);
-        actorNameTextFieldMock = mock(JTextField.class);
-        actionNameTextFieldMock = mock(JTextField.class);
-        agentNameTextFieldMock = mock(JTextField.class);
-        serviceNameTextFieldMock = mock(JTextField.class);
 
         requesterGui = new RequesterGui();
         setFieldValue(requesterGui, "sendRequestButton", sendRequestButtonMock);
@@ -85,17 +67,8 @@ public class RequesterGuiTest {
         setFieldValue(requesterGui, "clearMessagesLogButton", clearMessageLogsButtonMock);
         setFieldValue(requesterGui, "senderAgentLabel", senderAgentLabelMock);
         setFieldValue(requesterGui, "actionsComboBox", actionsComboBoxMock);
-        setFieldValue(requesterGui, "receiverAgentTextField", receiverAgentTextFieldMock);
         setFieldValue(requesterGui, "messageTextPane", messageTextPaneMock);
-        setFieldValue(requesterGui, "keySettingTextField", keySettingTextFieldMock);
         setFieldValue(requesterGui, "dynamicCanvasPanel", dynamicCanvasPanelMock);
-        setFieldValue(requesterGui, "simpleContentTextField", simpleContentTextFieldMock);
-        setFieldValue(requesterGui, "behaviourNameTextField", behaviourNameTextFieldMock);
-        setFieldValue(requesterGui, "behaviourClassNameTextField", behaviourClassNameTextFieldMock);
-        setFieldValue(requesterGui, "actorNameTextField", actorNameTextFieldMock);
-        setFieldValue(requesterGui, "actionNameTextField", actionNameTextFieldMock);
-        setFieldValue(requesterGui, "agentNameTextField", agentNameTextFieldMock);
-        setFieldValue(requesterGui, "serviceNameTextField", serviceNameTextFieldMock);
 
         requesterGuiSpy = spy(requesterGui);
         doNothing().when(requesterGuiSpy).setVisible(anyBoolean());
@@ -148,13 +121,6 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldGetReceiverAgentName() {
-        String expectedText = "expectedText";
-        doReturn(expectedText).when(receiverAgentTextFieldMock).getText();
-        assertThat(requesterGui.getReceiverAgentName(), is(expectedText));
-    }
-
-    @Test
     public void shouldLogMessage() throws Exception {
         StyledDocument styledDocumentMock = mock(StyledDocument.class);
         doReturn(styledDocumentMock).when(messageTextPaneMock).getStyledDocument();
@@ -175,60 +141,6 @@ public class RequesterGuiTest {
     public void shouldClearLogMessage() {
         requesterGui.clearMessagesLog();
         verify(messageTextPaneMock).setText("");
-    }
-
-    @Test
-    public void shouldGetLogMessage() {
-        requesterGui.getMessagesLog();
-        verify(messageTextPaneMock).getText();
-    }
-
-    @Test
-    public void shouldGetKeySetting() {
-        requesterGui.getKeySetting();
-        verify(keySettingTextFieldMock).getText();
-    }
-
-    @Test
-    public void shouldGetActorName() {
-        requesterGui.getActorName();
-        verify(actorNameTextFieldMock).getText();
-    }
-
-    @Test
-    public void shouldGetActionName() {
-        requesterGui.getActionName();
-        verify(actionNameTextFieldMock).getText();
-    }
-
-    @Test
-    public void shouldGetSimpleContent() {
-        requesterGui.getSimpleContent();
-        verify(simpleContentTextFieldMock).getText();
-    }
-
-    @Test
-    public void shouldGetNameBehaviour() {
-        requesterGui.getBehaviourName();
-        verify(behaviourNameTextFieldMock).getText();
-    }
-
-    @Test
-    public void shouldGetAgentName() {
-        requesterGui.getAgentName();
-        verify(agentNameTextFieldMock).getText();
-    }
-
-    @Test
-    public void shouldGetClassNameBehaviour() {
-        requesterGui.getBehaviourClassName();
-        verify(behaviourClassNameTextFieldMock).getText();
-    }
-
-    @Test
-    public void shouldGetServiceName() {
-        requesterGui.getServiceName();
-        verify(serviceNameTextFieldMock).getText();
     }
 
     @Test
@@ -290,8 +202,8 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldAddActorAndActionWhenActionIsEvaluateStimulus() {
-        requesterGuiSpy.setEvaluateStimulusActionComponents();
+    public void shouldAddActorAndActionWhenActionIsEvaluateActionStimulus() {
+        requesterGuiSpy.setEvaluateActionStimulusComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
@@ -341,6 +253,15 @@ public class RequesterGuiTest {
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
+    }
+
+    @Test
+    public void shouldAddActorAndActionWhenActionIsEvaluateObjectStimulus() {
+        requesterGuiSpy.setEvaluateObjectStimulusComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock, times(3)).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
+        verify(dynamicCanvasPanelMock).add(isA(JScrollPane.class), anyString());
     }
 
     private void testDynamicContentRepaint() {

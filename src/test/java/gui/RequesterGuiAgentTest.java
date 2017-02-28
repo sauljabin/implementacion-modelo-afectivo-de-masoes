@@ -31,6 +31,8 @@ import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.NotifyAction;
+import ontology.masoes.ObjectProperty;
+import ontology.masoes.ObjectStimulus;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.SettingsOntology;
@@ -183,11 +185,13 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldSendEvaluateStimulusToAgent() throws Exception {
-        doReturn(RequesterGuiAction.EVALUATE_ACTION_STIMULUS).when(requesterGuiMock).getSelectedAction();
-        doReturn(RECEIVER_AGENT_NAME).when(requesterGuiMock).getActorName();
+    public void shouldSendEvaluateActionStimulus() throws Exception {
+        String expectedActorName = "expectedActorName";
         String expectedActionName = "expectedActionName";
+        doReturn(expectedActorName).when(requesterGuiMock).getActorName();
         doReturn(expectedActionName).when(requesterGuiMock).getActionName();
+        doReturn(RequesterGuiAction.EVALUATE_ACTION_STIMULUS).when(requesterGuiMock).getSelectedAction();
+        doReturn(new AID(expectedActorName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedActorName);
 
         GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
         requesterGuiAgentSpy.onGuiEvent(guiEvent);
@@ -200,8 +204,42 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         EvaluateStimulus evaluateStimulus = (EvaluateStimulus) action.getAction();
 
         ActionStimulus actionStimulus = (ActionStimulus) evaluateStimulus.getStimulus();
-        assertThat(actionStimulus.getActor().getName(), is(RECEIVER_AGENT_NAME));
+        assertThat(actionStimulus.getActor().getName(), is(expectedActorName));
         assertThat(actionStimulus.getActionName(), is(expectedActionName));
+    }
+
+    @Test
+    public void shouldSendEvaluateObjectStimulus() throws Exception {
+        String expectedCreatorName = "expectedCreatorName";
+        String expectedObjectName = "expectedObjectName";
+        String expectedProperties = "color=blue\ntype=car";
+        doReturn(expectedCreatorName).when(requesterGuiMock).getCreatorName();
+        doReturn(expectedObjectName).when(requesterGuiMock).getObjectName();
+        doReturn(expectedProperties).when(requesterGuiMock).getObjectProperties();
+        doReturn(new AID(expectedCreatorName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedCreatorName);
+
+        doReturn(RequesterGuiAction.EVALUATE_OBJECT_STIMULUS).when(requesterGuiMock).getSelectedAction();
+
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+
+        ContentElement contentElement = testRequestAction(MasoesOntology.getInstance());
+
+        Action action = (Action) contentElement;
+        assertThat(action.getAction(), is(instanceOf(EvaluateStimulus.class)));
+
+        EvaluateStimulus evaluateStimulus = (EvaluateStimulus) action.getAction();
+
+        ObjectStimulus objectStimulus = (ObjectStimulus) evaluateStimulus.getStimulus();
+        assertThat(objectStimulus.getCreator().getLocalName(), is(expectedCreatorName));
+        assertThat(objectStimulus.getObjectName(), is(expectedObjectName));
+        ObjectProperty propertyColor = (ObjectProperty) objectStimulus.getObjectProperties().get(0);
+        assertThat(propertyColor.getName(), is("color"));
+        assertThat(propertyColor.getValue(), is("blue"));
+
+        ObjectProperty propertyType = (ObjectProperty) objectStimulus.getObjectProperties().get(1);
+        assertThat(propertyType.getName(), is("type"));
+        assertThat(propertyType.getValue(), is("car"));
     }
 
     @Test

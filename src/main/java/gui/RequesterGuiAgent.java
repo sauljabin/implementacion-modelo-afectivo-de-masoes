@@ -21,6 +21,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
+import jade.util.leap.ArrayList;
 import ontology.OntologyAssistant;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
@@ -30,6 +31,8 @@ import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.NotifyAction;
+import ontology.masoes.ObjectProperty;
+import ontology.masoes.ObjectStimulus;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.SettingsOntology;
@@ -38,8 +41,12 @@ import util.MessageBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class RequesterGuiAgent extends GuiAgent {
 
@@ -124,7 +131,10 @@ public class RequesterGuiAgent extends GuiAgent {
                 sendGetEmotionalState(aid);
                 break;
             case EVALUATE_ACTION_STIMULUS:
-                sendEvaluateStimulus(aid);
+                sendEvaluateActionStimulus(aid);
+                break;
+            case EVALUATE_OBJECT_STIMULUS:
+                sendEvaluateObjectStimulus(aid);
                 break;
             case SEND_SIMPLE_CONTENT:
                 sendSimpleContent(aid);
@@ -230,12 +240,40 @@ public class RequesterGuiAgent extends GuiAgent {
         sendMessage(message);
     }
 
-    private void sendEvaluateStimulus(AID aid) {
+    private void sendEvaluateActionStimulus(AID aid) {
         ActionStimulus stimulus = new ActionStimulus();
         stimulus.setActor(getAID(requesterGui.getActorName()));
         stimulus.setActionName(requesterGui.getActionName());
         sendOntologyMessage(aid, MasoesOntology.getInstance(), new EvaluateStimulus(stimulus));
     }
+
+
+    private void sendEvaluateObjectStimulus(AID aid) {
+        ObjectStimulus objectStimulus = new ObjectStimulus();
+        objectStimulus.setCreator(getAID(requesterGui.getCreatorName()));
+        objectStimulus.setObjectName(requesterGui.getObjectName());
+
+        if (!requesterGui.getObjectProperties().isEmpty()) {
+            try {
+                Properties properties = new Properties();
+                properties.load(new StringReader(requesterGui.getObjectProperties()));
+
+                List<ObjectProperty> propertiesToList = properties.entrySet()
+                        .stream()
+                        .map(objectEntry -> new ObjectProperty(objectEntry.getKey().toString(), objectEntry.getValue().toString()))
+                        .collect(Collectors.toList());
+
+                ArrayList listProperties = new ArrayList();
+                listProperties.fromList(propertiesToList);
+                objectStimulus.setObjectProperties(listProperties);
+            } catch (Exception e) {
+                throw new GuiException(e);
+            }
+        }
+
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), new EvaluateStimulus(objectStimulus));
+    }
+
 
     private void sendGetEmotionalState(AID aid) {
         sendOntologyMessage(aid, MasoesOntology.getInstance(), new GetEmotionalState());

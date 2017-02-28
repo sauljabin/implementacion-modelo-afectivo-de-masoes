@@ -57,9 +57,15 @@ public class RequesterGuiComboBoxListenerTest {
     }
 
     @Test
-    public void shouldInvokeEvaluateStimulus() {
+    public void shouldInvokeEvaluateActionStimulus() {
         prepareTest(RequesterGuiAction.EVALUATE_ACTION_STIMULUS);
-        verify(requesterGuiMock).setEvaluateStimulusActionComponents();
+        verify(requesterGuiMock).setEvaluateActionStimulusComponents();
+    }
+
+    @Test
+    public void shouldInvokeEvaluateObjectStimulus() {
+        prepareTest(RequesterGuiAction.EVALUATE_OBJECT_STIMULUS);
+        verify(requesterGuiMock).setEvaluateObjectStimulusComponents();
     }
 
     @Test

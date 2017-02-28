@@ -23,20 +23,18 @@ import java.util.List;
 
 public class RequesterGui extends JFrame {
 
-    private static final int CONVERSATIONS_CACHE = 100;
-    private JPanel westPanel;
-    private JPanel centerPanel;
+    private static final int CONVERSATIONS_CACHE = 20;
     private JLabel senderAgentLabel;
-    private JTextField receiverAgentTextField;
-    private JButton sendRequestButton;
-    private JPanel dynamicCanvasPanel;
     private JComboBox<RequesterGuiAction> actionsComboBox;
     private JTextPane messageTextPane;
-    private List<Color> colors;
-    private Iterator<Color> colorIterator;
-    private LinkedHashMap<String, Color> conversations;
+    private JTextArea propertiesTextArea;
+    private JPanel westPanel;
+    private JPanel centerPanel;
+    private JPanel dynamicCanvasPanel;
+    private JButton sendRequestButton;
     private JButton saveMessagesLogButton;
     private JButton clearMessagesLogButton;
+    private JTextField receiverAgentTextField;
     private JTextField keySettingTextField;
     private JTextField simpleContentTextField;
     private JTextField behaviourNameTextField;
@@ -45,6 +43,12 @@ public class RequesterGui extends JFrame {
     private JTextField actionNameTextField;
     private JTextField agentNameTextField;
     private JTextField serviceNameTextField;
+    private JTextField creatorNameTextField;
+    private JTextField objectNameTextField;
+
+    private List<Color> colors;
+    private Iterator<Color> colorIterator;
+    private LinkedHashMap<String, Color> conversations;
 
     public RequesterGui() {
         prepareColors();
@@ -233,12 +237,24 @@ public class RequesterGui extends JFrame {
         return actorNameTextField.getText();
     }
 
+    public String getCreatorName() {
+        return creatorNameTextField.getText();
+    }
+
     public String getServiceName() {
         return serviceNameTextField.getText();
     }
 
     public String getActionName() {
         return actionNameTextField.getText();
+    }
+
+    public String getObjectName() {
+        return objectNameTextField.getText();
+    }
+
+    public String getObjectProperties() {
+        return propertiesTextArea.getText();
     }
 
     public void setGetAllSettingsActionComponents() {
@@ -260,17 +276,42 @@ public class RequesterGui extends JFrame {
         });
     }
 
-    public void setEvaluateStimulusActionComponents() {
+    public void setEvaluateActionStimulusComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel nameTitleLabel = new JLabel("Actor:");
-            dynamicCanvasPanel.add(nameTitleLabel, "w 110");
+            JLabel actorTitleLabel = new JLabel("Actor:");
+            dynamicCanvasPanel.add(actorTitleLabel, "w 110");
             actorNameTextField = new JTextField();
             dynamicCanvasPanel.add(actorNameTextField, "w 175, wrap");
 
-            JLabel classNameTitleLabel = new JLabel("Action name:");
-            dynamicCanvasPanel.add(classNameTitleLabel, "w 110");
+            JLabel actionNameTitleLabel = new JLabel("Action name:");
+            dynamicCanvasPanel.add(actionNameTitleLabel, "w 110");
             actionNameTextField = new JTextField();
             dynamicCanvasPanel.add(actionNameTextField, "w 175, wrap");
+        });
+    }
+
+    public void setEvaluateObjectStimulusComponents() {
+        refreshDynamicCanvas(() -> {
+            JLabel creatorTitleLabel = new JLabel("Creator:");
+            dynamicCanvasPanel.add(creatorTitleLabel, "w 110");
+            creatorNameTextField = new JTextField();
+            dynamicCanvasPanel.add(creatorNameTextField, "w 175, wrap");
+
+            JLabel objectNameTitleLabel = new JLabel("Object name:");
+            dynamicCanvasPanel.add(objectNameTitleLabel, "w 110");
+            objectNameTextField = new JTextField();
+            dynamicCanvasPanel.add(objectNameTextField, "w 175, wrap");
+
+            JLabel propertiesTitleLabel = new JLabel("Properties:");
+            dynamicCanvasPanel.add(propertiesTitleLabel, "w 110");
+            propertiesTextArea = new JTextArea();
+
+            DefaultCaret caret = (DefaultCaret) propertiesTextArea.getCaret();
+            caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
+            JScrollPane propertiesTextScrollPane = new JScrollPane(propertiesTextArea);
+
+            dynamicCanvasPanel.add(propertiesTextScrollPane, "w 175, h 80, wrap");
         });
     }
 
@@ -307,7 +348,7 @@ public class RequesterGui extends JFrame {
     }
 
     public void setNotifyActionComponents() {
-        setEvaluateStimulusActionComponents();
+        setEvaluateActionStimulusComponents();
     }
 
     public void setGetServicesActionComponents() {
