@@ -91,6 +91,7 @@ public class RequesterGuiAgent extends GuiAgent {
             }
         } catch (Exception e) {
             logger.exception(this, e);
+            requesterGui.showError(e.getMessage());
         }
     }
 

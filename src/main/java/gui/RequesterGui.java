@@ -161,6 +161,10 @@ public class RequesterGui extends JFrame {
         setVisible(true);
     }
 
+    public void showError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
     public void addActionListener(ActionListener actionListener) {
         sendRequestButton.addActionListener(actionListener);
         saveMessagesLogButton.addActionListener(actionListener);
