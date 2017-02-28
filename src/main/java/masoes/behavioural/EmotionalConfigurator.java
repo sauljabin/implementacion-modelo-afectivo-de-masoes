@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class EmotionalConfigurator {
 
     private static final String ANSWER_VAR_NAME = "X";
-    private static final String KNOWLEDGE_QUESTION = "emotion('%s',%s," + ANSWER_VAR_NAME + ").";
+    private static final String KNOWLEDGE_QUESTION = "emotion(%s,%s," + ANSWER_VAR_NAME + ").";
 
     private EmotionalState emotionalState;
     private EmotionalSpace emotionalSpace;
@@ -78,10 +78,10 @@ public class EmotionalConfigurator {
     private String getActor(Stimulus stimulus) {
         if (stimulus instanceof ActionStimulus) {
             ActionStimulus actionStimulus = (ActionStimulus) stimulus;
-            return actionStimulus.getActor().getLocalName();
+            return String.format("'%s'", actionStimulus.getActor().getLocalName());
         } else {
             ObjectStimulus objectStimulus = (ObjectStimulus) stimulus;
-            return objectStimulus.getCreator().getLocalName();
+            return String.format("'%s'", objectStimulus.getCreator().getLocalName());
         }
     }
 
