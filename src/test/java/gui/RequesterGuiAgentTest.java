@@ -141,15 +141,29 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldSendGetAllSettingsToAgent() throws Exception {
-        doReturn(RequesterGuiAction.GET_ALL_SETTINGS).when(requesterGuiMock).getSelectedAction();
+    public void shouldSendSimpleContentToAgent() throws Exception {
+        String expectedContent = "expectedContent";
+        doReturn(expectedContent).when(requesterGuiMock).getSimpleContent();
+        doReturn(RequesterGuiAction.SEND_SIMPLE_CONTENT).when(requesterGuiMock).getSelectedAction();
 
         GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
         requesterGuiAgentSpy.onGuiEvent(guiEvent);
 
-        ContentElement contentElement = testRequestAction(SettingsOntology.getInstance());
+        verify(requesterGuiMock).logMessage(messageArgumentCaptor.capture());
+        verify(requesterGuiAgentSpy).send(messageArgumentCaptor.getValue());
 
-        Action action = (Action) contentElement;
+        ACLMessage message = messageArgumentCaptor.getValue();
+        assertThat(message.getPerformative(), is(ACLMessage.REQUEST));
+        assertThat(message.getReplyWith(), is(notNullValue()));
+        assertThat(message.getConversationId(), is(notNullValue()));
+        assertThat(message.getSender(), is(senderAgentAID));
+        assertThat(message.getAllReceiver().next(), is(receiverAgentAID));
+        assertThat(message.getContent(), is(expectedContent));
+    }
+
+    @Test
+    public void shouldSendGetAllSettingsToAgent() throws Exception {
+        Action action = testRequestAction(SettingsOntology.getInstance(), RequesterGuiAction.GET_ALL_SETTINGS);
         assertThat(action.getAction(), is(instanceOf(GetAllSettings.class)));
     }
 
@@ -157,14 +171,8 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
     public void shouldSendGetASettingToAgent() throws Exception {
         String expectedKey = "expectedSetting";
         doReturn(expectedKey).when(requesterGuiMock).getKeySetting();
-        doReturn(RequesterGuiAction.GET_SETTING).when(requesterGuiMock).getSelectedAction();
 
-        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
-        requesterGuiAgentSpy.onGuiEvent(guiEvent);
-
-        ContentElement contentElement = testRequestAction(SettingsOntology.getInstance());
-
-        Action action = (Action) contentElement;
+        Action action = testRequestAction(SettingsOntology.getInstance(), RequesterGuiAction.GET_SETTING);
         assertThat(action.getAction(), is(instanceOf(GetSetting.class)));
 
         GetSetting getSetting = (GetSetting) action.getAction();
@@ -173,14 +181,7 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
 
     @Test
     public void shouldSendGetEmotionalStateToAgent() throws Exception {
-        doReturn(RequesterGuiAction.GET_EMOTIONAL_STATE).when(requesterGuiMock).getSelectedAction();
-
-        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
-        requesterGuiAgentSpy.onGuiEvent(guiEvent);
-
-        ContentElement contentElement = testRequestAction(MasoesOntology.getInstance());
-
-        Action action = (Action) contentElement;
+        Action action = testRequestAction(MasoesOntology.getInstance(), RequesterGuiAction.GET_EMOTIONAL_STATE);
         assertThat(action.getAction(), is(instanceOf(GetEmotionalState.class)));
     }
 
@@ -190,15 +191,9 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         String expectedActionName = "expectedActionName";
         doReturn(expectedActorName).when(requesterGuiMock).getActorName();
         doReturn(expectedActionName).when(requesterGuiMock).getActionName();
-        doReturn(RequesterGuiAction.EVALUATE_ACTION_STIMULUS).when(requesterGuiMock).getSelectedAction();
         doReturn(new AID(expectedActorName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedActorName);
 
-        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
-        requesterGuiAgentSpy.onGuiEvent(guiEvent);
-
-        ContentElement contentElement = testRequestAction(MasoesOntology.getInstance());
-
-        Action action = (Action) contentElement;
+        Action action = testRequestAction(MasoesOntology.getInstance(), RequesterGuiAction.EVALUATE_ACTION_STIMULUS);
         assertThat(action.getAction(), is(instanceOf(EvaluateStimulus.class)));
 
         EvaluateStimulus evaluateStimulus = (EvaluateStimulus) action.getAction();
@@ -218,14 +213,7 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         doReturn(expectedProperties).when(requesterGuiMock).getObjectProperties();
         doReturn(new AID(expectedCreatorName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedCreatorName);
 
-        doReturn(RequesterGuiAction.EVALUATE_OBJECT_STIMULUS).when(requesterGuiMock).getSelectedAction();
-
-        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
-        requesterGuiAgentSpy.onGuiEvent(guiEvent);
-
-        ContentElement contentElement = testRequestAction(MasoesOntology.getInstance());
-
-        Action action = (Action) contentElement;
+        Action action = testRequestAction(MasoesOntology.getInstance(), RequesterGuiAction.EVALUATE_OBJECT_STIMULUS);
         assertThat(action.getAction(), is(instanceOf(EvaluateStimulus.class)));
 
         EvaluateStimulus evaluateStimulus = (EvaluateStimulus) action.getAction();
@@ -249,14 +237,8 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
 
         doReturn(expectedBehaviourName).when(requesterGuiMock).getBehaviourName();
         doReturn(expectedBehaviourClassName).when(requesterGuiMock).getBehaviourClassName();
-        doReturn(RequesterGuiAction.ADD_BEHAVIOUR).when(requesterGuiMock).getSelectedAction();
 
-        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
-        requesterGuiAgentSpy.onGuiEvent(guiEvent);
-
-        ContentElement contentElement = testRequestAction(ConfigurableOntology.getInstance());
-
-        Action action = (Action) contentElement;
+        Action action = testRequestAction(ConfigurableOntology.getInstance(), RequesterGuiAction.ADD_BEHAVIOUR);
         assertThat(action.getAction(), is(instanceOf(AddBehaviour.class)));
 
         AddBehaviour addBehaviour = (AddBehaviour) action.getAction();
@@ -268,14 +250,8 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
     public void shouldSendRemoveBehaviourToAgent() throws Exception {
         String expectedBehaviourName = "expectedBehaviourName";
         doReturn(expectedBehaviourName).when(requesterGuiMock).getBehaviourName();
-        doReturn(RequesterGuiAction.REMOVE_BEHAVIOUR).when(requesterGuiMock).getSelectedAction();
 
-        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
-        requesterGuiAgentSpy.onGuiEvent(guiEvent);
-
-        ContentElement contentElement = testRequestAction(ConfigurableOntology.getInstance());
-
-        Action action = (Action) contentElement;
+        Action action = testRequestAction(ConfigurableOntology.getInstance(), RequesterGuiAction.REMOVE_BEHAVIOUR);
         assertThat(action.getAction(), is(instanceOf(RemoveBehaviour.class)));
 
         RemoveBehaviour removeBehaviour = (RemoveBehaviour) action.getAction();
@@ -283,41 +259,14 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldSendSimpleContentToAgent() throws Exception {
-        String expectedContent = "expectedContent";
-        doReturn(expectedContent).when(requesterGuiMock).getSimpleContent();
-        doReturn(RequesterGuiAction.SEND_SIMPLE_CONTENT).when(requesterGuiMock).getSelectedAction();
-
-        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
-        requesterGuiAgentSpy.onGuiEvent(guiEvent);
-
-        verify(requesterGuiMock).logMessage(messageArgumentCaptor.capture());
-        verify(requesterGuiAgentSpy).send(messageArgumentCaptor.getValue());
-
-        ACLMessage message = messageArgumentCaptor.getValue();
-        assertThat(message.getPerformative(), is(ACLMessage.REQUEST));
-        assertThat(message.getReplyWith(), is(notNullValue()));
-        assertThat(message.getConversationId(), is(notNullValue()));
-        assertThat(message.getSender(), is(senderAgentAID));
-        assertThat(message.getAllReceiver().next(), is(receiverAgentAID));
-        assertThat(message.getContent(), is(expectedContent));
-    }
-
-    @Test
     public void shouldSendNotifyAction() throws Exception {
         String expectedActor = "expectedActor";
         String expectedActionName = "expectedActionName";
         doReturn(new AID(expectedActor, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedActor);
-        doReturn(RequesterGuiAction.NOTIFY_ACTION).when(requesterGuiMock).getSelectedAction();
         doReturn(expectedActor).when(requesterGuiMock).getActorName();
         doReturn(expectedActionName).when(requesterGuiMock).getActionName();
 
-        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
-        requesterGuiAgentSpy.onGuiEvent(guiEvent);
-
-        ContentElement contentElement = testRequestAction(MasoesOntology.getInstance());
-
-        Action action = (Action) contentElement;
+        Action action = testRequestAction(MasoesOntology.getInstance(), RequesterGuiAction.NOTIFY_ACTION);
         assertThat(action.getAction(), is(instanceOf(NotifyAction.class)));
 
         NotifyAction notifyAction = (NotifyAction) action.getAction();
@@ -329,15 +278,9 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
     public void shouldSendGetServices() throws Exception {
         String expectedAgentName = "expectedAgentName";
         doReturn(new AID(expectedAgentName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedAgentName);
-        doReturn(RequesterGuiAction.GET_SERVICES).when(requesterGuiMock).getSelectedAction();
         doReturn(expectedAgentName).when(requesterGuiMock).getAgentName();
 
-        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
-        requesterGuiAgentSpy.onGuiEvent(guiEvent);
-
-        ContentElement contentElement = testRequestAction(FIPAManagementOntology.getInstance());
-
-        Action action = (Action) contentElement;
+        Action action = testRequestAction(FIPAManagementOntology.getInstance(), RequesterGuiAction.GET_SERVICES);
         assertThat(action.getAction(), is(instanceOf(Search.class)));
 
         Search notifyAction = (Search) action.getAction();
@@ -349,14 +292,7 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
 
     @Test
     public void shouldSendGetAgents() throws Exception {
-        doReturn(RequesterGuiAction.GET_AGENTS).when(requesterGuiMock).getSelectedAction();
-
-        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
-        requesterGuiAgentSpy.onGuiEvent(guiEvent);
-
-        ContentElement contentElement = testRequestAction(FIPAManagementOntology.getInstance());
-
-        Action action = (Action) contentElement;
+        Action action = testRequestAction(FIPAManagementOntology.getInstance(), RequesterGuiAction.GET_AGENTS);
         assertThat(action.getAction(), is(instanceOf(Search.class)));
 
         Search notifyAction = (Search) action.getAction();
@@ -366,15 +302,9 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
     @Test
     public void shouldSendSearchAgent() throws Exception {
         String expectedServiceName = "expectedServiceName";
-        doReturn(RequesterGuiAction.SEARCH_AGENT).when(requesterGuiMock).getSelectedAction();
         doReturn(expectedServiceName).when(requesterGuiMock).getServiceName();
 
-        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
-        requesterGuiAgentSpy.onGuiEvent(guiEvent);
-
-        ContentElement contentElement = testRequestAction(FIPAManagementOntology.getInstance());
-
-        Action action = (Action) contentElement;
+        Action action = testRequestAction(FIPAManagementOntology.getInstance(), RequesterGuiAction.SEARCH_AGENT);
         assertThat(action.getAction(), is(instanceOf(Search.class)));
 
         Search notifyAction = (Search) action.getAction();
@@ -389,15 +319,9 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
     public void shouldSendDeregisterAgent() throws Exception {
         String expectedAgentName = "expectedAgentName";
         doReturn(new AID(expectedAgentName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedAgentName);
-        doReturn(RequesterGuiAction.DEREGISTER_AGENT).when(requesterGuiMock).getSelectedAction();
         doReturn(expectedAgentName).when(requesterGuiMock).getAgentName();
 
-        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
-        requesterGuiAgentSpy.onGuiEvent(guiEvent);
-
-        ContentElement contentElement = testRequestAction(FIPAManagementOntology.getInstance());
-
-        Action action = (Action) contentElement;
+        Action action = testRequestAction(FIPAManagementOntology.getInstance(), RequesterGuiAction.DEREGISTER_AGENT);
         assertThat(action.getAction(), is(instanceOf(Deregister.class)));
 
         Deregister deregister = (Deregister) action.getAction();
@@ -411,17 +335,11 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
     public void shouldSendRegisterAgent() throws Exception {
         String expectedServiceName = "expectedServiceName";
         String expectedAgentName = "expectedAgentName";
-        doReturn(RequesterGuiAction.REGISTER_AGENT).when(requesterGuiMock).getSelectedAction();
         doReturn(expectedServiceName).when(requesterGuiMock).getServiceName();
         doReturn(expectedAgentName).when(requesterGuiMock).getAgentName();
         doReturn(new AID(expectedAgentName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedAgentName);
 
-        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
-        requesterGuiAgentSpy.onGuiEvent(guiEvent);
-
-        ContentElement contentElement = testRequestAction(FIPAManagementOntology.getInstance());
-
-        Action action = (Action) contentElement;
+        Action action = testRequestAction(FIPAManagementOntology.getInstance(), RequesterGuiAction.REGISTER_AGENT);
         assertThat(action.getAction(), is(instanceOf(Register.class)));
 
         Register register = (Register) action.getAction();
@@ -435,7 +353,12 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         assertThat(serviceDescriptor.getType(), is(expectedServiceName));
     }
 
-    private ContentElement testRequestAction(Ontology ontology) throws Exception {
+    private Action testRequestAction(Ontology ontology, RequesterGuiAction guiAction) throws Exception {
+        doReturn(guiAction).when(requesterGuiMock).getSelectedAction();
+
+        GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
+        requesterGuiAgentSpy.onGuiEvent(guiEvent);
+
         SemanticLanguage language = SemanticLanguage.getInstance();
 
         verify(requesterGuiMock).logMessage(messageArgumentCaptor.capture());
@@ -458,7 +381,7 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
 
         ContentElement contentElement = contentManager.extractContent(message);
         assertThat(contentElement, is(instanceOf(Action.class)));
-        return contentElement;
+        return (Action) contentElement;
     }
 
 }
