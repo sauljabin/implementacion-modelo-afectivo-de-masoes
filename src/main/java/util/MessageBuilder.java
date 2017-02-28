@@ -122,9 +122,7 @@ public class MessageBuilder {
         }
 
         if (content != null) {
-            if (content instanceof String) {
-                message.setContent((String) content);
-            } else if (content instanceof ContentElement) {
+            if (content instanceof ContentElement) {
                 ContentManager contentManager = new ContentManager();
                 contentManager.registerOntology(ontology);
                 contentManager.registerLanguage(language);
@@ -133,6 +131,8 @@ public class MessageBuilder {
                 } catch (Exception e) {
                     throw new FillOntologyContentException(e);
                 }
+            } else {
+                message.setContent(content.toString());
             }
         }
 

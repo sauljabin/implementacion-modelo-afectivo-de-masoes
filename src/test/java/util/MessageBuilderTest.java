@@ -172,6 +172,15 @@ public class MessageBuilderTest {
     }
 
     @Test
+    public void shouldSetNumberContent() {
+        int expectedContent = 1;
+        ACLMessage message = messageBuilder
+                .content(expectedContent)
+                .build();
+        assertThat(message.getContent(), is(String.valueOf(expectedContent)));
+    }
+
+    @Test
     public void shouldFillContentWhenContentIsNotString() {
         ACLMessage message = messageBuilder
                 .ontology(BasicOntology.getInstance())
