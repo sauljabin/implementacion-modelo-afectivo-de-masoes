@@ -28,6 +28,8 @@ public class BehaviouralKnowledgeBase extends KnowledgeBase {
         if (agentName != null) {
             addTheory(String.format("self('%s').", agentName));
             addTheory("other(X) :- not self(X).");
+            addTheory("anyone(AGENT) :- self(AGENT).");
+            addTheory("anyone(AGENT) :- other(AGENT).");
             if (agentKnowledgePath != null) {
                 addTheoryFromPath(agentKnowledgePath);
             }

@@ -34,6 +34,14 @@ public class BehaviouralKnowledgeBaseTest {
     }
 
     @Test
+    public void shouldSolveCorrectlyAnyoneAgent() throws Exception {
+        SolveInfo solveSelf = behaviouralKnowledgeBase.solve("anyone(" + AGENT_NAME + ").");
+        assertThat(solveSelf.toString(), is("yes."));
+        SolveInfo solveOther = behaviouralKnowledgeBase.solve("anyone(otherAgent).");
+        assertThat(solveOther.toString(), is("yes."));
+    }
+
+    @Test
     public void shouldSolveSelfAgentWithUpperName() throws Exception {
         String nameUpper = "NAME_UPPER";
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(nameUpper, AGENT_KNOWLEDGE_PATH);
