@@ -11,8 +11,6 @@ import agent.AgentManagementAssistant;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPANames;
 import language.SemanticLanguage;
-import masoes.colective.NotifierAgent;
-import masoes.colective.NotifierAgentBehaviour;
 import ontology.masoes.MasoesOntology;
 import org.junit.Before;
 import org.junit.Test;

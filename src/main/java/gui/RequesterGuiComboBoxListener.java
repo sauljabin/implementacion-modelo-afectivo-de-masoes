@@ -39,7 +39,7 @@ public class RequesterGuiComboBoxListener implements ActionListener {
             case GET_EMOTIONAL_STATE:
                 requesterGui.setGetEmotionalStateActionComponents();
                 break;
-            case EVALUATE_STIMULUS:
+            case EVALUATE_ACTION_STIMULUS:
                 requesterGui.setEvaluateStimulusActionComponents();
                 break;
             case SEND_SIMPLE_CONTENT:

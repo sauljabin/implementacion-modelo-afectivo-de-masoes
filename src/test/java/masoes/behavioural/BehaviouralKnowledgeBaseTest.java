@@ -59,7 +59,7 @@ public class BehaviouralKnowledgeBaseTest {
     }
 
     @Test
-    public void shouldSolveCorrectlyEmotionalConfiguratorQuestions() throws Exception {
+    public void shouldSolveCorrectlyEmotionalConfiguratorQuestionsWithAction() throws Exception {
         testEmotion("other", "greeting", "compassion");
         testEmotion("other", "smile", "admiration");
         testEmotion("other", "run", "rejection");
@@ -70,8 +70,20 @@ public class BehaviouralKnowledgeBaseTest {
         testEmotion(AGENT_NAME, "pay", "depression");
     }
 
-    private void testEmotion(String agent, String action, String expectedEmotion) throws Exception {
-        SolveInfo solve = behaviouralKnowledgeBase.solve("emotion(" + agent + ", " + action + ", X).");
+    @Test
+    public void shouldSolveCorrectlyEmotionalConfiguratorQuestionsWithObject() throws Exception {
+        testEmotion("other", "[color=blue]", "compassion");
+        testEmotion("other", "[color=red]", "admiration");
+        testEmotion("other", "[color=white]", "rejection");
+        testEmotion("other", "[color=black]", "anger");
+        testEmotion(AGENT_NAME, "[color=blue]", "happiness");
+        testEmotion(AGENT_NAME, "[color=red]", "joy");
+        testEmotion(AGENT_NAME, "[color=white]", "sadness");
+        testEmotion(AGENT_NAME, "[color=black]", "depression");
+    }
+
+    private void testEmotion(String agent, String parameter, String expectedEmotion) throws Exception {
+        SolveInfo solve = behaviouralKnowledgeBase.solve("emotion(" + agent + ", " + parameter + ", X).");
         assertThat(solve.getVarValue("X").toString(), is(expectedEmotion));
     }
 

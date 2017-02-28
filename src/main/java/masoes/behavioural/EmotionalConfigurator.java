@@ -9,13 +9,19 @@ package masoes.behavioural;
 import alice.tuprolog.SolveInfo;
 import knowledge.KnowledgeBaseException;
 import ontology.masoes.ActionStimulus;
+import ontology.masoes.ObjectProperty;
+import ontology.masoes.ObjectStimulus;
 import ontology.masoes.Stimulus;
 import util.ToStringBuilder;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class EmotionalConfigurator {
 
     private static final String ANSWER_VAR_NAME = "X";
-    private static final String KNOWLEDGE_QUESTION = "emotion('%s','%s'," + ANSWER_VAR_NAME + ").";
+    private static final String KNOWLEDGE_QUESTION = "emotion('%s',%s," + ANSWER_VAR_NAME + ").";
 
     private EmotionalState emotionalState;
     private EmotionalSpace emotionalSpace;
@@ -41,12 +47,7 @@ public class EmotionalConfigurator {
 
     private EmotionalState calculateEmotionalState(Stimulus stimulus) {
         try {
-            ActionStimulus actionStimulus = (ActionStimulus) stimulus;
-            String actorName = actionStimulus.getActor().getLocalName();
-            String actionName = actionStimulus.getActionName();
-
-            SolveInfo solveEmotion = behaviouralKnowledgeBase.solve(String.format(KNOWLEDGE_QUESTION, actorName, actionName));
-
+            SolveInfo solveEmotion = behaviouralKnowledgeBase.solve(String.format(KNOWLEDGE_QUESTION, getActor(stimulus), getQuestionParameter(stimulus)));
             if (solveEmotion.isSuccess()) {
                 String emotionName = solveEmotion.getTerm(ANSWER_VAR_NAME).toString().replace("'", "").toLowerCase();
                 return emotionalSpace.searchEmotion(emotionName).getRandomEmotionalState();
@@ -54,6 +55,33 @@ public class EmotionalConfigurator {
             return new EmotionalState();
         } catch (Exception e) {
             throw new KnowledgeBaseException(e);
+        }
+    }
+
+    private String getQuestionParameter(Stimulus stimulus) {
+        if (stimulus instanceof ActionStimulus) {
+            ActionStimulus actionStimulus = (ActionStimulus) stimulus;
+            return String.format("'%s'", actionStimulus.getActionName());
+        } else {
+            ObjectStimulus objectStimulus = (ObjectStimulus) stimulus;
+            Object[] properties = objectStimulus.getObjectProperties().toArray();
+
+            List<String> stringsProperties = Arrays.stream(properties).map(object -> {
+                ObjectProperty objectProperty = (ObjectProperty) object;
+                return String.format("'%s'='%s'", objectProperty.getName(), objectProperty.getValue());
+            }).collect(Collectors.toList());
+
+            return String.format("[%s]", String.join(",", stringsProperties));
+        }
+    }
+
+    private String getActor(Stimulus stimulus) {
+        if (stimulus instanceof ActionStimulus) {
+            ActionStimulus actionStimulus = (ActionStimulus) stimulus;
+            return actionStimulus.getActor().getLocalName();
+        } else {
+            ObjectStimulus objectStimulus = (ObjectStimulus) stimulus;
+            return objectStimulus.getCreator().getLocalName();
         }
     }
 

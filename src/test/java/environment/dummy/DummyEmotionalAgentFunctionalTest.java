@@ -14,11 +14,15 @@ import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
+import jade.util.leap.ArrayList;
 import ontology.masoes.ActionStimulus;
 import ontology.masoes.AgentState;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
+import ontology.masoes.ObjectProperty;
+import ontology.masoes.ObjectStimulus;
+import ontology.masoes.Stimulus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,15 +72,25 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
                 .ontology(MasoesOntology.getInstance())
                 .build();
 
-        testEvaluateStimulus(requestMessage, "greeting", getAID(), "compassion", "IMITATIVE");
-        testEvaluateStimulus(requestMessage, "smile", getAID(), "admiration", "IMITATIVE");
-        testEvaluateStimulus(requestMessage, "run", getAID(), "rejection", "COGNITIVE");
-        testEvaluateStimulus(requestMessage, "bye", getAID(), "anger", "REACTIVE");
+        testEvaluateActionStimulus(requestMessage, "greeting", getAID(), "compassion", "IMITATIVE");
+        testEvaluateActionStimulus(requestMessage, "smile", getAID(), "admiration", "IMITATIVE");
+        testEvaluateActionStimulus(requestMessage, "run", getAID(), "rejection", "COGNITIVE");
+        testEvaluateActionStimulus(requestMessage, "bye", getAID(), "anger", "REACTIVE");
 
-        testEvaluateStimulus(requestMessage, "eat", dummyAgentAID, "happiness", "IMITATIVE");
-        testEvaluateStimulus(requestMessage, "sleep", dummyAgentAID, "joy", "IMITATIVE");
-        testEvaluateStimulus(requestMessage, "wake", dummyAgentAID, "sadness", "COGNITIVE");
-        testEvaluateStimulus(requestMessage, "pay", dummyAgentAID, "depression", "REACTIVE");
+        testEvaluateActionStimulus(requestMessage, "eat", dummyAgentAID, "happiness", "IMITATIVE");
+        testEvaluateActionStimulus(requestMessage, "sleep", dummyAgentAID, "joy", "IMITATIVE");
+        testEvaluateActionStimulus(requestMessage, "wake", dummyAgentAID, "sadness", "COGNITIVE");
+        testEvaluateActionStimulus(requestMessage, "pay", dummyAgentAID, "depression", "REACTIVE");
+
+        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "blue"), getAID(), "compassion", "IMITATIVE");
+        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "red"), getAID(), "admiration", "IMITATIVE");
+        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "white"), getAID(), "rejection", "COGNITIVE");
+        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "black"), getAID(), "anger", "REACTIVE");
+
+        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "blue"), dummyAgentAID, "happiness", "IMITATIVE");
+        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "red"), dummyAgentAID, "joy", "IMITATIVE");
+        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "white"), dummyAgentAID, "sadness", "COGNITIVE");
+        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "black"), dummyAgentAID, "depression", "REACTIVE");
     }
 
     @Test
@@ -90,11 +104,16 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
         testGetStatus(requestMessage);
     }
 
-    private void testEvaluateStimulus(ACLMessage requestMessage, String actionName, AID aid, String expectedEmotion, String behaviourType) throws Exception {
-        ActionStimulus stimulus = new ActionStimulus();
-        stimulus.setActor(aid);
-        stimulus.setActionName(actionName);
+    private void testEvaluateObjectStimulus(ACLMessage requestMessage, ObjectProperty property, AID aid, String expectedEmotion, String behaviourType) throws Exception {
+        ArrayList properties = new ArrayList();
+        properties.add(property);
+        ObjectStimulus stimulus = new ObjectStimulus(aid, "car", properties);
+        testEvaluateStimulus(requestMessage, expectedEmotion, behaviourType, stimulus);
+    }
+
+    private void testEvaluateStimulus(ACLMessage requestMessage, String expectedEmotion, String behaviourType, Stimulus stimulus) throws Exception {
         EvaluateStimulus evaluateStimulus = new EvaluateStimulus(stimulus);
+
         Action action = new Action(dummyAgentAID, evaluateStimulus);
         contentManager.fillContent(requestMessage, action);
         sendMessage(requestMessage);
@@ -107,6 +126,13 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
         AgentState secondEmotionalResponse = testGetStatus(requestMessage);
         assertThat(secondEmotionalResponse.getEmotionState().getName(), is(expectedEmotion));
         assertThat(secondEmotionalResponse.getBehaviourState().getType(), is(behaviourType.toUpperCase()));
+    }
+
+    private void testEvaluateActionStimulus(ACLMessage requestMessage, String actionName, AID aid, String expectedEmotion, String behaviourType) throws Exception {
+        ActionStimulus stimulus = new ActionStimulus();
+        stimulus.setActor(aid);
+        stimulus.setActionName(actionName);
+        testEvaluateStimulus(requestMessage, expectedEmotion, behaviourType, stimulus);
     }
 
     private AgentState testGetStatus(ACLMessage requestMessage) throws Exception {

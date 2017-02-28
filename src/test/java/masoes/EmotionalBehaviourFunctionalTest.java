@@ -55,7 +55,7 @@ public class EmotionalBehaviourFunctionalTest extends FunctionalTest {
         assertThat(contentElementStimulus, is(instanceOf(EvaluateStimulus.class)));
         EvaluateStimulus evaluateStimulus = (EvaluateStimulus) contentElementStimulus;
 
-        ActionStimulus  actionStimulus = (ActionStimulus) evaluateStimulus.getStimulus();
+        ActionStimulus actionStimulus = (ActionStimulus) evaluateStimulus.getStimulus();
 
         assertThat(actionStimulus.getActionName(), is("expectedActionForTest"));
         assertThat(actionStimulus.getActor(), is(emotionalAgent));

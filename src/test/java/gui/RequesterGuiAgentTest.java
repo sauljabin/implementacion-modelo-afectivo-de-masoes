@@ -184,7 +184,7 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
 
     @Test
     public void shouldSendEvaluateStimulusToAgent() throws Exception {
-        doReturn(RequesterGuiAction.EVALUATE_STIMULUS).when(requesterGuiMock).getSelectedAction();
+        doReturn(RequesterGuiAction.EVALUATE_ACTION_STIMULUS).when(requesterGuiMock).getSelectedAction();
         doReturn(RECEIVER_AGENT_NAME).when(requesterGuiMock).getActorName();
         String expectedActionName = "expectedActionName";
         doReturn(expectedActionName).when(requesterGuiMock).getActionName();

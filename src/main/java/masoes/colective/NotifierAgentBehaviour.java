@@ -23,7 +23,6 @@ import ontology.masoes.ActionStimulus;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.NotifyAction;
-import ontology.masoes.Stimulus;
 import util.ServiceBuilder;
 
 import java.util.Arrays;

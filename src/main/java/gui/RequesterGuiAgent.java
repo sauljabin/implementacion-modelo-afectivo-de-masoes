@@ -123,7 +123,7 @@ public class RequesterGuiAgent extends GuiAgent {
             case GET_EMOTIONAL_STATE:
                 sendGetEmotionalState(aid);
                 break;
-            case EVALUATE_STIMULUS:
+            case EVALUATE_ACTION_STIMULUS:
                 sendEvaluateStimulus(aid);
                 break;
             case SEND_SIMPLE_CONTENT:
