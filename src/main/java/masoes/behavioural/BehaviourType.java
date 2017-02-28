@@ -7,5 +7,5 @@
 package masoes.behavioural;
 
 public enum BehaviourType {
-    IMITATIVE, REACTIVE, COGNITIVE;
+    IMITATIVE, REACTIVE, COGNITIVE
 }

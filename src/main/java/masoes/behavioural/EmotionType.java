@@ -7,5 +7,5 @@
 package masoes.behavioural;
 
 public enum EmotionType {
-    POSITIVE, NEGATIVE_LOW, NEGATIVE_HIGH;
+    POSITIVE, NEGATIVE_LOW, NEGATIVE_HIGH
 }
