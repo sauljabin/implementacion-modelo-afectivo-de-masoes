@@ -211,8 +211,10 @@ public class RequesterGuiAgent extends GuiAgent {
 
     private void sendNotifyAction(AID aid) {
         NotifyAction notifyAction = new NotifyAction();
-        notifyAction.setActor(getAID(requesterGui.getActorName()));
-        notifyAction.setActionName(requesterGui.getActionName());
+        ActionStimulus actionStimulus = new ActionStimulus();
+        actionStimulus.setActor(getAID(requesterGui.getActorName()));
+        actionStimulus.setActionName(requesterGui.getActionName());
+        notifyAction.setActionStimulus(actionStimulus);
         sendOntologyMessage(aid, MasoesOntology.getInstance(), notifyAction);
     }
 

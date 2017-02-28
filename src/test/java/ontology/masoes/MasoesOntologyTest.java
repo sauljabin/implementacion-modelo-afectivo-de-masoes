@@ -9,9 +9,10 @@ package ontology.masoes;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -31,9 +32,18 @@ public class MasoesOntologyTest {
 
     @Test
     public void shouldInitializeElements() {
-        assertThat(Arrays.asList(masoesOntology.getPredicateNames().toArray()), hasItems("AgentState"));
-        assertThat(Arrays.asList(masoesOntology.getActionNames().toArray()), hasItems("EvaluateStimulus", "GetEmotionalState", "NotifyAction"));
-        assertThat(Arrays.asList(masoesOntology.getConceptNames().toArray()), hasItems("EmotionState", "Stimulus", "BehaviourState", "ObjectProperty"));
+        List<Object> predicatesList = new ArrayList();
+        predicatesList.addAll(masoesOntology.getPredicateNames());
+        assertThat(predicatesList, containsInAnyOrder("AgentState"));
+
+        List<Object> actionList = new ArrayList();
+        actionList.addAll(masoesOntology.getActionNames());
+        assertThat(actionList, containsInAnyOrder("CreateObject", "DeleteObject", "EvaluateStimulus", "GetEmotionalState", "GetObject", "NotifyAction", "UpdateObject"));
+
+        List<Object> conceptList = new ArrayList();
+        conceptList.addAll(masoesOntology.getConceptNames());
+        conceptList.removeAll(actionList);
+        assertThat(conceptList, containsInAnyOrder("ActionStimulus", "BehaviourState", "EmotionState", "ObjectProperty", "ObjectStimulus", "Stimulus"));
     }
 
 }

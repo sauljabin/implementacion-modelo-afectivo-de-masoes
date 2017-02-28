@@ -60,10 +60,8 @@ public class NotifierAgentBehaviour extends OntologyResponderBehaviour {
             List<AID> emotionalAgents = agentManagementAssistant.search(serviceDescription);
 
             emotionalAgents.forEach(aid -> {
-
-                Stimulus stimulus = new ActionStimulus(notifyAction.getActor(), notifyAction.getActionName());
-                EvaluateStimulus evaluateStimulus = new EvaluateStimulus(stimulus);
-
+                ActionStimulus actionStimulus = notifyAction.getActionStimulus();
+                EvaluateStimulus evaluateStimulus = new EvaluateStimulus(actionStimulus);
                 ACLMessage requestAction = ontologyAssistant.createRequestAction(aid, evaluateStimulus);
                 agent.send(requestAction);
             });

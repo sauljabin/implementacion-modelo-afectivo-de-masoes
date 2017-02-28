@@ -63,7 +63,7 @@ public class NotifierAgentFunctionalTest extends FunctionalTest {
         ProtocolAssistant protocolAssistant = createProtocolAssistant();
 
         String expectedActionName = "expectedActionName";
-        NotifyAction notifyAction = new NotifyAction(getAID(), expectedActionName);
+        NotifyAction notifyAction = new NotifyAction(new ActionStimulus(getAID(), expectedActionName));
 
         ACLMessage requestAction = ontologyAssistant.createRequestAction(notifierAgent, notifyAction);
         ACLMessage response = protocolAssistant.sendRequest(requestAction, ACLMessage.INFORM);

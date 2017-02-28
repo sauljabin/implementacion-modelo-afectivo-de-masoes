@@ -16,6 +16,7 @@ import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import ontology.OntologyAssistant;
+import ontology.masoes.ActionStimulus;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.NotifyAction;
 import org.hamcrest.CoreMatchers;
@@ -67,7 +68,7 @@ public class NotifierAgentBehaviourTest extends PowerMockitoTest {
         setFieldValue(notifierAgentBehaviour, "ontologyAssistant", ontologyAssistant);
 
         NotifyAction notifyAction = new NotifyAction();
-        notifyAction.setActionName(ACTION_NAME);
+        notifyAction.setActionStimulus(new ActionStimulus(new AID(), ACTION_NAME));
         action = new Action(new AID(), notifyAction);
 
         doReturn(new AID("agentName", AID.ISGUID)).when(agentMock).getAID();

@@ -283,8 +283,8 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         assertThat(action.getAction(), is(instanceOf(NotifyAction.class)));
 
         NotifyAction notifyAction = (NotifyAction) action.getAction();
-        assertThat(notifyAction.getActor().getName(), is(expectedActor));
-        assertThat(notifyAction.getActionName(), is(expectedActionName));
+        assertThat(notifyAction.getActionStimulus().getActor().getName(), is(expectedActor));
+        assertThat(notifyAction.getActionStimulus().getActionName(), is(expectedActionName));
     }
 
     @Test
