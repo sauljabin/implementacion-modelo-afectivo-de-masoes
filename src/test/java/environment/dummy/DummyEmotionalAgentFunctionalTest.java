@@ -14,11 +14,11 @@ import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
+import ontology.masoes.ActionStimulus;
 import ontology.masoes.AgentState;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
-import ontology.masoes.Stimulus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -91,7 +91,7 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
     }
 
     private void testEvaluateStimulus(ACLMessage requestMessage, String actionName, AID aid, String expectedEmotion, String behaviourType) throws Exception {
-        Stimulus stimulus = new Stimulus();
+        ActionStimulus stimulus = new ActionStimulus();
         stimulus.setActor(aid);
         stimulus.setActionName(actionName);
         EvaluateStimulus evaluateStimulus = new EvaluateStimulus(stimulus);

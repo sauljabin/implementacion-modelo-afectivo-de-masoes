@@ -26,6 +26,7 @@ import language.SemanticLanguage;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
+import ontology.masoes.ActionStimulus;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
@@ -197,8 +198,10 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         assertThat(action.getAction(), is(instanceOf(EvaluateStimulus.class)));
 
         EvaluateStimulus evaluateStimulus = (EvaluateStimulus) action.getAction();
-        assertThat(evaluateStimulus.getStimulus().getActor().getName(), is(RECEIVER_AGENT_NAME));
-        assertThat(evaluateStimulus.getStimulus().getActionName(), is(expectedActionName));
+
+        ActionStimulus actionStimulus = (ActionStimulus) evaluateStimulus.getStimulus();
+        assertThat(actionStimulus.getActor().getName(), is(RECEIVER_AGENT_NAME));
+        assertThat(actionStimulus.getActionName(), is(expectedActionName));
     }
 
     @Test

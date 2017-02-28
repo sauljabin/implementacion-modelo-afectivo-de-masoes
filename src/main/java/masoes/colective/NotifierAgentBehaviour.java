@@ -19,6 +19,7 @@ import jade.lang.acl.MessageTemplate;
 import ontology.OntologyAssistant;
 import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
+import ontology.masoes.ActionStimulus;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.NotifyAction;
@@ -59,7 +60,8 @@ public class NotifierAgentBehaviour extends OntologyResponderBehaviour {
             List<AID> emotionalAgents = agentManagementAssistant.search(serviceDescription);
 
             emotionalAgents.forEach(aid -> {
-                Stimulus stimulus = new Stimulus(notifyAction.getActor(), notifyAction.getActionName());
+
+                Stimulus stimulus = new ActionStimulus(notifyAction.getActor(), notifyAction.getActionName());
                 EvaluateStimulus evaluateStimulus = new EvaluateStimulus(stimulus);
 
                 ACLMessage requestAction = ontologyAssistant.createRequestAction(aid, evaluateStimulus);

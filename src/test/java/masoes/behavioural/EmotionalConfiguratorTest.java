@@ -15,7 +15,7 @@ import masoes.behavioural.emotion.HappinessEmotion;
 import masoes.behavioural.emotion.JoyEmotion;
 import masoes.behavioural.emotion.RejectionEmotion;
 import masoes.behavioural.emotion.SadnessEmotion;
-import ontology.masoes.Stimulus;
+import ontology.masoes.ActionStimulus;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,7 +70,7 @@ public class EmotionalConfiguratorTest {
     }
 
     private void testUpdateEmotion(String actionName, Class<? extends Emotion> expectedEmotion, String agentName) {
-        emotionalConfigurator.updateEmotion(new Stimulus(new AID(agentName, AID.ISGUID), actionName));
+        emotionalConfigurator.updateEmotion(new ActionStimulus(new AID(agentName, AID.ISGUID), actionName));
         assertThat(emotionalConfigurator.getEmotion(), is(instanceOf(expectedEmotion)));
         assertTrue(emotionalConfigurator.getEmotion().getGeometry().intersects(emotionalConfigurator.getEmotionalState().toPoint()));
     }

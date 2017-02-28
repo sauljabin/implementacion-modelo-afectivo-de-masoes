@@ -82,6 +82,8 @@ public class ToStringBuilder {
     private String objectToString(Object object) {
         if (object instanceof List) {
             return listToString((List) object);
+        } else if (object instanceof jade.util.leap.List) {
+            return leapListToString((jade.util.leap.List) object);
         } else if (object instanceof Map) {
             return mapToString((Map) object);
         } else if (object instanceof Object[]) {
@@ -104,6 +106,10 @@ public class ToStringBuilder {
             return charArrayToString((char[]) object);
         }
         return object.toString();
+    }
+
+    private String leapListToString(jade.util.leap.List object) {
+        return listToString(Arrays.asList(object.toArray()));
     }
 
     private String charArrayToString(char[] array) {

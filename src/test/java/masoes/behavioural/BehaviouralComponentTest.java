@@ -8,7 +8,7 @@ package masoes.behavioural;
 
 import masoes.EmotionalAgent;
 import masoes.EmotionalBehaviour;
-import ontology.masoes.Stimulus;
+import ontology.masoes.ActionStimulus;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -57,7 +57,7 @@ public class BehaviouralComponentTest extends PowerMockitoTest {
         EmotionalState emotionalStateMock = mock(EmotionalState.class);
         doReturn(emotionalStateMock).when(emotionalConfiguratorMock).getEmotionalState();
 
-        Stimulus stimulus = new Stimulus();
+        ActionStimulus stimulus = new ActionStimulus();
         behaviouralComponent.evaluateStimulus(stimulus);
 
         verify(emotionalConfiguratorMock).updateEmotion(stimulus);

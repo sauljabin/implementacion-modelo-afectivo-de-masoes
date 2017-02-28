@@ -15,6 +15,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import masoes.colective.NotifierAgent;
 import ontology.OntologyAssistant;
+import ontology.masoes.ActionStimulus;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.MasoesOntology;
 import org.junit.Before;
@@ -53,8 +54,11 @@ public class EmotionalBehaviourFunctionalTest extends FunctionalTest {
         ContentElement contentElementStimulus = (ContentElement) action.getAction();
         assertThat(contentElementStimulus, is(instanceOf(EvaluateStimulus.class)));
         EvaluateStimulus evaluateStimulus = (EvaluateStimulus) contentElementStimulus;
-        assertThat(evaluateStimulus.getStimulus().getActionName(), is("expectedActionForTest"));
-        assertThat(evaluateStimulus.getStimulus().getActor(), is(emotionalAgent));
+
+        ActionStimulus  actionStimulus = (ActionStimulus) evaluateStimulus.getStimulus();
+
+        assertThat(actionStimulus.getActionName(), is("expectedActionForTest"));
+        assertThat(actionStimulus.getActor(), is(emotionalAgent));
     }
 
 }

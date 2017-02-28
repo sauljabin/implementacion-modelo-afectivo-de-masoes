@@ -25,11 +25,11 @@ import ontology.OntologyAssistant;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
+import ontology.masoes.ActionStimulus;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.NotifyAction;
-import ontology.masoes.Stimulus;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.SettingsOntology;
@@ -229,7 +229,7 @@ public class RequesterGuiAgent extends GuiAgent {
     }
 
     private void sendEvaluateStimulus(AID aid) {
-        Stimulus stimulus = new Stimulus();
+        ActionStimulus stimulus = new ActionStimulus();
         stimulus.setActor(getAID(requesterGui.getActorName()));
         stimulus.setActionName(requesterGui.getActionName());
         sendOntologyMessage(aid, MasoesOntology.getInstance(), new EvaluateStimulus(stimulus));

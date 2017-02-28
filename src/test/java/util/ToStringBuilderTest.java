@@ -6,6 +6,7 @@
 
 package util;
 
+import jade.util.leap.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -155,6 +156,22 @@ public class ToStringBuilderTest {
                 .append("expectedName", Arrays.asList("A", "B"))
                 .toString();
         assertThat(actual, is("[expectedName=[A, B]]"));
+    }
+
+    @Test
+    public void shouldIncludeLeapListField() throws Exception {
+        Map<String, String> map = new HashMap<>();
+        map.put("1", "A");
+        map.put("2", "B");
+
+        jade.util.leap.List list = new ArrayList();
+        list.add(map);
+        list.add("B");
+
+        String actual = toStringBuilder
+                .append("expectedName", list)
+                .toString();
+        assertThat(actual, is("[expectedName=[[1=A, 2=B], B]]"));
     }
 
     @Test

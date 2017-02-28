@@ -16,11 +16,11 @@ import masoes.behavioural.BehaviouralComponent;
 import masoes.behavioural.EmotionalState;
 import masoes.behavioural.emotion.HappinessEmotion;
 import ontology.OntologyMatchExpression;
+import ontology.masoes.ActionStimulus;
 import ontology.masoes.AgentState;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
-import ontology.masoes.Stimulus;
 import org.junit.Before;
 import org.junit.Test;
 import test.PowerMockitoTest;
@@ -71,7 +71,7 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
     @Test
     public void shouldEvaluateStimulus() throws Exception {
         EvaluateStimulus evaluateStimulus = new EvaluateStimulus();
-        Stimulus stimulus = new Stimulus();
+        ActionStimulus stimulus = new ActionStimulus();
         evaluateStimulus.setStimulus(stimulus);
 
         Action action = new Action();

@@ -8,6 +8,7 @@ package masoes.behavioural;
 
 import alice.tuprolog.SolveInfo;
 import knowledge.KnowledgeBaseException;
+import ontology.masoes.ActionStimulus;
 import ontology.masoes.Stimulus;
 import util.ToStringBuilder;
 
@@ -40,8 +41,9 @@ public class EmotionalConfigurator {
 
     private EmotionalState calculateEmotionalState(Stimulus stimulus) {
         try {
-            String actorName = stimulus.getActor().getLocalName();
-            String actionName = stimulus.getActionName();
+            ActionStimulus actionStimulus = (ActionStimulus) stimulus;
+            String actorName = actionStimulus.getActor().getLocalName();
+            String actionName = actionStimulus.getActionName();
 
             SolveInfo solveEmotion = behaviouralKnowledgeBase.solve(String.format(KNOWLEDGE_QUESTION, actorName, actionName));
 

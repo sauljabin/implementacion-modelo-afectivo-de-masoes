@@ -13,6 +13,7 @@ import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import ontology.OntologyAssistant;
+import ontology.masoes.ActionStimulus;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.NotifyAction;
@@ -78,8 +79,9 @@ public class NotifierAgentFunctionalTest extends FunctionalTest {
         ContentElement contentElementStimulus = (ContentElement) action.getAction();
         assertThat(contentElementStimulus, is(instanceOf(EvaluateStimulus.class)));
         EvaluateStimulus evaluateStimulus = (EvaluateStimulus) contentElementStimulus;
-        assertThat(evaluateStimulus.getStimulus().getActionName(), is(expectedActionName));
-        assertThat(evaluateStimulus.getStimulus().getActor(), is(getAID()));
+        ActionStimulus actionStimulus = (ActionStimulus) evaluateStimulus.getStimulus();
+        assertThat(actionStimulus.getActionName(), is(expectedActionName));
+        assertThat(actionStimulus.getActor(), is(getAID()));
     }
 
 }
