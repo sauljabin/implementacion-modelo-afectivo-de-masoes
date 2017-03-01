@@ -123,18 +123,18 @@ public class ResponseSettingsBehaviourTest {
         assertTrue(responseSettingsBehaviour.isValidAction(actionGetAllSettings));
     }
 
+    @Test
+    public void shouldGetCorrectOntologyAndMessageTemplate() {
+        assertThat(responseSettingsBehaviour.getOntology(), is(instanceOf(SettingsOntology.class)));
+        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(SettingsOntology.getInstance())), responseSettingsBehaviour.getMessageTemplate());
+    }
+
     private void testReturnASettings(String key, String expectedValue) {
         GetSetting getSetting = new GetSetting(key);
         Action action = new Action(new AID(), getSetting);
         SystemSettings systemSettings = (SystemSettings) responseSettingsBehaviour.performAction(action);
         Setting expectedSetting = new Setting(key, expectedValue);
         assertReflectionEquals(expectedSetting, systemSettings.getSettings().get(0));
-    }
-
-    @Test
-    public void shouldGetCorrectOntologyAndMessageTemplate() {
-        assertThat(responseSettingsBehaviour.getOntology(), is(instanceOf(SettingsOntology.class)));
-        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(SettingsOntology.getInstance())), responseSettingsBehaviour.getMessageTemplate());
     }
 
 }

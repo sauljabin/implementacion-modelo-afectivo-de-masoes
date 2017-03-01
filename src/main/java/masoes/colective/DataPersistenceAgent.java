@@ -1,17 +1,19 @@
-package masoes.colective;
+/*
+ * Copyright (c) 2016 Saúl Piña <sauljabin@gmail.com>
+ * License GPLv3 <https://www.gnu.org/licenses/gpl-3.0.html>
+ * Please see the LICENSE.txt file
+ */
 
+package masoes.colective;
 
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.lang.acl.MessageTemplate;
-import ontology.OntologyMatchExpression;
 import ontology.masoes.MasoesOntology;
 import org.slf4j.LoggerFactory;
 import settings.SettingsAgent;
 import util.ServiceBuilder;
-import util.database.DataBaseHelper;
 
 public class DataPersistenceAgent extends Agent {
 
@@ -26,17 +28,14 @@ public class DataPersistenceAgent extends Agent {
     @Override
     protected void setup() {
         try {
-            addBehaviour(new DataPersistenceAgentBehaviour(
-                    this,
-                    new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())),
-                    MasoesOntology.getInstance(),
-                    new DataBaseHelper()));
+            addBehaviour(new DataPersistenceBehaviour(this));
 
-            agentManagementAssistant.register(createService(MasoesOntology.ACTION_CREATE_OBJECT));
-            agentManagementAssistant.register(createService(MasoesOntology.ACTION_GET_OBJECT));
-            agentManagementAssistant.register(createService(MasoesOntology.ACTION_UPDATE_OBJECT));
-            agentManagementAssistant.register(createService(MasoesOntology.ACTION_DELETE_OBJECT));
-
+            agentManagementAssistant.register(
+                    createService(MasoesOntology.ACTION_CREATE_OBJECT),
+                    createService(MasoesOntology.ACTION_GET_OBJECT),
+                    createService(MasoesOntology.ACTION_UPDATE_OBJECT),
+                    createService(MasoesOntology.ACTION_DELETE_OBJECT)
+            );
         } catch (Exception e) {
             logger.exception(this, e);
             throw e;

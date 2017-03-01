@@ -17,13 +17,12 @@ buildscript {
     }
     dependencies {
         classpath 'org.flywaydb:flyway-gradle-plugin:3.0'
-        classpath 'org.xerial:sqlite-jdbc:3.7.2'
+        classpath 'org.xerial:sqlite-jdbc:3.16.1'
     }
 }
 
 flyway {
-    url = 'jdbc:sqlite:Data/Masoes'
-    user = 'sa'
+    url = 'jdbc:sqlite:data/masoes.sqlite3'
 }
 
 repositories {
@@ -32,7 +31,6 @@ repositories {
         url 'http://jade.tilab.com/maven/'
     }
 }
-
 
 dependencies {
     compile 'org.apache.logging.log4j:log4j-api:2.6.2'

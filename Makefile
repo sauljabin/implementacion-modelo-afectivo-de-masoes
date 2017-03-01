@@ -1,41 +1,43 @@
 # target install:             Make program and install.
-install: dist ; @./gradlew -q installDist
+install: dist ; @ ./gradlew -q installDist
 
 # target dist:                Make program.
-dist: clean ; @./gradlew -q assembleDist
+dist: clean ; @ ./gradlew -q assembleDist
 
 # target clean:               Refresh dependencies and clean.
-clean: ; @./gradlew -q clean --refresh-dependencies
+clean: ; @ ./gradlew -q --refresh-dependencies clean flywayClean
 
 # target targets:             Display callable targets.
-targets: ; @grep "^# target" [Mm]akefile | cut -c10-
+targets: ; @ grep "^# target" [Mm]akefile | cut -c10-
 
 # target help:                Display masoes help.
-help: ; @./gradlew -q run -Pargs="-h"
+help: ; @ ./gradlew -q run -Pargs="-h"
 
 # target run:                 Exec masoes without env.
-run: ; @./gradlew -q run -Pargs="$(args)"
+run: ; @ ./gradlew -q run -Pargs="$(args)"
 
 # target dummy:               Exec masoes with dummy env.
-dummy: ; @./gradlew -q run -Pargs="-Edummy"
+dummy: ; @ ./gradlew -q run -Pargs="-Edummy"
 
 # target wikipedia:           Exec masoes with wikipedia env.
-wikipedia: ; @./gradlew -q run -Pargs="-Ewikipedia"
+wikipedia: ; @ ./gradlew -q run -Pargs="-Ewikipedia"
 
 # target uncopyrighted:       Search files without copyright.
-uncopyrighted: ; @grep --include *.java -Lr "Copyright (c) 2016 Saúl Piña <sauljabin@gmail.com>" .
+uncopyrighted: ; @ grep --include *.java -Lr "Copyright (c) 2016 Saúl Piña <sauljabin@ gmail.com>" .
 
 # target unit-test:           Exec unit test.
-unit-test: ; @./gradlew unitTest
+unit-test: ; @ ./gradlew unitTest
 
 # target functional-test:     Exec functional test.
-functional-test: ; @./gradlew functionalTest
+functional-test: ; @ ./gradlew functionalTest
 
 # target test:                Exec all test.
-test: ; @./gradlew test
+test: ; @ ./gradlew test
 
 # target docker-build:        Make docker image.
-docker-build: install ; @docker-compose build
+docker-build: install ; @ docker-compose build
 
 # target docker-up:           Starts docker image.
-docker-up: ; @docker-compose up
+docker-up: ; @ docker-compose up
+
+migrate: ; @ ./gradlew flywayMigrate -i
