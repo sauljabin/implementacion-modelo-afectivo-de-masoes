@@ -22,21 +22,21 @@ import static org.junit.Assert.assertThat;
 
 public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
 
-    private AID settingsAgentAID;
+    private AID agentAID;
 
     @Before
     public void setUp() {
-        settingsAgentAID = createAgent(DataPersistenceAgent.class, null);
+        agentAID = createAgent(DataPersistenceAgent.class, null);
     }
 
     @After
     public void tearDown() throws Exception {
-        killAgent(settingsAgentAID);
+        killAgent(agentAID);
     }
 
     @Test
     public void shouldGetAllServicesFromDF() {
-        List<ServiceDescription> services = services(settingsAgentAID);
+        List<ServiceDescription> services = services(agentAID);
         List<String> results = services.stream().map(ServiceDescription::getName).collect(Collectors.toList());
         assertThat(results, hasItems(
                 MasoesOntology.ACTION_GET_OBJECT,

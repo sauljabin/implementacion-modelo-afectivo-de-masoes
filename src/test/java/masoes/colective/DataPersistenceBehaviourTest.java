@@ -71,6 +71,33 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
 
     @Test
     public void shouldCreateObject() throws Exception {
+        ObjectStimulus objectStimulus = createObjectStimulus();
+
+        CreateObject createObject = new CreateObject();
+        createObject.setObjectStimulus(objectStimulus);
+
+        Action action = new Action();
+        action.setAction(createObject);
+
+        Predicate predicate = dataPersistenceBehaviour.performAction(action);
+        assertThat(predicate, is(instanceOf(Done.class)));
+
+        ResultSet query = dataBaseConnection.query("select * from object");
+        assertTrue(query.next());
+        assertThat(query.getString("name"), is(objectStimulus.getObjectName()));
+        assertThat(query.getString("creator_name"), is(objectStimulus.getCreator().getLocalName()));
+
+        String uuid = query.getString("uuid");
+        ObjectProperty objectProperty = (ObjectProperty) objectStimulus.getObjectProperties().get(0);
+
+        query = dataBaseConnection.query("select * from object_property");
+        assertTrue(query.next());
+        assertThat(query.getString("name"), is(objectProperty.getName()));
+        assertThat(query.getString("value"), is(objectProperty.getValue()));
+        assertThat(query.getString("object_uuid"), is(uuid));
+    }
+
+    private ObjectStimulus createObjectStimulus() {
         String expectedObjectName = "expectedObjectName";
         String expectedAgentName = "expectedAgentName";
 
@@ -84,28 +111,7 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         objectStimulus.setObjectName(expectedObjectName);
         objectStimulus.setCreator(new AID(expectedAgentName, AID.ISGUID));
         objectStimulus.setObjectProperties(objectProperties);
-
-        CreateObject createObject = new CreateObject();
-        createObject.setObjectStimulus(objectStimulus);
-
-        Action action = new Action();
-        action.setAction(createObject);
-
-        Predicate predicate = dataPersistenceBehaviour.performAction(action);
-        assertThat(predicate, is(instanceOf(Done.class)));
-
-        ResultSet query = dataBaseConnection.query("select * from object");
-        assertTrue(query.next());
-        assertThat(query.getString("name"), is(expectedObjectName));
-        assertThat(query.getString("creator_name"), is(expectedAgentName));
-
-        String uuid = query.getString("uuid");
-
-        query = dataBaseConnection.query("select * from object_property");
-        assertTrue(query.next());
-        assertThat(query.getString("name"), is(expectedPropertyName));
-        assertThat(query.getString("value"), is(expectedPropertyValue));
-        assertThat(query.getString("object_uuid"), is(uuid));
+        return objectStimulus;
     }
 
     @Test
