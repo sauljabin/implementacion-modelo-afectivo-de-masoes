@@ -52,7 +52,7 @@ public class EmotionalConfigurator {
                 String emotionName = solveEmotion.getTerm(ANSWER_VAR_NAME).toString().replace("'", "").toLowerCase();
                 return emotionalSpace.searchEmotion(emotionName).getRandomEmotionalState();
             }
-            return new EmotionalState();
+            return emotionalState;
         } catch (Exception e) {
             throw new KnowledgeBaseException(e);
         }

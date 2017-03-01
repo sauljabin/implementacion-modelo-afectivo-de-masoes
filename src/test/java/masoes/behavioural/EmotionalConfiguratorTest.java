@@ -44,6 +44,21 @@ public class EmotionalConfiguratorTest {
     }
 
     @Test
+    public void shouldReturnSameEmotionAndStateWhenRuleActionNotFound() throws Exception {
+        EmotionalState emotionalState = emotionalConfigurator.getEmotionalState();
+        emotionalConfigurator.updateEmotion(new ActionStimulus(new AID(AGENT_NAME, AID.ISGUID), "no-action"));
+        assertThat(emotionalConfigurator.getEmotionalState(), is(emotionalState));
+    }
+
+    @Test
+    public void shouldReturnSameEmotionAndStateWhenRuleObjectNotFound() throws Exception {
+        EmotionalState emotionalState = emotionalConfigurator.getEmotionalState();
+        ObjectStimulus stimulus = new ObjectStimulus(new AID(AGENT_NAME, AID.ISGUID), "no-object", new ArrayList());
+        emotionalConfigurator.updateEmotion(stimulus);
+        assertThat(emotionalConfigurator.getEmotionalState(), is(emotionalState));
+    }
+
+    @Test
     public void shouldUpdateCorrectlyTheEmotionWithAction() {
         testUpdateEmotionWithAction("other", CompassionEmotion.class, "greeting");
         testUpdateEmotionWithAction("other", AdmirationEmotion.class, "smile");

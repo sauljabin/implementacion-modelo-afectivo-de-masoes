@@ -27,6 +27,7 @@ import test.PowerMockitoTest;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doNothing;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
@@ -110,9 +111,20 @@ public class BehaviourManagerTest extends PowerMockitoTest {
     public void shouldUpdateBehaviourWithUpperEmotionName() {
         behaviouralKnowledgeBase.addTheory("emotionType('TEST', positive).");
         Emotion emotionMock = mock(Emotion.class);
+        doReturn(BehaviourType.REACTIVE).when(currentBehaviourMock).getType();
         doReturn("TEST").when(emotionMock).getName();
         behaviourManager.updateBehaviour(agentMock, emotionMock);
         assertThat(behaviourManager.getBehaviour(), is(imitativeBehaviourMock));
+    }
+
+    @Test
+    public void shouldReturnSameBehaviourWhenTypeNotChange() throws Exception {
+        HappinessEmotion emotion = new HappinessEmotion();
+        doReturn(BehaviourType.IMITATIVE).when(currentBehaviourMock).getType();
+        behaviourManager.updateBehaviour(agentMock, emotion);
+        assertThat(behaviourManager.getBehaviour(), is(currentBehaviourMock));
+        verify(agentMock, never()).addBehaviour(imitativeBehaviourMock);
+        verify(agentMock, never()).removeBehaviour(currentBehaviourMock);
     }
 
     private void testUpdateBehaviour(Emotion emotion, Behaviour expectedBehaviour) {

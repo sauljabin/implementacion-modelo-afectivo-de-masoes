@@ -28,19 +28,24 @@ public class BehaviourManager {
     }
 
     public void updateBehaviour(EmotionalAgent emotionalAgent, Emotion emotion) {
+        BehaviourType newType = getBehaviourTypeAssociated(emotion);
+
         if (behaviour != null) {
+            if (newType == behaviour.getType()) {
+                return;
+            }
             emotionalAgent.removeBehaviour(behaviour);
         }
 
-        behaviour = calculateBehaviour(emotionalAgent, emotion);
+        behaviour = calculateBehaviour(newType, emotionalAgent);
 
         if (behaviour != null) {
             emotionalAgent.addBehaviour(behaviour);
         }
     }
 
-    private EmotionalBehaviour calculateBehaviour(EmotionalAgent emotionalAgent, Emotion emotion) {
-        switch (getBehaviourTypeAssociated(emotion)) {
+    private EmotionalBehaviour calculateBehaviour(BehaviourType type, EmotionalAgent emotionalAgent) {
+        switch (type) {
             case COGNITIVE:
                 return emotionalAgent.getCognitiveBehaviour();
             case IMITATIVE:
@@ -53,12 +58,18 @@ public class BehaviourManager {
 
     private BehaviourType getBehaviourTypeAssociated(Emotion emotion) {
         try {
-            String emotionName = emotion.getName().toLowerCase();
+            String emotionName = emotion.getName();
             SolveInfo solve = behaviouralKnowledgeBase.solve(String.format(KNOWLEDGE_QUESTION, emotionName));
+
             if (solve.isSuccess()) {
                 String priority = solve.getTerm(ANSWER_VAR_NAME).toString().toUpperCase();
                 return BehaviourType.valueOf(priority);
             }
+
+            if (behaviour != null) {
+                return behaviour.getType();
+            }
+
             return BehaviourType.IMITATIVE;
         } catch (Exception e) {
             throw new KnowledgeBaseException(e);
