@@ -87,6 +87,12 @@ Ejecución de pruebas:
 ./gradlew test
 ```
 
+Ejecución de pruebas con filtro:
+
+```
+./gradlew test --tests *Prueba
+```
+
 Ejecución de pruebas unitarias:
 
 ```
@@ -99,10 +105,22 @@ Ejecución de pruebas funcionales:
 ./gradlew functionalTest
 ```
 
-Limpiar empaquetados:
+Limpiar compilados:
 
 ```
 ./gradlew clean
+```
+
+Migración de DB:
+
+```
+./gradlew flywayMigrate -i
+```
+
+Limpiar DB:
+
+```
+./gradlew flywayClean
 ```
 
 Ayuda:
@@ -122,61 +140,9 @@ Usage: masoes
  -v,--version   Shows the application version
 ```
 
-## Ejecución desde Empaquetado
-
-Ayuda:
-
-```
-./masoes -h
-```
-
-Versión:
-
-```
-./masoes -v
-```
-
-Settings:
-
-```
-./masoes -Skey1=value1 -Skey2=value2
-```
-
-Settings de JADE:
-
-```
-./masoes -Jkey1=value1 -Jkey2=value2
-./masoes -Jgui=false -Jagents=a1:masoes.core.agent.TestAgent
-./masoes -Jagents="a1:masoes.core.agent.TestAgent(arg1, arg2)"
-```
-
-Iniciar dummy:
-
-```
-./masoes -Edummy
-```
-
-Iniciar caso de estudio:
-
-```
-./masoes -Ewikipedia
-```
-
 ## Ejecución con make
 
-Instalar:
-
-```
-make install
-```
-
-Crear empaquetado:
-
-```
-make dist
-```
-
-Limpiar:
+Limpiar compilados:
 
 ```
 make clean
@@ -236,14 +202,20 @@ Ejecución de todas las pruebas:
 make test
 ```
 
-Crear imagen:
+Ejecución de pruebas con filtro:
 
 ```
-make docker-build
+make test tests=*Prueba
 ```
 
-Iniciar con docker:
+Crear DB:
 
 ```
-make docker-up
+make migrate
+```
+
+Limpiar DB:
+
+```
+make clean-db
 ```
