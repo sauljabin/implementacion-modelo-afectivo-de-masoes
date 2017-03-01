@@ -1,5 +1,5 @@
 # target clean:               Refresh dependencies and clean.
-clean: ; @ ./gradlew -q --refresh-dependencies clean flywayClean
+clean: ; @ ./gradlew -q --refresh-dependencies clean
 
 # target targets:             Display callable targets.
 targets: ; @ grep "^# target" [Mm]akefile | cut -c10-
@@ -17,7 +17,7 @@ dummy: ; @ ./gradlew -q run -Pargs="-Edummy"
 wikipedia: ; @ ./gradlew -q run -Pargs="-Ewikipedia"
 
 # target uncopyrighted:       Search files without copyright.
-uncopyrighted: ; @ grep --include *.java -Lr "Copyright (c) 2016 Saúl Piña <sauljabin@ gmail.com>" .
+uncopyrighted: ; @ grep --include *.java -Lr "Copyright (c) 2016 Saúl Piña <sauljabin@gmail.com>" .
 
 # target unit-test:           Exec unit test.
 unit-test: ; @ ./gradlew unitTest
@@ -31,3 +31,6 @@ test: ; @ ./gradlew test --tests $(tests)
 
 # target migrate:             Create database.
 migrate: ; @ ./gradlew flywayMigrate -i
+
+# target clean-db:            Clean database.
+clean-db: ; @ ./gradlew -q flywayClean

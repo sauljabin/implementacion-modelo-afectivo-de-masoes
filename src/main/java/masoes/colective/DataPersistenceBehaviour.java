@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2016 Saúl Piña <sauljabin@gmail.com>
+ * License GPLv3 <https://www.gnu.org/licenses/gpl-3.0.html>
+ * Please see the LICENSE.txt file
+ */
+
 package masoes.colective;
 
 import data.DataBaseConnection;
@@ -24,9 +30,9 @@ import ontology.masoes.UpdateObject;
 import java.util.Arrays;
 import java.util.UUID;
 
-// TODO: AGREGAR TRANSACCIONES
+// TODO: AGREGAR TRANSACCIONES, Y PRUEBAS UNITARIAS DE TRANSACCIONES
 // TODO: SE PUEDE CREAR DB DESDE PRUEBA?, PARA NO CORRER MIGRATE SIEMPRE
-// TODO: MEJORAR LÓGICA DE COMANDOS MAKE, ES NECESARIO LIMPIAR LA DB SIEMPRE?
+// TODO: SEND ACTION A NOTIFICADOR AL CREAR, ELIMINAR O ACTUALIZAR OBJETO
 
 public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
 
