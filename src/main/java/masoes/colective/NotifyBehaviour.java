@@ -28,13 +28,13 @@ import util.ServiceBuilder;
 import java.util.Arrays;
 import java.util.List;
 
-public class NotifierAgentBehaviour extends OntologyResponderBehaviour {
+public class NotifyBehaviour extends OntologyResponderBehaviour {
 
     private final AgentManagementAssistant agentManagementAssistant;
     private final OntologyAssistant ontologyAssistant;
     private Agent agent;
 
-    public NotifierAgentBehaviour(Agent agent) {
+    public NotifyBehaviour(Agent agent) {
         super(agent, new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), MasoesOntology.getInstance());
         this.agent = agent;
         agentManagementAssistant = new AgentManagementAssistant(agent);

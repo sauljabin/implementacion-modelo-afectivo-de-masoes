@@ -10,9 +10,9 @@ import settings.SettingsLoader;
 
 public class DataBaseSettings extends SettingsLoader {
 
-    private static final String SETTINGS_PROPERTIES_FILE = "jdbc.properties";
     public static final String URL = "url";
     public static final String DRIVER = "driver";
+    private static final String SETTINGS_PROPERTIES_FILE = "jdbc.properties";
     private static DataBaseSettings INSTANCE;
 
     private DataBaseSettings() {

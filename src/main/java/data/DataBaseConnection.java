@@ -17,13 +17,6 @@ public class DataBaseConnection {
     private Statement statement;
     private Connection connection;
 
-    public synchronized static DataBaseConnection getConnection() {
-        if (INSTANCE == null) {
-            INSTANCE = new DataBaseConnection();
-        }
-        return INSTANCE;
-    }
-
     private DataBaseConnection() {
         try {
             DataBaseSettings settings = DataBaseSettings.getInstance();
@@ -35,6 +28,13 @@ public class DataBaseConnection {
         } catch (Exception e) {
             throw new DataBaseException(e);
         }
+    }
+
+    public synchronized static DataBaseConnection getConnection() {
+        if (INSTANCE == null) {
+            INSTANCE = new DataBaseConnection();
+        }
+        return INSTANCE;
     }
 
     public synchronized boolean execute(String sql) throws DataBaseException {

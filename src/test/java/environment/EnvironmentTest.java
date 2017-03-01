@@ -7,6 +7,7 @@
 package environment;
 
 import jade.core.Agent;
+import masoes.colective.DataPersistenceAgent;
 import masoes.colective.NotifierAgent;
 import org.junit.Test;
 import settings.SettingsAgent;
@@ -75,6 +76,7 @@ public class EnvironmentTest {
     private void testBasicAgents(Environment environment) {
         assertThat(environment.toJadeParameter(), containsString("notifier:" + NotifierAgent.class.getName()));
         assertThat(environment.toJadeParameter(), containsString("settings:" + SettingsAgent.class.getName()));
+        assertThat(environment.toJadeParameter(), containsString("persistence:" + DataPersistenceAgent.class.getName()));
     }
 
     private Environment createEnvironment(List<AgentParameter> agentParameters) {

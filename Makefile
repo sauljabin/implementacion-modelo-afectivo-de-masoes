@@ -1,9 +1,3 @@
-# target install:             Make program and install.
-install: dist ; @ ./gradlew -q installDist
-
-# target dist:                Make program.
-dist: clean ; @ ./gradlew -q assembleDist
-
 # target clean:               Refresh dependencies and clean.
 clean: ; @ ./gradlew -q --refresh-dependencies clean flywayClean
 
@@ -31,13 +25,9 @@ unit-test: ; @ ./gradlew unitTest
 # target functional-test:     Exec functional test.
 functional-test: ; @ ./gradlew functionalTest
 
-# target test:                Exec all test.
-test: ; @ ./gradlew test
+# target test:                Exec all test, use tests=*Test.
+tests=*Test
+test: ; @ ./gradlew test --tests $(tests)
 
-# target docker-build:        Make docker image.
-docker-build: install ; @ docker-compose build
-
-# target docker-up:           Starts docker image.
-docker-up: ; @ docker-compose up
-
+# target migrate:             Create database.
 migrate: ; @ ./gradlew flywayMigrate -i

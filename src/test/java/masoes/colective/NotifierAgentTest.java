@@ -49,7 +49,7 @@ public class NotifierAgentTest extends PowerMockitoTest {
     @Test
     public void shouldAddBasicBehaviors() {
         notifierAgentSpy.setup();
-        verify(notifierAgentSpy).addBehaviour(isA(NotifierAgentBehaviour.class));
+        verify(notifierAgentSpy).addBehaviour(isA(NotifyBehaviour.class));
     }
 
     @Test

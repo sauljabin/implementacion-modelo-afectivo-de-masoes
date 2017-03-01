@@ -34,7 +34,7 @@ public class MasoesOntologyTest {
     public void shouldInitializeElements() {
         List<Object> predicatesList = new ArrayList();
         predicatesList.addAll(masoesOntology.getPredicateNames());
-        assertThat(predicatesList, containsInAnyOrder("AgentState"));
+        assertThat(predicatesList, containsInAnyOrder("AgentState", "ListObjects"));
 
         List<Object> actionList = new ArrayList();
         actionList.addAll(masoesOntology.getActionNames());

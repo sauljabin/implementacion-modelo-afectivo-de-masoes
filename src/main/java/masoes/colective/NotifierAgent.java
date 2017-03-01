@@ -28,7 +28,7 @@ public class NotifierAgent extends Agent {
     @Override
     protected void setup() {
         try {
-            addBehaviour(new NotifierAgentBehaviour(this));
+            addBehaviour(new NotifyBehaviour(this));
 
             ServiceDescription serviceDescription = new ServiceBuilder()
                     .fipaRequest()

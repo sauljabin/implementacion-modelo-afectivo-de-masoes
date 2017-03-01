@@ -42,13 +42,13 @@ import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
-public class NotifierAgentBehaviourTest extends PowerMockitoTest {
+public class NotifyBehaviourTest extends PowerMockitoTest {
 
     private static final String ACTION_NAME = "actionName";
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
     private Agent agentMock;
-    private NotifierAgentBehaviour notifierAgentBehaviour;
+    private NotifyBehaviour notifyBehaviour;
     private AgentManagementAssistant agentManagementAssistantMock;
     private ArgumentCaptor<ServiceDescription> serviceDescriptionArgumentCaptor;
     private ArgumentCaptor<ACLMessage> messageArgumentCaptor;
@@ -63,9 +63,9 @@ public class NotifierAgentBehaviourTest extends PowerMockitoTest {
         agentManagementAssistantMock = mock(AgentManagementAssistant.class);
         ontologyAssistant = new OntologyAssistant(agentMock, MasoesOntology.getInstance());
 
-        notifierAgentBehaviour = new NotifierAgentBehaviour(agentMock);
-        setFieldValue(notifierAgentBehaviour, "agentManagementAssistant", agentManagementAssistantMock);
-        setFieldValue(notifierAgentBehaviour, "ontologyAssistant", ontologyAssistant);
+        notifyBehaviour = new NotifyBehaviour(agentMock);
+        setFieldValue(notifyBehaviour, "agentManagementAssistant", agentManagementAssistantMock);
+        setFieldValue(notifyBehaviour, "ontologyAssistant", ontologyAssistant);
 
         NotifyAction notifyAction = new NotifyAction();
         notifyAction.setActionStimulus(new ActionStimulus(new AID(), ACTION_NAME));
@@ -77,7 +77,7 @@ public class NotifierAgentBehaviourTest extends PowerMockitoTest {
     @Test
     public void shouldReturnValidAgentAction() {
         Action action = new Action(new AID(), new NotifyAction());
-        assertTrue(notifierAgentBehaviour.isValidAction(action));
+        assertTrue(notifyBehaviour.isValidAction(action));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class NotifierAgentBehaviourTest extends PowerMockitoTest {
         );
         doReturn(agents).when(agentManagementAssistantMock).search(any());
 
-        Predicate predicate = notifierAgentBehaviour.performAction(action);
+        Predicate predicate = notifyBehaviour.performAction(action);
         assertThat(predicate, is(CoreMatchers.instanceOf(Done.class)));
 
         verify(agentManagementAssistantMock).search(serviceDescriptionArgumentCaptor.capture());
@@ -110,7 +110,7 @@ public class NotifierAgentBehaviourTest extends PowerMockitoTest {
         expectedException.expectMessage(expectedMessage);
         expectedException.expect(FailureException.class);
         doThrow(new RuntimeException(expectedMessage)).when(agentManagementAssistantMock).search(any());
-        notifierAgentBehaviour.performAction(action);
+        notifyBehaviour.performAction(action);
     }
 
 }
