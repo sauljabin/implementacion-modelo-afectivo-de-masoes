@@ -11,6 +11,7 @@ import jade.content.Concept;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
@@ -27,6 +28,7 @@ import ontology.masoes.ObjectProperty;
 import ontology.masoes.ObjectStimulus;
 import ontology.masoes.UpdateObject;
 
+import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -75,15 +77,39 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
 
     public ListObjects retrieveObject(GetObject getObjectAction) throws FailureException {
         try {
+            ObjectStimulus objectQuery = getObjectAction.getObjectStimulus();
+            String sql = String.format("SELECT object.name, object.creator_name, object_property.name, object_property.value " +
+                    "FROM object INNER JOIN object_property ON object.uuid = object_property.object_uuid " +
+                    "WHERE object.name='%s'", objectQuery.getObjectName());
+
+            // TODO: FILTRADO DINAMICO
+            // TODO: DEVOLVER LISTO DE OBJETOS
+            // TODO: PROBAR
+
             ListObjects listObjects = new ListObjects();
             listObjects.setObjects(new ArrayList());
+
+            ObjectStimulus objectStimulus = new ObjectStimulus();
+            objectStimulus.setObjectProperties(new ArrayList());
+
+            listObjects.getObjects().add(objectStimulus);
+
+            ResultSet resultSet = connection.query(sql);
+            while (resultSet.next()) {
+                String objectName = resultSet.getString("object.name");
+                AID creator = myAgent.getAID(resultSet.getString("object.creator_name"));
+                String propertyName = resultSet.getString("object_property.name");
+                String propertyValue = resultSet.getString("object_property.value");
+
+                objectStimulus.setObjectName(objectName);
+                objectStimulus.setCreator(creator);
+                objectStimulus.getObjectProperties().add(new ObjectProperty(propertyName, propertyValue));
+            }
+
             return listObjects;
         } catch (Exception e) {
             throw new FailureException(e.getMessage());
         }
-    }
-
-    public void updateObject(UpdateObject updateObjectAction) {
     }
 
     public void createObject(CreateObject createObjectAction) throws FailureException {
@@ -113,7 +139,12 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
         }
     }
 
+    public void updateObject(UpdateObject updateObjectAction) {
+        // TODO: ACTUALIZAR POR NOMBRE Y CREATOR
+    }
+
     public void deleteObject(DeleteObject deleteObjectAction) {
+        // TODO: ELIMINAR POR NOMBRE Y CREATOR
     }
 
 }
