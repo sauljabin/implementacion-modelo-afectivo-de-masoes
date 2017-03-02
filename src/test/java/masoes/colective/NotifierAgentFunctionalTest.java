@@ -6,6 +6,7 @@
 
 package masoes.colective;
 
+import agent.ConfigurableAgent;
 import jade.content.ContentElement;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
@@ -34,10 +35,12 @@ import static org.junit.Assert.assertThat;
 public class NotifierAgentFunctionalTest extends FunctionalTest {
 
     private AID notifierAgent;
+    private AID configurableAgent;
 
     @Before
     public void setUp() {
         notifierAgent = createAgent(NotifierAgent.class, null);
+        configurableAgent = createAgent(ConfigurableAgent.class, null);
     }
 
     @After
@@ -63,7 +66,7 @@ public class NotifierAgentFunctionalTest extends FunctionalTest {
         ProtocolAssistant protocolAssistant = createProtocolAssistant();
 
         String expectedActionName = "expectedActionName";
-        NotifyAction notifyAction = new NotifyAction(new ActionStimulus(getAID(), expectedActionName));
+        NotifyAction notifyAction = new NotifyAction(new ActionStimulus(configurableAgent, expectedActionName));
 
         ACLMessage requestAction = ontologyAssistant.createRequestAction(notifierAgent, notifyAction);
         ACLMessage response = protocolAssistant.sendRequest(requestAction, ACLMessage.INFORM);
@@ -81,7 +84,7 @@ public class NotifierAgentFunctionalTest extends FunctionalTest {
         EvaluateStimulus evaluateStimulus = (EvaluateStimulus) contentElementStimulus;
         ActionStimulus actionStimulus = (ActionStimulus) evaluateStimulus.getStimulus();
         assertThat(actionStimulus.getActionName(), is(expectedActionName));
-        assertThat(actionStimulus.getActor(), is(getAID()));
+        assertThat(actionStimulus.getActor(), is(configurableAgent));
     }
 
 }
