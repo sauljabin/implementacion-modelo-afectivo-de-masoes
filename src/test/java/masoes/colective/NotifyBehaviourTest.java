@@ -27,7 +27,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 import test.PowerMockitoTest;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -54,6 +54,7 @@ public class NotifyBehaviourTest extends PowerMockitoTest {
     private ArgumentCaptor<ACLMessage> messageArgumentCaptor;
     private Action action;
     private OntologyAssistant ontologyAssistant;
+    private AID actorAID;
 
     @Before
     public void setUp() throws Exception {
@@ -68,7 +69,8 @@ public class NotifyBehaviourTest extends PowerMockitoTest {
         setFieldValue(notifyBehaviour, "ontologyAssistant", ontologyAssistant);
 
         NotifyAction notifyAction = new NotifyAction();
-        notifyAction.setActionStimulus(new ActionStimulus(new AID(), ACTION_NAME));
+        actorAID = new AID("actorName", AID.ISGUID);
+        notifyAction.setActionStimulus(new ActionStimulus(actorAID, ACTION_NAME));
         action = new Action(new AID(), notifyAction);
 
         doReturn(new AID("agentName", AID.ISGUID)).when(agentMock).getAID();
@@ -82,12 +84,13 @@ public class NotifyBehaviourTest extends PowerMockitoTest {
 
     @Test
     public void shouldSendStimulusToAllEmotionalAgents() throws FailureException {
-        AID agentA = new AID("agentA", AID.ISGUID);
+        AID agentA = actorAID;
         AID agentB = new AID("agentB", AID.ISGUID);
-        List<AID> agents = Arrays.asList(
-                agentA,
-                agentB
-        );
+        AID agentC = new AID("agentC", AID.ISGUID);
+        List<AID> agents = new ArrayList<>();
+        agents.add(agentA);
+        agents.add(agentB);
+        agents.add(agentC);
         doReturn(agents).when(agentManagementAssistantMock).search(any());
 
         Predicate predicate = notifyBehaviour.performAction(action);
@@ -99,9 +102,9 @@ public class NotifyBehaviourTest extends PowerMockitoTest {
         verify(agentMock, times(2)).send(messageArgumentCaptor.capture());
 
         assertThat(messageArgumentCaptor.getAllValues().get(0).getContent(), containsString("EvaluateStimulus"));
-        assertThat(messageArgumentCaptor.getAllValues().get(0).getContent(), containsString("agentA"));
+        assertThat(messageArgumentCaptor.getAllValues().get(0).getContent(), containsString("agentB"));
         assertThat(messageArgumentCaptor.getAllValues().get(1).getContent(), containsString("EvaluateStimulus"));
-        assertThat(messageArgumentCaptor.getAllValues().get(1).getContent(), containsString("agentB"));
+        assertThat(messageArgumentCaptor.getAllValues().get(1).getContent(), containsString("agentC"));
     }
 
     @Test

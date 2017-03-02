@@ -58,6 +58,8 @@ public class NotifyBehaviour extends OntologyResponderBehaviour {
 
             List<AID> emotionalAgents = agentManagementAssistant.search(serviceDescription);
 
+            emotionalAgents.remove(notifyAction.getActionStimulus().getActor());
+
             emotionalAgents.forEach(aid -> {
                 ActionStimulus actionStimulus = notifyAction.getActionStimulus();
                 EvaluateStimulus evaluateStimulus = new EvaluateStimulus(actionStimulus);

@@ -12,6 +12,7 @@ import environment.Environment;
 import java.util.List;
 
 public class WikipediaEnvironment extends Environment {
+
     @Override
     public List<AgentParameter> getAgentParameters() {
         return null;
@@ -21,4 +22,5 @@ public class WikipediaEnvironment extends Environment {
     public String getName() {
         return "wikipedia";
     }
+
 }
