@@ -9,6 +9,7 @@ package data;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import test.PhoenixDatabase;
 
 import java.sql.ResultSet;
 
@@ -22,15 +23,13 @@ public class DataBaseConnectionTest {
 
     @Before
     public void setUp() {
-        DataBaseSettings.getInstance().set(DataBaseSettings.URL, "jdbc:sqlite:data/test.sqlite3");
-        dataBaseConnection = DataBaseConnection.getConnection();
+        dataBaseConnection = PhoenixDatabase.create();
         dataBaseConnection.execute("create table test (name varchar(10))");
     }
 
     @After
     public void tearDown() {
-        dataBaseConnection.execute("drop table test");
-        dataBaseConnection.closeConnection();
+        PhoenixDatabase.destroy();
     }
 
     @Test

@@ -14,6 +14,7 @@ import java.sql.Statement;
 public class DataBaseConnection {
 
     private static DataBaseConnection INSTANCE;
+    private static boolean closed = true;
     private Statement statement;
     private Connection connection;
 
@@ -25,16 +26,26 @@ public class DataBaseConnection {
             Class.forName(driver);
             connection = DriverManager.getConnection(url);
             connection.setAutoCommit(true);
+            closed = false;
         } catch (Exception e) {
             throw new DataBaseException(e);
         }
     }
 
     public synchronized static DataBaseConnection getConnection() {
-        if (INSTANCE == null) {
+        if (closed) {
             INSTANCE = new DataBaseConnection();
         }
         return INSTANCE;
+    }
+
+    public synchronized static DataBaseConnection getConnection(boolean force) {
+        if (force) {
+            if (!closed) {
+                INSTANCE.closeConnection();
+            }
+        }
+        return getConnection();
     }
 
     public synchronized boolean execute(String sql) throws DataBaseException {
@@ -77,7 +88,7 @@ public class DataBaseConnection {
         } catch (Exception e) {
             throw new DataBaseException(e);
         }
-        INSTANCE = null;
+        closed = true;
     }
 
 }

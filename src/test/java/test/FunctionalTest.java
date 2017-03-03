@@ -35,7 +35,7 @@ public abstract class FunctionalTest {
     private static AgentManagementAssistant agentManagementAssistant;
 
     @BeforeClass
-    public static void setUpJade() {
+    public static void setUpFunctionalTest() {
         JadeSettings.getInstance().set(JadeSettings.GUI, "false");
         ApplicationSettings.getInstance().set(ApplicationSettings.MASOES_ENV, "functional-tests");
 
@@ -54,7 +54,7 @@ public abstract class FunctionalTest {
     }
 
     @AfterClass
-    public static void tearDownJade() {
+    public static void tearDownFunctionalTest() {
         while (!agentsToKill.isEmpty()) {
             AID aid = agentsToKill.firstElement();
             try {

@@ -25,6 +25,7 @@ import ontology.masoes.UpdateObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import test.PhoenixDatabase;
 import test.PowerMockitoTest;
 
 import java.sql.ResultSet;
@@ -44,17 +45,15 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
 
     @Before
     public void setUp() {
+        dataBaseConnection = PhoenixDatabase.create();
         agentMock = mock(Agent.class);
         dataPersistenceBehaviour = new DataPersistenceBehaviour(agentMock);
-        dataBaseConnection = DataBaseConnection.getConnection();
         dataPersistenceBehaviour.onStart();
     }
 
     @After
     public void tearDown() {
-        dataBaseConnection.execute("delete from object");
-        dataBaseConnection.execute("delete from object_property");
-        dataBaseConnection.closeConnection();
+        PhoenixDatabase.destroy();
     }
 
     @Test

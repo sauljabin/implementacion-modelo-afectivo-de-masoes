@@ -44,6 +44,7 @@ dependencies {
     compile 'it.unibo.alice.tuprolog:tuprolog:3.2'
     compile 'org.xerial:sqlite-jdbc:3.16.1'
     compile 'org.reflections:reflections:0.9.10'
+    compile 'org.flywaydb:flyway-gradle-plugin:3.0'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.hamcrest:hamcrest-library:1.3'

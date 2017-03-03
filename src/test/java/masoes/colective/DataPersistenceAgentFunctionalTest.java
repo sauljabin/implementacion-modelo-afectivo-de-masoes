@@ -6,37 +6,64 @@
 
 package masoes.colective;
 
+import data.DataBaseConnection;
+import jade.content.AgentAction;
+import jade.content.ContentElement;
+import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.lang.acl.ACLMessage;
+import jade.util.leap.ArrayList;
+import ontology.OntologyAssistant;
+import ontology.masoes.CreateObject;
+import ontology.masoes.DeleteObject;
+import ontology.masoes.GetObject;
+import ontology.masoes.ListObjects;
 import ontology.masoes.MasoesOntology;
+import ontology.masoes.ObjectProperty;
+import ontology.masoes.ObjectStimulus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import protocol.ProtocolAssistant;
 import test.FunctionalTest;
+import test.PhoenixDatabase;
 
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
 
-    private AID agentAID;
+    private AID persistenceAgent;
+    private OntologyAssistant ontologyAssistant;
+    private ProtocolAssistant protocolAssistant;
+    private DataBaseConnection connection;
 
     @Before
     public void setUp() {
-        agentAID = createAgent(DataPersistenceAgent.class, null);
+        connection = PhoenixDatabase.create();
+        persistenceAgent = createAgent(DataPersistenceAgent.class, null);
+        ontologyAssistant = createOntologyAssistant(MasoesOntology.getInstance());
+        protocolAssistant = createProtocolAssistant();
     }
 
     @After
     public void tearDown() throws Exception {
-        killAgent(agentAID);
+        killAgent(persistenceAgent);
+        PhoenixDatabase.destroy();
     }
 
     @Test
     public void shouldGetAllServicesFromDF() {
-        List<ServiceDescription> services = services(agentAID);
+        List<ServiceDescription> services = services(persistenceAgent);
         List<String> results = services.stream().map(ServiceDescription::getName).collect(Collectors.toList());
         assertThat(results, hasItems(
                 MasoesOntology.ACTION_GET_OBJECT,
@@ -44,6 +71,104 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
                 MasoesOntology.ACTION_DELETE_OBJECT,
                 MasoesOntology.ACTION_UPDATE_OBJECT
         ));
+    }
+
+    @Test
+    public void shouldCreateObject() throws Exception {
+        String expectedObjectName = "expectedObjectName";
+        String expectedPropertyName = "expectedPropertyName";
+        String expectedPropertyValue = "expectedPropertyValue";
+        ArrayList objectProperties = new ArrayList();
+        objectProperties.add(new ObjectProperty(expectedPropertyName, expectedPropertyValue));
+        ObjectStimulus objectStimulus = new ObjectStimulus();
+        objectStimulus.setObjectName(expectedObjectName);
+        objectStimulus.setCreator(getAID());
+        objectStimulus.setObjectProperties(objectProperties);
+
+        CreateObject createObject = new CreateObject();
+        createObject.setObjectStimulus(objectStimulus);
+
+        ContentElement contentElement = sendAction(createObject);
+        assertThat(contentElement, is(instanceOf(Done.class)));
+
+        ResultSet resultSet = connection.query("select * from object");
+        assertTrue(resultSet.next());
+        assertThat(resultSet.getString("name"), is(expectedObjectName));
+        assertThat(resultSet.getString("creator_name"), is(getAID().getLocalName()));
+        String uuid = resultSet.getString("uuid");
+        assertTrue(uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"));
+
+        ResultSet resultSetProperty = connection.query("select * from object_property");
+        assertTrue(resultSetProperty.next());
+        assertThat(resultSetProperty.getString("object_uuid"), is(uuid));
+        assertThat(resultSetProperty.getString("name"), is(expectedPropertyName));
+        assertThat(resultSetProperty.getString("value"), is(expectedPropertyValue));
+    }
+
+    @Test
+    public void shouldGetObject() {
+        String uuid = "uuidToDelete";
+        String expectedObjectName = "expectedObjectName";
+        String expectedCreatorName = "expectedCreatorName";
+        String expectedPropertyName = "expectedPropertyName";
+        String expectedPropertyValue = "expectedPropertyValue";
+
+        connection.execute(String.format("insert into object (uuid, name, creator_name) values ('%s', '%s', '%s')", uuid, expectedObjectName, expectedCreatorName));
+        connection.execute(String.format("insert into object_property (object_uuid, name, value) values ('%s', '%s', '%s')", uuid, expectedPropertyName, expectedPropertyValue));
+
+        GetObject getObject = new GetObject();
+        ObjectStimulus getObjectStimulus = new ObjectStimulus();
+        getObjectStimulus.setCreator(new AID(expectedCreatorName, AID.ISGUID));
+        getObjectStimulus.setObjectName(expectedObjectName);
+        getObject.setObjectStimulus(getObjectStimulus);
+
+        ContentElement contentElementGetObject = sendAction(getObject);
+
+        assertThat(contentElementGetObject, is(instanceOf(ListObjects.class)));
+        ListObjects listObjects = (ListObjects) contentElementGetObject;
+
+        jade.util.leap.List objects = listObjects.getObjects();
+        assertThat(objects.size(), is(1));
+
+        ObjectStimulus actualObject = (ObjectStimulus) objects.get(0);
+        assertThat(actualObject.getObjectName(), is(expectedObjectName));
+        assertThat(actualObject.getCreator().getLocalName(), is(expectedCreatorName));
+
+        jade.util.leap.List objectProperties = actualObject.getObjectProperties();
+        assertThat(objectProperties.size(), is(1));
+
+        ObjectProperty objectProperty = (ObjectProperty) objectProperties.get(0);
+        assertThat(objectProperty.getName(), is(expectedPropertyName));
+        assertThat(objectProperty.getValue(), is(expectedPropertyValue));
+    }
+
+    @Test
+    public void shouldDeleteObject() throws Exception {
+        String uuid = "uuidToDelete";
+        String nameToDelete = "nameToDelete";
+        String creatorNameToDelete = "creatorNameToDelete";
+        connection.execute(String.format("insert into object (uuid, name, creator_name) values ('%s', '%s', '%s')", uuid, nameToDelete, creatorNameToDelete));
+        connection.execute(String.format("insert into object_property (object_uuid, name, value) values ('%s', 'any', 'any')", uuid));
+
+        DeleteObject deleteObject = new DeleteObject();
+        ObjectStimulus objectStimulus = new ObjectStimulus();
+        objectStimulus.setCreator(new AID(creatorNameToDelete, AID.ISGUID));
+        objectStimulus.setObjectName(nameToDelete);
+        deleteObject.setObjectStimulus(objectStimulus);
+        ContentElement contentElement = sendAction(deleteObject);
+        assertThat(contentElement, is(instanceOf(Done.class)));
+
+        ResultSet resultSet = connection.query(String.format("select * from object where uuid = '%s'", uuid));
+        assertFalse(resultSet.next());
+
+        ResultSet resultSetProperty = connection.query(String.format("select * from object_property where object_uuid = '%s'", uuid));
+        assertFalse(resultSetProperty.next());
+    }
+
+    private ContentElement sendAction(AgentAction action) {
+        ACLMessage requestAction = ontologyAssistant.createRequestAction(persistenceAgent, action);
+        ACLMessage message = protocolAssistant.sendRequest(requestAction, ACLMessage.INFORM);
+        return ontologyAssistant.extractMessageContent(message);
     }
 
 }
