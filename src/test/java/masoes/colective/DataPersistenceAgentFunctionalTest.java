@@ -22,6 +22,7 @@ import ontology.masoes.ListObjects;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.ObjectProperty;
 import ontology.masoes.ObjectStimulus;
+import ontology.masoes.UpdateObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -163,6 +164,115 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
 
         ResultSet resultSetProperty = connection.query(String.format("select * from object_property where object_uuid = '%s'", uuid));
         assertFalse(resultSetProperty.next());
+    }
+
+    @Test
+    public void shouldUpdateObject() throws Exception {
+        String uuid = "uuid";
+        String objectName = "objectName";
+        String creatorName = "creatorName";
+        String propertyName = "propertyName";
+        String propertyValue = "propertyValue";
+        connection.execute(String.format("insert into object (uuid, name, creator_name) values ('%s', '%s', '%s')", uuid, objectName, creatorName));
+        connection.execute(String.format("insert into object_property (object_uuid, name, value) values ('%s', '%s', '%s')", uuid, propertyName, propertyValue));
+
+        String expectedValue = "expectedValue";
+
+        ObjectStimulus objectStimulus = new ObjectStimulus();
+        objectStimulus.setObjectName(objectName);
+        objectStimulus.setCreator(new AID(creatorName, AID.ISGUID));
+        objectStimulus.setObjectProperties(new ArrayList());
+        objectStimulus.getObjectProperties().add(new ObjectProperty(propertyName, expectedValue));
+
+        UpdateObject updateObject = new UpdateObject();
+        updateObject.setObjectStimulus(objectStimulus);
+
+        ContentElement contentElement = sendAction(updateObject);
+        assertThat(contentElement, is(instanceOf(Done.class)));
+
+        ResultSet resultSet = connection.query("select * from object");
+        assertTrue(resultSet.next());
+        assertThat(resultSet.getString("name"), is(objectName));
+        assertThat(resultSet.getString("creator_name"), is(creatorName));
+
+        ResultSet resultSetProperty = connection.query("select * from object_property");
+        assertTrue(resultSetProperty.next());
+        assertThat(resultSetProperty.getString("name"), is(propertyName));
+        assertThat(resultSetProperty.getString("value"), is(expectedValue));
+    }
+
+    @Test
+    public void shouldUpdateAndAddObject() throws Exception {
+        String uuid = "uuid";
+        String objectName = "objectName";
+        String creatorName = "creatorName";
+        String propertyName = "propertyName";
+        String propertyValue = "propertyValue";
+        connection.execute(String.format("insert into object (uuid, name, creator_name) values ('%s', '%s', '%s')", uuid, objectName, creatorName));
+        connection.execute(String.format("insert into object_property (object_uuid, name, value) values ('%s', '%s', '%s')", uuid, propertyName, propertyValue));
+
+        String secondPropertyValue = "secondPropertyValue";
+        String secondPropertyName = "secondPropertyName";
+        String expectedFirstPropertyValue = "expectedFirstPropertyValue";
+
+        ObjectStimulus objectStimulus = new ObjectStimulus();
+        objectStimulus.setObjectName(objectName);
+        objectStimulus.setCreator(new AID(creatorName, AID.ISGUID));
+        objectStimulus.setObjectProperties(new ArrayList());
+        objectStimulus.getObjectProperties().add(new ObjectProperty(propertyName, expectedFirstPropertyValue));
+        objectStimulus.getObjectProperties().add(new ObjectProperty(secondPropertyName, secondPropertyValue));
+
+        UpdateObject updateObject = new UpdateObject();
+        updateObject.setObjectStimulus(objectStimulus);
+
+        ContentElement contentElement = sendAction(updateObject);
+        assertThat(contentElement, is(instanceOf(Done.class)));
+
+        ResultSet resultSetProperty = connection.query(String.format("select * from object_property where name = '%s'", propertyName));
+        assertTrue(resultSetProperty.next());
+        assertThat(resultSetProperty.getString("name"), is(propertyName));
+        assertThat(resultSetProperty.getString("value"), is(expectedFirstPropertyValue));
+
+        ResultSet resultSetSecondProperty = connection.query(String.format("select * from object_property where name = '%s'", secondPropertyName));
+        assertTrue(resultSetSecondProperty.next());
+        assertThat(resultSetSecondProperty.getString("name"), is(secondPropertyName));
+        assertThat(resultSetSecondProperty.getString("value"), is(secondPropertyValue));
+    }
+
+    @Test
+    public void shouldUpdateAndRemoveObject() throws Exception {
+        String uuid = "uuid";
+        String objectName = "objectName";
+        String creatorName = "creatorName";
+        String propertyName = "propertyName";
+        String propertyValue = "propertyValue";
+        String secondPropertyName = "secondPropertyName";
+        String secondPropertyValue = "secondPropertyValue";
+        connection.execute(String.format("insert into object (uuid, name, creator_name) values ('%s', '%s', '%s')", uuid, objectName, creatorName));
+        connection.execute(String.format("insert into object_property (object_uuid, name, value) values ('%s', '%s', '%s')", uuid, propertyName, propertyValue));
+        connection.execute(String.format("insert into object_property (object_uuid, name, value) values ('%s', '%s', '%s')", uuid, secondPropertyName, secondPropertyValue));
+
+        String expectedValue = "expectedValue";
+
+        ObjectStimulus objectStimulus = new ObjectStimulus();
+        objectStimulus.setObjectName(objectName);
+        objectStimulus.setCreator(new AID(creatorName, AID.ISGUID));
+        objectStimulus.setObjectProperties(new ArrayList());
+        objectStimulus.getObjectProperties().add(new ObjectProperty(propertyName, expectedValue));
+
+        UpdateObject updateObject = new UpdateObject();
+        updateObject.setObjectStimulus(objectStimulus);
+
+        ContentElement contentElement = sendAction(updateObject);
+        assertThat(contentElement, is(instanceOf(Done.class)));
+
+        ResultSet resultSetProperty = connection.query(String.format("select * from object_property where name = '%s'", propertyName));
+        assertTrue(resultSetProperty.next());
+        assertThat(resultSetProperty.getString("name"), is(propertyName));
+        assertThat(resultSetProperty.getString("value"), is(expectedValue));
+
+        ResultSet resultSetSecondProperty = connection.query(String.format("select * from object_property where name = '%s'", secondPropertyName));
+        assertFalse(resultSetSecondProperty.next());
     }
 
     private ContentElement sendAction(AgentAction action) {
