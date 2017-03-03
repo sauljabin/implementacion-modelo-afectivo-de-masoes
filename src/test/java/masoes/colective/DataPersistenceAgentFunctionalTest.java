@@ -79,11 +79,12 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
         String expectedObjectName = "expectedObjectName";
         String expectedPropertyName = "expectedPropertyName";
         String expectedPropertyValue = "expectedPropertyValue";
+        String expectedCreatorName = "expectedCreatorName";
         ArrayList objectProperties = new ArrayList();
         objectProperties.add(new ObjectProperty(expectedPropertyName, expectedPropertyValue));
         ObjectStimulus objectStimulus = new ObjectStimulus();
         objectStimulus.setObjectName(expectedObjectName);
-        objectStimulus.setCreator(getAID());
+        objectStimulus.setCreator(new AID(expectedCreatorName, AID.ISGUID));
         objectStimulus.setObjectProperties(objectProperties);
 
         CreateObject createObject = new CreateObject();
@@ -95,7 +96,7 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
         ResultSet resultSet = connection.query("select * from object");
         assertTrue(resultSet.next());
         assertThat(resultSet.getString("name"), is(expectedObjectName));
-        assertThat(resultSet.getString("creator_name"), is(getAID().getLocalName()));
+        assertThat(resultSet.getString("creator_name"), is(expectedCreatorName));
         String uuid = resultSet.getString("uuid");
         assertTrue(uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"));
 
