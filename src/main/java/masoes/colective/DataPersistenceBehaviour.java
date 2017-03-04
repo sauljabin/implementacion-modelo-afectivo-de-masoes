@@ -38,16 +38,17 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
 
     public DataPersistenceBehaviour(Agent agent) {
         super(agent, new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), MasoesOntology.getInstance());
-    }
-
-    @Override
-    public void onStart() {
         connection = DataBaseConnection.getConnection();
     }
 
     @Override
+    public void onStart() {
+        connection.connect();
+    }
+
+    @Override
     public int onEnd() {
-        connection.closeConnection();
+        connection.close();
         return 0;
     }
 

@@ -17,7 +17,20 @@ public class DataBaseConnection {
     private Connection connection;
 
     private DataBaseConnection() {
+    }
+
+    public synchronized static DataBaseConnection getConnection() {
+        if (INSTANCE == null) {
+            INSTANCE = new DataBaseConnection();
+        }
+        return INSTANCE;
+    }
+
+    public synchronized void connect() {
         try {
+            if (connection != null && !connection.isClosed()) {
+                return;
+            }
             DataBaseSettings settings = DataBaseSettings.getInstance();
             String driver = settings.get(DataBaseSettings.DRIVER);
             String url = settings.get(DataBaseSettings.URL);
@@ -29,20 +42,11 @@ public class DataBaseConnection {
         }
     }
 
-    public synchronized static DataBaseConnection getConnection() {
-        if (INSTANCE == null) {
-            INSTANCE = new DataBaseConnection();
-        }
-        return INSTANCE;
-    }
-
-    public synchronized static DataBaseConnection getConnection(boolean force) {
+    public synchronized void connect(boolean force) {
         if (force) {
-            if (INSTANCE != null) {
-                INSTANCE.closeConnection();
-            }
+            close();
         }
-        return getConnection();
+        connect();
     }
 
     public synchronized boolean execute(String sql) {
@@ -70,22 +74,22 @@ public class DataBaseConnection {
         try {
             if (statement != null) {
                 statement.close();
+                statement = null;
             }
         } catch (Exception e) {
             throw new DataBaseException(e);
         }
     }
 
-    public synchronized void closeConnection() {
+    public synchronized void close() {
         closeStatement();
         try {
-            if (connection != null) {
+            if (connection != null && !connection.isClosed()) {
                 connection.close();
             }
         } catch (Exception e) {
             throw new DataBaseException(e);
         }
-        INSTANCE = null;
     }
 
 }
