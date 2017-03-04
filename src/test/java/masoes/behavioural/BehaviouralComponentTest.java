@@ -62,7 +62,7 @@ public class BehaviouralComponentTest extends PowerMockitoTest {
         behaviouralComponent.evaluateStimulus(stimulus);
 
         verify(emotionalConfiguratorMock).updateEmotion(stimulus);
-        verify(behaviourManagerMock).updateBehaviour(emotionalAgentMock, emotionMock);
+        verify(behaviourManagerMock).updateBehaviour();
 
         assertThat(behaviouralComponent.getCurrentEmotion(), is(emotionMock));
         assertThat(behaviouralComponent.getCurrentEmotionalBehaviour(), is(emotionalBehaviourMock));

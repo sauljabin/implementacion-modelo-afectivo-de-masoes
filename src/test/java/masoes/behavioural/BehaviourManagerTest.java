@@ -30,12 +30,13 @@ import java.nio.file.Paths;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doNothing;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.unitils.util.ReflectionUtils.setFieldValue;
+import static test.ReflectionTestUtils.setFieldValue;
 
 public class BehaviourManagerTest extends PowerMockitoTest {
 
@@ -48,18 +49,22 @@ public class BehaviourManagerTest extends PowerMockitoTest {
     private ReactiveBehaviour reactiveBehaviourMock;
     private CognitiveBehaviour cognitiveBehaviourMock;
     private EmotionalBehaviour currentBehaviourMock;
+    private EmotionalConfigurator emotionalConfiguratorMock;
 
     @Before
     public void setUp() throws Exception {
         agentMock = mock(EmotionalAgent.class);
         doNothing().when(agentMock).addBehaviour(any());
         doNothing().when(agentMock).removeBehaviour(any());
-
         doReturn(new Knowledge(Paths.get(AGENT_KNOWLEDGE_PATH))).when(agentMock).getKnowledge();
         doReturn(AGENT_NAME).when(agentMock).getLocalName();
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
 
-        behaviourManager = new BehaviourManager(behaviouralKnowledgeBase);
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
+        emotionalConfiguratorMock = mock(EmotionalConfigurator.class);
+        doReturn(new HappinessEmotion()).when(emotionalConfiguratorMock).getEmotion();
+
+        behaviourManager = new BehaviourManager(agentMock, emotionalConfiguratorMock, behaviouralKnowledgeBase);
+
         imitativeBehaviourMock = mock(ImitativeBehaviour.class);
         doReturn(imitativeBehaviourMock).when(agentMock).getImitativeBehaviour();
 
@@ -119,7 +124,8 @@ public class BehaviourManagerTest extends PowerMockitoTest {
         Emotion emotionMock = mock(Emotion.class);
         doReturn(BehaviourType.REACTIVE).when(currentBehaviourMock).getType();
         doReturn("TEST").when(emotionMock).getName();
-        behaviourManager.updateBehaviour(agentMock, emotionMock);
+        doReturn(emotionMock).when(emotionalConfiguratorMock).getEmotion();
+        behaviourManager.updateBehaviour();
         assertThat(behaviourManager.getBehaviour(), is(imitativeBehaviourMock));
     }
 
@@ -127,17 +133,20 @@ public class BehaviourManagerTest extends PowerMockitoTest {
     public void shouldReturnSameBehaviourWhenTypeNotChange() throws Exception {
         HappinessEmotion emotion = new HappinessEmotion();
         doReturn(BehaviourType.IMITATIVE).when(currentBehaviourMock).getType();
-        behaviourManager.updateBehaviour(agentMock, emotion);
+        doReturn(emotion).when(emotionalConfiguratorMock).getEmotion();
+        behaviourManager.updateBehaviour();
         assertThat(behaviourManager.getBehaviour(), is(currentBehaviourMock));
         verify(agentMock, never()).addBehaviour(imitativeBehaviourMock);
         verify(agentMock, never()).removeBehaviour(currentBehaviourMock);
     }
 
     private void testUpdateBehaviour(Emotion emotion, Behaviour expectedBehaviour) {
-        behaviourManager.updateBehaviour(agentMock, emotion);
+        doReturn(emotion).when(emotionalConfiguratorMock).getEmotion();
+        behaviourManager.updateBehaviour();
         assertThat(behaviourManager.getBehaviour(), is(expectedBehaviour));
         verify(agentMock).addBehaviour(expectedBehaviour);
         verify(agentMock).removeBehaviour(currentBehaviourMock);
+        verify(agentMock, atLeastOnce()).log(any());
     }
 
 }

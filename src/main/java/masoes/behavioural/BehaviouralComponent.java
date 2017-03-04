@@ -21,9 +21,8 @@ public class BehaviouralComponent {
     public BehaviouralComponent(EmotionalAgent emotionalAgent) {
         this.emotionalAgent = emotionalAgent;
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(emotionalAgent);
-        emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
-        behaviourManager = new BehaviourManager(behaviouralKnowledgeBase);
-        behaviourManager.updateBehaviour(emotionalAgent, emotionalConfigurator.getEmotion());
+        emotionalConfigurator = new EmotionalConfigurator(emotionalAgent, behaviouralKnowledgeBase);
+        behaviourManager = new BehaviourManager(emotionalAgent, emotionalConfigurator, behaviouralKnowledgeBase);
     }
 
     public Emotion getCurrentEmotion() {
@@ -40,7 +39,7 @@ public class BehaviouralComponent {
 
     public void evaluateStimulus(Stimulus stimulus) {
         emotionalConfigurator.updateEmotion(stimulus);
-        behaviourManager.updateBehaviour(emotionalAgent, emotionalConfigurator.getEmotion());
+        behaviourManager.updateBehaviour();
     }
 
     @Override

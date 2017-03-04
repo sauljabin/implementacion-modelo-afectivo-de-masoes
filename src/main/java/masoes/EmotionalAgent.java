@@ -76,7 +76,7 @@ public abstract class EmotionalAgent extends Agent {
 
     public abstract CognitiveBehaviour getCognitiveBehaviour();
 
-    public void log(String message) {
+    public synchronized void log(String message) {
         logger.info(this, message);
     }
 

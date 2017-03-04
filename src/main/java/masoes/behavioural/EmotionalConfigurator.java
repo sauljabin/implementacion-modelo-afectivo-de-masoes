@@ -8,6 +8,7 @@ package masoes.behavioural;
 
 import alice.tuprolog.SolveInfo;
 import knowledge.KnowledgeException;
+import masoes.EmotionalAgent;
 import ontology.masoes.ActionStimulus;
 import ontology.masoes.ObjectProperty;
 import ontology.masoes.ObjectStimulus;
@@ -25,9 +26,11 @@ public class EmotionalConfigurator {
 
     private EmotionalState emotionalState;
     private EmotionalSpace emotionalSpace;
+    private EmotionalAgent emotionalAgent;
     private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
 
-    public EmotionalConfigurator(BehaviouralKnowledgeBase behaviouralKnowledgeBase) {
+    public EmotionalConfigurator(EmotionalAgent emotionalAgent, BehaviouralKnowledgeBase behaviouralKnowledgeBase) {
+        this.emotionalAgent = emotionalAgent;
         this.behaviouralKnowledgeBase = behaviouralKnowledgeBase;
         emotionalState = new EmotionalState();
         emotionalSpace = new EmotionalSpace();
@@ -50,7 +53,10 @@ public class EmotionalConfigurator {
             SolveInfo solveEmotion = behaviouralKnowledgeBase.solve(String.format(KNOWLEDGE_QUESTION, getActor(stimulus), getQuestionParameter(stimulus)));
             if (solveEmotion.isSuccess()) {
                 String emotionName = solveEmotion.getTerm(ANSWER_VAR_NAME).toString().replace("'", "").toLowerCase();
-                return emotionalSpace.searchEmotion(emotionName).getRandomEmotionalState();
+                Emotion newEmotion = emotionalSpace.searchEmotion(emotionName);
+                EmotionalState newEmotionalState = newEmotion.getRandomEmotionalState();
+                emotionalAgent.log(String.format("Changing emotion %s to %s", getEmotion().getName(), newEmotion.getName()));
+                return newEmotionalState;
             }
             return emotionalState;
         } catch (Exception e) {

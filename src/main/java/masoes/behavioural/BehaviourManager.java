@@ -16,25 +16,34 @@ public class BehaviourManager {
 
     private static final String ANSWER_VAR_NAME = "X";
     private static final String KNOWLEDGE_QUESTION = "behaviourPriority('%s'," + ANSWER_VAR_NAME + ").";
+    private final EmotionalAgent emotionalAgent;
+    private final EmotionalConfigurator emotionalConfigurator;
     private EmotionalBehaviour behaviour;
     private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
 
-    public BehaviourManager(BehaviouralKnowledgeBase behaviouralKnowledgeBase) {
+    public BehaviourManager(EmotionalAgent emotionalAgent, EmotionalConfigurator emotionalConfigurator, BehaviouralKnowledgeBase behaviouralKnowledgeBase) {
+        this.emotionalAgent = emotionalAgent;
+        this.emotionalConfigurator = emotionalConfigurator;
         this.behaviouralKnowledgeBase = behaviouralKnowledgeBase;
+        updateBehaviour();
     }
 
     public EmotionalBehaviour getBehaviour() {
         return behaviour;
     }
 
-    public void updateBehaviour(EmotionalAgent emotionalAgent, Emotion emotion) {
-        BehaviourType newType = getBehaviourTypeAssociated(emotion);
+    public void updateBehaviour() {
+        BehaviourType newType = getBehaviourTypeAssociated(emotionalConfigurator.getEmotion());
 
         if (behaviour != null) {
-            if (newType == behaviour.getType()) {
+            BehaviourType type = behaviour.getType();
+            if (newType == type) {
                 return;
             }
+            emotionalAgent.log(String.format("Changing behaviour %s to %s", type, newType));
             emotionalAgent.removeBehaviour(behaviour);
+        } else {
+            emotionalAgent.log(String.format("Starting behaviour %s", newType));
         }
 
         behaviour = calculateBehaviour(newType, emotionalAgent);
@@ -42,6 +51,7 @@ public class BehaviourManager {
         if (behaviour != null) {
             emotionalAgent.addBehaviour(behaviour);
         }
+
     }
 
     private EmotionalBehaviour calculateBehaviour(BehaviourType type, EmotionalAgent emotionalAgent) {

@@ -32,6 +32,9 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.contains;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 
@@ -48,7 +51,7 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
     public void setUp() {
         createAgent(AGENT_NAME);
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
-        emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
+        emotionalConfigurator = new EmotionalConfigurator(agentMock, behaviouralKnowledgeBase);
     }
 
     private void createAgent(String agentName) {
@@ -101,7 +104,7 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
         String agentName = "AGENT_NAME";
         createAgent(agentName);
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
-        emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
+        emotionalConfigurator = new EmotionalConfigurator(agentMock, behaviouralKnowledgeBase);
         testUpdateEmotionWithAction(agentName, HappinessEmotion.class, "eat");
         testUpdateEmotionWithAction(agentName, JoyEmotion.class, "sleep");
         testUpdateEmotionWithAction(agentName, SadnessEmotion.class, "wake");
@@ -113,7 +116,7 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
         String agentName = "AGENT_NAME";
         createAgent(agentName);
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
-        emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
+        emotionalConfigurator = new EmotionalConfigurator(agentMock, behaviouralKnowledgeBase);
         testUpdateEmotionWithObject(agentName, HappinessEmotion.class, new ObjectProperty("color", "blue"));
         testUpdateEmotionWithObject(agentName, JoyEmotion.class, new ObjectProperty("color", "red"));
         testUpdateEmotionWithObject(agentName, SadnessEmotion.class, new ObjectProperty("color", "white"));
@@ -123,7 +126,7 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
     @Test
     public void shouldUpdateCorrectlyTheEmotionWithUpperAction() {
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
-        emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
+        emotionalConfigurator = new EmotionalConfigurator(agentMock, behaviouralKnowledgeBase);
         behaviouralKnowledgeBase.addTheory("satisfactionAction(AGENT, 'Eat', positive_high) :- self(AGENT).");
         testUpdateEmotionWithAction(AGENT_NAME, HappinessEmotion.class, "Eat");
     }
@@ -131,7 +134,7 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
     @Test
     public void shouldUpdateCorrectlyTheEmotionWithUpperObject() {
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
-        emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
+        emotionalConfigurator = new EmotionalConfigurator(agentMock, behaviouralKnowledgeBase);
         behaviouralKnowledgeBase.addTheory("satisfactionObject(AGENT, PROPERTIES, positive_high) :- member(color='Gray', PROPERTIES).");
         testUpdateEmotionWithObject(AGENT_NAME, HappinessEmotion.class, new ObjectProperty("color", "Gray"));
     }
@@ -151,6 +154,7 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
         emotionalConfigurator.updateEmotion(objectStimulus);
         assertThat(emotionalConfigurator.getEmotion(), is(instanceOf(expectedEmotion)));
         assertTrue(emotionalConfigurator.getEmotion().getGeometry().intersects(emotionalConfigurator.getEmotionalState().toPoint()));
+        verify(agentMock, atLeastOnce()).log(contains("Changing emotion"));
     }
 
 }
