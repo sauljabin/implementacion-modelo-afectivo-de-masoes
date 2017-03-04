@@ -6,6 +6,7 @@
 
 package masoes.behavioural;
 
+import knowledge.KnowledgeException;
 import masoes.EmotionalAgent;
 import masoes.EmotionalBehaviour;
 import ontology.masoes.ActionStimulus;
@@ -28,7 +29,7 @@ public class BehaviouralComponentTest extends PowerMockitoTest {
 
     @Test
     public void shouldThrowExceptionIfAgentNotHaveName() {
-        expectedException.expect(BehaviouralComponentException.class);
+        expectedException.expect(KnowledgeException.class);
         expectedException.expectMessage("No agent name, create in setup agent method");
         EmotionalAgent emotionalAgent = mock(EmotionalAgent.class);
         new BehaviouralComponent(emotionalAgent);

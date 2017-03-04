@@ -10,6 +10,7 @@ import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPANames;
+import knowledge.Knowledge;
 import language.SemanticLanguage;
 import ontology.masoes.MasoesOntology;
 import org.junit.Before;
@@ -106,6 +107,13 @@ public class EmotionalAgentTest extends PowerMockitoTest {
         assertThat(description.getAllLanguages().next(), is(SemanticLanguage.NAME));
     }
 
+    @Test
+    public void shouldLogInfo() {
+        String expectedMessage = "expectedMessage";
+        emotionalAgentSpy.log(expectedMessage);
+        verify(loggerMock).info(emotionalAgentSpy, expectedMessage);
+    }
+
     private EmotionalAgent createAgent() {
         return new EmotionalAgent() {
 
@@ -114,7 +122,7 @@ public class EmotionalAgentTest extends PowerMockitoTest {
             }
 
             @Override
-            public String getKnowledgePath() {
+            public Knowledge getKnowledge() {
                 return null;
             }
 

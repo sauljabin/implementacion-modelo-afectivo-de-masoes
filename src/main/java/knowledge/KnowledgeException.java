@@ -6,17 +6,17 @@
 
 package knowledge;
 
-public class KnowledgeBaseException extends RuntimeException {
+public class KnowledgeException extends RuntimeException {
 
-    public KnowledgeBaseException(String message) {
+    public KnowledgeException(String message) {
         super(message);
     }
 
-    public KnowledgeBaseException(String message, Throwable cause) {
+    public KnowledgeException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public KnowledgeBaseException(Throwable cause) {
+    public KnowledgeException(Throwable cause) {
         super(cause);
     }
 

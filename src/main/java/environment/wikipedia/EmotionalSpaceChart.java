@@ -107,7 +107,6 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
             graphics.drawRect(x - 3, y - 3, 6, 6);
         }
 
-
         getGraphics().drawImage(image, 0, 0, this);
     }
 

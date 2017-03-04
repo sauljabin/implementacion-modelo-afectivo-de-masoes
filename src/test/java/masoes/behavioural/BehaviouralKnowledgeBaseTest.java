@@ -7,22 +7,33 @@
 package masoes.behavioural;
 
 import alice.tuprolog.SolveInfo;
+import knowledge.Knowledge;
+import masoes.EmotionalAgent;
 import org.junit.Before;
 import org.junit.Test;
+import test.PowerMockitoTest;
+
+import java.nio.file.Paths;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.powermock.api.mockito.PowerMockito.doReturn;
+import static org.powermock.api.mockito.PowerMockito.mock;
 
-public class BehaviouralKnowledgeBaseTest {
+public class BehaviouralKnowledgeBaseTest extends PowerMockitoTest {
 
     private static final String AGENT_NAME = "agent";
     private static final String AGENT_KNOWLEDGE_PATH = "theories/dummy/dummyEmotionalAgent.prolog";
     private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
+    private EmotionalAgent agentMock;
 
     @Before
     public void setUp() {
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(AGENT_NAME, AGENT_KNOWLEDGE_PATH);
+        agentMock = mock(EmotionalAgent.class);
+        doReturn(new Knowledge(Paths.get(AGENT_KNOWLEDGE_PATH))).when(agentMock).getKnowledge();
+        doReturn(AGENT_NAME).when(agentMock).getLocalName();
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
     }
 
     @Test
@@ -44,7 +55,7 @@ public class BehaviouralKnowledgeBaseTest {
     @Test
     public void shouldSolveSelfAgentWithUpperName() throws Exception {
         String nameUpper = "NAME_UPPER";
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(nameUpper, AGENT_KNOWLEDGE_PATH);
+        doReturn(nameUpper).when(agentMock).getLocalName();
         SolveInfo solveSelf = behaviouralKnowledgeBase.solve("self(" + nameUpper + ").");
         assertThat(solveSelf.toString(), containsString("yes."));
     }

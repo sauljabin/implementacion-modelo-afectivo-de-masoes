@@ -7,7 +7,7 @@
 package masoes.behavioural;
 
 import alice.tuprolog.SolveInfo;
-import knowledge.KnowledgeBaseException;
+import knowledge.KnowledgeException;
 import ontology.masoes.ActionStimulus;
 import ontology.masoes.ObjectProperty;
 import ontology.masoes.ObjectStimulus;
@@ -54,7 +54,7 @@ public class EmotionalConfigurator {
             }
             return emotionalState;
         } catch (Exception e) {
-            throw new KnowledgeBaseException(e);
+            throw new KnowledgeException(e);
         }
     }
 

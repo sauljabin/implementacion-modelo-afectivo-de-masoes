@@ -7,6 +7,7 @@
 package masoes.behavioural;
 
 import jade.core.behaviours.Behaviour;
+import knowledge.Knowledge;
 import masoes.CognitiveBehaviour;
 import masoes.EmotionalAgent;
 import masoes.EmotionalBehaviour;
@@ -23,6 +24,8 @@ import masoes.behavioural.emotion.SadnessEmotion;
 import org.junit.Before;
 import org.junit.Test;
 import test.PowerMockitoTest;
+
+import java.nio.file.Paths;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -48,12 +51,15 @@ public class BehaviourManagerTest extends PowerMockitoTest {
 
     @Before
     public void setUp() throws Exception {
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(AGENT_NAME, AGENT_KNOWLEDGE_PATH);
-        behaviourManager = new BehaviourManager(behaviouralKnowledgeBase);
         agentMock = mock(EmotionalAgent.class);
         doNothing().when(agentMock).addBehaviour(any());
         doNothing().when(agentMock).removeBehaviour(any());
 
+        doReturn(new Knowledge(Paths.get(AGENT_KNOWLEDGE_PATH))).when(agentMock).getKnowledge();
+        doReturn(AGENT_NAME).when(agentMock).getLocalName();
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
+
+        behaviourManager = new BehaviourManager(behaviouralKnowledgeBase);
         imitativeBehaviourMock = mock(ImitativeBehaviour.class);
         doReturn(imitativeBehaviourMock).when(agentMock).getImitativeBehaviour();
 

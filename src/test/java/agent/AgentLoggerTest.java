@@ -66,4 +66,12 @@ public class AgentLoggerTest extends PowerMockitoTest {
         verify(loggerMock).info(eq(expectedMessage));
     }
 
+    @Test
+    public void shouldLogAgentInfo() {
+        String expectedInfo = "expectedInfo";
+        String expectedMessage = String.format("Agent %s: %s", EXPECTED_AGENT_NAME, expectedInfo);
+        agentLogger.info(agentMock, expectedInfo);
+        verify(loggerMock).info(eq(expectedMessage));
+    }
+
 }

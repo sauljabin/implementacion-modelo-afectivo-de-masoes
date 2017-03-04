@@ -10,6 +10,7 @@ import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import knowledge.Knowledge;
 import masoes.behavioural.BehaviouralComponent;
 import ontology.masoes.MasoesOntology;
 import org.slf4j.LoggerFactory;
@@ -67,12 +68,16 @@ public abstract class EmotionalAgent extends Agent {
 
     public abstract void setUp();
 
-    public abstract String getKnowledgePath();
+    public abstract Knowledge getKnowledge();
 
     public abstract ImitativeBehaviour getImitativeBehaviour();
 
     public abstract ReactiveBehaviour getReactiveBehaviour();
 
     public abstract CognitiveBehaviour getCognitiveBehaviour();
+
+    public void log(String message) {
+        logger.info(this, message);
+    }
 
 }

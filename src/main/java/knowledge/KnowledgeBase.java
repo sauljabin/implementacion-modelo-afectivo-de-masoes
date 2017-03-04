@@ -9,21 +9,38 @@ package knowledge;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.Theory;
 
+import java.nio.file.Path;
+
 public class KnowledgeBase extends Prolog {
+
+    public void addKnowledge(Knowledge knowledge) {
+        if (knowledge != null) {
+            addTheory(knowledge.toString().trim());
+        }
+    }
 
     public void addTheory(String theory) {
         try {
             addTheory(new Theory(theory));
         } catch (Exception e) {
-            throw new KnowledgeBaseException(e);
+            throw new KnowledgeException(e);
         }
     }
 
-    public void addTheoryFromPath(String path) {
+    @Override
+    public void addTheory(Theory th) {
         try {
-            addTheory(new Theory(ClassLoader.getSystemResourceAsStream(path)));
+            super.addTheory(th);
         } catch (Exception e) {
-            throw new KnowledgeBaseException(e);
+            throw new KnowledgeException(e);
+        }
+    }
+
+    public void addTheory(Path path) {
+        try {
+            addTheory(new Theory(ClassLoader.getSystemResourceAsStream(path.toString())));
+        } catch (Exception e) {
+            throw new KnowledgeException(e);
         }
     }
 

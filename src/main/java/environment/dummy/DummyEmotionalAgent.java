@@ -6,13 +6,17 @@
 
 package environment.dummy;
 
+import knowledge.Knowledge;
 import masoes.CognitiveBehaviour;
 import masoes.EmotionalAgent;
 import masoes.ImitativeBehaviour;
 import masoes.ReactiveBehaviour;
 
+import java.nio.file.Paths;
+
 public class DummyEmotionalAgent extends EmotionalAgent {
 
+    private static final String THEORY = "theories/dummy/dummyEmotionalAgent.prolog";
     private DummyReactiveBehaviour dummyReactiveBehaviour;
     private DummyImitativeBehaviour dummyImitativeBehaviour;
     private DummyCognitiveBehaviour dummyCognitiveBehaviour;
@@ -25,8 +29,8 @@ public class DummyEmotionalAgent extends EmotionalAgent {
     }
 
     @Override
-    public String getKnowledgePath() {
-        return "theories/dummy/dummyEmotionalAgent.prolog";
+    public Knowledge getKnowledge() {
+        return new Knowledge(Paths.get(THEORY));
     }
 
     @Override

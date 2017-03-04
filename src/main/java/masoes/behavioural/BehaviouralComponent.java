@@ -19,11 +19,8 @@ public class BehaviouralComponent {
     private EmotionalAgent emotionalAgent;
 
     public BehaviouralComponent(EmotionalAgent emotionalAgent) {
-        if (emotionalAgent.getLocalName() == null) {
-            throw new BehaviouralComponentException("No agent name, create in setup agent method");
-        }
         this.emotionalAgent = emotionalAgent;
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(emotionalAgent.getLocalName(), emotionalAgent.getKnowledgePath());
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(emotionalAgent);
         emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
         behaviourManager = new BehaviourManager(behaviouralKnowledgeBase);
         behaviourManager.updateBehaviour(emotionalAgent, emotionalConfigurator.getEmotion());

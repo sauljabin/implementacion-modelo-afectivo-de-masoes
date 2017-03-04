@@ -7,7 +7,7 @@
 package masoes.behavioural;
 
 import alice.tuprolog.SolveInfo;
-import knowledge.KnowledgeBaseException;
+import knowledge.KnowledgeException;
 import masoes.EmotionalAgent;
 import masoes.EmotionalBehaviour;
 import util.ToStringBuilder;
@@ -72,7 +72,7 @@ public class BehaviourManager {
 
             return BehaviourType.IMITATIVE;
         } catch (Exception e) {
-            throw new KnowledgeBaseException(e);
+            throw new KnowledgeException(e);
         }
     }
 

@@ -8,6 +8,8 @@ package masoes.behavioural;
 
 import jade.core.AID;
 import jade.util.leap.ArrayList;
+import knowledge.Knowledge;
+import masoes.EmotionalAgent;
 import masoes.behavioural.emotion.AdmirationEmotion;
 import masoes.behavioural.emotion.AngerEmotion;
 import masoes.behavioural.emotion.CompassionEmotion;
@@ -21,26 +23,38 @@ import ontology.masoes.ObjectProperty;
 import ontology.masoes.ObjectStimulus;
 import org.junit.Before;
 import org.junit.Test;
+import test.PowerMockitoTest;
 
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertTrue;
+import static org.powermock.api.mockito.PowerMockito.doReturn;
+import static org.powermock.api.mockito.PowerMockito.mock;
 
 
-public class EmotionalConfiguratorTest {
+public class EmotionalConfiguratorTest extends PowerMockitoTest {
 
     private static final String AGENT_NAME = "agent";
     private static final String AGENT_KNOWLEDGE_PATH = "theories/dummy/dummyEmotionalAgent.prolog";
     private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
     private EmotionalConfigurator emotionalConfigurator;
+    private EmotionalAgent agentMock;
 
     @Before
     public void setUp() {
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(AGENT_NAME, AGENT_KNOWLEDGE_PATH);
+        createAgent(AGENT_NAME);
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
         emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
+    }
+
+    private void createAgent(String agentName) {
+        agentMock = mock(EmotionalAgent.class);
+        doReturn(new Knowledge(Paths.get(AGENT_KNOWLEDGE_PATH))).when(agentMock).getKnowledge();
+        doReturn(agentName).when(agentMock).getLocalName();
     }
 
     @Test
@@ -85,7 +99,8 @@ public class EmotionalConfiguratorTest {
     @Test
     public void shouldUpdateCorrectlyTheEmotionWithActionAndUpperAgent() {
         String agentName = "AGENT_NAME";
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentName, AGENT_KNOWLEDGE_PATH);
+        createAgent(agentName);
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
         emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
         testUpdateEmotionWithAction(agentName, HappinessEmotion.class, "eat");
         testUpdateEmotionWithAction(agentName, JoyEmotion.class, "sleep");
@@ -96,7 +111,8 @@ public class EmotionalConfiguratorTest {
     @Test
     public void shouldUpdateCorrectlyTheEmotionWithObjectAndUpperAgent() {
         String agentName = "AGENT_NAME";
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentName, AGENT_KNOWLEDGE_PATH);
+        createAgent(agentName);
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
         emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
         testUpdateEmotionWithObject(agentName, HappinessEmotion.class, new ObjectProperty("color", "blue"));
         testUpdateEmotionWithObject(agentName, JoyEmotion.class, new ObjectProperty("color", "red"));
@@ -106,7 +122,7 @@ public class EmotionalConfiguratorTest {
 
     @Test
     public void shouldUpdateCorrectlyTheEmotionWithUpperAction() {
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(AGENT_NAME, AGENT_KNOWLEDGE_PATH);
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
         emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
         behaviouralKnowledgeBase.addTheory("satisfactionAction(AGENT, 'Eat', positive_high) :- self(AGENT).");
         testUpdateEmotionWithAction(AGENT_NAME, HappinessEmotion.class, "Eat");
@@ -114,7 +130,7 @@ public class EmotionalConfiguratorTest {
 
     @Test
     public void shouldUpdateCorrectlyTheEmotionWithUpperObject() {
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(AGENT_NAME, AGENT_KNOWLEDGE_PATH);
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
         emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
         behaviouralKnowledgeBase.addTheory("satisfactionObject(AGENT, PROPERTIES, positive_high) :- member(color='Gray', PROPERTIES).");
         testUpdateEmotionWithObject(AGENT_NAME, HappinessEmotion.class, new ObjectProperty("color", "Gray"));

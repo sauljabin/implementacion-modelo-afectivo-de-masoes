@@ -52,4 +52,11 @@ public class AgentLogger {
                 .info(logger);
     }
 
+    public void info(Agent agent, String info) {
+        new LogWriter()
+                .message("Agent %s: %s")
+                .args(agent.getLocalName(), info)
+                .info(logger);
+    }
+
 }
