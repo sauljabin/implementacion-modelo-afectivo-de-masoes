@@ -41,7 +41,7 @@ public class QueryResult {
         }
     }
 
-    public void close(){
+    public void close() {
         try {
             resultSet.close();
         } catch (SQLException e) {

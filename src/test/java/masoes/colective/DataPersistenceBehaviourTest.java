@@ -9,7 +9,6 @@ package masoes.colective;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import data.DataBaseConnection;
 import data.QueryResult;
-import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
@@ -46,11 +45,11 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 //Should be component test
 public class DataPersistenceBehaviourTest extends PowerMockitoTest {
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
     private DataPersistenceBehaviour dataPersistenceBehaviour;
     private Agent agentMock;
     private DataBaseConnection dataBaseConnection;
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void setUp() {
@@ -101,6 +100,7 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         QueryResult resultSetValue = mock(QueryResult.class);
         when(resultSetValue.next()).thenAnswer(new Answer<Boolean>() {
             private boolean auxiliarValue = false;
+
             @Override
             public Boolean answer(InvocationOnMock invocation) throws Throwable {
                 auxiliarValue = !auxiliarValue;
@@ -114,7 +114,7 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
 
         DataBaseConnection dataBaseConnection = mock(DataBaseConnection.class);
         when(dataBaseConnection.query(anyString())).thenReturn(resultSetValue);
-        ReflectionTestUtils.setField(dataPersistenceBehaviour, "connection", dataBaseConnection);
+        ReflectionTestUtils.setFieldValue(dataPersistenceBehaviour, "connection", dataBaseConnection);
 
         GetObject getObjectAction = new GetObject(createObjectStimulus());
         ListObjects actualListObjects = dataPersistenceBehaviour.retrieveObject(getObjectAction);
@@ -130,7 +130,7 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
     public void shouldUpdatePropertyValues() throws Exception {
         UpdateObject updateObject = new UpdateObject(createObjectStimulus());
         DataBaseConnection dataBaseConnection = mock(DataBaseConnection.class);
-        ReflectionTestUtils.setField(dataPersistenceBehaviour, "connection", dataBaseConnection);
+        ReflectionTestUtils.setFieldValue(dataPersistenceBehaviour, "connection", dataBaseConnection);
         QueryResult resultSetValue = mock(QueryResult.class);
         when(resultSetValue.next()).thenReturn(true);
         when(resultSetValue.getString("uuid")).thenReturn("123456");
@@ -154,13 +154,14 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
     public void shouldAddNewPropertiesWhenUpdatesDoesNothing() throws Exception {
         UpdateObject updateObject = new UpdateObject(createObjectStimulus());
         DataBaseConnection dataBaseConnection = mock(DataBaseConnection.class);
-        ReflectionTestUtils.setField(dataPersistenceBehaviour, "connection", dataBaseConnection);
+        ReflectionTestUtils.setFieldValue(dataPersistenceBehaviour, "connection", dataBaseConnection);
         QueryResult resultSetValue = mock(QueryResult.class);
         when(resultSetValue.next()).thenReturn(true);
         when(resultSetValue.getString("uuid")).thenReturn("123456");
         when(dataBaseConnection.query(anyString())).thenReturn(resultSetValue);
         when(dataBaseConnection.execute(anyString())).thenAnswer(new Answer<Boolean>() {
             private boolean auxiliarResponse = true;
+
             @Override
             public Boolean answer(InvocationOnMock invocation) throws Throwable {
                 auxiliarResponse = !auxiliarResponse;
@@ -190,7 +191,7 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
 
         UpdateObject updateObject = new UpdateObject(createObjectStimulus());
         DataBaseConnection dataBaseConnection = mock(DataBaseConnection.class);
-        ReflectionTestUtils.setField(dataPersistenceBehaviour, "connection", dataBaseConnection);
+        ReflectionTestUtils.setFieldValue(dataPersistenceBehaviour, "connection", dataBaseConnection);
         QueryResult resultSetValue = mock(QueryResult.class);
         when(resultSetValue.next()).thenReturn(true);
         when(resultSetValue.getString("uuid")).thenReturn("123456");
@@ -204,10 +205,10 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldDeleteObjectWithProperties () throws Exception {
+    public void shouldDeleteObjectWithProperties() throws Exception {
         DeleteObject deleteObject = new DeleteObject(createObjectStimulus());
         DataBaseConnection dataBaseConnection = mock(DataBaseConnection.class);
-        ReflectionTestUtils.setField(dataPersistenceBehaviour, "connection", dataBaseConnection);
+        ReflectionTestUtils.setFieldValue(dataPersistenceBehaviour, "connection", dataBaseConnection);
         QueryResult resultSetValue = mock(QueryResult.class);
         when(resultSetValue.next()).thenReturn(true);
         when(resultSetValue.getString("uuid")).thenReturn("123456");

@@ -29,7 +29,6 @@ import ontology.masoes.ObjectProperty;
 import ontology.masoes.ObjectStimulus;
 import ontology.masoes.UpdateObject;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.UUID;
@@ -81,7 +80,7 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
         }
     }
 
-// TODO: FILTRADO DINAMICO?
+    // TODO: FILTRADO DINAMICO?
 // TODO: PORQUE LISTA?
     public ListObjects retrieveObject(GetObject getObjectAction) throws SQLException {
 
@@ -140,9 +139,9 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
     public void updateObject(UpdateObject updateObjectAction) throws SQLException, FailureException {
         // TODO: ACTUALIZAR POR NOMBRE Y CREATOR
         String sqlQuery = String.format("SELECT uuid " +
-                "FROM object " +
-                "WHERE name LIKE '%s' " +
-                "AND creator_name LIKE '%s';",
+                        "FROM object " +
+                        "WHERE name LIKE '%s' " +
+                        "AND creator_name LIKE '%s';",
                 updateObjectAction.getObjectStimulus().getObjectName(),
                 updateObjectAction.getObjectStimulus().getCreator().getName());
         QueryResult resultSet = connection.query(sqlQuery);
@@ -152,21 +151,21 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
             resultSet.close();
             updateObjectAction.getObjectStimulus().getObjectProperties().iterator().forEachRemaining((Object objectProperty) -> {
 
-                String name = ((ObjectProperty) objectProperty).getName();
-                String value = ((ObjectProperty) objectProperty).getValue();
+                        String name = ((ObjectProperty) objectProperty).getName();
+                        String value = ((ObjectProperty) objectProperty).getValue();
 
-                String sqlUpdateStatement = String.format("UPDATE object_property " +
-                        "SET value='%s' " +
-                        "WHERE object_uuid LIKE '%s' " +
-                        "AND name LIKE '%s';", value, objectUid, name);
+                        String sqlUpdateStatement = String.format("UPDATE object_property " +
+                                "SET value='%s' " +
+                                "WHERE object_uuid LIKE '%s' " +
+                                "AND name LIKE '%s';", value, objectUid, name);
 
-                if(!connection.execute(sqlUpdateStatement)) {
-                    String sql = String.format("INSERT INTO object_property (name, value, object_uuid) VALUES ('%s', '%s', '%s');", name, value, objectUid);
-                    if (!connection.execute(sql)) {
-                        throw new UncheckedExecutionException(new FailureException(String.format("Operation failed: Cannot insert data (%s:%s);", name, value)));
+                        if (!connection.execute(sqlUpdateStatement)) {
+                            String sql = String.format("INSERT INTO object_property (name, value, object_uuid) VALUES ('%s', '%s', '%s');", name, value, objectUid);
+                            if (!connection.execute(sql)) {
+                                throw new UncheckedExecutionException(new FailureException(String.format("Operation failed: Cannot insert data (%s:%s);", name, value)));
+                            }
+                        }
                     }
-                }
-            }
             );
         }
     }

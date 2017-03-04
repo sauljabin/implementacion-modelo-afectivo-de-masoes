@@ -19,8 +19,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import test.PowerMockitoTest;
 
-import java.lang.reflect.Field;
-
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -32,6 +30,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.spy;
+import static test.ReflectionTestUtils.setFieldValue;
 
 public class EmotionalAgentTest extends PowerMockitoTest {
 
@@ -49,13 +48,8 @@ public class EmotionalAgentTest extends PowerMockitoTest {
         agentManagementAssistantMock = mock(AgentManagementAssistant.class);
         emotionalAgent = createAgent();
 
-        Field fieldLogger = emotionalAgent.getClass().getSuperclass().getDeclaredField("logger");
-        fieldLogger.setAccessible(true);
-        fieldLogger.set(emotionalAgent, loggerMock);
-
-        Field fieldAssistant = emotionalAgent.getClass().getSuperclass().getDeclaredField("agentManagementAssistant");
-        fieldAssistant.setAccessible(true);
-        fieldAssistant.set(emotionalAgent, agentManagementAssistantMock);
+        setFieldValue(emotionalAgent, "logger", loggerMock);
+        setFieldValue(emotionalAgent, "agentManagementAssistant", agentManagementAssistantMock);
 
         emotionalAgentSpy = spy(emotionalAgent);
         doReturn(LOCAL_NAME).when(emotionalAgentSpy).getLocalName();
