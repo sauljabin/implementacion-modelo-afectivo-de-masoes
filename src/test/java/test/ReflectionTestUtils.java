@@ -1,6 +1,8 @@
 package test;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Optional;
 
 public final class ReflectionTestUtils {
 
@@ -11,9 +13,13 @@ public final class ReflectionTestUtils {
         Class<?> aClass = affectedObject.getClass();
         Field affectedField;
 
-        try {
+        Optional<Field> first = Arrays.stream(aClass.getDeclaredFields())
+                .filter(field -> field.getName().equals(fieldName))
+                .findFirst();
+
+        if (first.isPresent()) {
             affectedField = aClass.getDeclaredField(fieldName);
-        } catch (Exception e) {
+        } else {
             affectedField = aClass.getSuperclass().getDeclaredField(fieldName);
         }
 
