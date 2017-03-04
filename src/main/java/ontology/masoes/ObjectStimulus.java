@@ -51,9 +51,14 @@ public class ObjectStimulus extends Stimulus {
 
     @Override
     public String toString() {
-        return new ToStringBuilder()
-                .append("creator", creator)
-                .append("objectName", objectName)
+        ToStringBuilder toStringBuilder = new ToStringBuilder();
+        toStringBuilder.object(this);
+
+        if (creator != null) {
+            toStringBuilder.append("creator", creator.getLocalName());
+        }
+
+        return toStringBuilder.append("objectName", objectName)
                 .append("objectProperties", objectProperties)
                 .toString();
     }

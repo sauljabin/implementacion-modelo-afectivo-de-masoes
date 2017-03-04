@@ -40,10 +40,14 @@ public class ActionStimulus extends Stimulus {
 
     @Override
     public String toString() {
-        return new ToStringBuilder()
-                .append("actor", actor)
-                .append("actionName", actionName)
-                .toString();
+        ToStringBuilder toStringBuilder = new ToStringBuilder();
+        toStringBuilder.object(this);
+
+        if (actor != null) {
+            toStringBuilder.append("actor", actor.getLocalName());
+        }
+
+        return toStringBuilder.append("actionName", actionName).toString();
     }
 
 }

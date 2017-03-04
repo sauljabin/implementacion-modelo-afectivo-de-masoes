@@ -12,6 +12,7 @@ import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.lang.acl.MessageTemplate;
+import jade.util.leap.ArrayList;
 import masoes.behavioural.BehaviouralComponent;
 import masoes.behavioural.EmotionalState;
 import masoes.behavioural.emotion.HappinessEmotion;
@@ -21,6 +22,8 @@ import ontology.masoes.AgentState;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
+import ontology.masoes.ObjectProperty;
+import ontology.masoes.ObjectStimulus;
 import org.junit.Before;
 import org.junit.Test;
 import test.PowerMockitoTest;
@@ -29,6 +32,7 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -69,9 +73,11 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldEvaluateStimulus() throws Exception {
+    public void shouldEvaluateActionStimulus() throws Exception {
         EvaluateStimulus evaluateStimulus = new EvaluateStimulus();
         ActionStimulus stimulus = new ActionStimulus();
+        stimulus.setActionName("expectedActionName");
+        stimulus.setActor(new AID("expectedActorName", AID.ISGUID));
         evaluateStimulus.setStimulus(stimulus);
 
         Action action = new Action();
@@ -84,6 +90,36 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
         assertThat(done.getAction(), is(action));
 
         verify(behaviouralComponentMock).evaluateStimulus(stimulus);
+        System.out.println(evaluateStimulus.getStimulus().toString());
+        verify(emotionalAgentMock).log(contains("Receiving message: " + evaluateStimulus.getStimulus().toString()));
+        verify(emotionalAgentMock).log(contains("Sending message: Done"));
+    }
+
+    @Test
+    public void shouldEvaluateObjectStimulus() throws Exception {
+        EvaluateStimulus evaluateStimulus = new EvaluateStimulus();
+        ObjectStimulus stimulus = new ObjectStimulus();
+        stimulus.setObjectName("expectedActionName");
+        stimulus.setCreator(new AID("expectedActorName", AID.ISGUID));
+
+        ArrayList objectProperties = new ArrayList();
+        objectProperties.add(new ObjectProperty("name", "value"));
+        objectProperties.add(new ObjectProperty("name2", "value2"));
+        stimulus.setObjectProperties(objectProperties);
+        evaluateStimulus.setStimulus(stimulus);
+
+        Action action = new Action();
+        action.setAction(evaluateStimulus);
+
+        Predicate predicate = basicEmotionalAgentBehaviour.performAction(action);
+        assertThat(predicate, is(instanceOf(Done.class)));
+
+        Done done = (Done) predicate;
+        assertThat(done.getAction(), is(action));
+
+        verify(behaviouralComponentMock).evaluateStimulus(stimulus);
+        verify(emotionalAgentMock).log(contains("Receiving message: " + evaluateStimulus.getStimulus().toString()));
+        verify(emotionalAgentMock).log(contains("Sending message: Done"));
     }
 
     @Test
