@@ -7,6 +7,7 @@
 package data;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class QueryResult {
 
@@ -28,6 +29,22 @@ public class QueryResult {
         try {
             return resultSet.getString(columnName);
         } catch (Exception e) {
+            throw new DataBaseException(e);
+        }
+    }
+
+    public String getString(int columnIndex) {
+        try {
+            return resultSet.getString(columnIndex);
+        } catch (Exception e) {
+            throw new DataBaseException(e);
+        }
+    }
+
+    public void close(){
+        try {
+            resultSet.close();
+        } catch (SQLException e) {
             throw new DataBaseException(e);
         }
     }
