@@ -89,6 +89,7 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
 
         // PUNTOS
         graphics.setColor(Color.RED);
+
         for (int i = 0; i < emotionalStates.size() - 1; i++) {
             EmotionalState emotionalState = emotionalStates.get(i);
             int x = convertXToCanvas(getWidth(), emotionalState.getActivation());
@@ -96,13 +97,16 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
             graphics.fillRect(x - 2, y - 2, 4, 4);
         }
 
-        graphics.setColor(Color.BLUE);
-        EmotionalState lastEmotionalState = emotionalStates.get(emotionalStates.size() - 1);
-        int x = convertXToCanvas(getWidth(), lastEmotionalState.getActivation());
-        int y = convertYToCanvas(getHeight(), lastEmotionalState.getSatisfaction());
-        graphics.fillRect(x - 3, y - 3, 6, 6);
-        graphics.setColor(Color.WHITE);
-        graphics.drawRect(x - 3, y - 3, 6, 6);
+        if (emotionalStates.size() > 0) {
+            graphics.setColor(Color.BLUE);
+            EmotionalState lastEmotionalState = emotionalStates.get(emotionalStates.size() - 1);
+            int x = convertXToCanvas(getWidth(), lastEmotionalState.getActivation());
+            int y = convertYToCanvas(getHeight(), lastEmotionalState.getSatisfaction());
+            graphics.fillRect(x - 3, y - 3, 6, 6);
+            graphics.setColor(Color.WHITE);
+            graphics.drawRect(x - 3, y - 3, 6, 6);
+        }
+
 
         getGraphics().drawImage(image, 0, 0, this);
     }
