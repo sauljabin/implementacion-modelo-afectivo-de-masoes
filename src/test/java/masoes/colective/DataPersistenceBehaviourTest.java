@@ -6,10 +6,7 @@
 
 package masoes.colective;
 
-import data.DataBaseConnection;
-import jade.content.Predicate;
 import jade.content.onto.basic.Action;
-import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.MessageTemplate;
@@ -22,13 +19,9 @@ import ontology.masoes.MasoesOntology;
 import ontology.masoes.ObjectProperty;
 import ontology.masoes.ObjectStimulus;
 import ontology.masoes.UpdateObject;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import test.PhoenixDatabase;
 import test.PowerMockitoTest;
-
-import java.sql.ResultSet;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
@@ -41,19 +34,11 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
 
     private DataPersistenceBehaviour dataPersistenceBehaviour;
     private Agent agentMock;
-    private DataBaseConnection dataBaseConnection;
 
     @Before
     public void setUp() {
-        dataBaseConnection = PhoenixDatabase.create();
         agentMock = mock(Agent.class);
         dataPersistenceBehaviour = new DataPersistenceBehaviour(agentMock);
-        dataPersistenceBehaviour.onStart();
-    }
-
-    @After
-    public void tearDown() {
-        PhoenixDatabase.destroy();
     }
 
     @Test
@@ -69,31 +54,9 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldCreateObject() throws Exception {
-        ObjectStimulus objectStimulus = createObjectStimulus();
-
-        CreateObject createObject = new CreateObject();
-        createObject.setObjectStimulus(objectStimulus);
-
-        Action action = new Action();
-        action.setAction(createObject);
-
-        Predicate predicate = dataPersistenceBehaviour.performAction(action);
-        assertThat(predicate, is(instanceOf(Done.class)));
-
-        ResultSet query = dataBaseConnection.query("select * from object");
-        assertTrue(query.next());
-        assertThat(query.getString("name"), is(objectStimulus.getObjectName()));
-        assertThat(query.getString("creator_name"), is(objectStimulus.getCreator().getLocalName()));
-
-        String uuid = query.getString("uuid");
-        ObjectProperty objectProperty = (ObjectProperty) objectStimulus.getObjectProperties().get(0);
-
-        query = dataBaseConnection.query("select * from object_property");
-        assertTrue(query.next());
-        assertThat(query.getString("name"), is(objectProperty.getName()));
-        assertThat(query.getString("value"), is(objectProperty.getValue()));
-        assertThat(query.getString("object_uuid"), is(uuid));
+    public void shouldGetCorrectOntologyAndMessageTemplate() {
+        assertThat(dataPersistenceBehaviour.getOntology(), is(instanceOf(MasoesOntology.class)));
+        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), dataPersistenceBehaviour.getMessageTemplate());
     }
 
     private ObjectStimulus createObjectStimulus() {
@@ -103,20 +66,17 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         String expectedPropertyValue = "expectedPropertyValue";
         String expectedPropertyName = "expectedPropertyName";
 
+        AID creator = new AID(expectedAgentName, AID.ISGUID);
+
         ArrayList objectProperties = new ArrayList();
         objectProperties.add(new ObjectProperty(expectedPropertyName, expectedPropertyValue));
 
         ObjectStimulus objectStimulus = new ObjectStimulus();
         objectStimulus.setObjectName(expectedObjectName);
-        objectStimulus.setCreator(new AID(expectedAgentName, AID.ISGUID));
+        objectStimulus.setCreator(creator);
         objectStimulus.setObjectProperties(objectProperties);
-        return objectStimulus;
-    }
 
-    @Test
-    public void shouldGetCorrectOntologyAndMessageTemplate() {
-        assertThat(dataPersistenceBehaviour.getOntology(), is(instanceOf(MasoesOntology.class)));
-        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), dataPersistenceBehaviour.getMessageTemplate());
+        return objectStimulus;
     }
 
 }

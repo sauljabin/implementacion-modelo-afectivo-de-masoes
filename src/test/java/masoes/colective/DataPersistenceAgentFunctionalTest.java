@@ -7,6 +7,7 @@
 package masoes.colective;
 
 import data.DataBaseConnection;
+import data.QueryResult;
 import jade.content.AgentAction;
 import jade.content.ContentElement;
 import jade.content.onto.basic.Done;
@@ -30,7 +31,6 @@ import protocol.ProtocolAssistant;
 import test.FunctionalTest;
 import test.PhoenixDatabase;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,7 +57,7 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         killAgent(persistenceAgent);
         PhoenixDatabase.destroy();
     }
@@ -75,7 +75,7 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
     }
 
     @Test
-    public void shouldCreateObject() throws Exception {
+    public void shouldCreateObject() {
         String expectedObjectName = "expectedObjectName";
         String expectedPropertyName = "expectedPropertyName";
         String expectedPropertyValue = "expectedPropertyValue";
@@ -93,18 +93,18 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
         ContentElement contentElement = sendAction(createObject);
         assertThat(contentElement, is(instanceOf(Done.class)));
 
-        ResultSet resultSet = connection.query("select * from object");
-        assertTrue(resultSet.next());
-        assertThat(resultSet.getString("name"), is(expectedObjectName));
-        assertThat(resultSet.getString("creator_name"), is(expectedCreatorName));
-        String uuid = resultSet.getString("uuid");
+        QueryResult queryResult = connection.query("select * from object");
+        assertTrue(queryResult.next());
+        assertThat(queryResult.getString("name"), is(expectedObjectName));
+        assertThat(queryResult.getString("creator_name"), is(expectedCreatorName));
+        String uuid = queryResult.getString("uuid");
         assertTrue(uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"));
 
-        ResultSet resultSetProperty = connection.query("select * from object_property");
-        assertTrue(resultSetProperty.next());
-        assertThat(resultSetProperty.getString("object_uuid"), is(uuid));
-        assertThat(resultSetProperty.getString("name"), is(expectedPropertyName));
-        assertThat(resultSetProperty.getString("value"), is(expectedPropertyValue));
+        QueryResult queryResultProperty = connection.query("select * from object_property");
+        assertTrue(queryResultProperty.next());
+        assertThat(queryResultProperty.getString("object_uuid"), is(uuid));
+        assertThat(queryResultProperty.getString("name"), is(expectedPropertyName));
+        assertThat(queryResultProperty.getString("value"), is(expectedPropertyValue));
     }
 
     @Test
@@ -145,7 +145,7 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
     }
 
     @Test
-    public void shouldDeleteObject() throws Exception {
+    public void shouldDeleteObject() {
         String uuid = "uuidToDelete";
         String nameToDelete = "nameToDelete";
         String creatorNameToDelete = "creatorNameToDelete";
@@ -160,15 +160,15 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
         ContentElement contentElement = sendAction(deleteObject);
         assertThat(contentElement, is(instanceOf(Done.class)));
 
-        ResultSet resultSet = connection.query(String.format("select * from object where uuid = '%s'", uuid));
-        assertFalse(resultSet.next());
+        QueryResult queryResult = connection.query(String.format("select * from object where uuid = '%s'", uuid));
+        assertFalse(queryResult.next());
 
-        ResultSet resultSetProperty = connection.query(String.format("select * from object_property where object_uuid = '%s'", uuid));
-        assertFalse(resultSetProperty.next());
+        QueryResult queryResultProperty = connection.query(String.format("select * from object_property where object_uuid = '%s'", uuid));
+        assertFalse(queryResultProperty.next());
     }
 
     @Test
-    public void shouldUpdateObject() throws Exception {
+    public void shouldUpdateObject() {
         String uuid = "uuid";
         String objectName = "objectName";
         String creatorName = "creatorName";
@@ -191,19 +191,19 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
         ContentElement contentElement = sendAction(updateObject);
         assertThat(contentElement, is(instanceOf(Done.class)));
 
-        ResultSet resultSet = connection.query("select * from object");
-        assertTrue(resultSet.next());
-        assertThat(resultSet.getString("name"), is(objectName));
-        assertThat(resultSet.getString("creator_name"), is(creatorName));
+        QueryResult queryResult = connection.query("select * from object");
+        assertTrue(queryResult.next());
+        assertThat(queryResult.getString("name"), is(objectName));
+        assertThat(queryResult.getString("creator_name"), is(creatorName));
 
-        ResultSet resultSetProperty = connection.query("select * from object_property");
-        assertTrue(resultSetProperty.next());
-        assertThat(resultSetProperty.getString("name"), is(propertyName));
-        assertThat(resultSetProperty.getString("value"), is(expectedValue));
+        QueryResult queryResultProperty = connection.query("select * from object_property");
+        assertTrue(queryResultProperty.next());
+        assertThat(queryResultProperty.getString("name"), is(propertyName));
+        assertThat(queryResultProperty.getString("value"), is(expectedValue));
     }
 
     @Test
-    public void shouldUpdateAndAddObject() throws Exception {
+    public void shouldUpdateAndAddObject() {
         String uuid = "uuid";
         String objectName = "objectName";
         String creatorName = "creatorName";
@@ -229,19 +229,19 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
         ContentElement contentElement = sendAction(updateObject);
         assertThat(contentElement, is(instanceOf(Done.class)));
 
-        ResultSet resultSetProperty = connection.query(String.format("select * from object_property where name = '%s'", propertyName));
-        assertTrue(resultSetProperty.next());
-        assertThat(resultSetProperty.getString("name"), is(propertyName));
-        assertThat(resultSetProperty.getString("value"), is(expectedFirstPropertyValue));
+        QueryResult queryResultProperty = connection.query(String.format("select * from object_property where name = '%s'", propertyName));
+        assertTrue(queryResultProperty.next());
+        assertThat(queryResultProperty.getString("name"), is(propertyName));
+        assertThat(queryResultProperty.getString("value"), is(expectedFirstPropertyValue));
 
-        ResultSet resultSetSecondProperty = connection.query(String.format("select * from object_property where name = '%s'", secondPropertyName));
-        assertTrue(resultSetSecondProperty.next());
-        assertThat(resultSetSecondProperty.getString("name"), is(secondPropertyName));
-        assertThat(resultSetSecondProperty.getString("value"), is(secondPropertyValue));
+        QueryResult queryResultSecondProperty = connection.query(String.format("select * from object_property where name = '%s'", secondPropertyName));
+        assertTrue(queryResultSecondProperty.next());
+        assertThat(queryResultSecondProperty.getString("name"), is(secondPropertyName));
+        assertThat(queryResultSecondProperty.getString("value"), is(secondPropertyValue));
     }
 
     @Test
-    public void shouldUpdateAndRemoveObject() throws Exception {
+    public void shouldUpdateAndRemoveObject() {
         String uuid = "uuid";
         String objectName = "objectName";
         String creatorName = "creatorName";
@@ -267,13 +267,13 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
         ContentElement contentElement = sendAction(updateObject);
         assertThat(contentElement, is(instanceOf(Done.class)));
 
-        ResultSet resultSetProperty = connection.query(String.format("select * from object_property where name = '%s'", propertyName));
-        assertTrue(resultSetProperty.next());
-        assertThat(resultSetProperty.getString("name"), is(propertyName));
-        assertThat(resultSetProperty.getString("value"), is(expectedValue));
+        QueryResult queryResultProperty = connection.query(String.format("select * from object_property where name = '%s'", propertyName));
+        assertTrue(queryResultProperty.next());
+        assertThat(queryResultProperty.getString("name"), is(propertyName));
+        assertThat(queryResultProperty.getString("value"), is(expectedValue));
 
-        ResultSet resultSetSecondProperty = connection.query(String.format("select * from object_property where name = '%s'", secondPropertyName));
-        assertFalse(resultSetSecondProperty.next());
+        QueryResult queryResultSecondProperty = connection.query(String.format("select * from object_property where name = '%s'", secondPropertyName));
+        assertFalse(queryResultSecondProperty.next());
     }
 
     private ContentElement sendAction(AgentAction action) {

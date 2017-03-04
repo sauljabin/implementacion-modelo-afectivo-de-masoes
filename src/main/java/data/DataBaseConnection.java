@@ -8,13 +8,11 @@ package data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class DataBaseConnection {
 
     private static DataBaseConnection INSTANCE;
-    private static boolean closed = true;
     private Statement statement;
     private Connection connection;
 
@@ -26,14 +24,13 @@ public class DataBaseConnection {
             Class.forName(driver);
             connection = DriverManager.getConnection(url);
             connection.setAutoCommit(true);
-            closed = false;
         } catch (Exception e) {
             throw new DataBaseException(e);
         }
     }
 
     public synchronized static DataBaseConnection getConnection() {
-        if (closed) {
+        if (INSTANCE == null) {
             INSTANCE = new DataBaseConnection();
         }
         return INSTANCE;
@@ -41,14 +38,14 @@ public class DataBaseConnection {
 
     public synchronized static DataBaseConnection getConnection(boolean force) {
         if (force) {
-            if (!closed) {
+            if (INSTANCE != null) {
                 INSTANCE.closeConnection();
             }
         }
         return getConnection();
     }
 
-    public synchronized boolean execute(String sql) throws DataBaseException {
+    public synchronized boolean execute(String sql) {
         closeStatement();
         try {
             statement = connection.createStatement();
@@ -59,11 +56,11 @@ public class DataBaseConnection {
         }
     }
 
-    public synchronized ResultSet query(String sql) throws DataBaseException {
+    public synchronized QueryResult query(String sql) {
         closeStatement();
         try {
             statement = connection.createStatement();
-            return statement.executeQuery(sql);
+            return new QueryResult(statement.executeQuery(sql));
         } catch (Exception e) {
             throw new DataBaseException(e);
         }
@@ -88,7 +85,7 @@ public class DataBaseConnection {
         } catch (Exception e) {
             throw new DataBaseException(e);
         }
-        closed = true;
+        INSTANCE = null;
     }
 
 }

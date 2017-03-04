@@ -31,7 +31,6 @@ import java.util.Arrays;
 import java.util.UUID;
 
 // TODO: AGREGAR TRANSACCIONES, Y PRUEBAS UNITARIAS DE TRANSACCIONES
-// TODO: SE PUEDE CREAR DB DESDE PRUEBA?, PARA NO CORRER MIGRATE SIEMPRE
 
 public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
 
