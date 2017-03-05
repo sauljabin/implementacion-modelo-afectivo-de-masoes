@@ -10,7 +10,6 @@ import application.ApplicationLogger;
 import application.ApplicationOption;
 import application.ApplicationSettings;
 import application.ArgumentType;
-import org.slf4j.LoggerFactory;
 
 public class SettingsOption extends ApplicationOption {
 
@@ -18,7 +17,7 @@ public class SettingsOption extends ApplicationOption {
     private ApplicationLogger logger;
 
     public SettingsOption() {
-        logger = new ApplicationLogger(LoggerFactory.getLogger(SettingsOption.class));
+        logger = new ApplicationLogger(this);
         applicationSettings = ApplicationSettings.getInstance();
     }
 

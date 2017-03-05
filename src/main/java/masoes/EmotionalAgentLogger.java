@@ -6,7 +6,6 @@
 
 package masoes;
 
-import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import logger.LogWriter;
 import masoes.behavioural.BehaviourType;
@@ -54,11 +53,11 @@ public class EmotionalAgentLogger {
                 .info(logger);
     }
 
-    public void agent(Agent agent) {
+    public void agentInfo() {
         new LogWriter()
                 .addLoggerHandler(emotionalAgent)
                 .message("Agent %s: %s")
-                .args(agent.getLocalName(), agent)
+                .args(emotionalAgent.getLocalName(), emotionalAgent)
                 .info(logger);
     }
 
@@ -90,7 +89,7 @@ public class EmotionalAgentLogger {
         new LogWriter()
                 .addLoggerHandler(emotionalAgent)
                 .message("Actualizando emoción %s a %s")
-                .args(actualEmotion.getName(), newEmotion.getName())
+                .args(actualEmotion.getName().toUpperCase(), newEmotion.getName().toUpperCase())
                 .info(logger);
     }
 

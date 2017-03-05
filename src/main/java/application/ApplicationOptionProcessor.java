@@ -9,7 +9,6 @@ package application;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +23,7 @@ public class ApplicationOptionProcessor {
     public ApplicationOptionProcessor() {
         optionsContainer = new OptionsContainer();
         commandLineParser = new DefaultParser();
-        logger = new ApplicationLogger(LoggerFactory.getLogger(ApplicationOptionProcessor.class));
+        logger = new ApplicationLogger(this);
     }
 
     public void processArgs(String[] args) {

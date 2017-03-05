@@ -10,7 +10,6 @@ import application.ApplicationLogger;
 import application.ApplicationOption;
 import application.ArgumentType;
 import jade.JadeSettings;
-import org.slf4j.LoggerFactory;
 
 public class JadeOption extends ApplicationOption {
 
@@ -18,7 +17,7 @@ public class JadeOption extends ApplicationOption {
     private ApplicationLogger logger;
 
     public JadeOption() {
-        logger = new ApplicationLogger(LoggerFactory.getLogger(JadeOption.class));
+        logger = new ApplicationLogger(this);
         jadeSettings = JadeSettings.getInstance();
     }
 

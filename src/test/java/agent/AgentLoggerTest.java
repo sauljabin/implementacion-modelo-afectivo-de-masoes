@@ -6,14 +6,15 @@
 
 package agent;
 
+import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
-import masoes.EmotionalAgent;
+import logger.LoggerHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
+import org.slf4j.event.Level;
 import test.PowerMockitoTest;
 
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -24,15 +25,18 @@ public class AgentLoggerTest extends PowerMockitoTest {
     private static final String EXPECTED_AGENT_NAME = "AGENT";
     private Logger loggerMock;
     private AgentLogger agentLogger;
-    private EmotionalAgent agentMock;
+    private Agent agentMock;
     private ACLMessage messageMock;
+    private LoggerHandler loggerHandlerMock;
 
     @Before
     public void setUp() throws Exception {
         loggerMock = mock(Logger.class);
-        agentMock = mock(EmotionalAgent.class);
+        agentMock = mock(Agent.class);
         agentLogger = new AgentLogger(agentMock);
+        loggerHandlerMock = mock(LoggerHandler.class);
         setFieldValue(agentLogger, "logger", loggerMock);
+        setFieldValue(agentLogger, "loggerHandler", loggerHandlerMock);
 
         messageMock = mock(ACLMessage.class);
         doReturn(EXPECTED_AGENT_NAME).when(agentMock).getLocalName();
@@ -45,28 +49,32 @@ public class AgentLoggerTest extends PowerMockitoTest {
         Exception expectedException = new Exception("error");
         String expectedMessage = String.format("Exception in agent \"%s\", class \"%s\": %s", EXPECTED_AGENT_NAME, agentMock.getClass().getName(), expectedException.getMessage());
         agentLogger.exception(expectedException);
-        verify(loggerMock).error(eq(expectedMessage), eq(expectedException));
+        verify(loggerMock).error(expectedMessage, expectedException);
+        verify(loggerHandlerMock).handleMessage(Level.ERROR, expectedMessage);
     }
 
     @Test
     public void shouldLogAgentRequestMessage() {
         String expectedMessage = String.format("Message request in agent \"%s\": %s", EXPECTED_AGENT_NAME, messageMock);
         agentLogger.messageRequest(messageMock);
-        verify(loggerMock).info(eq(expectedMessage));
+        verify(loggerMock).info(expectedMessage);
+        verify(loggerHandlerMock).handleMessage(Level.INFO, expectedMessage);
     }
 
     @Test
     public void shouldLogAgentResponseMessage() {
         String expectedMessage = String.format("Message response in agent \"%s\": %s", EXPECTED_AGENT_NAME, messageMock);
         agentLogger.messageResponse(messageMock);
-        verify(loggerMock).info(eq(expectedMessage));
+        verify(loggerMock).info(expectedMessage);
+        verify(loggerHandlerMock).handleMessage(Level.INFO, expectedMessage);
     }
 
     @Test
     public void shouldLogAgent() {
         String expectedMessage = String.format("Agent %s: %s", EXPECTED_AGENT_NAME, agentMock);
         agentLogger.agentInfo();
-        verify(loggerMock).info(eq(expectedMessage));
+        verify(loggerMock).info(expectedMessage);
+        verify(loggerHandlerMock).handleMessage(Level.INFO, expectedMessage);
     }
 
     @Test
@@ -74,7 +82,8 @@ public class AgentLoggerTest extends PowerMockitoTest {
         String expectedInfo = "expectedInfo";
         String expectedMessage = String.format("Agent %s: %s", EXPECTED_AGENT_NAME, expectedInfo);
         agentLogger.info(expectedInfo);
-        verify(loggerMock).info(eq(expectedMessage));
+        verify(loggerMock).info(expectedMessage);
+        verify(loggerHandlerMock).handleMessage(Level.INFO, expectedMessage);
     }
 
 }

@@ -36,7 +36,7 @@ public class ApplicationLoggerTest {
         applicationSettingsMock = mock(ApplicationSettings.class);
         jadeSettingsMock = mock(JadeSettings.class);
         loggerMock = mock(Logger.class);
-        applicationLogger = new ApplicationLogger(loggerMock);
+        applicationLogger = new ApplicationLogger(new Object());
 
         expectedApplicationSettingsMap = new HashMap<>();
         expectedApplicationSettingsMap.put("application", "value");
@@ -50,6 +50,7 @@ public class ApplicationLoggerTest {
 
         setFieldValue(applicationLogger, "jadeSettings", jadeSettingsMock);
         setFieldValue(applicationLogger, "applicationSettings", applicationSettingsMock);
+        setFieldValue(applicationLogger, "logger", loggerMock);
     }
 
     @Test

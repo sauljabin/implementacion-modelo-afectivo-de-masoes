@@ -6,8 +6,6 @@
 
 package application;
 
-import org.slf4j.LoggerFactory;
-
 public class ApplicationBoot {
 
     private static final int STATUS_FAILURE = -1;
@@ -15,7 +13,7 @@ public class ApplicationBoot {
     private ApplicationOptionProcessor applicationOptionProcessor;
 
     public ApplicationBoot() {
-        logger = new ApplicationLogger(LoggerFactory.getLogger(ApplicationBoot.class));
+        logger = new ApplicationLogger(this);
         applicationOptionProcessor = new ApplicationOptionProcessor();
     }
 
