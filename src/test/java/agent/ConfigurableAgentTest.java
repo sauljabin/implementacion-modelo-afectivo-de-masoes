@@ -79,7 +79,7 @@ public class ConfigurableAgentTest {
             configurableAgentSpy.setup();
         } catch (Exception e) {
         } finally {
-            verify(loggerMock).exception(configurableAgentSpy, expectedException);
+            verify(loggerMock).exception(expectedException);
         }
     }
 

@@ -6,19 +6,21 @@
 
 package protocol;
 
+import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-public class ProtocolResponderNotUnderstoodBehaviour extends ProtocolResponderBehaviour {
-
-    public ProtocolResponderNotUnderstoodBehaviour() {
-        super(null, MessageTemplate.MatchAll());
-    }
+public class ProtocolResponderNotUnderstoodBehaviour extends OneShotBehaviour {
 
     @Override
-    protected ACLMessage prepareAcceptanceResponse(ACLMessage request) throws NotUnderstoodException {
-        throw new NotUnderstoodException("MESSAGE NOT UNDERSTOOD");
+    public void action() {
+        myAgent.addBehaviour(new ProtocolResponderBehaviour(myAgent, MessageTemplate.MatchAll()) {
+            @Override
+            protected ACLMessage prepareAcceptanceResponse(ACLMessage request) throws NotUnderstoodException {
+                throw new NotUnderstoodException("MESSAGE NOT UNDERSTOOD");
+            }
+        });
     }
 
 }

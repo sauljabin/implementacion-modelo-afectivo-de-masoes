@@ -10,23 +10,25 @@ import jade.content.Predicate;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
 
-public class OntologyResponderNotUnderstoodBehaviour extends OntologyResponderBehaviour {
-
-    public OntologyResponderNotUnderstoodBehaviour() {
-        super(null, MessageTemplate.MatchAll(), BasicOntology.getInstance());
-    }
+public class OntologyResponderNotUnderstoodBehaviour extends OneShotBehaviour {
 
     @Override
-    public boolean isValidAction(Action action) {
-        return true;
-    }
+    public void action() {
+        myAgent.addBehaviour(new OntologyResponderBehaviour(myAgent, MessageTemplate.MatchAll(), BasicOntology.getInstance()) {
+            @Override
+            public boolean isValidAction(Action action) {
+                return true;
+            }
 
-    @Override
-    public Predicate performAction(Action action) throws FailureException {
-        return new Done(action);
+            @Override
+            public Predicate performAction(Action action) throws FailureException {
+                return new Done(action);
+            }
+        });
     }
 
 }

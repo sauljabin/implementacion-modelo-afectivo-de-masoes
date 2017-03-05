@@ -10,7 +10,6 @@ import agent.AgentLogger;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
-import org.slf4j.LoggerFactory;
 import util.ToStringBuilder;
 
 import java.util.Vector;
@@ -23,7 +22,7 @@ public class ProtocolRequesterBehaviour extends SimpleAchieveREInitiator {
     public ProtocolRequesterBehaviour(Agent agent, ACLMessage message) {
         super(agent, message);
         this.message = message;
-        logger = new AgentLogger(LoggerFactory.getLogger(ProtocolRequesterBehaviour.class));
+        logger = new AgentLogger(agent);
     }
 
     public ACLMessage getMessage() {
@@ -38,7 +37,7 @@ public class ProtocolRequesterBehaviour extends SimpleAchieveREInitiator {
     @Override
     protected final ACLMessage prepareRequest(ACLMessage request) {
         ACLMessage requestInteraction = prepareRequestInteraction(request);
-        logger.messageRequest(myAgent, requestInteraction);
+        logger.messageRequest(requestInteraction);
         return requestInteraction;
     }
 
@@ -49,14 +48,14 @@ public class ProtocolRequesterBehaviour extends SimpleAchieveREInitiator {
     @Override
     protected void handleAllResponses(Vector messages) {
         for (int i = 0; i < messages.size(); i++) {
-            logger.messageResponse(myAgent, (ACLMessage) messages.get(i));
+            logger.messageResponse((ACLMessage) messages.get(i));
         }
     }
 
     @Override
     protected void handleAllResultNotifications(Vector messages) {
         for (int i = 0; i < messages.size(); i++) {
-            logger.messageResponse(myAgent, (ACLMessage) messages.get(i));
+            logger.messageResponse((ACLMessage) messages.get(i));
         }
     }
 

@@ -40,7 +40,6 @@ import ontology.masoes.UpdateObject;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.SettingsOntology;
-import org.slf4j.LoggerFactory;
 import util.MessageBuilder;
 
 import java.io.File;
@@ -61,7 +60,7 @@ public class RequesterGuiAgent extends GuiAgent {
     public RequesterGuiAgent() {
         requesterGui = new RequesterGui();
         requesterGuiListener = new RequesterGuiListener(requesterGui, this);
-        logger = new AgentLogger(LoggerFactory.getLogger(RequesterGuiAgent.class));
+        logger = new AgentLogger(this);
     }
 
     @Override
@@ -94,7 +93,7 @@ public class RequesterGuiAgent extends GuiAgent {
                     break;
             }
         } catch (Exception e) {
-            logger.exception(this, e);
+            logger.exception(e);
             requesterGui.showError(e.getMessage());
         }
     }

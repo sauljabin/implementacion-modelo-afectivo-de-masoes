@@ -11,7 +11,6 @@ import agent.AgentManagementAssistant;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import ontology.masoes.MasoesOntology;
-import org.slf4j.LoggerFactory;
 import util.ServiceBuilder;
 
 public class NotifierAgent extends Agent {
@@ -20,7 +19,7 @@ public class NotifierAgent extends Agent {
     private AgentManagementAssistant agentManagementAssistant;
 
     public NotifierAgent() {
-        logger = new AgentLogger(LoggerFactory.getLogger(NotifierAgent.class));
+        logger = new AgentLogger(this);
         agentManagementAssistant = new AgentManagementAssistant(this);
     }
 
@@ -38,7 +37,7 @@ public class NotifierAgent extends Agent {
 
             agentManagementAssistant.register(serviceDescription);
         } catch (Exception e) {
-            logger.exception(this, e);
+            logger.exception(e);
             throw e;
         }
     }

@@ -86,7 +86,7 @@ public class DataPersistenceAgentTest {
             dataPersistenceAgentSpy.setup();
         } catch (Exception e) {
         } finally {
-            verify(loggerMock).exception(dataPersistenceAgentSpy, expectedException);
+            verify(loggerMock).exception(expectedException);
         }
     }
 

@@ -11,7 +11,6 @@ import agent.AgentManagementAssistant;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import ontology.masoes.MasoesOntology;
-import org.slf4j.LoggerFactory;
 import util.ServiceBuilder;
 
 public class DataPersistenceAgent extends Agent {
@@ -20,7 +19,7 @@ public class DataPersistenceAgent extends Agent {
     private AgentManagementAssistant agentManagementAssistant;
 
     public DataPersistenceAgent() {
-        logger = new AgentLogger(LoggerFactory.getLogger(DataPersistenceAgent.class));
+        logger = new AgentLogger(this);
         agentManagementAssistant = new AgentManagementAssistant(this);
     }
 
@@ -36,7 +35,7 @@ public class DataPersistenceAgent extends Agent {
                     createService(MasoesOntology.ACTION_DELETE_OBJECT)
             );
         } catch (Exception e) {
-            logger.exception(this, e);
+            logger.exception(e);
             throw e;
         }
     }

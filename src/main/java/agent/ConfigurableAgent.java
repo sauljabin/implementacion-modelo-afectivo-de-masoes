@@ -9,7 +9,6 @@ package agent;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import ontology.configurable.ConfigurableOntology;
-import org.slf4j.LoggerFactory;
 import util.ServiceBuilder;
 
 public class ConfigurableAgent extends Agent {
@@ -18,7 +17,7 @@ public class ConfigurableAgent extends Agent {
     private AgentManagementAssistant agentManagementAssistant;
 
     public ConfigurableAgent() {
-        logger = new AgentLogger(LoggerFactory.getLogger(ConfigurableAgent.class));
+        logger = new AgentLogger(this);
         agentManagementAssistant = new AgentManagementAssistant(this);
     }
 
@@ -31,7 +30,7 @@ public class ConfigurableAgent extends Agent {
                     createService(ConfigurableOntology.ACTION_REMOVE_BEHAVIOUR)
             );
         } catch (Exception e) {
-            logger.exception(this, e);
+            logger.exception(e);
             throw e;
         }
     }

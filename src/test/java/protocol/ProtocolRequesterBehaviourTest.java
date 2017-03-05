@@ -22,7 +22,7 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class ProtocolRequesterBehaviourTest {
 
-    private ProtocolRequesterBehaviour resquesterBehaviourSpy;
+    private ProtocolRequesterBehaviour requesterBehaviourSpy;
     private AgentLogger loggerMock;
     private ProtocolRequesterBehaviour requesterBehaviour;
     private Agent agentMock;
@@ -38,7 +38,7 @@ public class ProtocolRequesterBehaviourTest {
         requestMock = mock(ACLMessage.class);
         requesterBehaviour = new ProtocolRequesterBehaviour(agentMock, requestMock);
         setFieldValue(requesterBehaviour, "logger", loggerMock);
-        resquesterBehaviourSpy = spy(requesterBehaviour);
+        requesterBehaviourSpy = spy(requesterBehaviour);
         messages = new Vector<>();
         messages.add(responseMock);
     }
@@ -46,27 +46,27 @@ public class ProtocolRequesterBehaviourTest {
     @Test
     public void shouldInvokeReset() {
         ACLMessage messageMock = mock(ACLMessage.class);
-        resquesterBehaviourSpy.setMessage(messageMock);
-        verify(resquesterBehaviourSpy).reset(messageMock);
+        requesterBehaviourSpy.setMessage(messageMock);
+        verify(requesterBehaviourSpy).reset(messageMock);
     }
 
     @Test
     public void shouldLogRequestAndResponseWhenPrepareResponse() {
-        doReturn(requestMock).when(resquesterBehaviourSpy).prepareRequestInteraction(requestMock);
-        resquesterBehaviourSpy.prepareRequest(requestMock);
-        verify(loggerMock).messageRequest(agentMock, requestMock);
+        doReturn(requestMock).when(requesterBehaviourSpy).prepareRequestInteraction(requestMock);
+        requesterBehaviourSpy.prepareRequest(requestMock);
+        verify(loggerMock).messageRequest(requestMock);
     }
 
     @Test
     public void shouldLogAllResponse() {
         requesterBehaviour.handleAllResponses(messages);
-        verify(loggerMock).messageResponse(agentMock, responseMock);
+        verify(loggerMock).messageResponse(responseMock);
     }
 
     @Test
     public void shouldLogAllResults() {
         requesterBehaviour.handleAllResultNotifications(messages);
-        verify(loggerMock).messageResponse(agentMock, responseMock);
+        verify(loggerMock).messageResponse(responseMock);
     }
 
 }

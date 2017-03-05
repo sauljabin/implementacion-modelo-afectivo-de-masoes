@@ -19,7 +19,6 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -61,15 +60,15 @@ public class ProtocolResponderBehaviourTest {
     public void shouldLogRequestAndResponseWhenPrepareResponse() throws Exception {
         doReturn(responseMock).when(responderBehaviourSpy).prepareAcceptanceResponse(requestMock);
         responderBehaviourSpy.prepareResponse(requestMock);
-        verify(loggerMock).messageRequest(agentMock, requestMock);
-        verify(loggerMock).messageResponse(agentMock, responseMock);
+        verify(loggerMock).messageRequest(requestMock);
+        verify(loggerMock).messageResponse(responseMock);
     }
 
     @Test
     public void shouldLogRequestAndResponseWhenPrepareResultResponse() throws Exception {
         doReturn(responseMock).when(responderBehaviourSpy).prepareInformResultResponse(requestMock, responseMock);
         responderBehaviourSpy.prepareResultNotification(requestMock, responseMock);
-        verify(loggerMock).messageResponse(agentMock, responseMock);
+        verify(loggerMock).messageResponse(responseMock);
     }
 
     @Test
@@ -102,9 +101,8 @@ public class ProtocolResponderBehaviourTest {
         ACLMessage response = responderBehaviourSpy.prepareResponse(request);
         assertThat(response.getPerformative(), is(performative));
         assertThat(response.getContent(), is(toBeThrown.getMessage()));
-        verify(loggerMock).exception(eq(agentMock), any());
-        verify(loggerMock).messageResponse(agentMock, response);
-
+        verify(loggerMock).exception(any());
+        verify(loggerMock).messageResponse(response);
     }
 
     private void testResponseResultFromException(Exception toBeThrown, int performative) throws Exception {
@@ -113,8 +111,8 @@ public class ProtocolResponderBehaviourTest {
         response = responderBehaviourSpy.prepareResultNotification(request, response);
         assertThat(response.getPerformative(), is(performative));
         assertThat(response.getContent(), is(toBeThrown.getMessage()));
-        verify(loggerMock).exception(eq(agentMock), any());
-        verify(loggerMock).messageResponse(agentMock, response);
+        verify(loggerMock).exception(any());
+        verify(loggerMock).messageResponse(response);
     }
 
 }

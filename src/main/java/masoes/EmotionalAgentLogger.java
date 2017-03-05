@@ -22,7 +22,7 @@ public class EmotionalAgentLogger {
 
     public EmotionalAgentLogger(EmotionalAgent emotionalAgent) {
         this.emotionalAgent = emotionalAgent;
-        this.logger = LoggerFactory.getLogger(emotionalAgent.getClass());
+        logger = LoggerFactory.getLogger(emotionalAgent.getClass());
     }
 
     public Logger getLogger() {

@@ -6,26 +6,28 @@
 
 package protocol;
 
+import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-public class ProtocolResponderFailureBehaviour extends ProtocolResponderBehaviour {
-
-    public ProtocolResponderFailureBehaviour() {
-        super(null, MessageTemplate.MatchAll());
-    }
+public class ProtocolResponderFailureBehaviour extends OneShotBehaviour {
 
     @Override
-    protected ACLMessage prepareAcceptanceResponse(ACLMessage request) {
-        ACLMessage reply = request.createReply();
-        reply.setPerformative(ACLMessage.AGREE);
-        return reply;
-    }
+    public void action() {
+        myAgent.addBehaviour(new ProtocolResponderBehaviour(myAgent, MessageTemplate.MatchAll()) {
+            @Override
+            protected ACLMessage prepareAcceptanceResponse(ACLMessage request) {
+                ACLMessage reply = request.createReply();
+                reply.setPerformative(ACLMessage.AGREE);
+                return reply;
+            }
 
-    @Override
-    protected ACLMessage prepareInformResultResponse(ACLMessage request, ACLMessage response) throws FailureException {
-        throw new FailureException("MESSAGE FAILURE");
+            @Override
+            protected ACLMessage prepareInformResultResponse(ACLMessage request, ACLMessage response) throws FailureException {
+                throw new FailureException("MESSAGE FAILURE");
+            }
+        });
     }
 
 }

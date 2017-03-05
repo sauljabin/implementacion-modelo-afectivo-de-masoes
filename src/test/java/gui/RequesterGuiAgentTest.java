@@ -134,7 +134,7 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
 
         GuiEvent guiEvent = new GuiEvent(requesterGuiMock, RequesterGuiEvent.SEND_MESSAGE.getInt());
         requesterGuiAgentSpy.onGuiEvent(guiEvent);
-        verify(logger).exception(requesterGuiAgentSpy, expectedException);
+        verify(logger).exception(expectedException);
     }
 
     @Test

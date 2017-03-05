@@ -39,6 +39,7 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
+import static test.ReflectionTestUtils.setFieldValue;
 
 public class EmotionalConfiguratorTest extends PowerMockitoTest {
 
@@ -80,35 +81,38 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldUpdateCorrectlyTheEmotionWithAction() {
-        testUpdateEmotionWithAction("other", CompassionEmotion.class, "greeting");
-        testUpdateEmotionWithAction("other", AdmirationEmotion.class, "smile");
-        testUpdateEmotionWithAction("other", RejectionEmotion.class, "run");
-        testUpdateEmotionWithAction("other", AngerEmotion.class, "bye");
+    public void shouldUpdateCorrectlyTheEmotionWithAction() throws Exception {
+        setFieldValue(emotionalConfigurator, "emotionalState", new CompassionEmotion().getRandomEmotionalState());
         testUpdateEmotionWithAction(AGENT_NAME, HappinessEmotion.class, "eat");
         testUpdateEmotionWithAction(AGENT_NAME, JoyEmotion.class, "sleep");
         testUpdateEmotionWithAction(AGENT_NAME, SadnessEmotion.class, "wake");
         testUpdateEmotionWithAction(AGENT_NAME, DepressionEmotion.class, "pay");
+        testUpdateEmotionWithAction("other", CompassionEmotion.class, "greeting");
+        testUpdateEmotionWithAction("other", AdmirationEmotion.class, "smile");
+        testUpdateEmotionWithAction("other", RejectionEmotion.class, "run");
+        testUpdateEmotionWithAction("other", AngerEmotion.class, "bye");
     }
 
     @Test
-    public void shouldUpdateCorrectlyTheEmotionWithObject() {
-        testUpdateEmotionWithObject("other", CompassionEmotion.class, new ObjectProperty("color", "blue"));
-        testUpdateEmotionWithObject("other", AdmirationEmotion.class, new ObjectProperty("color", "red"));
-        testUpdateEmotionWithObject("other", RejectionEmotion.class, new ObjectProperty("color", "white"));
-        testUpdateEmotionWithObject("other", AngerEmotion.class, new ObjectProperty("color", "black"));
+    public void shouldUpdateCorrectlyTheEmotionWithObject() throws Exception {
+        setFieldValue(emotionalConfigurator, "emotionalState", new CompassionEmotion().getRandomEmotionalState());
         testUpdateEmotionWithObject(AGENT_NAME, HappinessEmotion.class, new ObjectProperty("color", "blue"));
         testUpdateEmotionWithObject(AGENT_NAME, JoyEmotion.class, new ObjectProperty("color", "red"));
         testUpdateEmotionWithObject(AGENT_NAME, SadnessEmotion.class, new ObjectProperty("color", "white"));
         testUpdateEmotionWithObject(AGENT_NAME, DepressionEmotion.class, new ObjectProperty("color", "black"));
+        testUpdateEmotionWithObject("other", CompassionEmotion.class, new ObjectProperty("color", "blue"));
+        testUpdateEmotionWithObject("other", AdmirationEmotion.class, new ObjectProperty("color", "red"));
+        testUpdateEmotionWithObject("other", RejectionEmotion.class, new ObjectProperty("color", "white"));
+        testUpdateEmotionWithObject("other", AngerEmotion.class, new ObjectProperty("color", "black"));
     }
 
     @Test
-    public void shouldUpdateCorrectlyTheEmotionWithActionAndUpperAgent() {
+    public void shouldUpdateCorrectlyTheEmotionWithActionAndUpperAgent() throws Exception {
         String agentName = "AGENT_NAME";
         createAgent(agentName);
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
         emotionalConfigurator = new EmotionalConfigurator(agentMock, behaviouralKnowledgeBase);
+        setFieldValue(emotionalConfigurator, "emotionalState", new CompassionEmotion().getRandomEmotionalState());
         testUpdateEmotionWithAction(agentName, HappinessEmotion.class, "eat");
         testUpdateEmotionWithAction(agentName, JoyEmotion.class, "sleep");
         testUpdateEmotionWithAction(agentName, SadnessEmotion.class, "wake");
@@ -116,11 +120,12 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldUpdateCorrectlyTheEmotionWithObjectAndUpperAgent() {
+    public void shouldUpdateCorrectlyTheEmotionWithObjectAndUpperAgent() throws Exception {
         String agentName = "AGENT_NAME";
         createAgent(agentName);
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
         emotionalConfigurator = new EmotionalConfigurator(agentMock, behaviouralKnowledgeBase);
+        setFieldValue(emotionalConfigurator, "emotionalState", new CompassionEmotion().getRandomEmotionalState());
         testUpdateEmotionWithObject(agentName, HappinessEmotion.class, new ObjectProperty("color", "blue"));
         testUpdateEmotionWithObject(agentName, JoyEmotion.class, new ObjectProperty("color", "red"));
         testUpdateEmotionWithObject(agentName, SadnessEmotion.class, new ObjectProperty("color", "white"));
@@ -147,6 +152,7 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
         emotionalConfigurator.updateEmotion(new ActionStimulus(new AID(agentName, AID.ISGUID), actionName));
         assertThat(emotionalConfigurator.getEmotion(), is(instanceOf(expectedEmotion)));
         assertTrue(emotionalConfigurator.getEmotion().getGeometry().intersects(emotionalConfigurator.getEmotionalState().toPoint()));
+        verify(loggerMock, atLeastOnce()).updatingEmotion(any(Emotion.class), eq(emotionalConfigurator.getEmotion()));
     }
 
     private void testUpdateEmotionWithObject(String agentName, Class<? extends Emotion> expectedEmotion, ObjectProperty... objectProperties) {

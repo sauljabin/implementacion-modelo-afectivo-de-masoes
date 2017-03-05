@@ -73,7 +73,7 @@ public class NotifierAgentTest extends PowerMockitoTest {
             notifierAgentSpy.setup();
         } catch (Exception e) {
         } finally {
-            verify(loggerMock).exception(notifierAgentSpy, expectedException);
+            verify(loggerMock).exception(expectedException);
         }
     }
 

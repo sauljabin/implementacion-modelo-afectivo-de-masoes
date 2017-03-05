@@ -123,7 +123,7 @@ public class OntologyRequesterBehaviourTest extends PowerMockitoTest {
             ontologyRequesterBehaviour.prepareRequestInteraction(request);
         } catch (Exception e) {
         } finally {
-            verify(loggerMock).exception(eq(agentMock), eq(toBeThrown));
+            verify(loggerMock).exception(eq(toBeThrown));
         }
     }
 
@@ -187,7 +187,7 @@ public class OntologyRequesterBehaviourTest extends PowerMockitoTest {
             ontologyRequesterBehaviour.handleInform(request);
         } catch (Exception e) {
         } finally {
-            verify(loggerMock).exception(eq(agentMock), eq(toBeThrown));
+            verify(loggerMock).exception(eq(toBeThrown));
         }
     }
 

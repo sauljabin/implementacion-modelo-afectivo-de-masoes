@@ -6,19 +6,21 @@
 
 package protocol;
 
+import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-public class ProtocolResponderRefuseBehaviour extends ProtocolResponderBehaviour {
-
-    public ProtocolResponderRefuseBehaviour() {
-        super(null, MessageTemplate.MatchAll());
-    }
+public class ProtocolResponderRefuseBehaviour extends OneShotBehaviour {
 
     @Override
-    protected ACLMessage prepareAcceptanceResponse(ACLMessage request) throws RefuseException {
-        throw new RefuseException("MESSAGE REFUSE");
+    public void action() {
+        myAgent.addBehaviour(new ProtocolResponderBehaviour(myAgent, MessageTemplate.MatchAll()) {
+            @Override
+            protected ACLMessage prepareAcceptanceResponse(ACLMessage request) throws RefuseException {
+                throw new RefuseException("MESSAGE REFUSE");
+            }
+        });
     }
 
 }

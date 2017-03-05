@@ -14,7 +14,6 @@ import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
-import org.slf4j.LoggerFactory;
 import util.ToStringBuilder;
 
 public class ProtocolResponderBehaviour extends SimpleAchieveREResponder {
@@ -25,8 +24,9 @@ public class ProtocolResponderBehaviour extends SimpleAchieveREResponder {
     public ProtocolResponderBehaviour(Agent agent, MessageTemplate messageTemplate) {
         super(agent, messageTemplate);
         this.messageTemplate = messageTemplate;
-        logger = new AgentLogger(LoggerFactory.getLogger(ProtocolResponderBehaviour.class));
+        logger = new AgentLogger(agent);
     }
+
 
     public MessageTemplate getMessageTemplate() {
         return messageTemplate;
@@ -40,9 +40,9 @@ public class ProtocolResponderBehaviour extends SimpleAchieveREResponder {
     @Override
     protected final ACLMessage prepareResponse(ACLMessage request) {
         try {
-            logger.messageRequest(myAgent, request);
+            logger.messageRequest(request);
             ACLMessage response = prepareAcceptanceResponse(request);
-            logger.messageResponse(myAgent, response);
+            logger.messageResponse(response);
             return response;
         } catch (Exception e) {
             ACLMessage response = request.createReply();
@@ -59,7 +59,7 @@ public class ProtocolResponderBehaviour extends SimpleAchieveREResponder {
     protected final ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) {
         try {
             ACLMessage informResponse = prepareInformResultResponse(request, response);
-            logger.messageResponse(myAgent, informResponse);
+            logger.messageResponse(informResponse);
             return informResponse;
         } catch (Exception e) {
             response.setPerformative(ACLMessage.FAILURE);
@@ -69,8 +69,8 @@ public class ProtocolResponderBehaviour extends SimpleAchieveREResponder {
 
     private ACLMessage prepareResponseFromException(Exception exception, ACLMessage response) {
         response.setContent(exception.getMessage());
-        logger.exception(myAgent, exception);
-        logger.messageResponse(myAgent, response);
+        logger.exception(exception);
+        logger.messageResponse(response);
         return response;
     }
 

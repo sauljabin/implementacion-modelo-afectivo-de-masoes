@@ -81,7 +81,7 @@ public class SettingsAgentTest extends PowerMockitoTest {
             settingsAgentSpy.setup();
         } catch (Exception e) {
         } finally {
-            verify(loggerMock).exception(settingsAgentSpy, expectedException);
+            verify(loggerMock).exception(expectedException);
         }
     }
 

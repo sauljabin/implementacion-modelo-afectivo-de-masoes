@@ -11,21 +11,20 @@ import jade.lang.acl.ACLMessage;
 import logger.LogWriter;
 import logger.LoggerHandler;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AgentLogger {
-    // TODO PASAR CLASE POR CONTRUCTOR
+
     private Logger logger;
     private LoggerHandler loggerHandler;
+    private Agent agent;
 
-    public AgentLogger(Logger logger) {
-        this.logger = logger;
+    public AgentLogger(Agent agent) {
+        this.agent = agent;
+        logger = LoggerFactory.getLogger(agent.getClass());
     }
 
-    public Logger getLogger() {
-        return logger;
-    }
-
-    public void exception(Agent agent, Exception exception) {
+    public void exception(Exception exception) {
         new LogWriter()
                 .addLoggerHandler(loggerHandler)
                 .message("Exception in agent \"%s\", class \"%s\": %s")
@@ -34,7 +33,7 @@ public class AgentLogger {
                 .error(logger);
     }
 
-    public void messageRequest(Agent agent, ACLMessage message) {
+    public void messageRequest(ACLMessage message) {
         new LogWriter()
                 .addLoggerHandler(loggerHandler)
                 .message("Message request in agent \"%s\": %s")
@@ -42,7 +41,7 @@ public class AgentLogger {
                 .info(logger);
     }
 
-    public void messageResponse(Agent agent, ACLMessage message) {
+    public void messageResponse(ACLMessage message) {
         new LogWriter()
                 .addLoggerHandler(loggerHandler)
                 .message("Message response in agent \"%s\": %s")
@@ -50,7 +49,7 @@ public class AgentLogger {
                 .info(logger);
     }
 
-    public void agent(Agent agent) {
+    public void agentInfo() {
         new LogWriter()
                 .addLoggerHandler(loggerHandler)
                 .message("Agent %s: %s")
@@ -58,7 +57,7 @@ public class AgentLogger {
                 .info(logger);
     }
 
-    public void info(Agent agent, String info) {
+    public void info(String info) {
         new LogWriter()
                 .addLoggerHandler(loggerHandler)
                 .message("Agent %s: %s")

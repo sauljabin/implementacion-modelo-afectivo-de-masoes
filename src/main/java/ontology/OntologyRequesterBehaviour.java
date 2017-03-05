@@ -17,7 +17,6 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import org.slf4j.LoggerFactory;
 import protocol.ProtocolRequesterBehaviour;
 import util.StringGenerator;
 
@@ -37,7 +36,7 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
         this.ontology = ontology;
         this.agentAction = agentAction;
         contentManager = new ContentManager();
-        logger = new AgentLogger(LoggerFactory.getLogger(OntologyRequesterBehaviour.class));
+        logger = new AgentLogger(agent);
         stringGenerator = new StringGenerator();
     }
 
@@ -73,7 +72,7 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
         try {
             contentManager.fillContent(message, new Action(myAgent.getAID(), agentAction));
         } catch (Exception e) {
-            logger.exception(myAgent, e);
+            logger.exception(e);
             throw new FillOntologyContentException(e);
         }
 
@@ -118,7 +117,7 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
             Predicate predicate = (Predicate) contentManager.extractContent(message);
             handleInform(predicate);
         } catch (Exception e) {
-            logger.exception(myAgent, e);
+            logger.exception(e);
             throw new ExtractOntologyContentException(e);
         }
     }

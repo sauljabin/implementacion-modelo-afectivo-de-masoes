@@ -11,7 +11,6 @@ import agent.AgentManagementAssistant;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import ontology.settings.SettingsOntology;
-import org.slf4j.LoggerFactory;
 import util.ServiceBuilder;
 import util.ToStringBuilder;
 
@@ -21,7 +20,7 @@ public class SettingsAgent extends Agent {
     private AgentManagementAssistant agentManagementAssistant;
 
     public SettingsAgent() {
-        logger = new AgentLogger(LoggerFactory.getLogger(SettingsAgent.class));
+        logger = new AgentLogger(this);
         agentManagementAssistant = new AgentManagementAssistant(this);
     }
 
@@ -34,7 +33,7 @@ public class SettingsAgent extends Agent {
                     createService(SettingsOntology.ACTION_GET_ALL_SETTINGS)
             );
         } catch (Exception e) {
-            logger.exception(this, e);
+            logger.exception(e);
             throw e;
         }
     }
