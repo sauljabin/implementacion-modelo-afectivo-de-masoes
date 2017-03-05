@@ -56,10 +56,25 @@ public class CreatorUserAgentGui extends JFrame {
     private void addComponents() {
         addCenterComponent();
         addSouthComponents();
+        addEastComponents();
+    }
+
+    private void addEastComponents() {
+        JPanel eastPanel = new JPanel(new MigLayout(INSETS_10));
+        add(eastPanel, BorderLayout.EAST);
+        JButton case1Button = new JButton("Caso 1");
+        eastPanel.add(case1Button, "wrap");
+
+        JButton case2Button = new JButton("Caso 2");
+        eastPanel.add(case2Button, "wrap");
+
+        JButton case3Button = new JButton("Caso 3");
+        eastPanel.add(case3Button, "wrap");
     }
 
     private void addCenterComponent() {
-        Font font = new Font("Arial", Font.BOLD, 14);
+        Font font14 = new Font("Arial", Font.BOLD, 14);
+        Font font12 = new Font("Arial", Font.BOLD, 12);
 
         JPanel centerPanel = new JPanel(new MigLayout(INSETS_10));
         add(centerPanel, BorderLayout.CENTER);
@@ -68,46 +83,67 @@ public class CreatorUserAgentGui extends JFrame {
         centerPanel.add(agentLabel, "w 100");
 
         agentNameLabel = new JLabel();
-        agentNameLabel.setFont(font);
+        agentNameLabel.setFont(font14);
         centerPanel.add(agentNameLabel, FIELD_W);
 
         JLabel emotionLabel = new JLabel("Emoción:");
         centerPanel.add(emotionLabel, "grow");
 
         emotionNameLabel = new JLabel();
-        emotionNameLabel.setFont(font);
+        emotionNameLabel.setFont(font14);
         centerPanel.add(emotionNameLabel, FIELD_W);
 
         JLabel emotionTypeLabel = new JLabel("Tipo de emoción:");
         centerPanel.add(emotionTypeLabel, "grow");
 
         emotionTypeNameLabel = new JLabel();
-        emotionTypeNameLabel.setFont(font);
+        emotionTypeNameLabel.setFont(font14);
         centerPanel.add(emotionTypeNameLabel, FIELD_W);
 
         JLabel behaviourLabel = new JLabel("Comportamiento:");
         centerPanel.add(behaviourLabel, "grow");
 
         behaviourNameLabel = new JLabel();
-        behaviourNameLabel.setFont(font);
+        behaviourNameLabel.setFont(font14);
         centerPanel.add(behaviourNameLabel, FIELD_W);
 
         JLabel activationLabel = new JLabel("Activación (x):");
         centerPanel.add(activationLabel, "grow");
 
         activationValueLabel = new JLabel();
-        activationValueLabel.setFont(font);
+        activationValueLabel.setFont(font14);
         centerPanel.add(activationValueLabel, FIELD_W);
 
         JLabel satisfactionLabel = new JLabel("Satisfación (y):");
         centerPanel.add(satisfactionLabel, "grow");
 
         satisfactionValueLabel = new JLabel();
-        satisfactionValueLabel.setFont(font);
+        satisfactionValueLabel.setFont(font14);
         centerPanel.add(satisfactionValueLabel, FIELD_W);
 
         emotionalSpaceChart = new EmotionalSpaceChart();
-        centerPanel.add(emotionalSpaceChart, "w 300, h 300, span 2");
+        centerPanel.add(emotionalSpaceChart, "w 300, h 300, span 2, wrap");
+
+        JPanel legendPanel = new JPanel(new MigLayout("insets 0"));
+        centerPanel.add(legendPanel, "span 2, wrap");
+
+        JLabel blueLabel = new JLabel();
+        blueLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        blueLabel.setBackground(Color.BLUE);
+        blueLabel.setOpaque(true);
+        legendPanel.add(blueLabel, "w 30, grow");
+        JLabel legendActualEmotion = new JLabel("Emoción actual");
+        legendActualEmotion.setFont(font12);
+        legendPanel.add(legendActualEmotion);
+
+        JLabel redLabel = new JLabel();
+        redLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        redLabel.setBackground(Color.RED);
+        redLabel.setOpaque(true);
+        legendPanel.add(redLabel, "w 30,  grow");
+        JLabel legendLastEmotions = new JLabel("Emociones anteriores");
+        legendLastEmotions.setFont(font12);
+        legendPanel.add(legendLastEmotions);
     }
 
     private void addSouthComponents() {

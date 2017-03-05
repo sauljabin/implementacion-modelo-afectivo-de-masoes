@@ -28,7 +28,6 @@ import static org.junit.Assert.assertThat;
 
 public class EmotionalBehaviourFunctionalTest extends FunctionalTest {
 
-
     @Before
     public void setUp() {
         createAgent(Environment.NOTIFIER_AGENT, NotifierAgent.class, null);

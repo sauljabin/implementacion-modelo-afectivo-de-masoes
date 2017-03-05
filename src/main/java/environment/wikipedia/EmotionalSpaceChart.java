@@ -70,6 +70,7 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
 
     private void rendering() {
         graphics.setBackground(Color.WHITE);
+        graphics.setFont(font);
         graphics.clearRect(0, 0, getWidth(), getHeight());
 
         // CUADRO EXTERIOR
@@ -86,8 +87,15 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
         graphics.drawLine(0, getHeight() / 2, getWidth(), getHeight() / 2);
         graphics.drawRect(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
 
+        // RANGOS
+        graphics.setColor(Color.DARK_GRAY);
+        graphics.drawString("1", convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), .9));
+        graphics.drawString("1", convertXToCanvas(getWidth(), .9), convertYToCanvas(getHeight(), -.1));
+        graphics.drawString("-1", convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), -.9));
+        graphics.drawString("-1", convertXToCanvas(getWidth(), -.95), convertYToCanvas(getHeight(), -.1));
+
         // TEXTOS
-        graphics.setFont(font);
+        graphics.setColor(Color.BLACK);
         graphics.drawString("COMPASIÓN", convertXToCanvas(getWidth(), -.7), convertYToCanvas(getHeight(), .7));
         graphics.drawString("FELICIDAD", convertXToCanvas(getWidth(), .5), convertYToCanvas(getHeight(), .7));
         graphics.drawString("IRA", convertXToCanvas(getWidth(), .5), convertYToCanvas(getHeight(), -.8));

@@ -28,10 +28,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import test.PowerMockitoTest;
-import test.ReflectionTestUtils;
 
 import java.util.Random;
 
@@ -41,10 +39,12 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.matches;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-
+import static test.ReflectionTestUtils.setFieldValue;
 
 public class DataPersistenceBehaviourTest extends PowerMockitoTest {
 
@@ -54,12 +54,13 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
     private Agent agentMock;
     @Mock
     private DataBaseConnection dataBaseConnection;
+    private byte counter = 0;
 
     @Before
     public void setUp() throws Exception {
         agentMock = mock(Agent.class);
         dataPersistenceBehaviour = new DataPersistenceBehaviour(agentMock);
-        ReflectionTestUtils.setFieldValue(dataPersistenceBehaviour, "connection", dataBaseConnection);
+        setFieldValue(dataPersistenceBehaviour, "connection", dataBaseConnection);
         counter = 0;
     }
 
@@ -81,8 +82,6 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), dataPersistenceBehaviour.getMessageTemplate());
     }
 
-    //CREATE TESTS
-
     @Test
     public void shouldCreateObjectWithProperties() throws Exception {
         when(dataBaseConnection.execute(anyString())).thenReturn(true);
@@ -90,12 +89,12 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         Action createObject = new Action(new AID(), new CreateObject(createObjectStimulus()));
         dataPersistenceBehaviour.performAction(createObject);
 
-        String expectedInsertObjectSQL =  "INSERT INTO object \\(uuid, name, creator_name\\) VALUES \\(\\'.*\\', \\'expectedObjectName\\', \\'expectedAgentName\\'\\);";
+        String expectedInsertObjectSQL = "INSERT INTO object \\(uuid, name, creator_name\\) VALUES \\(\\'.*\\', \\'expectedObjectName\\', \\'expectedAgentName\\'\\);";
         String expectedInsertObjectPropertySQL = "INSERT INTO object_property \\(object_uuid, name, value\\) VALUES \\(\\'.*\\', \\'expectedPropertyName\\', \\'expectedPropertyValue\\'\\);";
         String expectedInsertObjectProperty2SQL = "INSERT INTO object_property \\(object_uuid, name, value\\) VALUES \\(\\'.*\\', \\'expectedPropertyName2\\', \\'expectedPropertyValue2\\'\\);";
-        Mockito.verify(dataBaseConnection).execute(matches(expectedInsertObjectSQL));
-        Mockito.verify(dataBaseConnection).execute(matches(expectedInsertObjectPropertySQL));
-        Mockito.verify(dataBaseConnection).execute(matches(expectedInsertObjectProperty2SQL));
+        verify(dataBaseConnection).execute(matches(expectedInsertObjectSQL));
+        verify(dataBaseConnection).execute(matches(expectedInsertObjectPropertySQL));
+        verify(dataBaseConnection).execute(matches(expectedInsertObjectProperty2SQL));
     }
 
     @Test
@@ -117,15 +116,13 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         Action createObject = new Action(new AID(), new CreateObject(objectStimulus));
         dataPersistenceBehaviour.performAction(createObject);
 
-        String expectedInsertObjectSQL =  "INSERT INTO object \\(uuid, name, creator_name\\) VALUES \\(\\'.*\\', \\'expectedObjectName\\', \\'expectedAgentName\\'\\);";
+        String expectedInsertObjectSQL = "INSERT INTO object \\(uuid, name, creator_name\\) VALUES \\(\\'.*\\', \\'expectedObjectName\\', \\'expectedAgentName\\'\\);";
         String expectedInsertObjectPropertySQL = "INSERT INTO object_property (object_uuid, name, value) VALUES ('918923bc-b544-454d-85e1-dbe5b86b6b0d', 'expectedPropertyName', 'expectedPropertyValue');";
         String expectedInsertObjectProperty2SQL = "INSERT INTO object_property (object_uuid, name, value) VALUES ('918923bc-b544-454d-85e1-dbe5b86b6b0d', 'expectedPropertyName2', 'expectedPropertyValue2');";
-        Mockito.verify(dataBaseConnection).execute(matches(expectedInsertObjectSQL));
-        Mockito.verify(dataBaseConnection, Mockito.never()).execute(expectedInsertObjectPropertySQL);
-        Mockito.verify(dataBaseConnection, Mockito.never()).execute(expectedInsertObjectProperty2SQL);
+        verify(dataBaseConnection).execute(matches(expectedInsertObjectSQL));
+        verify(dataBaseConnection, never()).execute(expectedInsertObjectPropertySQL);
+        verify(dataBaseConnection, never()).execute(expectedInsertObjectProperty2SQL);
     }
-
-    //RETRIEVE TEST
 
     @Test
     public void shouldRetrieveObjectListByUsingDataBaseConnection() throws Exception {
@@ -143,7 +140,7 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         objectStimulus.setObjectProperties(null);
         Action getObject = new Action(agentAID, new GetObject(objectStimulus));
 
-        ObjectStimulus actualObject = (ObjectStimulus)((ListObjects)dataPersistenceBehaviour.performAction(getObject)).getObjects().get(0);
+        ObjectStimulus actualObject = (ObjectStimulus) ((ListObjects) dataPersistenceBehaviour.performAction(getObject)).getObjects().get(0);
         ObjectProperty actualProperty = (ObjectProperty) actualObject.getObjectProperties().get(0);
 
         assertThat(actualObject.getObjectName(), is("expectedObjectName"));
@@ -168,8 +165,8 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
 
         String expectedObjectQuery = "SELECT name, creator_name, uuid FROM object WHERE object.name LIKE 'expectedObjectName' AND object.creator_name LIKE 'expectedAgentName';";
         String expectedObjectPropertySQL = "SELECT name, value FROM object_property WHERE object_uuid LIKE '';";
-        Mockito.verify(dataBaseConnection).query(expectedObjectQuery);
-        Mockito.verify(dataBaseConnection).query(expectedObjectPropertySQL);
+        verify(dataBaseConnection).query(expectedObjectQuery);
+        verify(dataBaseConnection).query(expectedObjectPropertySQL);
     }
 
     @Test
@@ -188,8 +185,6 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         dataPersistenceBehaviour.performAction(getObject);
     }
 
-    //DELETE TESTS
-
     @Test
     public void shouldDeleteObjectAndItsProperties() throws Exception {
         QueryResult queryResult = mock(QueryResult.class);
@@ -205,9 +200,9 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         String expectedQuery = "SELECT uuid FROM object WHERE name LIKE 'expectedObjectName' AND creator_name LIKE 'expectedAgentName';";
         String expectedDeleteObjectPropertySQL = "DELETE FROM object_property WHERE object_uuid LIKE '123';";
         String expectedDeleteObjectSQL = "DELETE FROM object WHERE uuid LIKE '123';";
-        Mockito.verify(dataBaseConnection).query(expectedQuery);
-        Mockito.verify(dataBaseConnection).execute(expectedDeleteObjectPropertySQL);
-        Mockito.verify(dataBaseConnection).execute(expectedDeleteObjectSQL);
+        verify(dataBaseConnection).query(expectedQuery);
+        verify(dataBaseConnection).execute(expectedDeleteObjectPropertySQL);
+        verify(dataBaseConnection).execute(expectedDeleteObjectSQL);
     }
 
     @Test
@@ -222,10 +217,7 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         ObjectStimulus objectStimulus = createObjectStimulus();
         Action deleteObject = new Action(new AID(), new DeleteObject(objectStimulus));
         dataPersistenceBehaviour.performAction(deleteObject);
-
     }
-
-    //UPDATE TESTS
 
     @Test
     public void shouldUpdateObjectByResetingProperties() throws Exception {
@@ -242,9 +234,9 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         String expectedQuery = "SELECT uuid FROM object WHERE name LIKE 'expectedObjectName' AND creator_name LIKE 'expectedAgentName';";
         String expectedUpdateObjectPropertySQL = "DELETE FROM object_property WHERE object_uuid LIKE '123';";
         String expectedUpdateObjectSQL = "INSERT INTO object_property (object_uuid, name, value) VALUES ('123', 'expectedPropertyName', 'expectedPropertyValue');";
-        Mockito.verify(dataBaseConnection).query(expectedQuery);
-        Mockito.verify(dataBaseConnection).execute(expectedUpdateObjectPropertySQL);
-        Mockito.verify(dataBaseConnection).execute(expectedUpdateObjectSQL);
+        verify(dataBaseConnection).query(expectedQuery);
+        verify(dataBaseConnection).execute(expectedUpdateObjectPropertySQL);
+        verify(dataBaseConnection).execute(expectedUpdateObjectSQL);
     }
 
     @Test
@@ -259,7 +251,6 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         ObjectStimulus objectStimulus = createObjectStimulus();
         Action updateObject = new Action(new AID(), new UpdateObject(objectStimulus));
         dataPersistenceBehaviour.performAction(updateObject);
-
     }
 
     @Test
@@ -274,7 +265,6 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         ObjectStimulus objectStimulus = createObjectStimulus();
         Action updateObject = new Action(new AID(), new UpdateObject(objectStimulus));
         dataPersistenceBehaviour.performAction(updateObject);
-
     }
 
     private ObjectStimulus createObjectStimulus() {
@@ -300,7 +290,6 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         return objectStimulus;
     }
 
-    private byte counter = 0;
     private Answer<Boolean> answerTrueOnce() {
         return invocation -> {
             counter++;
@@ -317,10 +306,9 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
 
     private Answer<Boolean> answerRandomlyWithAtLeastOneFalse() {
         return invocation -> {
-            counter ++;
+            counter++;
             return counter != 3 && new Random().nextBoolean();
         };
     }
-
 
 }

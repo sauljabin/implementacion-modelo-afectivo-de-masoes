@@ -32,8 +32,6 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.UUID;
 
-// TODO: AGREGAR TRANSACCIONES, Y PRUEBAS UNITARIAS DE TRANSACCIONES
-
 public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
 
     private DataBaseConnection connection;
@@ -95,23 +93,18 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
 
     }
 
-    // TODO: FILTRADO DINAMICO?
-    // TODO: PORQUE LISTA?
     private ListObjects retrieveObject(GetObject getObjectAction) throws FailureException {
-
         ObjectStimulus objectStimulus = retrieveSingleObject(getObjectAction.getObjectStimulus().getObjectName(), getObjectAction.getObjectStimulus().getCreator().getLocalName());
-
         ListObjects listObjects = new ListObjects();
         listObjects.setObjects(new ArrayList());
         listObjects.getObjects().add(objectStimulus);
         return listObjects;
     }
 
-
     private void updateObject(UpdateObject updateObjectAction) throws SQLException, FailureException {
         String uuid = getObjectUniqueIdentification(updateObjectAction.getObjectStimulus().getObjectName(), updateObjectAction.getObjectStimulus().getCreator().getLocalName());
         deleteProperties(uuid);
-        if(updateObjectAction.getObjectStimulus().getObjectProperties() != null) {
+        if (updateObjectAction.getObjectStimulus().getObjectProperties() != null) {
             insertObjectProperties(uuid, updateObjectAction.getObjectStimulus().getObjectProperties());
         }
     }
@@ -142,7 +135,6 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
     }
 
     private ObjectStimulus retrieveSingleObject(String objectName, String creatorName) throws FailureException {
-
         String sqlQueryObject = String.format("SELECT name, creator_name, uuid FROM object " +
                 "WHERE object.name LIKE '%s' AND object.creator_name LIKE '%s';", objectName, creatorName);
         QueryResult queryResult = connection.query(sqlQueryObject);
@@ -194,6 +186,5 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
         String sqlDeleteObject = String.format("DELETE FROM object WHERE uuid LIKE '%s';", objectUuid);
         connection.execute(sqlDeleteObject);
     }
-
 
 }
