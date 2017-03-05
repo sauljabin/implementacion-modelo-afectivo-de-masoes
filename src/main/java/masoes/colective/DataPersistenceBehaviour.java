@@ -6,7 +6,6 @@
 
 package masoes.colective;
 
-import com.google.common.util.concurrent.UncheckedExecutionException;
 import data.DataBaseConnection;
 import data.QueryResult;
 import jade.content.Concept;
@@ -70,7 +69,7 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
             } else if (agentAction instanceof CreateObject) {
                 createObject((CreateObject) agentAction);
             } else if (agentAction instanceof DeleteObject) {
-                deleteObject((DeleteObject) agentAction);
+                deleteCompleteObject((DeleteObject) agentAction);
             } else if (agentAction instanceof GetObject) {
                 return retrieveObject((GetObject) agentAction);
             }
@@ -80,115 +79,121 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
         }
     }
 
-    // TODO: FILTRADO DINAMICO?
-// TODO: PORQUE LISTA?
-    public ListObjects retrieveObject(GetObject getObjectAction) throws SQLException {
 
-        String sql = String.format("SELECT object.name, object.creator_name, object_property.name, object_property.value " +
-                "FROM object INNER JOIN object_property ON object.uuid = object_property.object_uuid " +
-                "WHERE object.name='%s';", getObjectAction.getObjectStimulus().getObjectName());
+    private void createObject(CreateObject createObjectAction) throws FailureException {
+        String newUUID = UUID.randomUUID().toString();
+        String creatorName = createObjectAction.getObjectStimulus().getCreator().getLocalName();
+        String objectName = createObjectAction.getObjectStimulus().getObjectName();
+
+        insertObject(newUUID, creatorName, objectName);
+
+        List properties = createObjectAction.getObjectStimulus().getObjectProperties();
+
+        if (properties != null) {
+            insertObjectProperties(newUUID, properties);
+        }
+
+    }
+
+    // TODO: FILTRADO DINAMICO?
+    // TODO: PORQUE LISTA?
+    private ListObjects retrieveObject(GetObject getObjectAction) throws FailureException {
+
+        ObjectStimulus objectStimulus = retrieveSingleObject(getObjectAction.getObjectStimulus().getObjectName(), getObjectAction.getObjectStimulus().getCreator().getLocalName());
 
         ListObjects listObjects = new ListObjects();
         listObjects.setObjects(new ArrayList());
-
-        ObjectStimulus objectStimulus = new ObjectStimulus();
-        objectStimulus.setObjectProperties(new ArrayList());
-
         listObjects.getObjects().add(objectStimulus);
-
-        QueryResult resultSet = connection.query(sql);
-        while (resultSet.next()) {
-            objectStimulus.setObjectName(resultSet.getString(1));
-            objectStimulus.setCreator(myAgent.getAID(resultSet.getString(2)));
-            ObjectProperty objectProperty = new ObjectProperty(
-                    resultSet.getString(3),
-                    resultSet.getString(4));
-            objectStimulus.getObjectProperties().add(objectProperty);
-        }
-
         return listObjects;
     }
 
-    public void createObject(CreateObject createObjectAction) throws FailureException {
-        String newUUID = UUID.randomUUID().toString();
-        ObjectStimulus objectStimulus = createObjectAction.getObjectStimulus();
-        String creatorName = objectStimulus.getCreator().getLocalName();
-        String objectName = objectStimulus.getObjectName();
+
+    private void updateObject(UpdateObject updateObjectAction) throws SQLException, FailureException {
+        String uuid = getObjectUniqueIdentification(updateObjectAction.getObjectStimulus().getObjectName(), updateObjectAction.getObjectStimulus().getCreator().getLocalName());
+        deleteProperties(uuid);
+        if(updateObjectAction.getObjectStimulus().getObjectProperties() != null) {
+            insertObjectProperties(uuid, updateObjectAction.getObjectStimulus().getObjectProperties());
+        }
+    }
+
+    private void deleteCompleteObject(DeleteObject deleteObjectAction) throws SQLException, FailureException {
+        String objectUuid = getObjectUniqueIdentification(deleteObjectAction.getObjectStimulus().getObjectName(), deleteObjectAction.getObjectStimulus().getCreator().getLocalName());
+        deleteProperties(objectUuid);
+        deleteObjectOnly(objectUuid);
+    }
+
+    private void insertObject(String newUUID, String creatorName, String objectName) throws FailureException {
         String sql = String.format("INSERT INTO object (uuid, name, creator_name) VALUES ('%s', '%s', '%s');", newUUID, objectName, creatorName);
         if (!connection.execute(sql)) {
             throw new FailureException("Operation failed");
         }
+    }
 
-        List properties = objectStimulus.getObjectProperties();
-
-        if (properties == null) {
-            return;
-        }
-
+    private void insertObjectProperties(String objectUuid, List properties) throws FailureException {
         for (int i = 0; i < properties.size(); i++) {
             ObjectProperty objectProperty = (ObjectProperty) properties.get(i);
             String name = objectProperty.getName();
             String value = objectProperty.getValue();
-            sql = String.format("INSERT INTO object_property (object_uuid, name, value) VALUES ('%s', '%s', '%s');", newUUID, name, value);
+            String sql = String.format("INSERT INTO object_property (object_uuid, name, value) VALUES ('%s', '%s', '%s');", objectUuid, name, value);
             if (!connection.execute(sql)) {
                 throw new FailureException("Operation failed");
             }
         }
     }
 
-    public void updateObject(UpdateObject updateObjectAction) throws SQLException, FailureException {
-        // TODO: ACTUALIZAR POR NOMBRE Y CREATOR
-        String sqlQuery = String.format("SELECT uuid " +
-                        "FROM object " +
-                        "WHERE name LIKE '%s' " +
-                        "AND creator_name LIKE '%s';",
-                updateObjectAction.getObjectStimulus().getObjectName(),
-                updateObjectAction.getObjectStimulus().getCreator().getName());
-        QueryResult resultSet = connection.query(sqlQuery);
+    private ObjectStimulus retrieveSingleObject(String objectName, String creatorName) throws FailureException {
 
-        if (resultSet.next()) {
-            final String objectUid = resultSet.getString("uuid");
-            resultSet.close();
-            updateObjectAction.getObjectStimulus().getObjectProperties().iterator().forEachRemaining((Object objectProperty) -> {
-
-                        String name = ((ObjectProperty) objectProperty).getName();
-                        String value = ((ObjectProperty) objectProperty).getValue();
-
-                        String sqlUpdateStatement = String.format("UPDATE object_property " +
-                                "SET value='%s' " +
-                                "WHERE object_uuid LIKE '%s' " +
-                                "AND name LIKE '%s';", value, objectUid, name);
-
-                        if (!connection.execute(sqlUpdateStatement)) {
-                            String sql = String.format("INSERT INTO object_property (name, value, object_uuid) VALUES ('%s', '%s', '%s');", name, value, objectUid);
-                            if (!connection.execute(sql)) {
-                                throw new UncheckedExecutionException(new FailureException(String.format("Operation failed: Cannot insert data (%s:%s);", name, value)));
-                            }
-                        }
-                    }
-            );
+        String sqlQueryObject = String.format("SELECT name, creator_name, uuid FROM object " +
+                "WHERE object.name LIKE '%s' AND object.creator_name LIKE '%s';", objectName, creatorName);
+        QueryResult queryResult = connection.query(sqlQueryObject);
+        try {
+            if (queryResult.next()) {
+                return new ObjectStimulus(myAgent.getAID(queryResult.getString("creator_name")),
+                        queryResult.getString("name"),
+                        getObjectPropertiesList(queryResult.getString("uuid")));
+            } else {
+                throw new FailureException("No such object: " + objectName);
+            }
+        } finally {
+            queryResult.close();
         }
     }
 
-    public void deleteObject(DeleteObject deleteObjectAction) throws SQLException {
-        // TODO: ELIMINAR POR NOMBRE Y CREATOR
-        String sqlQuery = String.format("SELECT uuid " +
-                        "FROM object " +
-                        "WHERE name LIKE '%s' " +
-                        "AND creator_name LIKE '%s';",
-                deleteObjectAction.getObjectStimulus().getObjectName(),
-                deleteObjectAction.getObjectStimulus().getCreator().getName());
-        QueryResult resultSet = connection.query(sqlQuery);
+    private List getObjectPropertiesList(String objectUuid) {
+        List propertyList = new ArrayList();
+        String sql = String.format("SELECT name, value FROM object_property WHERE object_uuid LIKE '%s';", objectUuid);
+        QueryResult resultSet = connection.query(sql);
+        while (resultSet.next()) {
+            ObjectProperty objectProperty = new ObjectProperty(resultSet.getString("name"), resultSet.getString("value"));
+            propertyList.add(objectProperty);
+        }
+        resultSet.close();
+        return propertyList;
+    }
 
-        if (resultSet.next()) {
-            final String objectUid = resultSet.getString("uuid");
-            resultSet.close();
-
-            String sqlDeleteProperties = String.format("DELETE FROM object_property WHERE object_uuid LIKE '%s';", objectUid);
-            connection.execute(sqlDeleteProperties);
-            String sqlDeleteObject = String.format("DELETE FROM object WHERE uuid LIKE '%s';", objectUid);
-            connection.execute(sqlDeleteObject);
+    private String getObjectUniqueIdentification(String name, String creatorName) throws FailureException {
+        String sqlQuery = String.format("SELECT uuid FROM object WHERE name LIKE '%s' AND creator_name LIKE '%s';", name, creatorName);
+        QueryResult queryResult = connection.query(sqlQuery);
+        try {
+            if (queryResult.next()) {
+                return queryResult.getString("uuid");
+            } else {
+                throw new FailureException("No such object: " + name);
+            }
+        } finally {
+            queryResult.close();
         }
     }
+
+    private void deleteProperties(String objectUuid) {
+        String sqlDeleteProperties = String.format("DELETE FROM object_property WHERE object_uuid LIKE '%s';", objectUuid);
+        connection.execute(sqlDeleteProperties);
+    }
+
+    private void deleteObjectOnly(String objectUuid) {
+        String sqlDeleteObject = String.format("DELETE FROM object WHERE uuid LIKE '%s';", objectUuid);
+        connection.execute(sqlDeleteObject);
+    }
+
 
 }
