@@ -12,7 +12,6 @@ import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import ontology.masoes.MasoesOntology;
 import org.slf4j.LoggerFactory;
-import settings.SettingsAgent;
 import util.ServiceBuilder;
 
 public class DataPersistenceAgent extends Agent {
@@ -21,7 +20,7 @@ public class DataPersistenceAgent extends Agent {
     private AgentManagementAssistant agentManagementAssistant;
 
     public DataPersistenceAgent() {
-        logger = new AgentLogger(LoggerFactory.getLogger(SettingsAgent.class));
+        logger = new AgentLogger(LoggerFactory.getLogger(DataPersistenceAgent.class));
         agentManagementAssistant = new AgentManagementAssistant(this);
     }
 

@@ -7,7 +7,6 @@
 package data;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class QueryResult {
 
@@ -44,7 +43,7 @@ public class QueryResult {
     public void close() {
         try {
             resultSet.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new DataBaseException(e);
         }
     }

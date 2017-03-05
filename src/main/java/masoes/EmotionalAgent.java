@@ -6,26 +6,25 @@
 
 package masoes;
 
-import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import knowledge.Knowledge;
+import logger.LoggerHandler;
 import masoes.behavioural.BehaviouralComponent;
 import ontology.masoes.MasoesOntology;
-import org.slf4j.LoggerFactory;
-import settings.SettingsAgent;
+import org.slf4j.event.Level;
 import util.ServiceBuilder;
 import util.ToStringBuilder;
 
-public abstract class EmotionalAgent extends Agent {
+public abstract class EmotionalAgent extends Agent implements LoggerHandler {
 
     private BehaviouralComponent behaviouralComponent;
-    private AgentLogger logger;
+    private EmotionalAgentLogger logger;
     private AgentManagementAssistant agentManagementAssistant;
 
     public EmotionalAgent() {
-        logger = new AgentLogger(LoggerFactory.getLogger(SettingsAgent.class));
+        logger = new EmotionalAgentLogger(this);
         agentManagementAssistant = new AgentManagementAssistant(this);
     }
 
@@ -40,7 +39,7 @@ public abstract class EmotionalAgent extends Agent {
                     createService(MasoesOntology.ACTION_GET_EMOTIONAL_STATE)
             );
         } catch (Exception e) {
-            logger.exception(this, e);
+            logger.exception(e);
             throw e;
         }
     }
@@ -76,8 +75,12 @@ public abstract class EmotionalAgent extends Agent {
 
     public abstract CognitiveBehaviour getCognitiveBehaviour();
 
-    public synchronized void log(String message) {
-        logger.info(this, message);
+    public EmotionalAgentLogger getLogger() {
+        return logger;
+    }
+
+    @Override
+    public void handleMessage(Level level, String message) {
     }
 
 }

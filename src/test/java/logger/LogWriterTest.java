@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package util;
+package logger;
 
 import org.junit.Before;
 import org.junit.Test;

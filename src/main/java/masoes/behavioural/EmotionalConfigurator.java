@@ -56,7 +56,7 @@ public class EmotionalConfigurator {
                 Emotion newEmotion = emotionalSpace.searchEmotion(emotionName);
                 EmotionalState newEmotionalState = newEmotion.getRandomEmotionalState();
                 if (!getEmotion().getName().equals(newEmotion.getName())) {
-                    emotionalAgent.log(String.format("Actualizando emoción %s a %s", getEmotion().getName().toUpperCase(), newEmotion.getName().toUpperCase()));
+                    emotionalAgent.getLogger().updatingEmotion(getEmotion(), newEmotion);
                 }
                 return newEmotionalState;
             }

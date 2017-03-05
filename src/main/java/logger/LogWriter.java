@@ -4,16 +4,18 @@
  * Please see the LICENSE.txt file
  */
 
-package util;
+package logger;
 
 import org.slf4j.Logger;
+import org.slf4j.event.Level;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Observable;
 import java.util.Optional;
 
-public class LogWriter {
+public class LogWriter extends Observable {
 
     private Optional<String> message;
     private Optional<Exception> exception;
@@ -58,6 +60,7 @@ public class LogWriter {
         } else {
             logger.info(getMessage());
         }
+        notifyLog(Level.INFO);
         init();
     }
 
@@ -67,6 +70,7 @@ public class LogWriter {
         } else {
             logger.warn(getMessage());
         }
+        notifyLog(Level.WARN);
         init();
     }
 
@@ -76,6 +80,7 @@ public class LogWriter {
         } else {
             logger.error(getMessage());
         }
+        notifyLog(Level.ERROR);
         init();
     }
 
@@ -85,7 +90,20 @@ public class LogWriter {
         } else {
             logger.debug(getMessage());
         }
+        notifyLog(Level.DEBUG);
         init();
+    }
+
+    public LogWriter addLoggerHandler(LoggerHandler handler) {
+        if (handler != null) {
+            addObserver(new LogWriterObserver(handler));
+        }
+        return this;
+    }
+
+    private void notifyLog(Level info) {
+        setChanged();
+        notifyObservers(new LogWriterNotification(info, getMessage()));
     }
 
 }

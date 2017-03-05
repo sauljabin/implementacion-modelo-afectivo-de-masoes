@@ -47,9 +47,9 @@ public class BasicEmotionalAgentBehaviour extends OntologyResponderBehaviour {
 
     private Predicate responseEvaluateStimulus(Action action) {
         EvaluateStimulus agentAction = (EvaluateStimulus) action.getAction();
-        emotionalAgent.log(String.format("Recibiendo mensaje: %s", agentAction.getStimulus()));
+        emotionalAgent.getLogger().receivingStimulus(agentAction.getStimulus());
         behaviouralComponent.evaluateStimulus(agentAction.getStimulus());
-        emotionalAgent.log("Enviando mensaje: Done");
+        emotionalAgent.getLogger().sendingDone();
         return new Done(action);
     }
 

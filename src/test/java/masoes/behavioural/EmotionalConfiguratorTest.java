@@ -10,6 +10,7 @@ import jade.core.AID;
 import jade.util.leap.ArrayList;
 import knowledge.Knowledge;
 import masoes.EmotionalAgent;
+import masoes.EmotionalAgentLogger;
 import masoes.behavioural.emotion.AdmirationEmotion;
 import masoes.behavioural.emotion.AngerEmotion;
 import masoes.behavioural.emotion.CompassionEmotion;
@@ -32,9 +33,12 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
-
 
 public class EmotionalConfiguratorTest extends PowerMockitoTest {
 
@@ -43,6 +47,7 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
     private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
     private EmotionalConfigurator emotionalConfigurator;
     private EmotionalAgent agentMock;
+    private EmotionalAgentLogger loggerMock;
 
     @Before
     public void setUp() {
@@ -53,8 +58,10 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
 
     private void createAgent(String agentName) {
         agentMock = mock(EmotionalAgent.class);
+        loggerMock = mock(EmotionalAgentLogger.class);
         doReturn(new Knowledge(Paths.get(AGENT_KNOWLEDGE_PATH))).when(agentMock).getKnowledge();
         doReturn(agentName).when(agentMock).getLocalName();
+        doReturn(loggerMock).when(agentMock).getLogger();
     }
 
     @Test
@@ -151,8 +158,7 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
         emotionalConfigurator.updateEmotion(objectStimulus);
         assertThat(emotionalConfigurator.getEmotion(), is(instanceOf(expectedEmotion)));
         assertTrue(emotionalConfigurator.getEmotion().getGeometry().intersects(emotionalConfigurator.getEmotionalState().toPoint()));
-        // TODO: MEJORAR, LLAMAR AL LOG CORRECTO
-        // verify(agentMock, atLeastOnce()).log(contains("Changing emotion"));
+        verify(loggerMock, atLeastOnce()).updatingEmotion(any(Emotion.class), eq(emotionalConfigurator.getEmotion()));
     }
 
 }

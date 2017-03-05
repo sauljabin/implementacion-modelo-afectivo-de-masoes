@@ -6,7 +6,6 @@
 
 package masoes;
 
-import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPANames;
@@ -39,12 +38,12 @@ public class EmotionalAgentTest extends PowerMockitoTest {
     private AgentManagementAssistant agentManagementAssistantMock;
     private ArgumentCaptor<ServiceDescription> serviceDescriptionCaptor;
     private EmotionalAgent emotionalAgent;
-    private AgentLogger loggerMock;
+    private EmotionalAgentLogger loggerMock;
 
     @Before
     public void setUp() throws Exception {
         serviceDescriptionCaptor = ArgumentCaptor.forClass(ServiceDescription.class);
-        loggerMock = mock(AgentLogger.class);
+        loggerMock = mock(EmotionalAgentLogger.class);
         agentManagementAssistantMock = mock(AgentManagementAssistant.class);
         emotionalAgent = createAgent();
 
@@ -71,7 +70,7 @@ public class EmotionalAgentTest extends PowerMockitoTest {
             emotionalAgentSpy.setup();
         } catch (Exception e) {
         } finally {
-            verify(loggerMock).exception(emotionalAgentSpy, expectedException);
+            verify(loggerMock).exception(expectedException);
         }
     }
 
@@ -99,13 +98,6 @@ public class EmotionalAgentTest extends PowerMockitoTest {
         assertThat(description.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
         assertThat(description.getAllOntologies().next(), is(MasoesOntology.NAME));
         assertThat(description.getAllLanguages().next(), is(SemanticLanguage.NAME));
-    }
-
-    @Test
-    public void shouldLogInfo() {
-        String expectedMessage = "expectedMessage";
-        emotionalAgentSpy.log(expectedMessage);
-        verify(loggerMock).info(emotionalAgentSpy, expectedMessage);
     }
 
     private EmotionalAgent createAgent() {

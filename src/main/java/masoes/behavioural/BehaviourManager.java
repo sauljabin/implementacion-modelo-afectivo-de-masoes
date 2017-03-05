@@ -40,10 +40,10 @@ public class BehaviourManager {
             if (newType == type) {
                 return;
             }
-            emotionalAgent.log(String.format("Actualizando comportamiento %s a %s", type, newType));
+            emotionalAgent.getLogger().updatingBehaviour(type, newType);
             emotionalAgent.removeBehaviour(behaviour);
         } else {
-            emotionalAgent.log(String.format("Inicializando comportamiento %s", newType));
+            emotionalAgent.getLogger().startingBehaviour(newType);
         }
 
         behaviour = calculateBehaviour(newType, emotionalAgent);

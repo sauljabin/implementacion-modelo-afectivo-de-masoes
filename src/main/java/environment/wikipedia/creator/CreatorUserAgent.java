@@ -15,6 +15,7 @@ import masoes.CognitiveBehaviour;
 import masoes.EmotionalAgent;
 import masoes.ImitativeBehaviour;
 import masoes.ReactiveBehaviour;
+import org.slf4j.event.Level;
 
 import java.nio.file.Paths;
 
@@ -65,8 +66,7 @@ public class CreatorUserAgent extends EmotionalAgent {
     }
 
     @Override
-    public synchronized void log(String message) {
-        super.log(message);
+    public void handleMessage(Level level, String message) {
         creatorUserAgentGui.logEvent(message);
     }
 

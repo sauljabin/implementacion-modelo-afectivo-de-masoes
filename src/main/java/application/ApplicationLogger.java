@@ -7,8 +7,8 @@
 package application;
 
 import jade.JadeSettings;
+import logger.LogWriter;
 import org.slf4j.Logger;
-import util.LogWriter;
 
 import java.util.Arrays;
 
@@ -18,6 +18,7 @@ public class ApplicationLogger {
     private Logger logger;
     private ApplicationSettings applicationSettings;
 
+    // TODO, PASAR OBJETO, OCLASE POR PARAMETRO DE CONSTRUCTOR
     public ApplicationLogger(Logger logger) {
         this.logger = logger;
         applicationSettings = ApplicationSettings.getInstance();

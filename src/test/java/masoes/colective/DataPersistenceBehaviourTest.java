@@ -71,7 +71,7 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
     @Test
     public void shouldUseTransactionsWhenPerformingActions() throws Exception {
         mockEverything();
-        Action action = new Action(new AID(), randomAction());
+        Action action = new Action(new AID(), randomModifyAction());
         dataPersistenceBehaviour.performAction(action);
         InOrder orderVerifier = inOrder(dataBaseConnection);
         orderVerifier.verify(dataBaseConnection).beginTransaction();
@@ -85,7 +85,7 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         when(queryResult.next()).thenReturn(false);
 
         try {
-            dataPersistenceBehaviour.performAction(new Action(new AID(), randomAction()));
+            dataPersistenceBehaviour.performAction(new Action(new AID(), randomModifyAction()));
             fail();
         } catch (FailureException e) {
             InOrder orderVerifier = inOrder(dataBaseConnection);
@@ -342,11 +342,22 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
     }
 
     private Concept randomAction() {
-        switch (new Random().nextInt(4)){
+        switch (new Random().nextInt(4)) {
             case 1:
                 return new CreateObject(createObjectStimulus());
             case 2:
                 return new GetObject(createObjectStimulus());
+            case 3:
+                return new UpdateObject(createObjectStimulus());
+            default:
+                return new DeleteObject(createObjectStimulus());
+        }
+    }
+
+    private Concept randomModifyAction() {
+        switch (new Random().nextInt(3)) {
+            case 1:
+                return new CreateObject(createObjectStimulus());
             case 3:
                 return new UpdateObject(createObjectStimulus());
             default:

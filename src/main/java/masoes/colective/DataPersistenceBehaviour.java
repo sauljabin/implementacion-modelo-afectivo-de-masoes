@@ -28,7 +28,6 @@ import ontology.masoes.ObjectProperty;
 import ontology.masoes.ObjectStimulus;
 import ontology.masoes.UpdateObject;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -60,26 +59,29 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
 
     @Override
     public Predicate performAction(Action action) throws FailureException {
+        Concept agentAction = action.getAction();
         try {
+            if (agentAction instanceof GetObject) {
+                return retrieveObject((GetObject) agentAction);
+            }
+
             connection.beginTransaction();
-            Concept agentAction = action.getAction();
             if (agentAction instanceof UpdateObject) {
                 updateObject((UpdateObject) agentAction);
             } else if (agentAction instanceof CreateObject) {
                 createObject((CreateObject) agentAction);
             } else if (agentAction instanceof DeleteObject) {
                 deleteCompleteObject((DeleteObject) agentAction);
-            } else if (agentAction instanceof GetObject) {
-                return retrieveObject((GetObject) agentAction);
             }
             connection.endTransaction();
             return new Done(action);
-        } catch (Exception e) {
-            connection.rollbackTransaction();
-            throw new FailureException(e.getMessage());
+        } catch (FailureException e) {
+            if (!(agentAction instanceof GetObject)) {
+                connection.rollbackTransaction();
+            }
+            throw e;
         }
     }
-
 
     private void createObject(CreateObject createObjectAction) throws FailureException {
         String newUUID = UUID.randomUUID().toString();
@@ -104,7 +106,7 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
         return listObjects;
     }
 
-    private void updateObject(UpdateObject updateObjectAction) throws SQLException, FailureException {
+    private void updateObject(UpdateObject updateObjectAction) throws FailureException {
         String uuid = getObjectUniqueIdentification(updateObjectAction.getObjectStimulus().getObjectName(), updateObjectAction.getObjectStimulus().getCreator().getLocalName());
         deleteProperties(uuid);
         if (updateObjectAction.getObjectStimulus().getObjectProperties() != null) {
@@ -112,7 +114,7 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
         }
     }
 
-    private void deleteCompleteObject(DeleteObject deleteObjectAction) throws SQLException, FailureException {
+    private void deleteCompleteObject(DeleteObject deleteObjectAction) throws FailureException {
         String objectUuid = getObjectUniqueIdentification(deleteObjectAction.getObjectStimulus().getObjectName(), deleteObjectAction.getObjectStimulus().getCreator().getLocalName());
         deleteProperties(objectUuid);
         deleteObjectOnly(objectUuid);

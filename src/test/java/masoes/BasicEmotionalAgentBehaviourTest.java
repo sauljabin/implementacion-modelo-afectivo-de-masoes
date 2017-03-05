@@ -43,16 +43,19 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
     private BasicEmotionalAgentBehaviour basicEmotionalAgentBehaviour;
     private BehaviouralComponent behaviouralComponentMock;
     private AID agentAID;
+    private EmotionalAgentLogger loggerMock;
 
     @Before
     public void setUp() {
         emotionalAgentMock = mock(EmotionalAgent.class);
         behaviouralComponentMock = mock(BehaviouralComponent.class);
+        loggerMock = mock(EmotionalAgentLogger.class);
 
         agentAID = new AID("agentName", AID.ISGUID);
 
         doReturn(behaviouralComponentMock).when(emotionalAgentMock).getBehaviouralComponent();
         doReturn(agentAID).when(emotionalAgentMock).getAID();
+        doReturn(loggerMock).when(emotionalAgentMock).getLogger();
 
         basicEmotionalAgentBehaviour = new BasicEmotionalAgentBehaviour(emotionalAgentMock);
     }
@@ -89,10 +92,8 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
         assertThat(done.getAction(), is(action));
 
         verify(behaviouralComponentMock).evaluateStimulus(stimulus);
-        System.out.println(evaluateStimulus.getStimulus().toString());
-        // TODO: MEJORAR, LLAMAR A LOG CORRCTO
-        // verify(emotionalAgentMock).log(contains("Receiving message: " + evaluateStimulus.getStimulus().toString()));
-        // verify(emotionalAgentMock).log(contains("Sending message: Done"));
+        verify(loggerMock).receivingStimulus(stimulus);
+        verify(loggerMock).sendingDone();
     }
 
     @Test
@@ -118,9 +119,8 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
         assertThat(done.getAction(), is(action));
 
         verify(behaviouralComponentMock).evaluateStimulus(stimulus);
-        // TODO: LLAMAR AL LOG CORRECTAMENTE
-        // verify(emotionalAgentMock).log(contains("Receiving message: " + evaluateStimulus.getStimulus().toString()));
-        // verify(emotionalAgentMock).log(contains("Sending message: Done"));
+        verify(loggerMock).receivingStimulus(stimulus);
+        verify(loggerMock).sendingDone();
     }
 
     @Test

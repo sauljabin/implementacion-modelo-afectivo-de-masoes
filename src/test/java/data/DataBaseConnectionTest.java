@@ -6,7 +6,6 @@
 
 package data;
 
-import org.hamcrest.core.Is;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -25,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.Is.isA;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -168,7 +168,6 @@ public class DataBaseConnectionTest {
 
     @Test
     public void shouldSetAutoCommitToFalseToBeginTransaction() throws Exception {
-
         dataBaseConnection.beginTransaction();
 
         verify(connectionMock).setAutoCommit(false);
@@ -177,16 +176,14 @@ public class DataBaseConnectionTest {
     @Test
     public void shouldThrowExceptionIfErrorWhileBeginningTransaction() throws Exception {
         expectedException.expect(DataBaseException.class);
-        expectedException.expectCause(Is.is(SQLException.class));
+        expectedException.expectCause(isA(SQLException.class));
         doThrow(new SQLException("ERROR")).when(connectionMock).setAutoCommit(anyBoolean());
         dataBaseConnection.beginTransaction();
     }
 
     @Test
     public void shouldInvokeCommitToEndTransactionAndSetAutoCommitToTrue() throws Exception {
-
         dataBaseConnection.endTransaction();
-
         verify(connectionMock).commit();
         verify(connectionMock).setAutoCommit(true);
     }
@@ -194,16 +191,14 @@ public class DataBaseConnectionTest {
     @Test
     public void shouldThrowExceptionIfErrorWhileEndingTransaction() throws Exception {
         expectedException.expect(DataBaseException.class);
-        expectedException.expectCause(Is.is(SQLException.class));
+        expectedException.expectCause(isA(SQLException.class));
         doThrow(new SQLException("ERROR")).when(connectionMock).commit();
         dataBaseConnection.endTransaction();
     }
 
     @Test
     public void shouldInvokeRollbackToRollbackTransactionAndSetAutoCommitToTrue() throws Exception {
-
         dataBaseConnection.rollbackTransaction();
-
         verify(connectionMock).rollback();
         verify(connectionMock).setAutoCommit(true);
     }
@@ -211,7 +206,7 @@ public class DataBaseConnectionTest {
     @Test
     public void shouldThrowExceptionIfErrorWhileRollbackTransaction() throws Exception {
         expectedException.expect(DataBaseException.class);
-        expectedException.expectCause(Is.is(SQLException.class));
+        expectedException.expectCause(isA(SQLException.class));
         doThrow(new SQLException("ERROR")).when(connectionMock).rollback();
         dataBaseConnection.rollbackTransaction();
     }

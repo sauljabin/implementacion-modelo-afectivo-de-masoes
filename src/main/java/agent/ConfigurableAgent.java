@@ -10,7 +10,6 @@ import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import ontology.configurable.ConfigurableOntology;
 import org.slf4j.LoggerFactory;
-import settings.SettingsAgent;
 import util.ServiceBuilder;
 
 public class ConfigurableAgent extends Agent {
@@ -19,7 +18,7 @@ public class ConfigurableAgent extends Agent {
     private AgentManagementAssistant agentManagementAssistant;
 
     public ConfigurableAgent() {
-        logger = new AgentLogger(LoggerFactory.getLogger(SettingsAgent.class));
+        logger = new AgentLogger(LoggerFactory.getLogger(ConfigurableAgent.class));
         agentManagementAssistant = new AgentManagementAssistant(this);
     }
 

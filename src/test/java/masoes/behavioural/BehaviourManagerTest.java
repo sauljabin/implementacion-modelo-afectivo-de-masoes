@@ -10,6 +10,7 @@ import jade.core.behaviours.Behaviour;
 import knowledge.Knowledge;
 import masoes.CognitiveBehaviour;
 import masoes.EmotionalAgent;
+import masoes.EmotionalAgentLogger;
 import masoes.EmotionalBehaviour;
 import masoes.ImitativeBehaviour;
 import masoes.ReactiveBehaviour;
@@ -30,7 +31,6 @@ import java.nio.file.Paths;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doNothing;
@@ -50,14 +50,17 @@ public class BehaviourManagerTest extends PowerMockitoTest {
     private CognitiveBehaviour cognitiveBehaviourMock;
     private EmotionalBehaviour currentBehaviourMock;
     private EmotionalConfigurator emotionalConfiguratorMock;
+    private EmotionalAgentLogger loggerMock;
 
     @Before
     public void setUp() throws Exception {
         agentMock = mock(EmotionalAgent.class);
+        loggerMock = mock(EmotionalAgentLogger.class);
         doNothing().when(agentMock).addBehaviour(any());
         doNothing().when(agentMock).removeBehaviour(any());
         doReturn(new Knowledge(Paths.get(AGENT_KNOWLEDGE_PATH))).when(agentMock).getKnowledge();
         doReturn(AGENT_NAME).when(agentMock).getLocalName();
+        doReturn(loggerMock).when(agentMock).getLogger();
 
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
         emotionalConfiguratorMock = mock(EmotionalConfigurator.class);
@@ -146,7 +149,7 @@ public class BehaviourManagerTest extends PowerMockitoTest {
         assertThat(behaviourManager.getBehaviour(), is(expectedBehaviour));
         verify(agentMock).addBehaviour(expectedBehaviour);
         verify(agentMock).removeBehaviour(currentBehaviourMock);
-        verify(agentMock, atLeastOnce()).log(any());
+        verify(loggerMock).updatingBehaviour(any(), any());
     }
 
 }
