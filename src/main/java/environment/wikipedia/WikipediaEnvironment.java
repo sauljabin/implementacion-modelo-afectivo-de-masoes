@@ -19,7 +19,7 @@ public class WikipediaEnvironment extends Environment {
     @Override
     public List<AgentParameter> getAgentParameters() {
         return Arrays.asList(
-                new AgentParameter("creator", CreatorUserAgent.class),
+                new AgentParameter("creador", CreatorUserAgent.class),
                 new AgentParameter("requester", RequesterGuiAgent.class)
         );
     }

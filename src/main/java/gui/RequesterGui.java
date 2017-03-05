@@ -400,6 +400,14 @@ public class RequesterGui extends JFrame {
         });
     }
 
+    public void setCreateObjectStimulusComponents() {
+        setEvaluateObjectStimulusComponents();
+    }
+
+    public void setUpdateObjectStimulusComponents() {
+        setEvaluateObjectStimulusComponents();
+    }
+
     public void refreshDynamicCanvas(Runnable runnable) {
         dynamicCanvasPanel.removeAll();
         runnable.run();

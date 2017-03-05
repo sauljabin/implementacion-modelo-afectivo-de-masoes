@@ -27,12 +27,14 @@ import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
 import ontology.masoes.ActionStimulus;
+import ontology.masoes.CreateObject;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.NotifyAction;
 import ontology.masoes.ObjectProperty;
 import ontology.masoes.ObjectStimulus;
+import ontology.masoes.UpdateObject;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.SettingsOntology;
@@ -219,6 +221,60 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         EvaluateStimulus evaluateStimulus = (EvaluateStimulus) action.getAction();
 
         ObjectStimulus objectStimulus = (ObjectStimulus) evaluateStimulus.getStimulus();
+        assertThat(objectStimulus.getCreator().getLocalName(), is(expectedCreatorName));
+        assertThat(objectStimulus.getObjectName(), is(expectedObjectName));
+        ObjectProperty propertyColor = (ObjectProperty) objectStimulus.getObjectProperties().get(0);
+        assertThat(propertyColor.getName(), is("color"));
+        assertThat(propertyColor.getValue(), is("blue"));
+
+        ObjectProperty propertyType = (ObjectProperty) objectStimulus.getObjectProperties().get(1);
+        assertThat(propertyType.getName(), is("type"));
+        assertThat(propertyType.getValue(), is("car"));
+    }
+
+    @Test
+    public void shouldSendCreateObjectStimulus() throws Exception {
+        String expectedCreatorName = "expectedCreatorName";
+        String expectedObjectName = "expectedObjectName";
+        String expectedProperties = "color=blue\ntype=car";
+        doReturn(expectedCreatorName).when(requesterGuiMock).getCreatorName();
+        doReturn(expectedObjectName).when(requesterGuiMock).getObjectName();
+        doReturn(expectedProperties).when(requesterGuiMock).getObjectProperties();
+        doReturn(new AID(expectedCreatorName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedCreatorName);
+
+        Action action = testRequestAction(MasoesOntology.getInstance(), RequesterGuiAction.CREATE_OBJECT);
+        assertThat(action.getAction(), is(instanceOf(CreateObject.class)));
+
+        CreateObject createObject = (CreateObject) action.getAction();
+
+        ObjectStimulus objectStimulus = createObject.getObjectStimulus();
+        assertThat(objectStimulus.getCreator().getLocalName(), is(expectedCreatorName));
+        assertThat(objectStimulus.getObjectName(), is(expectedObjectName));
+        ObjectProperty propertyColor = (ObjectProperty) objectStimulus.getObjectProperties().get(0);
+        assertThat(propertyColor.getName(), is("color"));
+        assertThat(propertyColor.getValue(), is("blue"));
+
+        ObjectProperty propertyType = (ObjectProperty) objectStimulus.getObjectProperties().get(1);
+        assertThat(propertyType.getName(), is("type"));
+        assertThat(propertyType.getValue(), is("car"));
+    }
+
+    @Test
+    public void shouldSendUpdateObjectStimulus() throws Exception {
+        String expectedCreatorName = "expectedCreatorName";
+        String expectedObjectName = "expectedObjectName";
+        String expectedProperties = "color=blue\ntype=car";
+        doReturn(expectedCreatorName).when(requesterGuiMock).getCreatorName();
+        doReturn(expectedObjectName).when(requesterGuiMock).getObjectName();
+        doReturn(expectedProperties).when(requesterGuiMock).getObjectProperties();
+        doReturn(new AID(expectedCreatorName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedCreatorName);
+
+        Action action = testRequestAction(MasoesOntology.getInstance(), RequesterGuiAction.UPDATE_OBJECT);
+        assertThat(action.getAction(), is(instanceOf(UpdateObject.class)));
+
+        UpdateObject updateObject = (UpdateObject) action.getAction();
+
+        ObjectStimulus objectStimulus = updateObject.getObjectStimulus();
         assertThat(objectStimulus.getCreator().getLocalName(), is(expectedCreatorName));
         assertThat(objectStimulus.getObjectName(), is(expectedObjectName));
         ObjectProperty propertyColor = (ObjectProperty) objectStimulus.getObjectProperties().get(0);

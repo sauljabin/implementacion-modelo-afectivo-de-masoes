@@ -27,12 +27,14 @@ import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
 import ontology.masoes.ActionStimulus;
+import ontology.masoes.CreateObject;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.NotifyAction;
 import ontology.masoes.ObjectProperty;
 import ontology.masoes.ObjectStimulus;
+import ontology.masoes.UpdateObject;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.SettingsOntology;
@@ -158,8 +160,32 @@ public class RequesterGuiAgent extends GuiAgent {
             case REGISTER_AGENT:
                 sendRegisterAgent(aid);
                 break;
+            case CREATE_OBJECT:
+                sendCreateObject(aid);
+                break;
+            case UPDATE_OBJECT:
+                sendUpdateObject(aid);
+                break;
         }
 
+    }
+
+    private void sendUpdateObject(AID aid) {
+        ObjectStimulus objectStimulus = createObjectStimulus();
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), new UpdateObject(objectStimulus));
+    }
+
+    private ObjectStimulus createObjectStimulus() {
+        ObjectStimulus objectStimulus = new ObjectStimulus();
+        objectStimulus.setCreator(getAID(requesterGui.getCreatorName()));
+        objectStimulus.setObjectName(requesterGui.getObjectName());
+        objectStimulus.setObjectProperties(createPropertiesList());
+        return objectStimulus;
+    }
+
+    private void sendCreateObject(AID aid) {
+        ObjectStimulus objectStimulus = createObjectStimulus();
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), new CreateObject(objectStimulus));
     }
 
     private void sendRegisterAgent(AID aid) {
@@ -248,10 +274,12 @@ public class RequesterGuiAgent extends GuiAgent {
     }
 
     private void sendEvaluateObjectStimulus(AID aid) {
-        ObjectStimulus objectStimulus = new ObjectStimulus();
-        objectStimulus.setCreator(getAID(requesterGui.getCreatorName()));
-        objectStimulus.setObjectName(requesterGui.getObjectName());
+        ObjectStimulus objectStimulus = createObjectStimulus();
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), new EvaluateStimulus(objectStimulus));
+    }
 
+    private ArrayList createPropertiesList() {
+        ArrayList listProperties = new ArrayList();
         if (!requesterGui.getObjectProperties().isEmpty()) {
             try {
                 Properties properties = new Properties();
@@ -262,15 +290,12 @@ public class RequesterGuiAgent extends GuiAgent {
                         .map(objectEntry -> new ObjectProperty(objectEntry.getKey().toString(), objectEntry.getValue().toString()))
                         .collect(Collectors.toList());
 
-                ArrayList listProperties = new ArrayList();
                 listProperties.fromList(propertiesToList);
-                objectStimulus.setObjectProperties(listProperties);
             } catch (Exception e) {
                 throw new GuiException(e);
             }
         }
-
-        sendOntologyMessage(aid, MasoesOntology.getInstance(), new EvaluateStimulus(objectStimulus));
+        return listProperties;
     }
 
 

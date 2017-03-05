@@ -150,7 +150,7 @@ public class CreatorUserAgentGui extends JFrame {
         JPanel southPanel = new JPanel(new MigLayout(INSETS_10));
         add(southPanel, BorderLayout.SOUTH);
 
-        JLabel eventsLabel = new JLabel("Eventos");
+        JLabel eventsLabel = new JLabel("Eventos:");
         southPanel.add(eventsLabel, "w 100%, wrap");
 
         eventsTextArea = new JTextArea();

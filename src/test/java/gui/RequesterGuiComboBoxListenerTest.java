@@ -110,6 +110,18 @@ public class RequesterGuiComboBoxListenerTest {
         verify(requesterGuiMock).setRegisterAgentActionComponents();
     }
 
+    @Test
+    public void shouldInvokeCreateObject() {
+        prepareTest(RequesterGuiAction.CREATE_OBJECT);
+        verify(requesterGuiMock).setCreateObjectStimulusComponents();
+    }
+
+    @Test
+    public void shouldInvokeUpdateObject() {
+        prepareTest(RequesterGuiAction.UPDATE_OBJECT);
+        verify(requesterGuiMock).setUpdateObjectStimulusComponents();
+    }
+
     private void prepareTest(RequesterGuiAction action) {
         doReturn(action).when(requesterGuiMock).getSelectedAction();
         ActionEvent actionEvent = new ActionEvent(requesterGuiMock, RequesterGuiEvent.CHANGE_ACTION.getInt(), RequesterGuiEvent.CHANGE_ACTION.toString());

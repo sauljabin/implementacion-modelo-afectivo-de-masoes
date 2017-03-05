@@ -262,6 +262,24 @@ public class RequesterGuiTest {
         verify(dynamicCanvasPanelMock).add(isA(JScrollPane.class), anyString());
     }
 
+    @Test
+    public void shouldAddActorAndActionWhenActionIsCreateObjectStimulus() {
+        requesterGuiSpy.setCreateObjectStimulusComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock, times(3)).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
+        verify(dynamicCanvasPanelMock).add(isA(JScrollPane.class), anyString());
+    }
+
+    @Test
+    public void shouldAddActorAndActionWhenActionIsUpdateObjectStimulus() {
+        requesterGuiSpy.setUpdateObjectStimulusComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock, times(3)).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
+        verify(dynamicCanvasPanelMock).add(isA(JScrollPane.class), anyString());
+    }
+
     private void testDynamicContentRepaint() {
         verify(dynamicCanvasPanelMock).removeAll();
         verify(requesterGuiSpy).revalidate();

@@ -66,6 +66,12 @@ public class RequesterGuiComboBoxListener implements ActionListener {
             case REGISTER_AGENT:
                 requesterGui.setRegisterAgentActionComponents();
                 break;
+            case CREATE_OBJECT:
+                requesterGui.setCreateObjectStimulusComponents();
+                break;
+            case UPDATE_OBJECT:
+                requesterGui.setUpdateObjectStimulusComponents();
+                break;
         }
 
     }

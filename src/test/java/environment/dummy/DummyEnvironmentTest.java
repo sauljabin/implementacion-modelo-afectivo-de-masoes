@@ -7,6 +7,7 @@
 package environment.dummy;
 
 import environment.AgentParameter;
+import gui.RequesterGuiAgent;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,6 +27,7 @@ public class DummyEnvironmentTest {
     public void setUp() {
         expectedAgentsInfo = new ArrayList<>();
         expectedAgentsInfo.add(new AgentParameter("dummy", DummyEmotionalAgent.class));
+        expectedAgentsInfo.add(new AgentParameter("requester", RequesterGuiAgent.class));
         dummyEnvironment = new DummyEnvironment();
     }
 
