@@ -6,6 +6,7 @@
 
 package data;
 
+import org.hamcrest.core.Is;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -20,14 +21,17 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -160,6 +164,56 @@ public class DataBaseConnectionTest {
         InOrder inOrder = Mockito.inOrder(anotherStatementMock, statementMock);
         inOrder.verify(anotherStatementMock).close();
         inOrder.verify(statementMock).executeUpdate(anyString());
+    }
+
+    @Test
+    public void shouldSetAutoCommitToFalseToBeginTransaction() throws Exception {
+
+        dataBaseConnection.beginTransaction();
+
+        verify(connectionMock).setAutoCommit(false);
+    }
+
+    @Test
+    public void shouldThrowExceptionIfErrorWhileBeginningTransaction() throws Exception {
+        expectedException.expect(DataBaseException.class);
+        expectedException.expectCause(Is.is(SQLException.class));
+        doThrow(new SQLException("ERROR")).when(connectionMock).setAutoCommit(anyBoolean());
+        dataBaseConnection.beginTransaction();
+    }
+
+    @Test
+    public void shouldInvokeCommitToEndTransactionAndSetAutoCommitToTrue() throws Exception {
+
+        dataBaseConnection.endTransaction();
+
+        verify(connectionMock).commit();
+        verify(connectionMock).setAutoCommit(true);
+    }
+
+    @Test
+    public void shouldThrowExceptionIfErrorWhileEndingTransaction() throws Exception {
+        expectedException.expect(DataBaseException.class);
+        expectedException.expectCause(Is.is(SQLException.class));
+        doThrow(new SQLException("ERROR")).when(connectionMock).commit();
+        dataBaseConnection.endTransaction();
+    }
+
+    @Test
+    public void shouldInvokeRollbackToRollbackTransactionAndSetAutoCommitToTrue() throws Exception {
+
+        dataBaseConnection.rollbackTransaction();
+
+        verify(connectionMock).rollback();
+        verify(connectionMock).setAutoCommit(true);
+    }
+
+    @Test
+    public void shouldThrowExceptionIfErrorWhileRollbackTransaction() throws Exception {
+        expectedException.expect(DataBaseException.class);
+        expectedException.expectCause(Is.is(SQLException.class));
+        doThrow(new SQLException("ERROR")).when(connectionMock).rollback();
+        dataBaseConnection.rollbackTransaction();
     }
 
 }

@@ -61,6 +61,7 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
     @Override
     public Predicate performAction(Action action) throws FailureException {
         try {
+            connection.beginTransaction();
             Concept agentAction = action.getAction();
             if (agentAction instanceof UpdateObject) {
                 updateObject((UpdateObject) agentAction);
@@ -71,8 +72,10 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
             } else if (agentAction instanceof GetObject) {
                 return retrieveObject((GetObject) agentAction);
             }
+            connection.endTransaction();
             return new Done(action);
         } catch (Exception e) {
+            connection.rollbackTransaction();
             throw new FailureException(e.getMessage());
         }
     }

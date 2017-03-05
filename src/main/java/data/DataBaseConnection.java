@@ -8,6 +8,7 @@ package data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DataBaseConnection {
@@ -92,4 +93,27 @@ public class DataBaseConnection {
         }
     }
 
+    public synchronized void beginTransaction() {
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new DataBaseException(e);
+        }
+    }
+
+    public synchronized void endTransaction() {
+        try {
+            connection.commit();
+        } catch (SQLException e) {
+            throw new DataBaseException(e);
+        }
+    }
+
+    public synchronized void rollbackTransaction() {
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            throw new DataBaseException(e);
+        }
+    }
 }

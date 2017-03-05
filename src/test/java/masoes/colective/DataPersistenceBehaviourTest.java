@@ -8,6 +8,7 @@ package masoes.colective;
 
 import data.DataBaseConnection;
 import data.QueryResult;
+import jade.content.Concept;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
@@ -27,6 +28,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.stubbing.Answer;
 import test.PowerMockitoTest;
@@ -37,8 +39,10 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.matches;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -62,6 +66,32 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         dataPersistenceBehaviour = new DataPersistenceBehaviour(agentMock);
         setFieldValue(dataPersistenceBehaviour, "connection", dataBaseConnection);
         counter = 0;
+    }
+
+    @Test
+    public void shouldUseTransactionsWhenPerformingActions() throws Exception {
+        mockEverything();
+        Action action = new Action(new AID(), randomAction());
+        dataPersistenceBehaviour.performAction(action);
+        InOrder orderVerifier = inOrder(dataBaseConnection);
+        orderVerifier.verify(dataBaseConnection).beginTransaction();
+        orderVerifier.verify(dataBaseConnection).endTransaction();
+    }
+
+    @Test
+    public void shouldRollbackTransactionIfException() throws Exception {
+        QueryResult queryResult = mockEverything();
+        when(dataBaseConnection.execute(anyString())).thenReturn(false);
+        when(queryResult.next()).thenReturn(false);
+
+        try {
+            dataPersistenceBehaviour.performAction(new Action(new AID(), randomAction()));
+            fail();
+        } catch (FailureException e) {
+            InOrder orderVerifier = inOrder(dataBaseConnection);
+            orderVerifier.verify(dataBaseConnection).beginTransaction();
+            orderVerifier.verify(dataBaseConnection).rollbackTransaction();
+        }
     }
 
     @Test
@@ -117,11 +147,11 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         dataPersistenceBehaviour.performAction(createObject);
 
         String expectedInsertObjectSQL = "INSERT INTO object \\(uuid, name, creator_name\\) VALUES \\(\\'.*\\', \\'expectedObjectName\\', \\'expectedAgentName\\'\\);";
-        String expectedInsertObjectPropertySQL = "INSERT INTO object_property (object_uuid, name, value) VALUES ('918923bc-b544-454d-85e1-dbe5b86b6b0d', 'expectedPropertyName', 'expectedPropertyValue');";
-        String expectedInsertObjectProperty2SQL = "INSERT INTO object_property (object_uuid, name, value) VALUES ('918923bc-b544-454d-85e1-dbe5b86b6b0d', 'expectedPropertyName2', 'expectedPropertyValue2');";
+        String unexpectedInsertObjectPropertySQL = "INSERT INTO object_property \\(object_uuid, name, value\\) VALUES \\(\\'.*\\', \\'expectedPropertyName\\', \\'expectedPropertyValue\\'\\);";
+        String unexpectedInsertObjectProperty2SQL = "INSERT INTO object_property \\(object_uuid, name, value\\) VALUES \\(\\'.*\\', \\'expectedPropertyName2\\', \\'expectedPropertyValue2\\'\\);";
         verify(dataBaseConnection).execute(matches(expectedInsertObjectSQL));
-        verify(dataBaseConnection, never()).execute(expectedInsertObjectPropertySQL);
-        verify(dataBaseConnection, never()).execute(expectedInsertObjectProperty2SQL);
+        verify(dataBaseConnection, never()).execute(matches(unexpectedInsertObjectPropertySQL));
+        verify(dataBaseConnection, never()).execute(matches(unexpectedInsertObjectProperty2SQL));
     }
 
     @Test
@@ -311,4 +341,31 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         };
     }
 
+    private Concept randomAction() {
+        switch (new Random().nextInt(4)){
+            case 1:
+                return new CreateObject(createObjectStimulus());
+            case 2:
+                return new GetObject(createObjectStimulus());
+            case 3:
+                return new UpdateObject(createObjectStimulus());
+            default:
+                return new DeleteObject(createObjectStimulus());
+        }
+    }
+
+    private QueryResult mockEverything() {
+        QueryResult queryResult = mock(QueryResult.class);
+        when(queryResult.next()).thenAnswer(answerTrueTwice());
+        when(queryResult.getString("name")).thenReturn("expectedObjectName");
+        when(queryResult.getString("creator_name")).thenReturn("expectedAgentName");
+        when(queryResult.getString("uuid")).thenReturn("adbce68549");
+        when(queryResult.getString("value")).thenReturn("value");
+        when(queryResult.getString("uuid")).thenReturn("123");
+        AID agentAID = mock(AID.class);
+        when(agentMock.getAID("expectedAgentName")).thenReturn(agentAID);
+        when(dataBaseConnection.execute(anyString())).thenReturn(true);
+        when(dataBaseConnection.query(anyString())).thenReturn(queryResult);
+        return queryResult;
+    }
 }
