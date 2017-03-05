@@ -23,9 +23,9 @@ import java.util.List;
 
 public class RequesterGui extends JFrame {
 
-    private static final int CONVERSATIONS_CACHE = 20;
-    private static final String FIELD_W = "w 250, wrap";
-    private static final String LABEL_W = "w 110";
+    private static final int CONVERSATIONS_CACHE = 50;
+    private static final String FIELD_W = "w 190, wrap";
+    private static final String LABEL_W = "w 90";
     private JLabel senderAgentLabel;
     private JComboBox<RequesterGuiAction> actionsComboBox;
     private JTextPane messageTextPane;
@@ -80,7 +80,7 @@ public class RequesterGui extends JFrame {
 
     private void setUp() {
         setTitle("Envío de Mensajes - GUI");
-        setSize(1024, 600);
+        setSize(900, 600);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
         addComponents();
@@ -117,7 +117,9 @@ public class RequesterGui extends JFrame {
         JLabel actionsLabel = new JLabel("Acción:");
         westPanel.add(actionsLabel, LABEL_W);
 
+        Font font = new Font("Arial", Font.BOLD, 10);
         actionsComboBox = new JComboBox<>(RequesterGuiAction.values());
+        actionsComboBox.setFont(font);
         actionsComboBox.setActionCommand(RequesterGuiEvent.CHANGE_ACTION.toString());
         actionsComboBox.addActionListener(new RequesterGuiComboBoxListener(this));
         westPanel.add(actionsComboBox, FIELD_W);

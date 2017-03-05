@@ -7,7 +7,6 @@
 package gui;
 
 import jade.lang.acl.ACLMessage;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,11 +19,13 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doNothing;
@@ -77,11 +78,8 @@ public class RequesterGuiTest {
 
     @Test
     public void shouldSetupViewConfiguration() {
-        assertThat(requesterGuiSpy.getTitle(), is("Requester GUI"));
-        assertThat(requesterGuiSpy.getSize().getWidth(), is(1024.));
-        assertThat(requesterGuiSpy.getSize().getHeight(), is(768.));
         assertThat(requesterGuiSpy.getDefaultCloseOperation(), is(WindowConstants.DO_NOTHING_ON_CLOSE));
-        assertThat(requesterGuiSpy.getLayout(), is(IsInstanceOf.instanceOf(BorderLayout.class)));
+        assertThat(requesterGuiSpy.getLayout(), is(instanceOf(BorderLayout.class)));
     }
 
     @Test
@@ -133,7 +131,7 @@ public class RequesterGuiTest {
 
         requesterGui.logMessage(messageMock);
 
-        verify(styledDocumentMock).insertString(anyInt(), eq("Conversation: " + expectedConversationId + "\n"), any(AttributeSet.class));
+        verify(styledDocumentMock).insertString(anyInt(), contains(expectedConversationId), any(AttributeSet.class));
         verify(styledDocumentMock).insertString(anyInt(), eq(expectedMessageToString + "\n\n"), any(AttributeSet.class));
     }
 

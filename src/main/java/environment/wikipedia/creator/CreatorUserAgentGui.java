@@ -29,15 +29,18 @@ import java.awt.*;
 public class CreatorUserAgentGui extends JFrame {
 
     private static final String INSETS_10 = "insets 10";
+    private static final String FIELD_W = "grow, wrap 15";
     private JTextArea eventsTextArea;
     private EmotionalSpaceChart emotionalSpaceChart;
     private JLabel agentNameLabel;
     private JLabel emotionNameLabel;
     private JLabel behaviourNameLabel;
     private JLabel emotionTypeNameLabel;
+    private JLabel activationValueLabel;
+    private JLabel satisfactionValueLabel;
 
     public CreatorUserAgentGui() {
-        setSize(400, 700);
+        setSize(400, 720);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
         setTitle("Usuario Creador de Contenido");
@@ -62,38 +65,49 @@ public class CreatorUserAgentGui extends JFrame {
         add(centerPanel, BorderLayout.CENTER);
 
         JLabel agentLabel = new JLabel("Agente:");
-        centerPanel.add(agentLabel, "w 80");
+        centerPanel.add(agentLabel, "w 100");
 
         agentNameLabel = new JLabel();
         agentNameLabel.setFont(font);
-        centerPanel.add(agentNameLabel, "w 100%, wrap 20");
-
-        JLabel emotionalStateLabel = new JLabel("Estado emocional");
-        centerPanel.add(emotionalStateLabel, "span 2, wrap");
-
-        emotionalSpaceChart = new EmotionalSpaceChart();
-        centerPanel.add(emotionalSpaceChart, "w 300, h 300, span 2, wrap 20");
+        centerPanel.add(agentNameLabel, FIELD_W);
 
         JLabel emotionLabel = new JLabel("Emoción:");
-        centerPanel.add(emotionLabel, "w 80");
+        centerPanel.add(emotionLabel, "grow");
 
         emotionNameLabel = new JLabel();
         emotionNameLabel.setFont(font);
-        centerPanel.add(emotionNameLabel, "w 100%, wrap 20");
+        centerPanel.add(emotionNameLabel, FIELD_W);
 
         JLabel emotionTypeLabel = new JLabel("Tipo de emoción:");
-        centerPanel.add(emotionTypeLabel, "w 80");
+        centerPanel.add(emotionTypeLabel, "grow");
 
         emotionTypeNameLabel = new JLabel();
         emotionTypeNameLabel.setFont(font);
-        centerPanel.add(emotionTypeNameLabel, "w 100%, wrap 20");
+        centerPanel.add(emotionTypeNameLabel, FIELD_W);
 
         JLabel behaviourLabel = new JLabel("Comportamiento:");
-        centerPanel.add(behaviourLabel, "w 80");
+        centerPanel.add(behaviourLabel, "grow");
 
         behaviourNameLabel = new JLabel();
         behaviourNameLabel.setFont(font);
-        centerPanel.add(behaviourNameLabel, "w 100%, wrap 20");
+        centerPanel.add(behaviourNameLabel, FIELD_W);
+
+        JLabel activationLabel = new JLabel("Activación (x):");
+        centerPanel.add(activationLabel, "grow");
+
+        activationValueLabel = new JLabel();
+        activationValueLabel.setFont(font);
+        centerPanel.add(activationValueLabel, FIELD_W);
+
+        JLabel satisfactionLabel = new JLabel("Satisfación (y):");
+        centerPanel.add(satisfactionLabel, "grow");
+
+        satisfactionValueLabel = new JLabel();
+        satisfactionValueLabel.setFont(font);
+        centerPanel.add(satisfactionValueLabel, FIELD_W);
+
+        emotionalSpaceChart = new EmotionalSpaceChart();
+        centerPanel.add(emotionalSpaceChart, "w 300, h 300, span 2");
     }
 
     private void addSouthComponents() {
@@ -113,6 +127,8 @@ public class CreatorUserAgentGui extends JFrame {
 
     public void addEmotionalState(EmotionalState emotionalState) {
         emotionalSpaceChart.addEmotionalState(emotionalState);
+        satisfactionValueLabel.setText(String.format("%.5f", emotionalState.getSatisfaction()));
+        activationValueLabel.setText(String.format("%.5f", emotionalState.getActivation()));
     }
 
     public void logEvent(String message) {
