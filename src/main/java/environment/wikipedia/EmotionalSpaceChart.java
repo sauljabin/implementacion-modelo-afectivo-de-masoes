@@ -20,13 +20,14 @@ import static java.lang.Math.abs;
 
 public class EmotionalSpaceChart extends Canvas implements Runnable {
 
-    private static int FPS = 24;
+    private static int FPS = 10;
     private Font font;
     private Thread thread;
     private BufferedImage image;
     private Graphics2D graphics;
     private List<EmotionalState> emotionalStates;
     private boolean stop;
+    private EmotionalState lastEmotionalState;
 
     public EmotionalSpaceChart() {
         emotionalStates = new ArrayList<>();
@@ -56,14 +57,24 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
         }
     }
 
-    private void addEmotionalState(EmotionalState emotionalState) {
+    public void addEmotionalState(EmotionalState emotionalState) {
+        if (lastEmotionalState != null) {
+            if (lastEmotionalState.getActivation() == emotionalState.getActivation()
+                    && lastEmotionalState.getSatisfaction() == emotionalState.getSatisfaction()) {
+                return;
+            }
+        }
         emotionalStates.add(emotionalState);
+        lastEmotionalState = emotionalState;
     }
 
-
-    public void rendering() {
-        graphics.setBackground(getBackground());
+    private void rendering() {
+        graphics.setBackground(Color.WHITE);
         graphics.clearRect(0, 0, getWidth(), getHeight());
+
+        // CUADRO EXTERIOR
+        graphics.setColor(Color.BLACK);
+        graphics.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 
         // CUADRO INTERIOR
         graphics.setColor(Color.LIGHT_GRAY);
@@ -110,7 +121,7 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
         getGraphics().drawImage(image, 0, 0, this);
     }
 
-    public int convertXToCanvas(int size, double value) {
+    private int convertXToCanvas(int size, double value) {
         int sign = 1;
         if (value < 0) {
             sign = -1;
@@ -118,7 +129,7 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
         return (int) ((size / 2 + abs(value) * size / 2 * sign));
     }
 
-    public int convertYToCanvas(int size, double value) {
+    private int convertYToCanvas(int size, double value) {
         int sign = 1;
         if (value >= 0) {
             sign = -1;
@@ -142,7 +153,7 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
         }
     }
 
-    public synchronized void makeImage() {
+    private synchronized void makeImage() {
         image = new BufferedImage(getWidth(), getHeight(), 1);
         graphics = (Graphics2D) image.getGraphics();
         RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

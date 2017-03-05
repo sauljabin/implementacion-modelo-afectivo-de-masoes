@@ -8,14 +8,20 @@ package environment.wikipedia;
 
 import environment.AgentParameter;
 import environment.Environment;
+import environment.wikipedia.creator.CreatorUserAgent;
+import gui.RequesterGuiAgent;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class WikipediaEnvironment extends Environment {
 
     @Override
     public List<AgentParameter> getAgentParameters() {
-        return null;
+        return Arrays.asList(
+                new AgentParameter("creator", CreatorUserAgent.class),
+                new AgentParameter("requester", RequesterGuiAgent.class)
+        );
     }
 
     @Override

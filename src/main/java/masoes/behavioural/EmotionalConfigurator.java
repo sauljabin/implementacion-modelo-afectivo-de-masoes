@@ -55,7 +55,9 @@ public class EmotionalConfigurator {
                 String emotionName = solveEmotion.getTerm(ANSWER_VAR_NAME).toString().replace("'", "").toLowerCase();
                 Emotion newEmotion = emotionalSpace.searchEmotion(emotionName);
                 EmotionalState newEmotionalState = newEmotion.getRandomEmotionalState();
-                emotionalAgent.log(String.format("Changing emotion %s to %s", getEmotion().getName(), newEmotion.getName()));
+                if (!getEmotion().getName().equals(newEmotion.getName())) {
+                    emotionalAgent.log(String.format("Changing emotion %s to %s", getEmotion().getName().toUpperCase(), newEmotion.getName().toUpperCase()));
+                }
                 return newEmotionalState;
             }
             return emotionalState;
