@@ -8,24 +8,24 @@ package gui;
 
 public enum RequesterGuiAction {
 
-    GET_ALL_SETTINGS("Get all settings"),
-    GET_SETTING("Get setting"),
-    ADD_BEHAVIOUR("Add behaviour"),
-    REMOVE_BEHAVIOUR("Remove behaviour"),
-    GET_EMOTIONAL_STATE("Get emotional state"),
-    EVALUATE_ACTION_STIMULUS("Evaluate action"),
-    EVALUATE_OBJECT_STIMULUS("Evaluate object"),
-    SEND_SIMPLE_CONTENT("Send simple content"),
-    NOTIFY_ACTION("Notify action"),
-    GET_SERVICES("Get agent services"),
-    GET_AGENTS("Get agents"),
-    REGISTER_AGENT("Register agent"),
-    DEREGISTER_AGENT("Deregister agent"),
-    SEARCH_AGENT("Search agent in DF"),
-    CREATE_OBJECT("Create object"),
-    UPDATE_OBJECT("Update object"),
-    GET_OBJECT("Get object"),
-    DELETE_OBJECT("Delete object");
+    GET_ALL_SETTINGS("Consultar configuraciones"),
+    GET_SETTING("Consultar configuración"),
+    ADD_BEHAVIOUR("Agregar comportamiento"),
+    REMOVE_BEHAVIOUR("Remover comportamiento"),
+    GET_EMOTIONAL_STATE("Consultar estado emocional"),
+    EVALUATE_ACTION_STIMULUS("Evaluar acción"),
+    EVALUATE_OBJECT_STIMULUS("Evaluar objeto"),
+    SEND_SIMPLE_CONTENT("Enviar contenido simple"),
+    NOTIFY_ACTION("Notificar Acción"),
+    GET_SERVICES("Consultar servicios"),
+    GET_AGENTS("Consultar agentes"),
+    REGISTER_AGENT("Registrar agente"),
+    DEREGISTER_AGENT("Eliminar registro"),
+    SEARCH_AGENT("Buscar agente en DF"),
+    CREATE_OBJECT("Crear objeto"),
+    UPDATE_OBJECT("Actualizar objeto"),
+    GET_OBJECT("Obtener objeto"),
+    DELETE_OBJECT("Eliminar objeto");
 
     private String name;
 

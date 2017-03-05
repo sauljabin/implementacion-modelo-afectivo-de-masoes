@@ -24,6 +24,8 @@ import java.util.List;
 public class RequesterGui extends JFrame {
 
     private static final int CONVERSATIONS_CACHE = 20;
+    private static final String FIELD_W = "w 250, wrap";
+    private static final String LABEL_W = "w 110";
     private JLabel senderAgentLabel;
     private JComboBox<RequesterGuiAction> actionsComboBox;
     private JTextPane messageTextPane;
@@ -77,8 +79,8 @@ public class RequesterGui extends JFrame {
     }
 
     private void setUp() {
-        setTitle("Requester GUI");
-        setSize(1024, 768);
+        setTitle("Envío de Mensajes - GUI");
+        setSize(1024, 600);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
         addComponents();
@@ -99,44 +101,44 @@ public class RequesterGui extends JFrame {
     }
 
     private void createWestComponents() {
-        JLabel senderAgentTitleLabel = new JLabel("Sender agent:");
-        westPanel.add(senderAgentTitleLabel, "w 110");
+        JLabel senderAgentTitleLabel = new JLabel("Remitente:");
+        westPanel.add(senderAgentTitleLabel, LABEL_W);
 
         senderAgentLabel = new JLabel();
         senderAgentLabel.setForeground(Color.BLUE);
-        westPanel.add(senderAgentLabel, "w 150, wrap");
+        westPanel.add(senderAgentLabel, FIELD_W);
 
-        JLabel receiverAgentTitleLabel = new JLabel("Receiver agent:");
-        westPanel.add(receiverAgentTitleLabel, "grow");
+        JLabel receiverAgentTitleLabel = new JLabel("Receptor:");
+        westPanel.add(receiverAgentTitleLabel, LABEL_W);
 
         receiverAgentTextField = new JTextField();
-        westPanel.add(receiverAgentTextField, "grow, wrap");
+        westPanel.add(receiverAgentTextField, FIELD_W);
 
-        JLabel actionsLabel = new JLabel("Action:");
-        westPanel.add(actionsLabel, "grow");
+        JLabel actionsLabel = new JLabel("Acción:");
+        westPanel.add(actionsLabel, LABEL_W);
 
         actionsComboBox = new JComboBox<>(RequesterGuiAction.values());
         actionsComboBox.setActionCommand(RequesterGuiEvent.CHANGE_ACTION.toString());
         actionsComboBox.addActionListener(new RequesterGuiComboBoxListener(this));
-        westPanel.add(actionsComboBox, "grow, wrap");
+        westPanel.add(actionsComboBox, FIELD_W);
 
         dynamicCanvasPanel = new JPanel(new MigLayout("insets 0"));
         westPanel.add(dynamicCanvasPanel, "span 2, grow, wrap 20");
 
-        sendRequestButton = new JButton("Send request");
+        sendRequestButton = new JButton("Enviar mensaje");
         sendRequestButton.setActionCommand(RequesterGuiEvent.SEND_MESSAGE.toString());
         westPanel.add(sendRequestButton, "span 2, h 30, grow");
     }
 
     private void createCenterComponent() {
-        JLabel messageTextTitleLabel = new JLabel("Messages:");
+        JLabel messageTextTitleLabel = new JLabel("Mensajes:");
         centerPanel.add(messageTextTitleLabel, "w 100%");
 
-        saveMessagesLogButton = new JButton("Save");
+        saveMessagesLogButton = new JButton("Guardar");
         saveMessagesLogButton.setActionCommand(RequesterGuiEvent.SAVE_MESSAGE_LOGS.toString());
         centerPanel.add(saveMessagesLogButton);
 
-        clearMessagesLogButton = new JButton("Clear");
+        clearMessagesLogButton = new JButton("Limpiar");
         clearMessagesLogButton.setActionCommand(RequesterGuiEvent.CLEAR_MESSAGE_LOGS.toString());
         centerPanel.add(clearMessagesLogButton, "wrap");
 
@@ -203,7 +205,7 @@ public class RequesterGui extends JFrame {
 
             attributeSet.addAttribute(StyleConstants.Bold, Boolean.TRUE);
             attributeSet.addAttribute(StyleConstants.Foreground, conversations.get(message.getConversationId()));
-            document.insertString(document.getLength(), "Conversation: " + message.getConversationId() + "\n", attributeSet);
+            document.insertString(document.getLength(), "Canversación: " + message.getConversationId() + "\n", attributeSet);
 
             attributeSet.addAttribute(StyleConstants.Bold, Boolean.FALSE);
             attributeSet.addAttribute(StyleConstants.Foreground, Color.BLACK);
@@ -268,10 +270,10 @@ public class RequesterGui extends JFrame {
 
     public void setGetSettingActionComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel keySettingTitleLabel = new JLabel("Key:");
-            dynamicCanvasPanel.add(keySettingTitleLabel, "w 110");
+            JLabel keySettingTitleLabel = new JLabel("Nombre:");
+            dynamicCanvasPanel.add(keySettingTitleLabel, LABEL_W);
             keySettingTextField = new JTextField();
-            dynamicCanvasPanel.add(keySettingTextField, "w 175, wrap");
+            dynamicCanvasPanel.add(keySettingTextField, FIELD_W);
         });
     }
 
@@ -283,31 +285,31 @@ public class RequesterGui extends JFrame {
     public void setEvaluateActionStimulusComponents() {
         refreshDynamicCanvas(() -> {
             JLabel actorTitleLabel = new JLabel("Actor:");
-            dynamicCanvasPanel.add(actorTitleLabel, "w 110");
+            dynamicCanvasPanel.add(actorTitleLabel, LABEL_W);
             actorNameTextField = new JTextField();
-            dynamicCanvasPanel.add(actorNameTextField, "w 175, wrap");
+            dynamicCanvasPanel.add(actorNameTextField, FIELD_W);
 
-            JLabel actionNameTitleLabel = new JLabel("Action name:");
-            dynamicCanvasPanel.add(actionNameTitleLabel, "w 110");
+            JLabel actionNameTitleLabel = new JLabel("Acción:");
+            dynamicCanvasPanel.add(actionNameTitleLabel, LABEL_W);
             actionNameTextField = new JTextField();
-            dynamicCanvasPanel.add(actionNameTextField, "w 175, wrap");
+            dynamicCanvasPanel.add(actionNameTextField, FIELD_W);
         });
     }
 
     public void setEvaluateObjectStimulusComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel creatorTitleLabel = new JLabel("Creator:");
-            dynamicCanvasPanel.add(creatorTitleLabel, "w 110");
+            JLabel creatorTitleLabel = new JLabel("Creador:");
+            dynamicCanvasPanel.add(creatorTitleLabel, LABEL_W);
             creatorNameTextField = new JTextField();
-            dynamicCanvasPanel.add(creatorNameTextField, "w 175, wrap");
+            dynamicCanvasPanel.add(creatorNameTextField, FIELD_W);
 
-            JLabel objectNameTitleLabel = new JLabel("Object name:");
-            dynamicCanvasPanel.add(objectNameTitleLabel, "w 110");
+            JLabel objectNameTitleLabel = new JLabel("Objeto:");
+            dynamicCanvasPanel.add(objectNameTitleLabel, LABEL_W);
             objectNameTextField = new JTextField();
-            dynamicCanvasPanel.add(objectNameTextField, "w 175, wrap");
+            dynamicCanvasPanel.add(objectNameTextField, FIELD_W);
 
-            JLabel propertiesTitleLabel = new JLabel("Properties:");
-            dynamicCanvasPanel.add(propertiesTitleLabel, "w 110");
+            JLabel propertiesTitleLabel = new JLabel("Propiedades:");
+            dynamicCanvasPanel.add(propertiesTitleLabel, LABEL_W);
             propertiesTextArea = new JTextArea();
 
             DefaultCaret caret = (DefaultCaret) propertiesTextArea.getCaret();
@@ -315,39 +317,39 @@ public class RequesterGui extends JFrame {
 
             JScrollPane propertiesTextScrollPane = new JScrollPane(propertiesTextArea);
 
-            dynamicCanvasPanel.add(propertiesTextScrollPane, "w 175, h 80, wrap");
+            dynamicCanvasPanel.add(propertiesTextScrollPane, "h 80, " + FIELD_W);
         });
     }
 
     public void setSimpleContentActionComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel contentTitleLabel = new JLabel("Content:");
-            dynamicCanvasPanel.add(contentTitleLabel, "w 110");
+            JLabel contentTitleLabel = new JLabel("Contenido:");
+            dynamicCanvasPanel.add(contentTitleLabel, LABEL_W);
             simpleContentTextField = new JTextField();
-            dynamicCanvasPanel.add(simpleContentTextField, "w 175, wrap");
+            dynamicCanvasPanel.add(simpleContentTextField, FIELD_W);
         });
     }
 
     public void setRemoveBehaviourActionComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel nameTitleLabel = new JLabel("Name:");
-            dynamicCanvasPanel.add(nameTitleLabel, "w 110");
+            JLabel nameTitleLabel = new JLabel("Nombre:");
+            dynamicCanvasPanel.add(nameTitleLabel, LABEL_W);
             behaviourNameTextField = new JTextField();
-            dynamicCanvasPanel.add(behaviourNameTextField, "w 175, wrap");
+            dynamicCanvasPanel.add(behaviourNameTextField, FIELD_W);
         });
     }
 
     public void setAddBehaviourActionComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel nameTitleLabel = new JLabel("Name:");
-            dynamicCanvasPanel.add(nameTitleLabel, "w 110");
+            JLabel nameTitleLabel = new JLabel("Nombre:");
+            dynamicCanvasPanel.add(nameTitleLabel, LABEL_W);
             behaviourNameTextField = new JTextField();
-            dynamicCanvasPanel.add(behaviourNameTextField, "w 175, wrap");
+            dynamicCanvasPanel.add(behaviourNameTextField, FIELD_W);
 
-            JLabel classNameTitleLabel = new JLabel("Class name:");
-            dynamicCanvasPanel.add(classNameTitleLabel, "w 110");
+            JLabel classNameTitleLabel = new JLabel("Clase:");
+            dynamicCanvasPanel.add(classNameTitleLabel, LABEL_W);
             behaviourClassNameTextField = new JTextField();
-            dynamicCanvasPanel.add(behaviourClassNameTextField, "w 175, wrap");
+            dynamicCanvasPanel.add(behaviourClassNameTextField, FIELD_W);
         });
     }
 
@@ -357,10 +359,10 @@ public class RequesterGui extends JFrame {
 
     public void setGetServicesActionComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel nameTitleLabel = new JLabel("Agent name:");
-            dynamicCanvasPanel.add(nameTitleLabel, "w 110");
+            JLabel nameTitleLabel = new JLabel("Agente:");
+            dynamicCanvasPanel.add(nameTitleLabel, LABEL_W);
             agentNameTextField = new JTextField();
-            dynamicCanvasPanel.add(agentNameTextField, "w 175, wrap");
+            dynamicCanvasPanel.add(agentNameTextField, FIELD_W);
         });
     }
 
@@ -371,10 +373,10 @@ public class RequesterGui extends JFrame {
 
     public void setSearchAgentActionComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel nameTitleLabel = new JLabel("Service name:");
-            dynamicCanvasPanel.add(nameTitleLabel, "w 110");
+            JLabel nameTitleLabel = new JLabel("Servicio:");
+            dynamicCanvasPanel.add(nameTitleLabel, LABEL_W);
             serviceNameTextField = new JTextField();
-            dynamicCanvasPanel.add(serviceNameTextField, "w 175, wrap");
+            dynamicCanvasPanel.add(serviceNameTextField, FIELD_W);
         });
     }
 
@@ -384,15 +386,15 @@ public class RequesterGui extends JFrame {
 
     public void setRegisterAgentActionComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel agentNameTitle = new JLabel("Agent name:");
-            dynamicCanvasPanel.add(agentNameTitle, "w 110");
+            JLabel agentNameTitle = new JLabel("Agente:");
+            dynamicCanvasPanel.add(agentNameTitle, LABEL_W);
             agentNameTextField = new JTextField();
-            dynamicCanvasPanel.add(agentNameTextField, "w 175, wrap");
+            dynamicCanvasPanel.add(agentNameTextField, FIELD_W);
 
-            JLabel serviceNameTitle = new JLabel("Service name:");
-            dynamicCanvasPanel.add(serviceNameTitle, "w 110");
+            JLabel serviceNameTitle = new JLabel("Servicio:");
+            dynamicCanvasPanel.add(serviceNameTitle, LABEL_W);
             serviceNameTextField = new JTextField();
-            dynamicCanvasPanel.add(serviceNameTextField, "w 175, wrap");
+            dynamicCanvasPanel.add(serviceNameTextField, FIELD_W);
         });
     }
 
