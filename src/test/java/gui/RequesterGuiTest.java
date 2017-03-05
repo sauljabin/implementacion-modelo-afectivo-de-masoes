@@ -288,6 +288,14 @@ public class RequesterGuiTest {
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
     }
 
+    @Test
+    public void shouldAddCreatorAndObjectWhenActionIsGetObjectStimulus() {
+        requesterGuiSpy.setGetObjectStimulusComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
+    }
+
     private void testDynamicContentRepaint() {
         verify(dynamicCanvasPanelMock).removeAll();
         verify(requesterGuiSpy).revalidate();

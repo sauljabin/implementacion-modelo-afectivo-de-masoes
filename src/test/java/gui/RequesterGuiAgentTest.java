@@ -31,6 +31,7 @@ import ontology.masoes.CreateObject;
 import ontology.masoes.DeleteObject;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
+import ontology.masoes.GetObject;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.NotifyAction;
 import ontology.masoes.ObjectProperty;
@@ -301,6 +302,24 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         DeleteObject deleteObject = (DeleteObject) action.getAction();
 
         ObjectStimulus objectStimulus = deleteObject.getObjectStimulus();
+        assertThat(objectStimulus.getCreator().getLocalName(), is(expectedCreatorName));
+        assertThat(objectStimulus.getObjectName(), is(expectedObjectName));
+    }
+
+    @Test
+    public void shouldSendGetObjectStimulus() throws Exception {
+        String expectedCreatorName = "expectedCreatorName";
+        String expectedObjectName = "expectedObjectName";
+        doReturn(expectedCreatorName).when(requesterGuiMock).getCreatorName();
+        doReturn(expectedObjectName).when(requesterGuiMock).getObjectName();
+        doReturn(new AID(expectedCreatorName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedCreatorName);
+
+        Action action = testRequestAction(MasoesOntology.getInstance(), RequesterGuiAction.GET_OBJECT);
+        assertThat(action.getAction(), is(instanceOf(GetObject.class)));
+
+        GetObject getObject = (GetObject) action.getAction();
+
+        ObjectStimulus objectStimulus = getObject.getObjectStimulus();
         assertThat(objectStimulus.getCreator().getLocalName(), is(expectedCreatorName));
         assertThat(objectStimulus.getObjectName(), is(expectedObjectName));
     }

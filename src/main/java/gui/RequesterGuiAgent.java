@@ -31,6 +31,7 @@ import ontology.masoes.CreateObject;
 import ontology.masoes.DeleteObject;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
+import ontology.masoes.GetObject;
 import ontology.masoes.MasoesOntology;
 import ontology.masoes.NotifyAction;
 import ontology.masoes.ObjectProperty;
@@ -170,8 +171,18 @@ public class RequesterGuiAgent extends GuiAgent {
             case DELETE_OBJECT:
                 sendDeleteObject(aid);
                 break;
+            case GET_OBJECT:
+                sendGetObject(aid);
+                break;
         }
 
+    }
+
+    private void sendGetObject(AID aid) {
+        ObjectStimulus objectStimulus = new ObjectStimulus();
+        objectStimulus.setCreator(getAID(requesterGui.getCreatorName()));
+        objectStimulus.setObjectName(requesterGui.getObjectName());
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), new GetObject(objectStimulus));
     }
 
     private void sendDeleteObject(AID aid) {

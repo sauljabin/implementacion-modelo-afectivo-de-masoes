@@ -128,6 +128,12 @@ public class RequesterGuiComboBoxListenerTest {
         verify(requesterGuiMock).setDeleteObjectStimulusComponents();
     }
 
+    @Test
+    public void shouldInvokeGetObject() {
+        prepareTest(RequesterGuiAction.GET_OBJECT);
+        verify(requesterGuiMock).setGetObjectStimulusComponents();
+    }
+
     private void prepareTest(RequesterGuiAction action) {
         doReturn(action).when(requesterGuiMock).getSelectedAction();
         ActionEvent actionEvent = new ActionEvent(requesterGuiMock, RequesterGuiEvent.CHANGE_ACTION.getInt(), RequesterGuiEvent.CHANGE_ACTION.toString());
