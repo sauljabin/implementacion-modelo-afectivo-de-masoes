@@ -408,6 +408,20 @@ public class RequesterGui extends JFrame {
         setEvaluateObjectStimulusComponents();
     }
 
+    public void setDeleteObjectStimulusComponents() {
+        refreshDynamicCanvas(() -> {
+            JLabel creatorTitleLabel = new JLabel("Creador:");
+            dynamicCanvasPanel.add(creatorTitleLabel, LABEL_W);
+            creatorNameTextField = new JTextField();
+            dynamicCanvasPanel.add(creatorNameTextField, FIELD_W);
+
+            JLabel objectNameTitleLabel = new JLabel("Objeto:");
+            dynamicCanvasPanel.add(objectNameTitleLabel, LABEL_W);
+            objectNameTextField = new JTextField();
+            dynamicCanvasPanel.add(objectNameTextField, FIELD_W);
+        });
+    }
+
     public void refreshDynamicCanvas(Runnable runnable) {
         dynamicCanvasPanel.removeAll();
         runnable.run();

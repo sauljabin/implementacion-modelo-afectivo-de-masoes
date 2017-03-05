@@ -28,6 +28,7 @@ import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
 import ontology.masoes.ActionStimulus;
 import ontology.masoes.CreateObject;
+import ontology.masoes.DeleteObject;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
@@ -284,6 +285,24 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         ObjectProperty propertyType = (ObjectProperty) objectStimulus.getObjectProperties().get(1);
         assertThat(propertyType.getName(), is("type"));
         assertThat(propertyType.getValue(), is("car"));
+    }
+
+    @Test
+    public void shouldSendDeleteObjectStimulus() throws Exception {
+        String expectedCreatorName = "expectedCreatorName";
+        String expectedObjectName = "expectedObjectName";
+        doReturn(expectedCreatorName).when(requesterGuiMock).getCreatorName();
+        doReturn(expectedObjectName).when(requesterGuiMock).getObjectName();
+        doReturn(new AID(expectedCreatorName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedCreatorName);
+
+        Action action = testRequestAction(MasoesOntology.getInstance(), RequesterGuiAction.DELETE_OBJECT);
+        assertThat(action.getAction(), is(instanceOf(DeleteObject.class)));
+
+        DeleteObject deleteObject = (DeleteObject) action.getAction();
+
+        ObjectStimulus objectStimulus = deleteObject.getObjectStimulus();
+        assertThat(objectStimulus.getCreator().getLocalName(), is(expectedCreatorName));
+        assertThat(objectStimulus.getObjectName(), is(expectedObjectName));
     }
 
     @Test

@@ -254,7 +254,7 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldAddActorAndActionWhenActionIsEvaluateObjectStimulus() {
+    public void shouldAddActorAndActionAndPropertiesWhenActionIsEvaluateObjectStimulus() {
         requesterGuiSpy.setEvaluateObjectStimulusComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock, times(3)).add(isA(JLabel.class), anyString());
@@ -263,7 +263,7 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldAddActorAndActionWhenActionIsCreateObjectStimulus() {
+    public void shouldAddCreatorAndObjectAndPropertiesWhenActionIsCreateObjectStimulus() {
         requesterGuiSpy.setCreateObjectStimulusComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock, times(3)).add(isA(JLabel.class), anyString());
@@ -272,12 +272,20 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldAddActorAndActionWhenActionIsUpdateObjectStimulus() {
+    public void shouldAddCreatorAndObjectAndPropertiesWhenActionIsUpdateObjectStimulus() {
         requesterGuiSpy.setUpdateObjectStimulusComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock, times(3)).add(isA(JLabel.class), anyString());
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
         verify(dynamicCanvasPanelMock).add(isA(JScrollPane.class), anyString());
+    }
+
+    @Test
+    public void shouldAddCreatorAndObjectWhenActionIsDeleteObjectStimulus() {
+        requesterGuiSpy.setDeleteObjectStimulusComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
     }
 
     private void testDynamicContentRepaint() {

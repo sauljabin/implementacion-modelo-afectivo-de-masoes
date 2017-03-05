@@ -20,7 +20,7 @@ public enum RequesterGuiAction {
     GET_SERVICES("Consultar servicios"),
     GET_AGENTS("Consultar agentes"),
     REGISTER_AGENT("Registrar agente"),
-    DEREGISTER_AGENT("Eliminar registro"),
+    DEREGISTER_AGENT("Eliminar registro de agente"),
     SEARCH_AGENT("Buscar agente en DF"),
     CREATE_OBJECT("Crear objeto"),
     UPDATE_OBJECT("Actualizar objeto"),

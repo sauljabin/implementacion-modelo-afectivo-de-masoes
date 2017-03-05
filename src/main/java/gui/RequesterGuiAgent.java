@@ -28,6 +28,7 @@ import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
 import ontology.masoes.ActionStimulus;
 import ontology.masoes.CreateObject;
+import ontology.masoes.DeleteObject;
 import ontology.masoes.EvaluateStimulus;
 import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
@@ -166,8 +167,18 @@ public class RequesterGuiAgent extends GuiAgent {
             case UPDATE_OBJECT:
                 sendUpdateObject(aid);
                 break;
+            case DELETE_OBJECT:
+                sendDeleteObject(aid);
+                break;
         }
 
+    }
+
+    private void sendDeleteObject(AID aid) {
+        ObjectStimulus objectStimulus = new ObjectStimulus();
+        objectStimulus.setCreator(getAID(requesterGui.getCreatorName()));
+        objectStimulus.setObjectName(requesterGui.getObjectName());
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), new DeleteObject(objectStimulus));
     }
 
     private void sendUpdateObject(AID aid) {

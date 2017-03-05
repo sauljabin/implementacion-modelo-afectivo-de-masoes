@@ -72,6 +72,9 @@ public class RequesterGuiComboBoxListener implements ActionListener {
             case UPDATE_OBJECT:
                 requesterGui.setUpdateObjectStimulusComponents();
                 break;
+            case DELETE_OBJECT:
+                requesterGui.setDeleteObjectStimulusComponents();
+                break;
         }
 
     }
