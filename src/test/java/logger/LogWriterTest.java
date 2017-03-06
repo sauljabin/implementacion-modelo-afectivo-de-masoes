@@ -9,6 +9,7 @@ package logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
+import org.slf4j.event.Level;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -33,6 +34,38 @@ public class LogWriterTest {
         expectedMessageObjects = new Object[]{"arg", 1, 0.4};
         expectedFormatMessage = String.format(expectedFormat, expectedMessageObjects);
         logWriter = new LogWriter();
+    }
+
+    @Test
+    public void shouldInvokeHandlerWithInfo() {
+        LoggerHandler handlerMock = mock(LoggerHandler.class);
+        logWriter.addLoggerHandler(handlerMock);
+        logWriter.message(expectedMessage).info(loggerMock);
+        handlerMock.handleMessage(Level.INFO, expectedMessage);
+    }
+
+    @Test
+    public void shouldInvokeHandlerWithWarn() {
+        LoggerHandler handlerMock = mock(LoggerHandler.class);
+        logWriter.addLoggerHandler(handlerMock);
+        logWriter.message(expectedMessage).warn(loggerMock);
+        handlerMock.handleMessage(Level.WARN, expectedMessage);
+    }
+
+    @Test
+    public void shouldInvokeHandlerWithError() {
+        LoggerHandler handlerMock = mock(LoggerHandler.class);
+        logWriter.addLoggerHandler(handlerMock);
+        logWriter.message(expectedMessage).error(loggerMock);
+        handlerMock.handleMessage(Level.ERROR, expectedMessage);
+    }
+
+    @Test
+    public void shouldInvokeHandlerWithDebug() {
+        LoggerHandler handlerMock = mock(LoggerHandler.class);
+        logWriter.addLoggerHandler(handlerMock);
+        logWriter.message(expectedMessage).debug(loggerMock);
+        handlerMock.handleMessage(Level.DEBUG, expectedMessage);
     }
 
     @Test
