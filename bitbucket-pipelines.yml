@@ -9,5 +9,5 @@ pipelines:
   default:
     - step:
         script: # Modify the commands below to build your repository.
-          - ./gradlew clean unitTest
-          - ./gradlew clean functionalTest
+          - DISPLAY=:0.0 ./gradlew clean unitTest
+          - DISPLAY=:0.0 ./gradlew clean functionalTest
