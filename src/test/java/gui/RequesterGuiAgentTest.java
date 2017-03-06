@@ -145,7 +145,7 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldSendSimpleContentToAgent() throws Exception {
+    public void shouldSendSimpleContentToAgent() {
         String expectedContent = "expectedContent";
         doReturn(expectedContent).when(requesterGuiMock).getSimpleContent();
         doReturn(RequesterGuiAction.SEND_SIMPLE_CONTENT).when(requesterGuiMock).getSelectedAction();

@@ -24,17 +24,17 @@ public class ToStringBuilderTest {
     private ToStringBuilder toStringBuilder;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         toStringBuilder = new ToStringBuilder();
     }
 
     @Test
-    public void shouldGetEmptyStringWhenAnyObjectIsAdded() throws Exception {
+    public void shouldGetEmptyStringWhenAnyObjectIsAdded() {
         assertThat(toStringBuilder.toString(), isEmptyString());
     }
 
     @Test
-    public void shouldNotIncludeNullField() throws Exception {
+    public void shouldNotIncludeNullField() {
         assertThat(toStringBuilder.append("field", null).toString(), isEmptyString());
     }
 
@@ -45,13 +45,13 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeField() throws Exception {
+    public void shouldIncludeField() {
         String actual = toStringBuilder.append("expectedName", "expectedStringObject").toString();
         assertThat(actual, is("[expectedName=expectedStringObject]"));
     }
 
     @Test
-    public void shouldIncludeTwoField() throws Exception {
+    public void shouldIncludeTwoField() {
         String actual = toStringBuilder
                 .append("expectedName", "expectedStringObject")
                 .append("expectedName2", "expectedStringObject2")
@@ -60,7 +60,7 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeFieldAndClassName() throws Exception {
+    public void shouldIncludeFieldAndClassName() {
         Object object = new Object();
         String actual = toStringBuilder
                 .object(object)
@@ -70,7 +70,7 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeArrayField() throws Exception {
+    public void shouldIncludeArrayField() {
         String[] arrayObject = {"A", "B"};
         String actual = toStringBuilder
                 .append("expectedName", arrayObject)
@@ -79,7 +79,7 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeIntArrayField() throws Exception {
+    public void shouldIncludeIntArrayField() {
         int[] arrayObject = {1, 2};
         String actual = toStringBuilder
                 .append("expectedName", arrayObject)
@@ -88,7 +88,7 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeDoubleArrayField() throws Exception {
+    public void shouldIncludeDoubleArrayField() {
         double[] arrayObject = {1.3, 2.};
         String actual = toStringBuilder
                 .append("expectedName", arrayObject)
@@ -97,7 +97,7 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeLongArrayField() throws Exception {
+    public void shouldIncludeLongArrayField() {
         long[] arrayObject = {100, 200};
         String actual = toStringBuilder
                 .append("expectedName", arrayObject)
@@ -106,7 +106,7 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeBooleanArrayField() throws Exception {
+    public void shouldIncludeBooleanArrayField() {
         boolean[] arrayObject = {true, false};
         String actual = toStringBuilder
                 .append("expectedName", arrayObject)
@@ -115,7 +115,7 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeByteArrayField() throws Exception {
+    public void shouldIncludeByteArrayField() {
         byte[] arrayObject = {1, 2};
         String actual = toStringBuilder
                 .append("expectedName", arrayObject)
@@ -124,7 +124,7 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeShortArrayField() throws Exception {
+    public void shouldIncludeShortArrayField() {
         short[] arrayObject = {1, 2};
         String actual = toStringBuilder
                 .append("expectedName", arrayObject)
@@ -133,7 +133,7 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeFloatArrayField() throws Exception {
+    public void shouldIncludeFloatArrayField() {
         float[] arrayObject = {1.1F, 2.2F};
         String actual = toStringBuilder
                 .append("expectedName", arrayObject)
@@ -142,7 +142,7 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeCharArrayField() throws Exception {
+    public void shouldIncludeCharArrayField() {
         char[] arrayObject = {'A', 'B'};
         String actual = toStringBuilder
                 .append("expectedName", arrayObject)
@@ -151,7 +151,7 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeListField() throws Exception {
+    public void shouldIncludeListField() {
         String actual = toStringBuilder
                 .append("expectedName", Arrays.asList("A", "B"))
                 .toString();
@@ -159,7 +159,7 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeLeapListField() throws Exception {
+    public void shouldIncludeLeapListField() {
         Map<String, String> map = new HashMap<>();
         map.put("1", "A");
         map.put("2", "B");
@@ -175,7 +175,7 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeDoubleListField() throws Exception {
+    public void shouldIncludeDoubleListField() {
         String actual = toStringBuilder
                 .append("expectedName", Arrays.asList(1.1, 2.2))
                 .toString();
@@ -183,7 +183,7 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeIntListField() throws Exception {
+    public void shouldIncludeIntListField() {
         List<Integer> object = Arrays.asList(1, 2);
         String actual = toStringBuilder
                 .append("expectedName", object)
@@ -192,7 +192,7 @@ public class ToStringBuilderTest {
     }
 
     @Test
-    public void shouldIncludeMapField() throws Exception {
+    public void shouldIncludeMapField() {
         Map<String, String> map = new HashMap<>();
         map.put("1", "A");
         map.put("2", "B");

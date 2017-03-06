@@ -10,9 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.collection.IsArrayContainingInAnyOrder.arrayContainingInAnyOrder;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -31,19 +33,22 @@ public class MasoesOntologyTest {
     }
 
     @Test
-    public void shouldInitializeElements() {
-        List<Object> predicatesList = new ArrayList();
-        predicatesList.addAll(masoesOntology.getPredicateNames());
-        assertThat(predicatesList, containsInAnyOrder("AgentState", "ListObjects"));
+    public void shouldGetAllPredicates() {
+        assertThat(masoesOntology.getPredicateNames().toArray(), arrayContainingInAnyOrder("AgentState", "ListObjects"));
 
-        List<Object> actionList = new ArrayList();
-        actionList.addAll(masoesOntology.getActionNames());
-        assertThat(actionList, containsInAnyOrder("CreateObject", "DeleteObject", "EvaluateStimulus", "GetEmotionalState", "GetObject", "NotifyAction", "UpdateObject"));
+    }
 
-        List<Object> conceptList = new ArrayList();
-        conceptList.addAll(masoesOntology.getConceptNames());
-        conceptList.removeAll(actionList);
-        assertThat(conceptList, containsInAnyOrder("ActionStimulus", "BehaviourState", "EmotionState", "ObjectProperty", "ObjectStimulus", "Stimulus"));
+    @Test
+    public void shouldGetAllActions() {
+        assertThat(masoesOntology.getActionNames().toArray(), arrayContainingInAnyOrder("CreateObject", "DeleteObject", "EvaluateStimulus", "GetEmotionalState", "GetObject", "NotifyAction", "UpdateObject"));
+    }
+
+    @Test
+    public void shouldGetAllConcepts() {
+        List<Object> concepts = new ArrayList<>(Arrays.asList(masoesOntology.getConceptNames().toArray()));
+        List<Object> actions = Arrays.asList(masoesOntology.getActionNames().toArray());
+        concepts.removeAll(actions);
+        assertThat(concepts, containsInAnyOrder("ActionStimulus", "BehaviourState", "EmotionState", "ObjectProperty", "ObjectStimulus", "Stimulus"));
     }
 
 }

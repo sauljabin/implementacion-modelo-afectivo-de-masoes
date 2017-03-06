@@ -40,7 +40,7 @@ public class CreatorUserAgentGui extends JFrame {
     private JLabel satisfactionValueLabel;
 
     public CreatorUserAgentGui() {
-        setSize(400, 720);
+        setSize(440, 760);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
         setTitle("Usuario Creador de Contenido");

@@ -51,7 +51,7 @@ public class OntologyAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldCreateActionAndFillContent() throws Exception {
+    public void shouldCreateActionAndFillContent() {
         GetAllSettings content = new GetAllSettings();
         ACLMessage actualMessage = ontologyAssistant.createRequestAction(receiver, content);
 
@@ -60,7 +60,7 @@ public class OntologyAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldCreateMessageAndFillContent() throws Exception {
+    public void shouldCreateMessageAndFillContent() {
         GetAllSettings content = new GetAllSettings();
         Action action = new Action(receiver, content);
         ACLMessage actualMessage = ontologyAssistant.createRequestMessage(receiver, action);

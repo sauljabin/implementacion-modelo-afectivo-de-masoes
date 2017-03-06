@@ -36,7 +36,7 @@ public class GuiResponseHandlerBehaviourTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldSendResponseWhenReceiveAnyMessage() throws Exception {
+    public void shouldSendResponseWhenReceiveAnyMessage() {
         ACLMessage messageMock = mock(ACLMessage.class);
         doReturn(messageMock).when(requesterGuiAgentMock).receive();
         responseHandlerBehaviourSpy.action();

@@ -133,7 +133,7 @@ public class BehaviourManagerTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldReturnSameBehaviourWhenTypeNotChange() throws Exception {
+    public void shouldReturnSameBehaviourWhenTypeNotChange() {
         HappinessEmotion emotion = new HappinessEmotion();
         doReturn(BehaviourType.IMITATIVE).when(currentBehaviourMock).getType();
         doReturn(emotion).when(emotionalConfiguratorMock).getEmotion();

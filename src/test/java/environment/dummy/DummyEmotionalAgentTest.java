@@ -25,7 +25,7 @@ public class DummyEmotionalAgentTest {
     }
 
     @Test
-    public void shouldGetCorrectConfig() throws Exception {
+    public void shouldGetCorrectConfig() {
         assertThat(dummyEmotionalAgent.getKnowledge(), is(notNullValue()));
         assertThat(dummyEmotionalAgent.getCognitiveBehaviour(), is(instanceOf(DummyCognitiveBehaviour.class)));
         assertThat(dummyEmotionalAgent.getImitativeBehaviour(), is(instanceOf(DummyImitativeBehaviour.class)));

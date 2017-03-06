@@ -54,7 +54,7 @@ public class SettingsAgentTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldRegisterAgent() throws Exception {
+    public void shouldRegisterAgent() {
         settingsAgentSpy.setup();
 
         verify(agentManagementAssistantMock).register(serviceDescriptionCaptor.capture());
@@ -74,7 +74,7 @@ public class SettingsAgentTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldLogErrorWhenRegisterThrowsException() throws Exception {
+    public void shouldLogErrorWhenRegisterThrowsException() {
         RuntimeException expectedException = new RuntimeException("error");
         doThrow(expectedException).when(agentManagementAssistantMock).register(any(ServiceDescription.class), any(ServiceDescription.class));
         try {

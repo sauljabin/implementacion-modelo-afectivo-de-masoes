@@ -79,7 +79,7 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldRollbackTransactionIfException() throws Exception {
+    public void shouldRollbackTransactionIfException() {
         QueryResult queryResult = mockEverything();
         when(dataBaseConnection.execute(anyString())).thenReturn(false);
         when(queryResult.next()).thenReturn(false);

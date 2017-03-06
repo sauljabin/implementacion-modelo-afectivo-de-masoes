@@ -72,7 +72,7 @@ public class OntologyResponderBehaviourTest {
     }
 
     @Test
-    public void shouldConfigContentManager() throws Exception {
+    public void shouldConfigContentManager() {
         String ontologyName = "ontologyName";
         doReturn(ontologyName).when(ontologyMock).getName();
         ontologyResponderBehaviour = new OntologyResponderBehaviour(agentMock, messageTemplateMock, ontologyMock);

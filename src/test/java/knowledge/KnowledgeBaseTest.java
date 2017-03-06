@@ -36,7 +36,7 @@ public class KnowledgeBaseTest {
     }
 
     @Test
-    public void shouldAddStringTheory() throws Exception {
+    public void shouldAddStringTheory() {
         String expectedTheory = "expectedTheory(X).";
         knowledgeBaseSpy.addTheory(expectedTheory);
         verify(knowledgeBaseSpy).addTheory(theoryArgumentCaptor.capture());
@@ -44,13 +44,13 @@ public class KnowledgeBaseTest {
     }
 
     @Test
-    public void shouldAddFileTheory() throws Exception {
+    public void shouldAddFileTheory() {
         knowledgeBaseSpy.addTheory("testTheory.prolog");
         verify(knowledgeBaseSpy).addTheory(any(Theory.class));
     }
 
     @Test
-    public void shouldAddKnowledge() throws Exception {
+    public void shouldAddKnowledge() {
         String expectedTheory = "expectedTheory(X).";
         Knowledge knowledgeMock = mock(Knowledge.class);
         doReturn(expectedTheory).when(knowledgeMock).toString();

@@ -68,7 +68,7 @@ public class ProtocolAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldVerifyTimeoutAndSendMessageControl() throws Exception {
+    public void shouldVerifyTimeoutAndSendMessageControl() {
         long timeout = 5000L;
         long delayInAgree = 2000L;
         ACLMessage responseMock = mock(ACLMessage.class);
@@ -91,7 +91,7 @@ public class ProtocolAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldWaitForMessageAfterAgreeInSendActionAndWaitMessage() throws Exception {
+    public void shouldWaitForMessageAfterAgreeInSendActionAndWaitMessage() {
         ACLMessage responseMock = mock(ACLMessage.class);
         doReturn(ACLMessage.AGREE)
                 .doReturn(ACLMessage.INFORM)
@@ -103,7 +103,7 @@ public class ProtocolAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowTimeoutExceptionInSendRequestWhenResponseIsNull() throws Exception {
+    public void shouldThrowTimeoutExceptionInSendRequestWhenResponseIsNull() {
         String expectedMessage = "The agent did not respond";
         doReturn(null).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
         expectedException.expect(TimeoutRequestException.class);
@@ -112,7 +112,7 @@ public class ProtocolAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowTimeoutExceptionInSendRequestWhenWaitSecondAndResponseIsNull() throws Exception {
+    public void shouldThrowTimeoutExceptionInSendRequestWhenWaitSecondAndResponseIsNull() {
         String expectedMessage = "The agent did not respond";
         ACLMessage responseMock = mock(ACLMessage.class);
         doReturn(ACLMessage.AGREE).when(responseMock).getPerformative();
@@ -126,7 +126,7 @@ public class ProtocolAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowInvalidResponseExceptionExceptionInSendRequestWhenExpectPerformative() throws Exception {
+    public void shouldThrowInvalidResponseExceptionExceptionInSendRequestWhenExpectPerformative() {
         ACLMessage responseMock = mock(ACLMessage.class);
         doReturn(ACLMessage.REQUEST).when(responseMock).getPerformative();
         doReturn(responseMock).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());

@@ -169,7 +169,6 @@ public class DataBaseConnectionTest {
     @Test
     public void shouldSetAutoCommitToFalseToBeginTransaction() throws Exception {
         dataBaseConnection.beginTransaction();
-
         verify(connectionMock).setAutoCommit(false);
     }
 

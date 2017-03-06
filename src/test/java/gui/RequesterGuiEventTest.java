@@ -25,7 +25,7 @@ public class RequesterGuiEventTest {
     }
 
     @Test
-    public void shouldConvertFromIntegerValue() throws Exception {
+    public void shouldConvertFromIntegerValue() {
         RequesterGuiEvent[] events = RequesterGuiEvent.values();
         for (int i = 0; i < events.length; i++) {
             assertThat(RequesterGuiEvent.fromInt(i), is(events[i]));
@@ -34,7 +34,7 @@ public class RequesterGuiEventTest {
     }
 
     @Test
-    public void shouldReturnEvenEqualsWhenInvokeIntEqueal() throws Exception {
+    public void shouldReturnEvenEqualsWhenInvokeIntEqual() {
         RequesterGuiEvent[] events = RequesterGuiEvent.values();
         for (int i = 0; i < events.length; i++) {
             assertTrue(events[i].equals(i));

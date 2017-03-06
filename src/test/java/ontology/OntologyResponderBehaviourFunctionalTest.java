@@ -42,7 +42,7 @@ public class OntologyResponderBehaviourFunctionalTest extends FunctionalTest {
     }
 
     @Test
-    public void shouldReceiveDoneFromValidAction() throws Exception {
+    public void shouldReceiveDoneFromValidAction() {
         addBehaviour(agent, OntologyResponderValidActionBehaviour.class);
         KillAgent action = new KillAgent();
         action.setAgent(agent);
@@ -55,7 +55,7 @@ public class OntologyResponderBehaviourFunctionalTest extends FunctionalTest {
     }
 
     @Test
-    public void shouldReceiveNotUnderstoodFromIncorrectAction() throws Exception {
+    public void shouldReceiveNotUnderstoodFromIncorrectAction() {
         addBehaviour(agent, OntologyResponderNotUnderstoodBehaviour.class);
         KillAgent action = new KillAgent();
         action.setAgent(agent);
@@ -68,7 +68,7 @@ public class OntologyResponderBehaviourFunctionalTest extends FunctionalTest {
     }
 
     @Test
-    public void shouldReceiveRefuseFromInvalidAction() throws Exception {
+    public void shouldReceiveRefuseFromInvalidAction() {
         addBehaviour(agent, OntologyResponderInvalidActionBehaviour.class);
         KillAgent action = new KillAgent();
         action.setAgent(agent);
@@ -81,7 +81,7 @@ public class OntologyResponderBehaviourFunctionalTest extends FunctionalTest {
     }
 
     @Test
-    public void shouldReceiveFailureFromExceptionInAgent() throws Exception {
+    public void shouldReceiveFailureFromExceptionInAgent() {
         addBehaviour(agent, OntologyResponderFailureBehaviour.class);
         KillAgent action = new KillAgent();
         action.setAgent(agent);

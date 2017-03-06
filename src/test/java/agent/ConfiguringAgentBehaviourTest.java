@@ -23,13 +23,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -44,14 +44,14 @@ public class ConfiguringAgentBehaviourTest {
 
     private ConfiguringAgentBehaviour configuringAgentBehaviour;
     private Agent agentMock;
-    private Map behavioursMock;
+    private Map<String, Behaviour> behaviourMap;
 
     @Before
     public void setUp() throws Exception {
         agentMock = mock(Agent.class);
         configuringAgentBehaviour = new ConfiguringAgentBehaviour(agentMock);
-        behavioursMock = mock(Map.class);
-        setFieldValue(configuringAgentBehaviour, "behaviours", behavioursMock);
+        behaviourMap = new HashMap<>();
+        setFieldValue(configuringAgentBehaviour, "behaviours", behaviourMap);
     }
 
     @Test
@@ -70,15 +70,15 @@ public class ConfiguringAgentBehaviourTest {
         Predicate predicate = configuringAgentBehaviour.performAction(action);
 
         verify(agentMock).addBehaviour(isA(SimpleBehaviour.class));
-        verify(behavioursMock).put(eq(behaviourName), isA(SimpleBehaviour.class));
         assertThat(predicate, is(instanceOf(Done.class)));
+        assertThat(behaviourMap.get(behaviourName), is(instanceOf(SimpleBehaviour.class)));
     }
 
     @Test
     public void shouldRemoveBehavior() throws Exception {
         String behaviourName = "behaviourName";
         Behaviour behaviourMock = mock(Behaviour.class);
-        doReturn(behaviourMock).when(behavioursMock).get(behaviourName);
+        behaviourMap.put(behaviourName, behaviourMock);
 
         Action action = new Action();
         RemoveBehaviour removeBehaviour = new RemoveBehaviour(behaviourName);

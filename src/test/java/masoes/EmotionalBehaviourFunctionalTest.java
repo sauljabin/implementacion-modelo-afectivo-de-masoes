@@ -34,7 +34,7 @@ public class EmotionalBehaviourFunctionalTest extends FunctionalTest {
     }
 
     @Test
-    public void shouldNotifyAction() throws Exception {
+    public void shouldNotifyAction() {
         ServiceDescription serviceDescription = new ServiceDescription();
         serviceDescription.setName(MasoesOntology.ACTION_EVALUATE_STIMULUS);
         serviceDescription.setType(MasoesOntology.ACTION_EVALUATE_STIMULUS);

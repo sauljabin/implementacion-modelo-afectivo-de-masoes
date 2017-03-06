@@ -44,7 +44,7 @@ public class NotifierAgentFunctionalTest extends FunctionalTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         killAgent(notifierAgent);
     }
 
@@ -56,7 +56,7 @@ public class NotifierAgentFunctionalTest extends FunctionalTest {
     }
 
     @Test
-    public void shouldNotifyAction() throws Exception {
+    public void shouldNotifyAction() {
         ServiceDescription serviceDescription = new ServiceDescription();
         serviceDescription.setName(MasoesOntology.ACTION_EVALUATE_STIMULUS);
         serviceDescription.setType(MasoesOntology.ACTION_EVALUATE_STIMULUS);

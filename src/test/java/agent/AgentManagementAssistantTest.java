@@ -141,7 +141,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInKillAgent() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInKillAgent() {
         prepareTestException(JADEManagementOntology.getInstance());
         agentManagementAssistant.killAgent(agentAID);
     }
@@ -160,7 +160,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInCreateAgent() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInCreateAgent() {
         prepareTestException(JADEManagementOntology.getInstance());
         agentManagementAssistant.createAgent("name", Agent.class, Arrays.asList("arg1"));
     }
@@ -179,7 +179,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInCreateAgentWithRandomName() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInCreateAgentWithRandomName() {
         prepareTestException(JADEManagementOntology.getInstance());
         agentManagementAssistant.createAgent(Agent.class, Arrays.asList("arg1"));
     }
@@ -204,7 +204,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInRemoveBehaviour() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInRemoveBehaviour() {
         prepareTestException(ConfigurableOntology.getInstance());
         agentManagementAssistant.removeBehaviour(amsAID, "");
     }
@@ -230,7 +230,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInAddBehavior() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInAddBehavior() {
         prepareTestException(ConfigurableOntology.getInstance());
         agentManagementAssistant.addBehaviour(amsAID, "name", SimpleBehaviour.class);
     }
@@ -255,7 +255,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInAddBehaviorWithRandomName() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInAddBehaviorWithRandomName() {
         prepareTestException(ConfigurableOntology.getInstance());
         agentManagementAssistant.addBehaviour(amsAID, SimpleBehaviour.class);
     }
@@ -282,7 +282,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInRegisterAgent() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInRegisterAgent() {
         prepareTestException(FIPAManagementOntology.getInstance());
         agentManagementAssistant.register(new ServiceDescription());
     }
@@ -309,7 +309,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInRegisterAgentWithName() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInRegisterAgentWithName() {
         prepareTestException(FIPAManagementOntology.getInstance());
         agentManagementAssistant.register(otherAID, new ServiceDescription());
     }
@@ -362,7 +362,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInSearchServiceAgent() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInSearchServiceAgent() {
         prepareTestException(FIPAManagementOntology.getInstance());
         agentManagementAssistant.services(agentAID);
     }
@@ -409,7 +409,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInSearchAgent() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInSearchAgent() {
         prepareTestException(FIPAManagementOntology.getInstance());
         agentManagementAssistant.search(new ServiceDescription());
     }
@@ -464,7 +464,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInSearchAgents() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInSearchAgents() {
         prepareTestException(FIPAManagementOntology.getInstance());
         agentManagementAssistant.agents();
     }
@@ -491,7 +491,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInDRegisterAgent() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInDRegisterAgent() {
         prepareTestException(FIPAManagementOntology.getInstance());
         agentManagementAssistant.deregister();
     }
@@ -518,7 +518,7 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIsNotDoneInDeRegisterAgentWithName() throws Exception {
+    public void shouldThrowExceptionWhenIsNotDoneInDeRegisterAgentWithName() {
         prepareTestException(FIPAManagementOntology.getInstance());
         agentManagementAssistant.deregister(otherAID);
     }

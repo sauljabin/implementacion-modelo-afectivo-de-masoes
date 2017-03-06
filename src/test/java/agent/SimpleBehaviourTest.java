@@ -24,7 +24,7 @@ public class SimpleBehaviourTest extends PowerMockitoTest {
     private SimpleBehaviour simpleBehaviourSpy;
 
     @Before
-    public void setUp() throws NoSuchFieldException {
+    public void setUp() {
         agentMock = mock(Agent.class);
         simpleBehaviour = new SimpleBehaviour();
         simpleBehaviour.setAgent(agentMock);
@@ -38,7 +38,7 @@ public class SimpleBehaviourTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldSendResponseWhenReceiveAnyMessage() throws Exception {
+    public void shouldSendResponseWhenReceiveAnyMessage() {
         ACLMessage messageMock = mock(ACLMessage.class);
         ACLMessage requestMock = mock(ACLMessage.class);
         doReturn(messageMock).when(agentMock).receive();

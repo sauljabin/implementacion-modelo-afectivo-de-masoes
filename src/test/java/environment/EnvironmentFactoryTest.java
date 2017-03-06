@@ -24,7 +24,7 @@ public class EnvironmentFactoryTest {
     private EnvironmentFactory environmentFactory;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         environmentFactory = new EnvironmentFactory();
     }
 

@@ -34,7 +34,7 @@ public class ConfigurableAgentFunctionalTest extends FunctionalTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         killAgent(configurableAid);
     }
 

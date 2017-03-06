@@ -53,7 +53,7 @@ public class NotifierAgentTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldRegisterAgent() throws Exception {
+    public void shouldRegisterAgent() {
         notifierAgentSpy.setup();
 
         verify(agentManagementAssistantMock).register(serviceDescriptionCaptor.capture());
@@ -66,7 +66,7 @@ public class NotifierAgentTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldLogErrorWhenRegisterThrowsException() throws Exception {
+    public void shouldLogErrorWhenRegisterThrowsException() {
         RuntimeException expectedException = new RuntimeException("error");
         doThrow(expectedException).when(agentManagementAssistantMock).register(any(ServiceDescription.class));
         try {

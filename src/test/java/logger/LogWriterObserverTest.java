@@ -29,7 +29,7 @@ public class LogWriterObserverTest {
     }
 
     @Test
-    public void shouldInvokeLoggerHandler() throws Exception {
+    public void shouldInvokeLoggerHandler() {
         String expectedObject = "expectedObject";
         LogWriterNotification notification = new LogWriterNotification(Level.INFO, expectedObject);
         logWriterObserver.update(mock(Observable.class), notification);
@@ -37,7 +37,7 @@ public class LogWriterObserverTest {
     }
 
     @Test
-    public void shouldNotInvokeLoggerHandler() throws Exception {
+    public void shouldNotInvokeLoggerHandler() {
         logWriterObserver.update(mock(Observable.class), new Object());
         verify(loggerHandlerMock, never()).handleMessage(any(), any());
     }
