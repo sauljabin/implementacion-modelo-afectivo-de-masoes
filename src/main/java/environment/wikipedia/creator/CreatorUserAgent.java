@@ -36,13 +36,14 @@ public class CreatorUserAgent extends EmotionalAgent {
                 creatorUserAgentGui.setBehaviour(getBehaviouralComponent().getCurrentEmotionalBehaviour());
                 creatorUserAgentGui.setEmotion(getBehaviouralComponent().getCurrentEmotion());
                 creatorUserAgentGui.addEmotionalState(getBehaviouralComponent().getCurrentEmotionalState());
-                try {
-                    Thread.sleep(1000 / FPS);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                block(1000 / FPS);
             }
         });
+    }
+
+    @Override
+    protected void takeDown() {
+        creatorUserAgentGui.closeGui();
     }
 
     @Override
