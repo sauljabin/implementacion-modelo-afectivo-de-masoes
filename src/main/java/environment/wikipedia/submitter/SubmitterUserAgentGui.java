@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.creator;
+package environment.wikipedia.submitter;
 
 import environment.wikipedia.EmotionalSpaceChart;
 import masoes.EmotionalBehaviour;
@@ -26,7 +26,7 @@ import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
 
-public class CreatorUserAgentGui extends JFrame {
+public class SubmitterUserAgentGui extends JFrame {
 
     private static final String INSETS_10 = "insets 10";
     private static final String FIELD_W = "grow, wrap 15";
@@ -39,7 +39,7 @@ public class CreatorUserAgentGui extends JFrame {
     private JLabel activationValueLabel;
     private JLabel satisfactionValueLabel;
 
-    public CreatorUserAgentGui() {
+    public SubmitterUserAgentGui() {
         setSize(440, 760);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -49,8 +49,8 @@ public class CreatorUserAgentGui extends JFrame {
     }
 
     public static void main(String[] args) {
-        CreatorUserAgentGui creatorUserAgentGui = new CreatorUserAgentGui();
-        creatorUserAgentGui.showGui();
+        SubmitterUserAgentGui submitterUserAgentGui = new SubmitterUserAgentGui();
+        submitterUserAgentGui.showGui();
     }
 
     private void addComponents() {

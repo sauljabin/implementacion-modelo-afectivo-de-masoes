@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.editor;
+package environment.wikipedia.reviewer;
 
 import environment.dummy.DummyCognitiveBehaviour;
 import environment.dummy.DummyImitativeBehaviour;
@@ -15,7 +15,7 @@ import masoes.EmotionalAgent;
 import masoes.ImitativeBehaviour;
 import masoes.ReactiveBehaviour;
 
-public class EditorUserAgent extends EmotionalAgent {
+public class ReviewerUserAgent extends EmotionalAgent {
 
     @Override
     public void setUp() {

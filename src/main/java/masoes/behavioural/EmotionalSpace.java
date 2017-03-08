@@ -48,7 +48,7 @@ public class EmotionalSpace {
                 .stream()
                 .filter(emotion -> emotion.getName().equalsIgnoreCase(name))
                 .findFirst()
-                .orElse(new HappinessEmotion());
+                .orElse(null);
     }
 
     @Override

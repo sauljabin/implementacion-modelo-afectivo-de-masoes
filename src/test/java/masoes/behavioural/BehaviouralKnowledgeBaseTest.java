@@ -79,30 +79,35 @@ public class BehaviouralKnowledgeBaseTest extends PowerMockitoTest {
 
     @Test
     public void shouldSolveCorrectlyEmotionalConfiguratorQuestionsWithAction() throws Exception {
-        testEmotion("other", "greeting", "compassion");
-        testEmotion("other", "smile", "admiration");
-        testEmotion("other", "run", "rejection");
-        testEmotion("other", "bye", "anger");
-        testEmotion(AGENT_NAME, "eat", "happiness");
-        testEmotion(AGENT_NAME, "sleep", "joy");
-        testEmotion(AGENT_NAME, "wake", "sadness");
-        testEmotion(AGENT_NAME, "pay", "depression");
+        testEmotionByAction("other", "greeting", "compassion");
+        testEmotionByAction("other", "smile", "admiration");
+        testEmotionByAction("other", "run", "rejection");
+        testEmotionByAction("other", "bye", "anger");
+        testEmotionByAction(AGENT_NAME, "eat", "happiness");
+        testEmotionByAction(AGENT_NAME, "sleep", "joy");
+        testEmotionByAction(AGENT_NAME, "wake", "sadness");
+        testEmotionByAction(AGENT_NAME, "pay", "depression");
     }
 
     @Test
     public void shouldSolveCorrectlyEmotionalConfiguratorQuestionsWithObject() throws Exception {
-        testEmotion("other", "[color=blue]", "compassion");
-        testEmotion("other", "[color=red]", "admiration");
-        testEmotion("other", "[color=white]", "rejection");
-        testEmotion("other", "[color=black]", "anger");
-        testEmotion(AGENT_NAME, "[color=blue]", "happiness");
-        testEmotion(AGENT_NAME, "[color=red]", "joy");
-        testEmotion(AGENT_NAME, "[color=white]", "sadness");
-        testEmotion(AGENT_NAME, "[color=black]", "depression");
+        testEmotionByObject("other", "[color=blue]", "compassion");
+        testEmotionByObject("other", "[color=red]", "admiration");
+        testEmotionByObject("other", "[color=white]", "rejection");
+        testEmotionByObject("other", "[color=black]", "anger");
+        testEmotionByObject(AGENT_NAME, "[color=blue]", "happiness");
+        testEmotionByObject(AGENT_NAME, "[color=red]", "joy");
+        testEmotionByObject(AGENT_NAME, "[color=white]", "sadness");
+        testEmotionByObject(AGENT_NAME, "[color=black]", "depression");
     }
 
-    private void testEmotion(String agent, String parameter, String expectedEmotion) throws Exception {
-        SolveInfo solve = behaviouralKnowledgeBase.solve("emotion(" + agent + ", " + parameter + ", X).");
+    private void testEmotionByAction(String agent, String parameter, String expectedEmotion) throws Exception {
+        SolveInfo solve = behaviouralKnowledgeBase.solve("emotionByAction(" + agent + ", " + parameter + ", X).");
+        assertThat(solve.getVarValue("X").toString(), is(expectedEmotion));
+    }
+
+    private void testEmotionByObject(String agent, String parameter, String expectedEmotion) throws Exception {
+        SolveInfo solve = behaviouralKnowledgeBase.solve("emotionByObject(" + agent + ", " + parameter + ", X).");
         assertThat(solve.getVarValue("X").toString(), is(expectedEmotion));
     }
 

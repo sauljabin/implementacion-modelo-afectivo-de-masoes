@@ -28,7 +28,9 @@ import test.PowerMockitoTest;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -81,6 +83,30 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
     }
 
     @Test
+    public void shouldReturnSameEmotionAndStateWhenEmotionNotFound() {
+        String actionName = "actionName";
+        EmotionalState emotionalState = emotionalConfigurator.getEmotionalState();
+        behaviouralKnowledgeBase.addTheory("satisfactionByAction(AGENT, actionName, newLevel) :- self(AGENT).");
+        behaviouralKnowledgeBase.addTheory("emotionByAction(AGENT, ACTION, newEmotion) :- satisfactionByAction(AGENT, ACTION, newLevel), self(AGENT).");
+        emotionalConfigurator.updateEmotion(new ActionStimulus(new AID(AGENT_NAME, AID.ISGUID), actionName));
+        assertThat(emotionalConfigurator.getEmotionalState(), is(emotionalState));
+    }
+
+    @Test
+    public void shouldReturnRandomValueWhenResultHasMoreThanOneSolution() {
+        String actionName = "actionName";
+        behaviouralKnowledgeBase.addTheory("satisfactionByAction(AGENT, actionName, positive_high) :- self(AGENT).");
+        behaviouralKnowledgeBase.addTheory("satisfactionByAction(AGENT, actionName, positive_low) :- self(AGENT).");
+        List<Emotion> emotions = new java.util.ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            emotionalConfigurator.updateEmotion(new ActionStimulus(new AID(AGENT_NAME, AID.ISGUID), actionName));
+            emotions.add(emotionalConfigurator.getEmotion());
+        }
+
+        assertThat(emotions, hasItems(instanceOf(JoyEmotion.class), instanceOf(HappinessEmotion.class)));
+    }
+
+    @Test
     public void shouldUpdateCorrectlyTheEmotionWithAction() {
         testUpdateEmotionWithAction(AGENT_NAME, HappinessEmotion.class, "eat");
         testUpdateEmotionWithAction(AGENT_NAME, JoyEmotion.class, "sleep");
@@ -130,17 +156,15 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
 
     @Test
     public void shouldUpdateCorrectlyTheEmotionWithUpperAction() {
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
-        emotionalConfigurator = new EmotionalConfigurator(agentMock, behaviouralKnowledgeBase);
-        behaviouralKnowledgeBase.addTheory("satisfactionAction(AGENT, 'Eat', positive_high) :- self(AGENT).");
-        testUpdateEmotionWithAction(AGENT_NAME, HappinessEmotion.class, "Eat");
+        behaviouralKnowledgeBase.addTheory("satisfactionByAction(AGENT, 'Eat', positive_low) :- self(AGENT).");
+        testUpdateEmotionWithAction(AGENT_NAME, JoyEmotion.class, "Eat");
     }
 
     @Test
     public void shouldUpdateCorrectlyTheEmotionWithUpperObject() {
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
         emotionalConfigurator = new EmotionalConfigurator(agentMock, behaviouralKnowledgeBase);
-        behaviouralKnowledgeBase.addTheory("satisfactionObject(AGENT, PROPERTIES, positive_high) :- member(color='Gray', PROPERTIES).");
+        behaviouralKnowledgeBase.addTheory("satisfactionByObject(AGENT, PROPERTIES, positive_high) :- member(color='Gray', PROPERTIES).");
         testUpdateEmotionWithObject(AGENT_NAME, HappinessEmotion.class, new ObjectProperty("color", "Gray"));
     }
 

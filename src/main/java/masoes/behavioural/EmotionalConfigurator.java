@@ -15,14 +15,15 @@ import ontology.masoes.ObjectStimulus;
 import ontology.masoes.Stimulus;
 import util.ToStringBuilder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class EmotionalConfigurator {
 
     private static final String ANSWER_VAR_NAME = "X";
-    private static final String KNOWLEDGE_QUESTION = "emotion(%s,%s," + ANSWER_VAR_NAME + ").";
 
     private EmotionalState emotionalState;
     private EmotionalSpace emotionalSpace;
@@ -50,19 +51,46 @@ public class EmotionalConfigurator {
 
     private EmotionalState calculateEmotionalState(Stimulus stimulus) {
         try {
-            SolveInfo solveEmotion = behaviouralKnowledgeBase.solve(String.format(KNOWLEDGE_QUESTION, getActor(stimulus), getQuestionParameter(stimulus)));
+            String question = getQuestion(stimulus);
+
+            List<SolveInfo> solveInfos = new ArrayList<>();
+
+            solveInfos.add(behaviouralKnowledgeBase.solve(question));
+
+            while (behaviouralKnowledgeBase.hasOpenAlternatives()) {
+                SolveInfo solveNext = behaviouralKnowledgeBase.solveNext();
+                if (solveNext.isSuccess()) {
+                    solveInfos.add(solveNext);
+                }
+            }
+
+            int random = new Random().nextInt(solveInfos.size());
+
+            SolveInfo solveEmotion = solveInfos.get(random);
+
             if (solveEmotion.isSuccess()) {
                 String emotionName = solveEmotion.getTerm(ANSWER_VAR_NAME).toString().replace("'", "").toLowerCase();
                 Emotion newEmotion = emotionalSpace.searchEmotion(emotionName);
-                EmotionalState newEmotionalState = newEmotion.getRandomEmotionalState();
-                if (!getEmotion().getName().equals(newEmotion.getName())) {
-                    emotionalAgent.getLogger().updatingEmotion(getEmotion(), newEmotion);
+
+                if (newEmotion != null) {
+                    if (!getEmotion().getName().equals(newEmotion.getName())) {
+                        emotionalAgent.getLogger().updatingEmotion(getEmotion(), newEmotion);
+                    }
+
+                    return newEmotion.getRandomEmotionalState();
                 }
-                return newEmotionalState;
             }
             return emotionalState;
         } catch (Exception e) {
             throw new KnowledgeException(e);
+        }
+    }
+
+    private String getQuestion(Stimulus stimulus) {
+        if (stimulus instanceof ActionStimulus) {
+            return String.format("emotionByAction(%s,%s," + ANSWER_VAR_NAME + ").", getActor(stimulus), getQuestionParameter(stimulus));
+        } else {
+            return String.format("emotionByObject(%s,%s," + ANSWER_VAR_NAME + ").", getActor(stimulus), getQuestionParameter(stimulus));
         }
     }
 

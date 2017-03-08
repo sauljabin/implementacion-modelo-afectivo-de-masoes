@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.creator;
+package environment.wikipedia.submitter;
 
 import environment.dummy.DummyCognitiveBehaviour;
 import environment.dummy.DummyImitativeBehaviour;
@@ -19,23 +19,23 @@ import org.slf4j.event.Level;
 
 import java.nio.file.Paths;
 
-public class CreatorUserAgent extends EmotionalAgent {
+public class SubmitterUserAgent extends EmotionalAgent {
 
-    private CreatorUserAgentGui creatorUserAgentGui;
+    private SubmitterUserAgentGui submitterUserAgentGui;
 
     @Override
     public void setUp() {
-        creatorUserAgentGui = new CreatorUserAgentGui();
-        creatorUserAgentGui.setAgentName(getLocalName());
-        creatorUserAgentGui.showGui();
+        submitterUserAgentGui = new SubmitterUserAgentGui();
+        submitterUserAgentGui.setAgentName(getLocalName());
+        submitterUserAgentGui.showGui();
         addBehaviour(new CyclicBehaviour() {
             private static final int FPS = 10;
 
             @Override
             public void action() {
-                creatorUserAgentGui.setBehaviour(getBehaviouralComponent().getCurrentEmotionalBehaviour());
-                creatorUserAgentGui.setEmotion(getBehaviouralComponent().getCurrentEmotion());
-                creatorUserAgentGui.addEmotionalState(getBehaviouralComponent().getCurrentEmotionalState());
+                submitterUserAgentGui.setBehaviour(getBehaviouralComponent().getCurrentEmotionalBehaviour());
+                submitterUserAgentGui.setEmotion(getBehaviouralComponent().getCurrentEmotion());
+                submitterUserAgentGui.addEmotionalState(getBehaviouralComponent().getCurrentEmotionalState());
                 block(1000 / FPS);
             }
         });
@@ -43,7 +43,7 @@ public class CreatorUserAgent extends EmotionalAgent {
 
     @Override
     protected void takeDown() {
-        creatorUserAgentGui.closeGui();
+        submitterUserAgentGui.closeGui();
     }
 
     @Override
@@ -68,7 +68,7 @@ public class CreatorUserAgent extends EmotionalAgent {
 
     @Override
     public void handleMessage(Level level, String message) {
-        creatorUserAgentGui.logEvent(message);
+        submitterUserAgentGui.logEvent(message);
     }
 
 }

@@ -20,6 +20,7 @@ import util.RandomGenerator;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class EmotionalSpaceTest {
@@ -43,8 +44,8 @@ public class EmotionalSpaceTest {
     }
 
     @Test
-    public void shouldReturnDefaultHappinessEmotionFromString() {
-        assertThat(emotionalSpace.searchEmotion("no-emotion"), is(instanceOf(HappinessEmotion.class)));
+    public void shouldReturnDefaultNullEmotionFromString() {
+        assertThat(emotionalSpace.searchEmotion("no-emotion"), is(nullValue()));
     }
 
     @Test
