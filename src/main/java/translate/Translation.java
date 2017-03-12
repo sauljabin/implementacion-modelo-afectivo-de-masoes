@@ -48,4 +48,14 @@ public class Translation extends SettingsLoader {
         }
     }
 
+    @Override
+    public synchronized String get(String key) {
+        String value = super.get(key);
+        if (value != null) {
+            return value;
+        } else {
+            return key;
+        }
+    }
+
 }

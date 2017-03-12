@@ -12,15 +12,8 @@ import masoes.behavioural.BehaviourType;
 import masoes.behavioural.Emotion;
 import masoes.behavioural.EmotionType;
 import masoes.behavioural.EmotionalState;
-import masoes.behavioural.emotion.AdmirationEmotion;
-import masoes.behavioural.emotion.AngerEmotion;
-import masoes.behavioural.emotion.CompassionEmotion;
-import masoes.behavioural.emotion.DepressionEmotion;
-import masoes.behavioural.emotion.HappinessEmotion;
-import masoes.behavioural.emotion.JoyEmotion;
-import masoes.behavioural.emotion.RejectionEmotion;
-import masoes.behavioural.emotion.SadnessEmotion;
 import net.miginfocom.swing.MigLayout;
+import translate.Translation;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
@@ -30,6 +23,8 @@ public class SubmitterUserAgentGui extends JFrame {
 
     private static final String INSETS_10 = "insets 10";
     private static final String FIELD_W = "grow, wrap 15";
+    private static final Color ORANGE_COLOR = new Color(255, 110, 40);
+    private static final Color GREEN_COLOR = new Color(62, 200, 100);
     private JTextArea eventsTextArea;
     private EmotionalSpaceChart emotionalSpaceChart;
     private JLabel agentNameLabel;
@@ -38,12 +33,14 @@ public class SubmitterUserAgentGui extends JFrame {
     private JLabel emotionTypeNameLabel;
     private JLabel activationValueLabel;
     private JLabel satisfactionValueLabel;
+    private Translation translation;
 
     public SubmitterUserAgentGui() {
-        setSize(440, 760);
+        translation = Translation.getInstance();
+        setSize(440, 740);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
-        setTitle("Usuario Creador de Contenido");
+        setTitle(translation.get("gui.user"));
         addComponents();
         setLocationRelativeTo(this);
     }
@@ -62,13 +59,14 @@ public class SubmitterUserAgentGui extends JFrame {
     private void addEastComponents() {
         JPanel eastPanel = new JPanel(new MigLayout(INSETS_10));
         add(eastPanel, BorderLayout.EAST);
-        JButton case1Button = new JButton("Caso 1");
+
+        JButton case1Button = new JButton(translation.get("gui.case_1"));
         eastPanel.add(case1Button, "wrap");
 
-        JButton case2Button = new JButton("Caso 2");
+        JButton case2Button = new JButton(translation.get("gui.case_2"));
         eastPanel.add(case2Button, "wrap");
 
-        JButton case3Button = new JButton("Caso 3");
+        JButton case3Button = new JButton(translation.get("gui.case_3"));
         eastPanel.add(case3Button, "wrap");
     }
 
@@ -79,42 +77,42 @@ public class SubmitterUserAgentGui extends JFrame {
         JPanel centerPanel = new JPanel(new MigLayout(INSETS_10));
         add(centerPanel, BorderLayout.CENTER);
 
-        JLabel agentLabel = new JLabel("Agente:");
+        JLabel agentLabel = new JLabel(translation.get("gui.agent"));
         centerPanel.add(agentLabel, "w 100");
 
         agentNameLabel = new JLabel();
         agentNameLabel.setFont(font14);
         centerPanel.add(agentNameLabel, FIELD_W);
 
-        JLabel emotionLabel = new JLabel("Emoción:");
+        JLabel emotionLabel = new JLabel(translation.get("gui.emotion"));
         centerPanel.add(emotionLabel, "grow");
 
         emotionNameLabel = new JLabel();
         emotionNameLabel.setFont(font14);
         centerPanel.add(emotionNameLabel, FIELD_W);
 
-        JLabel emotionTypeLabel = new JLabel("Tipo de emoción:");
+        JLabel emotionTypeLabel = new JLabel(translation.get("gui.emotion_type"));
         centerPanel.add(emotionTypeLabel, "grow");
 
         emotionTypeNameLabel = new JLabel();
         emotionTypeNameLabel.setFont(font14);
         centerPanel.add(emotionTypeNameLabel, FIELD_W);
 
-        JLabel behaviourLabel = new JLabel("Comportamiento:");
+        JLabel behaviourLabel = new JLabel(translation.get("gui.behaviour"));
         centerPanel.add(behaviourLabel, "grow");
 
         behaviourNameLabel = new JLabel();
         behaviourNameLabel.setFont(font14);
         centerPanel.add(behaviourNameLabel, FIELD_W);
 
-        JLabel activationLabel = new JLabel("Activación (x):");
+        JLabel activationLabel = new JLabel(translation.get("gui.activation_x"));
         centerPanel.add(activationLabel, "grow");
 
         activationValueLabel = new JLabel();
         activationValueLabel.setFont(font14);
         centerPanel.add(activationValueLabel, FIELD_W);
 
-        JLabel satisfactionLabel = new JLabel("Satisfación (y):");
+        JLabel satisfactionLabel = new JLabel(translation.get("gui.satisfaction_y"));
         centerPanel.add(satisfactionLabel, "grow");
 
         satisfactionValueLabel = new JLabel();
@@ -132,7 +130,7 @@ public class SubmitterUserAgentGui extends JFrame {
         blueLabel.setBackground(Color.BLUE);
         blueLabel.setOpaque(true);
         legendPanel.add(blueLabel, "w 30, grow");
-        JLabel legendActualEmotion = new JLabel("Emoción actual");
+        JLabel legendActualEmotion = new JLabel(translation.get("gui.current_emotion"));
         legendActualEmotion.setFont(font12);
         legendPanel.add(legendActualEmotion);
 
@@ -141,7 +139,7 @@ public class SubmitterUserAgentGui extends JFrame {
         redLabel.setBackground(Color.RED);
         redLabel.setOpaque(true);
         legendPanel.add(redLabel, "w 30,  grow");
-        JLabel legendLastEmotions = new JLabel("Emociones anteriores");
+        JLabel legendLastEmotions = new JLabel(translation.get("gui.previous_emotions"));
         legendLastEmotions.setFont(font12);
         legendPanel.add(legendLastEmotions);
     }
@@ -150,7 +148,7 @@ public class SubmitterUserAgentGui extends JFrame {
         JPanel southPanel = new JPanel(new MigLayout(INSETS_10));
         add(southPanel, BorderLayout.SOUTH);
 
-        JLabel eventsLabel = new JLabel("Eventos:");
+        JLabel eventsLabel = new JLabel(translation.get("gui.events"));
         southPanel.add(eventsLabel, "w 100%, wrap");
 
         eventsTextArea = new JTextArea();
@@ -176,44 +174,36 @@ public class SubmitterUserAgentGui extends JFrame {
     }
 
     public void setEmotion(Emotion emotion) {
-
         EmotionType type = emotion.getType();
+        String typeName = translation.get(type.toString().toLowerCase());
+        String name = translation.get(emotion.getName().toLowerCase());
+
+        emotionTypeNameLabel.setText(typeName);
+        emotionNameLabel.setText(name);
+
         if (type.equals(EmotionType.NEGATIVE_HIGH)) {
-            emotionTypeNameLabel.setText("ALTAMENTE NEGATIVA");
+            emotionTypeNameLabel.setForeground(Color.RED);
+            emotionNameLabel.setForeground(Color.RED);
         } else if (type.equals(EmotionType.NEGATIVE_LOW)) {
-            emotionTypeNameLabel.setText("NEGATIVA");
+            emotionTypeNameLabel.setForeground(ORANGE_COLOR);
+            emotionNameLabel.setForeground(ORANGE_COLOR);
         } else if (type.equals(EmotionType.POSITIVE)) {
-            emotionTypeNameLabel.setText("POSITIVA");
+            emotionTypeNameLabel.setForeground(GREEN_COLOR);
+            emotionNameLabel.setForeground(GREEN_COLOR);
         }
-
-        if (emotion instanceof HappinessEmotion) {
-            emotionNameLabel.setText("FELICIDAD");
-        } else if (emotion instanceof JoyEmotion) {
-            emotionNameLabel.setText("ALEGRIA");
-        } else if (emotion instanceof CompassionEmotion) {
-            emotionNameLabel.setText("COMPASIÓN");
-        } else if (emotion instanceof AdmirationEmotion) {
-            emotionNameLabel.setText("ADMIRACIÓN");
-        } else if (emotion instanceof SadnessEmotion) {
-            emotionNameLabel.setText("TRISTEZA");
-        } else if (emotion instanceof DepressionEmotion) {
-            emotionNameLabel.setText("DEPRESIÓN");
-        } else if (emotion instanceof RejectionEmotion) {
-            emotionNameLabel.setText("RECHAZO");
-        } else if (emotion instanceof AngerEmotion) {
-            emotionNameLabel.setText("IRA");
-        }
-
     }
 
     public void setBehaviour(EmotionalBehaviour behaviour) {
         BehaviourType type = behaviour.getType();
+        String typeName = translation.get(type.toString().toLowerCase());
+        behaviourNameLabel.setText(typeName);
+
         if (type.equals(BehaviourType.COGNITIVE)) {
-            behaviourNameLabel.setText("COGNITIVO");
+            behaviourNameLabel.setForeground(ORANGE_COLOR);
         } else if (type.equals(BehaviourType.REACTIVE)) {
-            behaviourNameLabel.setText("REACTIVO");
+            behaviourNameLabel.setForeground(Color.RED);
         } else if (type.equals(BehaviourType.IMITATIVE)) {
-            behaviourNameLabel.setText("IMITATIVO");
+            behaviourNameLabel.setForeground(GREEN_COLOR);
         }
     }
 

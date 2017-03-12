@@ -100,6 +100,7 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
         behaviouralKnowledgeBase.addTheory("satisfactionByAction(AGENT, actionName, positive_low) :- self(AGENT).");
 
         List<Emotion> emotions = new LinkedList<>();
+
         for (int i = 0; i < 10; i++) {
             emotionalConfigurator.updateEmotion(new ActionStimulus(new AID(AGENT_NAME, AID.ISGUID), actionName));
             emotions.add(emotionalConfigurator.getEmotion());

@@ -8,6 +8,7 @@ package settings;
 
 import util.ToStringBuilder;
 
+import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -23,7 +24,7 @@ public class SettingsLoader {
     public synchronized void load(String path) {
         try {
             properties.clear();
-            properties.load(ClassLoader.getSystemResourceAsStream(path));
+            properties.load(new InputStreamReader(ClassLoader.getSystemResourceAsStream(path), "UTF-8"));
         } catch (Exception e) {
             throw new SettingsException(e);
         }

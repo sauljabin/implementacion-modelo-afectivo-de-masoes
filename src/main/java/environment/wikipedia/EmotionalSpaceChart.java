@@ -7,6 +7,7 @@
 package environment.wikipedia;
 
 import masoes.behavioural.EmotionalState;
+import translate.Translation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +22,7 @@ import static java.lang.Math.abs;
 public class EmotionalSpaceChart extends Canvas implements Runnable {
 
     private static int FPS = 10;
+    private final Translation translation;
     private Font font;
     private Thread thread;
     private BufferedImage image;
@@ -33,6 +35,7 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
         emotionalStates = new ArrayList<>();
         thread = new Thread(this);
         font = new Font("Arial", Font.PLAIN, 10);
+        translation = Translation.getInstance();
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -96,15 +99,15 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
 
         // TEXTOS
         graphics.setColor(Color.BLACK);
-        graphics.drawString("COMPASIÓN", convertXToCanvas(getWidth(), -.7), convertYToCanvas(getHeight(), .7));
-        graphics.drawString("FELICIDAD", convertXToCanvas(getWidth(), .5), convertYToCanvas(getHeight(), .7));
-        graphics.drawString("IRA", convertXToCanvas(getWidth(), .5), convertYToCanvas(getHeight(), -.8));
-        graphics.drawString("DEPRESIÓN", convertXToCanvas(getWidth(), -.7), convertYToCanvas(getHeight(), -.8));
+        graphics.drawString(getEmotionTranslation("compassion"), convertXToCanvas(getWidth(), -.8), convertYToCanvas(getHeight(), .7));
+        graphics.drawString(getEmotionTranslation("happiness"), convertXToCanvas(getWidth(), .5), convertYToCanvas(getHeight(), .7));
+        graphics.drawString(getEmotionTranslation("anger"), convertXToCanvas(getWidth(), .5), convertYToCanvas(getHeight(), -.8));
+        graphics.drawString(getEmotionTranslation("depression"), convertXToCanvas(getWidth(), -.8), convertYToCanvas(getHeight(), -.8));
 
-        graphics.drawString("ADMIRACIÓN", convertXToCanvas(getWidth(), -.45), convertYToCanvas(getHeight(), .40));
-        graphics.drawString("ALEGRIA", convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), .40));
-        graphics.drawString("TRISTEZA", convertXToCanvas(getWidth(), -.45), convertYToCanvas(getHeight(), -.40));
-        graphics.drawString("RECHAZO", convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), -.40));
+        graphics.drawString(getEmotionTranslation("admiration"), convertXToCanvas(getWidth(), -.45), convertYToCanvas(getHeight(), .40));
+        graphics.drawString(getEmotionTranslation("joy"), convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), .40));
+        graphics.drawString(getEmotionTranslation("sadness"), convertXToCanvas(getWidth(), -.45), convertYToCanvas(getHeight(), -.45));
+        graphics.drawString(getEmotionTranslation("rejection"), convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), -.45));
 
         // PUNTOS
         graphics.setColor(Color.RED);
@@ -127,6 +130,10 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
         }
 
         getGraphics().drawImage(image, 0, 0, this);
+    }
+
+    private String getEmotionTranslation(String key) {
+        return translation.get(key).toUpperCase();
     }
 
     private int convertXToCanvas(int size, double value) {

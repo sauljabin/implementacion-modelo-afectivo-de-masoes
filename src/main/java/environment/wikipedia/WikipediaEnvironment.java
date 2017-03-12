@@ -8,6 +8,7 @@ package environment.wikipedia;
 
 import environment.AgentParameter;
 import environment.Environment;
+import environment.wikipedia.reviewer.ReviewerUserAgent;
 import environment.wikipedia.submitter.SubmitterUserAgent;
 import gui.RequesterGuiAgent;
 
@@ -20,6 +21,7 @@ public class WikipediaEnvironment extends Environment {
     public List<AgentParameter> getAgentParameters() {
         return Arrays.asList(
                 new AgentParameter("submitter", SubmitterUserAgent.class),
+                new AgentParameter("reviewer", ReviewerUserAgent.class),
                 new AgentParameter("requester", RequesterGuiAgent.class)
         );
     }

@@ -88,4 +88,11 @@ public class TranslationTest {
         assertThat(translationSpy.getCurrentTranslation(), is(Translation.EN));
     }
 
+    @Test
+    public void shouldReturnSameKeyWhenNotFoundValue() {
+        String value = "no-key";
+        String translation = translationSpy.get(value);
+        assertThat(translation, is(value));
+    }
+
 }

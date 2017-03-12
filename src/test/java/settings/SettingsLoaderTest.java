@@ -13,6 +13,7 @@ import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.Map;
 import java.util.Properties;
 
@@ -91,6 +92,7 @@ public class SettingsLoaderTest {
         String expectedMessage = "Message";
         Properties propertiesMock = mock(Properties.class);
         doThrow(new IOException(expectedMessage)).when(propertiesMock).load(any(InputStream.class));
+        doThrow(new IOException(expectedMessage)).when(propertiesMock).load(any(Reader.class));
         setFieldValue(jadeSettingsLoader, "properties", propertiesMock);
         expectedException.expect(SettingsException.class);
         expectedException.expectMessage(expectedMessage);
