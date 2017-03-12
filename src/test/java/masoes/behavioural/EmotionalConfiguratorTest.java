@@ -28,12 +28,13 @@ import test.PowerMockitoTest;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -97,13 +98,15 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
         String actionName = "actionName";
         behaviouralKnowledgeBase.addTheory("satisfactionByAction(AGENT, actionName, positive_high) :- self(AGENT).");
         behaviouralKnowledgeBase.addTheory("satisfactionByAction(AGENT, actionName, positive_low) :- self(AGENT).");
-        List<Emotion> emotions = new java.util.ArrayList<>();
+
+        List<Emotion> emotions = new LinkedList<>();
         for (int i = 0; i < 10; i++) {
             emotionalConfigurator.updateEmotion(new ActionStimulus(new AID(AGENT_NAME, AID.ISGUID), actionName));
             emotions.add(emotionalConfigurator.getEmotion());
         }
 
-        assertThat(emotions, hasItems(instanceOf(JoyEmotion.class), instanceOf(HappinessEmotion.class)));
+        assertThat(emotions, hasItem(instanceOf(JoyEmotion.class)));
+        assertThat(emotions, hasItem(instanceOf(HappinessEmotion.class)));
     }
 
     @Test
