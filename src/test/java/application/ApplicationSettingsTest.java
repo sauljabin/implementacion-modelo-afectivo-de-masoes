@@ -25,6 +25,7 @@ public class ApplicationSettingsTest {
     private static final String APP_NAME = "app.name";
     private static final String APP_REVISION = "app.revision";
     private static final String APP_VERSION = "app.version";
+    private static final String APP_LANGUAGE = "app.language";
     private static final String OS_NAME = "os.name";
     private static final String OS_ARCH = "os.arch";
     private static final String OS_VERSION = "os.version";
@@ -63,6 +64,7 @@ public class ApplicationSettingsTest {
         expectedValues.put(JAVA_VENDOR, System.getProperty(JAVA_VENDOR));
         expectedValues.put(JADE_VERSION, jade.core.Runtime.getVersion());
         expectedValues.put(JADE_REVISION, jade.core.Runtime.getRevision());
+        expectedValues.put(APP_LANGUAGE, "ES");
 
         expectedValues.keySet().forEach(
                 key -> assertThat(applicationSettings.get(key), is(expectedValues.get(key)))

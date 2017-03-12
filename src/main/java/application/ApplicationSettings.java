@@ -20,6 +20,7 @@ public class ApplicationSettings extends SettingsLoader {
     public static final String APP_NAME = "app.name";
     public static final String APP_REVISION = "app.revision";
     public static final String APP_VERSION = "app.version";
+    public static final String APP_LANGUAGE = "app.language";
     public static final String MASOES_ENV = "masoes.env";
 
     private static final String SETTINGS_PROPERTIES_FILE = "application.properties";
