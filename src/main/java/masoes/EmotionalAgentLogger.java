@@ -13,15 +13,18 @@ import masoes.behavioural.Emotion;
 import ontology.masoes.Stimulus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import translate.Translation;
 
 public class EmotionalAgentLogger {
 
     private EmotionalAgent emotionalAgent;
     private Logger logger;
+    private final Translation translation;
 
     public EmotionalAgentLogger(EmotionalAgent emotionalAgent) {
         this.emotionalAgent = emotionalAgent;
         logger = LoggerFactory.getLogger(emotionalAgent.getClass());
+        translation = Translation.getInstance();
     }
 
     public Logger getLogger() {
@@ -31,7 +34,7 @@ public class EmotionalAgentLogger {
     public void exception(Exception exception) {
         new LogWriter()
                 .addLoggerHandler(emotionalAgent)
-                .message("Exception in agent \"%s\", class \"%s\": %s")
+                .message(translation.get("log.exception_in_agent"))
                 .args(emotionalAgent.getLocalName(), emotionalAgent.getClass().getName(), exception.getMessage())
                 .exception(exception)
                 .error(logger);
@@ -40,7 +43,7 @@ public class EmotionalAgentLogger {
     public void messageRequest(ACLMessage message) {
         new LogWriter()
                 .addLoggerHandler(emotionalAgent)
-                .message("Message request in agent \"%s\": %s")
+                .message(translation.get("log.request_message"))
                 .args(emotionalAgent.getLocalName(), message)
                 .info(logger);
     }
@@ -48,7 +51,7 @@ public class EmotionalAgentLogger {
     public void messageResponse(ACLMessage message) {
         new LogWriter()
                 .addLoggerHandler(emotionalAgent)
-                .message("Message response in agent \"%s\": %s")
+                .message(translation.get("log.response_message"))
                 .args(emotionalAgent.getLocalName(), message)
                 .info(logger);
     }
@@ -56,7 +59,7 @@ public class EmotionalAgentLogger {
     public void agentInfo() {
         new LogWriter()
                 .addLoggerHandler(emotionalAgent)
-                .message("Agent %s: %s")
+                .message(translation.get("log.agent"))
                 .args(emotionalAgent.getLocalName(), emotionalAgent)
                 .info(logger);
     }
@@ -64,7 +67,7 @@ public class EmotionalAgentLogger {
     public void info(String info) {
         new LogWriter()
                 .addLoggerHandler(emotionalAgent)
-                .message("Agent %s: %s")
+                .message(translation.get("log.agent"))
                 .args(emotionalAgent.getLocalName(), info)
                 .info(logger);
     }
@@ -72,31 +75,31 @@ public class EmotionalAgentLogger {
     public void updatingBehaviour(BehaviourType actualType, BehaviourType newType) {
         new LogWriter()
                 .addLoggerHandler(emotionalAgent)
-                .message("Actualizando comportamiento %s a %s")
-                .args(actualType, newType)
+                .message(translation.get("log.updating_behaviour"))
+                .args(translation.get(actualType.toString().toLowerCase()), translation.get(newType.toString().toLowerCase()))
                 .info(logger);
     }
 
     public void startingBehaviour(BehaviourType newType) {
         new LogWriter()
                 .addLoggerHandler(emotionalAgent)
-                .message("Inicializando comportamiento %s")
-                .args(newType)
+                .message(translation.get("log.starting_behaviour"))
+                .args(translation.get(newType.toString().toLowerCase()))
                 .info(logger);
     }
 
     public void updatingEmotion(Emotion actualEmotion, Emotion newEmotion) {
         new LogWriter()
                 .addLoggerHandler(emotionalAgent)
-                .message("Actualizando emoción %s a %s")
-                .args(actualEmotion.getName().toUpperCase(), newEmotion.getName().toUpperCase())
+                .message(translation.get("log.updating_emotion"))
+                .args(translation.get(actualEmotion.getName().toLowerCase()), translation.get(newEmotion.getName().toLowerCase()))
                 .info(logger);
     }
 
     public void receivingStimulus(Stimulus stimulus) {
         new LogWriter()
                 .addLoggerHandler(emotionalAgent)
-                .message("Recibiendo mensaje: %s")
+                .message(translation.get("log.receiving_message"))
                 .args(stimulus)
                 .info(logger);
     }
@@ -104,7 +107,7 @@ public class EmotionalAgentLogger {
     public void sendingDone() {
         new LogWriter()
                 .addLoggerHandler(emotionalAgent)
-                .message("Enviando respuesta: completado")
+                .message(translation.get("log.sending_done"))
                 .info(logger);
     }
 
