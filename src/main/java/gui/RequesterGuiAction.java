@@ -6,36 +6,39 @@
 
 package gui;
 
+import translate.Translation;
+
 public enum RequesterGuiAction {
 
-    GET_ALL_SETTINGS("Consultar configuraciones"),
-    GET_SETTING("Consultar configuración"),
-    ADD_BEHAVIOUR("Agregar comportamiento"),
-    REMOVE_BEHAVIOUR("Remover comportamiento"),
-    GET_EMOTIONAL_STATE("Consultar estado emocional"),
-    EVALUATE_ACTION_STIMULUS("Evaluar acción"),
-    EVALUATE_OBJECT_STIMULUS("Evaluar objeto"),
-    SEND_SIMPLE_CONTENT("Enviar contenido simple"),
-    NOTIFY_ACTION("Notificar Acción"),
-    GET_SERVICES("Consultar servicios"),
-    GET_AGENTS("Consultar agentes"),
-    REGISTER_AGENT("Registrar agente"),
-    DEREGISTER_AGENT("Eliminar registro de agente"),
-    SEARCH_AGENT("Buscar agente en DF"),
-    CREATE_OBJECT("Crear objeto"),
-    UPDATE_OBJECT("Actualizar objeto"),
-    GET_OBJECT("Obtener objeto"),
-    DELETE_OBJECT("Eliminar objeto");
+    GET_ALL_SETTINGS("gui.action.get_all_settings"),
+    GET_SETTING("gui.action.get_setting"),
+    ADD_BEHAVIOUR("gui.action.add_behaviour"),
+    REMOVE_BEHAVIOUR("gui.action.remove_behaviour"),
+    GET_EMOTIONAL_STATE("gui.action.get_emotional_state"),
+    EVALUATE_ACTION_STIMULUS("gui.action.evaluate_action_stimulus"),
+    EVALUATE_OBJECT_STIMULUS("gui.action.evaluate_object_stimulus"),
+    SEND_SIMPLE_CONTENT("gui.action.send_simple_content"),
+    NOTIFY_ACTION("gui.action.notify_action"),
+    GET_SERVICES("gui.action.get_services"),
+    GET_AGENTS("gui.action.get_agents"),
+    REGISTER_AGENT("gui.action.register_agent"),
+    DEREGISTER_AGENT("gui.action.deregister_agent"),
+    SEARCH_AGENT("gui.action.search_agent"),
+    CREATE_OBJECT("gui.action.create_object"),
+    UPDATE_OBJECT("gui.action.update_object"),
+    GET_OBJECT("gui.action.get_object"),
+    DELETE_OBJECT("gui.action.delete_object");
 
-    private String name;
+    private String translationKey;
+    private Translation translation = Translation.getInstance();
 
-    RequesterGuiAction(String name) {
-        this.name = name;
+    RequesterGuiAction(String translationKey) {
+        this.translationKey = translationKey;
     }
 
     @Override
     public String toString() {
-        return name;
+        return translation.get(translationKey);
     }
 
 }
