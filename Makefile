@@ -17,7 +17,7 @@ dummy: ; @ ./gradlew -q run -Pargs="-Edummy"
 wikipedia: ; @ ./gradlew -q run -Pargs="-Ewikipedia"
 
 # target uncopyrighted:       Search files without copyright.
-uncopyrighted: ; @ grep --include *.java -Lr "Copyright (c) 2016 Saúl Piña <sauljabin@gmail.com>" .
+uncopyrighted: ; @ grep --include *.java -Lr "Copyright (c) 2017 Saúl Piña <sauljabin@gmail.com>" .
 
 # target unit-test:           Exec unit test.
 unit-test: ; @ ./gradlew unitTest
