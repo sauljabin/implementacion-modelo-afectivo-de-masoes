@@ -8,6 +8,7 @@ package gui;
 
 import jade.lang.acl.ACLMessage;
 import net.miginfocom.swing.MigLayout;
+import translate.Translation;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
@@ -51,8 +52,10 @@ public class RequesterGui extends JFrame {
     private List<Color> colors;
     private Iterator<Color> colorIterator;
     private LinkedHashMap<String, Color> conversations;
+    private Translation translation;
 
     public RequesterGui() {
+        translation = Translation.getInstance();
         prepareColors();
         setUp();
     }
@@ -79,7 +82,7 @@ public class RequesterGui extends JFrame {
     }
 
     private void setUp() {
-        setTitle("Envío de Mensajes - GUI");
+        setTitle(translation.get("gui.send_message_interface"));
         setSize(900, 600);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -101,20 +104,20 @@ public class RequesterGui extends JFrame {
     }
 
     private void createWestComponents() {
-        JLabel senderAgentTitleLabel = new JLabel("Remitente:");
+        JLabel senderAgentTitleLabel = new JLabel(translation.get("gui.sender"));
         westPanel.add(senderAgentTitleLabel, LABEL_W);
 
         senderAgentLabel = new JLabel();
         senderAgentLabel.setForeground(Color.BLUE);
         westPanel.add(senderAgentLabel, FIELD_W);
 
-        JLabel receiverAgentTitleLabel = new JLabel("Receptor:");
+        JLabel receiverAgentTitleLabel = new JLabel(translation.get("gui.receiver"));
         westPanel.add(receiverAgentTitleLabel, LABEL_W);
 
         receiverAgentTextField = new JTextField();
         westPanel.add(receiverAgentTextField, FIELD_W);
 
-        JLabel actionsLabel = new JLabel("Acción:");
+        JLabel actionsLabel = new JLabel(translation.get("gui.action"));
         westPanel.add(actionsLabel, LABEL_W);
 
         Font font = new Font("Arial", Font.BOLD, 10);
@@ -127,20 +130,20 @@ public class RequesterGui extends JFrame {
         dynamicCanvasPanel = new JPanel(new MigLayout("insets 0"));
         westPanel.add(dynamicCanvasPanel, "span 2, grow, wrap 20");
 
-        sendRequestButton = new JButton("Enviar mensaje");
+        sendRequestButton = new JButton(translation.get("gui.send_message"));
         sendRequestButton.setActionCommand(RequesterGuiEvent.SEND_MESSAGE.toString());
         westPanel.add(sendRequestButton, "span 2, h 30, grow");
     }
 
     private void createCenterComponent() {
-        JLabel messageTextTitleLabel = new JLabel("Mensajes:");
+        JLabel messageTextTitleLabel = new JLabel(translation.get("gui.messages"));
         centerPanel.add(messageTextTitleLabel, "w 100%");
 
-        saveMessagesLogButton = new JButton("Guardar");
+        saveMessagesLogButton = new JButton(translation.get("gui.save"));
         saveMessagesLogButton.setActionCommand(RequesterGuiEvent.SAVE_MESSAGE_LOGS.toString());
         centerPanel.add(saveMessagesLogButton);
 
-        clearMessagesLogButton = new JButton("Limpiar");
+        clearMessagesLogButton = new JButton(translation.get("gui.clean"));
         clearMessagesLogButton.setActionCommand(RequesterGuiEvent.CLEAR_MESSAGE_LOGS.toString());
         centerPanel.add(clearMessagesLogButton, "wrap");
 
@@ -207,7 +210,7 @@ public class RequesterGui extends JFrame {
 
             attributeSet.addAttribute(StyleConstants.Bold, Boolean.TRUE);
             attributeSet.addAttribute(StyleConstants.Foreground, conversations.get(message.getConversationId()));
-            document.insertString(document.getLength(), "Canversación: " + message.getConversationId() + "\n", attributeSet);
+            document.insertString(document.getLength(), String.format("%s %s\n", translation.get("gui.conversation"), message.getConversationId()), attributeSet);
 
             attributeSet.addAttribute(StyleConstants.Bold, Boolean.FALSE);
             attributeSet.addAttribute(StyleConstants.Foreground, Color.BLACK);
@@ -272,7 +275,7 @@ public class RequesterGui extends JFrame {
 
     public void setGetSettingActionComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel keySettingTitleLabel = new JLabel("Nombre:");
+            JLabel keySettingTitleLabel = new JLabel(translation.get("gui.name"));
             dynamicCanvasPanel.add(keySettingTitleLabel, LABEL_W);
             keySettingTextField = new JTextField();
             dynamicCanvasPanel.add(keySettingTextField, FIELD_W);
@@ -286,12 +289,12 @@ public class RequesterGui extends JFrame {
 
     public void setEvaluateActionStimulusComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel actorTitleLabel = new JLabel("Actor:");
+            JLabel actorTitleLabel = new JLabel(translation.get("gui.actor"));
             dynamicCanvasPanel.add(actorTitleLabel, LABEL_W);
             actorNameTextField = new JTextField();
             dynamicCanvasPanel.add(actorNameTextField, FIELD_W);
 
-            JLabel actionNameTitleLabel = new JLabel("Acción:");
+            JLabel actionNameTitleLabel = new JLabel(translation.get("gui.action"));
             dynamicCanvasPanel.add(actionNameTitleLabel, LABEL_W);
             actionNameTextField = new JTextField();
             dynamicCanvasPanel.add(actionNameTextField, FIELD_W);
@@ -300,17 +303,17 @@ public class RequesterGui extends JFrame {
 
     public void setEvaluateObjectStimulusComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel creatorTitleLabel = new JLabel("Creador:");
+            JLabel creatorTitleLabel = new JLabel(translation.get("gui.creator"));
             dynamicCanvasPanel.add(creatorTitleLabel, LABEL_W);
             creatorNameTextField = new JTextField();
             dynamicCanvasPanel.add(creatorNameTextField, FIELD_W);
 
-            JLabel objectNameTitleLabel = new JLabel("Objeto:");
+            JLabel objectNameTitleLabel = new JLabel(translation.get("gui.object"));
             dynamicCanvasPanel.add(objectNameTitleLabel, LABEL_W);
             objectNameTextField = new JTextField();
             dynamicCanvasPanel.add(objectNameTextField, FIELD_W);
 
-            JLabel propertiesTitleLabel = new JLabel("Propiedades:");
+            JLabel propertiesTitleLabel = new JLabel(translation.get("gui.properties"));
             dynamicCanvasPanel.add(propertiesTitleLabel, LABEL_W);
             propertiesTextArea = new JTextArea();
 
@@ -325,7 +328,7 @@ public class RequesterGui extends JFrame {
 
     public void setSimpleContentActionComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel contentTitleLabel = new JLabel("Contenido:");
+            JLabel contentTitleLabel = new JLabel(translation.get("gui.content"));
             dynamicCanvasPanel.add(contentTitleLabel, LABEL_W);
             simpleContentTextField = new JTextField();
             dynamicCanvasPanel.add(simpleContentTextField, FIELD_W);
@@ -334,7 +337,7 @@ public class RequesterGui extends JFrame {
 
     public void setRemoveBehaviourActionComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel nameTitleLabel = new JLabel("Nombre:");
+            JLabel nameTitleLabel = new JLabel(translation.get("gui.name"));
             dynamicCanvasPanel.add(nameTitleLabel, LABEL_W);
             behaviourNameTextField = new JTextField();
             dynamicCanvasPanel.add(behaviourNameTextField, FIELD_W);
@@ -343,12 +346,12 @@ public class RequesterGui extends JFrame {
 
     public void setAddBehaviourActionComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel nameTitleLabel = new JLabel("Nombre:");
+            JLabel nameTitleLabel = new JLabel(translation.get("gui.name"));
             dynamicCanvasPanel.add(nameTitleLabel, LABEL_W);
             behaviourNameTextField = new JTextField();
             dynamicCanvasPanel.add(behaviourNameTextField, FIELD_W);
 
-            JLabel classNameTitleLabel = new JLabel("Clase:");
+            JLabel classNameTitleLabel = new JLabel(translation.get("gui.class"));
             dynamicCanvasPanel.add(classNameTitleLabel, LABEL_W);
             behaviourClassNameTextField = new JTextField();
             dynamicCanvasPanel.add(behaviourClassNameTextField, FIELD_W);
@@ -361,7 +364,7 @@ public class RequesterGui extends JFrame {
 
     public void setGetServicesActionComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel nameTitleLabel = new JLabel("Agente:");
+            JLabel nameTitleLabel = new JLabel(translation.get("gui.agent"));
             dynamicCanvasPanel.add(nameTitleLabel, LABEL_W);
             agentNameTextField = new JTextField();
             dynamicCanvasPanel.add(agentNameTextField, FIELD_W);
@@ -375,7 +378,7 @@ public class RequesterGui extends JFrame {
 
     public void setSearchAgentActionComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel nameTitleLabel = new JLabel("Servicio:");
+            JLabel nameTitleLabel = new JLabel(translation.get("gui.service"));
             dynamicCanvasPanel.add(nameTitleLabel, LABEL_W);
             serviceNameTextField = new JTextField();
             dynamicCanvasPanel.add(serviceNameTextField, FIELD_W);
@@ -388,12 +391,12 @@ public class RequesterGui extends JFrame {
 
     public void setRegisterAgentActionComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel agentNameTitle = new JLabel("Agente:");
+            JLabel agentNameTitle = new JLabel(translation.get("gui.agent"));
             dynamicCanvasPanel.add(agentNameTitle, LABEL_W);
             agentNameTextField = new JTextField();
             dynamicCanvasPanel.add(agentNameTextField, FIELD_W);
 
-            JLabel serviceNameTitle = new JLabel("Servicio:");
+            JLabel serviceNameTitle = new JLabel(translation.get("gui.service"));
             dynamicCanvasPanel.add(serviceNameTitle, LABEL_W);
             serviceNameTextField = new JTextField();
             dynamicCanvasPanel.add(serviceNameTextField, FIELD_W);
@@ -410,12 +413,12 @@ public class RequesterGui extends JFrame {
 
     public void setDeleteObjectStimulusComponents() {
         refreshDynamicCanvas(() -> {
-            JLabel creatorTitleLabel = new JLabel("Creador:");
+            JLabel creatorTitleLabel = new JLabel(translation.get("gui.creator"));
             dynamicCanvasPanel.add(creatorTitleLabel, LABEL_W);
             creatorNameTextField = new JTextField();
             dynamicCanvasPanel.add(creatorNameTextField, FIELD_W);
 
-            JLabel objectNameTitleLabel = new JLabel("Objeto:");
+            JLabel objectNameTitleLabel = new JLabel(translation.get("gui.object"));
             dynamicCanvasPanel.add(objectNameTitleLabel, LABEL_W);
             objectNameTextField = new JTextField();
             dynamicCanvasPanel.add(objectNameTextField, FIELD_W);

@@ -15,6 +15,8 @@ import masoes.EmotionalAgent;
 import masoes.ImitativeBehaviour;
 import masoes.ReactiveBehaviour;
 
+import java.nio.file.Paths;
+
 public class ReviewerUserAgent extends EmotionalAgent {
 
     @Override
@@ -24,7 +26,7 @@ public class ReviewerUserAgent extends EmotionalAgent {
 
     @Override
     public Knowledge getKnowledge() {
-        return null;
+        return new Knowledge(Paths.get("theories/wikipedia/reviewerEmotionalAgent.prolog"));
     }
 
     @Override

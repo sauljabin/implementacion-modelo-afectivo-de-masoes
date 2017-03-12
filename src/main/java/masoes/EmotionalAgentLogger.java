@@ -19,7 +19,7 @@ public class EmotionalAgentLogger {
 
     private EmotionalAgent emotionalAgent;
     private Logger logger;
-    private final Translation translation;
+    private Translation translation;
 
     public EmotionalAgentLogger(EmotionalAgent emotionalAgent) {
         this.emotionalAgent = emotionalAgent;

@@ -22,7 +22,7 @@ import static java.lang.Math.abs;
 public class EmotionalSpaceChart extends Canvas implements Runnable {
 
     private static int FPS = 10;
-    private final Translation translation;
+    private Translation translation;
     private Font font;
     private Thread thread;
     private BufferedImage image;
