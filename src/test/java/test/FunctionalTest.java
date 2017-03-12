@@ -60,7 +60,7 @@ public abstract class FunctionalTest {
             try {
                 agentManagementAssistant.killAgent(aid);
             } catch (Exception e) {
-                System.out.println("Fail kill: " + aid);
+                System.out.println("Fail kill: " + aid.getName());
             }
             agentsToKill.remove(aid);
         }
@@ -73,7 +73,7 @@ public abstract class FunctionalTest {
     public void killAgent(AID agentToKill) {
         agentsToKill.remove(agentToKill);
         agentManagementAssistant.killAgent(agentToKill);
-        System.out.println("Killed: " + agentToKill);
+        System.out.println("Killed: " + agentToKill.getName());
     }
 
     public AID createAgent(Class<? extends Agent> agentClass, List<String> arguments) {
