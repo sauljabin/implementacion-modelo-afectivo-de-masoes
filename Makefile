@@ -1,5 +1,5 @@
 # target clean:               Refresh dependencies and clean.
-clean: ; @ ./gradlew -q --refresh-dependencies clean
+clean: ; @ ./gradlew -q --refresh-dependencies clean && rm -rf log/
 
 # target targets:             Display callable targets.
 targets: ; @ grep "^# target" [Mm]akefile | cut -c10-
