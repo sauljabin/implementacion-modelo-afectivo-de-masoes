@@ -6,6 +6,7 @@
 
 package gui.component;
 
+import masoes.behavioural.EmotionalSpace;
 import masoes.behavioural.EmotionalState;
 import translate.Translation;
 
@@ -14,28 +15,35 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.lang.Math.abs;
 
 public class EmotionalSpaceChart extends Canvas implements Runnable {
 
-    private static int FPS = 10;
+    private static final String HAPPINESS = "happiness";
+    private static final String JOY = "joy";
+    private static final String COMPASSION = "compassion";
+    private static final Color GRAY_COLOR = new Color(235, 235, 235);
+    private static final String ADMIRATION = "admiration";
+    private static final String DEPRESSION = "depression";
+    private static final String SADNESS = "sadness";
+    private static final String REJECTION = "rejection";
+    private static final String ANGER = "anger";
+    private static final int FPS = 26;
     private Translation translation;
     private Font font;
     private Thread thread;
     private BufferedImage image;
     private Graphics2D graphics;
-    private List<EmotionalState> emotionalStates;
     private boolean stop;
-    private EmotionalState lastEmotionalState;
+    private EmotionalState emotionalState;
+    private EmotionalSpace emotionalSpace;
 
     public EmotionalSpaceChart() {
-        emotionalStates = new ArrayList<>();
         thread = new Thread(this);
         font = new Font("Arial", Font.PLAIN, 10);
         translation = Translation.getInstance();
+        emotionalSpace = new EmotionalSpace();
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -48,88 +56,163 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
         EmotionalSpaceChart spaceChart = new EmotionalSpaceChart();
 
         JFrame jFrame = new JFrame();
-        jFrame.setSize(300, 300);
+        jFrame.setSize(500, 500);
         jFrame.setLayout(new BorderLayout());
         jFrame.add(spaceChart, BorderLayout.CENTER);
         jFrame.setLocationRelativeTo(jFrame);
         jFrame.setVisible(true);
 
         spaceChart.start();
-        for (int i = 0; i < 5; i++) {
-            spaceChart.addEmotionalState(new EmotionalState());
-        }
+
+        new EmotionalSpace().getEmotions().forEach(emotion -> {
+            spaceChart.addEmotionalState(emotion.getRandomEmotionalState());
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void addEmotionalState(EmotionalState emotionalState) {
-        if (lastEmotionalState != null) {
-            if (lastEmotionalState.getActivation() == emotionalState.getActivation()
-                    && lastEmotionalState.getSatisfaction() == emotionalState.getSatisfaction()) {
-                return;
-            }
-        }
-        emotionalStates.add(emotionalState);
-        lastEmotionalState = emotionalState;
+        this.emotionalState = emotionalState;
     }
 
-    private void rendering() {
-        graphics.setBackground(Color.WHITE);
-        graphics.setFont(font);
-        graphics.clearRect(0, 0, getWidth(), getHeight());
+    protected void render() {
+        renderBackground();
+        renderExternalBox();
+        renderInnerBox();
+        renderLines();
+        renderEmotionIntersection();
+        renderIntervals();
+        renderTexts();
+        renderEmotionalState();
+        getGraphics().drawImage(image, 0, 0, this);
+    }
 
-        // CUADRO EXTERIOR
+    private void renderEmotionalState() {
+        if (emotionalState == null) {
+            return;
+        }
+        graphics.setColor(Color.RED);
+        int x = convertXToCanvas(getWidth(), emotionalState.getActivation());
+        int y = convertYToCanvas(getHeight(), emotionalState.getSatisfaction());
+        graphics.fillOval(x - 3, y - 3, 6, 6);
+    }
+
+    private void renderTexts() {
         graphics.setColor(Color.BLACK);
-        graphics.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+        graphics.drawString(getEmotionTranslation(COMPASSION), convertXToCanvas(getWidth(), -.8), convertYToCanvas(getHeight(), .7));
+        graphics.drawString(getEmotionTranslation(HAPPINESS), convertXToCanvas(getWidth(), .5), convertYToCanvas(getHeight(), .7));
+        graphics.drawString(getEmotionTranslation(ANGER), convertXToCanvas(getWidth(), .5), convertYToCanvas(getHeight(), -.8));
+        graphics.drawString(getEmotionTranslation(DEPRESSION), convertXToCanvas(getWidth(), -.8), convertYToCanvas(getHeight(), -.8));
 
-        // CUADRO INTERIOR
-        graphics.setColor(Color.LIGHT_GRAY);
-        graphics.fillRect(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
+        graphics.drawString(getEmotionTranslation(ADMIRATION), convertXToCanvas(getWidth(), -.45), convertYToCanvas(getHeight(), .40));
+        graphics.drawString(getEmotionTranslation(JOY), convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), .40));
+        graphics.drawString(getEmotionTranslation(SADNESS), convertXToCanvas(getWidth(), -.45), convertYToCanvas(getHeight(), -.45));
+        graphics.drawString(getEmotionTranslation(REJECTION), convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), -.45));
+    }
 
-        // LINEAS
-        graphics.setColor(Color.BLACK);
-        graphics.drawLine(getWidth() / 2, 0, getWidth() / 2, getHeight());
-        graphics.drawLine(0, getHeight() / 2, getWidth(), getHeight() / 2);
-        graphics.drawRect(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
-
-        // RANGOS
+    private void renderIntervals() {
         graphics.setColor(Color.DARK_GRAY);
         graphics.drawString("1", convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), .9));
         graphics.drawString("1", convertXToCanvas(getWidth(), .9), convertYToCanvas(getHeight(), -.1));
         graphics.drawString("-1", convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), -.9));
         graphics.drawString("-1", convertXToCanvas(getWidth(), -.95), convertYToCanvas(getHeight(), -.1));
+    }
 
-        // TEXTOS
-        graphics.setColor(Color.BLACK);
-        graphics.drawString(getEmotionTranslation("compassion"), convertXToCanvas(getWidth(), -.8), convertYToCanvas(getHeight(), .7));
-        graphics.drawString(getEmotionTranslation("happiness"), convertXToCanvas(getWidth(), .5), convertYToCanvas(getHeight(), .7));
-        graphics.drawString(getEmotionTranslation("anger"), convertXToCanvas(getWidth(), .5), convertYToCanvas(getHeight(), -.8));
-        graphics.drawString(getEmotionTranslation("depression"), convertXToCanvas(getWidth(), -.8), convertYToCanvas(getHeight(), -.8));
+    private void renderEmotionIntersection() {
+        if (emotionalState == null) {
+            return;
+        }
 
-        graphics.drawString(getEmotionTranslation("admiration"), convertXToCanvas(getWidth(), -.45), convertYToCanvas(getHeight(), .40));
-        graphics.drawString(getEmotionTranslation("joy"), convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), .40));
-        graphics.drawString(getEmotionTranslation("sadness"), convertXToCanvas(getWidth(), -.45), convertYToCanvas(getHeight(), -.45));
-        graphics.drawString(getEmotionTranslation("rejection"), convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), -.45));
-
-        // PUNTOS
         graphics.setColor(Color.RED);
 
-        for (int i = 0; i < emotionalStates.size() - 1; i++) {
-            EmotionalState emotionalState = emotionalStates.get(i);
-            int x = convertXToCanvas(getWidth(), emotionalState.getActivation());
-            int y = convertYToCanvas(getHeight(), emotionalState.getSatisfaction());
-            graphics.fillRect(x - 2, y - 2, 4, 4);
-        }
+        String emotionName = emotionalSpace.searchEmotion(emotionalState).getName();
 
-        if (emotionalStates.size() > 0) {
-            graphics.setColor(Color.BLUE);
-            EmotionalState lastEmotionalState = emotionalStates.get(emotionalStates.size() - 1);
-            int x = convertXToCanvas(getWidth(), lastEmotionalState.getActivation());
-            int y = convertYToCanvas(getHeight(), lastEmotionalState.getSatisfaction());
-            graphics.fillRect(x - 3, y - 3, 6, 6);
-            graphics.setColor(Color.WHITE);
-            graphics.drawRect(x - 3, y - 3, 6, 6);
+        Polygon polygon = new Polygon();
+        switch (emotionName) {
+            case HAPPINESS:
+                polygon.addPoint(getWidth() / 2, 0);
+                polygon.addPoint(getWidth() - 1, 0);
+                polygon.addPoint(getWidth() - 1, getHeight() / 2);
+                polygon.addPoint(getWidth() / 2 + getWidth() / 4, getHeight() / 2);
+                polygon.addPoint(getWidth() / 2 + getWidth() / 4, getHeight() / 4);
+                polygon.addPoint(getWidth() / 2, getHeight() / 4);
+                break;
+            case JOY:
+                polygon.addPoint(getWidth() / 2, getHeight() / 2);
+                polygon.addPoint(getWidth() / 2, getHeight() / 4);
+                polygon.addPoint(getWidth() / 2 + getWidth() / 4, getHeight() / 4);
+                polygon.addPoint(getWidth() / 2 + getWidth() / 4, getHeight() / 2);
+                break;
+            case COMPASSION:
+                polygon.addPoint(0, 0);
+                polygon.addPoint(getWidth() / 2, 0);
+                polygon.addPoint(getWidth() / 2, getHeight() / 4);
+                polygon.addPoint(getWidth() / 4, getHeight() / 4);
+                polygon.addPoint(getWidth() / 4, getHeight() / 2);
+                polygon.addPoint(0, getHeight() / 2);
+                break;
+            case ADMIRATION:
+                polygon.addPoint(getWidth() / 2, getHeight() / 2);
+                polygon.addPoint(getWidth() / 4, getHeight() / 2);
+                polygon.addPoint(getWidth() / 4, getHeight() / 4);
+                polygon.addPoint(getWidth() / 2, getHeight() / 4);
+                break;
+            case DEPRESSION:
+                polygon.addPoint(0, getHeight() / 2);
+                polygon.addPoint(0, getHeight() - 1);
+                polygon.addPoint(getWidth() / 2, getHeight() - 1);
+                polygon.addPoint(getWidth() / 2, getHeight() / 2 + getHeight() / 4);
+                polygon.addPoint(getWidth() / 4, getHeight() / 2 + getHeight() / 4);
+                polygon.addPoint(getWidth() / 4, getHeight() / 2);
+                break;
+            case SADNESS:
+                polygon.addPoint(getWidth() / 2, getHeight() / 2);
+                polygon.addPoint(getWidth() / 4, getHeight() / 2);
+                polygon.addPoint(getWidth() / 4, getHeight() / 2 + getHeight() / 4);
+                polygon.addPoint(getWidth() / 2, getHeight() / 2 + getHeight() / 4);
+                break;
+            case REJECTION:
+                polygon.addPoint(getWidth() / 2, getHeight() / 2);
+                polygon.addPoint(getWidth() / 2, getHeight() / 2 + getHeight() / 4);
+                polygon.addPoint(getWidth() / 2 + getWidth() / 4, getHeight() / 2 + getHeight() / 4);
+                polygon.addPoint(getWidth() / 2 + getWidth() / 4, getHeight() / 2);
+                break;
+            case ANGER:
+                polygon.addPoint(getWidth() / 2, getHeight() - 1);
+                polygon.addPoint(getWidth() - 1, getHeight() - 1);
+                polygon.addPoint(getWidth() - 1, getHeight() / 2);
+                polygon.addPoint(getWidth() / 2 + getWidth() / 4, getHeight() / 2);
+                polygon.addPoint(getWidth() / 2 + getWidth() / 4, getHeight() / 2 + getHeight() / 4);
+                polygon.addPoint(getWidth() / 2, getHeight() / 2 + getHeight() / 4);
+                break;
         }
+        graphics.drawPolygon(polygon);
+    }
 
-        getGraphics().drawImage(image, 0, 0, this);
+    private void renderLines() {
+        graphics.setColor(Color.BLACK);
+        graphics.drawLine(getWidth() / 2, 0, getWidth() / 2, getHeight());
+        graphics.drawLine(0, getHeight() / 2, getWidth(), getHeight() / 2);
+        graphics.drawRect(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
+    }
+
+    private void renderInnerBox() {
+        graphics.setColor(GRAY_COLOR);
+        graphics.fillRect(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
+    }
+
+    private void renderExternalBox() {
+        graphics.setColor(Color.BLACK);
+        graphics.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+    }
+
+    private void renderBackground() {
+        graphics.setBackground(Color.WHITE);
+        graphics.setFont(font);
+        graphics.clearRect(0, 0, getWidth(), getHeight());
     }
 
     private String getEmotionTranslation(String key) {
@@ -168,7 +251,7 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
         }
     }
 
-    private synchronized void makeImage() {
+    protected synchronized void makeImage() {
         image = new BufferedImage(getWidth(), getHeight(), 1);
         graphics = (Graphics2D) image.getGraphics();
         RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -179,7 +262,7 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
     @Override
     public void run() {
         while (!stop) {
-            rendering();
+            render();
             try {
                 Thread.sleep(1000 / FPS);
             } catch (Exception e) {

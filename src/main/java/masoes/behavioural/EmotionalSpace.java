@@ -35,12 +35,16 @@ public class EmotionalSpace {
                 new RejectionEmotion());
     }
 
+    public List<Emotion> getEmotions() {
+        return emotions;
+    }
+
     public Emotion searchEmotion(EmotionalState emotionalState) {
         return emotions
                 .stream()
                 .filter(emotion -> emotion.getGeometry().intersects(emotionalState.toPoint()))
                 .findFirst()
-                .orElse(new HappinessEmotion());
+                .orElse(null);
     }
 
     public Emotion searchEmotion(String name) {
