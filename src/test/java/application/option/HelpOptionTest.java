@@ -13,6 +13,7 @@ import org.apache.commons.cli.Options;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -40,7 +41,7 @@ public class HelpOptionTest {
     public void shouldGetCorrectConfiguration() {
         assertThat(helpOption.getOpt(), is("h"));
         assertThat(helpOption.getLongOpt(), is("help"));
-        assertThat(helpOption.getDescription(), is("Shows the options"));
+        assertThat(helpOption.getDescription(), is(notNullValue()));
         assertThat(helpOption.getArgType(), is(ArgumentType.NO_ARGS));
         assertThat(helpOption.getOrder(), is(20));
         assertTrue(helpOption.isFinalOption());

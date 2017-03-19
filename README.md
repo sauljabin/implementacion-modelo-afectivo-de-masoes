@@ -222,3 +222,9 @@ Limpiar DB:
 ```
 make clean-db
 ```
+
+Mostar versión:
+
+```
+make version
+```

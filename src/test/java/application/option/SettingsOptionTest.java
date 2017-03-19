@@ -16,7 +16,7 @@ import org.junit.rules.ExpectedException;
 
 import java.util.Properties;
 
-import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
@@ -56,7 +56,7 @@ public class SettingsOptionTest {
     public void shouldGetCorrectConfiguration() {
         assertThat(settingsOption.getOpt(), is("S"));
         assertThat(settingsOption.getLongOpt(), is(nullValue()));
-        assertThat(settingsOption.getDescription(), containsString("Sets application settings"));
+        assertThat(settingsOption.getDescription(), is(notNullValue()));
         assertThat(settingsOption.getArgType(), is(ArgumentType.UNLIMITED_ARGS));
         assertThat(settingsOption.getOrder(), is(30));
         assertFalse(settingsOption.isFinalOption());

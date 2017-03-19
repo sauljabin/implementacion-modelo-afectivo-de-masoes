@@ -10,6 +10,7 @@ import application.ApplicationLogger;
 import application.ApplicationOption;
 import application.ArgumentType;
 import masoes.MasoesSettings;
+import translate.Translation;
 
 public class MasoesOption extends ApplicationOption {
 
@@ -38,8 +39,7 @@ public class MasoesOption extends ApplicationOption {
 
     @Override
     public String getDescription() {
-        return "Sets MASOES settings, example:\n" +
-                "-Mkey=value -Mkey=value";
+        return Translation.getInstance().get("option.masoes.description");
     }
 
     @Override

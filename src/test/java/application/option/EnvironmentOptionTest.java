@@ -14,7 +14,7 @@ import masoes.MasoesSettings;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
@@ -53,7 +53,7 @@ public class EnvironmentOptionTest {
     public void shouldGetCorrectConfiguration() {
         assertThat(environmentOption.getOpt(), is("E"));
         assertThat(environmentOption.getLongOpt(), is(nullValue()));
-        assertThat(environmentOption.getDescription(), containsString("Sets the environment (dummy, wikipedia)"));
+        assertThat(environmentOption.getDescription(), is(notNullValue()));
         assertThat(environmentOption.getArgType(), is(ArgumentType.ONE_ARG));
         assertThat(environmentOption.getOrder(), is(60));
         assertFalse(environmentOption.isFinalOption());

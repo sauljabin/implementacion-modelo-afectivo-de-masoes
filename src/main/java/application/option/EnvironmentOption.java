@@ -12,6 +12,7 @@ import environment.Environment;
 import environment.EnvironmentFactory;
 import jade.JadeSettings;
 import masoes.MasoesSettings;
+import translate.Translation;
 
 public class EnvironmentOption extends ApplicationOption {
 
@@ -42,8 +43,7 @@ public class EnvironmentOption extends ApplicationOption {
 
     @Override
     public String getDescription() {
-        return "Sets the environment (dummy, wikipedia), example:\n" +
-                "-Edummy";
+        return Translation.getInstance().get("option.environment.description");
     }
 
     @Override

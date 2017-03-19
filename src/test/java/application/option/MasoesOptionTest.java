@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import java.util.Properties;
 
-import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
@@ -43,7 +43,7 @@ public class MasoesOptionTest {
     public void shouldGetCorrectConfiguration() {
         assertThat(masoesOption.getOpt(), is("M"));
         assertThat(masoesOption.getLongOpt(), is(nullValue()));
-        assertThat(masoesOption.getDescription(), containsString("Sets MASOES settings"));
+        assertThat(masoesOption.getDescription(), is(notNullValue()));
         assertThat(masoesOption.getArgType(), is(ArgumentType.UNLIMITED_ARGS));
         assertThat(masoesOption.getOrder(), is(50));
         assertFalse(masoesOption.isFinalOption());

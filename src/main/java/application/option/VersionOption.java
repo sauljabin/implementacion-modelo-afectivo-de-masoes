@@ -9,6 +9,7 @@ package application.option;
 import application.ApplicationOption;
 import application.ApplicationSettings;
 import application.ArgumentType;
+import translate.Translation;
 
 public class VersionOption extends ApplicationOption {
 
@@ -36,7 +37,7 @@ public class VersionOption extends ApplicationOption {
 
     @Override
     public String getDescription() {
-        return "Shows the application version";
+        return Translation.getInstance().get("option.version.description");
     }
 
     @Override
@@ -53,13 +54,21 @@ public class VersionOption extends ApplicationOption {
     public void exec() {
         System.out.println(LINE);
         System.out.println(applicationSettings.get(ApplicationSettings.APP_NAME).toUpperCase());
-        System.out.printf("Version: %s\n", applicationSettings.get(ApplicationSettings.APP_VERSION));
-        System.out.printf("Revision: %s\n", applicationSettings.get(ApplicationSettings.APP_REVISION));
+        printVersion(ApplicationSettings.APP_VERSION);
+        printRevision(ApplicationSettings.APP_REVISION);
         System.out.println(LINE);
         System.out.println("JADE");
-        System.out.printf("Version: %s\n", applicationSettings.get(ApplicationSettings.JADE_VERSION));
-        System.out.printf("Revision: %s\n", applicationSettings.get(ApplicationSettings.JADE_REVISION));
+        printVersion(ApplicationSettings.JADE_VERSION);
+        printRevision(ApplicationSettings.JADE_REVISION);
         System.out.println(LINE);
+    }
+
+    private void printVersion(String key) {
+        System.out.printf("%s: %s\n", Translation.getInstance().get("version"), applicationSettings.get(key));
+    }
+
+    private void printRevision(String key) {
+        System.out.printf("%s: %s\n", Translation.getInstance().get("revision"), applicationSettings.get(key));
     }
 
 }

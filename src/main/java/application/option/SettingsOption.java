@@ -10,6 +10,7 @@ import application.ApplicationLogger;
 import application.ApplicationOption;
 import application.ApplicationSettings;
 import application.ArgumentType;
+import translate.Translation;
 
 public class SettingsOption extends ApplicationOption {
 
@@ -38,8 +39,7 @@ public class SettingsOption extends ApplicationOption {
 
     @Override
     public String getDescription() {
-        return "Sets application settings, example:\n" +
-                "-Skey=value -Skey=value";
+        return Translation.getInstance().get("option.settings.description");
     }
 
     @Override

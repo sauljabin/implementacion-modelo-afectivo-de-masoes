@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -40,7 +41,7 @@ public class VersionOptionTest {
     public void shouldGetCorrectConfiguration() {
         assertThat(versionOption.getOpt(), is("v"));
         assertThat(versionOption.getLongOpt(), is("version"));
-        assertThat(versionOption.getDescription(), is("Shows the application version"));
+        assertThat(versionOption.getDescription(), is(notNullValue()));
         assertThat(versionOption.getArgType(), is(ArgumentType.NO_ARGS));
         assertThat(versionOption.getOrder(), is(10));
         assertTrue(versionOption.isFinalOption());
@@ -60,11 +61,11 @@ public class VersionOptionTest {
         doReturn(jadeVersion).when(applicationSettingsMock).get(ApplicationSettings.JADE_VERSION);
         doReturn(jadeRevision).when(applicationSettingsMock).get(ApplicationSettings.JADE_REVISION);
 
-        String expectedStringMasoes = String.format("%s\nVersion: %s\nRevision: %s", appName, appVersion, appRevision);
-        String expectedStringJade = String.format("JADE\nVersion: %s\nRevision: %s\n", jadeVersion, jadeRevision);
         versionOption.exec();
-        assertThat(systemOutRule.getLog(), containsString(expectedStringMasoes));
-        assertThat(systemOutRule.getLog(), containsString(expectedStringJade));
+        assertThat(systemOutRule.getLog(), containsString(appVersion));
+        assertThat(systemOutRule.getLog(), containsString(appRevision));
+        assertThat(systemOutRule.getLog(), containsString(jadeVersion));
+        assertThat(systemOutRule.getLog(), containsString(jadeRevision));
     }
 
 }

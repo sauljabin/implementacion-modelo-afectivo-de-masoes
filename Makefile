@@ -34,3 +34,6 @@ migrate: ; @ ./gradlew flywayMigrate -i
 
 # target clean-db:            Clean database.
 clean-db: ; @ ./gradlew -q flywayClean
+
+# target version:             Shows app version.
+version: ; @ ./gradlew -q run -Pargs="-v"

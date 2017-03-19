@@ -10,6 +10,7 @@ import application.ApplicationLogger;
 import application.ApplicationOption;
 import application.ArgumentType;
 import jade.JadeSettings;
+import translate.Translation;
 
 public class JadeOption extends ApplicationOption {
 
@@ -38,8 +39,7 @@ public class JadeOption extends ApplicationOption {
 
     @Override
     public String getDescription() {
-        return "Sets JADE settings, example:\n" +
-                "-Jkey=value -Jkey=value";
+        return Translation.getInstance().get("option.jade.description");
     }
 
     @Override

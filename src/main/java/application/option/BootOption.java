@@ -9,6 +9,7 @@ package application.option;
 import application.ApplicationOption;
 import application.ArgumentType;
 import jade.JadeBoot;
+import translate.Translation;
 
 public class BootOption extends ApplicationOption {
 
@@ -35,7 +36,7 @@ public class BootOption extends ApplicationOption {
 
     @Override
     public String getDescription() {
-        return "Starts the application (Default option)";
+        return Translation.getInstance().get("option.boot.description");
     }
 
     @Override

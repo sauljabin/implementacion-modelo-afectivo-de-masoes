@@ -11,6 +11,7 @@ import application.ApplicationSettings;
 import application.ArgumentType;
 import application.OptionsContainer;
 import org.apache.commons.cli.HelpFormatter;
+import translate.Translation;
 
 public class HelpOption extends ApplicationOption {
 
@@ -41,7 +42,7 @@ public class HelpOption extends ApplicationOption {
 
     @Override
     public String getDescription() {
-        return "Shows the options";
+        return Translation.getInstance().get("option.help.description");
     }
 
     @Override

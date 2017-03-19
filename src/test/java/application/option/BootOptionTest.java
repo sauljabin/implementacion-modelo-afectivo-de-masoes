@@ -13,6 +13,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -39,7 +40,7 @@ public class BootOptionTest {
     public void shouldGetCorrectConfiguration() {
         assertThat(bootOption.getOpt(), is("b"));
         assertThat(bootOption.getLongOpt(), is("boot"));
-        assertThat(bootOption.getDescription(), is("Starts the application (Default option)"));
+        assertThat(bootOption.getDescription(), is(notNullValue()));
         assertThat(bootOption.getArgType(), is(ArgumentType.NO_ARGS));
         assertThat(bootOption.getOrder(), is(70));
         assertTrue(bootOption.isFinalOption());
