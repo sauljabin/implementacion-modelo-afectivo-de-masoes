@@ -4,8 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package gui;
+package gui.requester;
 
+import gui.GuiException;
 import jade.lang.acl.ACLMessage;
 import org.junit.Before;
 import org.junit.Rule;

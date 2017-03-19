@@ -4,9 +4,10 @@
  * Please see the LICENSE.txt file
  */
 
-package gui;
+package gui.requester;
 
 import agent.AgentLogger;
+import gui.GuiException;
 import jade.content.AgentAction;
 import jade.content.onto.Ontology;
 import jade.core.AID;
@@ -65,7 +66,7 @@ public class RequesterGuiAgent extends GuiAgent {
 
     @Override
     protected void setup() {
-        addBehaviour(new GuiResponseHandlerBehaviour(this, requesterGui));
+        addBehaviour(new RequesterGuiResponseHandlerBehaviour(this, requesterGui));
         requesterGui.setSenderAgentName(getLocalName());
         requesterGui.showGui();
     }

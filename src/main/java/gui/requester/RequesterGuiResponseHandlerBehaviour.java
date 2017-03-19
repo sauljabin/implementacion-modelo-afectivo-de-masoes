@@ -4,16 +4,16 @@
  * Please see the LICENSE.txt file
  */
 
-package gui;
+package gui.requester;
 
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 
-public class GuiResponseHandlerBehaviour extends Behaviour {
+public class RequesterGuiResponseHandlerBehaviour extends Behaviour {
 
     private RequesterGui requesterGui;
 
-    public GuiResponseHandlerBehaviour(RequesterGuiAgent requesterGuiAgent, RequesterGui requesterGui) {
+    public RequesterGuiResponseHandlerBehaviour(RequesterGuiAgent requesterGuiAgent, RequesterGui requesterGui) {
         super(requesterGuiAgent);
         this.requesterGui = requesterGui;
     }

@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package gui;
+package gui.requester;
 
 import jade.lang.acl.ACLMessage;
 import org.junit.Before;
@@ -16,17 +16,17 @@ import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.spy;
 
-public class GuiResponseHandlerBehaviourTest extends PowerMockitoTest {
+public class RequesterGuiResponseHandlerBehaviourTest extends PowerMockitoTest {
 
     private RequesterGuiAgent requesterGuiAgentMock;
     private RequesterGui requesterGuiMock;
-    private GuiResponseHandlerBehaviour responseHandlerBehaviourSpy;
+    private RequesterGuiResponseHandlerBehaviour responseHandlerBehaviourSpy;
 
     @Before
     public void setUp() {
         requesterGuiAgentMock = mock(RequesterGuiAgent.class);
         requesterGuiMock = mock(RequesterGui.class);
-        responseHandlerBehaviourSpy = spy(new GuiResponseHandlerBehaviour(requesterGuiAgentMock, requesterGuiMock));
+        responseHandlerBehaviourSpy = spy(new RequesterGuiResponseHandlerBehaviour(requesterGuiAgentMock, requesterGuiMock));
     }
 
     @Test

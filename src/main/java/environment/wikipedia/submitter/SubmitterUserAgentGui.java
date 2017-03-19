@@ -6,7 +6,7 @@
 
 package environment.wikipedia.submitter;
 
-import environment.wikipedia.EmotionalSpaceChart;
+import gui.component.EmotionalSpaceChart;
 import masoes.EmotionalBehaviour;
 import masoes.behavioural.BehaviourType;
 import masoes.behavioural.Emotion;

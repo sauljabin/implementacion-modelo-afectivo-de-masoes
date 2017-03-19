@@ -8,7 +8,7 @@ package environment.dummy;
 
 import environment.AgentParameter;
 import environment.Environment;
-import gui.RequesterGuiAgent;
+import gui.requester.RequesterGuiAgent;
 
 import java.util.Arrays;
 import java.util.List;

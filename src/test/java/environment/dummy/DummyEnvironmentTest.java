@@ -7,7 +7,7 @@
 package environment.dummy;
 
 import environment.AgentParameter;
-import gui.RequesterGuiAgent;
+import gui.requester.RequesterGuiAgent;
 import org.junit.Before;
 import org.junit.Test;
 

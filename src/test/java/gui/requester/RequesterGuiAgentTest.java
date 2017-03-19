@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package gui;
+package gui.requester;
 
 import agent.AgentLogger;
 import jade.content.ContentElement;
@@ -101,7 +101,7 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
     @Test
     public void shouldAddResponseHandlerBehaviour() {
         requesterGuiAgentSpy.setup();
-        verify(requesterGuiAgentSpy).addBehaviour(isA(GuiResponseHandlerBehaviour.class));
+        verify(requesterGuiAgentSpy).addBehaviour(isA(RequesterGuiResponseHandlerBehaviour.class));
     }
 
     @Test

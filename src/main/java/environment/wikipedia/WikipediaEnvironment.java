@@ -10,7 +10,7 @@ import environment.AgentParameter;
 import environment.Environment;
 import environment.wikipedia.reviewer.ReviewerUserAgent;
 import environment.wikipedia.submitter.SubmitterUserAgent;
-import gui.RequesterGuiAgent;
+import gui.requester.RequesterGuiAgent;
 
 import java.util.Arrays;
 import java.util.List;

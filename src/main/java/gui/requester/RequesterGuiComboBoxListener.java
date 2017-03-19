@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package gui;
+package gui.requester;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

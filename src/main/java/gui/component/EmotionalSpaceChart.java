@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia;
+package gui.component;
 
 import masoes.behavioural.EmotionalState;
 import translate.Translation;

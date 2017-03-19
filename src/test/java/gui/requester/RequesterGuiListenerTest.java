@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package gui;
+package gui.requester;
 
 import jade.gui.GuiEvent;
 import org.junit.Before;
