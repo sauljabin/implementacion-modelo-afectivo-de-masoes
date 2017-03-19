@@ -20,7 +20,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static test.ReflectionTestUtils.setFieldValue;
 
-
 public class EmotionalSpaceChartTest {
 
     private EmotionalSpaceChart emotionalSpaceChart;

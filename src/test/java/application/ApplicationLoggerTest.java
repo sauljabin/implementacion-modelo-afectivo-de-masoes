@@ -96,7 +96,7 @@ public class ApplicationLoggerTest {
     @Test
     public void shouldLogUpdatedSettings() {
         applicationLogger.updatedSettings();
-        verify(loggerMock).info(eq("Updated settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString()+ ", masoes settings: " + masoesSettingsMock.toString()));
+        verify(loggerMock).info(eq("Updated settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString() + ", masoes settings: " + masoesSettingsMock.toString()));
     }
 
     @Test
@@ -109,7 +109,7 @@ public class ApplicationLoggerTest {
     @Test
     public void shouldLogStartingApp() {
         applicationLogger.startingApplication();
-        verify(loggerMock).info(eq("Starting application with settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString()+ ", masoes settings: " + masoesSettingsMock.toString()));
+        verify(loggerMock).info(eq("Starting application with settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString() + ", masoes settings: " + masoesSettingsMock.toString()));
     }
 
 }
