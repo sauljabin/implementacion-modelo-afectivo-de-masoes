@@ -10,6 +10,7 @@ import application.option.BootOption;
 import application.option.EnvironmentOption;
 import application.option.HelpOption;
 import application.option.JadeOption;
+import application.option.MasoesOption;
 import application.option.SettingsOption;
 import application.option.VersionOption;
 import org.apache.commons.cli.Options;
@@ -33,7 +34,8 @@ public class OptionsContainer {
                         new JadeOption(),
                         new SettingsOption(),
                         new EnvironmentOption(),
-                        new BootOption());
+                        new BootOption(),
+                        new MasoesOption());
         Collections.sort(applicationOptions);
         return applicationOptions;
     }

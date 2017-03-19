@@ -7,6 +7,7 @@
 package application;
 
 import jade.JadeSettings;
+import masoes.MasoesSettings;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -30,11 +31,14 @@ public class ApplicationLoggerTest {
     private JadeSettings jadeSettingsMock;
     private Map<String, String> expectedApplicationSettingsMap;
     private Map<String, String> expectedJadeSettingsMap;
+    private MasoesSettings masoesSettingsMock;
+    private HashMap<Object, Object> expectedMasoesSettingsMap;
 
     @Before
     public void setUp() throws Exception {
         applicationSettingsMock = mock(ApplicationSettings.class);
         jadeSettingsMock = mock(JadeSettings.class);
+        masoesSettingsMock = mock(MasoesSettings.class);
         loggerMock = mock(Logger.class);
         applicationLogger = new ApplicationLogger(new Object());
 
@@ -48,8 +52,14 @@ public class ApplicationLoggerTest {
         doReturn(expectedJadeSettingsMap).when(jadeSettingsMock).toMap();
         doCallRealMethod().when(jadeSettingsMock).toString();
 
+        expectedMasoesSettingsMap = new HashMap<>();
+        expectedMasoesSettingsMap.put("masoes", "value");
+        doReturn(expectedMasoesSettingsMap).when(masoesSettingsMock).toMap();
+        doCallRealMethod().when(masoesSettingsMock).toString();
+
         setFieldValue(applicationLogger, "jadeSettings", jadeSettingsMock);
         setFieldValue(applicationLogger, "applicationSettings", applicationSettingsMock);
+        setFieldValue(applicationLogger, "masoesSettings", masoesSettingsMock);
         setFieldValue(applicationLogger, "logger", loggerMock);
     }
 
@@ -57,7 +67,7 @@ public class ApplicationLoggerTest {
     public void shouldLogStartingAppWithArgs() {
         String[] args = {"-h"};
         applicationLogger.startingApplication(args);
-        verify(loggerMock).info(eq("Starting application with arguments: [-h], settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString()));
+        verify(loggerMock).info(eq("Starting application with arguments: [-h], settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString() + ", masoes settings: " + masoesSettingsMock.toString()));
     }
 
     @Test
@@ -86,7 +96,7 @@ public class ApplicationLoggerTest {
     @Test
     public void shouldLogUpdatedSettings() {
         applicationLogger.updatedSettings();
-        verify(loggerMock).info(eq("Updated settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString()));
+        verify(loggerMock).info(eq("Updated settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString()+ ", masoes settings: " + masoesSettingsMock.toString()));
     }
 
     @Test
@@ -99,7 +109,7 @@ public class ApplicationLoggerTest {
     @Test
     public void shouldLogStartingApp() {
         applicationLogger.startingApplication();
-        verify(loggerMock).info(eq("Starting application with settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString()));
+        verify(loggerMock).info(eq("Starting application with settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString()+ ", masoes settings: " + masoesSettingsMock.toString()));
     }
 
 }

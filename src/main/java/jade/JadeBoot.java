@@ -30,6 +30,7 @@ public class JadeBoot {
         jadeSettings.toMap().forEach((key, value) -> jadeProfile.setParameter(key, value));
         try {
             mainContainer = jadeRuntime.createMainContainer(jadeProfile);
+            mainContainer.addPlatformListener(new JadePlatformListener());
         } catch (Exception e) {
             throw new JadeBootException(e);
         }

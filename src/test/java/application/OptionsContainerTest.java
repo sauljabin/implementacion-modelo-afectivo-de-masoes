@@ -10,6 +10,7 @@ import application.option.BootOption;
 import application.option.EnvironmentOption;
 import application.option.HelpOption;
 import application.option.JadeOption;
+import application.option.MasoesOption;
 import application.option.SettingsOption;
 import application.option.VersionOption;
 import org.apache.commons.cli.Options;
@@ -42,6 +43,7 @@ public class OptionsContainerTest {
         expectedOptions.add(new SettingsOption());
         expectedOptions.add(new EnvironmentOption());
         expectedOptions.add(new BootOption());
+        expectedOptions.add(new MasoesOption());
         expectedOptions.forEach(option -> expectedOptionsObject.addOption(option.toOption()));
 
         Collections.sort(expectedOptions);

@@ -54,7 +54,6 @@ public class ApplicationBootTest {
         applicationBoot.boot(args);
         verify(applicationOptionProcessorMock).processArgs(args);
         verify(loggerMock).startingApplication(any());
-        verify(loggerMock).closingApplication();
     }
 
 }

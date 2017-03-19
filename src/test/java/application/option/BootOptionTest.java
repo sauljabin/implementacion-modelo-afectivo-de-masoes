@@ -41,7 +41,7 @@ public class BootOptionTest {
         assertThat(bootOption.getLongOpt(), is("boot"));
         assertThat(bootOption.getDescription(), is("Starts the application (Default option)"));
         assertThat(bootOption.getArgType(), is(ArgumentType.NO_ARGS));
-        assertThat(bootOption.getOrder(), is(60));
+        assertThat(bootOption.getOrder(), is(70));
         assertTrue(bootOption.isFinalOption());
     }
 

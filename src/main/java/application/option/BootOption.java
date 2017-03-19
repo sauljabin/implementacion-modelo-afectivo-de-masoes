@@ -20,7 +20,7 @@ public class BootOption extends ApplicationOption {
 
     @Override
     public int getOrder() {
-        return 60;
+        return 70;
     }
 
     @Override

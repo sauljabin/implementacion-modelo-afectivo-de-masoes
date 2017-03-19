@@ -6,28 +6,24 @@
 
 package application.option;
 
+import application.ApplicationLogger;
 import application.ApplicationOption;
 import application.ArgumentType;
-import environment.Environment;
-import environment.EnvironmentFactory;
-import jade.JadeSettings;
 import masoes.MasoesSettings;
 
-public class EnvironmentOption extends ApplicationOption {
+public class MasoesOption extends ApplicationOption {
 
-    private JadeSettings jadeSettings;
-    private EnvironmentFactory environmentFactory;
     private MasoesSettings masoesSettings;
+    private ApplicationLogger logger;
 
-    public EnvironmentOption() {
+    public MasoesOption() {
+        logger = new ApplicationLogger(this);
         masoesSettings = MasoesSettings.getInstance();
-        jadeSettings = JadeSettings.getInstance();
-        environmentFactory = new EnvironmentFactory();
     }
 
     @Override
     public int getOrder() {
-        return 60;
+        return 50;
     }
 
     @Override
@@ -37,18 +33,18 @@ public class EnvironmentOption extends ApplicationOption {
 
     @Override
     public String getOpt() {
-        return "E";
+        return "M";
     }
 
     @Override
     public String getDescription() {
-        return "Sets the environment (dummy, wikipedia), example:\n" +
-                "-Edummy";
+        return "Sets MASOES settings, example:\n" +
+                "-Mkey=value -Mkey=value";
     }
 
     @Override
     public ArgumentType getArgType() {
-        return ArgumentType.ONE_ARG;
+        return ArgumentType.UNLIMITED_ARGS;
     }
 
     @Override
@@ -58,9 +54,8 @@ public class EnvironmentOption extends ApplicationOption {
 
     @Override
     public void exec() {
-        masoesSettings.set(MasoesSettings.MASOES_ENV, getValue());
-        Environment environment = environmentFactory.createEnvironment(getValue());
-        jadeSettings.set(JadeSettings.AGENTS, environment.toJadeParameter());
+        getProperties().entrySet().forEach(objectEntry -> masoesSettings.set(objectEntry.getKey().toString(), objectEntry.getValue().toString()));
+        logger.updatedSettings();
     }
 
 }

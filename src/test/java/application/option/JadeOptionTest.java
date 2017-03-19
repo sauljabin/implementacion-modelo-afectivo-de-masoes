@@ -59,7 +59,7 @@ public class JadeOptionTest {
     }
 
     @Test
-    public void shouldSeJadeSettings() {
+    public void shouldSetJadeSettings() {
         jadeOption.setProperties(properties);
         jadeOption.exec();
         verify(jadeSettingsMock).set(GUI, GUI_VALUE);

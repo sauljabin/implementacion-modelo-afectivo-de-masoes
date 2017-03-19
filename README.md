@@ -136,6 +136,8 @@ Usage: masoes
  -h,--help      Shows the options
  -J <arg>       Sets JADE settings, example:
                 -Jkey=value -Jkey=value
+ -M <arg>       Sets MASOES settings, example:
+                -Mkey=value -Mkey=value
  -S <arg>       Sets application settings, example:
                 -Skey=value -Skey=value
  -v,--version   Shows the application version

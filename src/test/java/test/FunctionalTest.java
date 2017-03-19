@@ -7,7 +7,6 @@
 package test;
 
 import agent.AgentManagementAssistant;
-import application.ApplicationSettings;
 import jade.JadeBoot;
 import jade.JadeSettings;
 import jade.content.onto.Ontology;
@@ -18,6 +17,7 @@ import jade.core.behaviours.Behaviour;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
+import masoes.MasoesSettings;
 import ontology.OntologyAssistant;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -37,7 +37,7 @@ public abstract class FunctionalTest {
     @BeforeClass
     public static void setUpFunctionalTest() {
         JadeSettings.getInstance().set(JadeSettings.GUI, "false");
-        ApplicationSettings.getInstance().set(ApplicationSettings.MASOES_ENV, "functional-tests");
+        MasoesSettings.getInstance().set(MasoesSettings.MASOES_ENV, "functional-tests");
 
         if (jadeBoot != null) {
             return;

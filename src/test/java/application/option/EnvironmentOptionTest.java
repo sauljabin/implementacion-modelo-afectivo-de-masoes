@@ -6,11 +6,11 @@
 
 package application.option;
 
-import application.ApplicationSettings;
 import application.ArgumentType;
 import environment.Environment;
 import environment.EnvironmentFactory;
 import jade.JadeSettings;
+import masoes.MasoesSettings;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,20 +29,20 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 public class EnvironmentOptionTest {
 
     private EnvironmentOption environmentOption;
-    private ApplicationSettings applicationSettingsMock;
+    private MasoesSettings masoesSettingsMock;
     private JadeSettings jadeSettingsMock;
     private EnvironmentFactory environmentFactoryMock;
     private Environment environmentMock;
 
     @Before
     public void setUp() throws Exception {
-        applicationSettingsMock = mock(ApplicationSettings.class);
+        masoesSettingsMock = mock(MasoesSettings.class);
         jadeSettingsMock = mock(JadeSettings.class);
         environmentFactoryMock = mock(EnvironmentFactory.class);
         environmentMock = mock(Environment.class);
 
         environmentOption = new EnvironmentOption();
-        setFieldValue(environmentOption, "applicationSettings", applicationSettingsMock);
+        setFieldValue(environmentOption, "masoesSettings", masoesSettingsMock);
         setFieldValue(environmentOption, "jadeSettings", jadeSettingsMock);
         setFieldValue(environmentOption, "environmentFactory", environmentFactoryMock);
 
@@ -55,7 +55,7 @@ public class EnvironmentOptionTest {
         assertThat(environmentOption.getLongOpt(), is(nullValue()));
         assertThat(environmentOption.getDescription(), containsString("Sets the environment (dummy, wikipedia)"));
         assertThat(environmentOption.getArgType(), is(ArgumentType.ONE_ARG));
-        assertThat(environmentOption.getOrder(), is(50));
+        assertThat(environmentOption.getOrder(), is(60));
         assertFalse(environmentOption.isFinalOption());
     }
 
@@ -64,7 +64,7 @@ public class EnvironmentOptionTest {
         String caseStudy = "default";
         environmentOption.setValue(caseStudy);
         environmentOption.exec();
-        verify(applicationSettingsMock).set(ApplicationSettings.MASOES_ENV, caseStudy);
+        verify(masoesSettingsMock).set(MasoesSettings.MASOES_ENV, caseStudy);
         verify(environmentFactoryMock).createEnvironment(caseStudy);
     }
 
