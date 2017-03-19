@@ -10,14 +10,12 @@ import agent.AgentManagementAssistant;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import knowledge.Knowledge;
-import logger.LoggerHandler;
 import masoes.behavioural.BehaviouralComponent;
 import ontology.masoes.MasoesOntology;
-import org.slf4j.event.Level;
 import util.ServiceBuilder;
 import util.ToStringBuilder;
 
-public abstract class EmotionalAgent extends Agent implements LoggerHandler {
+public abstract class EmotionalAgent extends Agent {
 
     private BehaviouralComponent behaviouralComponent;
     private EmotionalAgentLogger logger;
@@ -77,10 +75,6 @@ public abstract class EmotionalAgent extends Agent implements LoggerHandler {
 
     public EmotionalAgentLogger getLogger() {
         return logger;
-    }
-
-    @Override
-    public void handleMessage(Level level, String message) {
     }
 
 }

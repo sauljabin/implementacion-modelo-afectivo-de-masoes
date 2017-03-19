@@ -16,7 +16,6 @@ import net.miginfocom.swing.MigLayout;
 import translate.Translation;
 
 import javax.swing.*;
-import javax.swing.text.DefaultCaret;
 import java.awt.*;
 
 public class SubmitterUserAgentGui extends JFrame {
@@ -25,7 +24,7 @@ public class SubmitterUserAgentGui extends JFrame {
     private static final String FIELD_W = "grow, wrap 15";
     private static final Color ORANGE_COLOR = new Color(255, 110, 40);
     private static final Color GREEN_COLOR = new Color(62, 200, 100);
-    private JTextArea eventsTextArea;
+    private static final Color BLUE_COLOR = new Color(42, 117, 200);
     private EmotionalSpaceChart emotionalSpaceChart;
     private JLabel agentNameLabel;
     private JLabel emotionNameLabel;
@@ -37,7 +36,7 @@ public class SubmitterUserAgentGui extends JFrame {
 
     public SubmitterUserAgentGui() {
         translation = Translation.getInstance();
-        setSize(440, 740);
+        setSize(320, 550);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
         setTitle(translation.get("gui.user"));
@@ -52,22 +51,6 @@ public class SubmitterUserAgentGui extends JFrame {
 
     private void addComponents() {
         addCenterComponent();
-        addSouthComponents();
-        addEastComponents();
-    }
-
-    private void addEastComponents() {
-        JPanel eastPanel = new JPanel(new MigLayout(INSETS_10));
-        add(eastPanel, BorderLayout.EAST);
-
-        JButton case1Button = new JButton(translation.get("gui.case_1"));
-        eastPanel.add(case1Button, "wrap");
-
-        JButton case2Button = new JButton(translation.get("gui.case_2"));
-        eastPanel.add(case2Button, "wrap");
-
-        JButton case3Button = new JButton(translation.get("gui.case_3"));
-        eastPanel.add(case3Button, "wrap");
     }
 
     private void addCenterComponent() {
@@ -127,46 +110,18 @@ public class SubmitterUserAgentGui extends JFrame {
 
         JLabel blueLabel = new JLabel();
         blueLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        blueLabel.setBackground(Color.BLUE);
+        blueLabel.setBackground(Color.RED);
         blueLabel.setOpaque(true);
         legendPanel.add(blueLabel, "w 30, grow");
         JLabel legendActualEmotion = new JLabel(translation.get("gui.current_emotion"));
         legendActualEmotion.setFont(font12);
         legendPanel.add(legendActualEmotion);
-
-        JLabel redLabel = new JLabel();
-        redLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        redLabel.setBackground(Color.RED);
-        redLabel.setOpaque(true);
-        legendPanel.add(redLabel, "w 30,  grow");
-        JLabel legendLastEmotions = new JLabel(translation.get("gui.previous_emotions"));
-        legendLastEmotions.setFont(font12);
-        legendPanel.add(legendLastEmotions);
-    }
-
-    private void addSouthComponents() {
-        JPanel southPanel = new JPanel(new MigLayout(INSETS_10));
-        add(southPanel, BorderLayout.SOUTH);
-
-        JLabel eventsLabel = new JLabel(translation.get("gui.events"));
-        southPanel.add(eventsLabel, "w 100%, wrap");
-
-        eventsTextArea = new JTextArea();
-        eventsTextArea.setEditable(false);
-        DefaultCaret caret = (DefaultCaret) eventsTextArea.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        JScrollPane scrollPane = new JScrollPane(eventsTextArea);
-        southPanel.add(scrollPane, "w 100%, h 150");
     }
 
     public void addEmotionalState(EmotionalState emotionalState) {
         emotionalSpaceChart.addEmotionalState(emotionalState);
         satisfactionValueLabel.setText(String.format("%.5f", emotionalState.getSatisfaction()));
         activationValueLabel.setText(String.format("%.5f", emotionalState.getActivation()));
-    }
-
-    public void logEvent(String message) {
-        eventsTextArea.append(String.format("- %s\n", message));
     }
 
     public void setAgentName(String name) {
@@ -182,11 +137,11 @@ public class SubmitterUserAgentGui extends JFrame {
         emotionNameLabel.setText(name);
 
         if (type.equals(EmotionType.NEGATIVE_HIGH)) {
-            emotionTypeNameLabel.setForeground(Color.RED);
-            emotionNameLabel.setForeground(Color.RED);
-        } else if (type.equals(EmotionType.NEGATIVE_LOW)) {
             emotionTypeNameLabel.setForeground(ORANGE_COLOR);
             emotionNameLabel.setForeground(ORANGE_COLOR);
+        } else if (type.equals(EmotionType.NEGATIVE_LOW)) {
+            emotionTypeNameLabel.setForeground(BLUE_COLOR);
+            emotionNameLabel.setForeground(BLUE_COLOR);
         } else if (type.equals(EmotionType.POSITIVE)) {
             emotionTypeNameLabel.setForeground(GREEN_COLOR);
             emotionNameLabel.setForeground(GREEN_COLOR);
@@ -199,9 +154,9 @@ public class SubmitterUserAgentGui extends JFrame {
         behaviourNameLabel.setText(typeName);
 
         if (type.equals(BehaviourType.COGNITIVE)) {
-            behaviourNameLabel.setForeground(ORANGE_COLOR);
+            behaviourNameLabel.setForeground(BLUE_COLOR);
         } else if (type.equals(BehaviourType.REACTIVE)) {
-            behaviourNameLabel.setForeground(Color.RED);
+            behaviourNameLabel.setForeground(ORANGE_COLOR);
         } else if (type.equals(BehaviourType.IMITATIVE)) {
             behaviourNameLabel.setForeground(GREEN_COLOR);
         }

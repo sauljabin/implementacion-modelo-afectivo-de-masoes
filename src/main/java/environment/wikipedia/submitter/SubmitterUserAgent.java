@@ -15,7 +15,6 @@ import masoes.CognitiveBehaviour;
 import masoes.EmotionalAgent;
 import masoes.ImitativeBehaviour;
 import masoes.ReactiveBehaviour;
-import org.slf4j.event.Level;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -66,11 +65,6 @@ public class SubmitterUserAgent extends EmotionalAgent implements ActionListener
     @Override
     public CognitiveBehaviour getCognitiveBehaviour() {
         return new DummyCognitiveBehaviour();
-    }
-
-    @Override
-    public void handleMessage(Level level, String message) {
-        submitterUserAgentGui.logEvent(message);
     }
 
     @Override

@@ -15,7 +15,6 @@ import ontology.masoes.ActionStimulus;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
-import org.slf4j.event.Level;
 import test.PowerMockitoTest;
 
 import static org.mockito.Matchers.anyString;
@@ -52,28 +51,24 @@ public class EmotionalAgentLoggerTest extends PowerMockitoTest {
         Exception expectedException = new Exception("error");
         emotionalAgentLoggerMock.exception(expectedException);
         verify(loggerMock).error(contains("error"), eq(expectedException));
-        verify(emotionalAgentMock).handleMessage(eq(Level.ERROR), contains("error"));
     }
 
     @Test
     public void shouldLogAgentRequestMessage() {
         emotionalAgentLoggerMock.messageRequest(messageMock);
         verify(loggerMock).info(contains(messageMock.toString()));
-        verify(emotionalAgentMock).handleMessage(eq(Level.INFO), anyString());
     }
 
     @Test
     public void shouldLogAgentResponseMessage() {
         emotionalAgentLoggerMock.messageResponse(messageMock);
         verify(loggerMock).info(contains(messageMock.toString()));
-        verify(emotionalAgentMock).handleMessage(eq(Level.INFO), anyString());
     }
 
     @Test
     public void shouldLogAgent() {
         emotionalAgentLoggerMock.agentInfo();
         verify(loggerMock).info(contains(emotionalAgentMock.toString()));
-        verify(emotionalAgentMock).handleMessage(eq(Level.INFO), anyString());
     }
 
     @Test
@@ -81,21 +76,18 @@ public class EmotionalAgentLoggerTest extends PowerMockitoTest {
         String expectedInfo = "expectedInfo";
         emotionalAgentLoggerMock.info(expectedInfo);
         verify(loggerMock).info(contains(expectedInfo));
-        verify(emotionalAgentMock).handleMessage(eq(Level.INFO), contains(expectedInfo));
     }
 
     @Test
     public void shouldLogUpdatingBehaviour() {
         emotionalAgentLoggerMock.updatingBehaviour(BehaviourType.COGNITIVE, BehaviourType.REACTIVE);
         verify(loggerMock).info(anyString());
-        verify(emotionalAgentMock).handleMessage(eq(Level.INFO), anyString());
     }
 
     @Test
     public void shouldLogStartingBehaviour() {
         emotionalAgentLoggerMock.startingBehaviour(BehaviourType.COGNITIVE);
         verify(loggerMock).info(anyString());
-        verify(emotionalAgentMock).handleMessage(eq(Level.INFO), anyString());
     }
 
     @Test
@@ -104,14 +96,12 @@ public class EmotionalAgentLoggerTest extends PowerMockitoTest {
         SadnessEmotion sadnessEmotion = new SadnessEmotion();
         emotionalAgentLoggerMock.updatingEmotion(happinessEmotion, sadnessEmotion);
         verify(loggerMock).info(anyString());
-        verify(emotionalAgentMock).handleMessage(eq(Level.INFO), anyString());
     }
 
     @Test
     public void shouldLogSendingDone() {
         emotionalAgentLoggerMock.sendingDone();
         verify(loggerMock).info(anyString());
-        verify(emotionalAgentMock).handleMessage(eq(Level.INFO), anyString());
     }
 
     @Test
@@ -119,7 +109,6 @@ public class EmotionalAgentLoggerTest extends PowerMockitoTest {
         ActionStimulus actionStimulus = new ActionStimulus(new AID("agent", AID.ISGUID), "actionName");
         emotionalAgentLoggerMock.receivingStimulus(actionStimulus);
         verify(loggerMock).info(contains(actionStimulus.toString()));
-        verify(emotionalAgentMock).handleMessage(eq(Level.INFO), contains(actionStimulus.toString()));
     }
 
 }
