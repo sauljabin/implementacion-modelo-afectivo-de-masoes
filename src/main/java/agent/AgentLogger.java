@@ -9,25 +9,25 @@ package agent;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import logger.LogWriter;
-import logger.LoggerHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import translate.Translation;
 
 public class AgentLogger {
 
     private Logger logger;
-    private LoggerHandler loggerHandler;
     private Agent agent;
+    private Translation translation;
 
     public AgentLogger(Agent agent) {
         this.agent = agent;
         logger = LoggerFactory.getLogger(agent.getClass());
+        translation = Translation.getInstance();
     }
 
     public void exception(Exception exception) {
         new LogWriter()
-                .addLoggerHandler(loggerHandler)
-                .message("Exception in agent \"%s\", class \"%s\": %s")
+                .message(translation.get("log.exception_in_agent"))
                 .args(agent.getLocalName(), agent.getClass().getName(), exception.getMessage())
                 .exception(exception)
                 .error(logger);
@@ -35,38 +35,30 @@ public class AgentLogger {
 
     public void messageRequest(ACLMessage message) {
         new LogWriter()
-                .addLoggerHandler(loggerHandler)
-                .message("Message request in agent \"%s\": %s")
+                .message(translation.get("log.request_message"))
                 .args(agent.getLocalName(), message)
                 .info(logger);
     }
 
     public void messageResponse(ACLMessage message) {
         new LogWriter()
-                .addLoggerHandler(loggerHandler)
-                .message("Message response in agent \"%s\": %s")
+                .message(translation.get("log.response_message"))
                 .args(agent.getLocalName(), message)
                 .info(logger);
     }
 
     public void agentInfo() {
         new LogWriter()
-                .addLoggerHandler(loggerHandler)
-                .message("Agent %s: %s")
+                .message(translation.get("log.agent"))
                 .args(agent.getLocalName(), agent)
                 .info(logger);
     }
 
     public void info(String info) {
         new LogWriter()
-                .addLoggerHandler(loggerHandler)
-                .message("Agent %s: %s")
+                .message(translation.get("log.agent"))
                 .args(agent.getLocalName(), info)
                 .info(logger);
-    }
-
-    public void setLoggerHandler(LoggerHandler loggerHandler) {
-        this.loggerHandler = loggerHandler;
     }
 
 }
