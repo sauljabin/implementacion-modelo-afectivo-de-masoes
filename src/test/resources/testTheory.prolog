@@ -1,1 +1,0 @@
-expectedTheory(X).

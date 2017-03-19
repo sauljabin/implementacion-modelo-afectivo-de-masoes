@@ -11,26 +11,42 @@ import java.nio.file.Path;
 
 public class Knowledge {
 
-    private String knowledge;
+    private StringBuilder knowledge;
 
-    public Knowledge(Path path) {
+    public Knowledge() {
+        knowledge = new StringBuilder();
+    }
+
+    public Knowledge(Path knowledgePath) {
+        this();
+        add(knowledgePath);
+    }
+
+    public Knowledge(String knowledgeString) {
+        this();
+        add(knowledgeString);
+    }
+
+    public void add(String knowledgeString) {
+        knowledge.append(knowledgeString);
+        knowledge.append("\n");
+    }
+
+    public void add(Path knowledgePath) {
         try {
-            InputStream stream = ClassLoader.getSystemResourceAsStream(path.toString());
+            InputStream stream = ClassLoader.getSystemResourceAsStream(knowledgePath.toString());
             byte[] info = new byte[stream.available()];
             stream.read(info);
-            knowledge = new String(info);
+            knowledge.append(new String(info));
+            knowledge.append("\n");
         } catch (Exception e) {
             throw new KnowledgeException(e);
         }
     }
 
-    public Knowledge(String knowledge) {
-        this.knowledge = knowledge;
-    }
-
     @Override
     public String toString() {
-        return knowledge;
+        return knowledge.toString().trim();
     }
 
 }
