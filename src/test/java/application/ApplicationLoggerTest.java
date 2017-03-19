@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doCallRealMethod;
@@ -67,20 +68,24 @@ public class ApplicationLoggerTest {
     public void shouldLogStartingAppWithArgs() {
         String[] args = {"-h"};
         applicationLogger.startingApplication(args);
-        verify(loggerMock).info(eq("Starting application with arguments: [-h], settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString() + ", masoes settings: " + masoesSettingsMock.toString()));
+        verify(loggerMock).info(contains("[-h]"));
+        verify(loggerMock).info(contains(applicationSettingsMock.toString()));
+        verify(loggerMock).info(contains(jadeSettingsMock.toString()));
+        verify(loggerMock).info(contains(masoesSettingsMock.toString()));
     }
 
     @Test
     public void shouldLogClosingApp() {
         applicationLogger.closingApplication();
-        verify(loggerMock).info(eq("Closing application"));
+        verify(loggerMock).info(anyString());
     }
 
     @Test
     public void shouldLogCantNotStartApp() {
-        Exception expectedException = new Exception();
+        String message = "message";
+        Exception expectedException = new Exception(message);
         applicationLogger.cantNotStartApplication(expectedException);
-        verify(loggerMock).error(contains("Could not start the application"), eq(expectedException));
+        verify(loggerMock).error(contains(message), eq(expectedException));
     }
 
     @Test
@@ -90,26 +95,22 @@ public class ApplicationLoggerTest {
         doReturn(expectedToString).when(applicationOption).toString();
 
         applicationLogger.startingOption(applicationOption);
-        verify(loggerMock).info(eq("Starting option: " + expectedToString));
+        verify(loggerMock).info(contains(expectedToString));
     }
 
     @Test
     public void shouldLogUpdatedSettings() {
         applicationLogger.updatedSettings();
-        verify(loggerMock).info(eq("Updated settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString() + ", masoes settings: " + masoesSettingsMock.toString()));
+        verify(loggerMock).info(contains(applicationSettingsMock.toString()));
+        verify(loggerMock).info(contains(jadeSettingsMock.toString()));
+        verify(loggerMock).info(contains(masoesSettingsMock.toString()));
     }
 
     @Test
     public void shouldLogException() {
         Exception expectedException = new Exception("error");
         applicationLogger.exception(expectedException);
-        verify(loggerMock).error(eq("Exception: " + expectedException.getMessage()), eq(expectedException));
-    }
-
-    @Test
-    public void shouldLogStartingApp() {
-        applicationLogger.startingApplication();
-        verify(loggerMock).info(eq("Starting application with settings: " + applicationSettingsMock.toString() + ", jade settings: " + jadeSettingsMock.toString() + ", masoes settings: " + masoesSettingsMock.toString()));
+        verify(loggerMock).error(contains(expectedException.getMessage()), eq(expectedException));
     }
 
 }
