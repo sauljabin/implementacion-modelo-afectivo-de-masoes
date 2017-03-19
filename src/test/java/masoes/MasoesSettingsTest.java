@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package data;
+package masoes;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,32 +17,32 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
-public class DataBaseSettingsTest {
+public class MasoesSettingsTest {
 
-    private DataBaseSettings dataBaseSettings;
+    private MasoesSettings masoesSettings;
 
     @Before
     public void setUp() {
-        dataBaseSettings = DataBaseSettings.getInstance();
+        masoesSettings = MasoesSettings.getInstance();
     }
 
     @After
     public void tearDown() throws Exception {
-        setFieldValue(dataBaseSettings, "INSTANCE", null);
+        setFieldValue(masoesSettings, "INSTANCE", null);
     }
 
     @Test
     public void shouldGetSameInstance() {
-        assertThat(DataBaseSettings.getInstance(), is(dataBaseSettings));
+        assertThat(MasoesSettings.getInstance(), is(masoesSettings));
     }
 
     @Test
     public void shouldLoadInitValues() {
         Map<String, String> expectedValues = new HashMap<>();
-        expectedValues.put("jdbc.driver", "org.sqlite.JDBC");
-        expectedValues.put("jdbc.url", "jdbc:sqlite:data/masoes.sqlite3");
+        expectedValues.put(MasoesSettings.MASOES_SATISFACTION_INCREASE, "0.1");
+        expectedValues.put(MasoesSettings.MASOES_ACTIVATION_INCREASE, "0.1");
         expectedValues.keySet().forEach(
-                key -> assertThat(dataBaseSettings.get(key), is(expectedValues.get(key)))
+                key -> assertThat(masoesSettings.get(key), is(expectedValues.get(key)))
         );
     }
 
