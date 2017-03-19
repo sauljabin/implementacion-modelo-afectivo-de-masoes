@@ -14,6 +14,7 @@ import jade.core.Agent;
 import jade.lang.acl.MessageTemplate;
 import jade.util.leap.ArrayList;
 import jade.util.leap.List;
+import masoes.MasoesSettings;
 import ontology.OntologyMatchExpression;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
@@ -46,16 +47,19 @@ public class ResponseSettingsBehaviourTest {
     private ResponseSettingsBehaviour responseSettingsBehaviour;
     private ApplicationSettings applicationSettingsMock;
     private JadeSettings jadeSettingsMock;
+    private MasoesSettings masoesSettingsMock;
 
     @Before
     public void setUp() throws Exception {
         agentMock = mock(Agent.class);
         applicationSettingsMock = mock(ApplicationSettings.class);
         jadeSettingsMock = mock(JadeSettings.class);
+        masoesSettingsMock = mock(MasoesSettings.class);
 
         responseSettingsBehaviour = new ResponseSettingsBehaviour(agentMock);
         setFieldValue(responseSettingsBehaviour, "applicationSettings", applicationSettingsMock);
         setFieldValue(responseSettingsBehaviour, "jadeSettings", jadeSettingsMock);
+        setFieldValue(responseSettingsBehaviour, "masoesSettings", masoesSettingsMock);
     }
 
     @Test
@@ -75,12 +79,21 @@ public class ResponseSettingsBehaviourTest {
     }
 
     @Test
+    public void shouldReturnAMasoesSetting() {
+        String keyMasoes = "keyMasoes";
+        String valueMasoes = "valueMasoes";
+        doReturn(valueMasoes).when(masoesSettingsMock).get(keyMasoes);
+        testReturnASettings(keyMasoes, valueMasoes);
+    }
+
+    @Test
     public void shouldThrowExceptionWhenKeyNotFound() {
         String key = "no-key";
         expectedException.expectMessage("Setting not found " + key);
         expectedException.expect(SettingsException.class);
         doReturn(null).when(applicationSettingsMock).get(key);
         doReturn(null).when(jadeSettingsMock).get(key);
+        doReturn(null).when(masoesSettingsMock).get(key);
         GetSetting getSetting = new GetSetting(key);
         Action action = new Action(new AID(), getSetting);
         responseSettingsBehaviour.performAction(action);
@@ -98,6 +111,11 @@ public class ResponseSettingsBehaviourTest {
         jadeSettingsMap.put("keyJade2", "valueJade2");
         doReturn(jadeSettingsMap).when(jadeSettingsMock).toMap();
 
+        Map<String, String> masoesSettingsMap = new HashMap<>();
+        masoesSettingsMap.put("keyMasoes1", "valueMasoes1");
+        masoesSettingsMap.put("keyMasoes2", "valueMasoes");
+        doReturn(masoesSettingsMap).when(masoesSettingsMock).toMap();
+
         SystemSettings expectedSetting = new SystemSettings();
         List appList = new ArrayList();
         expectedSetting.setSettings(appList);
@@ -107,6 +125,10 @@ public class ResponseSettingsBehaviourTest {
         );
 
         jadeSettingsMap.forEach(
+                (key, value) -> appList.add(new Setting(key, value))
+        );
+
+        masoesSettingsMap.forEach(
                 (key, value) -> appList.add(new Setting(key, value))
         );
 

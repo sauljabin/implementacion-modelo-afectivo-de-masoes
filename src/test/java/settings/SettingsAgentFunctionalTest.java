@@ -13,6 +13,7 @@ import jade.content.ContentElement;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
+import masoes.MasoesSettings;
 import ontology.OntologyAssistant;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
@@ -80,6 +81,10 @@ public class SettingsAgentFunctionalTest extends FunctionalTest {
                 (key, value) -> expectedSystemSettings.getSettings().add(new Setting(key, value))
         );
 
+        MasoesSettings.getInstance().toMap().forEach(
+                (key, value) -> expectedSystemSettings.getSettings().add(new Setting(key, value))
+        );
+
         assertReflectionEquals("Content", expectedSystemSettings.getSettings().toArray(), systemSettings.getSettings().toArray());
     }
 
@@ -90,12 +95,38 @@ public class SettingsAgentFunctionalTest extends FunctionalTest {
     }
 
     @Test
-    public void shouldReceiveOneSetting() {
+    public void shouldReceiveOneApplicationSetting() {
         ContentElement contentElement = sendAction(new GetSetting(ApplicationSettings.APP_NAME));
         assertThat(contentElement, is(instanceOf(SystemSettings.class)));
-        SystemSettings systemSettings = (SystemSettings) contentElement;
+
         SystemSettings expectedSystemSettings = new SystemSettings();
         expectedSystemSettings.getSettings().add(new Setting(ApplicationSettings.APP_NAME, ApplicationSettings.getInstance().get(ApplicationSettings.APP_NAME)));
+
+        SystemSettings systemSettings = (SystemSettings) contentElement;
+        assertReflectionEquals("Content", expectedSystemSettings.getSettings().toArray(), systemSettings.getSettings().toArray());
+    }
+
+    @Test
+    public void shouldReceiveOneMasoesSetting() {
+        ContentElement contentElement = sendAction(new GetSetting(MasoesSettings.MASOES_ACTIVATION_INCREASE));
+        assertThat(contentElement, is(instanceOf(SystemSettings.class)));
+
+        SystemSettings expectedSystemSettings = new SystemSettings();
+        expectedSystemSettings.getSettings().add(new Setting(MasoesSettings.MASOES_ACTIVATION_INCREASE, MasoesSettings.getInstance().get(MasoesSettings.MASOES_ACTIVATION_INCREASE)));
+
+        SystemSettings systemSettings = (SystemSettings) contentElement;
+        assertReflectionEquals("Content", expectedSystemSettings.getSettings().toArray(), systemSettings.getSettings().toArray());
+    }
+
+    @Test
+    public void shouldReceiveOneJadeSetting() {
+        ContentElement contentElement = sendAction(new GetSetting(JadeSettings.JADE_DOMAIN_DF_AUTOCLEANUP));
+        assertThat(contentElement, is(instanceOf(SystemSettings.class)));
+
+        SystemSettings expectedSystemSettings = new SystemSettings();
+        expectedSystemSettings.getSettings().add(new Setting(JadeSettings.JADE_DOMAIN_DF_AUTOCLEANUP, JadeSettings.getInstance().get(JadeSettings.JADE_DOMAIN_DF_AUTOCLEANUP)));
+
+        SystemSettings systemSettings = (SystemSettings) contentElement;
         assertReflectionEquals("Content", expectedSystemSettings.getSettings().toArray(), systemSettings.getSettings().toArray());
     }
 
