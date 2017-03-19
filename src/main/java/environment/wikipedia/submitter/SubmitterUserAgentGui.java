@@ -173,8 +173,4 @@ public class SubmitterUserAgentGui extends JFrame {
         emotionalSpaceChart.start();
     }
 
-    public void showError(String message) {
-        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
 }

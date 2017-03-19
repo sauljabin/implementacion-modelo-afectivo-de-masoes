@@ -11,7 +11,6 @@ import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
-import jade.wrapper.ControllerException;
 
 public class JadeBoot {
 
@@ -47,7 +46,7 @@ public class JadeBoot {
     public AgentController getAgent(String name) {
         try {
             return mainContainer.getAgent(name);
-        } catch (ControllerException e) {
+        } catch (Exception e) {
             throw new AgentException(e);
         }
     }
