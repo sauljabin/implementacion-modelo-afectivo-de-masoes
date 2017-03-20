@@ -34,9 +34,12 @@ import masoes.ontology.knowledge.ObjectEnvironment;
 import masoes.ontology.knowledge.ObjectProperty;
 import masoes.ontology.knowledge.UpdateObject;
 import masoes.ontology.notifier.NotifyAction;
+import masoes.ontology.notifier.NotifyEvent;
+import masoes.ontology.notifier.NotifyObject;
 import masoes.ontology.state.GetEmotionalState;
 import masoes.ontology.stimulus.ActionStimulus;
 import masoes.ontology.stimulus.EvaluateStimulus;
+import masoes.ontology.stimulus.EventStimulus;
 import masoes.ontology.stimulus.ObjectStimulus;
 import ontology.OntologyAssistant;
 import settings.ontology.GetAllSettings;
@@ -142,11 +145,20 @@ public class RequesterGuiAgent extends GuiAgent {
             case EVALUATE_OBJECT_STIMULUS:
                 sendEvaluateObjectStimulus(aid);
                 break;
+            case EVALUATE_EVENT_STIMULUS:
+                sendEvaluateEventStimulus(aid);
+                break;
             case SEND_SIMPLE_CONTENT:
                 sendSimpleContent(aid);
                 break;
             case NOTIFY_ACTION:
                 sendNotifyAction(aid);
+                break;
+            case NOTIFY_EVENT:
+                sendNotifyEvent(aid);
+                break;
+            case NOTIFY_OBJECT:
+                sendNotifyObject(aid);
                 break;
             case GET_SERVICES:
                 sendGetServices(aid);
@@ -275,6 +287,24 @@ public class RequesterGuiAgent extends GuiAgent {
         sendOntologyMessage(aid, MasoesOntology.getInstance(), notifyAction);
     }
 
+    private void sendNotifyEvent(AID aid) {
+        NotifyEvent notifyEvent = new NotifyEvent();
+        EventStimulus eventStimulus = new EventStimulus();
+        eventStimulus.setAffected(getAID(requesterGui.getAffectedName()));
+        eventStimulus.setEventName(requesterGui.getEventName());
+        notifyEvent.setEventStimulus(eventStimulus);
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), notifyEvent);
+    }
+
+    private void sendNotifyObject(AID aid) {
+        NotifyObject notifyEvent = new NotifyObject();
+        ObjectStimulus objectStimulus = new ObjectStimulus();
+        objectStimulus.setCreator(getAID(requesterGui.getCreatorName()));
+        objectStimulus.setObjectName(requesterGui.getObjectName());
+        notifyEvent.setObjectStimulus(objectStimulus);
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), notifyEvent);
+    }
+
     private void sendSimpleContent(AID aid) {
         ACLMessage message = new MessageBuilder()
                 .request()
@@ -299,6 +329,13 @@ public class RequesterGuiAgent extends GuiAgent {
         objectStimulus.setCreator(getAID(requesterGui.getCreatorName()));
         objectStimulus.setObjectName(requesterGui.getObjectName());
         sendOntologyMessage(aid, MasoesOntology.getInstance(), new EvaluateStimulus(objectStimulus));
+    }
+
+    private void sendEvaluateEventStimulus(AID aid) {
+        EventStimulus eventStimulus = new EventStimulus();
+        eventStimulus.setAffected(getAID(requesterGui.getCreatorName()));
+        eventStimulus.setEventName(requesterGui.getObjectName());
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), new EvaluateStimulus(eventStimulus));
     }
 
     private ArrayList createPropertiesList() {

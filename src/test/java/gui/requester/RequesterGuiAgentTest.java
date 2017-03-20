@@ -34,9 +34,12 @@ import masoes.ontology.knowledge.ObjectEnvironment;
 import masoes.ontology.knowledge.ObjectProperty;
 import masoes.ontology.knowledge.UpdateObject;
 import masoes.ontology.notifier.NotifyAction;
+import masoes.ontology.notifier.NotifyEvent;
+import masoes.ontology.notifier.NotifyObject;
 import masoes.ontology.state.GetEmotionalState;
 import masoes.ontology.stimulus.ActionStimulus;
 import masoes.ontology.stimulus.EvaluateStimulus;
+import masoes.ontology.stimulus.EventStimulus;
 import masoes.ontology.stimulus.ObjectStimulus;
 import org.junit.Before;
 import org.junit.Test;
@@ -212,10 +215,8 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
     public void shouldSendEvaluateObjectStimulus() throws Exception {
         String expectedCreatorName = "expectedCreatorName";
         String expectedObjectName = "expectedObjectName";
-        String expectedProperties = "color=blue\ntype=car";
         doReturn(expectedCreatorName).when(requesterGuiMock).getCreatorName();
         doReturn(expectedObjectName).when(requesterGuiMock).getObjectName();
-        doReturn(expectedProperties).when(requesterGuiMock).getObjectProperties();
         doReturn(new AID(expectedCreatorName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedCreatorName);
 
         Action action = testRequestAction(MasoesOntology.getInstance(), RequesterGuiAction.EVALUATE_OBJECT_STIMULUS);
@@ -226,6 +227,24 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         ObjectStimulus objectStimulus = (ObjectStimulus) evaluateStimulus.getStimulus();
         assertThat(objectStimulus.getCreator().getLocalName(), is(expectedCreatorName));
         assertThat(objectStimulus.getObjectName(), is(expectedObjectName));
+    }
+
+    @Test
+    public void shouldSendEvaluateEventStimulus() throws Exception {
+        String expectedAffectedName = "expectedAffectedName";
+        String expectedEventName = "expectedEventName";
+        doReturn(expectedAffectedName).when(requesterGuiMock).getCreatorName();
+        doReturn(expectedEventName).when(requesterGuiMock).getObjectName();
+        doReturn(new AID(expectedAffectedName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedAffectedName);
+
+        Action action = testRequestAction(MasoesOntology.getInstance(), RequesterGuiAction.EVALUATE_EVENT_STIMULUS);
+        assertThat(action.getAction(), is(instanceOf(EvaluateStimulus.class)));
+
+        EvaluateStimulus evaluateStimulus = (EvaluateStimulus) action.getAction();
+
+        EventStimulus eventStimulus = (EventStimulus) evaluateStimulus.getStimulus();
+        assertThat(eventStimulus.getAffected().getLocalName(), is(expectedAffectedName));
+        assertThat(eventStimulus.getEventName(), is(expectedEventName));
     }
 
     @Test
@@ -360,6 +379,38 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         NotifyAction notifyAction = (NotifyAction) action.getAction();
         assertThat(notifyAction.getActionStimulus().getActor().getName(), is(expectedActor));
         assertThat(notifyAction.getActionStimulus().getActionName(), is(expectedActionName));
+    }
+
+    @Test
+    public void shouldSendNotifyEvent() throws Exception {
+        String expectedAffected = "expectedAffected";
+        String expectedEventName = "expectedEventName";
+        doReturn(new AID(expectedAffected, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedAffected);
+        doReturn(expectedAffected).when(requesterGuiMock).getAffectedName();
+        doReturn(expectedEventName).when(requesterGuiMock).getEventName();
+
+        Action action = testRequestAction(MasoesOntology.getInstance(), RequesterGuiAction.NOTIFY_EVENT);
+        assertThat(action.getAction(), is(instanceOf(NotifyEvent.class)));
+
+        NotifyEvent notifyEvent = (NotifyEvent) action.getAction();
+        assertThat(notifyEvent.getEventStimulus().getAffected().getName(), is(expectedAffected));
+        assertThat(notifyEvent.getEventStimulus().getEventName(), is(expectedEventName));
+    }
+
+    @Test
+    public void shouldSendNotifyObject() throws Exception {
+        String expectedCreator = "expectedCreator";
+        String expectedObjectName = "expectedObjectName";
+        doReturn(new AID(expectedCreator, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedCreator);
+        doReturn(expectedCreator).when(requesterGuiMock).getCreatorName();
+        doReturn(expectedObjectName).when(requesterGuiMock).getObjectName();
+
+        Action action = testRequestAction(MasoesOntology.getInstance(), RequesterGuiAction.NOTIFY_OBJECT);
+        assertThat(action.getAction(), is(instanceOf(NotifyObject.class)));
+
+        NotifyObject notifyEvent = (NotifyObject) action.getAction();
+        assertThat(notifyEvent.getObjectStimulus().getCreator().getName(), is(expectedCreator));
+        assertThat(notifyEvent.getObjectStimulus().getObjectName(), is(expectedObjectName));
     }
 
     @Test

@@ -251,6 +251,10 @@ public class RequesterGui extends JFrame {
         return actorNameTextField.getText();
     }
 
+    public String getAffectedName() {
+        return affectedNameTextField.getText();
+    }
+
     public String getCreatorName() {
         return creatorNameTextField.getText();
     }
@@ -261,6 +265,10 @@ public class RequesterGui extends JFrame {
 
     public String getActionName() {
         return actionNameTextField.getText();
+    }
+
+    public String getEventName() {
+        return eventNameTextField.getText();
     }
 
     public String getObjectName() {
