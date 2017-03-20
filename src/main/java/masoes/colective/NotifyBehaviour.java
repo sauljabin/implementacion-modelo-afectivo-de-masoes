@@ -14,16 +14,13 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.notifier.NotifyAction;
 import masoes.ontology.notifier.NotifyEvent;
 import masoes.ontology.notifier.NotifyObject;
-import masoes.ontology.stimulus.ActionStimulus;
 import masoes.ontology.stimulus.EvaluateStimulus;
-import masoes.ontology.stimulus.EventStimulus;
-import masoes.ontology.stimulus.ObjectStimulus;
+import masoes.ontology.stimulus.Stimulus;
 import ontology.OntologyAssistant;
 import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
@@ -60,58 +57,37 @@ public class NotifyBehaviour extends OntologyResponderBehaviour {
         } else if (action.getAction() instanceof NotifyObject) {
             notifyObject((NotifyObject) action.getAction());
         }
-
         return new Done(action);
     }
 
     private void notifyObject(NotifyObject notifyObject) {
-        ServiceDescription serviceDescription = new ServiceBuilder()
-                .name(MasoesOntology.ACTION_EVALUATE_STIMULUS)
-                .build();
-
-        List<AID> emotionalAgents = agentManagementAssistant.search(serviceDescription);
-
+        List<AID> emotionalAgents = searchEmotionalAgents();
         emotionalAgents.remove(notifyObject.getObjectStimulus().getCreator());
-
-        emotionalAgents.forEach(aid -> {
-            ObjectStimulus objectStimulus = notifyObject.getObjectStimulus();
-            EvaluateStimulus evaluateStimulus = new EvaluateStimulus(objectStimulus);
-            ACLMessage requestAction = ontologyAssistant.createRequestAction(aid, evaluateStimulus);
-            agent.send(requestAction);
-        });
+        sendStimulus(emotionalAgents, notifyObject.getObjectStimulus());
     }
 
     private void notifyEvent(NotifyEvent notifyEvent) {
-        ServiceDescription serviceDescription = new ServiceBuilder()
-                .name(MasoesOntology.ACTION_EVALUATE_STIMULUS)
-                .build();
-
-        List<AID> emotionalAgents = agentManagementAssistant.search(serviceDescription);
-
-        emotionalAgents.remove(notifyEvent.getEventStimulus().getAffected());
-
-        emotionalAgents.forEach(aid -> {
-            EventStimulus eventStimulus = notifyEvent.getEventStimulus();
-            EvaluateStimulus evaluateStimulus = new EvaluateStimulus(eventStimulus);
-            ACLMessage requestAction = ontologyAssistant.createRequestAction(aid, evaluateStimulus);
-            agent.send(requestAction);
-        });
+        List<AID> emotionalAgents = searchEmotionalAgents();
+        sendStimulus(emotionalAgents, notifyEvent.getEventStimulus());
     }
 
     private void notifyAction(NotifyAction notifyAction) {
+        List<AID> emotionalAgents = searchEmotionalAgents();
+        emotionalAgents.remove(notifyAction.getActionStimulus().getActor());
+        sendStimulus(emotionalAgents, notifyAction.getActionStimulus());
+    }
+
+    private List<AID> searchEmotionalAgents() {
         ServiceDescription serviceDescription = new ServiceBuilder()
                 .name(MasoesOntology.ACTION_EVALUATE_STIMULUS)
                 .build();
 
-        List<AID> emotionalAgents = agentManagementAssistant.search(serviceDescription);
+        return agentManagementAssistant.search(serviceDescription);
+    }
 
-        emotionalAgents.remove(notifyAction.getActionStimulus().getActor());
-
+    private void sendStimulus(List<AID> emotionalAgents, Stimulus stimulus) {
         emotionalAgents.forEach(aid -> {
-            ActionStimulus actionStimulus = notifyAction.getActionStimulus();
-            EvaluateStimulus evaluateStimulus = new EvaluateStimulus(actionStimulus);
-            ACLMessage requestAction = ontologyAssistant.createRequestAction(aid, evaluateStimulus);
-            agent.send(requestAction);
+            agent.send(ontologyAssistant.createRequestAction(aid, new EvaluateStimulus(stimulus)));
         });
     }
 

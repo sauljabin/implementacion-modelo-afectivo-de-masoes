@@ -102,11 +102,6 @@ public class NotifyBehaviourTest extends PowerMockitoTest {
         testNotification(new Action(new AID(), new NotifyObject(new ObjectStimulus(actorAID, "object"))));
     }
 
-    @Test
-    public void shouldSendEventStimulusToAllEmotionalAgents() throws FailureException {
-        testNotification(new Action(new AID(), new NotifyEvent(new EventStimulus(actorAID, "event"))));
-    }
-
     private void testNotification(Action action) throws FailureException {
         AID agentA = actorAID;
         AID agentB = new AID("agentB", AID.ISGUID);
@@ -129,6 +124,33 @@ public class NotifyBehaviourTest extends PowerMockitoTest {
         assertThat(messageArgumentCaptor.getAllValues().get(0).getContent(), containsString("agentB"));
         assertThat(messageArgumentCaptor.getAllValues().get(1).getContent(), containsString("EvaluateStimulus"));
         assertThat(messageArgumentCaptor.getAllValues().get(1).getContent(), containsString("agentC"));
+    }
+
+    @Test
+    public void shouldSendEventStimulusToAllEmotionalAgents() throws FailureException {
+        AID agentA = actorAID;
+        AID agentB = new AID("agentB", AID.ISGUID);
+        AID agentC = new AID("agentC", AID.ISGUID);
+        List<AID> agents = new ArrayList<>();
+        agents.add(agentA);
+        agents.add(agentB);
+        agents.add(agentC);
+        doReturn(agents).when(agentManagementAssistantMock).search(any());
+
+        Predicate predicate = notifyBehaviour.performAction(new Action(new AID(), new NotifyEvent(new EventStimulus(actorAID, "event"))));
+        assertThat(predicate, is(CoreMatchers.instanceOf(Done.class)));
+
+        verify(agentManagementAssistantMock).search(serviceDescriptionArgumentCaptor.capture());
+        assertThat(serviceDescriptionArgumentCaptor.getValue().getName(), is(MasoesOntology.ACTION_EVALUATE_STIMULUS));
+
+        verify(agentMock, times(3)).send(messageArgumentCaptor.capture());
+
+        assertThat(messageArgumentCaptor.getAllValues().get(0).getContent(), containsString("EvaluateStimulus"));
+        assertThat(messageArgumentCaptor.getAllValues().get(0).getContent(), containsString("actorName"));
+        assertThat(messageArgumentCaptor.getAllValues().get(1).getContent(), containsString("EvaluateStimulus"));
+        assertThat(messageArgumentCaptor.getAllValues().get(1).getContent(), containsString("agentB"));
+        assertThat(messageArgumentCaptor.getAllValues().get(2).getContent(), containsString("EvaluateStimulus"));
+        assertThat(messageArgumentCaptor.getAllValues().get(2).getContent(), containsString("agentC"));
     }
 
 }
