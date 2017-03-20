@@ -15,15 +15,13 @@ import java.nio.file.Paths;
 
 public class BehaviouralKnowledgeBase extends KnowledgeBase {
 
-    private static final String PATH_THEORY_BEHAVIOUR_MANAGER = "theories/behaviourManager.prolog";
-    private static final String PATH_THEORY_EMOTIONAL_CONFIGURATOR = "theories/emotionalConfigurator.prolog";
+    private static final String PATH_THEORY_BEHAVIOUR_MANAGER = "theories/behavioural/behaviourManager.prolog";
     private EmotionalAgent emotionalAgent;
 
     public BehaviouralKnowledgeBase(EmotionalAgent emotionalAgent) {
         this.emotionalAgent = emotionalAgent;
         addAgentKnowledge();
         addTheory(Paths.get(PATH_THEORY_BEHAVIOUR_MANAGER));
-        addTheory(Paths.get(PATH_THEORY_EMOTIONAL_CONFIGURATOR));
     }
 
     private void addAgentKnowledge() {
@@ -44,7 +42,6 @@ public class BehaviouralKnowledgeBase extends KnowledgeBase {
         return new ToStringBuilder()
                 .append("emotionalAgent", emotionalAgent)
                 .append("behaviourManagerKnowledgePath", PATH_THEORY_BEHAVIOUR_MANAGER)
-                .append("emotionalConfiguratorKnowledgePath", PATH_THEORY_EMOTIONAL_CONFIGURATOR)
                 .toString();
     }
 

@@ -41,7 +41,7 @@ import static test.ReflectionTestUtils.setFieldValue;
 public class BehaviourManagerTest extends PowerMockitoTest {
 
     private static final String AGENT_NAME = "agent";
-    private static final String AGENT_KNOWLEDGE_PATH = "theories/dummy/dummyEmotionalAgent.prolog";
+    private static final String AGENT_KNOWLEDGE_PATH = "theories/behavioural/dummy/dummyEmotionalAgent.prolog";
     private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
     private BehaviourManager behaviourManager;
     private EmotionalAgent agentMock;

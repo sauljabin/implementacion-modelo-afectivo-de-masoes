@@ -18,7 +18,7 @@ public class KnowledgeTest {
 
     @Test
     public void shouldLoadKnowledgeFromPath() {
-        Knowledge knowledge = new Knowledge(Paths.get("theories/behaviourManager.prolog"));
+        Knowledge knowledge = new Knowledge(Paths.get("theories/behavioural/behaviourManager.prolog"));
         assertThat(knowledge.toString(), containsString("emotionType(admiration, positive)."));
     }
 

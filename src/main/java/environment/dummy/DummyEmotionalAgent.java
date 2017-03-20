@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 
 public class DummyEmotionalAgent extends EmotionalAgent {
 
-    private static final String THEORY = "theories/dummy/dummyEmotionalAgent.prolog";
+    private static final String THEORY = "theories/behavioural/dummy/dummyEmotionalAgent.prolog";
     private DummyReactiveBehaviour dummyReactiveBehaviour;
     private DummyImitativeBehaviour dummyImitativeBehaviour;
     private DummyCognitiveBehaviour dummyCognitiveBehaviour;

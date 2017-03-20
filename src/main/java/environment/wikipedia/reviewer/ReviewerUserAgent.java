@@ -26,7 +26,7 @@ public class ReviewerUserAgent extends EmotionalAgent {
 
     @Override
     public Knowledge getKnowledge() {
-        return new Knowledge(Paths.get("theories/wikipedia/reviewerEmotionalAgent.prolog"));
+        return new Knowledge(Paths.get("theories/behavioural/wikipedia/reviewerEmotionalAgent.prolog"));
     }
 
     @Override

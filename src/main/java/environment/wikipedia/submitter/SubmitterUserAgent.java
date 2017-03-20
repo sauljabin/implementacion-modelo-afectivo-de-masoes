@@ -49,7 +49,7 @@ public class SubmitterUserAgent extends EmotionalAgent implements ActionListener
 
     @Override
     public Knowledge getKnowledge() {
-        return new Knowledge(Paths.get("theories/wikipedia/submitterEmotionalAgent.prolog"));
+        return new Knowledge(Paths.get("theories/behavioural/wikipedia/submitterEmotionalAgent.prolog"));
     }
 
     @Override

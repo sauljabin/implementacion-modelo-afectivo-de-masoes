@@ -24,7 +24,7 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 public class BehaviouralKnowledgeBaseTest extends PowerMockitoTest {
 
     private static final String AGENT_NAME = "agent";
-    private static final String AGENT_KNOWLEDGE_PATH = "theories/dummy/dummyEmotionalAgent.prolog";
+    private static final String AGENT_KNOWLEDGE_PATH = "theories/behavioural/dummy/dummyEmotionalAgent.prolog";
     private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
     private EmotionalAgent agentMock;
 
@@ -40,15 +40,15 @@ public class BehaviouralKnowledgeBaseTest extends PowerMockitoTest {
     public void shouldSolveCorrectlySelfAndOtherAgent() throws Exception {
         SolveInfo solveSelf = behaviouralKnowledgeBase.solve("self(X).");
         assertThat(solveSelf.getVarValue("X").toString(), is(AGENT_NAME));
-        SolveInfo solveOther = behaviouralKnowledgeBase.solve("other(otherAgent).");
+        SolveInfo solveOther = behaviouralKnowledgeBase.solve("other('otherAgent').");
         assertThat(solveOther.toString(), is("yes."));
     }
 
     @Test
     public void shouldSolveCorrectlyAnyoneAgent() throws Exception {
-        SolveInfo solveSelf = behaviouralKnowledgeBase.solve("anyone(" + AGENT_NAME + ").");
+        SolveInfo solveSelf = behaviouralKnowledgeBase.solve("anyone('" + AGENT_NAME + "').");
         assertThat(solveSelf.toString(), is("yes."));
-        SolveInfo solveOther = behaviouralKnowledgeBase.solve("anyone(otherAgent).");
+        SolveInfo solveOther = behaviouralKnowledgeBase.solve("anyone('otherAgent').");
         assertThat(solveOther.toString(), is("yes."));
     }
 
@@ -56,7 +56,8 @@ public class BehaviouralKnowledgeBaseTest extends PowerMockitoTest {
     public void shouldSolveSelfAgentWithUpperName() throws Exception {
         String nameUpper = "NAME_UPPER";
         doReturn(nameUpper).when(agentMock).getLocalName();
-        SolveInfo solveSelf = behaviouralKnowledgeBase.solve("self(" + nameUpper + ").");
+        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
+        SolveInfo solveSelf = behaviouralKnowledgeBase.solve("self('" + nameUpper + "').");
         assertThat(solveSelf.toString(), containsString("yes."));
     }
 
@@ -73,42 +74,26 @@ public class BehaviouralKnowledgeBaseTest extends PowerMockitoTest {
     }
 
     private void testBehaviourPriority(String emotion, String expectedBehaviour) throws Exception {
-        SolveInfo solve = behaviouralKnowledgeBase.solve("behaviourPriority(" + emotion + ", X).");
+        SolveInfo solve = behaviouralKnowledgeBase.solve("behaviourPriority('" + emotion + "', X).");
         assertThat(solve.getVarValue("X").toString(), is(expectedBehaviour));
     }
 
     @Test
     public void shouldSolveCorrectlyEmotionalConfiguratorQuestionsWithAction() throws Exception {
-        testEmotionByAction("other", "greeting", "compassion");
-        testEmotionByAction("other", "smile", "admiration");
-        testEmotionByAction("other", "run", "rejection");
-        testEmotionByAction("other", "bye", "anger");
-        testEmotionByAction(AGENT_NAME, "eat", "happiness");
-        testEmotionByAction(AGENT_NAME, "sleep", "joy");
-        testEmotionByAction(AGENT_NAME, "wake", "sadness");
-        testEmotionByAction(AGENT_NAME, "pay", "depression");
-    }
-
-    @Test
-    public void shouldSolveCorrectlyEmotionalConfiguratorQuestionsWithObject() throws Exception {
-        testEmotionByObject("other", "[color=blue]", "compassion");
-        testEmotionByObject("other", "[color=red]", "admiration");
-        testEmotionByObject("other", "[color=white]", "rejection");
-        testEmotionByObject("other", "[color=black]", "anger");
-        testEmotionByObject(AGENT_NAME, "[color=blue]", "happiness");
-        testEmotionByObject(AGENT_NAME, "[color=red]", "joy");
-        testEmotionByObject(AGENT_NAME, "[color=white]", "sadness");
-        testEmotionByObject(AGENT_NAME, "[color=black]", "depression");
+        testEmotionByAction("other", "greeting", "positive");
+        testEmotionByAction("other", "smile", "positive");
+        testEmotionByAction("other", "run", "negative");
+        testEmotionByAction("other", "bye", "negative");
+        testEmotionByAction(AGENT_NAME, "eat", "positive");
+        testEmotionByAction(AGENT_NAME, "sleep", "positive");
+        testEmotionByAction(AGENT_NAME, "wake", "negative");
+        testEmotionByAction(AGENT_NAME, "pay", "negative");
     }
 
     private void testEmotionByAction(String agent, String parameter, String expectedEmotion) throws Exception {
-        SolveInfo solve = behaviouralKnowledgeBase.solve("emotionByAction(" + agent + ", " + parameter + ", X).");
+        SolveInfo solve = behaviouralKnowledgeBase.solve("valence('" + agent + "', '" + parameter + "', X, Y).");
         assertThat(solve.getVarValue("X").toString(), is(expectedEmotion));
-    }
-
-    private void testEmotionByObject(String agent, String parameter, String expectedEmotion) throws Exception {
-        SolveInfo solve = behaviouralKnowledgeBase.solve("emotionByObject(" + agent + ", " + parameter + ", X).");
-        assertThat(solve.getVarValue("X").toString(), is(expectedEmotion));
+        assertThat(solve.getVarValue("Y").toString(), is(expectedEmotion));
     }
 
 }
