@@ -20,6 +20,7 @@ import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
 import masoes.ontology.stimulus.ActionStimulus;
 import masoes.ontology.stimulus.EvaluateStimulus;
+import masoes.ontology.stimulus.EventStimulus;
 import masoes.ontology.stimulus.ObjectStimulus;
 import ontology.OntologyMatchExpression;
 import org.junit.Before;
@@ -41,19 +42,16 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
     private BasicEmotionalAgentBehaviour basicEmotionalAgentBehaviour;
     private BehaviouralComponent behaviouralComponentMock;
     private AID agentAID;
-    private EmotionalAgentLogger loggerMock;
 
     @Before
     public void setUp() {
         emotionalAgentMock = mock(EmotionalAgent.class);
         behaviouralComponentMock = mock(BehaviouralComponent.class);
-        loggerMock = mock(EmotionalAgentLogger.class);
 
         agentAID = new AID("agentName", AID.ISGUID);
 
         doReturn(behaviouralComponentMock).when(emotionalAgentMock).getBehaviouralComponent();
         doReturn(agentAID).when(emotionalAgentMock).getAID();
-        doReturn(loggerMock).when(emotionalAgentMock).getLogger();
 
         basicEmotionalAgentBehaviour = new BasicEmotionalAgentBehaviour(emotionalAgentMock);
     }
@@ -90,16 +88,14 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
         assertThat(done.getAction(), is(action));
 
         verify(behaviouralComponentMock).evaluateStimulus(stimulus);
-        verify(loggerMock).receivingStimulus(stimulus);
-        verify(loggerMock).sendingDone();
     }
 
     @Test
     public void shouldEvaluateObjectStimulus() throws Exception {
         EvaluateStimulus evaluateStimulus = new EvaluateStimulus();
         ObjectStimulus stimulus = new ObjectStimulus();
-        stimulus.setObjectName("expectedActionName");
-        stimulus.setCreator(new AID("expectedActorName", AID.ISGUID));
+        stimulus.setObjectName("expectedObjectName");
+        stimulus.setCreator(new AID("expectedCreatorName", AID.ISGUID));
         evaluateStimulus.setStimulus(stimulus);
 
         Action action = new Action();
@@ -112,8 +108,26 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
         assertThat(done.getAction(), is(action));
 
         verify(behaviouralComponentMock).evaluateStimulus(stimulus);
-        verify(loggerMock).receivingStimulus(stimulus);
-        verify(loggerMock).sendingDone();
+    }
+
+    @Test
+    public void shouldEvaluateEventStimulus() throws Exception {
+        EvaluateStimulus evaluateStimulus = new EvaluateStimulus();
+        EventStimulus stimulus = new EventStimulus();
+        stimulus.setEventName("expectedEventName");
+        stimulus.setAffected(new AID("expectedAffectedName", AID.ISGUID));
+        evaluateStimulus.setStimulus(stimulus);
+
+        Action action = new Action();
+        action.setAction(evaluateStimulus);
+
+        Predicate predicate = basicEmotionalAgentBehaviour.performAction(action);
+        assertThat(predicate, is(instanceOf(Done.class)));
+
+        Done done = (Done) predicate;
+        assertThat(done.getAction(), is(action));
+
+        verify(behaviouralComponentMock).evaluateStimulus(stimulus);
     }
 
     @Test

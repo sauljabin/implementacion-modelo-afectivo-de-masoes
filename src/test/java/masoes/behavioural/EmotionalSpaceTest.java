@@ -38,12 +38,6 @@ public class EmotionalSpaceTest {
     }
 
     @Test
-    public void shouldReturnDefaultHappinessEmotion() {
-        EmotionalState randomPoint = getRandomPointForBasicEmotion(2, 10, 2, 10);
-        assertThat(emotionalSpace.searchEmotion(randomPoint), is(nullValue()));
-    }
-
-    @Test
     public void shouldReturnDefaultNullEmotionFromString() {
         assertThat(emotionalSpace.searchEmotion("no-emotion"), is(nullValue()));
     }

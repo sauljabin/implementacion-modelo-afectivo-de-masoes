@@ -29,7 +29,7 @@ public abstract class EmotionalAgent extends Agent {
     @Override
     protected final void setup() {
         try {
-            setUp();
+            setUp(); // TODO: SETUP AL FINAL
             behaviouralComponent = new BehaviouralComponent(this);
             addBehaviour(new BasicEmotionalAgentBehaviour(this));
             agentManagementAssistant.register(
@@ -72,9 +72,5 @@ public abstract class EmotionalAgent extends Agent {
     public abstract ReactiveBehaviour getReactiveBehaviour();
 
     public abstract CognitiveBehaviour getCognitiveBehaviour();
-
-    public EmotionalAgentLogger getLogger() {
-        return logger;
-    }
 
 }

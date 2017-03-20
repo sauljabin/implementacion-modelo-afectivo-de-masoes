@@ -40,10 +40,7 @@ public class BehaviourManager {
             if (newType == type) {
                 return;
             }
-            emotionalAgent.getLogger().updatingBehaviour(type, newType);
             emotionalAgent.removeBehaviour(behaviour);
-        } else {
-            emotionalAgent.getLogger().startingBehaviour(newType);
         }
 
         behaviour = calculateBehaviour(newType, emotionalAgent);

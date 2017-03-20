@@ -32,4 +32,20 @@ public class EmotionalStateTest {
         assertThat(actualPoint.getY(), is(emotionalState.getSatisfaction()));
     }
 
+    @Test
+    public void shouldSetMaxWhenActivationOrSatisfactionIsGreaterThan1() {
+        EmotionalState emotionalState = new EmotionalState(2, 2);
+        assertThat(emotionalState.getActivation(), is(1.0));
+        assertThat(emotionalState.getSatisfaction(), is(1.0));
+        testEmotionalState(emotionalState);
+    }
+
+    @Test
+    public void shouldSetMaxWhenActivationOrSatisfactionIsLessThanMinus1() {
+        EmotionalState emotionalState = new EmotionalState(-2, -2);
+        assertThat(emotionalState.getActivation(), is(-1.0));
+        assertThat(emotionalState.getSatisfaction(), is(-1.0));
+        testEmotionalState(emotionalState);
+    }
+
 }

@@ -21,7 +21,7 @@ public class BehaviouralComponent {
     public BehaviouralComponent(EmotionalAgent emotionalAgent) {
         this.emotionalAgent = emotionalAgent;
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(emotionalAgent);
-        emotionalConfigurator = new EmotionalConfigurator(emotionalAgent, behaviouralKnowledgeBase);
+        emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
         behaviourManager = new BehaviourManager(emotionalAgent, emotionalConfigurator, behaviouralKnowledgeBase);
     }
 

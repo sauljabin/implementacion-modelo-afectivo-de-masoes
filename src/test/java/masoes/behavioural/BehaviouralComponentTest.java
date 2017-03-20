@@ -8,7 +8,6 @@ package masoes.behavioural;
 
 import knowledge.KnowledgeException;
 import masoes.EmotionalAgent;
-import masoes.EmotionalAgentLogger;
 import masoes.EmotionalBehaviour;
 import masoes.ontology.stimulus.ActionStimulus;
 import org.junit.Rule;
@@ -41,7 +40,6 @@ public class BehaviouralComponentTest extends PowerMockitoTest {
         EmotionalAgent emotionalAgentMock = mock(EmotionalAgent.class);
         String agentName = "agentName";
         doReturn(agentName).when(emotionalAgentMock).getLocalName();
-        doReturn(mock(EmotionalAgentLogger.class)).when(emotionalAgentMock).getLogger();
 
         BehaviouralComponent behaviouralComponent = new BehaviouralComponent(emotionalAgentMock);
 

@@ -23,14 +23,14 @@ public class EmotionalState {
     public EmotionalState() {
         RandomGenerator randomGenerator = new RandomGenerator();
         geometryFactory = new GeometryFactory();
-        this.activation = randomGenerator.getDouble(MIN, MAX);
-        this.satisfaction = randomGenerator.getDouble(MIN, MAX);
+        setActivation(randomGenerator.getDouble(MIN, MAX));
+        setActivation(randomGenerator.getDouble(MIN, MAX));
     }
 
     public EmotionalState(double activation, double satisfaction) {
         geometryFactory = new GeometryFactory();
-        this.activation = activation;
-        this.satisfaction = satisfaction;
+        setActivation(activation);
+        setSatisfaction(satisfaction);
     }
 
     public EmotionalState(Point point) {
@@ -41,8 +41,28 @@ public class EmotionalState {
         return activation;
     }
 
+    private void setActivation(double activation) {
+        if (activation > MAX) {
+            this.activation = MAX;
+        } else if (activation < MIN) {
+            this.activation = MIN;
+        } else {
+            this.activation = activation;
+        }
+    }
+
     public double getSatisfaction() {
         return satisfaction;
+    }
+
+    private void setSatisfaction(double satisfaction) {
+        if (satisfaction > MAX) {
+            this.satisfaction = MAX;
+        } else if (satisfaction < MIN) {
+            this.satisfaction = MIN;
+        } else {
+            this.satisfaction = satisfaction;
+        }
     }
 
     public Point toPoint() {
