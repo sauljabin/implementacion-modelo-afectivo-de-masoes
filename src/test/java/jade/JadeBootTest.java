@@ -11,6 +11,7 @@ import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.PlatformController;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -48,7 +49,7 @@ public class JadeBootTest {
         agentContainerMock = mock(AgentContainer.class);
         platformController = mock(PlatformController.class);
 
-        jadeBoot = new JadeBoot();
+        jadeBoot = JadeBoot.getInstance();
         setFieldValue(jadeBoot, "jadeProfile", jadeProfileMock);
         setFieldValue(jadeBoot, "jadeRuntime", jadeRuntimeMock);
         setFieldValue(jadeBoot, "jadeSettings", jadeSettingsMock);
@@ -56,6 +57,11 @@ public class JadeBootTest {
         doReturn(platformController).when(agentContainerMock).getPlatformController();
         doReturn(agentContainerMock).when(jadeRuntimeMock).createMainContainer(jadeProfileMock);
         agentMock = mock(Agent.class);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        setFieldValue(jadeBoot, "INSTANCE", null);
     }
 
     @Test

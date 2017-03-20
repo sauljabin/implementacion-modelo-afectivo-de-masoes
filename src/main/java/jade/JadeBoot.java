@@ -14,18 +14,26 @@ import jade.wrapper.AgentController;
 
 public class JadeBoot {
 
+    private static JadeBoot INSTANCE;
     private JadeSettings jadeSettings;
     private ProfileImpl jadeProfile;
     private Runtime jadeRuntime;
     private AgentContainer mainContainer;
 
-    public JadeBoot() {
+    private JadeBoot() {
         jadeProfile = new ProfileImpl();
         jadeRuntime = Runtime.instance();
         jadeSettings = JadeSettings.getInstance();
     }
 
-    public void boot() {
+    public synchronized static JadeBoot getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new JadeBoot();
+        }
+        return INSTANCE;
+    }
+
+    public synchronized void boot() {
         jadeSettings.toMap().forEach((key, value) -> jadeProfile.setParameter(key, value));
         try {
             mainContainer = jadeRuntime.createMainContainer(jadeProfile);
@@ -35,7 +43,7 @@ public class JadeBoot {
         }
     }
 
-    public void addAgent(String agentName, Agent agent) {
+    public synchronized void addAgent(String agentName, Agent agent) {
         try {
             mainContainer.acceptNewAgent(agentName, agent);
         } catch (Exception e) {
@@ -43,7 +51,7 @@ public class JadeBoot {
         }
     }
 
-    public AgentController getAgent(String name) {
+    public synchronized AgentController getAgent(String name) {
         try {
             return mainContainer.getAgent(name);
         } catch (Exception e) {
@@ -51,7 +59,7 @@ public class JadeBoot {
         }
     }
 
-    public void kill() {
+    public synchronized void kill() {
         try {
             mainContainer.getPlatformController().kill();
         } catch (Exception e) {

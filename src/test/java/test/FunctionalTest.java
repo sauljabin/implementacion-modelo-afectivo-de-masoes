@@ -43,7 +43,7 @@ public abstract class FunctionalTest {
             return;
         }
 
-        jadeBoot = new JadeBoot();
+        jadeBoot = JadeBoot.getInstance();
         jadeBoot.boot();
 
         testerAgent = new Agent();

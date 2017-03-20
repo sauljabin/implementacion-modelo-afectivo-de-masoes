@@ -16,7 +16,7 @@ public class BootOption extends ApplicationOption {
     private JadeBoot jadeBoot;
 
     public BootOption() {
-        jadeBoot = new JadeBoot();
+        jadeBoot = JadeBoot.getInstance();
     }
 
     @Override
