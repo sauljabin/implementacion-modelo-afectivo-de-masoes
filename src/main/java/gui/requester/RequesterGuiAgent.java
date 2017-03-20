@@ -27,17 +27,18 @@ import ontology.OntologyAssistant;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
-import ontology.masoes.ActionStimulus;
-import ontology.masoes.CreateObject;
-import ontology.masoes.DeleteObject;
-import ontology.masoes.EvaluateStimulus;
-import ontology.masoes.GetEmotionalState;
-import ontology.masoes.GetObject;
 import ontology.masoes.MasoesOntology;
-import ontology.masoes.NotifyAction;
-import ontology.masoes.ObjectProperty;
-import ontology.masoes.ObjectStimulus;
-import ontology.masoes.UpdateObject;
+import ontology.masoes.data.CreateObject;
+import ontology.masoes.data.DeleteObject;
+import ontology.masoes.data.GetObject;
+import ontology.masoes.data.ObjectEnvironment;
+import ontology.masoes.data.ObjectProperty;
+import ontology.masoes.data.UpdateObject;
+import ontology.masoes.notifier.NotifyAction;
+import ontology.masoes.state.GetEmotionalState;
+import ontology.masoes.stimulus.ActionStimulus;
+import ontology.masoes.stimulus.EvaluateStimulus;
+import ontology.masoes.stimulus.ObjectStimulus;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.SettingsOntology;
@@ -179,35 +180,33 @@ public class RequesterGuiAgent extends GuiAgent {
     }
 
     private void sendGetObject(AID aid) {
-        ObjectStimulus objectStimulus = new ObjectStimulus();
-        objectStimulus.setCreator(getAID(requesterGui.getCreatorName()));
-        objectStimulus.setObjectName(requesterGui.getObjectName());
-        sendOntologyMessage(aid, MasoesOntology.getInstance(), new GetObject(objectStimulus));
+        ObjectEnvironment objectEnvironment = new ObjectEnvironment();
+        objectEnvironment.setCreator(getAID(requesterGui.getCreatorName()));
+        objectEnvironment.setName(requesterGui.getObjectName());
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), new GetObject(objectEnvironment));
     }
 
     private void sendDeleteObject(AID aid) {
-        ObjectStimulus objectStimulus = new ObjectStimulus();
-        objectStimulus.setCreator(getAID(requesterGui.getCreatorName()));
-        objectStimulus.setObjectName(requesterGui.getObjectName());
-        sendOntologyMessage(aid, MasoesOntology.getInstance(), new DeleteObject(objectStimulus));
+        ObjectEnvironment objectEnvironment = new ObjectEnvironment();
+        objectEnvironment.setCreator(getAID(requesterGui.getCreatorName()));
+        objectEnvironment.setName(requesterGui.getObjectName());
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), new DeleteObject(objectEnvironment));
     }
 
     private void sendUpdateObject(AID aid) {
-        ObjectStimulus objectStimulus = createObjectStimulus();
-        sendOntologyMessage(aid, MasoesOntology.getInstance(), new UpdateObject(objectStimulus));
-    }
-
-    private ObjectStimulus createObjectStimulus() {
-        ObjectStimulus objectStimulus = new ObjectStimulus();
-        objectStimulus.setCreator(getAID(requesterGui.getCreatorName()));
-        objectStimulus.setObjectName(requesterGui.getObjectName());
-        objectStimulus.setObjectProperties(createPropertiesList());
-        return objectStimulus;
+        ObjectEnvironment objectEnvironment = new ObjectEnvironment();
+        objectEnvironment.setCreator(getAID(requesterGui.getCreatorName()));
+        objectEnvironment.setName(requesterGui.getObjectName());
+        objectEnvironment.setObjectProperties(createPropertiesList());
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), new UpdateObject(objectEnvironment));
     }
 
     private void sendCreateObject(AID aid) {
-        ObjectStimulus objectStimulus = createObjectStimulus();
-        sendOntologyMessage(aid, MasoesOntology.getInstance(), new CreateObject(objectStimulus));
+        ObjectEnvironment objectEnvironment = new ObjectEnvironment();
+        objectEnvironment.setCreator(getAID(requesterGui.getCreatorName()));
+        objectEnvironment.setName(requesterGui.getObjectName());
+        objectEnvironment.setObjectProperties(createPropertiesList());
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), new CreateObject(objectEnvironment));
     }
 
     private void sendRegisterAgent(AID aid) {
@@ -296,7 +295,9 @@ public class RequesterGuiAgent extends GuiAgent {
     }
 
     private void sendEvaluateObjectStimulus(AID aid) {
-        ObjectStimulus objectStimulus = createObjectStimulus();
+        ObjectStimulus objectStimulus = new ObjectStimulus();
+        objectStimulus.setCreator(getAID(requesterGui.getCreatorName()));
+        objectStimulus.setObjectName(requesterGui.getObjectName());
         sendOntologyMessage(aid, MasoesOntology.getInstance(), new EvaluateStimulus(objectStimulus));
     }
 

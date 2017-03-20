@@ -9,17 +9,14 @@ package masoes.behavioural;
 import alice.tuprolog.SolveInfo;
 import knowledge.KnowledgeException;
 import masoes.EmotionalAgent;
-import ontology.masoes.ActionStimulus;
-import ontology.masoes.ObjectProperty;
-import ontology.masoes.ObjectStimulus;
-import ontology.masoes.Stimulus;
+import ontology.masoes.stimulus.ActionStimulus;
+import ontology.masoes.stimulus.ObjectStimulus;
+import ontology.masoes.stimulus.Stimulus;
 import util.ToStringBuilder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class EmotionalConfigurator {
 
@@ -100,14 +97,8 @@ public class EmotionalConfigurator {
             return String.format("'%s'", actionStimulus.getActionName());
         } else {
             ObjectStimulus objectStimulus = (ObjectStimulus) stimulus;
-            Object[] properties = objectStimulus.getObjectProperties().toArray();
 
-            List<String> stringsProperties = Arrays.stream(properties).map(object -> {
-                ObjectProperty objectProperty = (ObjectProperty) object;
-                return String.format("'%s'='%s'", objectProperty.getName(), objectProperty.getValue());
-            }).collect(Collectors.toList());
-
-            return String.format("[%s]", String.join(",", stringsProperties));
+            return String.format("'%s'", objectStimulus.getObjectName());
         }
     }
 

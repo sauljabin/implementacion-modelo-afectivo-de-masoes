@@ -4,44 +4,24 @@
  * Please see the LICENSE.txt file
  */
 
-package ontology.masoes;
+package ontology.masoes.state;
 
 import jade.content.Concept;
 import util.ToStringBuilder;
 
-public class EmotionState implements Concept {
+public class BehaviourState implements Concept {
 
     private String name;
     private String className;
     private String type;
-    private double activation;
-    private double satisfaction;
 
-    public EmotionState() {
-    }
-
-    public EmotionState(String name, String className, String type, double activation, double satisfaction) {
+    public BehaviourState(String name, String className, String type) {
         this.name = name;
         this.className = className;
         this.type = type;
-        this.activation = activation;
-        this.satisfaction = satisfaction;
     }
 
-    public double getActivation() {
-        return activation;
-    }
-
-    public void setActivation(double activation) {
-        this.activation = activation;
-    }
-
-    public double getSatisfaction() {
-        return satisfaction;
-    }
-
-    public void setSatisfaction(double satisfaction) {
-        this.satisfaction = satisfaction;
+    public BehaviourState() {
     }
 
     public String getClassName() {
@@ -74,8 +54,6 @@ public class EmotionState implements Concept {
                 .append("name", name)
                 .append("className", className)
                 .append("type", type)
-                .append("activation", activation)
-                .append("satisfaction", satisfaction)
                 .toString();
     }
 

@@ -16,14 +16,14 @@ import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
 import jade.util.leap.ArrayList;
 import ontology.OntologyMatchExpression;
-import ontology.masoes.CreateObject;
-import ontology.masoes.DeleteObject;
-import ontology.masoes.GetObject;
-import ontology.masoes.ListObjects;
 import ontology.masoes.MasoesOntology;
-import ontology.masoes.ObjectProperty;
-import ontology.masoes.ObjectStimulus;
-import ontology.masoes.UpdateObject;
+import ontology.masoes.data.CreateObject;
+import ontology.masoes.data.DeleteObject;
+import ontology.masoes.data.GetObject;
+import ontology.masoes.data.ListObjects;
+import ontology.masoes.data.ObjectEnvironment;
+import ontology.masoes.data.ObjectProperty;
+import ontology.masoes.data.UpdateObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -116,7 +116,7 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
     public void shouldCreateObjectWithProperties() throws Exception {
         when(dataBaseConnection.execute(anyString())).thenReturn(true);
 
-        Action createObject = new Action(new AID(), new CreateObject(createObjectStimulus()));
+        Action createObject = new Action(new AID(), new CreateObject(createObjectEnvironment()));
         dataPersistenceBehaviour.performAction(createObject);
 
         String expectedInsertObjectSQL = "INSERT INTO object \\(uuid, name, creator_name\\) VALUES \\(\\'.*\\', \\'expectedObjectName\\', \\'expectedAgentName\\'\\);";
@@ -133,7 +133,7 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         expectedException.expectMessage("Operation failed");
         when(dataBaseConnection.execute(anyString())).thenAnswer(answerRandomlyWithAtLeastOneFalse());
 
-        Action createObject = new Action(new AID(), new CreateObject(createObjectStimulus()));
+        Action createObject = new Action(new AID(), new CreateObject(createObjectEnvironment()));
         dataPersistenceBehaviour.performAction(createObject);
     }
 
@@ -141,9 +141,9 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
     public void shouldCreateObjectWithoutPropertiesIfPropertiesListIsNull() throws Exception {
         when(dataBaseConnection.execute(anyString())).thenReturn(true);
 
-        ObjectStimulus objectStimulus = createObjectStimulus();
-        objectStimulus.setObjectProperties(null);
-        Action createObject = new Action(new AID(), new CreateObject(objectStimulus));
+        ObjectEnvironment objectEnvironment = createObjectEnvironment();
+        objectEnvironment.setObjectProperties(null);
+        Action createObject = new Action(new AID(), new CreateObject(objectEnvironment));
         dataPersistenceBehaviour.performAction(createObject);
 
         String expectedInsertObjectSQL = "INSERT INTO object \\(uuid, name, creator_name\\) VALUES \\(\\'.*\\', \\'expectedObjectName\\', \\'expectedAgentName\\'\\);";
@@ -166,14 +166,14 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         AID agentAID = mock(AID.class);
         when(agentMock.getAID("expectedAgentName")).thenReturn(agentAID);
 
-        ObjectStimulus objectStimulus = createObjectStimulus();
-        objectStimulus.setObjectProperties(null);
-        Action getObject = new Action(agentAID, new GetObject(objectStimulus));
+        ObjectEnvironment objectEnvironment = createObjectEnvironment();
+        objectEnvironment.setObjectProperties(null);
+        Action getObject = new Action(agentAID, new GetObject(objectEnvironment));
 
-        ObjectStimulus actualObject = (ObjectStimulus) ((ListObjects) dataPersistenceBehaviour.performAction(getObject)).getObjects().get(0);
+        ObjectEnvironment actualObject = (ObjectEnvironment) ((ListObjects) dataPersistenceBehaviour.performAction(getObject)).getObjects().get(0);
         ObjectProperty actualProperty = (ObjectProperty) actualObject.getObjectProperties().get(0);
 
-        assertThat(actualObject.getObjectName(), is("expectedObjectName"));
+        assertThat(actualObject.getName(), is("expectedObjectName"));
         assertThat(actualObject.getCreator(), is(agentAID));
         assertThat(actualProperty.getName(), is("expectedObjectName"));
         assertThat(actualProperty.getValue(), is("value"));
@@ -187,9 +187,9 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         when(queryResult.getString(anyString())).thenReturn("");
         when(agentMock.getAID(anyString())).thenReturn(mock(AID.class));
 
-        ObjectStimulus objectStimulus = createObjectStimulus();
-        objectStimulus.setObjectProperties(null);
-        Action getObject = new Action(null, new GetObject(objectStimulus));
+        ObjectEnvironment objectEnvironment = createObjectEnvironment();
+        objectEnvironment.setObjectProperties(null);
+        Action getObject = new Action(null, new GetObject(objectEnvironment));
 
         dataPersistenceBehaviour.performAction(getObject);
 
@@ -208,9 +208,9 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         when(dataBaseConnection.query(anyString())).thenReturn(queryResult);
         when(queryResult.next()).thenReturn(false);
 
-        ObjectStimulus objectStimulus = createObjectStimulus();
-        objectStimulus.setObjectProperties(null);
-        Action getObject = new Action(null, new GetObject(objectStimulus));
+        ObjectEnvironment objectEnvironment = createObjectEnvironment();
+        objectEnvironment.setObjectProperties(null);
+        Action getObject = new Action(null, new GetObject(objectEnvironment));
 
         dataPersistenceBehaviour.performAction(getObject);
     }
@@ -223,8 +223,8 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         when(queryResult.getString("uuid")).thenReturn("123");
         when(queryResult.next()).thenReturn(true);
 
-        ObjectStimulus objectStimulus = createObjectStimulus();
-        Action deleteObject = new Action(new AID(), new DeleteObject(objectStimulus));
+        ObjectEnvironment objectEnvironment = createObjectEnvironment();
+        Action deleteObject = new Action(new AID(), new DeleteObject(objectEnvironment));
         dataPersistenceBehaviour.performAction(deleteObject);
 
         String expectedQuery = "SELECT uuid FROM object WHERE name LIKE 'expectedObjectName' AND creator_name LIKE 'expectedAgentName';";
@@ -244,8 +244,8 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         when(dataBaseConnection.query(anyString())).thenReturn(queryResult);
         when(queryResult.next()).thenReturn(false);
 
-        ObjectStimulus objectStimulus = createObjectStimulus();
-        Action deleteObject = new Action(new AID(), new DeleteObject(objectStimulus));
+        ObjectEnvironment objectEnvironment = createObjectEnvironment();
+        Action deleteObject = new Action(new AID(), new DeleteObject(objectEnvironment));
         dataPersistenceBehaviour.performAction(deleteObject);
     }
 
@@ -257,8 +257,8 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         when(queryResult.getString("uuid")).thenReturn("123");
         when(queryResult.next()).thenReturn(true);
 
-        ObjectStimulus objectStimulus = createObjectStimulus();
-        Action updateObject = new Action(new AID(), new UpdateObject(objectStimulus));
+        ObjectEnvironment objectEnvironment = createObjectEnvironment();
+        Action updateObject = new Action(new AID(), new UpdateObject(objectEnvironment));
         dataPersistenceBehaviour.performAction(updateObject);
 
         String expectedQuery = "SELECT uuid FROM object WHERE name LIKE 'expectedObjectName' AND creator_name LIKE 'expectedAgentName';";
@@ -278,8 +278,8 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         when(dataBaseConnection.query(anyString())).thenReturn(queryResult);
         when(queryResult.next()).thenReturn(false);
 
-        ObjectStimulus objectStimulus = createObjectStimulus();
-        Action updateObject = new Action(new AID(), new UpdateObject(objectStimulus));
+        ObjectEnvironment objectEnvironment = createObjectEnvironment();
+        Action updateObject = new Action(new AID(), new UpdateObject(objectEnvironment));
         dataPersistenceBehaviour.performAction(updateObject);
     }
 
@@ -292,12 +292,12 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         when(dataBaseConnection.query(anyString())).thenReturn(queryResult);
         when(dataBaseConnection.execute(anyString())).thenAnswer(answerTrueOnce());
 
-        ObjectStimulus objectStimulus = createObjectStimulus();
-        Action updateObject = new Action(new AID(), new UpdateObject(objectStimulus));
+        ObjectEnvironment objectEnvironment = createObjectEnvironment();
+        Action updateObject = new Action(new AID(), new UpdateObject(objectEnvironment));
         dataPersistenceBehaviour.performAction(updateObject);
     }
 
-    private ObjectStimulus createObjectStimulus() {
+    private ObjectEnvironment createObjectEnvironment() {
         String expectedObjectName = "expectedObjectName";
         String expectedAgentName = "expectedAgentName";
 
@@ -312,12 +312,12 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
         objectProperties.add(new ObjectProperty(expectedPropertyName, expectedPropertyValue));
         objectProperties.add(new ObjectProperty(expectedPropertyName2, expectedPropertyValue2));
 
-        ObjectStimulus objectStimulus = new ObjectStimulus();
-        objectStimulus.setObjectName(expectedObjectName);
-        objectStimulus.setCreator(creator);
-        objectStimulus.setObjectProperties(objectProperties);
+        ObjectEnvironment objectEnvironment = new ObjectEnvironment();
+        objectEnvironment.setName(expectedObjectName);
+        objectEnvironment.setCreator(creator);
+        objectEnvironment.setObjectProperties(objectProperties);
 
-        return objectStimulus;
+        return objectEnvironment;
     }
 
     private Answer<Boolean> answerTrueOnce() {
@@ -344,24 +344,24 @@ public class DataPersistenceBehaviourTest extends PowerMockitoTest {
     private Concept randomAction() {
         switch (new Random().nextInt(4)) {
             case 1:
-                return new CreateObject(createObjectStimulus());
+                return new CreateObject(createObjectEnvironment());
             case 2:
-                return new GetObject(createObjectStimulus());
+                return new GetObject(createObjectEnvironment());
             case 3:
-                return new UpdateObject(createObjectStimulus());
+                return new UpdateObject(createObjectEnvironment());
             default:
-                return new DeleteObject(createObjectStimulus());
+                return new DeleteObject(createObjectEnvironment());
         }
     }
 
     private Concept randomModifyAction() {
         switch (new Random().nextInt(3)) {
             case 1:
-                return new CreateObject(createObjectStimulus());
+                return new CreateObject(createObjectEnvironment());
             case 3:
-                return new UpdateObject(createObjectStimulus());
+                return new UpdateObject(createObjectEnvironment());
             default:
-                return new DeleteObject(createObjectStimulus());
+                return new DeleteObject(createObjectEnvironment());
         }
     }
 

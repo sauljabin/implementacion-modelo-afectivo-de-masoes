@@ -4,25 +4,33 @@
  * Please see the LICENSE.txt file
  */
 
-package ontology.masoes;
+package ontology.masoes.data;
 
 import jade.core.AID;
 import jade.util.leap.List;
 import util.ToStringBuilder;
 
-public class ObjectStimulus extends Stimulus {
+public class ObjectEnvironment {
 
+    private String name;
     private AID creator;
-    private String objectName;
     private List objectProperties;
 
-    public ObjectStimulus() {
+    public ObjectEnvironment() {
     }
 
-    public ObjectStimulus(AID creator, String objectName, List objectProperties) {
+    public ObjectEnvironment(AID creator, String name, List objectProperties) {
+        this.name = name;
         this.creator = creator;
-        this.objectName = objectName;
         this.objectProperties = objectProperties;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public AID getCreator() {
@@ -31,14 +39,6 @@ public class ObjectStimulus extends Stimulus {
 
     public void setCreator(AID creator) {
         this.creator = creator;
-    }
-
-    public String getObjectName() {
-        return objectName;
-    }
-
-    public void setObjectName(String objectName) {
-        this.objectName = objectName;
     }
 
     public List getObjectProperties() {
@@ -58,7 +58,7 @@ public class ObjectStimulus extends Stimulus {
             toStringBuilder.append("creator", creator.getLocalName());
         }
 
-        return toStringBuilder.append("objectName", objectName)
+        return toStringBuilder.append("name", name)
                 .append("objectProperties", objectProperties)
                 .toString();
     }

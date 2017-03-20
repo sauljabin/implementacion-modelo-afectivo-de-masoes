@@ -4,9 +4,10 @@
  * Please see the LICENSE.txt file
  */
 
-package ontology.masoes;
+package ontology.masoes.notifier;
 
 import jade.content.AgentAction;
+import ontology.masoes.stimulus.ActionStimulus;
 import util.ToStringBuilder;
 
 public class NotifyAction implements AgentAction {

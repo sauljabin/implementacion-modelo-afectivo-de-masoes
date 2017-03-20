@@ -15,11 +15,11 @@ import jade.lang.acl.MessageTemplate;
 import masoes.behavioural.BehaviouralComponent;
 import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
-import ontology.masoes.AgentState;
-import ontology.masoes.BehaviourState;
-import ontology.masoes.EmotionState;
-import ontology.masoes.EvaluateStimulus;
-import ontology.masoes.GetEmotionalState;
+import ontology.masoes.state.AgentState;
+import ontology.masoes.state.BehaviourState;
+import ontology.masoes.state.EmotionState;
+import ontology.masoes.stimulus.EvaluateStimulus;
+import ontology.masoes.state.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
 
 import java.util.Arrays;

@@ -26,17 +26,18 @@ import language.SemanticLanguage;
 import ontology.configurable.AddBehaviour;
 import ontology.configurable.ConfigurableOntology;
 import ontology.configurable.RemoveBehaviour;
-import ontology.masoes.ActionStimulus;
-import ontology.masoes.CreateObject;
-import ontology.masoes.DeleteObject;
-import ontology.masoes.EvaluateStimulus;
-import ontology.masoes.GetEmotionalState;
-import ontology.masoes.GetObject;
 import ontology.masoes.MasoesOntology;
-import ontology.masoes.NotifyAction;
-import ontology.masoes.ObjectProperty;
-import ontology.masoes.ObjectStimulus;
-import ontology.masoes.UpdateObject;
+import ontology.masoes.data.CreateObject;
+import ontology.masoes.data.DeleteObject;
+import ontology.masoes.data.GetObject;
+import ontology.masoes.data.ObjectEnvironment;
+import ontology.masoes.data.ObjectProperty;
+import ontology.masoes.data.UpdateObject;
+import ontology.masoes.notifier.NotifyAction;
+import ontology.masoes.state.GetEmotionalState;
+import ontology.masoes.stimulus.ActionStimulus;
+import ontology.masoes.stimulus.EvaluateStimulus;
+import ontology.masoes.stimulus.ObjectStimulus;
 import ontology.settings.GetAllSettings;
 import ontology.settings.GetSetting;
 import ontology.settings.SettingsOntology;
@@ -225,17 +226,10 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         ObjectStimulus objectStimulus = (ObjectStimulus) evaluateStimulus.getStimulus();
         assertThat(objectStimulus.getCreator().getLocalName(), is(expectedCreatorName));
         assertThat(objectStimulus.getObjectName(), is(expectedObjectName));
-        ObjectProperty propertyColor = (ObjectProperty) objectStimulus.getObjectProperties().get(0);
-        assertThat(propertyColor.getName(), is("color"));
-        assertThat(propertyColor.getValue(), is("blue"));
-
-        ObjectProperty propertyType = (ObjectProperty) objectStimulus.getObjectProperties().get(1);
-        assertThat(propertyType.getName(), is("type"));
-        assertThat(propertyType.getValue(), is("car"));
     }
 
     @Test
-    public void shouldSendCreateObjectStimulus() throws Exception {
+    public void shouldSendCreateObject() throws Exception {
         String expectedCreatorName = "expectedCreatorName";
         String expectedObjectName = "expectedObjectName";
         String expectedProperties = "color=blue\ntype=car";
@@ -249,20 +243,20 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
 
         CreateObject createObject = (CreateObject) action.getAction();
 
-        ObjectStimulus objectStimulus = createObject.getObjectStimulus();
-        assertThat(objectStimulus.getCreator().getLocalName(), is(expectedCreatorName));
-        assertThat(objectStimulus.getObjectName(), is(expectedObjectName));
-        ObjectProperty propertyColor = (ObjectProperty) objectStimulus.getObjectProperties().get(0);
+        ObjectEnvironment objectEnvironment = createObject.getObjectEnvironment();
+        assertThat(objectEnvironment.getCreator().getLocalName(), is(expectedCreatorName));
+        assertThat(objectEnvironment.getName(), is(expectedObjectName));
+        ObjectProperty propertyColor = (ObjectProperty) objectEnvironment.getObjectProperties().get(0);
         assertThat(propertyColor.getName(), is("color"));
         assertThat(propertyColor.getValue(), is("blue"));
 
-        ObjectProperty propertyType = (ObjectProperty) objectStimulus.getObjectProperties().get(1);
+        ObjectProperty propertyType = (ObjectProperty) objectEnvironment.getObjectProperties().get(1);
         assertThat(propertyType.getName(), is("type"));
         assertThat(propertyType.getValue(), is("car"));
     }
 
     @Test
-    public void shouldSendUpdateObjectStimulus() throws Exception {
+    public void shouldSendUpdateObject() throws Exception {
         String expectedCreatorName = "expectedCreatorName";
         String expectedObjectName = "expectedObjectName";
         String expectedProperties = "color=blue\ntype=car";
@@ -276,20 +270,20 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
 
         UpdateObject updateObject = (UpdateObject) action.getAction();
 
-        ObjectStimulus objectStimulus = updateObject.getObjectStimulus();
-        assertThat(objectStimulus.getCreator().getLocalName(), is(expectedCreatorName));
-        assertThat(objectStimulus.getObjectName(), is(expectedObjectName));
-        ObjectProperty propertyColor = (ObjectProperty) objectStimulus.getObjectProperties().get(0);
+        ObjectEnvironment objectEnvironment = updateObject.getObjectEnvironment();
+        assertThat(objectEnvironment.getCreator().getLocalName(), is(expectedCreatorName));
+        assertThat(objectEnvironment.getName(), is(expectedObjectName));
+        ObjectProperty propertyColor = (ObjectProperty) objectEnvironment.getObjectProperties().get(0);
         assertThat(propertyColor.getName(), is("color"));
         assertThat(propertyColor.getValue(), is("blue"));
 
-        ObjectProperty propertyType = (ObjectProperty) objectStimulus.getObjectProperties().get(1);
+        ObjectProperty propertyType = (ObjectProperty) objectEnvironment.getObjectProperties().get(1);
         assertThat(propertyType.getName(), is("type"));
         assertThat(propertyType.getValue(), is("car"));
     }
 
     @Test
-    public void shouldSendDeleteObjectStimulus() throws Exception {
+    public void shouldSendDeleteObject() throws Exception {
         String expectedCreatorName = "expectedCreatorName";
         String expectedObjectName = "expectedObjectName";
         doReturn(expectedCreatorName).when(requesterGuiMock).getCreatorName();
@@ -301,13 +295,13 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
 
         DeleteObject deleteObject = (DeleteObject) action.getAction();
 
-        ObjectStimulus objectStimulus = deleteObject.getObjectStimulus();
-        assertThat(objectStimulus.getCreator().getLocalName(), is(expectedCreatorName));
-        assertThat(objectStimulus.getObjectName(), is(expectedObjectName));
+        ObjectEnvironment objectEnvironment = deleteObject.getObjectEnvironment();
+        assertThat(objectEnvironment.getCreator().getLocalName(), is(expectedCreatorName));
+        assertThat(objectEnvironment.getName(), is(expectedObjectName));
     }
 
     @Test
-    public void shouldSendGetObjectStimulus() throws Exception {
+    public void shouldSendGetObject() throws Exception {
         String expectedCreatorName = "expectedCreatorName";
         String expectedObjectName = "expectedObjectName";
         doReturn(expectedCreatorName).when(requesterGuiMock).getCreatorName();
@@ -319,9 +313,9 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
 
         GetObject getObject = (GetObject) action.getAction();
 
-        ObjectStimulus objectStimulus = getObject.getObjectStimulus();
-        assertThat(objectStimulus.getCreator().getLocalName(), is(expectedCreatorName));
-        assertThat(objectStimulus.getObjectName(), is(expectedObjectName));
+        ObjectEnvironment objectEnvironment = getObject.getObjectEnvironment();
+        assertThat(objectEnvironment.getCreator().getLocalName(), is(expectedCreatorName));
+        assertThat(objectEnvironment.getName(), is(expectedObjectName));
     }
 
     @Test

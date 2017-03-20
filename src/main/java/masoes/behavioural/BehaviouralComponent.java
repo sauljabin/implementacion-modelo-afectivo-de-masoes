@@ -8,7 +8,7 @@ package masoes.behavioural;
 
 import masoes.EmotionalAgent;
 import masoes.EmotionalBehaviour;
-import ontology.masoes.Stimulus;
+import ontology.masoes.stimulus.Stimulus;
 import util.ToStringBuilder;
 
 public class BehaviouralComponent {

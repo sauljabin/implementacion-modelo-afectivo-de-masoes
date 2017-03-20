@@ -19,10 +19,10 @@ import jade.lang.acl.MessageTemplate;
 import ontology.OntologyAssistant;
 import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
-import ontology.masoes.ActionStimulus;
-import ontology.masoes.EvaluateStimulus;
+import ontology.masoes.stimulus.ActionStimulus;
+import ontology.masoes.stimulus.EvaluateStimulus;
 import ontology.masoes.MasoesOntology;
-import ontology.masoes.NotifyAction;
+import ontology.masoes.notifier.NotifyAction;
 import util.ServiceBuilder;
 
 import java.util.Arrays;

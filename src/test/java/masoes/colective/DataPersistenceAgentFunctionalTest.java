@@ -16,14 +16,14 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.util.leap.ArrayList;
 import ontology.OntologyAssistant;
-import ontology.masoes.CreateObject;
-import ontology.masoes.DeleteObject;
-import ontology.masoes.GetObject;
-import ontology.masoes.ListObjects;
 import ontology.masoes.MasoesOntology;
-import ontology.masoes.ObjectProperty;
-import ontology.masoes.ObjectStimulus;
-import ontology.masoes.UpdateObject;
+import ontology.masoes.data.CreateObject;
+import ontology.masoes.data.DeleteObject;
+import ontology.masoes.data.GetObject;
+import ontology.masoes.data.ListObjects;
+import ontology.masoes.data.ObjectEnvironment;
+import ontology.masoes.data.ObjectProperty;
+import ontology.masoes.data.UpdateObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,13 +82,13 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
         String expectedCreatorName = "expectedCreatorName";
         ArrayList objectProperties = new ArrayList();
         objectProperties.add(new ObjectProperty(expectedPropertyName, expectedPropertyValue));
-        ObjectStimulus objectStimulus = new ObjectStimulus();
-        objectStimulus.setObjectName(expectedObjectName);
-        objectStimulus.setCreator(new AID(expectedCreatorName, AID.ISGUID));
-        objectStimulus.setObjectProperties(objectProperties);
+        ObjectEnvironment objectEnvironment = new ObjectEnvironment();
+        objectEnvironment.setName(expectedObjectName);
+        objectEnvironment.setCreator(new AID(expectedCreatorName, AID.ISGUID));
+        objectEnvironment.setObjectProperties(objectProperties);
 
         CreateObject createObject = new CreateObject();
-        createObject.setObjectStimulus(objectStimulus);
+        createObject.setObjectEnvironment(objectEnvironment);
 
         ContentElement contentElement = sendAction(createObject);
         assertThat(contentElement, is(instanceOf(Done.class)));
@@ -119,10 +119,10 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
         connection.execute(String.format("insert into object_property (object_uuid, name, value) values ('%s', '%s', '%s')", uuid, expectedPropertyName, expectedPropertyValue));
 
         GetObject getObject = new GetObject();
-        ObjectStimulus getObjectStimulus = new ObjectStimulus();
-        getObjectStimulus.setCreator(new AID(expectedCreatorName, AID.ISGUID));
-        getObjectStimulus.setObjectName(expectedObjectName);
-        getObject.setObjectStimulus(getObjectStimulus);
+        ObjectEnvironment getObjectEnvironment = new ObjectEnvironment();
+        getObjectEnvironment.setCreator(new AID(expectedCreatorName, AID.ISGUID));
+        getObjectEnvironment.setName(expectedObjectName);
+        getObject.setObjectEnvironment(getObjectEnvironment);
 
         ContentElement contentElementGetObject = sendAction(getObject);
 
@@ -132,8 +132,8 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
         jade.util.leap.List objects = listObjects.getObjects();
         assertThat(objects.size(), is(1));
 
-        ObjectStimulus actualObject = (ObjectStimulus) objects.get(0);
-        assertThat(actualObject.getObjectName(), is(expectedObjectName));
+        ObjectEnvironment actualObject = (ObjectEnvironment) objects.get(0);
+        assertThat(actualObject.getName(), is(expectedObjectName));
         assertThat(actualObject.getCreator().getLocalName(), is(expectedCreatorName));
 
         jade.util.leap.List objectProperties = actualObject.getObjectProperties();
@@ -153,10 +153,10 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
         connection.execute(String.format("insert into object_property (object_uuid, name, value) values ('%s', 'any', 'any')", uuid));
 
         DeleteObject deleteObject = new DeleteObject();
-        ObjectStimulus objectStimulus = new ObjectStimulus();
-        objectStimulus.setCreator(new AID(creatorNameToDelete, AID.ISGUID));
-        objectStimulus.setObjectName(nameToDelete);
-        deleteObject.setObjectStimulus(objectStimulus);
+        ObjectEnvironment objectEnvironment = new ObjectEnvironment();
+        objectEnvironment.setCreator(new AID(creatorNameToDelete, AID.ISGUID));
+        objectEnvironment.setName(nameToDelete);
+        deleteObject.setObjectEnvironment(objectEnvironment);
         ContentElement contentElement = sendAction(deleteObject);
         assertThat(contentElement, is(instanceOf(Done.class)));
 
@@ -179,14 +179,14 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
 
         String expectedValue = "expectedValue";
 
-        ObjectStimulus objectStimulus = new ObjectStimulus();
-        objectStimulus.setObjectName(objectName);
-        objectStimulus.setCreator(new AID(creatorName, AID.ISGUID));
-        objectStimulus.setObjectProperties(new ArrayList());
-        objectStimulus.getObjectProperties().add(new ObjectProperty(propertyName, expectedValue));
+        ObjectEnvironment objectEnvironment = new ObjectEnvironment();
+        objectEnvironment.setName(objectName);
+        objectEnvironment.setCreator(new AID(creatorName, AID.ISGUID));
+        objectEnvironment.setObjectProperties(new ArrayList());
+        objectEnvironment.getObjectProperties().add(new ObjectProperty(propertyName, expectedValue));
 
         UpdateObject updateObject = new UpdateObject();
-        updateObject.setObjectStimulus(objectStimulus);
+        updateObject.setObjectEnvironment(objectEnvironment);
 
         ContentElement contentElement = sendAction(updateObject);
         assertThat(contentElement, is(instanceOf(Done.class)));
@@ -216,15 +216,15 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
         String secondPropertyName = "secondPropertyName";
         String expectedFirstPropertyValue = "expectedFirstPropertyValue";
 
-        ObjectStimulus objectStimulus = new ObjectStimulus();
-        objectStimulus.setObjectName(objectName);
-        objectStimulus.setCreator(new AID(creatorName, AID.ISGUID));
-        objectStimulus.setObjectProperties(new ArrayList());
-        objectStimulus.getObjectProperties().add(new ObjectProperty(propertyName, expectedFirstPropertyValue));
-        objectStimulus.getObjectProperties().add(new ObjectProperty(secondPropertyName, secondPropertyValue));
+        ObjectEnvironment objectEnvironment = new ObjectEnvironment();
+        objectEnvironment.setName(objectName);
+        objectEnvironment.setCreator(new AID(creatorName, AID.ISGUID));
+        objectEnvironment.setObjectProperties(new ArrayList());
+        objectEnvironment.getObjectProperties().add(new ObjectProperty(propertyName, expectedFirstPropertyValue));
+        objectEnvironment.getObjectProperties().add(new ObjectProperty(secondPropertyName, secondPropertyValue));
 
         UpdateObject updateObject = new UpdateObject();
-        updateObject.setObjectStimulus(objectStimulus);
+        updateObject.setObjectEnvironment(objectEnvironment);
 
         ContentElement contentElement = sendAction(updateObject);
         assertThat(contentElement, is(instanceOf(Done.class)));
@@ -255,14 +255,14 @@ public class DataPersistenceAgentFunctionalTest extends FunctionalTest {
 
         String expectedValue = "expectedValue";
 
-        ObjectStimulus objectStimulus = new ObjectStimulus();
-        objectStimulus.setObjectName(objectName);
-        objectStimulus.setCreator(new AID(creatorName, AID.ISGUID));
-        objectStimulus.setObjectProperties(new ArrayList());
-        objectStimulus.getObjectProperties().add(new ObjectProperty(propertyName, expectedValue));
+        ObjectEnvironment objectEnvironment = new ObjectEnvironment();
+        objectEnvironment.setName(objectName);
+        objectEnvironment.setCreator(new AID(creatorName, AID.ISGUID));
+        objectEnvironment.setObjectProperties(new ArrayList());
+        objectEnvironment.getObjectProperties().add(new ObjectProperty(propertyName, expectedValue));
 
         UpdateObject updateObject = new UpdateObject();
-        updateObject.setObjectStimulus(objectStimulus);
+        updateObject.setObjectEnvironment(objectEnvironment);
 
         ContentElement contentElement = sendAction(updateObject);
         assertThat(contentElement, is(instanceOf(Done.class)));

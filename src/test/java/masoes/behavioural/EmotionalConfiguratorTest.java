@@ -7,7 +7,6 @@
 package masoes.behavioural;
 
 import jade.core.AID;
-import jade.util.leap.ArrayList;
 import knowledge.Knowledge;
 import masoes.EmotionalAgent;
 import masoes.EmotionalAgentLogger;
@@ -19,15 +18,14 @@ import masoes.behavioural.emotion.HappinessEmotion;
 import masoes.behavioural.emotion.JoyEmotion;
 import masoes.behavioural.emotion.RejectionEmotion;
 import masoes.behavioural.emotion.SadnessEmotion;
-import ontology.masoes.ActionStimulus;
-import ontology.masoes.ObjectProperty;
-import ontology.masoes.ObjectStimulus;
+import ontology.masoes.data.ObjectProperty;
+import ontology.masoes.stimulus.ActionStimulus;
+import ontology.masoes.stimulus.ObjectStimulus;
 import org.junit.Before;
 import org.junit.Test;
 import test.PowerMockitoTest;
 
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -78,7 +76,7 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
     @Test
     public void shouldReturnSameEmotionAndStateWhenRuleObjectNotFound() {
         EmotionalState emotionalState = emotionalConfigurator.getEmotionalState();
-        ObjectStimulus stimulus = new ObjectStimulus(new AID(AGENT_NAME, AID.ISGUID), "no-object", new ArrayList());
+        ObjectStimulus stimulus = new ObjectStimulus(new AID(AGENT_NAME, AID.ISGUID), "no-object");
         emotionalConfigurator.updateEmotion(stimulus);
         assertThat(emotionalConfigurator.getEmotionalState(), is(emotionalState));
     }
@@ -203,9 +201,6 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
     private void testUpdateEmotionWithObject(String agentName, Class<? extends Emotion> expectedEmotion, ObjectProperty... objectProperties) {
         ObjectStimulus objectStimulus = new ObjectStimulus();
         objectStimulus.setCreator(new AID(agentName, AID.ISGUID));
-        ArrayList properties = new ArrayList();
-        properties.fromList(Arrays.asList(objectProperties));
-        objectStimulus.setObjectProperties(properties);
         emotionalConfigurator.updateEmotion(objectStimulus);
         assertThat(emotionalConfigurator.getEmotion(), is(instanceOf(expectedEmotion)));
         assertTrue(emotionalConfigurator.getEmotion().getGeometry().intersects(emotionalConfigurator.getEmotionalState().toPoint()));

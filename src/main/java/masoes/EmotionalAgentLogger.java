@@ -10,7 +10,7 @@ import jade.lang.acl.ACLMessage;
 import logger.LogWriter;
 import masoes.behavioural.BehaviourType;
 import masoes.behavioural.Emotion;
-import ontology.masoes.Stimulus;
+import ontology.masoes.stimulus.Stimulus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import translate.Translation;

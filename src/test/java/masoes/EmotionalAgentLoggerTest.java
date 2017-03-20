@@ -11,7 +11,7 @@ import jade.lang.acl.ACLMessage;
 import masoes.behavioural.BehaviourType;
 import masoes.behavioural.emotion.HappinessEmotion;
 import masoes.behavioural.emotion.SadnessEmotion;
-import ontology.masoes.ActionStimulus;
+import ontology.masoes.stimulus.ActionStimulus;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;

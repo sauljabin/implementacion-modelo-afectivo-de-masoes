@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package ontology.masoes;
+package ontology.masoes.data;
 
 import jade.content.Predicate;
 import jade.util.leap.List;

@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package ontology.masoes;
+package ontology.masoes.stimulus;
 
 import jade.content.AgentAction;
 import util.ToStringBuilder;

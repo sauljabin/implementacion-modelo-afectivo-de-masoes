@@ -4,19 +4,20 @@
  * Please see the LICENSE.txt file
  */
 
-package ontology.masoes;
+package ontology.masoes.notifier;
 
 import jade.content.AgentAction;
+import ontology.masoes.stimulus.ObjectStimulus;
 import util.ToStringBuilder;
 
-public class GetObject implements AgentAction {
+public class NotifyObject implements AgentAction {
 
     private ObjectStimulus objectStimulus;
 
-    public GetObject() {
+    public NotifyObject() {
     }
 
-    public GetObject(ObjectStimulus objectStimulus) {
+    public NotifyObject(ObjectStimulus objectStimulus) {
         this.objectStimulus = objectStimulus;
     }
 

@@ -40,7 +40,7 @@ public class MasoesOntologyTest {
 
     @Test
     public void shouldGetAllActions() {
-        assertThat(masoesOntology.getActionNames().toArray(), arrayContainingInAnyOrder("CreateObject", "DeleteObject", "EvaluateStimulus", "GetEmotionalState", "GetObject", "NotifyAction", "UpdateObject"));
+        assertThat(masoesOntology.getActionNames().toArray(), arrayContainingInAnyOrder("CreateObject", "DeleteObject", "EvaluateStimulus", "GetEmotionalState", "GetObject", "NotifyAction", "NotifyObject", "NotifyEvent", "UpdateObject"));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class MasoesOntologyTest {
         List<Object> concepts = new ArrayList<>(Arrays.asList(masoesOntology.getConceptNames().toArray()));
         List<Object> actions = Arrays.asList(masoesOntology.getActionNames().toArray());
         concepts.removeAll(actions);
-        assertThat(concepts, containsInAnyOrder("ActionStimulus", "BehaviourState", "EmotionState", "ObjectProperty", "ObjectStimulus", "Stimulus"));
+        assertThat(concepts, containsInAnyOrder("ActionStimulus", "BehaviourState", "EmotionState", "ObjectProperty", "ObjectStimulus", "EventStimulus", "Stimulus", "ObjectEnvironment"));
     }
 
 }

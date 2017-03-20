@@ -12,18 +12,16 @@ import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.lang.acl.MessageTemplate;
-import jade.util.leap.ArrayList;
 import masoes.behavioural.BehaviouralComponent;
 import masoes.behavioural.EmotionalState;
 import masoes.behavioural.emotion.HappinessEmotion;
 import ontology.OntologyMatchExpression;
-import ontology.masoes.ActionStimulus;
-import ontology.masoes.AgentState;
-import ontology.masoes.EvaluateStimulus;
-import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
-import ontology.masoes.ObjectProperty;
-import ontology.masoes.ObjectStimulus;
+import ontology.masoes.state.AgentState;
+import ontology.masoes.state.GetEmotionalState;
+import ontology.masoes.stimulus.ActionStimulus;
+import ontology.masoes.stimulus.EvaluateStimulus;
+import ontology.masoes.stimulus.ObjectStimulus;
 import org.junit.Before;
 import org.junit.Test;
 import test.PowerMockitoTest;
@@ -102,11 +100,6 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
         ObjectStimulus stimulus = new ObjectStimulus();
         stimulus.setObjectName("expectedActionName");
         stimulus.setCreator(new AID("expectedActorName", AID.ISGUID));
-
-        ArrayList objectProperties = new ArrayList();
-        objectProperties.add(new ObjectProperty("name", "value"));
-        objectProperties.add(new ObjectProperty("name2", "value2"));
-        stimulus.setObjectProperties(objectProperties);
         evaluateStimulus.setStimulus(stimulus);
 
         Action action = new Action();

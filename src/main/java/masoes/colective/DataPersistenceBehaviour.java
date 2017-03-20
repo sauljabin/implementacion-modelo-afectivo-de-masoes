@@ -19,14 +19,14 @@ import jade.util.leap.ArrayList;
 import jade.util.leap.List;
 import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
-import ontology.masoes.CreateObject;
-import ontology.masoes.DeleteObject;
-import ontology.masoes.GetObject;
-import ontology.masoes.ListObjects;
 import ontology.masoes.MasoesOntology;
-import ontology.masoes.ObjectProperty;
-import ontology.masoes.ObjectStimulus;
-import ontology.masoes.UpdateObject;
+import ontology.masoes.data.CreateObject;
+import ontology.masoes.data.DeleteObject;
+import ontology.masoes.data.GetObject;
+import ontology.masoes.data.ListObjects;
+import ontology.masoes.data.ObjectEnvironment;
+import ontology.masoes.data.ObjectProperty;
+import ontology.masoes.data.UpdateObject;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -85,12 +85,12 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
 
     private void createObject(CreateObject createObjectAction) throws FailureException {
         String newUUID = UUID.randomUUID().toString();
-        String creatorName = createObjectAction.getObjectStimulus().getCreator().getLocalName();
-        String objectName = createObjectAction.getObjectStimulus().getObjectName();
+        String creatorName = createObjectAction.getObjectEnvironment().getCreator().getLocalName();
+        String objectName = createObjectAction.getObjectEnvironment().getName();
 
         insertObject(newUUID, creatorName, objectName);
 
-        List properties = createObjectAction.getObjectStimulus().getObjectProperties();
+        List properties = createObjectAction.getObjectEnvironment().getObjectProperties();
 
         if (properties != null) {
             insertObjectProperties(newUUID, properties);
@@ -99,23 +99,23 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
     }
 
     private ListObjects retrieveObject(GetObject getObjectAction) throws FailureException {
-        ObjectStimulus objectStimulus = retrieveSingleObject(getObjectAction.getObjectStimulus().getObjectName(), getObjectAction.getObjectStimulus().getCreator().getLocalName());
+        ObjectEnvironment objectEnvironment = retrieveSingleObject(getObjectAction.getObjectEnvironment().getName(), getObjectAction.getObjectEnvironment().getCreator().getLocalName());
         ListObjects listObjects = new ListObjects();
         listObjects.setObjects(new ArrayList());
-        listObjects.getObjects().add(objectStimulus);
+        listObjects.getObjects().add(objectEnvironment);
         return listObjects;
     }
 
     private void updateObject(UpdateObject updateObjectAction) throws FailureException {
-        String uuid = getObjectUniqueIdentification(updateObjectAction.getObjectStimulus().getObjectName(), updateObjectAction.getObjectStimulus().getCreator().getLocalName());
+        String uuid = getObjectUniqueIdentification(updateObjectAction.getObjectEnvironment().getName(), updateObjectAction.getObjectEnvironment().getCreator().getLocalName());
         deleteProperties(uuid);
-        if (updateObjectAction.getObjectStimulus().getObjectProperties() != null) {
-            insertObjectProperties(uuid, updateObjectAction.getObjectStimulus().getObjectProperties());
+        if (updateObjectAction.getObjectEnvironment().getObjectProperties() != null) {
+            insertObjectProperties(uuid, updateObjectAction.getObjectEnvironment().getObjectProperties());
         }
     }
 
     private void deleteCompleteObject(DeleteObject deleteObjectAction) throws FailureException {
-        String objectUuid = getObjectUniqueIdentification(deleteObjectAction.getObjectStimulus().getObjectName(), deleteObjectAction.getObjectStimulus().getCreator().getLocalName());
+        String objectUuid = getObjectUniqueIdentification(deleteObjectAction.getObjectEnvironment().getName(), deleteObjectAction.getObjectEnvironment().getCreator().getLocalName());
         deleteProperties(objectUuid);
         deleteObjectOnly(objectUuid);
     }
@@ -139,13 +139,13 @@ public class DataPersistenceBehaviour extends OntologyResponderBehaviour {
         }
     }
 
-    private ObjectStimulus retrieveSingleObject(String objectName, String creatorName) throws FailureException {
+    private ObjectEnvironment retrieveSingleObject(String objectName, String creatorName) throws FailureException {
         String sqlQueryObject = String.format("SELECT name, creator_name, uuid FROM object " +
                 "WHERE object.name LIKE '%s' AND object.creator_name LIKE '%s';", objectName, creatorName);
         QueryResult queryResult = connection.query(sqlQueryObject);
         try {
             if (queryResult.next()) {
-                return new ObjectStimulus(myAgent.getAID(queryResult.getString("creator_name")),
+                return new ObjectEnvironment(myAgent.getAID(queryResult.getString("creator_name")),
                         queryResult.getString("name"),
                         getObjectPropertiesList(queryResult.getString("uuid")));
             } else {

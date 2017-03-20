@@ -14,15 +14,13 @@ import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
-import jade.util.leap.ArrayList;
-import ontology.masoes.ActionStimulus;
-import ontology.masoes.AgentState;
-import ontology.masoes.EvaluateStimulus;
-import ontology.masoes.GetEmotionalState;
 import ontology.masoes.MasoesOntology;
-import ontology.masoes.ObjectProperty;
-import ontology.masoes.ObjectStimulus;
-import ontology.masoes.Stimulus;
+import ontology.masoes.state.AgentState;
+import ontology.masoes.state.GetEmotionalState;
+import ontology.masoes.stimulus.ActionStimulus;
+import ontology.masoes.stimulus.EvaluateStimulus;
+import ontology.masoes.stimulus.ObjectStimulus;
+import ontology.masoes.stimulus.Stimulus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,15 +80,15 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
         testEvaluateActionStimulus(requestMessage, "wake", dummyAgentAID, "sadness", "COGNITIVE");
         testEvaluateActionStimulus(requestMessage, "pay", dummyAgentAID, "depression", "REACTIVE");
 
-        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "blue"), getAID(), "compassion", "IMITATIVE");
-        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "red"), getAID(), "admiration", "IMITATIVE");
-        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "white"), getAID(), "rejection", "COGNITIVE");
-        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "black"), getAID(), "anger", "REACTIVE");
+        testEvaluateObjectStimulus(requestMessage, getAID(), "compassion", "IMITATIVE");
+        testEvaluateObjectStimulus(requestMessage, getAID(), "admiration", "IMITATIVE");
+        testEvaluateObjectStimulus(requestMessage, getAID(), "rejection", "COGNITIVE");
+        testEvaluateObjectStimulus(requestMessage, getAID(), "anger", "REACTIVE");
 
-        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "blue"), dummyAgentAID, "happiness", "IMITATIVE");
-        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "red"), dummyAgentAID, "joy", "IMITATIVE");
-        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "white"), dummyAgentAID, "sadness", "COGNITIVE");
-        testEvaluateObjectStimulus(requestMessage, new ObjectProperty("color", "black"), dummyAgentAID, "depression", "REACTIVE");
+        testEvaluateObjectStimulus(requestMessage, dummyAgentAID, "happiness", "IMITATIVE");
+        testEvaluateObjectStimulus(requestMessage, dummyAgentAID, "joy", "IMITATIVE");
+        testEvaluateObjectStimulus(requestMessage, dummyAgentAID, "sadness", "COGNITIVE");
+        testEvaluateObjectStimulus(requestMessage, dummyAgentAID, "depression", "REACTIVE");
     }
 
     @Test
@@ -104,10 +102,8 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
         testGetStatus(requestMessage);
     }
 
-    private void testEvaluateObjectStimulus(ACLMessage requestMessage, ObjectProperty property, AID aid, String expectedEmotion, String behaviourType) throws Exception {
-        ArrayList properties = new ArrayList();
-        properties.add(property);
-        ObjectStimulus stimulus = new ObjectStimulus(aid, "car", properties);
+    private void testEvaluateObjectStimulus(ACLMessage requestMessage, AID aid, String expectedEmotion, String behaviourType) throws Exception {
+        ObjectStimulus stimulus = new ObjectStimulus(aid, "car");
         testEvaluateStimulus(requestMessage, expectedEmotion, behaviourType, stimulus);
     }
 
