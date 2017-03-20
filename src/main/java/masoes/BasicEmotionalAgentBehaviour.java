@@ -13,14 +13,14 @@ import jade.content.onto.basic.Done;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
 import masoes.behavioural.BehaviouralComponent;
-import ontology.OntologyMatchExpression;
-import ontology.OntologyResponderBehaviour;
+import masoes.ontology.MasoesOntology;
 import masoes.ontology.state.AgentState;
 import masoes.ontology.state.BehaviourState;
 import masoes.ontology.state.EmotionState;
-import masoes.ontology.stimulus.EvaluateStimulus;
 import masoes.ontology.state.GetEmotionalState;
-import masoes.ontology.MasoesOntology;
+import masoes.ontology.stimulus.EvaluateStimulus;
+import ontology.OntologyMatchExpression;
+import ontology.OntologyResponderBehaviour;
 
 import java.util.Arrays;
 

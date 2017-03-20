@@ -8,9 +8,9 @@ package agent.configurable;
 
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
+import agent.configurable.ontology.ConfigurableOntology;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import agent.configurable.ontology.ConfigurableOntology;
 import util.ServiceBuilder;
 
 public class ConfigurableAgent extends Agent {

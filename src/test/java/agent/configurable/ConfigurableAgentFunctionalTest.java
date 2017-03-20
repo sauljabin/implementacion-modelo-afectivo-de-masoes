@@ -6,12 +6,11 @@
 
 package agent.configurable;
 
-import agent.SimpleBehaviour;
-import agent.configurable.ConfigurableAgent;
+import agent.configurable.ontology.ConfigurableOntology;
+import behaviour.SimpleBehaviour;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
-import agent.configurable.ontology.ConfigurableOntology;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

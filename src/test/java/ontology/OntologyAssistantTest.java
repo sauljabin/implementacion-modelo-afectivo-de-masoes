@@ -16,12 +16,12 @@ import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import language.SemanticLanguage;
-import settings.ontology.GetAllSettings;
-import settings.ontology.SettingsOntology;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import settings.ontology.GetAllSettings;
+import settings.ontology.SettingsOntology;
 import test.PowerMockitoTest;
 import util.MessageBuilder;
 

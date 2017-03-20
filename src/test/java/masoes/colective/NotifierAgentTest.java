@@ -62,7 +62,7 @@ public class NotifierAgentTest extends PowerMockitoTest {
         assertThat(serviceGetSetting.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
         assertThat(serviceGetSetting.getAllOntologies().next(), is(MasoesOntology.NAME));
         assertThat(serviceGetSetting.getAllLanguages().next(), is(SemanticLanguage.NAME));
-        assertThat(serviceGetSetting.getName(), is(MasoesOntology.ACTION_NOTIFY_ACTION));
+        assertThat(serviceGetSetting.getName(), is(MasoesOntology.ACTION_NOTIFY_EVENT));
     }
 
     @Test

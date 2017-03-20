@@ -32,7 +32,7 @@ public class NotifierAgent extends Agent {
                     .fipaRequest()
                     .fipaSL()
                     .ontology(MasoesOntology.getInstance())
-                    .name(MasoesOntology.ACTION_NOTIFY_ACTION)
+                    .name(MasoesOntology.ACTION_NOTIFY_EVENT)
                     .build();
 
             agentManagementAssistant.register(serviceDescription);

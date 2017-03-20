@@ -10,10 +10,10 @@ import environment.Environment;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import masoes.behavioural.BehaviourType;
-import ontology.OntologyAssistant;
-import masoes.ontology.stimulus.ActionStimulus;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.notifier.NotifyAction;
+import masoes.ontology.stimulus.ActionStimulus;
+import ontology.OntologyAssistant;
 
 public abstract class EmotionalBehaviour extends Behaviour {
 

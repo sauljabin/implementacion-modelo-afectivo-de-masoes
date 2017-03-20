@@ -6,6 +6,10 @@
 
 package agent;
 
+import agent.configurable.ontology.AddBehaviour;
+import agent.configurable.ontology.ConfigurableOntology;
+import agent.configurable.ontology.RemoveBehaviour;
+import behaviour.SimpleBehaviour;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
 import jade.content.onto.Ontology;
@@ -34,9 +38,6 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.leap.ArrayList;
 import language.SemanticLanguage;
-import agent.configurable.ontology.AddBehaviour;
-import agent.configurable.ontology.ConfigurableOntology;
-import agent.configurable.ontology.RemoveBehaviour;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

@@ -8,12 +8,10 @@ package agent.configurable;
 
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
-import agent.configurable.ConfigurableAgent;
-import agent.configurable.ConfiguringAgentBehaviour;
+import agent.configurable.ontology.ConfigurableOntology;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPANames;
 import language.SemanticLanguage;
-import agent.configurable.ontology.ConfigurableOntology;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

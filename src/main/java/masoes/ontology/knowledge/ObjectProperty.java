@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.ontology.data;
+package masoes.ontology.knowledge;
 
 import jade.content.Concept;
 import util.ToStringBuilder;

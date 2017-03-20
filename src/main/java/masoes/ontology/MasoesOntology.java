@@ -22,7 +22,11 @@ public class MasoesOntology extends BeanOntology {
     public static final String NAME = "masoes";
     public static final String ACTION_GET_EMOTIONAL_STATE = "GetEmotionalState";
     public static final String ACTION_EVALUATE_STIMULUS = "EvaluateStimulus";
+
     public static final String ACTION_NOTIFY_ACTION = "NotifyAction";
+    public static final String ACTION_NOTIFY_EVENT = "NotifyEvent";
+    public static final String ACTION_NOTIFY_OBJECT = "NotifyObject";
+
     public static final String ACTION_CREATE_OBJECT = "CreateObject";
     public static final String ACTION_DELETE_OBJECT = "DeleteObject";
     public static final String ACTION_GET_OBJECT = "GetObject";

@@ -6,6 +6,9 @@
 
 package agent;
 
+import agent.configurable.ontology.AddBehaviour;
+import agent.configurable.ontology.ConfigurableOntology;
+import agent.configurable.ontology.RemoveBehaviour;
 import jade.content.AgentAction;
 import jade.content.ContentElement;
 import jade.content.onto.basic.Done;
@@ -30,9 +33,6 @@ import jade.domain.JADEAgentManagement.ShutdownPlatform;
 import jade.lang.acl.ACLMessage;
 import jade.util.leap.Iterator;
 import ontology.OntologyAssistant;
-import agent.configurable.ontology.AddBehaviour;
-import agent.configurable.ontology.ConfigurableOntology;
-import agent.configurable.ontology.RemoveBehaviour;
 import protocol.InvalidResponseException;
 import protocol.ProtocolAssistant;
 import util.StopWatch;

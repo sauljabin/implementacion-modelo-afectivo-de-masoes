@@ -4,19 +4,19 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.ontology.data;
+package masoes.ontology.knowledge;
 
 import jade.content.AgentAction;
 import util.ToStringBuilder;
 
-public class CreateObject implements AgentAction {
+public class GetObject implements AgentAction {
 
     private ObjectEnvironment objectEnvironment;
 
-    public CreateObject() {
+    public GetObject() {
     }
 
-    public CreateObject(ObjectEnvironment objectEnvironment) {
+    public GetObject(ObjectEnvironment objectEnvironment) {
         this.objectEnvironment = objectEnvironment;
     }
 

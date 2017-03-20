@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.ontology.data;
+package masoes.ontology.knowledge;
 
 import jade.core.AID;
 import jade.util.leap.List;

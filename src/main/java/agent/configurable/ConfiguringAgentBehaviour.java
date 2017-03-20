@@ -6,6 +6,9 @@
 
 package agent.configurable;
 
+import agent.configurable.ontology.AddBehaviour;
+import agent.configurable.ontology.ConfigurableOntology;
+import agent.configurable.ontology.RemoveBehaviour;
 import jade.content.Concept;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
@@ -16,9 +19,6 @@ import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
 import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
-import agent.configurable.ontology.AddBehaviour;
-import agent.configurable.ontology.ConfigurableOntology;
-import agent.configurable.ontology.RemoveBehaviour;
 
 import java.util.Arrays;
 import java.util.HashMap;

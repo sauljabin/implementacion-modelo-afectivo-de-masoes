@@ -16,13 +16,13 @@ import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import masoes.ontology.MasoesOntology;
+import masoes.ontology.notifier.NotifyAction;
+import masoes.ontology.stimulus.ActionStimulus;
+import masoes.ontology.stimulus.EvaluateStimulus;
 import ontology.OntologyAssistant;
 import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
-import masoes.ontology.stimulus.ActionStimulus;
-import masoes.ontology.stimulus.EvaluateStimulus;
-import masoes.ontology.MasoesOntology;
-import masoes.ontology.notifier.NotifyAction;
 import util.ServiceBuilder;
 
 import java.util.Arrays;

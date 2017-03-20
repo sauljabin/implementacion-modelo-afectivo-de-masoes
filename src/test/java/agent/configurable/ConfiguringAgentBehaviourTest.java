@@ -6,8 +6,10 @@
 
 package agent.configurable;
 
-import agent.SimpleBehaviour;
-import agent.configurable.ConfiguringAgentBehaviour;
+import agent.configurable.ontology.AddBehaviour;
+import agent.configurable.ontology.ConfigurableOntology;
+import agent.configurable.ontology.RemoveBehaviour;
+import behaviour.SimpleBehaviour;
 import jade.content.AgentAction;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
@@ -17,9 +19,6 @@ import jade.core.behaviours.Behaviour;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
 import ontology.OntologyMatchExpression;
-import agent.configurable.ontology.AddBehaviour;
-import agent.configurable.ontology.ConfigurableOntology;
-import agent.configurable.ontology.RemoveBehaviour;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

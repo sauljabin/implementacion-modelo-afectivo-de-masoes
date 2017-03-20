@@ -13,11 +13,11 @@ import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
-import ontology.OntologyAssistant;
-import masoes.ontology.stimulus.ActionStimulus;
-import masoes.ontology.stimulus.EvaluateStimulus;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.notifier.NotifyAction;
+import masoes.ontology.stimulus.ActionStimulus;
+import masoes.ontology.stimulus.EvaluateStimulus;
+import ontology.OntologyAssistant;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +52,7 @@ public class NotifierAgentFunctionalTest extends FunctionalTest {
     public void shouldGetAllServicesFromDF() {
         List<ServiceDescription> services = services(notifierAgent);
         List<String> results = services.stream().map(ServiceDescription::getName).collect(Collectors.toList());
-        assertThat(results, hasItems(MasoesOntology.ACTION_NOTIFY_ACTION));
+        assertThat(results, hasItems(MasoesOntology.ACTION_NOTIFY_EVENT));
     }
 
     @Test

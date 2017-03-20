@@ -18,7 +18,7 @@ import masoes.behavioural.emotion.HappinessEmotion;
 import masoes.behavioural.emotion.JoyEmotion;
 import masoes.behavioural.emotion.RejectionEmotion;
 import masoes.behavioural.emotion.SadnessEmotion;
-import masoes.ontology.data.ObjectProperty;
+import masoes.ontology.knowledge.ObjectProperty;
 import masoes.ontology.stimulus.ActionStimulus;
 import masoes.ontology.stimulus.ObjectStimulus;
 import org.junit.Before;
