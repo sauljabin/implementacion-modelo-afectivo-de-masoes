@@ -30,7 +30,7 @@ public class BehaviouralKnowledgeBase extends KnowledgeBase {
                 throw new KnowledgeException("No agent name, create in setup agent method");
             }
             addTheory(String.format("self('%s').", emotionalAgent.getLocalName()));
-            addTheory("other(X) :- not self(X).");
+            addTheory("other(AGENT) :- not self(AGENT).");
             addTheory("anyone(AGENT) :- self(AGENT).");
             addTheory("anyone(AGENT) :- other(AGENT).");
             addKnowledge(emotionalAgent.getKnowledge());
