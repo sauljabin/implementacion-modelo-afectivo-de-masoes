@@ -10,7 +10,7 @@ import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import ontology.masoes.MasoesOntology;
+import masoes.ontology.MasoesOntology;
 import util.ServiceBuilder;
 
 public class NotifierAgent extends Agent {

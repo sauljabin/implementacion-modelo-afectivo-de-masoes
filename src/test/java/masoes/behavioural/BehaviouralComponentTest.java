@@ -10,7 +10,7 @@ import knowledge.KnowledgeException;
 import masoes.EmotionalAgent;
 import masoes.EmotionalAgentLogger;
 import masoes.EmotionalBehaviour;
-import ontology.masoes.stimulus.ActionStimulus;
+import masoes.ontology.stimulus.ActionStimulus;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

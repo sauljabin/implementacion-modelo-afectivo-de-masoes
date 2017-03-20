@@ -11,7 +11,7 @@ import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import knowledge.Knowledge;
 import masoes.behavioural.BehaviouralComponent;
-import ontology.masoes.MasoesOntology;
+import masoes.ontology.MasoesOntology;
 import util.ServiceBuilder;
 import util.ToStringBuilder;
 

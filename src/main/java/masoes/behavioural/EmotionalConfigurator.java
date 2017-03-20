@@ -9,9 +9,9 @@ package masoes.behavioural;
 import alice.tuprolog.SolveInfo;
 import knowledge.KnowledgeException;
 import masoes.EmotionalAgent;
-import ontology.masoes.stimulus.ActionStimulus;
-import ontology.masoes.stimulus.ObjectStimulus;
-import ontology.masoes.stimulus.Stimulus;
+import masoes.ontology.stimulus.ActionStimulus;
+import masoes.ontology.stimulus.ObjectStimulus;
+import masoes.ontology.stimulus.Stimulus;
 import util.ToStringBuilder;
 
 import java.util.ArrayList;

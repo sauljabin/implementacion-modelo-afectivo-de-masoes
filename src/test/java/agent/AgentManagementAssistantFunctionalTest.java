@@ -6,6 +6,7 @@
 
 package agent;
 
+import agent.configurable.ConfigurableAgent;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;

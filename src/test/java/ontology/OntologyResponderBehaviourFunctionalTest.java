@@ -6,7 +6,7 @@
 
 package ontology;
 
-import agent.ConfigurableAgent;
+import agent.configurable.ConfigurableAgent;
 import jade.content.ContentElement;
 import jade.content.onto.basic.Done;
 import jade.core.AID;

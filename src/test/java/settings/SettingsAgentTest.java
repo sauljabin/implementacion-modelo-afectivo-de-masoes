@@ -11,7 +11,7 @@ import agent.AgentManagementAssistant;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPANames;
 import language.SemanticLanguage;
-import ontology.settings.SettingsOntology;
+import settings.ontology.SettingsOntology;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

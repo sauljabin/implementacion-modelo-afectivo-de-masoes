@@ -10,7 +10,7 @@ import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import ontology.settings.SettingsOntology;
+import settings.ontology.SettingsOntology;
 import util.ServiceBuilder;
 import util.ToStringBuilder;
 

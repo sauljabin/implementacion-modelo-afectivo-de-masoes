@@ -6,7 +6,7 @@
 
 package protocol;
 
-import agent.ConfigurableAgent;
+import agent.configurable.ConfigurableAgent;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import org.junit.After;

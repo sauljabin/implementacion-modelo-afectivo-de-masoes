@@ -17,11 +17,11 @@ import jade.util.leap.ArrayList;
 import masoes.MasoesSettings;
 import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
-import ontology.settings.GetAllSettings;
-import ontology.settings.GetSetting;
-import ontology.settings.Setting;
-import ontology.settings.SettingsOntology;
-import ontology.settings.SystemSettings;
+import settings.ontology.GetAllSettings;
+import settings.ontology.GetSetting;
+import settings.ontology.Setting;
+import settings.ontology.SettingsOntology;
+import settings.ontology.SystemSettings;
 
 import java.util.Arrays;
 

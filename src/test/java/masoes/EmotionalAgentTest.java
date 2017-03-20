@@ -11,7 +11,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPANames;
 import knowledge.Knowledge;
 import language.SemanticLanguage;
-import ontology.masoes.MasoesOntology;
+import masoes.ontology.MasoesOntology;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

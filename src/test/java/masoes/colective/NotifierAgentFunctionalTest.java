@@ -6,7 +6,7 @@
 
 package masoes.colective;
 
-import agent.ConfigurableAgent;
+import agent.configurable.ConfigurableAgent;
 import jade.content.ContentElement;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
@@ -14,10 +14,10 @@ import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import ontology.OntologyAssistant;
-import ontology.masoes.stimulus.ActionStimulus;
-import ontology.masoes.stimulus.EvaluateStimulus;
-import ontology.masoes.MasoesOntology;
-import ontology.masoes.notifier.NotifyAction;
+import masoes.ontology.stimulus.ActionStimulus;
+import masoes.ontology.stimulus.EvaluateStimulus;
+import masoes.ontology.MasoesOntology;
+import masoes.ontology.notifier.NotifyAction;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

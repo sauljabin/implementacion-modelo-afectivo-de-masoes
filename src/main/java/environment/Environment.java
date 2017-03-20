@@ -6,7 +6,7 @@
 
 package environment;
 
-import masoes.colective.DataPersistenceAgent;
+import masoes.colective.ColectiveKnowledgeBaseAgent;
 import masoes.colective.NotifierAgent;
 import settings.SettingsAgent;
 import util.ToStringBuilder;
@@ -39,7 +39,7 @@ public abstract class Environment {
 
         agentParameters.add(new AgentParameter(SETTINGS_AGENT, SettingsAgent.class));
         agentParameters.add(new AgentParameter(NOTIFIER_AGENT, NotifierAgent.class));
-        agentParameters.add(new AgentParameter(PERSISTENCE_AGENT, DataPersistenceAgent.class));
+        agentParameters.add(new AgentParameter(PERSISTENCE_AGENT, ColectiveKnowledgeBaseAgent.class));
 
         return agentParameters.stream().map(
                 agentParameter -> agentParameter.toJadeParameter()
