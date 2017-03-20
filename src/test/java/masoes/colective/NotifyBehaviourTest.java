@@ -17,7 +17,11 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.notifier.NotifyAction;
+import masoes.ontology.notifier.NotifyEvent;
+import masoes.ontology.notifier.NotifyObject;
 import masoes.ontology.stimulus.ActionStimulus;
+import masoes.ontology.stimulus.EventStimulus;
+import masoes.ontology.stimulus.ObjectStimulus;
 import ontology.OntologyAssistant;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
@@ -35,7 +39,6 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
@@ -44,7 +47,6 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class NotifyBehaviourTest extends PowerMockitoTest {
 
-    private static final String ACTION_NAME = "actionName";
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
     private Agent agentMock;
@@ -52,7 +54,6 @@ public class NotifyBehaviourTest extends PowerMockitoTest {
     private AgentManagementAssistant agentManagementAssistantMock;
     private ArgumentCaptor<ServiceDescription> serviceDescriptionArgumentCaptor;
     private ArgumentCaptor<ACLMessage> messageArgumentCaptor;
-    private Action action;
     private OntologyAssistant ontologyAssistant;
     private AID actorAID;
 
@@ -68,22 +69,45 @@ public class NotifyBehaviourTest extends PowerMockitoTest {
         setFieldValue(notifyBehaviour, "agentManagementAssistant", agentManagementAssistantMock);
         setFieldValue(notifyBehaviour, "ontologyAssistant", ontologyAssistant);
 
-        NotifyAction notifyAction = new NotifyAction();
         actorAID = new AID("actorName", AID.ISGUID);
-        notifyAction.setActionStimulus(new ActionStimulus(actorAID, ACTION_NAME));
-        action = new Action(new AID(), notifyAction);
 
         doReturn(new AID("agentName", AID.ISGUID)).when(agentMock).getAID();
     }
 
     @Test
-    public void shouldReturnValidAgentAction() {
+    public void shouldReturnValidNotifyAction() {
         Action action = new Action(new AID(), new NotifyAction());
         assertTrue(notifyBehaviour.isValidAction(action));
     }
 
     @Test
-    public void shouldSendStimulusToAllEmotionalAgents() throws FailureException {
+    public void shouldReturnValidNotifyEvent() {
+        Action action = new Action(new AID(), new NotifyEvent());
+        assertTrue(notifyBehaviour.isValidAction(action));
+    }
+
+    @Test
+    public void shouldReturnValidNotifyObject() {
+        Action action = new Action(new AID(), new NotifyObject());
+        assertTrue(notifyBehaviour.isValidAction(action));
+    }
+
+    @Test
+    public void shouldSendActionStimulusToAllEmotionalAgents() throws FailureException {
+        testNotification(new Action(new AID(), new NotifyAction(new ActionStimulus(actorAID, "action"))));
+    }
+
+    @Test
+    public void shouldSendObjectStimulusToAllEmotionalAgents() throws FailureException {
+        testNotification(new Action(new AID(), new NotifyObject(new ObjectStimulus(actorAID, "object"))));
+    }
+
+    @Test
+    public void shouldSendEventStimulusToAllEmotionalAgents() throws FailureException {
+        testNotification(new Action(new AID(), new NotifyEvent(new EventStimulus(actorAID, "event"))));
+    }
+
+    private void testNotification(Action action) throws FailureException {
         AID agentA = actorAID;
         AID agentB = new AID("agentB", AID.ISGUID);
         AID agentC = new AID("agentC", AID.ISGUID);
@@ -105,15 +129,6 @@ public class NotifyBehaviourTest extends PowerMockitoTest {
         assertThat(messageArgumentCaptor.getAllValues().get(0).getContent(), containsString("agentB"));
         assertThat(messageArgumentCaptor.getAllValues().get(1).getContent(), containsString("EvaluateStimulus"));
         assertThat(messageArgumentCaptor.getAllValues().get(1).getContent(), containsString("agentC"));
-    }
-
-    @Test
-    public void shouldThrowCorrectException() throws Exception {
-        String expectedMessage = "error";
-        expectedException.expectMessage(expectedMessage);
-        expectedException.expect(FailureException.class);
-        doThrow(new RuntimeException(expectedMessage)).when(agentManagementAssistantMock).search(any());
-        notifyBehaviour.performAction(action);
     }
 
 }

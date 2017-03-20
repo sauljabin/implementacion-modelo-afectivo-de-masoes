@@ -27,19 +27,24 @@ public class NotifierAgent extends Agent {
     protected void setup() {
         try {
             addBehaviour(new NotifyBehaviour(this));
-
-            ServiceDescription serviceDescription = new ServiceBuilder()
-                    .fipaRequest()
-                    .fipaSL()
-                    .ontology(MasoesOntology.getInstance())
-                    .name(MasoesOntology.ACTION_NOTIFY_EVENT)
-                    .build();
-
-            agentManagementAssistant.register(serviceDescription);
+            agentManagementAssistant.register(
+                    createServiceDescription(MasoesOntology.ACTION_NOTIFY_EVENT),
+                    createServiceDescription(MasoesOntology.ACTION_NOTIFY_ACTION),
+                    createServiceDescription(MasoesOntology.ACTION_NOTIFY_OBJECT)
+            );
         } catch (Exception e) {
             logger.exception(e);
             throw e;
         }
+    }
+
+    private ServiceDescription createServiceDescription(String action) {
+        return new ServiceBuilder()
+                .fipaRequest()
+                .fipaSL()
+                .ontology(MasoesOntology.getInstance())
+                .name(action)
+                .build();
     }
 
 }

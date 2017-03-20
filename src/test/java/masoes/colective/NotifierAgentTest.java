@@ -58,17 +58,23 @@ public class NotifierAgentTest extends PowerMockitoTest {
 
         verify(agentManagementAssistantMock).register(serviceDescriptionCaptor.capture());
 
-        ServiceDescription serviceGetSetting = serviceDescriptionCaptor.getAllValues().get(0);
+        testService(MasoesOntology.ACTION_NOTIFY_EVENT, 0);
+        testService(MasoesOntology.ACTION_NOTIFY_ACTION, 1);
+        testService(MasoesOntology.ACTION_NOTIFY_OBJECT, 2);
+    }
+
+    private void testService(String action, int index) {
+        ServiceDescription serviceGetSetting = serviceDescriptionCaptor.getAllValues().get(index);
         assertThat(serviceGetSetting.getAllProtocols().next(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
         assertThat(serviceGetSetting.getAllOntologies().next(), is(MasoesOntology.NAME));
         assertThat(serviceGetSetting.getAllLanguages().next(), is(SemanticLanguage.NAME));
-        assertThat(serviceGetSetting.getName(), is(MasoesOntology.ACTION_NOTIFY_EVENT));
+        assertThat(serviceGetSetting.getName(), is(action));
     }
 
     @Test
     public void shouldLogErrorWhenRegisterThrowsException() {
         RuntimeException expectedException = new RuntimeException("error");
-        doThrow(expectedException).when(agentManagementAssistantMock).register(any(ServiceDescription.class));
+        doThrow(expectedException).when(agentManagementAssistantMock).register(any(ServiceDescription.class), any(ServiceDescription.class), any(ServiceDescription.class));
         try {
             notifierAgentSpy.setup();
         } catch (Exception e) {
