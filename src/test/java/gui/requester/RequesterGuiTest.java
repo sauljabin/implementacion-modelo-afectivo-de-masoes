@@ -209,8 +209,40 @@ public class RequesterGuiTest {
     }
 
     @Test
+    public void shouldAddCreatorAndObjectWhenActionIsEvaluateObjectStimulus() {
+        requesterGuiSpy.setEvaluateObjectStimulusComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
+    }
+
+    @Test
+    public void shouldAddAffectedAndEventWhenActionIsEvaluateEventStimulus() {
+        requesterGuiSpy.setEvaluateEventStimulusComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
+    }
+
+    @Test
     public void shouldAddActorAndActionWhenActionIsNotifyAction() {
         requesterGuiSpy.setNotifyActionComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
+    }
+
+    @Test
+    public void shouldAddCreatorAndObjectWhenActionIsNotifyObject() {
+        requesterGuiSpy.setNotifyObjectComponents();
+        testDynamicContentRepaint();
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
+        verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
+    }
+
+    @Test
+    public void shouldAddAffectedAndEventWhenActionIsNotifyEvent() {
+        requesterGuiSpy.setNotifyEventComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
@@ -255,8 +287,8 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldAddActorAndActionAndPropertiesWhenActionIsEvaluateObjectStimulus() {
-        requesterGuiSpy.setEvaluateObjectStimulusComponents();
+    public void shouldAddCreatorAndObjectAndPropertiesWhenActionIsCreateObject() {
+        requesterGuiSpy.setCreateObjectComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock, times(3)).add(isA(JLabel.class), anyString());
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
@@ -264,8 +296,8 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldAddCreatorAndObjectAndPropertiesWhenActionIsCreateObjectStimulus() {
-        requesterGuiSpy.setCreateObjectStimulusComponents();
+    public void shouldAddCreatorAndObjectAndPropertiesWhenActionIsUpdateObject() {
+        requesterGuiSpy.setUpdateObjectComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock, times(3)).add(isA(JLabel.class), anyString());
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
@@ -273,25 +305,16 @@ public class RequesterGuiTest {
     }
 
     @Test
-    public void shouldAddCreatorAndObjectAndPropertiesWhenActionIsUpdateObjectStimulus() {
-        requesterGuiSpy.setUpdateObjectStimulusComponents();
-        testDynamicContentRepaint();
-        verify(dynamicCanvasPanelMock, times(3)).add(isA(JLabel.class), anyString());
-        verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
-        verify(dynamicCanvasPanelMock).add(isA(JScrollPane.class), anyString());
-    }
-
-    @Test
-    public void shouldAddCreatorAndObjectWhenActionIsDeleteObjectStimulus() {
-        requesterGuiSpy.setDeleteObjectStimulusComponents();
+    public void shouldAddCreatorAndObjectWhenActionIsDeleteObject() {
+        requesterGuiSpy.setDeleteObjectComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());
     }
 
     @Test
-    public void shouldAddCreatorAndObjectWhenActionIsGetObjectStimulus() {
-        requesterGuiSpy.setGetObjectStimulusComponents();
+    public void shouldAddCreatorAndObjectWhenActionIsGetObject() {
+        requesterGuiSpy.setGetObjectComponents();
         testDynamicContentRepaint();
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JLabel.class), anyString());
         verify(dynamicCanvasPanelMock, times(2)).add(isA(JTextField.class), anyString());

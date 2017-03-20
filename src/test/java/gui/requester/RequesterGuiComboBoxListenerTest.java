@@ -69,6 +69,12 @@ public class RequesterGuiComboBoxListenerTest {
     }
 
     @Test
+    public void shouldInvokeEvaluateEventStimulus() {
+        prepareTest(RequesterGuiAction.EVALUATE_EVENT_STIMULUS);
+        verify(requesterGuiMock).setEvaluateEventStimulusComponents();
+    }
+
+    @Test
     public void shouldInvokeSimpleContent() {
         prepareTest(RequesterGuiAction.SEND_SIMPLE_CONTENT);
         verify(requesterGuiMock).setSimpleContentActionComponents();
@@ -78,6 +84,18 @@ public class RequesterGuiComboBoxListenerTest {
     public void shouldInvokeNotifyAction() {
         prepareTest(RequesterGuiAction.NOTIFY_ACTION);
         verify(requesterGuiMock).setNotifyActionComponents();
+    }
+
+    @Test
+    public void shouldInvokeNotifyEvent() {
+        prepareTest(RequesterGuiAction.NOTIFY_EVENT);
+        verify(requesterGuiMock).setNotifyEventComponents();
+    }
+
+    @Test
+    public void shouldInvokeNotifyObject() {
+        prepareTest(RequesterGuiAction.NOTIFY_OBJECT);
+        verify(requesterGuiMock).setNotifyObjectComponents();
     }
 
     @Test
@@ -113,25 +131,25 @@ public class RequesterGuiComboBoxListenerTest {
     @Test
     public void shouldInvokeCreateObject() {
         prepareTest(RequesterGuiAction.CREATE_OBJECT);
-        verify(requesterGuiMock).setCreateObjectStimulusComponents();
+        verify(requesterGuiMock).setCreateObjectComponents();
     }
 
     @Test
     public void shouldInvokeUpdateObject() {
         prepareTest(RequesterGuiAction.UPDATE_OBJECT);
-        verify(requesterGuiMock).setUpdateObjectStimulusComponents();
+        verify(requesterGuiMock).setUpdateObjectComponents();
     }
 
     @Test
     public void shouldInvokeDeleteObject() {
         prepareTest(RequesterGuiAction.DELETE_OBJECT);
-        verify(requesterGuiMock).setDeleteObjectStimulusComponents();
+        verify(requesterGuiMock).setDeleteObjectComponents();
     }
 
     @Test
     public void shouldInvokeGetObject() {
         prepareTest(RequesterGuiAction.GET_OBJECT);
-        verify(requesterGuiMock).setGetObjectStimulusComponents();
+        verify(requesterGuiMock).setGetObjectComponents();
     }
 
     private void prepareTest(RequesterGuiAction action) {

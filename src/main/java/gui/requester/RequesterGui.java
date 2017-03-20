@@ -49,6 +49,8 @@ public class RequesterGui extends JFrame {
     private JTextField serviceNameTextField;
     private JTextField creatorNameTextField;
     private JTextField objectNameTextField;
+    private JTextField affectedNameTextField;
+    private JTextField eventNameTextField;
 
     private List<Color> colors;
     private Iterator<Color> colorIterator;
@@ -313,17 +315,20 @@ public class RequesterGui extends JFrame {
             dynamicCanvasPanel.add(objectNameTitleLabel, LABEL_W);
             objectNameTextField = new JTextField();
             dynamicCanvasPanel.add(objectNameTextField, FIELD_W);
+        });
+    }
 
-            JLabel propertiesTitleLabel = new JLabel(translation.get("gui.properties"));
-            dynamicCanvasPanel.add(propertiesTitleLabel, LABEL_W);
-            propertiesTextArea = new JTextArea();
+    public void setEvaluateEventStimulusComponents() {
+        refreshDynamicCanvas(() -> {
+            JLabel actorTitleLabel = new JLabel(translation.get("gui.affected"));
+            dynamicCanvasPanel.add(actorTitleLabel, LABEL_W);
+            affectedNameTextField = new JTextField();
+            dynamicCanvasPanel.add(affectedNameTextField, FIELD_W);
 
-            DefaultCaret caret = (DefaultCaret) propertiesTextArea.getCaret();
-            caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-
-            JScrollPane propertiesTextScrollPane = new JScrollPane(propertiesTextArea);
-
-            dynamicCanvasPanel.add(propertiesTextScrollPane, "h 80, " + FIELD_W);
+            JLabel actionNameTitleLabel = new JLabel(translation.get("gui.event"));
+            dynamicCanvasPanel.add(actionNameTitleLabel, LABEL_W);
+            eventNameTextField = new JTextField();
+            dynamicCanvasPanel.add(eventNameTextField, FIELD_W);
         });
     }
 
@@ -361,6 +366,14 @@ public class RequesterGui extends JFrame {
 
     public void setNotifyActionComponents() {
         setEvaluateActionStimulusComponents();
+    }
+
+    public void setNotifyObjectComponents() {
+        setEvaluateObjectStimulusComponents();
+    }
+
+    public void setNotifyEventComponents() {
+        setEvaluateEventStimulusComponents();
     }
 
     public void setGetServicesActionComponents() {
@@ -404,15 +417,7 @@ public class RequesterGui extends JFrame {
         });
     }
 
-    public void setCreateObjectStimulusComponents() {
-        setEvaluateObjectStimulusComponents();
-    }
-
-    public void setUpdateObjectStimulusComponents() {
-        setEvaluateObjectStimulusComponents();
-    }
-
-    public void setDeleteObjectStimulusComponents() {
+    public void setCreateObjectComponents() {
         refreshDynamicCanvas(() -> {
             JLabel creatorTitleLabel = new JLabel(translation.get("gui.creator"));
             dynamicCanvasPanel.add(creatorTitleLabel, LABEL_W);
@@ -423,11 +428,30 @@ public class RequesterGui extends JFrame {
             dynamicCanvasPanel.add(objectNameTitleLabel, LABEL_W);
             objectNameTextField = new JTextField();
             dynamicCanvasPanel.add(objectNameTextField, FIELD_W);
+
+            JLabel propertiesTitleLabel = new JLabel(translation.get("gui.properties"));
+            dynamicCanvasPanel.add(propertiesTitleLabel, LABEL_W);
+            propertiesTextArea = new JTextArea();
+
+            DefaultCaret caret = (DefaultCaret) propertiesTextArea.getCaret();
+            caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
+            JScrollPane propertiesTextScrollPane = new JScrollPane(propertiesTextArea);
+
+            dynamicCanvasPanel.add(propertiesTextScrollPane, "h 80, " + FIELD_W);
         });
     }
 
-    public void setGetObjectStimulusComponents() {
-        setDeleteObjectStimulusComponents();
+    public void setUpdateObjectComponents() {
+        setCreateObjectComponents();
+    }
+
+    public void setDeleteObjectComponents() {
+        setEvaluateObjectStimulusComponents();
+    }
+
+    public void setGetObjectComponents() {
+        setDeleteObjectComponents();
     }
 
     public void refreshDynamicCanvas(Runnable runnable) {

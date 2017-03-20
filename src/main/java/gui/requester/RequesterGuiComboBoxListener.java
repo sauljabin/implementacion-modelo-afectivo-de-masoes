@@ -45,11 +45,20 @@ public class RequesterGuiComboBoxListener implements ActionListener {
             case EVALUATE_OBJECT_STIMULUS:
                 requesterGui.setEvaluateObjectStimulusComponents();
                 break;
+            case EVALUATE_EVENT_STIMULUS:
+                requesterGui.setEvaluateEventStimulusComponents();
+                break;
             case SEND_SIMPLE_CONTENT:
                 requesterGui.setSimpleContentActionComponents();
                 break;
             case NOTIFY_ACTION:
                 requesterGui.setNotifyActionComponents();
+                break;
+            case NOTIFY_EVENT:
+                requesterGui.setNotifyEventComponents();
+                break;
+            case NOTIFY_OBJECT:
+                requesterGui.setNotifyObjectComponents();
                 break;
             case GET_SERVICES:
                 requesterGui.setGetServicesActionComponents();
@@ -67,16 +76,16 @@ public class RequesterGuiComboBoxListener implements ActionListener {
                 requesterGui.setRegisterAgentActionComponents();
                 break;
             case CREATE_OBJECT:
-                requesterGui.setCreateObjectStimulusComponents();
+                requesterGui.setCreateObjectComponents();
                 break;
             case UPDATE_OBJECT:
-                requesterGui.setUpdateObjectStimulusComponents();
+                requesterGui.setUpdateObjectComponents();
                 break;
             case DELETE_OBJECT:
-                requesterGui.setDeleteObjectStimulusComponents();
+                requesterGui.setDeleteObjectComponents();
                 break;
             case GET_OBJECT:
-                requesterGui.setGetObjectStimulusComponents();
+                requesterGui.setGetObjectComponents();
                 break;
         }
 
