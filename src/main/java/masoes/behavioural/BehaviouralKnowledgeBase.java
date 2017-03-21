@@ -8,7 +8,7 @@ package masoes.behavioural;
 
 import knowledge.KnowledgeBase;
 import knowledge.KnowledgeException;
-import masoes.EmotionalAgent;
+import masoes.agent.EmotionalAgent;
 import util.ToStringBuilder;
 
 import java.nio.file.Paths;

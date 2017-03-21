@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes;
+package masoes.agent;
 
 import agent.AgentManagementAssistant;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -58,7 +58,7 @@ public class EmotionalAgentTest extends PowerMockitoTest {
     public void shouldAddBasicBehaviors() {
         emotionalAgentSpy.setup();
         InOrder inOrder = inOrder(emotionalAgentSpy);
-        inOrder.verify(emotionalAgentSpy).addBehaviour(isA(BasicEmotionalAgentBehaviour.class));
+        inOrder.verify(emotionalAgentSpy).addBehaviour(isA(EmotionalAgentBehaviour.class));
         inOrder.verify(emotionalAgentSpy).setUp();
     }
 
@@ -109,21 +109,6 @@ public class EmotionalAgentTest extends PowerMockitoTest {
 
             @Override
             public Knowledge getKnowledge() {
-                return null;
-            }
-
-            @Override
-            public ImitativeBehaviour getImitativeBehaviour() {
-                return null;
-            }
-
-            @Override
-            public ReactiveBehaviour getReactiveBehaviour() {
-                return null;
-            }
-
-            @Override
-            public CognitiveBehaviour getCognitiveBehaviour() {
                 return null;
             }
         };

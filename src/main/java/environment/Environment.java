@@ -6,8 +6,8 @@
 
 package environment;
 
-import masoes.colective.ColectiveKnowledgeBaseAgent;
-import masoes.colective.NotifierAgent;
+import masoes.agent.ColectiveKnowledgeBaseAgent;
+import masoes.agent.NotifierAgent;
 import settings.SettingsAgent;
 import util.ToStringBuilder;
 

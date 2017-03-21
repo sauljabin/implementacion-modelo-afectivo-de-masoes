@@ -6,13 +6,8 @@
 
 package masoes.behavioural;
 
-import jade.core.behaviours.Behaviour;
 import knowledge.Knowledge;
-import masoes.CognitiveBehaviour;
-import masoes.EmotionalAgent;
-import masoes.EmotionalBehaviour;
-import masoes.ImitativeBehaviour;
-import masoes.ReactiveBehaviour;
+import masoes.agent.EmotionalAgent;
 import masoes.behavioural.emotion.AdmirationEmotion;
 import masoes.behavioural.emotion.AngerEmotion;
 import masoes.behavioural.emotion.CompassionEmotion;
@@ -29,10 +24,6 @@ import java.nio.file.Paths;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.doNothing;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static test.ReflectionTestUtils.setFieldValue;
@@ -44,17 +35,11 @@ public class BehaviourManagerTest extends PowerMockitoTest {
     private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
     private BehaviourManager behaviourManager;
     private EmotionalAgent agentMock;
-    private ImitativeBehaviour imitativeBehaviourMock;
-    private ReactiveBehaviour reactiveBehaviourMock;
-    private CognitiveBehaviour cognitiveBehaviourMock;
-    private EmotionalBehaviour currentBehaviourMock;
     private EmotionalConfigurator emotionalConfiguratorMock;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         agentMock = mock(EmotionalAgent.class);
-        doNothing().when(agentMock).addBehaviour(any());
-        doNothing().when(agentMock).removeBehaviour(any());
         doReturn(new Knowledge(Paths.get(AGENT_KNOWLEDGE_PATH))).when(agentMock).getKnowledge();
         doReturn(AGENT_NAME).when(agentMock).getLocalName();
 
@@ -62,89 +47,64 @@ public class BehaviourManagerTest extends PowerMockitoTest {
         emotionalConfiguratorMock = mock(EmotionalConfigurator.class);
         doReturn(new HappinessEmotion()).when(emotionalConfiguratorMock).getEmotion();
 
-        behaviourManager = new BehaviourManager(agentMock, emotionalConfiguratorMock, behaviouralKnowledgeBase);
-
-        imitativeBehaviourMock = mock(ImitativeBehaviour.class);
-        doReturn(imitativeBehaviourMock).when(agentMock).getImitativeBehaviour();
-
-        reactiveBehaviourMock = mock(ReactiveBehaviour.class);
-        doReturn(reactiveBehaviourMock).when(agentMock).getReactiveBehaviour();
-
-        cognitiveBehaviourMock = mock(CognitiveBehaviour.class);
-        doReturn(cognitiveBehaviourMock).when(agentMock).getCognitiveBehaviour();
-
-        currentBehaviourMock = mock(EmotionalBehaviour.class);
-        setFieldValue(behaviourManager, "behaviour", currentBehaviourMock);
+        behaviourManager = new BehaviourManager(emotionalConfiguratorMock, behaviouralKnowledgeBase);
     }
 
     @Test
     public void shouldUpdateCorrectlyTheBehaviourWithHappinessEmotion() {
-        testUpdateBehaviour(new HappinessEmotion(), imitativeBehaviourMock);
+        testUpdateBehaviour(new HappinessEmotion(), BehaviourType.IMITATIVE);
     }
 
     @Test
     public void shouldUpdateCorrectlyTheBehaviourWithCompassionEmotion() {
-        testUpdateBehaviour(new CompassionEmotion(), imitativeBehaviourMock);
+        testUpdateBehaviour(new CompassionEmotion(), BehaviourType.IMITATIVE);
     }
 
     @Test
     public void shouldUpdateCorrectlyTheBehaviourWithJoyEmotion() {
-        testUpdateBehaviour(new JoyEmotion(), imitativeBehaviourMock);
+        testUpdateBehaviour(new JoyEmotion(), BehaviourType.IMITATIVE);
     }
 
     @Test
     public void shouldUpdateCorrectlyTheBehaviourWithAdmirationEmotion() {
-        testUpdateBehaviour(new AdmirationEmotion(), imitativeBehaviourMock);
+        testUpdateBehaviour(new AdmirationEmotion(), BehaviourType.IMITATIVE);
     }
 
     @Test
     public void shouldUpdateCorrectlyTheBehaviourWithRejectionEmotion() {
-        testUpdateBehaviour(new RejectionEmotion(), cognitiveBehaviourMock);
+        testUpdateBehaviour(new RejectionEmotion(), BehaviourType.COGNITIVE);
     }
 
     @Test
     public void shouldUpdateCorrectlyTheBehaviourWithSadnessEmotion() {
-        testUpdateBehaviour(new SadnessEmotion(), cognitiveBehaviourMock);
+        testUpdateBehaviour(new SadnessEmotion(), BehaviourType.COGNITIVE);
     }
 
     @Test
     public void shouldUpdateCorrectlyTheBehaviourWithDepressionEmotion() {
-        testUpdateBehaviour(new DepressionEmotion(), reactiveBehaviourMock);
+        testUpdateBehaviour(new DepressionEmotion(), BehaviourType.REACTIVE);
     }
 
     @Test
     public void shouldUpdateCorrectlyTheBehaviourWithAngerEmotion() {
-        testUpdateBehaviour(new AngerEmotion(), reactiveBehaviourMock);
+        testUpdateBehaviour(new AngerEmotion(), BehaviourType.REACTIVE);
+    }
+
+    private void testUpdateBehaviour(Emotion emotion, BehaviourType behaviourType) {
+        doReturn(emotion).when(emotionalConfiguratorMock).getEmotion();
+        behaviourManager.updateBehaviour();
+        assertThat(behaviourManager.getBehaviourType(), is(behaviourType));
     }
 
     @Test
-    public void shouldUpdateBehaviourWithUpperEmotionName() {
+    public void shouldUpdateBehaviourWithUpperEmotionName() throws Exception {
+        setFieldValue(behaviourManager, "behaviourType", BehaviourType.REACTIVE);
         behaviouralKnowledgeBase.addTheory("emotionType('TEST', positive).");
         Emotion emotionMock = mock(Emotion.class);
-        doReturn(BehaviourType.REACTIVE).when(currentBehaviourMock).getType();
         doReturn("TEST").when(emotionMock).getName();
         doReturn(emotionMock).when(emotionalConfiguratorMock).getEmotion();
         behaviourManager.updateBehaviour();
-        assertThat(behaviourManager.getBehaviour(), is(imitativeBehaviourMock));
-    }
-
-    @Test
-    public void shouldReturnSameBehaviourWhenTypeNotChange() {
-        HappinessEmotion emotion = new HappinessEmotion();
-        doReturn(BehaviourType.IMITATIVE).when(currentBehaviourMock).getType();
-        doReturn(emotion).when(emotionalConfiguratorMock).getEmotion();
-        behaviourManager.updateBehaviour();
-        assertThat(behaviourManager.getBehaviour(), is(currentBehaviourMock));
-        verify(agentMock, never()).addBehaviour(imitativeBehaviourMock);
-        verify(agentMock, never()).removeBehaviour(currentBehaviourMock);
-    }
-
-    private void testUpdateBehaviour(Emotion emotion, Behaviour expectedBehaviour) {
-        doReturn(emotion).when(emotionalConfiguratorMock).getEmotion();
-        behaviourManager.updateBehaviour();
-        assertThat(behaviourManager.getBehaviour(), is(expectedBehaviour));
-        verify(agentMock).addBehaviour(expectedBehaviour);
-        verify(agentMock).removeBehaviour(currentBehaviourMock);
+        assertThat(behaviourManager.getBehaviourType(), is(BehaviourType.IMITATIVE));
     }
 
 }

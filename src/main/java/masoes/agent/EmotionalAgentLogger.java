@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes;
+package masoes.agent;
 
 import jade.lang.acl.ACLMessage;
 import logger.LogWriter;

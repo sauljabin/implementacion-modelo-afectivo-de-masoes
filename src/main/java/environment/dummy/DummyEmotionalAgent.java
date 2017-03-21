@@ -7,10 +7,7 @@
 package environment.dummy;
 
 import knowledge.Knowledge;
-import masoes.CognitiveBehaviour;
-import masoes.EmotionalAgent;
-import masoes.ImitativeBehaviour;
-import masoes.ReactiveBehaviour;
+import masoes.agent.EmotionalAgent;
 import masoes.behavioural.EmotionalState;
 import util.StringValidator;
 
@@ -19,9 +16,7 @@ import java.nio.file.Paths;
 public class DummyEmotionalAgent extends EmotionalAgent {
 
     private static final String THEORY = "theories/behavioural/dummy/dummyEmotionalAgent.prolog";
-    private DummyReactiveBehaviour dummyReactiveBehaviour;
-    private DummyImitativeBehaviour dummyImitativeBehaviour;
-    private DummyCognitiveBehaviour dummyCognitiveBehaviour;
+
 
     @Override
     public void setUp() {
@@ -32,9 +27,6 @@ public class DummyEmotionalAgent extends EmotionalAgent {
             EmotionalState emotionalState = new EmotionalState(activation, satisfaction);
             getBehaviouralComponent().setEmotionalState(emotionalState);
         }
-        dummyImitativeBehaviour = new DummyImitativeBehaviour();
-        dummyReactiveBehaviour = new DummyReactiveBehaviour();
-        dummyCognitiveBehaviour = new DummyCognitiveBehaviour();
     }
 
     private boolean argsAreReal() {
@@ -48,21 +40,6 @@ public class DummyEmotionalAgent extends EmotionalAgent {
     @Override
     public Knowledge getKnowledge() {
         return new Knowledge(Paths.get(THEORY));
-    }
-
-    @Override
-    public ImitativeBehaviour getImitativeBehaviour() {
-        return dummyImitativeBehaviour;
-    }
-
-    @Override
-    public ReactiveBehaviour getReactiveBehaviour() {
-        return dummyReactiveBehaviour;
-    }
-
-    @Override
-    public CognitiveBehaviour getCognitiveBehaviour() {
-        return dummyCognitiveBehaviour;
     }
 
 }

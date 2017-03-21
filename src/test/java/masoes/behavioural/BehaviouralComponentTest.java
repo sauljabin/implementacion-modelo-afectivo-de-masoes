@@ -7,8 +7,7 @@
 package masoes.behavioural;
 
 import knowledge.KnowledgeException;
-import masoes.EmotionalAgent;
-import masoes.EmotionalBehaviour;
+import masoes.agent.EmotionalAgent;
 import masoes.ontology.stimulus.ActionStimulus;
 import org.junit.Rule;
 import org.junit.Test;
@@ -46,8 +45,7 @@ public class BehaviouralComponentTest extends PowerMockitoTest {
         BehaviourManager behaviourManagerMock = mock(BehaviourManager.class);
         setFieldValue(behaviouralComponent, "behaviourManager", behaviourManagerMock);
 
-        EmotionalBehaviour emotionalBehaviourMock = mock(EmotionalBehaviour.class);
-        doReturn(emotionalBehaviourMock).when(behaviourManagerMock).getBehaviour();
+        doReturn(BehaviourType.IMITATIVE).when(behaviourManagerMock).getBehaviourType();
 
         EmotionalConfigurator emotionalConfiguratorMock = mock(EmotionalConfigurator.class);
         setFieldValue(behaviouralComponent, "emotionalConfigurator", emotionalConfiguratorMock);
@@ -65,7 +63,7 @@ public class BehaviouralComponentTest extends PowerMockitoTest {
         verify(behaviourManagerMock).updateBehaviour();
 
         assertThat(behaviouralComponent.getCurrentEmotion(), is(emotionMock));
-        assertThat(behaviouralComponent.getCurrentEmotionalBehaviour(), is(emotionalBehaviourMock));
+        assertThat(behaviouralComponent.getCurrentBehaviourType(), is(BehaviourType.IMITATIVE));
         assertThat(behaviouralComponent.getCurrentEmotionalState(), is(emotionalStateMock));
     }
 

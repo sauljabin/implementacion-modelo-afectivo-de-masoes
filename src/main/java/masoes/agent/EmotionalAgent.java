@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes;
+package masoes.agent;
 
 import agent.AgentManagementAssistant;
 import jade.core.Agent;
@@ -30,7 +30,7 @@ public abstract class EmotionalAgent extends Agent {
     protected final void setup() {
         try {
             behaviouralComponent = new BehaviouralComponent(this);
-            addBehaviour(new BasicEmotionalAgentBehaviour(this));
+            addBehaviour(new EmotionalAgentBehaviour(this));
 
             setUp();
 
@@ -68,11 +68,5 @@ public abstract class EmotionalAgent extends Agent {
     public abstract void setUp();
 
     public abstract Knowledge getKnowledge();
-
-    public abstract ImitativeBehaviour getImitativeBehaviour();
-
-    public abstract ReactiveBehaviour getReactiveBehaviour();
-
-    public abstract CognitiveBehaviour getCognitiveBehaviour();
 
 }

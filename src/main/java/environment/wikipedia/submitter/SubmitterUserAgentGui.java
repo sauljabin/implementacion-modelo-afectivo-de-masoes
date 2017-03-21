@@ -7,7 +7,6 @@
 package environment.wikipedia.submitter;
 
 import gui.component.EmotionalSpaceChart;
-import masoes.EmotionalBehaviour;
 import masoes.behavioural.BehaviourType;
 import masoes.behavioural.Emotion;
 import masoes.behavioural.EmotionType;
@@ -22,9 +21,6 @@ public class SubmitterUserAgentGui extends JFrame {
 
     private static final String INSETS_10 = "insets 10";
     private static final String FIELD_W = "grow, wrap 15";
-    private static final Color ORANGE_COLOR = new Color(255, 110, 40);
-    private static final Color GREEN_COLOR = new Color(62, 200, 100);
-    private static final Color BLUE_COLOR = new Color(42, 117, 200);
     private EmotionalSpaceChart emotionalSpaceChart;
     private JLabel agentNameLabel;
     private JLabel emotionNameLabel;
@@ -135,31 +131,11 @@ public class SubmitterUserAgentGui extends JFrame {
 
         emotionTypeNameLabel.setText(typeName);
         emotionNameLabel.setText(name);
-
-        if (type.equals(EmotionType.NEGATIVE_HIGH)) {
-            emotionTypeNameLabel.setForeground(ORANGE_COLOR);
-            emotionNameLabel.setForeground(ORANGE_COLOR);
-        } else if (type.equals(EmotionType.NEGATIVE_LOW)) {
-            emotionTypeNameLabel.setForeground(BLUE_COLOR);
-            emotionNameLabel.setForeground(BLUE_COLOR);
-        } else if (type.equals(EmotionType.POSITIVE)) {
-            emotionTypeNameLabel.setForeground(GREEN_COLOR);
-            emotionNameLabel.setForeground(GREEN_COLOR);
-        }
     }
 
-    public void setBehaviour(EmotionalBehaviour behaviour) {
-        BehaviourType type = behaviour.getType();
+    public void setBehaviour(BehaviourType type) {
         String typeName = translation.get(type.toString().toLowerCase());
         behaviourNameLabel.setText(typeName);
-
-        if (type.equals(BehaviourType.COGNITIVE)) {
-            behaviourNameLabel.setForeground(BLUE_COLOR);
-        } else if (type.equals(BehaviourType.REACTIVE)) {
-            behaviourNameLabel.setForeground(ORANGE_COLOR);
-        } else if (type.equals(BehaviourType.IMITATIVE)) {
-            behaviourNameLabel.setForeground(GREEN_COLOR);
-        }
     }
 
     public void closeGui() {

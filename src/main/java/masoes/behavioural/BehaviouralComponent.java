@@ -6,8 +6,7 @@
 
 package masoes.behavioural;
 
-import masoes.EmotionalAgent;
-import masoes.EmotionalBehaviour;
+import masoes.agent.EmotionalAgent;
 import masoes.ontology.stimulus.Stimulus;
 import util.ToStringBuilder;
 
@@ -20,15 +19,15 @@ public class BehaviouralComponent {
     public BehaviouralComponent(EmotionalAgent emotionalAgent) {
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(emotionalAgent);
         emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
-        behaviourManager = new BehaviourManager(emotionalAgent, emotionalConfigurator, behaviouralKnowledgeBase);
+        behaviourManager = new BehaviourManager(emotionalConfigurator, behaviouralKnowledgeBase);
     }
 
     public Emotion getCurrentEmotion() {
         return emotionalConfigurator.getEmotion();
     }
 
-    public EmotionalBehaviour getCurrentEmotionalBehaviour() {
-        return behaviourManager.getBehaviour();
+    public BehaviourType getCurrentBehaviourType() {
+        return behaviourManager.getBehaviourType();
     }
 
     public EmotionalState getCurrentEmotionalState() {

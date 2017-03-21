@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.colective;
+package masoes.agent;
 
 import agent.AgentManagementAssistant;
 import jade.content.Predicate;
@@ -29,13 +29,13 @@ import util.ServiceBuilder;
 import java.util.Arrays;
 import java.util.List;
 
-public class NotifyBehaviour extends OntologyResponderBehaviour {
+public class NotifierBehaviour extends OntologyResponderBehaviour {
 
     private final AgentManagementAssistant agentManagementAssistant;
     private final OntologyAssistant ontologyAssistant;
     private Agent agent;
 
-    public NotifyBehaviour(Agent agent) {
+    public NotifierBehaviour(Agent agent) {
         super(agent, new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), MasoesOntology.getInstance());
         this.agent = agent;
         agentManagementAssistant = new AgentManagementAssistant(agent);

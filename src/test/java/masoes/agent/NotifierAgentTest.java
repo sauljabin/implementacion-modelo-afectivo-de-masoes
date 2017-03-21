@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.colective;
+package masoes.agent;
 
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
@@ -49,7 +49,7 @@ public class NotifierAgentTest extends PowerMockitoTest {
     @Test
     public void shouldAddBasicBehaviors() {
         notifierAgentSpy.setup();
-        verify(notifierAgentSpy).addBehaviour(isA(NotifyBehaviour.class));
+        verify(notifierAgentSpy).addBehaviour(isA(NotifierBehaviour.class));
     }
 
     @Test

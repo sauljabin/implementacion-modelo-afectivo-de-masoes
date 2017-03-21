@@ -8,8 +8,8 @@ package masoes.behavioural;
 
 import jade.core.AID;
 import knowledge.Knowledge;
-import masoes.EmotionalAgent;
-import masoes.EmotionalAgentLogger;
+import masoes.agent.EmotionalAgent;
+import masoes.agent.EmotionalAgentLogger;
 import masoes.behavioural.emotion.CompassionEmotion;
 import masoes.behavioural.emotion.DepressionEmotion;
 import masoes.behavioural.emotion.HappinessEmotion;

@@ -8,59 +8,28 @@ package masoes.behavioural;
 
 import alice.tuprolog.SolveInfo;
 import knowledge.KnowledgeException;
-import masoes.EmotionalAgent;
-import masoes.EmotionalBehaviour;
 import util.ToStringBuilder;
 
 public class BehaviourManager {
 
     private static final String ANSWER_VAR_NAME = "X";
     private static final String KNOWLEDGE_QUESTION = "behaviourPriority('%s'," + ANSWER_VAR_NAME + ").";
-    private final EmotionalAgent emotionalAgent;
-    private final EmotionalConfigurator emotionalConfigurator;
-    private EmotionalBehaviour behaviour;
+    private EmotionalConfigurator emotionalConfigurator;
     private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
+    private BehaviourType behaviourType;
 
-    public BehaviourManager(EmotionalAgent emotionalAgent, EmotionalConfigurator emotionalConfigurator, BehaviouralKnowledgeBase behaviouralKnowledgeBase) {
-        this.emotionalAgent = emotionalAgent;
+    public BehaviourManager(EmotionalConfigurator emotionalConfigurator, BehaviouralKnowledgeBase behaviouralKnowledgeBase) {
         this.emotionalConfigurator = emotionalConfigurator;
         this.behaviouralKnowledgeBase = behaviouralKnowledgeBase;
         updateBehaviour();
     }
 
-    public EmotionalBehaviour getBehaviour() {
-        return behaviour;
+    public BehaviourType getBehaviourType() {
+        return behaviourType;
     }
 
     public void updateBehaviour() {
-        BehaviourType newType = getBehaviourTypeAssociated(emotionalConfigurator.getEmotion());
-
-        if (behaviour != null) {
-            BehaviourType type = behaviour.getType();
-            if (newType == type) {
-                return;
-            }
-            emotionalAgent.removeBehaviour(behaviour);
-        }
-
-        behaviour = calculateBehaviour(newType, emotionalAgent);
-
-        if (behaviour != null) {
-            emotionalAgent.addBehaviour(behaviour);
-        }
-
-    }
-
-    private EmotionalBehaviour calculateBehaviour(BehaviourType type, EmotionalAgent emotionalAgent) {
-        switch (type) {
-            case COGNITIVE:
-                return emotionalAgent.getCognitiveBehaviour();
-            case IMITATIVE:
-                return emotionalAgent.getImitativeBehaviour();
-            case REACTIVE:
-            default:
-                return emotionalAgent.getReactiveBehaviour();
-        }
+        behaviourType = getBehaviourTypeAssociated(emotionalConfigurator.getEmotion());
     }
 
     private BehaviourType getBehaviourTypeAssociated(Emotion emotion) {
@@ -73,8 +42,8 @@ public class BehaviourManager {
                 return BehaviourType.valueOf(priority);
             }
 
-            if (behaviour != null) {
-                return behaviour.getType();
+            if (behaviourType != null) {
+                return behaviourType;
             }
 
             return BehaviourType.IMITATIVE;
@@ -86,7 +55,7 @@ public class BehaviourManager {
     @Override
     public String toString() {
         return new ToStringBuilder()
-                .append("behaviour", behaviour)
+                .append("behaviourType", behaviourType)
                 .append("behaviouralKnowledgeBase", behaviouralKnowledgeBase)
                 .toString();
     }

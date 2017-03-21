@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes;
+package masoes.agent;
 
 import jade.content.Concept;
 import jade.content.Predicate;
@@ -25,13 +25,13 @@ import ontology.OntologyResponderBehaviour;
 
 import java.util.Arrays;
 
-public class BasicEmotionalAgentBehaviour extends OntologyResponderBehaviour {
+public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
 
     private EmotionalAgent emotionalAgent;
     private BehaviouralComponent behaviouralComponent;
     private EmotionalAgentLogger logger;
 
-    public BasicEmotionalAgentBehaviour(EmotionalAgent emotionalAgent) {
+    public EmotionalAgentBehaviour(EmotionalAgent emotionalAgent) {
         super(emotionalAgent, new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), MasoesOntology.getInstance());
         this.emotionalAgent = emotionalAgent;
         behaviouralComponent = emotionalAgent.getBehaviouralComponent();
@@ -69,14 +69,8 @@ public class BasicEmotionalAgentBehaviour extends OntologyResponderBehaviour {
         emotionState.setSatisfaction(behaviouralComponent.getCurrentEmotionalState().getSatisfaction());
         emotionState.setType(behaviouralComponent.getCurrentEmotion().getType().toString());
 
-
         BehaviourState behaviourState = new BehaviourState();
-
-        if (behaviouralComponent.getCurrentEmotionalBehaviour() != null) {
-            behaviourState.setName(behaviouralComponent.getCurrentEmotionalBehaviour().getName());
-            behaviourState.setClassName(behaviouralComponent.getCurrentEmotionalBehaviour().getClass().getSimpleName());
-            behaviourState.setType(behaviouralComponent.getCurrentEmotionalBehaviour().getType().toString());
-        }
+        behaviourState.setType(behaviouralComponent.getCurrentBehaviourType().toString());
 
         return new AgentState(emotionalAgent.getAID(), emotionState, behaviourState);
     }

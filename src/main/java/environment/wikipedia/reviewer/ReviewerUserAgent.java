@@ -6,14 +6,8 @@
 
 package environment.wikipedia.reviewer;
 
-import environment.dummy.DummyCognitiveBehaviour;
-import environment.dummy.DummyImitativeBehaviour;
-import environment.dummy.DummyReactiveBehaviour;
 import knowledge.Knowledge;
-import masoes.CognitiveBehaviour;
-import masoes.EmotionalAgent;
-import masoes.ImitativeBehaviour;
-import masoes.ReactiveBehaviour;
+import masoes.agent.EmotionalAgent;
 
 import java.nio.file.Paths;
 
@@ -27,21 +21,6 @@ public class ReviewerUserAgent extends EmotionalAgent {
     @Override
     public Knowledge getKnowledge() {
         return new Knowledge(Paths.get("theories/behavioural/wikipedia/reviewerEmotionalAgent.prolog"));
-    }
-
-    @Override
-    public ImitativeBehaviour getImitativeBehaviour() {
-        return new DummyImitativeBehaviour();
-    }
-
-    @Override
-    public ReactiveBehaviour getReactiveBehaviour() {
-        return new DummyReactiveBehaviour();
-    }
-
-    @Override
-    public CognitiveBehaviour getCognitiveBehaviour() {
-        return new DummyCognitiveBehaviour();
     }
 
 }

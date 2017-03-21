@@ -8,7 +8,7 @@ package masoes.behavioural;
 
 import alice.tuprolog.SolveInfo;
 import knowledge.Knowledge;
-import masoes.EmotionalAgent;
+import masoes.agent.EmotionalAgent;
 import org.junit.Before;
 import org.junit.Test;
 import test.PowerMockitoTest;

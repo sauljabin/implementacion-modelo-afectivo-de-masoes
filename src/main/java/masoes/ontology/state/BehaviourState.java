@@ -11,33 +11,13 @@ import util.ToStringBuilder;
 
 public class BehaviourState implements Concept {
 
-    private String name;
-    private String className;
     private String type;
-
-    public BehaviourState(String name, String className, String type) {
-        this.name = name;
-        this.className = className;
-        this.type = type;
-    }
 
     public BehaviourState() {
     }
 
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public BehaviourState(String type) {
+        this.type = type;
     }
 
     public String getType() {
@@ -51,8 +31,6 @@ public class BehaviourState implements Concept {
     @Override
     public String toString() {
         return new ToStringBuilder()
-                .append("name", name)
-                .append("className", className)
                 .append("type", type)
                 .toString();
     }

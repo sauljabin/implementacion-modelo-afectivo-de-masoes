@@ -4,14 +4,14 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes;
+package masoes.agent;
 
-import environment.dummy.DummyCognitiveBehaviour;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.lang.acl.MessageTemplate;
+import masoes.behavioural.BehaviourType;
 import masoes.behavioural.BehaviouralComponent;
 import masoes.behavioural.EmotionalState;
 import masoes.behavioural.emotion.HappinessEmotion;
@@ -37,10 +37,10 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static test.ReflectionTestUtils.setFieldValue;
 
-public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
+public class EmotionalAgentBehaviourTest extends PowerMockitoTest {
 
     private EmotionalAgent emotionalAgentMock;
-    private BasicEmotionalAgentBehaviour basicEmotionalAgentBehaviour;
+    private EmotionalAgentBehaviour emotionalAgentBehaviour;
     private BehaviouralComponent behaviouralComponentMock;
     private AID agentAID;
 
@@ -54,23 +54,23 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
         doReturn(behaviouralComponentMock).when(emotionalAgentMock).getBehaviouralComponent();
         doReturn(agentAID).when(emotionalAgentMock).getAID();
 
-        basicEmotionalAgentBehaviour = new BasicEmotionalAgentBehaviour(emotionalAgentMock);
+        emotionalAgentBehaviour = new EmotionalAgentBehaviour(emotionalAgentMock);
 
-        setFieldValue(basicEmotionalAgentBehaviour, "logger", mock(EmotionalAgentLogger.class));
+        setFieldValue(emotionalAgentBehaviour, "logger", mock(EmotionalAgentLogger.class));
     }
 
     @Test
     public void shouldReturnValidAgentAction() {
         Action actionGetEmotionalState = new Action(new AID(), new GetEmotionalState());
         Action actionEvaluateStimulus = new Action(new AID(), new EvaluateStimulus());
-        assertTrue(basicEmotionalAgentBehaviour.isValidAction(actionGetEmotionalState));
-        assertTrue(basicEmotionalAgentBehaviour.isValidAction(actionEvaluateStimulus));
+        assertTrue(emotionalAgentBehaviour.isValidAction(actionGetEmotionalState));
+        assertTrue(emotionalAgentBehaviour.isValidAction(actionEvaluateStimulus));
     }
 
     @Test
     public void shouldGetCorrectOntologyAndMessageTemplate() {
-        assertThat(basicEmotionalAgentBehaviour.getOntology(), is(instanceOf(MasoesOntology.class)));
-        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), basicEmotionalAgentBehaviour.getMessageTemplate());
+        assertThat(emotionalAgentBehaviour.getOntology(), is(instanceOf(MasoesOntology.class)));
+        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), emotionalAgentBehaviour.getMessageTemplate());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
         Action action = new Action();
         action.setAction(evaluateStimulus);
 
-        Predicate predicate = basicEmotionalAgentBehaviour.performAction(action);
+        Predicate predicate = emotionalAgentBehaviour.performAction(action);
         assertThat(predicate, is(instanceOf(Done.class)));
 
         Done done = (Done) predicate;
@@ -104,7 +104,7 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
         Action action = new Action();
         action.setAction(evaluateStimulus);
 
-        Predicate predicate = basicEmotionalAgentBehaviour.performAction(action);
+        Predicate predicate = emotionalAgentBehaviour.performAction(action);
         assertThat(predicate, is(instanceOf(Done.class)));
 
         Done done = (Done) predicate;
@@ -124,7 +124,7 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
         Action action = new Action();
         action.setAction(evaluateStimulus);
 
-        Predicate predicate = basicEmotionalAgentBehaviour.performAction(action);
+        Predicate predicate = emotionalAgentBehaviour.performAction(action);
         assertThat(predicate, is(instanceOf(Done.class)));
 
         Done done = (Done) predicate;
@@ -141,20 +141,17 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
         EmotionalState emotionalState = emotion.getRandomEmotionalState();
         doReturn(emotionalState).when(behaviouralComponentMock).getCurrentEmotionalState();
 
-        DummyCognitiveBehaviour behaviour = new DummyCognitiveBehaviour();
-        doReturn(behaviour).when(behaviouralComponentMock).getCurrentEmotionalBehaviour();
+        doReturn(BehaviourType.IMITATIVE).when(behaviouralComponentMock).getCurrentBehaviourType();
 
         Action action = new Action();
         action.setAction(new GetEmotionalState());
-        Predicate predicate = basicEmotionalAgentBehaviour.performAction(action);
+        Predicate predicate = emotionalAgentBehaviour.performAction(action);
         assertThat(predicate, is(instanceOf(AgentState.class)));
 
         AgentState agentState = (AgentState) predicate;
         assertThat(agentState.getAgent(), is(agentAID));
 
-        assertThat(agentState.getBehaviourState().getName(), is(behaviour.getName()));
-        assertThat(agentState.getBehaviourState().getType(), is(behaviour.getType().toString()));
-        assertThat(agentState.getBehaviourState().getClassName(), is(behaviour.getClass().getSimpleName()));
+        assertThat(agentState.getBehaviourState().getType(), is(BehaviourType.IMITATIVE.toString()));
 
         assertThat(agentState.getEmotionState().getName(), is(emotion.getName()));
         assertThat(agentState.getEmotionState().getType(), is(emotion.getType().toString()));

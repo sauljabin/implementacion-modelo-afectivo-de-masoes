@@ -6,15 +6,10 @@
 
 package environment.wikipedia.submitter;
 
-import environment.dummy.DummyCognitiveBehaviour;
-import environment.dummy.DummyImitativeBehaviour;
-import environment.dummy.DummyReactiveBehaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import knowledge.Knowledge;
-import masoes.CognitiveBehaviour;
-import masoes.EmotionalAgent;
-import masoes.ImitativeBehaviour;
-import masoes.ReactiveBehaviour;
+import masoes.agent.EmotionalAgent;
+import masoes.behavioural.BehaviourType;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,7 +29,7 @@ public class SubmitterUserAgent extends EmotionalAgent implements ActionListener
 
             @Override
             public void action() {
-                submitterUserAgentGui.setBehaviour(getBehaviouralComponent().getCurrentEmotionalBehaviour());
+                submitterUserAgentGui.setBehaviour(BehaviourType.IMITATIVE);
                 submitterUserAgentGui.setEmotion(getBehaviouralComponent().getCurrentEmotion());
                 submitterUserAgentGui.addEmotionalState(getBehaviouralComponent().getCurrentEmotionalState());
                 block(1000 / FPS);
@@ -50,21 +45,6 @@ public class SubmitterUserAgent extends EmotionalAgent implements ActionListener
     @Override
     public Knowledge getKnowledge() {
         return new Knowledge(Paths.get("theories/behavioural/wikipedia/submitterEmotionalAgent.prolog"));
-    }
-
-    @Override
-    public ImitativeBehaviour getImitativeBehaviour() {
-        return new DummyImitativeBehaviour();
-    }
-
-    @Override
-    public ReactiveBehaviour getReactiveBehaviour() {
-        return new DummyReactiveBehaviour();
-    }
-
-    @Override
-    public CognitiveBehaviour getCognitiveBehaviour() {
-        return new DummyCognitiveBehaviour();
     }
 
     @Override
