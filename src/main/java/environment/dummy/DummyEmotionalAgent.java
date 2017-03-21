@@ -26,7 +26,7 @@ public class DummyEmotionalAgent extends EmotionalAgent {
             EmotionalState emotionalState = new EmotionalState(activation, satisfaction);
             getBehaviouralComponent().setEmotionalState(emotionalState);
         }
-        getBehaviouralComponent().getBehaviouralKnowledgeBase().addKnowledge(new Knowledge(Paths.get(THEORY)));
+        getBehaviouralComponent().addKnowledge(new Knowledge(Paths.get(THEORY)));
     }
 
     private boolean argsAreReal() {

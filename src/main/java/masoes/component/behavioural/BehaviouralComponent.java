@@ -6,6 +6,7 @@
 
 package masoes.component.behavioural;
 
+import knowledge.Knowledge;
 import knowledge.KnowledgeException;
 import masoes.agent.EmotionalAgent;
 import masoes.ontology.stimulus.Stimulus;
@@ -56,6 +57,10 @@ public class BehaviouralComponent {
 
     public void setEmotionalState(EmotionalState emotionalState) {
         emotionalConfigurator.setEmotionalState(emotionalState);
+    }
+
+    public void addKnowledge(Knowledge knowledge) {
+        behaviouralKnowledgeBase.addKnowledge(knowledge);
     }
 
     public BehaviourManager getBehaviourManager() {
