@@ -16,10 +16,8 @@ public class BehaviouralComponent {
     private BehaviourManager behaviourManager;
     private EmotionalConfigurator emotionalConfigurator;
     private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
-    private EmotionalAgent emotionalAgent;
 
     public BehaviouralComponent(EmotionalAgent emotionalAgent) {
-        this.emotionalAgent = emotionalAgent;
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(emotionalAgent);
         emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
         behaviourManager = new BehaviourManager(emotionalAgent, emotionalConfigurator, behaviouralKnowledgeBase);
@@ -49,6 +47,10 @@ public class BehaviouralComponent {
                 .append("emotionalConfigurator", emotionalConfigurator)
                 .append("behaviouralKnowledgeBase", behaviouralKnowledgeBase)
                 .toString();
+    }
+
+    public void setEmotionalState(EmotionalState emotionalState) {
+        emotionalConfigurator.setEmotionalState(emotionalState);
     }
 
     public BehaviourManager getBehaviourManager() {

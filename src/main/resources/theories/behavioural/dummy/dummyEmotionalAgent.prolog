@@ -1,5 +1,5 @@
-valence(AGENT, greeting, positive, positive) :- other(AGENT).
-valence(AGENT, smile, positive, positive) :- other(AGENT).
+valence(AGENT, greeting, negative, positive) :- other(AGENT).
+valence(AGENT, smile, positive, negative) :- other(AGENT).
 valence(AGENT, run, negative, negative) :- other(AGENT).
 valence(AGENT, bye, negative, negative) :- other(AGENT).
 valence(AGENT, eat, positive, positive) :- self(AGENT).

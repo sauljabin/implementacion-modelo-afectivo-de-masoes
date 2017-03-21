@@ -11,6 +11,8 @@ import masoes.CognitiveBehaviour;
 import masoes.EmotionalAgent;
 import masoes.ImitativeBehaviour;
 import masoes.ReactiveBehaviour;
+import masoes.behavioural.EmotionalState;
+import util.StringValidator;
 
 import java.nio.file.Paths;
 
@@ -23,9 +25,24 @@ public class DummyEmotionalAgent extends EmotionalAgent {
 
     @Override
     public void setUp() {
+        if (hasArgs() && argsAreReal()) {
+            double activation = Double.parseDouble((String) getArguments()[0]);
+            double satisfaction = Double.parseDouble((String) getArguments()[1]);
+
+            EmotionalState emotionalState = new EmotionalState(activation, satisfaction);
+            getBehaviouralComponent().setEmotionalState(emotionalState);
+        }
         dummyImitativeBehaviour = new DummyImitativeBehaviour();
         dummyReactiveBehaviour = new DummyReactiveBehaviour();
         dummyCognitiveBehaviour = new DummyCognitiveBehaviour();
+    }
+
+    private boolean argsAreReal() {
+        return (getArguments()[0] instanceof String) && (getArguments()[1] instanceof String) && StringValidator.isReal((String) getArguments()[0]) && StringValidator.isReal((String) getArguments()[1]);
+    }
+
+    private boolean hasArgs() {
+        return getArguments() != null && getArguments().length == 2;
     }
 
     @Override

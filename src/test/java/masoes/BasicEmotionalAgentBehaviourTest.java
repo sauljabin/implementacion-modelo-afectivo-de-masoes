@@ -35,6 +35,7 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static test.ReflectionTestUtils.setFieldValue;
 
 public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
 
@@ -44,7 +45,7 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
     private AID agentAID;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         emotionalAgentMock = mock(EmotionalAgent.class);
         behaviouralComponentMock = mock(BehaviouralComponent.class);
 
@@ -54,6 +55,8 @@ public class BasicEmotionalAgentBehaviourTest extends PowerMockitoTest {
         doReturn(agentAID).when(emotionalAgentMock).getAID();
 
         basicEmotionalAgentBehaviour = new BasicEmotionalAgentBehaviour(emotionalAgentMock);
+
+        setFieldValue(basicEmotionalAgentBehaviour, "logger", mock(EmotionalAgentLogger.class));
     }
 
     @Test

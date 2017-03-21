@@ -24,7 +24,7 @@ public class EmotionalState {
         RandomGenerator randomGenerator = new RandomGenerator();
         geometryFactory = new GeometryFactory();
         setActivation(randomGenerator.getDouble(MIN, MAX));
-        setActivation(randomGenerator.getDouble(MIN, MAX));
+        setSatisfaction(randomGenerator.getDouble(MIN, MAX));
     }
 
     public EmotionalState(double activation, double satisfaction) {

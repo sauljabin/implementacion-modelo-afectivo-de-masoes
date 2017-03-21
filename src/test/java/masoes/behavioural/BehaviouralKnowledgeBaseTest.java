@@ -80,20 +80,20 @@ public class BehaviouralKnowledgeBaseTest extends PowerMockitoTest {
 
     @Test
     public void shouldSolveCorrectlyEmotionalConfiguratorQuestionsWithAction() throws Exception {
-        testEmotionByAction("other", "greeting", "positive");
-        testEmotionByAction("other", "smile", "positive");
-        testEmotionByAction("other", "run", "negative");
-        testEmotionByAction("other", "bye", "negative");
-        testEmotionByAction(AGENT_NAME, "eat", "positive");
-        testEmotionByAction(AGENT_NAME, "sleep", "positive");
-        testEmotionByAction(AGENT_NAME, "wake", "negative");
-        testEmotionByAction(AGENT_NAME, "pay", "negative");
+        testEmotionByAction("other", "greeting", "negative", "positive");
+        testEmotionByAction("other", "smile", "positive", "negative");
+        testEmotionByAction("other", "run", "negative", "negative");
+        testEmotionByAction("other", "bye", "negative", "negative");
+        testEmotionByAction(AGENT_NAME, "eat", "positive", "positive");
+        testEmotionByAction(AGENT_NAME, "sleep", "positive", "positive");
+        testEmotionByAction(AGENT_NAME, "wake", "negative", "negative");
+        testEmotionByAction(AGENT_NAME, "pay", "negative", "negative");
     }
 
-    private void testEmotionByAction(String agent, String parameter, String expectedEmotion) throws Exception {
+    private void testEmotionByAction(String agent, String parameter, String expectedActivation, String expectedSatisfaction) throws Exception {
         SolveInfo solve = behaviouralKnowledgeBase.solve("valence('" + agent + "', '" + parameter + "', X, Y).");
-        assertThat(solve.getVarValue("X").toString(), is(expectedEmotion));
-        assertThat(solve.getVarValue("Y").toString(), is(expectedEmotion));
+        assertThat(solve.getVarValue("X").toString(), is(expectedActivation));
+        assertThat(solve.getVarValue("Y").toString(), is(expectedSatisfaction));
     }
 
 }

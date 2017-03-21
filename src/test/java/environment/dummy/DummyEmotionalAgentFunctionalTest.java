@@ -19,6 +19,7 @@ import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
 import masoes.ontology.stimulus.ActionStimulus;
 import masoes.ontology.stimulus.EvaluateStimulus;
+import masoes.ontology.stimulus.EventStimulus;
 import masoes.ontology.stimulus.ObjectStimulus;
 import masoes.ontology.stimulus.Stimulus;
 import org.junit.After;
@@ -27,6 +28,7 @@ import org.junit.Test;
 import test.FunctionalTest;
 import util.MessageBuilder;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +45,6 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
 
     @Before
     public void setUp() {
-        dummyAgentAID = createAgent(DummyEmotionalAgent.class, null);
         contentManager = new ContentManager();
         contentManager.registerOntology(MasoesOntology.getInstance());
         contentManager.registerLanguage(new SLCodec());
@@ -56,6 +57,7 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
 
     @Test
     public void shouldGetAllEmotionalServicesFromDF() {
+        dummyAgentAID = createAgent(DummyEmotionalAgent.class, null);
         List<ServiceDescription> services = services(dummyAgentAID);
         List<String> results = services.stream().map(ServiceDescription::getName).collect(Collectors.toList());
         assertThat(results, hasItems(MasoesOntology.ACTION_EVALUATE_STIMULUS, MasoesOntology.ACTION_GET_EMOTIONAL_STATE));
@@ -63,36 +65,14 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
 
     @Test
     public void shouldChangeAgentEmotion() throws Exception {
-        ACLMessage requestMessage = new MessageBuilder().request()
-                .fipaSL()
-                .fipaRequest()
-                .receiver(dummyAgentAID)
-                .ontology(MasoesOntology.getInstance())
-                .build();
-
-        testEvaluateActionStimulus(requestMessage, "greeting", getAID(), "compassion", "IMITATIVE");
-        testEvaluateActionStimulus(requestMessage, "smile", getAID(), "admiration", "IMITATIVE");
-        testEvaluateActionStimulus(requestMessage, "run", getAID(), "rejection", "COGNITIVE");
-        testEvaluateActionStimulus(requestMessage, "bye", getAID(), "anger", "REACTIVE");
-
-        testEvaluateActionStimulus(requestMessage, "eat", dummyAgentAID, "happiness", "IMITATIVE");
-        testEvaluateActionStimulus(requestMessage, "sleep", dummyAgentAID, "joy", "IMITATIVE");
-        testEvaluateActionStimulus(requestMessage, "wake", dummyAgentAID, "sadness", "COGNITIVE");
-        testEvaluateActionStimulus(requestMessage, "pay", dummyAgentAID, "depression", "REACTIVE");
-
-        testEvaluateObjectStimulus(requestMessage, getAID(), "compassion", "IMITATIVE");
-        testEvaluateObjectStimulus(requestMessage, getAID(), "admiration", "IMITATIVE");
-        testEvaluateObjectStimulus(requestMessage, getAID(), "rejection", "COGNITIVE");
-        testEvaluateObjectStimulus(requestMessage, getAID(), "anger", "REACTIVE");
-
-        testEvaluateObjectStimulus(requestMessage, dummyAgentAID, "happiness", "IMITATIVE");
-        testEvaluateObjectStimulus(requestMessage, dummyAgentAID, "joy", "IMITATIVE");
-        testEvaluateObjectStimulus(requestMessage, dummyAgentAID, "sadness", "COGNITIVE");
-        testEvaluateObjectStimulus(requestMessage, dummyAgentAID, "depression", "REACTIVE");
+        testEvaluateActionStimulus("greeting", getAID(), "compassion", "IMITATIVE", Arrays.asList("-0.45", "0.45"));
+        testEvaluateObjectStimulus("smile", getAID(), "admiration", "IMITATIVE", Arrays.asList("-0.55", "0.55"));
+        testEvaluateEventStimulus("bye", getAID(), "joy", "IMITATIVE", Arrays.asList("0.55", "0.55"));
     }
 
     @Test
     public void shouldGetRandomValueFromGetStatus() throws Exception {
+        dummyAgentAID = createAgent(DummyEmotionalAgent.class, null);
         ACLMessage requestMessage = new MessageBuilder().request()
                 .fipaSL()
                 .fipaRequest()
@@ -102,12 +82,37 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
         testGetStatus(requestMessage);
     }
 
-    private void testEvaluateObjectStimulus(ACLMessage requestMessage, AID aid, String expectedEmotion, String behaviourType) throws Exception {
-        ObjectStimulus stimulus = new ObjectStimulus(aid, "car");
-        testEvaluateStimulus(requestMessage, expectedEmotion, behaviourType, stimulus);
+    private void testEvaluateActionStimulus(String actionName, AID aid, String expectedEmotion, String behaviourType, List<String> arguments) throws Exception {
+        ActionStimulus stimulus = new ActionStimulus();
+        stimulus.setActor(aid);
+        stimulus.setActionName(actionName);
+        testEvaluateStimulus(expectedEmotion, behaviourType, stimulus, arguments);
     }
 
-    private void testEvaluateStimulus(ACLMessage requestMessage, String expectedEmotion, String behaviourType, Stimulus stimulus) throws Exception {
+    private void testEvaluateObjectStimulus(String actionName, AID aid, String expectedEmotion, String behaviourType, List<String> arguments) throws Exception {
+        ObjectStimulus stimulus = new ObjectStimulus();
+        stimulus.setCreator(aid);
+        stimulus.setObjectName(actionName);
+        testEvaluateStimulus(expectedEmotion, behaviourType, stimulus, arguments);
+    }
+
+    private void testEvaluateEventStimulus(String actionName, AID aid, String expectedEmotion, String behaviourType, List<String> arguments) throws Exception {
+        EventStimulus stimulus = new EventStimulus();
+        stimulus.setAffected(aid);
+        stimulus.setEventName(actionName);
+        testEvaluateStimulus(expectedEmotion, behaviourType, stimulus, arguments);
+    }
+
+    private void testEvaluateStimulus(String expectedEmotion, String behaviourType, Stimulus stimulus, List<String> arguments) throws Exception {
+        dummyAgentAID = createAgent(DummyEmotionalAgent.class, arguments);
+
+        ACLMessage requestMessage = new MessageBuilder().request()
+                .fipaSL()
+                .fipaRequest()
+                .receiver(dummyAgentAID)
+                .ontology(MasoesOntology.getInstance())
+                .build();
+
         EvaluateStimulus evaluateStimulus = new EvaluateStimulus(stimulus);
 
         Action action = new Action(dummyAgentAID, evaluateStimulus);
@@ -122,13 +127,6 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
         AgentState secondEmotionalResponse = testGetStatus(requestMessage);
         assertThat(secondEmotionalResponse.getEmotionState().getName(), is(expectedEmotion));
         assertThat(secondEmotionalResponse.getBehaviourState().getType(), is(behaviourType.toUpperCase()));
-    }
-
-    private void testEvaluateActionStimulus(ACLMessage requestMessage, String actionName, AID aid, String expectedEmotion, String behaviourType) throws Exception {
-        ActionStimulus stimulus = new ActionStimulus();
-        stimulus.setActor(aid);
-        stimulus.setActionName(actionName);
-        testEvaluateStimulus(requestMessage, expectedEmotion, behaviourType, stimulus);
     }
 
     private AgentState testGetStatus(ACLMessage requestMessage) throws Exception {

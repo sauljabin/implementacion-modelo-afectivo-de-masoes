@@ -26,6 +26,7 @@ public class StringValidatorTest {
     @Test
     public void shouldReturnTrueWhenStringIsInteger() {
         assertTrue(StringValidator.isInteger(String.valueOf(random.nextInt(1000))));
+        assertTrue(StringValidator.isInteger(String.valueOf(-random.nextInt(1000))));
         assertFalse(StringValidator.isInteger("text"));
         assertFalse(StringValidator.isInteger("1.0"));
     }
@@ -33,6 +34,7 @@ public class StringValidatorTest {
     @Test
     public void shouldReturnTrueWhenStringIsReal() {
         assertTrue(StringValidator.isReal(String.valueOf(random.nextDouble())));
+        assertTrue(StringValidator.isReal(String.valueOf(-random.nextDouble())));
         assertFalse(StringValidator.isReal("text"));
         assertFalse(StringValidator.isReal("1"));
     }

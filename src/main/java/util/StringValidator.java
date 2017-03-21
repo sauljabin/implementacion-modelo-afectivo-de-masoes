@@ -12,11 +12,11 @@ public class StringValidator {
     }
 
     public static boolean isInteger(String string) {
-        return string.matches("[0-9]+");
+        return string.matches("-?[0-9]+");
     }
 
     public static boolean isReal(String string) {
-        return string.matches("[0-9]+.[0-9]+");
+        return string.matches("-?[0-9]+.[0-9]+");
     }
 
 }

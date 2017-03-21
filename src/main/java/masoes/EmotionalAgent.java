@@ -29,9 +29,11 @@ public abstract class EmotionalAgent extends Agent {
     @Override
     protected final void setup() {
         try {
-            setUp(); // TODO: SETUP AL FINAL
             behaviouralComponent = new BehaviouralComponent(this);
             addBehaviour(new BasicEmotionalAgentBehaviour(this));
+
+            setUp();
+
             agentManagementAssistant.register(
                     createService(MasoesOntology.ACTION_EVALUATE_STIMULUS),
                     createService(MasoesOntology.ACTION_GET_EMOTIONAL_STATE)

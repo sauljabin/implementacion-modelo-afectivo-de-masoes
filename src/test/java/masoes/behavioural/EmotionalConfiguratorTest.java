@@ -31,13 +31,8 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
-import static test.ReflectionTestUtils.setFieldValue;
 
 public class EmotionalConfiguratorTest extends PowerMockitoTest {
 
@@ -167,17 +162,6 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
 
         assertThat(emotions, hasItem(instanceOf(JoyEmotion.class)));
         assertThat(emotions, hasItem(instanceOf(HappinessEmotion.class)));
-    }
-
-    @Test
-    public void shouldNotInvokeLoggerUpdatingEmotion() throws Exception {
-        createAgent(AGENT_NAME);
-        behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(agentMock);
-        emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
-        setFieldValue(emotionalConfigurator, "emotionalState", new JoyEmotion().getRandomEmotionalState());
-
-        emotionalConfigurator.updateEmotion(new ActionStimulus(new AID(AGENT_NAME, AID.ISGUID), "sleep"));
-        verify(loggerMock, never()).updatingEmotion(any(Emotion.class), eq(emotionalConfigurator.getEmotion()));
     }
 
 }
