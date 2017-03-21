@@ -7,10 +7,10 @@
 package environment.wikipedia.submitter;
 
 import gui.component.EmotionalSpaceChart;
-import masoes.behavioural.BehaviourType;
-import masoes.behavioural.Emotion;
-import masoes.behavioural.EmotionType;
-import masoes.behavioural.EmotionalState;
+import masoes.component.behavioural.BehaviourType;
+import masoes.component.behavioural.Emotion;
+import masoes.component.behavioural.EmotionType;
+import masoes.component.behavioural.EmotionalState;
 import net.miginfocom.swing.MigLayout;
 import translate.Translation;
 

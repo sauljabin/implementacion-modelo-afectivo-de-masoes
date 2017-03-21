@@ -8,8 +8,8 @@ package masoes.agent;
 
 import jade.lang.acl.ACLMessage;
 import logger.LogWriter;
-import masoes.behavioural.BehaviourType;
-import masoes.behavioural.Emotion;
+import masoes.component.behavioural.BehaviourType;
+import masoes.component.behavioural.Emotion;
 import masoes.ontology.stimulus.Stimulus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

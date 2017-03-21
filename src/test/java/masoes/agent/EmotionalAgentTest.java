@@ -9,7 +9,6 @@ package masoes.agent;
 import agent.AgentManagementAssistant;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPANames;
-import knowledge.Knowledge;
 import language.SemanticLanguage;
 import masoes.ontology.MasoesOntology;
 import org.junit.Before;
@@ -105,11 +104,6 @@ public class EmotionalAgentTest extends PowerMockitoTest {
 
             @Override
             public void setUp() {
-            }
-
-            @Override
-            public Knowledge getKnowledge() {
-                return null;
             }
         };
     }

@@ -7,11 +7,6 @@
 package environment.dummy;
 
 import org.junit.Before;
-import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 public class DummyEmotionalAgentTest {
 
@@ -21,12 +16,7 @@ public class DummyEmotionalAgentTest {
     @Before
     public void setUp() {
         dummyEmotionalAgent = new DummyEmotionalAgent();
-        dummyEmotionalAgent.setUp();
     }
 
-    @Test
-    public void shouldGetCorrectConfig() {
-        assertThat(dummyEmotionalAgent.getKnowledge(), is(notNullValue()));
-    }
 
 }

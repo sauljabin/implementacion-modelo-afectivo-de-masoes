@@ -8,7 +8,7 @@ package environment.dummy;
 
 import knowledge.Knowledge;
 import masoes.agent.EmotionalAgent;
-import masoes.behavioural.EmotionalState;
+import masoes.component.behavioural.EmotionalState;
 import util.StringValidator;
 
 import java.nio.file.Paths;
@@ -16,7 +16,6 @@ import java.nio.file.Paths;
 public class DummyEmotionalAgent extends EmotionalAgent {
 
     private static final String THEORY = "theories/behavioural/dummy/dummyEmotionalAgent.prolog";
-
 
     @Override
     public void setUp() {
@@ -27,6 +26,7 @@ public class DummyEmotionalAgent extends EmotionalAgent {
             EmotionalState emotionalState = new EmotionalState(activation, satisfaction);
             getBehaviouralComponent().setEmotionalState(emotionalState);
         }
+        getBehaviouralComponent().getBehaviouralKnowledgeBase().addKnowledge(new Knowledge(Paths.get(THEORY)));
     }
 
     private boolean argsAreReal() {
@@ -35,11 +35,6 @@ public class DummyEmotionalAgent extends EmotionalAgent {
 
     private boolean hasArgs() {
         return getArguments() != null && getArguments().length == 2;
-    }
-
-    @Override
-    public Knowledge getKnowledge() {
-        return new Knowledge(Paths.get(THEORY));
     }
 
 }

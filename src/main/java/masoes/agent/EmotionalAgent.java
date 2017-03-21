@@ -9,8 +9,10 @@ package masoes.agent;
 import agent.AgentManagementAssistant;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import knowledge.Knowledge;
-import masoes.behavioural.BehaviouralComponent;
+import masoes.component.behavioural.BehaviouralComponent;
+import masoes.component.cognitive.CognitiveComponent;
+import masoes.component.reactive.ReactiveComponent;
+import masoes.component.social.SocialComponent;
 import masoes.ontology.MasoesOntology;
 import util.ServiceBuilder;
 import util.ToStringBuilder;
@@ -20,6 +22,9 @@ public abstract class EmotionalAgent extends Agent {
     private BehaviouralComponent behaviouralComponent;
     private EmotionalAgentLogger logger;
     private AgentManagementAssistant agentManagementAssistant;
+    private CognitiveComponent cognitiveComponent;
+    private ReactiveComponent reactiveComponent;
+    private SocialComponent socialComponent;
 
     public EmotionalAgent() {
         logger = new EmotionalAgentLogger(this);
@@ -30,6 +35,10 @@ public abstract class EmotionalAgent extends Agent {
     protected final void setup() {
         try {
             behaviouralComponent = new BehaviouralComponent(this);
+            cognitiveComponent = new CognitiveComponent(this);
+            reactiveComponent = new ReactiveComponent(this);
+            socialComponent = new SocialComponent(this);
+
             addBehaviour(new EmotionalAgentBehaviour(this));
 
             setUp();
@@ -65,8 +74,18 @@ public abstract class EmotionalAgent extends Agent {
         return behaviouralComponent;
     }
 
-    public abstract void setUp();
+    public CognitiveComponent getCognitiveComponent() {
+        return cognitiveComponent;
+    }
 
-    public abstract Knowledge getKnowledge();
+    public ReactiveComponent getReactiveComponent() {
+        return reactiveComponent;
+    }
+
+    public SocialComponent getSocialComponent() {
+        return socialComponent;
+    }
+
+    public abstract void setUp();
 
 }

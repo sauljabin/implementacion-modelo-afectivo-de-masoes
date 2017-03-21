@@ -7,13 +7,11 @@
 package environment.wikipedia.submitter;
 
 import jade.core.behaviours.CyclicBehaviour;
-import knowledge.Knowledge;
 import masoes.agent.EmotionalAgent;
-import masoes.behavioural.BehaviourType;
+import masoes.component.behavioural.BehaviourType;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.file.Paths;
 
 public class SubmitterUserAgent extends EmotionalAgent implements ActionListener {
 
@@ -40,11 +38,6 @@ public class SubmitterUserAgent extends EmotionalAgent implements ActionListener
     @Override
     protected void takeDown() {
         submitterUserAgentGui.closeGui();
-    }
-
-    @Override
-    public Knowledge getKnowledge() {
-        return new Knowledge(Paths.get("theories/behavioural/wikipedia/submitterEmotionalAgent.prolog"));
     }
 
     @Override

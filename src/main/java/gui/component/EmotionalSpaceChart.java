@@ -6,8 +6,8 @@
 
 package gui.component;
 
-import masoes.behavioural.EmotionalSpace;
-import masoes.behavioural.EmotionalState;
+import masoes.component.behavioural.EmotionalSpace;
+import masoes.component.behavioural.EmotionalState;
 import translate.Translation;
 
 import javax.swing.*;

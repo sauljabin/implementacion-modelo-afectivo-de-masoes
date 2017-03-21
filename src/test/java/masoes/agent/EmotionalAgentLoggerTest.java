@@ -8,9 +8,9 @@ package masoes.agent;
 
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
-import masoes.behavioural.BehaviourType;
-import masoes.behavioural.emotion.HappinessEmotion;
-import masoes.behavioural.emotion.SadnessEmotion;
+import masoes.component.behavioural.BehaviourType;
+import masoes.component.behavioural.emotion.HappinessEmotion;
+import masoes.component.behavioural.emotion.SadnessEmotion;
 import masoes.ontology.stimulus.ActionStimulus;
 import org.junit.Before;
 import org.junit.Test;
