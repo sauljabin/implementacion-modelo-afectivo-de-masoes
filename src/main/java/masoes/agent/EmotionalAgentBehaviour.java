@@ -44,12 +44,12 @@ public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
         if (agentAction instanceof GetEmotionalState) {
             return responseAgentStatus();
         } else {
-            responseEvaluateStimulus((EvaluateStimulus) action.getAction());
+            evaluateStimulus((EvaluateStimulus) action.getAction());
         }
         return new Done(action);
     }
 
-    private void responseEvaluateStimulus(EvaluateStimulus evaluateStimulus) {
+    private void evaluateStimulus(EvaluateStimulus evaluateStimulus) {
         Emotion currentEmotion = behaviouralComponent.getCurrentEmotion();
         behaviouralComponent.evaluateStimulus(evaluateStimulus.getStimulus());
         Emotion newEmotion = behaviouralComponent.getCurrentEmotion();
