@@ -13,6 +13,7 @@ import translate.Translation;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class ConfiguratorAgentGui extends JFrame {
         double activationIncrease = Double.parseDouble(MasoesSettings.getInstance().get(MasoesSettings.MASOES_ACTIVATION_INCREASE));
 
         activationIncreaseSpinner = new JSpinner();
-        activationIncreaseSpinner.setModel(new SpinnerNumberModel(activationIncrease, -1., 1., .01));
+        activationIncreaseSpinner.setModel(new SpinnerNumberModel(activationIncrease, 0., 1., .01));
         westPanel.add(activationIncreaseSpinner, "w 70, wrap");
 
         JLabel satisfactionIncreaseLabel = new JLabel(translation.get("gui.satisfaction_increase"));
@@ -66,7 +67,7 @@ public class ConfiguratorAgentGui extends JFrame {
         double satisfactionIncrease = Double.parseDouble(MasoesSettings.getInstance().get(MasoesSettings.MASOES_SATISFACTION_INCREASE));
 
         satisfactionIncreaseSpinner = new JSpinner();
-        satisfactionIncreaseSpinner.setModel(new SpinnerNumberModel(satisfactionIncrease, -1., 1., .01));
+        satisfactionIncreaseSpinner.setModel(new SpinnerNumberModel(satisfactionIncrease, 0., 1., .01));
         westPanel.add(satisfactionIncreaseSpinner, "w 70, wrap");
     }
 
@@ -96,10 +97,29 @@ public class ConfiguratorAgentGui extends JFrame {
     }
 
     public void addActionListener(ActionListener actionListener) {
+        activationIncreaseSpinner.addChangeListener(e -> actionListener.actionPerformed(new ActionEvent(
+                e.getSource(),
+                ConfiguratorAgentEvent.UPDATE_ACTIVATION_INCREASE.getInt(),
+                ConfiguratorAgentEvent.UPDATE_ACTIVATION_INCREASE.toString()
+        )));
+
+        satisfactionIncreaseSpinner.addChangeListener(e -> actionListener.actionPerformed(new ActionEvent(
+                e.getSource(),
+                ConfiguratorAgentEvent.UPDATE_SATISFACTION_INCREASE.getInt(),
+                ConfiguratorAgentEvent.UPDATE_SATISFACTION_INCREASE.toString()
+        )));
     }
 
     public void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public double getActivationIncrease() {
+        return (double) activationIncreaseSpinner.getValue();
+    }
+
+    public double getSatisfactionIncrease() {
+        return (double) satisfactionIncreaseSpinner.getValue();
     }
 
 }

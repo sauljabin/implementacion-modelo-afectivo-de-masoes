@@ -12,6 +12,7 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
+import masoes.MasoesSettings;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
@@ -68,11 +69,25 @@ public class ConfiguratorAgent extends GuiAgent {
                 case CLOSE_WINDOW:
                     doDelete();
                     break;
+                case UPDATE_SATISFACTION_INCREASE:
+                    updateSatisfactionIncrease();
+                    break;
+                case UPDATE_ACTIVATION_INCREASE:
+                    updateActivationIncrease();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             configuratorAgentGui.showError(e.getMessage());
         }
+    }
+
+    private void updateActivationIncrease() {
+        MasoesSettings.getInstance().set(MasoesSettings.MASOES_ACTIVATION_INCREASE, String.valueOf(configuratorAgentGui.getActivationIncrease()));
+    }
+
+    private void updateSatisfactionIncrease() {
+        MasoesSettings.getInstance().set(MasoesSettings.MASOES_SATISFACTION_INCREASE, String.valueOf(configuratorAgentGui.getSatisfactionIncrease()));
     }
 
 }
