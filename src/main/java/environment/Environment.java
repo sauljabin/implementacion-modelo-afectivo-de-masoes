@@ -19,7 +19,7 @@ public abstract class Environment {
 
     public static final String SETTINGS_AGENT = "settings";
     public static final String NOTIFIER_AGENT = "notifier";
-    private static final String KNOWLEDGE_AGENT = "knowledge";
+    public static final String KNOWLEDGE_AGENT = "knowledge";
     private static final String AGENT_DELIMITER = ";";
 
     public abstract List<AgentParameter> getAgentParameters();
