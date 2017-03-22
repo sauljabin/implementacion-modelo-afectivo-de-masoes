@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.component;
+package environment.wikipedia;
 
 import masoes.component.behavioural.EmotionalSpace;
 import masoes.component.behavioural.EmotionalState;

@@ -6,7 +6,6 @@
 
 package environment.wikipedia;
 
-import gui.component.EmotionalSpaceChart;
 import masoes.component.behavioural.BehaviourType;
 import masoes.component.behavioural.Emotion;
 import masoes.component.behavioural.EmotionType;
@@ -24,7 +23,7 @@ public class EmotionalAgentGui extends JFrame {
     private EmotionalSpaceChart emotionalSpaceChart;
     private JLabel agentNameLabel;
     private JLabel emotionNameLabel;
-    private JLabel behaviourNameLabel;
+    private JLabel behaviourTypeLabel;
     private JLabel emotionTypeNameLabel;
     private JLabel activationValueLabel;
     private JLabel satisfactionValueLabel;
@@ -77,13 +76,6 @@ public class EmotionalAgentGui extends JFrame {
         emotionTypeNameLabel.setFont(font14);
         centerPanel.add(emotionTypeNameLabel, FIELD_W);
 
-        JLabel behaviourLabel = new JLabel(translation.get("gui.behaviour"));
-        centerPanel.add(behaviourLabel, "grow");
-
-        behaviourNameLabel = new JLabel();
-        behaviourNameLabel.setFont(font14);
-        centerPanel.add(behaviourNameLabel, FIELD_W);
-
         JLabel activationLabel = new JLabel(translation.get("gui.activation_x"));
         centerPanel.add(activationLabel, "grow");
 
@@ -97,6 +89,13 @@ public class EmotionalAgentGui extends JFrame {
         satisfactionValueLabel = new JLabel();
         satisfactionValueLabel.setFont(font14);
         centerPanel.add(satisfactionValueLabel, FIELD_W);
+
+        JLabel behaviourLabel = new JLabel(translation.get("gui.behaviour"));
+        centerPanel.add(behaviourLabel, "grow");
+
+        behaviourTypeLabel = new JLabel();
+        behaviourTypeLabel.setFont(font14);
+        centerPanel.add(behaviourTypeLabel, FIELD_W);
 
         emotionalSpaceChart = new EmotionalSpaceChart();
         centerPanel.add(emotionalSpaceChart, "w 300, h 300, span 2, wrap");
@@ -133,9 +132,9 @@ public class EmotionalAgentGui extends JFrame {
         emotionNameLabel.setText(name);
     }
 
-    public void setBehaviour(BehaviourType type) {
+    public void setBehaviourType(BehaviourType type) {
         String typeName = translation.get(type.toString().toLowerCase());
-        behaviourNameLabel.setText(typeName);
+        behaviourTypeLabel.setText(typeName);
     }
 
     public void closeGui() {

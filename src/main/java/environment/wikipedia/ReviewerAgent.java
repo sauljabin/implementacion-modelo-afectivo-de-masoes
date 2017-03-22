@@ -11,7 +11,7 @@ import masoes.agent.EmotionalAgent;
 
 import java.nio.file.Paths;
 
-public class ReviewerUserAgent extends EmotionalAgent {
+public class ReviewerAgent extends EmotionalAgent {
 
     @Override
     public void setUp() {

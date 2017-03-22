@@ -6,6 +6,7 @@
 
 package environment.wikipedia;
 
+import net.miginfocom.swing.MigLayout;
 import translate.Translation;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ import java.awt.event.ActionListener;
 public class ConfiguratorAgentGui extends JFrame {
 
     private Translation translation;
+    private AgentStateTableModel agentStateTableModel;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -36,6 +38,19 @@ public class ConfiguratorAgentGui extends JFrame {
     }
 
     private void addComponents() {
+        addCenterComponent();
+    }
+
+    private void addCenterComponent() {
+        JPanel centerPanel = new JPanel(new MigLayout());
+        add(centerPanel, BorderLayout.CENTER);
+
+        agentStateTableModel = new AgentStateTableModel();
+        JTable agentStateTable = new JTable(agentStateTableModel);
+        agentStateTable.setFillsViewportHeight(true);
+
+        JScrollPane scrollAgentStateTable = new JScrollPane(agentStateTable);
+        centerPanel.add(scrollAgentStateTable, "h 100%, w 100%");
     }
 
     public void closeGui() {
