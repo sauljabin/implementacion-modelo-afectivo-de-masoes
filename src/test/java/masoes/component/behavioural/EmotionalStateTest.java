@@ -11,6 +11,7 @@ import org.junit.Test;
 import util.RandomGenerator;
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 
 public class EmotionalStateTest {
@@ -30,6 +31,8 @@ public class EmotionalStateTest {
         Point actualPoint = emotionalState.toPoint();
         assertThat(actualPoint.getX(), is(emotionalState.getActivation()));
         assertThat(actualPoint.getY(), is(emotionalState.getSatisfaction()));
+        assertThat(actualPoint.getX(), is(not(0.0)));
+        assertThat(actualPoint.getY(), is(not(0.0)));
     }
 
     @Test
