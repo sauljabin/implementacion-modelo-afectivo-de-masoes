@@ -52,23 +52,28 @@ public class ConfiguratorAgentGui extends JFrame {
         JPanel westPanel = new JPanel(new MigLayout("insets 10"));
         add(westPanel, BorderLayout.WEST);
 
+        JPanel globalVariablesPanel = new JPanel(new MigLayout("insets 10"));
+        globalVariablesPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.variables")));
+
+        westPanel.add(globalVariablesPanel, "wrap");
+
         JLabel activationIncreaseLabel = new JLabel(translation.get("gui.activation_increase"));
-        westPanel.add(activationIncreaseLabel, "w 70");
+        globalVariablesPanel.add(activationIncreaseLabel, "w 70");
 
         double activationIncrease = Double.parseDouble(MasoesSettings.getInstance().get(MasoesSettings.MASOES_ACTIVATION_INCREASE));
 
         activationIncreaseSpinner = new JSpinner();
         activationIncreaseSpinner.setModel(new SpinnerNumberModel(activationIncrease, 0., 1., .01));
-        westPanel.add(activationIncreaseSpinner, "w 70, wrap");
+        globalVariablesPanel.add(activationIncreaseSpinner, "w 70, wrap");
 
         JLabel satisfactionIncreaseLabel = new JLabel(translation.get("gui.satisfaction_increase"));
-        westPanel.add(satisfactionIncreaseLabel, "w 70");
+        globalVariablesPanel.add(satisfactionIncreaseLabel, "w 70");
 
         double satisfactionIncrease = Double.parseDouble(MasoesSettings.getInstance().get(MasoesSettings.MASOES_SATISFACTION_INCREASE));
 
         satisfactionIncreaseSpinner = new JSpinner();
         satisfactionIncreaseSpinner.setModel(new SpinnerNumberModel(satisfactionIncrease, 0., 1., .01));
-        westPanel.add(satisfactionIncreaseSpinner, "w 70, wrap");
+        globalVariablesPanel.add(satisfactionIncreaseSpinner, "w 70, wrap");
     }
 
     private void addCenterComponents() {
