@@ -115,7 +115,7 @@ public class SubmitterUserAgentGui extends JFrame {
     }
 
     public void addEmotionalState(EmotionalState emotionalState) {
-        emotionalSpaceChart.addEmotionalState(emotionalState);
+        emotionalSpaceChart.setEmotionalState(emotionalState);
         satisfactionValueLabel.setText(String.format("%.5f", emotionalState.getSatisfaction()));
         activationValueLabel.setText(String.format("%.5f", emotionalState.getActivation()));
     }

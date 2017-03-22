@@ -23,19 +23,21 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
     private static final String HAPPINESS = "happiness";
     private static final String JOY = "joy";
     private static final String COMPASSION = "compassion";
-    private static final Color GRAY_COLOR = new Color(235, 235, 235);
     private static final String ADMIRATION = "admiration";
     private static final String DEPRESSION = "depression";
     private static final String SADNESS = "sadness";
     private static final String REJECTION = "rejection";
     private static final String ANGER = "anger";
+
+    private static final Color GRAY_COLOR = new Color(235, 235, 235);
     private static final int FPS = 26;
+    private boolean stop;
+
     private Translation translation;
     private Font font;
     private Thread thread;
     private BufferedImage image;
     private Graphics2D graphics;
-    private boolean stop;
     private EmotionalState emotionalState;
     private EmotionalSpace emotionalSpace;
 
@@ -65,7 +67,7 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
         spaceChart.start();
 
         new EmotionalSpace().getEmotions().forEach(emotion -> {
-            spaceChart.addEmotionalState(emotion.getRandomEmotionalState());
+            spaceChart.setEmotionalState(emotion.getRandomEmotionalState());
             try {
                 Thread.sleep(4000);
             } catch (InterruptedException e) {
@@ -74,7 +76,7 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
         });
     }
 
-    public void addEmotionalState(EmotionalState emotionalState) {
+    public void setEmotionalState(EmotionalState emotionalState) {
         this.emotionalState = emotionalState;
     }
 
@@ -95,30 +97,30 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
             return;
         }
         graphics.setColor(Color.RED);
-        int x = convertXToCanvas(getWidth(), emotionalState.getActivation());
-        int y = convertYToCanvas(getHeight(), emotionalState.getSatisfaction());
+        int x = xCanvas(emotionalState.getActivation());
+        int y = yCanvas(emotionalState.getSatisfaction());
         graphics.fillOval(x - 3, y - 3, 6, 6);
     }
 
     private void renderTexts() {
         graphics.setColor(Color.BLACK);
-        graphics.drawString(getEmotionTranslation(COMPASSION), convertXToCanvas(getWidth(), -.8), convertYToCanvas(getHeight(), .7));
-        graphics.drawString(getEmotionTranslation(HAPPINESS), convertXToCanvas(getWidth(), .5), convertYToCanvas(getHeight(), .7));
-        graphics.drawString(getEmotionTranslation(ANGER), convertXToCanvas(getWidth(), .5), convertYToCanvas(getHeight(), -.8));
-        graphics.drawString(getEmotionTranslation(DEPRESSION), convertXToCanvas(getWidth(), -.8), convertYToCanvas(getHeight(), -.8));
+        graphics.drawString(getEmotionTranslation(COMPASSION), xCanvas(-.8), yCanvas(.7));
+        graphics.drawString(getEmotionTranslation(HAPPINESS), xCanvas(.5), yCanvas(.7));
+        graphics.drawString(getEmotionTranslation(ANGER), xCanvas(.5), yCanvas(-.8));
+        graphics.drawString(getEmotionTranslation(DEPRESSION), xCanvas(-.8), yCanvas(-.8));
 
-        graphics.drawString(getEmotionTranslation(ADMIRATION), convertXToCanvas(getWidth(), -.45), convertYToCanvas(getHeight(), .40));
-        graphics.drawString(getEmotionTranslation(JOY), convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), .40));
-        graphics.drawString(getEmotionTranslation(SADNESS), convertXToCanvas(getWidth(), -.45), convertYToCanvas(getHeight(), -.45));
-        graphics.drawString(getEmotionTranslation(REJECTION), convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), -.45));
+        graphics.drawString(getEmotionTranslation(ADMIRATION), xCanvas(-.45), yCanvas(.40));
+        graphics.drawString(getEmotionTranslation(JOY), xCanvas(.05), yCanvas(.40));
+        graphics.drawString(getEmotionTranslation(SADNESS), xCanvas(-.45), yCanvas(-.45));
+        graphics.drawString(getEmotionTranslation(REJECTION), xCanvas(.05), yCanvas(-.45));
     }
 
     private void renderIntervals() {
         graphics.setColor(Color.DARK_GRAY);
-        graphics.drawString("1", convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), .9));
-        graphics.drawString("1", convertXToCanvas(getWidth(), .9), convertYToCanvas(getHeight(), -.1));
-        graphics.drawString("-1", convertXToCanvas(getWidth(), .05), convertYToCanvas(getHeight(), -.9));
-        graphics.drawString("-1", convertXToCanvas(getWidth(), -.95), convertYToCanvas(getHeight(), -.1));
+        graphics.drawString("1", xCanvas(.05), yCanvas(.9));
+        graphics.drawString("1", xCanvas(.9), yCanvas(-.1));
+        graphics.drawString("-1", xCanvas(.05), yCanvas(-.9));
+        graphics.drawString("-1", xCanvas(-.95), yCanvas(-.1));
     }
 
     private void renderEmotionIntersection() {
@@ -219,26 +221,27 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
         return translation.get(key).toUpperCase();
     }
 
-    private int convertXToCanvas(int size, double value) {
+    private int xCanvas(double value) {
         int sign = 1;
         if (value < 0) {
             sign = -1;
         }
-        return (int) ((size / 2 + abs(value) * size / 2 * sign));
+        return (int) ((getWidth() / 2 + abs(value) * getWidth() / 2 * sign));
     }
 
-    private int convertYToCanvas(int size, double value) {
+    private int yCanvas(double value) {
         int sign = 1;
         if (value >= 0) {
             sign = -1;
         }
-        return (int) ((size / 2 + abs(value) * size / 2 * sign));
+        return (int) ((getHeight() / 2 + abs(value) * getHeight() / 2 * sign));
     }
 
     public void start() {
         if (!thread.isAlive()) {
             makeImage();
             thread.start();
+            stop = false;
         }
     }
 
