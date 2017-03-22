@@ -34,8 +34,8 @@ public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
     public EmotionalAgentBehaviour(EmotionalAgent emotionalAgent) {
         super(emotionalAgent, new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), MasoesOntology.getInstance());
         this.emotionalAgent = emotionalAgent;
-        behaviouralComponent = emotionalAgent.getBehaviouralComponent();
         logger = new EmotionalAgentLogger(emotionalAgent);
+        behaviouralComponent = emotionalAgent.getBehaviouralComponent();
     }
 
     @Override
@@ -44,21 +44,16 @@ public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
         if (agentAction instanceof GetEmotionalState) {
             return responseAgentStatus();
         } else {
-            return responseEvaluateStimulus(action);
+            responseEvaluateStimulus((EvaluateStimulus) action.getAction());
         }
+        return new Done(action);
     }
 
-    private Predicate responseEvaluateStimulus(Action action) {
-        EvaluateStimulus agentAction = (EvaluateStimulus) action.getAction();
-
+    private void responseEvaluateStimulus(EvaluateStimulus evaluateStimulus) {
         Emotion currentEmotion = behaviouralComponent.getCurrentEmotion();
-
-        behaviouralComponent.evaluateStimulus(agentAction.getStimulus());
-
+        behaviouralComponent.evaluateStimulus(evaluateStimulus.getStimulus());
         Emotion newEmotion = behaviouralComponent.getCurrentEmotion();
-
         logger.updatingEmotion(currentEmotion, newEmotion);
-        return new Done(action);
     }
 
     private Predicate responseAgentStatus() {
