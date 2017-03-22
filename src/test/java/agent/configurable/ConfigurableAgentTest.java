@@ -50,7 +50,7 @@ public class ConfigurableAgentTest {
     @Test
     public void shouldAddConfiguringAgentBehaviour() {
         configurableAgentSpy.setup();
-        verify(configurableAgentSpy).addBehaviour(isA(ConfiguringAgentBehaviour.class));
+        verify(configurableAgentSpy).addBehaviour(isA(ConfigurableAgentBehaviour.class));
     }
 
     @Test

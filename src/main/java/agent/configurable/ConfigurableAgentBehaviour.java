@@ -25,11 +25,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class ConfiguringAgentBehaviour extends OntologyResponderBehaviour {
+public class ConfigurableAgentBehaviour extends OntologyResponderBehaviour {
 
     private Map<String, Behaviour> behaviours;
 
-    public ConfiguringAgentBehaviour(Agent agent) {
+    public ConfigurableAgentBehaviour(Agent agent) {
         super(agent, new MessageTemplate(new OntologyMatchExpression(ConfigurableOntology.getInstance())), ConfigurableOntology.getInstance());
         behaviours = new HashMap<>();
     }
@@ -57,7 +57,7 @@ public class ConfiguringAgentBehaviour extends OntologyResponderBehaviour {
     private Predicate removeBehaviour(Action action) {
         RemoveBehaviour removeBehaviour = (RemoveBehaviour) action.getAction();
         String name = removeBehaviour.getName();
-        if (name != null) {
+        if (behaviours.get(name) != null) {
             myAgent.removeBehaviour(behaviours.get(name));
         }
         return new Done(action);

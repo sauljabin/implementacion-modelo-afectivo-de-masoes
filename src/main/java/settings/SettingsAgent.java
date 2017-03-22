@@ -27,7 +27,7 @@ public class SettingsAgent extends Agent {
     @Override
     protected void setup() {
         try {
-            addBehaviour(new ResponseSettingsBehaviour(this));
+            addBehaviour(new SettingsBehaviour(this));
             agentManagementAssistant.register(
                     createService(SettingsOntology.ACTION_GET_SETTING),
                     createService(SettingsOntology.ACTION_GET_ALL_SETTINGS)

@@ -50,7 +50,7 @@ public class SettingsAgentTest extends PowerMockitoTest {
     @Test
     public void shouldAddSettingsBehaviour() {
         settingsAgentSpy.setup();
-        verify(settingsAgentSpy).addBehaviour(isA(ResponseSettingsBehaviour.class));
+        verify(settingsAgentSpy).addBehaviour(isA(SettingsBehaviour.class));
     }
 
     @Test

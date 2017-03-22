@@ -333,8 +333,8 @@ public class RequesterGuiAgent extends GuiAgent {
 
     private void sendEvaluateEventStimulus(AID aid) {
         EventStimulus eventStimulus = new EventStimulus();
-        eventStimulus.setAffected(getAID(requesterGui.getCreatorName()));
-        eventStimulus.setEventName(requesterGui.getObjectName());
+        eventStimulus.setAffected(getAID(requesterGui.getAffectedName()));
+        eventStimulus.setEventName(requesterGui.getEventName());
         sendOntologyMessage(aid, MasoesOntology.getInstance(), new EvaluateStimulus(eventStimulus));
     }
 

@@ -233,8 +233,8 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
     public void shouldSendEvaluateEventStimulus() throws Exception {
         String expectedAffectedName = "expectedAffectedName";
         String expectedEventName = "expectedEventName";
-        doReturn(expectedAffectedName).when(requesterGuiMock).getCreatorName();
-        doReturn(expectedEventName).when(requesterGuiMock).getObjectName();
+        doReturn(expectedAffectedName).when(requesterGuiMock).getAffectedName();
+        doReturn(expectedEventName).when(requesterGuiMock).getEventName();
         doReturn(new AID(expectedAffectedName, AID.ISGUID)).when(requesterGuiAgentSpy).getAID(expectedAffectedName);
 
         Action action = testRequestAction(MasoesOntology.getInstance(), RequesterGuiAction.EVALUATE_EVENT_STIMULUS);

@@ -26,7 +26,7 @@ public class ConfigurableAgent extends Agent {
     @Override
     protected void setup() {
         try {
-            addBehaviour(new ConfiguringAgentBehaviour(this));
+            addBehaviour(new ConfigurableAgentBehaviour(this));
             agentManagementAssistant.register(
                     createService(ConfigurableOntology.ACTION_ADD_BEHAVIOUR),
                     createService(ConfigurableOntology.ACTION_REMOVE_BEHAVIOUR)

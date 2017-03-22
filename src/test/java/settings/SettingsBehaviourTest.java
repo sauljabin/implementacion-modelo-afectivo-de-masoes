@@ -38,13 +38,13 @@ import static org.mockito.Mockito.mock;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
-public class ResponseSettingsBehaviourTest {
+public class SettingsBehaviourTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     private Agent agentMock;
-    private ResponseSettingsBehaviour responseSettingsBehaviour;
+    private SettingsBehaviour settingsBehaviour;
     private ApplicationSettings applicationSettingsMock;
     private JadeSettings jadeSettingsMock;
     private MasoesSettings masoesSettingsMock;
@@ -56,10 +56,10 @@ public class ResponseSettingsBehaviourTest {
         jadeSettingsMock = mock(JadeSettings.class);
         masoesSettingsMock = mock(MasoesSettings.class);
 
-        responseSettingsBehaviour = new ResponseSettingsBehaviour(agentMock);
-        setFieldValue(responseSettingsBehaviour, "applicationSettings", applicationSettingsMock);
-        setFieldValue(responseSettingsBehaviour, "jadeSettings", jadeSettingsMock);
-        setFieldValue(responseSettingsBehaviour, "masoesSettings", masoesSettingsMock);
+        settingsBehaviour = new SettingsBehaviour(agentMock);
+        setFieldValue(settingsBehaviour, "applicationSettings", applicationSettingsMock);
+        setFieldValue(settingsBehaviour, "jadeSettings", jadeSettingsMock);
+        setFieldValue(settingsBehaviour, "masoesSettings", masoesSettingsMock);
     }
 
     @Test
@@ -96,7 +96,7 @@ public class ResponseSettingsBehaviourTest {
         doReturn(null).when(masoesSettingsMock).get(key);
         GetSetting getSetting = new GetSetting(key);
         Action action = new Action(new AID(), getSetting);
-        responseSettingsBehaviour.performAction(action);
+        settingsBehaviour.performAction(action);
     }
 
     @Test
@@ -133,7 +133,7 @@ public class ResponseSettingsBehaviourTest {
         );
 
         Action action = new Action(new AID(), new GetAllSettings());
-        SystemSettings systemSettings = (SystemSettings) responseSettingsBehaviour.performAction(action);
+        SystemSettings systemSettings = (SystemSettings) settingsBehaviour.performAction(action);
         assertReflectionEquals(expectedSetting.getSettings().toArray(), systemSettings.getSettings().toArray());
     }
 
@@ -141,20 +141,20 @@ public class ResponseSettingsBehaviourTest {
     public void shouldReturnValidAgentAction() {
         Action actionGetSetting = new Action(new AID(), new GetSetting());
         Action actionGetAllSettings = new Action(new AID(), new GetAllSettings());
-        assertTrue(responseSettingsBehaviour.isValidAction(actionGetSetting));
-        assertTrue(responseSettingsBehaviour.isValidAction(actionGetAllSettings));
+        assertTrue(settingsBehaviour.isValidAction(actionGetSetting));
+        assertTrue(settingsBehaviour.isValidAction(actionGetAllSettings));
     }
 
     @Test
     public void shouldGetCorrectOntologyAndMessageTemplate() {
-        assertThat(responseSettingsBehaviour.getOntology(), is(instanceOf(SettingsOntology.class)));
-        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(SettingsOntology.getInstance())), responseSettingsBehaviour.getMessageTemplate());
+        assertThat(settingsBehaviour.getOntology(), is(instanceOf(SettingsOntology.class)));
+        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(SettingsOntology.getInstance())), settingsBehaviour.getMessageTemplate());
     }
 
     private void testReturnASettings(String key, String expectedValue) {
         GetSetting getSetting = new GetSetting(key);
         Action action = new Action(new AID(), getSetting);
-        SystemSettings systemSettings = (SystemSettings) responseSettingsBehaviour.performAction(action);
+        SystemSettings systemSettings = (SystemSettings) settingsBehaviour.performAction(action);
         Setting expectedSetting = new Setting(key, expectedValue);
         assertReflectionEquals(expectedSetting, systemSettings.getSettings().get(0));
     }

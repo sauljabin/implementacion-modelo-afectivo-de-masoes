@@ -25,13 +25,13 @@ import settings.ontology.SystemSettings;
 
 import java.util.Arrays;
 
-public class ResponseSettingsBehaviour extends OntologyResponderBehaviour {
+public class SettingsBehaviour extends OntologyResponderBehaviour {
 
     private ApplicationSettings applicationSettings;
     private JadeSettings jadeSettings;
     private MasoesSettings masoesSettings;
 
-    public ResponseSettingsBehaviour(Agent agent) {
+    public SettingsBehaviour(Agent agent) {
         super(agent, new MessageTemplate(new OntologyMatchExpression(SettingsOntology.getInstance())), SettingsOntology.getInstance());
         applicationSettings = ApplicationSettings.getInstance();
         jadeSettings = JadeSettings.getInstance();

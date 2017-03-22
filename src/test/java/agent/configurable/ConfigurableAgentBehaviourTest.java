@@ -38,27 +38,27 @@ import static org.mockito.Mockito.verify;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
-public class ConfiguringAgentBehaviourTest {
+public class ConfigurableAgentBehaviourTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    private ConfiguringAgentBehaviour configuringAgentBehaviour;
+    private ConfigurableAgentBehaviour configurableAgentBehaviour;
     private Agent agentMock;
     private Map<String, Behaviour> behaviourMap;
 
     @Before
     public void setUp() throws Exception {
         agentMock = mock(Agent.class);
-        configuringAgentBehaviour = new ConfiguringAgentBehaviour(agentMock);
+        configurableAgentBehaviour = new ConfigurableAgentBehaviour(agentMock);
         behaviourMap = new HashMap<>();
-        setFieldValue(configuringAgentBehaviour, "behaviours", behaviourMap);
+        setFieldValue(configurableAgentBehaviour, "behaviours", behaviourMap);
     }
 
     @Test
     public void shouldGetCorrectOntologyAndMessageTemplate() {
-        assertThat(configuringAgentBehaviour.getOntology(), is(instanceOf(ConfigurableOntology.class)));
-        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(ConfigurableOntology.getInstance())), configuringAgentBehaviour.getMessageTemplate());
+        assertThat(configurableAgentBehaviour.getOntology(), is(instanceOf(ConfigurableOntology.class)));
+        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(ConfigurableOntology.getInstance())), configurableAgentBehaviour.getMessageTemplate());
     }
 
     @Test
@@ -68,7 +68,7 @@ public class ConfiguringAgentBehaviourTest {
         AddBehaviour addBehaviour = new AddBehaviour(behaviourName, SimpleBehaviour.class.getCanonicalName());
         action.setAction(addBehaviour);
 
-        Predicate predicate = configuringAgentBehaviour.performAction(action);
+        Predicate predicate = configurableAgentBehaviour.performAction(action);
 
         verify(agentMock).addBehaviour(isA(SimpleBehaviour.class));
         assertThat(predicate, is(instanceOf(Done.class)));
@@ -85,7 +85,7 @@ public class ConfiguringAgentBehaviourTest {
         RemoveBehaviour removeBehaviour = new RemoveBehaviour(behaviourName);
         action.setAction(removeBehaviour);
 
-        Predicate predicate = configuringAgentBehaviour.performAction(action);
+        Predicate predicate = configurableAgentBehaviour.performAction(action);
 
         verify(agentMock).removeBehaviour(behaviourMock);
         assertThat(predicate, is(instanceOf(Done.class)));
@@ -100,36 +100,36 @@ public class ConfiguringAgentBehaviourTest {
         AgentAction agentActionMock = mock(AgentAction.class);
         doReturn(actionToString).when(agentActionMock).toString();
         action.setAction(agentActionMock);
-        configuringAgentBehaviour.performAction(action);
+        configurableAgentBehaviour.performAction(action);
     }
 
     @Test
     public void shouldReturnFalseWhenActionIsInvalid() {
         Action action = new Action();
         action.setAction(new AddBehaviour());
-        assertTrue(configuringAgentBehaviour.isValidAction(action));
+        assertTrue(configurableAgentBehaviour.isValidAction(action));
         action.setAction(new RemoveBehaviour());
-        assertTrue(configuringAgentBehaviour.isValidAction(action));
+        assertTrue(configurableAgentBehaviour.isValidAction(action));
     }
 
     @Test
-    public void shouldReturnFalseWhenActionNameIsNull() throws Exception {
+    public void shouldThrowExceptionWhenActionNameIsNull() throws Exception {
         expectedException.expectMessage("Behaviour name not found");
         expectedException.expect(FailureException.class);
         Action action = new Action();
         action.setAction(new AddBehaviour());
-        configuringAgentBehaviour.performAction(action);
+        configurableAgentBehaviour.performAction(action);
     }
 
     @Test
-    public void shouldReturnFalseWhenActionNameIsEmpty() throws Exception {
+    public void shouldThrowExceptionWhenActionNameIsEmpty() throws Exception {
         expectedException.expectMessage("Behaviour name not found");
         expectedException.expect(FailureException.class);
         Action action = new Action();
         AddBehaviour addBehaviour = new AddBehaviour();
         addBehaviour.setName("");
         action.setAction(addBehaviour);
-        configuringAgentBehaviour.performAction(action);
+        configurableAgentBehaviour.performAction(action);
     }
 
 }

@@ -19,7 +19,7 @@ public abstract class Environment {
 
     public static final String SETTINGS_AGENT = "settings";
     public static final String NOTIFIER_AGENT = "notifier";
-    private static final String PERSISTENCE_AGENT = "persistence";
+    private static final String KNOWLEDGE_AGENT = "knowledge";
     private static final String AGENT_DELIMITER = ";";
 
     public abstract List<AgentParameter> getAgentParameters();
@@ -39,7 +39,7 @@ public abstract class Environment {
 
         agentParameters.add(new AgentParameter(SETTINGS_AGENT, SettingsAgent.class));
         agentParameters.add(new AgentParameter(NOTIFIER_AGENT, NotifierAgent.class));
-        agentParameters.add(new AgentParameter(PERSISTENCE_AGENT, ColectiveKnowledgeBaseAgent.class));
+        agentParameters.add(new AgentParameter(KNOWLEDGE_AGENT, ColectiveKnowledgeBaseAgent.class));
 
         return agentParameters.stream().map(
                 agentParameter -> agentParameter.toJadeParameter()

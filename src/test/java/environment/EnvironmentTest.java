@@ -76,7 +76,7 @@ public class EnvironmentTest {
     private void testBasicAgents(Environment environment) {
         assertThat(environment.toJadeParameter(), containsString("notifier:" + NotifierAgent.class.getName()));
         assertThat(environment.toJadeParameter(), containsString("settings:" + SettingsAgent.class.getName()));
-        assertThat(environment.toJadeParameter(), containsString("persistence:" + ColectiveKnowledgeBaseAgent.class.getName()));
+        assertThat(environment.toJadeParameter(), containsString("knowledge:" + ColectiveKnowledgeBaseAgent.class.getName()));
     }
 
     private Environment createEnvironment(List<AgentParameter> agentParameters) {
