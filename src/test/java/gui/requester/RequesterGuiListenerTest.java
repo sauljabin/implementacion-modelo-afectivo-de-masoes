@@ -31,7 +31,7 @@ public class RequesterGuiListenerTest {
         guiEventArgumentCaptor = ArgumentCaptor.forClass(GuiEvent.class);
         requesterGuiMock = mock(RequesterGui.class);
         requesterGuiAgentMock = mock(RequesterGuiAgent.class);
-        requesterGuiListener = new RequesterGuiListener(requesterGuiMock, requesterGuiAgentMock);
+        requesterGuiListener = new RequesterGuiListener(requesterGuiAgentMock, requesterGuiMock);
     }
 
     @Test

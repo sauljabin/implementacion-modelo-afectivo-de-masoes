@@ -18,7 +18,7 @@ public class RequesterGuiListener extends WindowAdapter implements ActionListene
     private RequesterGui requesterGui;
     private RequesterGuiAgent requesterGuiAgent;
 
-    public RequesterGuiListener(RequesterGui requesterGui, RequesterGuiAgent requesterGuiAgent) {
+    public RequesterGuiListener(RequesterGuiAgent requesterGuiAgent, RequesterGui requesterGui) {
         this.requesterGui = requesterGui;
         this.requesterGuiAgent = requesterGuiAgent;
         setUpGui();

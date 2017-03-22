@@ -8,27 +8,24 @@ package environment.wikipedia;
 
 import environment.AgentParameter;
 import environment.Environment;
-import environment.wikipedia.reviewer.ReviewerUserAgent;
-import environment.wikipedia.submitter.SubmitterUserAgent;
-import gui.requester.RequesterGuiAgent;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class WikipediaEnvironment extends Environment {
 
+    private static final String WIKIPEDIA = "wikipedia";
+
     @Override
     public List<AgentParameter> getAgentParameters() {
         return Arrays.asList(
-                new AgentParameter("submitter", SubmitterUserAgent.class),
-                new AgentParameter("reviewer", ReviewerUserAgent.class),
-                new AgentParameter("requester", RequesterGuiAgent.class)
+                new AgentParameter("configurator", ConfiguratorAgent.class)
         );
     }
 
     @Override
     public String getName() {
-        return "wikipedia";
+        return WIKIPEDIA;
     }
 
 }

@@ -4,15 +4,18 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.reviewer;
+package environment.wikipedia;
 
+import knowledge.Knowledge;
 import masoes.agent.EmotionalAgent;
+
+import java.nio.file.Paths;
 
 public class ReviewerUserAgent extends EmotionalAgent {
 
     @Override
     public void setUp() {
-
+        getBehaviouralComponent().addKnowledge(new Knowledge(Paths.get("theories/behavioural/wikipedia/reviewerEmotionalAgent.prolog")));
     }
 
 }

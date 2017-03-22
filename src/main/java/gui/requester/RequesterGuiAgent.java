@@ -64,7 +64,7 @@ public class RequesterGuiAgent extends GuiAgent {
 
     public RequesterGuiAgent() {
         requesterGui = new RequesterGui();
-        requesterGuiListener = new RequesterGuiListener(requesterGui, this);
+        requesterGuiListener = new RequesterGuiListener(this, requesterGui);
         logger = new AgentLogger(this);
     }
 

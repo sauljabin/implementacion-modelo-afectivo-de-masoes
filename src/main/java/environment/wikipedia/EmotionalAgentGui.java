@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.submitter;
+package environment.wikipedia;
 
 import gui.component.EmotionalSpaceChart;
 import masoes.component.behavioural.BehaviourType;
@@ -17,7 +17,7 @@ import translate.Translation;
 import javax.swing.*;
 import java.awt.*;
 
-public class SubmitterUserAgentGui extends JFrame {
+public class EmotionalAgentGui extends JFrame {
 
     private static final String INSETS_10 = "insets 10";
     private static final String FIELD_W = "grow, wrap 15";
@@ -30,19 +30,19 @@ public class SubmitterUserAgentGui extends JFrame {
     private JLabel satisfactionValueLabel;
     private Translation translation;
 
-    public SubmitterUserAgentGui() {
+    public EmotionalAgentGui() {
         translation = Translation.getInstance();
         setSize(320, 550);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
-        setTitle(translation.get("gui.user"));
+        setTitle(translation.get("gui.agent_state"));
         addComponents();
         setLocationRelativeTo(this);
     }
 
     public static void main(String[] args) {
-        SubmitterUserAgentGui submitterUserAgentGui = new SubmitterUserAgentGui();
-        submitterUserAgentGui.showGui();
+        EmotionalAgentGui emotionalAgentGui = new EmotionalAgentGui();
+        emotionalAgentGui.showGui();
     }
 
     private void addComponents() {
@@ -114,10 +114,10 @@ public class SubmitterUserAgentGui extends JFrame {
         legendPanel.add(legendActualEmotion);
     }
 
-    public void addEmotionalState(EmotionalState emotionalState) {
+    public void setEmotionalState(EmotionalState emotionalState) {
         emotionalSpaceChart.setEmotionalState(emotionalState);
-        satisfactionValueLabel.setText(String.format("%.5f", emotionalState.getSatisfaction()));
-        activationValueLabel.setText(String.format("%.5f", emotionalState.getActivation()));
+        satisfactionValueLabel.setText(String.format("%.3f", emotionalState.getSatisfaction()));
+        activationValueLabel.setText(String.format("%.3f", emotionalState.getActivation()));
     }
 
     public void setAgentName(String name) {
