@@ -38,7 +38,7 @@ public class ConfiguratorAgentGui extends JFrame {
 
     private void setUp() {
         setTitle(translation.get("gui.configurator"));
-        setSize(900, 600);
+        setSize(1024, 768);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
         addComponents();
@@ -88,9 +88,22 @@ public class ConfiguratorAgentGui extends JFrame {
         JPanel centerPanel = new JPanel(new MigLayout("insets 10 0 10 10"));
         add(centerPanel, BorderLayout.CENTER);
 
+        JPanel addAgentsPanel = new JPanel(new MigLayout("insets 10"));
+        addAgentsPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.add_agents")));
+        centerPanel.add(addAgentsPanel, "w 100%, h 40%, wrap");
+
+        JButton addAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/add-icon.png")));
+        addAgentsPanel.add(addAgentButton, "w 25, h 25");
+
+        JButton removeAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/delete-icon.png")));
+        addAgentsPanel.add(removeAgentButton, "w 25, h 25");
+
+        JButton windowAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/window.png")));
+        addAgentsPanel.add(windowAgentButton, "w 25, h 25");
+
         JPanel currentStatePanel = new JPanel(new MigLayout("insets 0 5 5 5"));
         currentStatePanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.current_emotional_states")));
-        centerPanel.add(currentStatePanel, "w 100%, h 100%");
+        centerPanel.add(currentStatePanel, "w 100%, h 60%");
 
         agentStateTableModel = new AgentStateTableModel();
         JTable agentStateTable = new JTable(agentStateTableModel);
