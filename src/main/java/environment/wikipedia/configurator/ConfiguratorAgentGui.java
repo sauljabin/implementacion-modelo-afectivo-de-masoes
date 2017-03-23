@@ -88,12 +88,16 @@ public class ConfiguratorAgentGui extends JFrame {
         JPanel centerPanel = new JPanel(new MigLayout("insets 10 0 10 10"));
         add(centerPanel, BorderLayout.CENTER);
 
+        JPanel currentStatePanel = new JPanel(new MigLayout("insets 0 5 5 5"));
+        currentStatePanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.current_emotional_states")));
+        centerPanel.add(currentStatePanel, "w 100%, h 100%");
+
         agentStateTableModel = new AgentStateTableModel();
         JTable agentStateTable = new JTable(agentStateTableModel);
         agentStateTable.setFillsViewportHeight(true);
 
         JScrollPane scrollAgentStateTable = new JScrollPane(agentStateTable);
-        centerPanel.add(scrollAgentStateTable, "h 100%, w 100%");
+        currentStatePanel.add(scrollAgentStateTable, "h 100%, w 100%");
     }
 
     public void closeGui() {
