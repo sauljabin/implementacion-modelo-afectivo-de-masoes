@@ -23,6 +23,8 @@ public class ConfiguratorAgentGui extends JFrame {
     private AgentStateTableModel agentStateTableModel;
     private JSpinner activationIncreaseSpinner;
     private JSpinner satisfactionIncreaseSpinner;
+    private JButton startButton;
+    private JButton cleanButton;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -74,6 +76,12 @@ public class ConfiguratorAgentGui extends JFrame {
         satisfactionIncreaseSpinner = new JSpinner();
         satisfactionIncreaseSpinner.setModel(new SpinnerNumberModel(satisfactionIncrease, 0., 1., .01));
         globalVariablesPanel.add(satisfactionIncreaseSpinner, "w 70, wrap");
+
+        startButton = new JButton(translation.get("gui.start"));
+        westPanel.add(startButton, "grow, h 25, wrap");
+
+        cleanButton = new JButton(translation.get("gui.clean"));
+        westPanel.add(cleanButton, "grow, h 25");
     }
 
     private void addCenterComponents() {
@@ -113,6 +121,12 @@ public class ConfiguratorAgentGui extends JFrame {
                 ConfiguratorAgentEvent.UPDATE_SATISFACTION_INCREASE.getInt(),
                 ConfiguratorAgentEvent.UPDATE_SATISFACTION_INCREASE.toString()
         )));
+
+        startButton.setActionCommand(ConfiguratorAgentEvent.START.toString());
+        startButton.addActionListener(actionListener);
+
+        cleanButton.setActionCommand(ConfiguratorAgentEvent.CLEAN.toString());
+        cleanButton.addActionListener(actionListener);
     }
 
     public void showError(String message) {

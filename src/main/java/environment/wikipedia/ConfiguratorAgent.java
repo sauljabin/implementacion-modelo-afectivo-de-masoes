@@ -52,7 +52,7 @@ public class ConfiguratorAgent extends GuiAgent {
                 ACLMessage response = protocolAssistant.sendRequest(requestAction, ACLMessage.INFORM);
                 AgentState agentState = (AgentState) masoesOntologyAssistant.extractMessageContent(response);
                 configuratorAgentGui.setAgentStates(Arrays.asList(agentState));
-                block(1000 / 10);
+                block(1000);
             }
         });
     }
@@ -75,11 +75,23 @@ public class ConfiguratorAgent extends GuiAgent {
                 case UPDATE_ACTIVATION_INCREASE:
                     updateActivationIncrease();
                     break;
+                case CLEAN:
+                    cleanSimulation();
+                    break;
+                case START:
+                    startSimulation();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             configuratorAgentGui.showError(e.getMessage());
         }
+    }
+
+    private void startSimulation() {
+    }
+
+    private void cleanSimulation() {
     }
 
     private void updateActivationIncrease() {
