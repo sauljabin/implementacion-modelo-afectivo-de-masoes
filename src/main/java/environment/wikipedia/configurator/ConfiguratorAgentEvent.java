@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia;
+package environment.wikipedia.configurator;
 
 import java.util.Arrays;
 import java.util.List;

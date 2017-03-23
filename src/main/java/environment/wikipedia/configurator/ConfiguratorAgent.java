@@ -4,10 +4,11 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia;
+package environment.wikipedia.configurator;
 
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
+import environment.wikipedia.ContributorAgent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;

@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia;
+package environment.wikipedia.configurator;
 
 import masoes.component.behavioural.BehaviourType;
 import masoes.component.behavioural.Emotion;
