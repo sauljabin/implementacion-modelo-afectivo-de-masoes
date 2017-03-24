@@ -8,16 +8,22 @@ package environment.wikipedia.configurator;
 
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import masoes.MasoesSettings;
 import masoes.component.behavioural.EmotionalSpace;
 import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.MasoesOntology;
+import masoes.ontology.state.AgentState;
+import masoes.ontology.state.GetEmotionalState;
 import ontology.OntologyAssistant;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ConfiguratorAgent extends GuiAgent {
 
@@ -124,6 +130,28 @@ public class ConfiguratorAgent extends GuiAgent {
     }
 
     private void startSimulation() {
+        configuratorAgentGui.getAgentsToAdd().forEach(agentToAdd -> {
+            agentManagementAssistant.createAgent(
+                    agentToAdd.getAgentName(),
+                    agentToAdd.getType().getAgentCLass(),
+                    Arrays.asList(
+                            String.valueOf(agentToAdd.getEmotionalState().getActivation()),
+                            String.valueOf(agentToAdd.getEmotionalState().getSatisfaction()))
+            );
+        });
+
+        addBehaviour(new CyclicBehaviour() {
+            @Override
+            public void action() {
+                List<AgentState> agentStates = configuratorAgentGui.getAgentsToAdd()
+                        .stream()
+                        .map(agentToAdd -> {
+                            return (AgentState) masoesOntologyAssistant.sendRequestAction(getAID(agentToAdd.getAgentName()), new GetEmotionalState());
+                        }).collect(Collectors.toList());
+                configuratorAgentGui.setAgentStates(agentStates);
+                block(1000);
+            }
+        });
     }
 
     private void cleanSimulation() {

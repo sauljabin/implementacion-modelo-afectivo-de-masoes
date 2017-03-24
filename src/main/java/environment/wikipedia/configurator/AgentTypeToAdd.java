@@ -6,16 +6,25 @@
 
 package environment.wikipedia.configurator;
 
+import environment.wikipedia.ContributorAgent;
+import environment.wikipedia.ReviewerAgent;
+import jade.core.Agent;
 import translate.Translation;
 
 public enum AgentTypeToAdd {
 
-    CONTRIBUTOR("gui.contributor"), REVIEWER("gui.reviewer");
+    CONTRIBUTOR("gui.contributor", ContributorAgent.class), REVIEWER("gui.reviewer", ReviewerAgent.class);
 
     private String translationKey;
+    private Class<? extends Agent> agentClass;
 
-    AgentTypeToAdd(String translationKey) {
+    AgentTypeToAdd(String translationKey, Class<? extends Agent> agentClass) {
         this.translationKey = translationKey;
+        this.agentClass = agentClass;
+    }
+
+    public Class<? extends Agent> getAgentCLass() {
+        return agentClass;
     }
 
     @Override
