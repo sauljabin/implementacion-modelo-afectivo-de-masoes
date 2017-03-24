@@ -17,6 +17,7 @@ public enum ConfiguratorAgentEvent {
     START,
     CLEAN,
     ADD_AGENT,
+    REMOVE_AGENTS,
     UPDATE_SATISFACTION_TO_ADD,
     UPDATE_ACTIVATION_TO_ADD;
 

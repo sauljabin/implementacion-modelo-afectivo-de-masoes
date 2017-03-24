@@ -32,13 +32,17 @@ public class AgentsToAddTableModel extends AbstractTableModel {
         };
     }
 
-    public void setAgentsToAdd(List<AgentToAdd> agentsToAdd) {
-        this.agentsToAdd = agentsToAdd;
-        fireTableDataChanged();
+    public List<AgentToAdd> getAgentsToAdd() {
+        return agentsToAdd;
     }
 
     public void addAgentToAdd(AgentToAdd agentToAdd) {
         this.agentsToAdd.add(agentToAdd);
+        fireTableDataChanged();
+    }
+
+    public void removeAgentToAdd(AgentToAdd agentToAdd) {
+        this.agentsToAdd.remove(agentToAdd);
         fireTableDataChanged();
     }
 

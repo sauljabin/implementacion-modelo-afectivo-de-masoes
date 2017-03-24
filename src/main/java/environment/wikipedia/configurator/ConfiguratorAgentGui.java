@@ -18,25 +18,28 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ConfiguratorAgentGui extends JFrame {
 
     private JPanel centerPanel;
+    private Translation translation;
 
+    private JComboBox<Object> agentTypesToAddCombo;
     private AgentsStateTableModel agentsStateTableModel;
     private AgentsToAddTableModel agentsToAddTableModel;
     private JSpinner activationIncreaseSpinner;
     private JSpinner satisfactionIncreaseSpinner;
+    private JSpinner activationToAddSpinner;
+    private JSpinner satisfactionToAddSpinner;
     private JButton startButton;
     private JButton cleanButton;
     private JButton addAgentButton;
-
-    private Translation translation;
-    private JComboBox<Object> agentTypesToAddCombo;
+    private JButton removeAgentButton;
     private JLabel emotionToAddLabel;
-    private JSpinner activationToAddSpinner;
-    private JSpinner satisfactionToAddSpinner;
+    private JTable agentsToAddTable;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -140,7 +143,7 @@ public class ConfiguratorAgentGui extends JFrame {
         configAgentPanel.add(addAgentButton, "w 25, h 25");
 
         agentsToAddTableModel = new AgentsToAddTableModel();
-        JTable agentsToAddTable = new JTable(agentsToAddTableModel);
+        agentsToAddTable = new JTable(agentsToAddTableModel);
         agentsToAddTable.setFillsViewportHeight(true);
 
         JScrollPane scrollAgentsToAddTable = new JScrollPane(agentsToAddTable);
@@ -149,7 +152,7 @@ public class ConfiguratorAgentGui extends JFrame {
         JPanel buttonsPanel = new JPanel(new MigLayout("insets 0"));
         initialAgentConfigurationPanel.add(buttonsPanel, "h 100%, wrap");
 
-        JButton removeAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/delete-icon.png")));
+        removeAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/delete-icon.png")));
         buttonsPanel.add(removeAgentButton, "w 25, h 25, wrap");
     }
 
@@ -224,6 +227,9 @@ public class ConfiguratorAgentGui extends JFrame {
 
         addAgentButton.setActionCommand(ConfiguratorAgentEvent.ADD_AGENT.toString());
         addAgentButton.addActionListener(actionListener);
+
+        removeAgentButton.setActionCommand(ConfiguratorAgentEvent.REMOVE_AGENTS.toString());
+        removeAgentButton.addActionListener(actionListener);
     }
 
     public void showError(String message) {
@@ -256,6 +262,21 @@ public class ConfiguratorAgentGui extends JFrame {
 
     public void addAgentToAdd(AgentToAdd agentToAdd) {
         agentsToAddTableModel.addAgentToAdd(agentToAdd);
+    }
+
+    public void removeAgentToAdd(AgentToAdd agentToAdd) {
+        agentsToAddTableModel.removeAgentToAdd(agentToAdd);
+    }
+
+    public List<AgentToAdd> getAgentsToAdd() {
+        return agentsToAddTableModel.getAgentsToAdd();
+    }
+
+    public List<AgentToAdd> getSelectedAgentToAdd() {
+        List<AgentToAdd> agentToAdds = new ArrayList<>();
+        Arrays.stream(agentsToAddTable.getSelectedRows())
+                .forEach(index -> agentToAdds.add(agentsToAddTableModel.getAgentsToAdd().get(index)));
+        return agentToAdds;
     }
 
 }

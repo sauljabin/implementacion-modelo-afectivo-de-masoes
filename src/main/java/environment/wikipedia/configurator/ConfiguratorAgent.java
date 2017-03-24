@@ -16,8 +16,8 @@ import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.MasoesOntology;
 import ontology.OntologyAssistant;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
+import java.util.Optional;
 
 public class ConfiguratorAgent extends GuiAgent {
 
@@ -26,7 +26,6 @@ public class ConfiguratorAgent extends GuiAgent {
     private ConfiguratorAgentListener configuratorAgentListener;
     private AgentManagementAssistant agentManagementAssistant;
     private OntologyAssistant masoesOntologyAssistant;
-    private List<AgentToAdd> agentsToAdd;
     private EmotionalSpace emotionalSpace;
 
     public ConfiguratorAgent() {
@@ -35,7 +34,6 @@ public class ConfiguratorAgent extends GuiAgent {
         logger = new AgentLogger(this);
         agentManagementAssistant = new AgentManagementAssistant(this);
         masoesOntologyAssistant = new OntologyAssistant(this, MasoesOntology.getInstance());
-        agentsToAdd = new ArrayList<>();
         emotionalSpace = new EmotionalSpace();
     }
 
@@ -75,11 +73,20 @@ public class ConfiguratorAgent extends GuiAgent {
                 case UPDATE_SATISFACTION_TO_ADD:
                     updateEmotionToAdd();
                     break;
+                case REMOVE_AGENTS:
+                    removeAgents();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             configuratorAgentGui.showError(e.getMessage());
         }
+    }
+
+    private void removeAgents() {
+        configuratorAgentGui.getSelectedAgentToAdd()
+                .forEach(agentToAdd ->
+                        configuratorAgentGui.removeAgentToAdd(agentToAdd));
     }
 
     private void updateEmotionToAdd() {
@@ -91,16 +98,28 @@ public class ConfiguratorAgent extends GuiAgent {
     }
 
     private void addAgent() {
+        Optional<AgentToAdd> max = configuratorAgentGui.getAgentsToAdd()
+                .stream()
+                .filter(agentToAdd ->
+                        agentToAdd.getType().equals(configuratorAgentGui.getAgentTypeToAdd()))
+                .max(Comparator.comparingInt(AgentToAdd::getSequence));
+
+        int nextSequence = 1;
+
+        if (max.isPresent()) {
+            nextSequence = max.get().getSequence() + 1;
+        }
+
         EmotionalState emotionalState = new EmotionalState(
                 configuratorAgentGui.getActivationToAdd(),
                 configuratorAgentGui.getSatisfactionToAdd()
         );
+
         AgentToAdd agentToAdd = new AgentToAdd(
-                agentsToAdd.size() + 1,
+                nextSequence,
                 configuratorAgentGui.getAgentTypeToAdd(),
                 emotionalState
         );
-        agentsToAdd.add(agentToAdd);
         configuratorAgentGui.addAgentToAdd(agentToAdd);
     }
 
