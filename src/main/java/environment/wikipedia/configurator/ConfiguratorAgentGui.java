@@ -279,6 +279,10 @@ public class ConfiguratorAgentGui extends JFrame {
         return agentsToAddTableModel.getAgentsToAdd();
     }
 
+    public void setAgentsToAdd(List<AgentToAdd> agentToAdds) {
+        agentsToAddTableModel.setAgentsToAdd(agentToAdds);
+    }
+
     public List<AgentToAdd> getSelectedAgentToAdd() {
         List<AgentToAdd> agentToAdds = new ArrayList<>();
         Arrays.stream(agentsToAddTable.getSelectedRows())

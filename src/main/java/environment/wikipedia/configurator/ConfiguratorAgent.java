@@ -9,6 +9,8 @@ package environment.wikipedia.configurator;
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import environment.wikipedia.state.EmotionalStateAgent;
+import jade.core.AID;
+import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
@@ -20,6 +22,7 @@ import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
 import ontology.OntologyAssistant;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -34,6 +37,7 @@ public class ConfiguratorAgent extends GuiAgent {
     private AgentManagementAssistant agentManagementAssistant;
     private OntologyAssistant masoesOntologyAssistant;
     private EmotionalSpace emotionalSpace;
+    private Behaviour configuratorBehaviour;
 
     public ConfiguratorAgent() {
         configuratorAgentGui = new ConfiguratorAgentGui();
@@ -154,7 +158,7 @@ public class ConfiguratorAgent extends GuiAgent {
             );
         });
 
-        addBehaviour(new CyclicBehaviour() {
+        configuratorBehaviour = new CyclicBehaviour() {
             @Override
             public void action() {
                 List<AgentState> agentStates = configuratorAgentGui.getAgentsToAdd()
@@ -165,13 +169,32 @@ public class ConfiguratorAgent extends GuiAgent {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
             }
-        });
+        };
+        addBehaviour(configuratorBehaviour);
     }
 
     private void cleanSimulation() {
+        if (configuratorBehaviour != null) {
+            removeBehaviour(configuratorBehaviour);
+        }
+        List<AgentToAdd> agentsToAdd = configuratorAgentGui.getAgentsToAdd();
+
+        agentsToAdd.forEach(agentToAdd -> {
+            try {
+                AID gui = getAID(agentToAdd.getAgentName() + "_GUI");
+                if (agentManagementAssistant.agents().contains(gui)) {
+                    agentManagementAssistant.killAgent(gui);
+                }
+
+                agentManagementAssistant.killAgent(getAID(agentToAdd.getAgentName()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            configuratorAgentGui.setAgentStates(new ArrayList<>());
+            configuratorAgentGui.setAgentsToAdd(new ArrayList<>());
+        });
     }
 
     private void updateActivationIncrease() {

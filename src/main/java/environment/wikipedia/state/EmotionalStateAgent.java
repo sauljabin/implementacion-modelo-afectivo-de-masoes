@@ -9,6 +9,7 @@ package environment.wikipedia.state;
 import agent.AgentLogger;
 import environment.wikipedia.configurator.ConfiguratorAgentEvent;
 import jade.AgentException;
+import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
@@ -22,6 +23,7 @@ public class EmotionalStateAgent extends GuiAgent {
     private OntologyAssistant masoesOntologyAssistant;
     private EmotionalStateAgentGui emotionalStateAgentGui;
     private AgentLogger logger;
+    private Behaviour emotionalStateAgentBehaviour;
 
     public EmotionalStateAgent() {
         emotionalStateAgentGui = new EmotionalStateAgentGui();
@@ -38,7 +40,7 @@ public class EmotionalStateAgent extends GuiAgent {
 
         String agentName = (String) getArguments()[0];
 
-        addBehaviour(new CyclicBehaviour() {
+        emotionalStateAgentBehaviour = new CyclicBehaviour() {
             @Override
             public void action() {
                 AgentState agentState = (AgentState) masoesOntologyAssistant.sendRequestAction(getAID(agentName), new GetEmotionalState());
@@ -46,10 +48,10 @@ public class EmotionalStateAgent extends GuiAgent {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
             }
-        });
+        };
+        addBehaviour(emotionalStateAgentBehaviour);
         emotionalStateAgentGui.showGui();
     }
 

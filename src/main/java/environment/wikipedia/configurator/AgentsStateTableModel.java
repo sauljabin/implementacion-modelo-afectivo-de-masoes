@@ -86,7 +86,7 @@ public class AgentsStateTableModel extends AbstractTableModel {
 
         int selectedRow = -1;
 
-        if (table != null) {
+        if (table != null && getRowCount() > 0) {
             selectedRow = table.getSelectedRow();
         }
 
