@@ -24,9 +24,11 @@ public class EmotionalStateAgent extends GuiAgent {
     private EmotionalStateAgentGui emotionalStateAgentGui;
     private AgentLogger logger;
     private Behaviour emotionalStateAgentBehaviour;
+    private EmotionalStateAgentListener emotionalStateAgentListener;
 
     public EmotionalStateAgent() {
         emotionalStateAgentGui = new EmotionalStateAgentGui();
+        emotionalStateAgentListener = new EmotionalStateAgentListener(this, emotionalStateAgentGui);
         logger = new AgentLogger(this);
         masoesOntologyAssistant = new OntologyAssistant(this, MasoesOntology.getInstance());
     }

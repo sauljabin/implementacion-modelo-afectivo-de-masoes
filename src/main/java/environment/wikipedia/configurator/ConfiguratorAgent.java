@@ -173,6 +173,7 @@ public class ConfiguratorAgent extends GuiAgent {
             }
         };
         addBehaviour(configuratorBehaviour);
+        configuratorAgentGui.modeSimulation();
     }
 
     private void cleanSimulation() {
@@ -195,6 +196,7 @@ public class ConfiguratorAgent extends GuiAgent {
             configuratorAgentGui.setAgentStates(new ArrayList<>());
             configuratorAgentGui.setAgentsToAdd(new ArrayList<>());
         });
+        configuratorAgentGui.modeConfiguration();
     }
 
     private void updateActivationIncrease() {

@@ -59,6 +59,7 @@ public class ConfiguratorAgentGui extends JFrame {
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
         addComponents();
+        modeConfiguration();
         setLocationRelativeTo(this);
     }
 
@@ -292,6 +293,32 @@ public class ConfiguratorAgentGui extends JFrame {
 
     public AgentState getSelectedAgentState() {
         return agentsStateTableModel.getAgentStates().get(agentStateTable.getSelectedRow());
+    }
+
+    public void modeConfiguration() {
+        cleanButton.setEnabled(false);
+        windowAgentButton.setEnabled(false);
+        addAgentButton.setEnabled(true);
+        startButton.setEnabled(true);
+        removeAgentButton.setEnabled(true);
+        agentTypesToAddCombo.setEnabled(true);
+        activationIncreaseSpinner.setEnabled(true);
+        satisfactionIncreaseSpinner.setEnabled(true);
+        activationToAddSpinner.setEnabled(true);
+        satisfactionToAddSpinner.setEnabled(true);
+    }
+
+    public void modeSimulation() {
+        cleanButton.setEnabled(true);
+        windowAgentButton.setEnabled(true);
+        addAgentButton.setEnabled(false);
+        startButton.setEnabled(false);
+        removeAgentButton.setEnabled(false);
+        agentTypesToAddCombo.setEnabled(false);
+        activationIncreaseSpinner.setEnabled(false);
+        satisfactionIncreaseSpinner.setEnabled(false);
+        activationToAddSpinner.setEnabled(false);
+        satisfactionToAddSpinner.setEnabled(false);
     }
 
 }
