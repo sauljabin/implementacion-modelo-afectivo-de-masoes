@@ -254,7 +254,7 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
         }
     }
 
-    protected synchronized void makeImage() {
+    protected void makeImage() {
         image = new BufferedImage(getWidth(), getHeight(), 1);
         graphics = (Graphics2D) image.getGraphics();
         RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
