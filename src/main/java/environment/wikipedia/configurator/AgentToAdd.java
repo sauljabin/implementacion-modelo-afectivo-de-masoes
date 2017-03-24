@@ -6,37 +6,51 @@
 
 package environment.wikipedia.configurator;
 
+import masoes.component.behavioural.Emotion;
+import masoes.component.behavioural.EmotionalSpace;
+import masoes.component.behavioural.EmotionalState;
+import translate.Translation;
+
 public class AgentToAdd {
 
-    private AgentToAddType type;
     private int sequence;
+    private AgentTypeToAdd type;
+    private EmotionalState emotionalState;
+    private EmotionalSpace emotionalSpace;
 
     public AgentToAdd() {
     }
 
-    public AgentToAdd(AgentToAddType type, int sequence) {
-        this.type = type;
+    public AgentToAdd(int sequence, AgentTypeToAdd type, EmotionalState emotionalState) {
         this.sequence = sequence;
-    }
-
-    public AgentToAddType getType() {
-        return type;
-    }
-
-    public void setType(AgentToAddType type) {
         this.type = type;
+        this.emotionalState = emotionalState;
+        emotionalSpace = new EmotionalSpace();
+    }
+
+    public AgentTypeToAdd getType() {
+        return type;
     }
 
     public int getSequence() {
         return sequence;
     }
 
-    public void setSequence(int sequence) {
-        this.sequence = sequence;
+    public EmotionalState getEmotionalState() {
+        return emotionalState;
     }
 
-    public String getName() {
+    public String getAgentName() {
         return String.format("%s%d", type.toString(), sequence);
+    }
+
+    public String getEmotionalStateString() {
+        return String.format("(%.2f, %.2f)", emotionalState.getActivation(), emotionalState.getSatisfaction());
+    }
+
+    public String getEmotionName() {
+        Emotion emotion = emotionalSpace.searchEmotion(emotionalState);
+        return String.format("%s - %s", Translation.getInstance().get(emotion.getName().toLowerCase()), Translation.getInstance().get(emotion.getType().toString().toLowerCase()));
     }
 
 }

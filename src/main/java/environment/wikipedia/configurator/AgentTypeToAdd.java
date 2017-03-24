@@ -8,13 +8,13 @@ package environment.wikipedia.configurator;
 
 import translate.Translation;
 
-public enum AgentToAddType {
+public enum AgentTypeToAdd {
 
     CONTRIBUTOR("gui.contributor"), REVIEWER("gui.reviewer");
 
     private String translationKey;
 
-    AgentToAddType(String translationKey) {
+    AgentTypeToAdd(String translationKey) {
         this.translationKey = translationKey;
     }
 

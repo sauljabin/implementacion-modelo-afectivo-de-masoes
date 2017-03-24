@@ -75,9 +75,9 @@ public class AgentsStateTableModel extends AbstractTableModel {
             case COLUMN_EMOTION_TYPE:
                 return translation.get(agentState.getEmotionState().getType().toLowerCase());
             case COLUMN_ACTIVATION:
-                return String.format("%.3f", agentState.getEmotionState().getActivation());
+                return String.format("%.2f", agentState.getEmotionState().getActivation());
             case COLUMN_SATISFACTION:
-                return String.format("%.3f", agentState.getEmotionState().getSatisfaction());
+                return String.format("%.2f", agentState.getEmotionState().getSatisfaction());
             case COLUMN_BEHAVIOUR_TYPE:
                 return translation.get(agentState.getBehaviourState().getType().toLowerCase());
             default:

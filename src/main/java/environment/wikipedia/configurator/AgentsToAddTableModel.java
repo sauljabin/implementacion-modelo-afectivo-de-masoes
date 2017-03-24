@@ -15,7 +15,8 @@ import java.util.List;
 public class AgentsToAddTableModel extends AbstractTableModel {
 
     private static final int COLUMN_AGENT = 0;
-    private static final int COLUMN_EMOTION = 1;
+    private static final int COLUMN_INITIAL_EMOTIONAL_STATE = 1;
+    private static final int COLUMN_EMOTION = 2;
 
     private List<AgentToAdd> agentsToAdd;
     private Translation translation;
@@ -61,9 +62,11 @@ public class AgentsToAddTableModel extends AbstractTableModel {
         AgentToAdd agentToAdd = agentsToAdd.get(rowIndex);
         switch (columnIndex) {
             case COLUMN_AGENT:
-                return agentToAdd.getName();
+                return agentToAdd.getAgentName();
+            case COLUMN_INITIAL_EMOTIONAL_STATE:
+                return agentToAdd.getEmotionalStateString();
             case COLUMN_EMOTION:
-                return "";
+                return agentToAdd.getEmotionName();
             default:
                 return null;
         }

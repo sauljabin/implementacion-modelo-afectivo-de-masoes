@@ -108,7 +108,7 @@ public class ConfiguratorAgentGui extends JFrame {
         JPanel configAgentPanel = new JPanel(new MigLayout("insets 0"));
         initialAgentConfigurationPanel.add(configAgentPanel, "w 100%, span 2, wrap");
 
-        agentTypesToAddCombo = new JComboBox<>(AgentToAddType.values());
+        agentTypesToAddCombo = new JComboBox<>(AgentTypeToAdd.values());
         configAgentPanel.add(agentTypesToAddCombo);
 
         configAgentPanel.add(new JLabel(translation.get("gui.activation_x")));
@@ -117,21 +117,22 @@ public class ConfiguratorAgentGui extends JFrame {
         Emotion initialEmotion = new EmotionalSpace().searchEmotion(initialEmotionalState);
 
         activationToAddSpinner = new JSpinner();
-        activationToAddSpinner.setModel(new SpinnerNumberModel(initialEmotionalState.getActivation(), 0., 1., .01));
+        activationToAddSpinner.setModel(new SpinnerNumberModel(initialEmotionalState.getActivation(), -1., 1., .01));
         configAgentPanel.add(activationToAddSpinner, "w 70");
 
         configAgentPanel.add(new JLabel(translation.get("gui.satisfaction_y")));
 
         satisfactionToAddSpinner = new JSpinner();
-        satisfactionToAddSpinner.setModel(new SpinnerNumberModel(initialEmotionalState.getSatisfaction(), 0., 1., .01));
+        satisfactionToAddSpinner.setModel(new SpinnerNumberModel(initialEmotionalState.getSatisfaction(), -1., 1., .01));
         configAgentPanel.add(satisfactionToAddSpinner, "w 70");
 
-        emotionToAddLabel = new JLabel(String.format("%s - %s", translation.get(initialEmotion.getName().toLowerCase()), translation.get(initialEmotion.getType().toString().toLowerCase())));
+        emotionToAddLabel = new JLabel();
         emotionToAddLabel.setFont(new Font("Arial", Font.PLAIN, 10));
         emotionToAddLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         emotionToAddLabel.setBackground(new Color(210, 210, 210));
         emotionToAddLabel.setOpaque(true);
         emotionToAddLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        setEmotionToAdd(initialEmotion);
 
         configAgentPanel.add(emotionToAddLabel, "h 20, w 200");
 
@@ -203,6 +204,18 @@ public class ConfiguratorAgentGui extends JFrame {
                 ConfiguratorAgentEvent.UPDATE_SATISFACTION_INCREASE.toString()
         )));
 
+        activationToAddSpinner.addChangeListener(e -> actionListener.actionPerformed(new ActionEvent(
+                e.getSource(),
+                ConfiguratorAgentEvent.UPDATE_ACTIVATION_TO_ADD.getInt(),
+                ConfiguratorAgentEvent.UPDATE_ACTIVATION_TO_ADD.toString()
+        )));
+
+        satisfactionToAddSpinner.addChangeListener(e -> actionListener.actionPerformed(new ActionEvent(
+                e.getSource(),
+                ConfiguratorAgentEvent.UPDATE_SATISFACTION_TO_ADD.getInt(),
+                ConfiguratorAgentEvent.UPDATE_SATISFACTION_TO_ADD.toString()
+        )));
+
         startButton.setActionCommand(ConfiguratorAgentEvent.START.toString());
         startButton.addActionListener(actionListener);
 
@@ -225,8 +238,20 @@ public class ConfiguratorAgentGui extends JFrame {
         return (double) satisfactionIncreaseSpinner.getValue();
     }
 
-    public AgentToAddType getAgentToAddType() {
-        return (AgentToAddType) agentTypesToAddCombo.getSelectedItem();
+    public double getActivationToAdd() {
+        return (double) activationToAddSpinner.getValue();
+    }
+
+    public double getSatisfactionToAdd() {
+        return (double) satisfactionToAddSpinner.getValue();
+    }
+
+    public AgentTypeToAdd getAgentTypeToAdd() {
+        return (AgentTypeToAdd) agentTypesToAddCombo.getSelectedItem();
+    }
+
+    public void setEmotionToAdd(Emotion emotion) {
+        emotionToAddLabel.setText(String.format("%s - %s", translation.get(emotion.getName().toLowerCase()), translation.get(emotion.getType().toString().toLowerCase())));
     }
 
     public void addAgentToAdd(AgentToAdd agentToAdd) {

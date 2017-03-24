@@ -115,8 +115,8 @@ public class EmotionalAgentGui extends JFrame {
 
     public void setEmotionalState(EmotionalState emotionalState) {
         emotionalSpaceChart.setEmotionalState(emotionalState);
-        satisfactionValueLabel.setText(String.format("%.3f", emotionalState.getSatisfaction()));
-        activationValueLabel.setText(String.format("%.3f", emotionalState.getActivation()));
+        satisfactionValueLabel.setText(String.format("%.2f", emotionalState.getSatisfaction()));
+        activationValueLabel.setText(String.format("%.2f", emotionalState.getActivation()));
     }
 
     public void setAgentName(String name) {

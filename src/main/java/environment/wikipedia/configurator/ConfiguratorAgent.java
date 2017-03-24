@@ -11,6 +11,8 @@ import agent.AgentManagementAssistant;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import masoes.MasoesSettings;
+import masoes.component.behavioural.EmotionalSpace;
+import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.MasoesOntology;
 import ontology.OntologyAssistant;
 
@@ -25,6 +27,7 @@ public class ConfiguratorAgent extends GuiAgent {
     private AgentManagementAssistant agentManagementAssistant;
     private OntologyAssistant masoesOntologyAssistant;
     private List<AgentToAdd> agentsToAdd;
+    private EmotionalSpace emotionalSpace;
 
     public ConfiguratorAgent() {
         configuratorAgentGui = new ConfiguratorAgentGui();
@@ -33,6 +36,7 @@ public class ConfiguratorAgent extends GuiAgent {
         agentManagementAssistant = new AgentManagementAssistant(this);
         masoesOntologyAssistant = new OntologyAssistant(this, MasoesOntology.getInstance());
         agentsToAdd = new ArrayList<>();
+        emotionalSpace = new EmotionalSpace();
     }
 
     @Override
@@ -67,6 +71,10 @@ public class ConfiguratorAgent extends GuiAgent {
                 case ADD_AGENT:
                     addAgent();
                     break;
+                case UPDATE_ACTIVATION_TO_ADD:
+                case UPDATE_SATISFACTION_TO_ADD:
+                    updateEmotionToAdd();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
@@ -74,10 +82,23 @@ public class ConfiguratorAgent extends GuiAgent {
         }
     }
 
+    private void updateEmotionToAdd() {
+        EmotionalState emotionalState = new EmotionalState(
+                configuratorAgentGui.getActivationToAdd(),
+                configuratorAgentGui.getSatisfactionToAdd()
+        );
+        configuratorAgentGui.setEmotionToAdd(emotionalSpace.searchEmotion(emotionalState));
+    }
+
     private void addAgent() {
+        EmotionalState emotionalState = new EmotionalState(
+                configuratorAgentGui.getActivationToAdd(),
+                configuratorAgentGui.getSatisfactionToAdd()
+        );
         AgentToAdd agentToAdd = new AgentToAdd(
-                configuratorAgentGui.getAgentToAddType(),
-                agentsToAdd.size() + 1
+                agentsToAdd.size() + 1,
+                configuratorAgentGui.getAgentTypeToAdd(),
+                emotionalState
         );
         agentsToAdd.add(agentToAdd);
         configuratorAgentGui.addAgentToAdd(agentToAdd);

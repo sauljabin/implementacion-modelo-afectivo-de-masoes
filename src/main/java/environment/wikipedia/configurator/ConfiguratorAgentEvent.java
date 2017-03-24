@@ -11,7 +11,14 @@ import java.util.List;
 
 public enum ConfiguratorAgentEvent {
 
-    CLOSE_WINDOW, UPDATE_SATISFACTION_INCREASE, UPDATE_ACTIVATION_INCREASE, START, CLEAN, ADD_AGENT;
+    CLOSE_WINDOW,
+    UPDATE_SATISFACTION_INCREASE,
+    UPDATE_ACTIVATION_INCREASE,
+    START,
+    CLEAN,
+    ADD_AGENT,
+    UPDATE_SATISFACTION_TO_ADD,
+    UPDATE_ACTIVATION_TO_ADD;
 
     private static List<ConfiguratorAgentEvent> events = Arrays.asList(ConfiguratorAgentEvent.values());
 
