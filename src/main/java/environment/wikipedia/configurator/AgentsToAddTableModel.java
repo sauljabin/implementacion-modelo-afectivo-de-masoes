@@ -17,12 +17,12 @@ public class AgentsToAddTableModel extends AbstractTableModel {
     private static final int COLUMN_AGENT = 0;
     private static final int COLUMN_EMOTION = 1;
 
-    private List<AgentsToAdd> agentsToAdds;
+    private List<AgentToAdd> agentsToAdd;
     private Translation translation;
     private String[] columns;
 
     public AgentsToAddTableModel() {
-        agentsToAdds = new ArrayList<>();
+        agentsToAdd = new ArrayList<>();
         translation = Translation.getInstance();
         columns = new String[]{
                 translation.get("gui.agent"),
@@ -30,19 +30,19 @@ public class AgentsToAddTableModel extends AbstractTableModel {
         };
     }
 
-    public void setAgentsToAdds(List<AgentsToAdd> agentsToAdds) {
-        this.agentsToAdds = agentsToAdds;
+    public void setAgentsToAdd(List<AgentToAdd> agentsToAdd) {
+        this.agentsToAdd = agentsToAdd;
         fireTableDataChanged();
     }
 
-    public void addAgentsToAdds(AgentsToAdd agentsToAdd) {
-        this.agentsToAdds.add(agentsToAdd);
+    public void addAgentToAdd(AgentToAdd agentToAdd) {
+        this.agentsToAdd.add(agentToAdd);
         fireTableDataChanged();
     }
 
     @Override
     public int getRowCount() {
-        return agentsToAdds.size();
+        return agentsToAdd.size();
     }
 
     @Override
@@ -57,12 +57,12 @@ public class AgentsToAddTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        AgentsToAdd agentsToAdd = agentsToAdds.get(rowIndex);
+        AgentToAdd agentToAdd = agentsToAdd.get(rowIndex);
         switch (columnIndex) {
             case COLUMN_AGENT:
-                return agentsToAdd.getName();
+                return agentToAdd.getName();
             case COLUMN_EMOTION:
-                return agentsToAdd.getEmotion().toString();
+                return agentToAdd.getEmotion().toString();
             default:
                 return null;
         }

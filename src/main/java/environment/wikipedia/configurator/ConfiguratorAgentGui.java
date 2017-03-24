@@ -26,8 +26,11 @@ public class ConfiguratorAgentGui extends JFrame {
     private JSpinner satisfactionIncreaseSpinner;
     private JButton startButton;
     private JButton cleanButton;
+    private JButton addAgentButton;
 
     private Translation translation;
+    private JComboBox<Object> emotionCombo;
+    private JComboBox<Object> agentTypesCombo;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -98,7 +101,7 @@ public class ConfiguratorAgentGui extends JFrame {
         JPanel configAgentPanel = new JPanel(new MigLayout("insets 0"));
         addAgentsPanel.add(configAgentPanel, "w 100%, span 2, wrap");
 
-        JComboBox<Object> agentTypesCombo = new JComboBox<>(AgentToAddType.values());
+        agentTypesCombo = new JComboBox<>(AgentToAddType.values());
         configAgentPanel.add(agentTypesCombo);
 
         Object[] emotions = new EmotionalSpace().getEmotions()
@@ -106,10 +109,10 @@ public class ConfiguratorAgentGui extends JFrame {
                 .map(emotion -> new EmotionToAdd(emotion))
                 .toArray();
 
-        JComboBox<Object> emotionCombo = new JComboBox<>(emotions);
+        emotionCombo = new JComboBox<>(emotions);
         configAgentPanel.add(emotionCombo);
 
-        JButton addAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/add-icon.png")));
+        addAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/add-icon.png")));
         configAgentPanel.add(addAgentButton, "w 25, h 25");
 
         agentsToAddTableModel = new AgentsToAddTableModel();
@@ -171,6 +174,9 @@ public class ConfiguratorAgentGui extends JFrame {
 
         cleanButton.setActionCommand(ConfiguratorAgentEvent.CLEAN.toString());
         cleanButton.addActionListener(actionListener);
+
+        addAgentButton.setActionCommand(ConfiguratorAgentEvent.ADD_AGENT.toString());
+        addAgentButton.addActionListener(actionListener);
     }
 
     public void showError(String message) {
@@ -183,6 +189,18 @@ public class ConfiguratorAgentGui extends JFrame {
 
     public double getSatisfactionIncrease() {
         return (double) satisfactionIncreaseSpinner.getValue();
+    }
+
+    public EmotionToAdd getEmotionToAdd() {
+        return (EmotionToAdd) emotionCombo.getSelectedItem();
+    }
+
+    public AgentToAddType getAgentToAddType() {
+        return (AgentToAddType) agentTypesCombo.getSelectedItem();
+    }
+
+    public void addAgentToAdd(AgentToAdd agentToAdd) {
+        agentsToAddTableModel.addAgentToAdd(agentToAdd);
     }
 
 }

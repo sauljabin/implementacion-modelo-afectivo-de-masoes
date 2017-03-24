@@ -20,7 +20,9 @@ import masoes.ontology.state.GetEmotionalState;
 import ontology.OntologyAssistant;
 import protocol.ProtocolAssistant;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ConfiguratorAgent extends GuiAgent {
 
@@ -30,6 +32,7 @@ public class ConfiguratorAgent extends GuiAgent {
     private AgentManagementAssistant agentManagementAssistant;
     private OntologyAssistant masoesOntologyAssistant;
     private ProtocolAssistant protocolAssistant;
+    private List<AgentToAdd> agentsToAdd;
 
     public ConfiguratorAgent() {
         configuratorAgentGui = new ConfiguratorAgentGui();
@@ -38,6 +41,7 @@ public class ConfiguratorAgent extends GuiAgent {
         agentManagementAssistant = new AgentManagementAssistant(this);
         masoesOntologyAssistant = new OntologyAssistant(this, MasoesOntology.getInstance());
         protocolAssistant = new ProtocolAssistant(this);
+        agentsToAdd = new ArrayList<>();
     }
 
     @Override
@@ -82,11 +86,24 @@ public class ConfiguratorAgent extends GuiAgent {
                 case START:
                     startSimulation();
                     break;
+                case ADD_AGENT:
+                    addAgent();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             configuratorAgentGui.showError(e.getMessage());
         }
+    }
+
+    private void addAgent() {
+        AgentToAdd agentToAdd = new AgentToAdd(
+                configuratorAgentGui.getAgentToAddType(),
+                configuratorAgentGui.getEmotionToAdd(),
+                agentsToAdd.size() + 1
+        );
+        agentsToAdd.add(agentToAdd);
+        configuratorAgentGui.addAgentToAdd(agentToAdd);
     }
 
     private void startSimulation() {

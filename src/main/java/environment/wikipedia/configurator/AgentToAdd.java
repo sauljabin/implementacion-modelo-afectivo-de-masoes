@@ -6,16 +6,16 @@
 
 package environment.wikipedia.configurator;
 
-public class AgentsToAdd {
+public class AgentToAdd {
 
     private AgentToAddType type;
     private EmotionToAdd emotion;
     private int sequence;
 
-    public AgentsToAdd() {
+    public AgentToAdd() {
     }
 
-    public AgentsToAdd(AgentToAddType type, EmotionToAdd emotion, int sequence) {
+    public AgentToAdd(AgentToAddType type, EmotionToAdd emotion, int sequence) {
         this.type = type;
         this.emotion = emotion;
         this.sequence = sequence;
