@@ -7,6 +7,9 @@
 package environment.wikipedia.configurator;
 
 import masoes.MasoesSettings;
+import masoes.component.behavioural.Emotion;
+import masoes.component.behavioural.EmotionalSpace;
+import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.state.AgentState;
 import net.miginfocom.swing.MigLayout;
 import translate.Translation;
@@ -30,7 +33,10 @@ public class ConfiguratorAgentGui extends JFrame {
     private JButton addAgentButton;
 
     private Translation translation;
-    private JComboBox<Object> agentTypesCombo;
+    private JComboBox<Object> agentTypesToAddCombo;
+    private JLabel emotionToAddLabel;
+    private JSpinner activationToAddSpinner;
+    private JSpinner satisfactionToAddSpinner;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -76,7 +82,7 @@ public class ConfiguratorAgentGui extends JFrame {
     }
 
     private void addCurrentStateComponents() {
-        JPanel currentStatePanel = new JPanel(new MigLayout("insets 0 5 5 5"));
+        JPanel currentStatePanel = new JPanel(new MigLayout("insets 0 5 0 5"));
         currentStatePanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.current_emotional_states")));
         centerPanel.add(currentStatePanel, "w 100%, h 60%");
 
@@ -95,15 +101,39 @@ public class ConfiguratorAgentGui extends JFrame {
     }
 
     private void addInitialAgentConfigurationComponents() {
-        JPanel initialAgentConfigurationPanel = new JPanel(new MigLayout("insets 0 5 0 5"));
+        JPanel initialAgentConfigurationPanel = new JPanel(new MigLayout("insets 5 5 0 5"));
         initialAgentConfigurationPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.initial_agent_configuration")));
         centerPanel.add(initialAgentConfigurationPanel, "w 100%, h 40%, wrap");
 
         JPanel configAgentPanel = new JPanel(new MigLayout("insets 0"));
         initialAgentConfigurationPanel.add(configAgentPanel, "w 100%, span 2, wrap");
 
-        agentTypesCombo = new JComboBox<>(AgentToAddType.values());
-        configAgentPanel.add(agentTypesCombo);
+        agentTypesToAddCombo = new JComboBox<>(AgentToAddType.values());
+        configAgentPanel.add(agentTypesToAddCombo);
+
+        configAgentPanel.add(new JLabel(translation.get("gui.activation_x")));
+
+        EmotionalState initialEmotionalState = new EmotionalState(.5, .5);
+        Emotion initialEmotion = new EmotionalSpace().searchEmotion(initialEmotionalState);
+
+        activationToAddSpinner = new JSpinner();
+        activationToAddSpinner.setModel(new SpinnerNumberModel(initialEmotionalState.getActivation(), 0., 1., .01));
+        configAgentPanel.add(activationToAddSpinner, "w 70");
+
+        configAgentPanel.add(new JLabel(translation.get("gui.satisfaction_y")));
+
+        satisfactionToAddSpinner = new JSpinner();
+        satisfactionToAddSpinner.setModel(new SpinnerNumberModel(initialEmotionalState.getSatisfaction(), 0., 1., .01));
+        configAgentPanel.add(satisfactionToAddSpinner, "w 70");
+
+        emotionToAddLabel = new JLabel(String.format("%s - %s", translation.get(initialEmotion.getName().toLowerCase()), translation.get(initialEmotion.getType().toString().toLowerCase())));
+        emotionToAddLabel.setFont(new Font("Arial", Font.PLAIN, 10));
+        emotionToAddLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        emotionToAddLabel.setBackground(new Color(210, 210, 210));
+        emotionToAddLabel.setOpaque(true);
+        emotionToAddLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        configAgentPanel.add(emotionToAddLabel, "h 20, w 200");
 
         addAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/add-icon.png")));
         configAgentPanel.add(addAgentButton, "w 25, h 25");
@@ -123,7 +153,7 @@ public class ConfiguratorAgentGui extends JFrame {
     }
 
     private void addGlobalVariablesComponents() {
-        JPanel globalVariablesPanel = new JPanel(new MigLayout("insets 0 5 5 5"));
+        JPanel globalVariablesPanel = new JPanel(new MigLayout("insets 5"));
         globalVariablesPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.variables")));
 
         centerPanel.add(globalVariablesPanel, "w 100%, wrap");
@@ -196,7 +226,7 @@ public class ConfiguratorAgentGui extends JFrame {
     }
 
     public AgentToAddType getAgentToAddType() {
-        return (AgentToAddType) agentTypesCombo.getSelectedItem();
+        return (AgentToAddType) agentTypesToAddCombo.getSelectedItem();
     }
 
     public void addAgentToAdd(AgentToAdd agentToAdd) {
