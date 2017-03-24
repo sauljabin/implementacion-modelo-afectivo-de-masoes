@@ -26,6 +26,7 @@ public class AgentsToAddTableModel extends AbstractTableModel {
         translation = Translation.getInstance();
         columns = new String[]{
                 translation.get("gui.agent"),
+                translation.get("gui.initial_emotional_state"),
                 translation.get("gui.emotion")
         };
     }
@@ -62,7 +63,7 @@ public class AgentsToAddTableModel extends AbstractTableModel {
             case COLUMN_AGENT:
                 return agentToAdd.getName();
             case COLUMN_EMOTION:
-                return agentToAdd.getEmotion().toString();
+                return "";
             default:
                 return null;
         }

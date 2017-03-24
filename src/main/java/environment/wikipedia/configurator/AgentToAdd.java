@@ -9,15 +9,13 @@ package environment.wikipedia.configurator;
 public class AgentToAdd {
 
     private AgentToAddType type;
-    private EmotionToAdd emotion;
     private int sequence;
 
     public AgentToAdd() {
     }
 
-    public AgentToAdd(AgentToAddType type, EmotionToAdd emotion, int sequence) {
+    public AgentToAdd(AgentToAddType type, int sequence) {
         this.type = type;
-        this.emotion = emotion;
         this.sequence = sequence;
     }
 
@@ -27,14 +25,6 @@ public class AgentToAdd {
 
     public void setType(AgentToAddType type) {
         this.type = type;
-    }
-
-    public EmotionToAdd getEmotion() {
-        return emotion;
-    }
-
-    public void setEmotion(EmotionToAdd emotion) {
-        this.emotion = emotion;
     }
 
     public int getSequence() {

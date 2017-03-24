@@ -8,13 +8,11 @@ package environment.wikipedia.configurator;
 
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
-import environment.wikipedia.ContributorAgent;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import masoes.MasoesSettings;
 import masoes.ontology.MasoesOntology;
 import ontology.OntologyAssistant;
-import protocol.ProtocolAssistant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +77,6 @@ public class ConfiguratorAgent extends GuiAgent {
     private void addAgent() {
         AgentToAdd agentToAdd = new AgentToAdd(
                 configuratorAgentGui.getAgentToAddType(),
-                configuratorAgentGui.getEmotionToAdd(),
                 agentsToAdd.size() + 1
         );
         agentsToAdd.add(agentToAdd);
