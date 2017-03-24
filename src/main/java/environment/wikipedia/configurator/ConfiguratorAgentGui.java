@@ -92,6 +92,7 @@ public class ConfiguratorAgentGui extends JFrame {
         agentsStateTableModel = new AgentsStateTableModel();
         JTable agentStateTable = new JTable(agentsStateTableModel);
         agentStateTable.setFillsViewportHeight(true);
+        agentsStateTableModel.setTable(agentStateTable);
 
         JScrollPane scrollAgentStateTable = new JScrollPane(agentStateTable);
         currentStatePanel.add(scrollAgentStateTable, "h 100%, w 100%");
@@ -145,6 +146,7 @@ public class ConfiguratorAgentGui extends JFrame {
         agentsToAddTableModel = new AgentsToAddTableModel();
         agentsToAddTable = new JTable(agentsToAddTableModel);
         agentsToAddTable.setFillsViewportHeight(true);
+        agentsToAddTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane scrollAgentsToAddTable = new JScrollPane(agentsToAddTable);
         initialAgentConfigurationPanel.add(scrollAgentsToAddTable, "h 100%, w 100%");

@@ -9,6 +9,7 @@ package environment.wikipedia.configurator;
 import masoes.ontology.state.AgentState;
 import translate.Translation;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class AgentsStateTableModel extends AbstractTableModel {
     private List<AgentState> agentStates;
     private String[] columns;
     private Translation translation;
+    private JTable table;
 
     public AgentsStateTableModel() {
         translation = Translation.getInstance();
@@ -41,12 +43,12 @@ public class AgentsStateTableModel extends AbstractTableModel {
 
     public void setAgentStates(List<AgentState> agentStates) {
         this.agentStates = agentStates;
+        int selectedRow = table.getSelectedRow();
         fireTableDataChanged();
-    }
 
-    public void addAgentStates(AgentState agentState) {
-        this.agentStates.add(agentState);
-        fireTableDataChanged();
+        if (selectedRow >= 0) {
+            table.addRowSelectionInterval(selectedRow, selectedRow);
+        }
     }
 
     @Override
@@ -83,6 +85,10 @@ public class AgentsStateTableModel extends AbstractTableModel {
             default:
                 return null;
         }
+    }
+
+    public void setTable(JTable table) {
+        this.table = table;
     }
 
 }

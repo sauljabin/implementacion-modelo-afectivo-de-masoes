@@ -57,6 +57,7 @@ public class BehaviouralComponent {
 
     public void setEmotionalState(EmotionalState emotionalState) {
         emotionalConfigurator.setEmotionalState(emotionalState);
+        behaviourManager.updateBehaviour();
     }
 
     public void addKnowledge(Knowledge knowledge) {
