@@ -9,19 +9,14 @@ package environment.wikipedia.configurator;
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import environment.wikipedia.ContributorAgent;
-import jade.core.behaviours.CyclicBehaviour;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
-import jade.lang.acl.ACLMessage;
 import masoes.MasoesSettings;
 import masoes.ontology.MasoesOntology;
-import masoes.ontology.state.AgentState;
-import masoes.ontology.state.GetEmotionalState;
 import ontology.OntologyAssistant;
 import protocol.ProtocolAssistant;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ConfiguratorAgent extends GuiAgent {
@@ -31,7 +26,6 @@ public class ConfiguratorAgent extends GuiAgent {
     private ConfiguratorAgentListener configuratorAgentListener;
     private AgentManagementAssistant agentManagementAssistant;
     private OntologyAssistant masoesOntologyAssistant;
-    private ProtocolAssistant protocolAssistant;
     private List<AgentToAdd> agentsToAdd;
 
     public ConfiguratorAgent() {
@@ -40,26 +34,12 @@ public class ConfiguratorAgent extends GuiAgent {
         logger = new AgentLogger(this);
         agentManagementAssistant = new AgentManagementAssistant(this);
         masoesOntologyAssistant = new OntologyAssistant(this, MasoesOntology.getInstance());
-        protocolAssistant = new ProtocolAssistant(this);
         agentsToAdd = new ArrayList<>();
     }
 
     @Override
     protected void setup() {
         configuratorAgentGui.showGui();
-
-        agentManagementAssistant.createAgent("testAgent", ContributorAgent.class, null);
-
-        addBehaviour(new CyclicBehaviour() {
-            @Override
-            public void action() {
-                ACLMessage requestAction = masoesOntologyAssistant.createRequestAction(getAID("testAgent"), new GetEmotionalState());
-                ACLMessage response = protocolAssistant.sendRequest(requestAction, ACLMessage.INFORM);
-                AgentState agentState = (AgentState) masoesOntologyAssistant.extractMessageContent(response);
-                configuratorAgentGui.setAgentStates(Arrays.asList(agentState));
-                block(1000);
-            }
-        });
     }
 
     @Override
