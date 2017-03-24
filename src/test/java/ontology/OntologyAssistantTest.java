@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import protocol.ProtocolAssistant;
 import settings.ontology.GetAllSettings;
 import settings.ontology.SettingsOntology;
 import test.PowerMockitoTest;
@@ -28,8 +29,12 @@ import util.MessageBuilder;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
+import static test.ReflectionTestUtils.setFieldValue;
 
 public class OntologyAssistantTest extends PowerMockitoTest {
 
@@ -40,14 +45,21 @@ public class OntologyAssistantTest extends PowerMockitoTest {
     private AID aidMock;
     private Agent agentMock;
     private AID receiver;
+    private ProtocolAssistant protocolAssistantMock;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        receiver = new AID();
+
         agentMock = mock(Agent.class);
         aidMock = mock(AID.class);
+        protocolAssistantMock = mock(ProtocolAssistant.class);
+
         doReturn(aidMock).when(agentMock).getAID();
+
         ontologyAssistant = new OntologyAssistant(agentMock, SettingsOntology.getInstance());
-        receiver = new AID();
+
+        setFieldValue(ontologyAssistant, "protocolAssistant", protocolAssistantMock);
     }
 
     @Test
@@ -56,19 +68,6 @@ public class OntologyAssistantTest extends PowerMockitoTest {
         ACLMessage actualMessage = ontologyAssistant.createRequestAction(receiver, content);
 
         assertThat(actualMessage.getAllReceiver().next(), is(receiver));
-        testBasicMessage(actualMessage);
-    }
-
-    @Test
-    public void shouldCreateMessageAndFillContent() {
-        GetAllSettings content = new GetAllSettings();
-        Action action = new Action(receiver, content);
-        ACLMessage actualMessage = ontologyAssistant.createRequestMessage(receiver, action);
-
-        testBasicMessage(actualMessage);
-    }
-
-    private void testBasicMessage(ACLMessage actualMessage) {
         assertThat(actualMessage.getPerformative(), is(ACLMessage.REQUEST));
         assertThat(actualMessage.getSender(), is(aidMock));
         assertThat(actualMessage.getOntology(), is(SettingsOntology.getInstance().getName()));
@@ -113,6 +112,23 @@ public class OntologyAssistantTest extends PowerMockitoTest {
     public void shouldThrowFillContentException() {
         expectedException.expect(FillOntologyContentException.class);
         ontologyAssistant.fillMessageContent(new ACLMessage(ACLMessage.REQUEST), new Done());
+    }
+
+    @Test
+    public void shouldSendRequestActionWithProtocolAssistant() {
+        doReturn(new MessageBuilder()
+                .request()
+                .sender(receiver)
+                .receiver(receiver)
+                .ontology(SettingsOntology.getInstance())
+                .fipaSL()
+                .fipaRequest()
+                .conversationId()
+                .replyWith()
+                .content(new Done(new Action(receiver, new GetAllSettings())))
+                .build()).when(protocolAssistantMock).sendRequest(any(ACLMessage.class), eq(ACLMessage.INFORM));
+        ontologyAssistant.sendRequestAction(receiver, new GetAllSettings());
+        verify(protocolAssistantMock).sendRequest(any(ACLMessage.class), eq(ACLMessage.INFORM));
     }
 
 }

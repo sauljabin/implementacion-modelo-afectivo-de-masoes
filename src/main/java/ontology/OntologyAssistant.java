@@ -15,6 +15,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import language.SemanticLanguage;
+import protocol.ProtocolAssistant;
 import util.MessageBuilder;
 
 public class OntologyAssistant {
@@ -22,6 +23,7 @@ public class OntologyAssistant {
     private Agent agent;
     private Ontology ontology;
     private ContentManager contentManager;
+    private ProtocolAssistant protocolAssistant;
 
     public OntologyAssistant(Agent agent, Ontology ontology) {
         this.agent = agent;
@@ -29,6 +31,21 @@ public class OntologyAssistant {
         contentManager = new ContentManager();
         contentManager.registerLanguage(SemanticLanguage.getInstance());
         contentManager.registerOntology(ontology);
+
+        protocolAssistant = new ProtocolAssistant(agent);
+    }
+
+    public long getTimeout() {
+        return protocolAssistant.getTimeout();
+    }
+
+    public void setTimeout(long timeout) {
+        protocolAssistant.setTimeout(timeout);
+    }
+
+    public ContentElement sendRequestAction(AID receiver, AgentAction agentAction) {
+        ACLMessage message = protocolAssistant.sendRequest(createRequestAction(receiver, agentAction), ACLMessage.INFORM);
+        return extractMessageContent(message);
     }
 
     public ACLMessage createRequestAction(AID receiver, AgentAction agentAction) {
@@ -36,7 +53,7 @@ public class OntologyAssistant {
         return createRequestMessage(receiver, action);
     }
 
-    public ACLMessage createRequestMessage(AID receiver, ContentElement contentElement) {
+    private ACLMessage createRequestMessage(AID receiver, ContentElement contentElement) {
         return new MessageBuilder()
                 .request()
                 .sender(agent.getAID())
