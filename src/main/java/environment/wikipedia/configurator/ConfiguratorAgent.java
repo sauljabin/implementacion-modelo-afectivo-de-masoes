@@ -8,6 +8,7 @@ package environment.wikipedia.configurator;
 
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
+import environment.wikipedia.state.EmotionalStateAgent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
@@ -93,7 +94,13 @@ public class ConfiguratorAgent extends GuiAgent {
     }
 
     private void showEmotionalStateGui() {
+        AgentState agentState = configuratorAgentGui.getSelectedAgentState();
 
+        agentManagementAssistant.createAgent(
+                agentState.getAgent().getLocalName() + "_GUI",
+                EmotionalStateAgent.class,
+                Arrays.asList(agentState.getAgent().getLocalName())
+        );
     }
 
     private void removeAgents() {

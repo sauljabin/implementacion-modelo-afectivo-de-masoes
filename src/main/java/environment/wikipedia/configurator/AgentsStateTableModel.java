@@ -41,22 +41,6 @@ public class AgentsStateTableModel extends AbstractTableModel {
         };
     }
 
-    public void setAgentStates(List<AgentState> agentStates) {
-        this.agentStates = agentStates;
-
-        int selectedRow = -1;
-
-        if (table != null) {
-            selectedRow = table.getSelectedRow();
-        }
-
-        fireTableDataChanged();
-
-        if (selectedRow >= 0) {
-            table.addRowSelectionInterval(selectedRow, selectedRow);
-        }
-    }
-
     @Override
     public String getColumnName(int column) {
         return columns[column];
@@ -90,6 +74,26 @@ public class AgentsStateTableModel extends AbstractTableModel {
                 return translation.get(agentState.getBehaviourState().getType().toLowerCase());
             default:
                 return null;
+        }
+    }
+
+    public List<AgentState> getAgentStates() {
+        return agentStates;
+    }
+
+    public void setAgentStates(List<AgentState> agentStates) {
+        this.agentStates = agentStates;
+
+        int selectedRow = -1;
+
+        if (table != null) {
+            selectedRow = table.getSelectedRow();
+        }
+
+        fireTableDataChanged();
+
+        if (selectedRow >= 0) {
+            table.addRowSelectionInterval(selectedRow, selectedRow);
         }
     }
 

@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.configurator;
+package environment.wikipedia.state;
 
 import masoes.component.behavioural.EmotionalSpace;
 import masoes.component.behavioural.EmotionalState;

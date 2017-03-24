@@ -4,19 +4,17 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.configurator;
+package environment.wikipedia.state;
 
-import masoes.component.behavioural.BehaviourType;
-import masoes.component.behavioural.Emotion;
-import masoes.component.behavioural.EmotionType;
 import masoes.component.behavioural.EmotionalState;
+import masoes.ontology.state.AgentState;
 import net.miginfocom.swing.MigLayout;
 import translate.Translation;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class EmotionalAgentGui extends JFrame {
+public class EmotionalStateAgentGui extends JFrame {
 
     private static final String INSETS_10 = "insets 10";
     private static final String FIELD_W = "grow, wrap 15";
@@ -29,7 +27,7 @@ public class EmotionalAgentGui extends JFrame {
     private JLabel satisfactionValueLabel;
     private Translation translation;
 
-    public EmotionalAgentGui() {
+    public EmotionalStateAgentGui() {
         translation = Translation.getInstance();
         setSize(320, 550);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -40,8 +38,8 @@ public class EmotionalAgentGui extends JFrame {
     }
 
     public static void main(String[] args) {
-        EmotionalAgentGui emotionalAgentGui = new EmotionalAgentGui();
-        emotionalAgentGui.showGui();
+        EmotionalStateAgentGui emotionalStateAgentGui = new EmotionalStateAgentGui();
+        emotionalStateAgentGui.showGui();
     }
 
     private void addComponents() {
@@ -113,28 +111,22 @@ public class EmotionalAgentGui extends JFrame {
         legendPanel.add(legendActualEmotion);
     }
 
-    public void setEmotionalState(EmotionalState emotionalState) {
+    public void setAgentState(AgentState agentState) {
+        agentNameLabel.setText(agentState.getAgent().getLocalName());
+
+        EmotionalState emotionalState = new EmotionalState(agentState.getEmotionState().getActivation(), agentState.getEmotionState().getSatisfaction());
         emotionalSpaceChart.setEmotionalState(emotionalState);
         satisfactionValueLabel.setText(String.format("%.2f", emotionalState.getSatisfaction()));
         activationValueLabel.setText(String.format("%.2f", emotionalState.getActivation()));
-    }
 
-    public void setAgentName(String name) {
-        agentNameLabel.setText(name);
-    }
-
-    public void setEmotion(Emotion emotion) {
-        EmotionType type = emotion.getType();
-        String typeName = translation.get(type.toString().toLowerCase());
-        String name = translation.get(emotion.getName().toLowerCase());
+        String typeName = translation.get(agentState.getEmotionState().getType().toLowerCase());
+        String name = translation.get(agentState.getEmotionState().getName().toLowerCase());
 
         emotionTypeNameLabel.setText(typeName);
         emotionNameLabel.setText(name);
-    }
 
-    public void setBehaviourType(BehaviourType type) {
-        String typeName = translation.get(type.toString().toLowerCase());
-        behaviourTypeLabel.setText(typeName);
+        String behaviourTypeName = translation.get(agentState.getBehaviourState().getType().toLowerCase());
+        behaviourTypeLabel.setText(behaviourTypeName);
     }
 
     public void closeGui() {

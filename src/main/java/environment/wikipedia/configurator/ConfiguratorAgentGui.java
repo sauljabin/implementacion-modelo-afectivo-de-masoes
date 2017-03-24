@@ -38,9 +38,10 @@ public class ConfiguratorAgentGui extends JFrame {
     private JButton cleanButton;
     private JButton addAgentButton;
     private JButton removeAgentButton;
-    private JLabel emotionToAddLabel;
-    private JTable agentsToAddTable;
     private JButton windowAgentButton;
+    private JTable agentsToAddTable;
+    private JTable agentStateTable;
+    private JLabel emotionToAddLabel;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -91,7 +92,7 @@ public class ConfiguratorAgentGui extends JFrame {
         centerPanel.add(currentStatePanel, "w 100%, h 60%");
 
         agentsStateTableModel = new AgentsStateTableModel();
-        JTable agentStateTable = new JTable(agentsStateTableModel);
+        agentStateTable = new JTable(agentsStateTableModel);
         agentStateTable.setFillsViewportHeight(true);
         agentsStateTableModel.setTable(agentStateTable);
 
@@ -283,6 +284,10 @@ public class ConfiguratorAgentGui extends JFrame {
         Arrays.stream(agentsToAddTable.getSelectedRows())
                 .forEach(index -> agentToAdds.add(agentsToAddTableModel.getAgentsToAdd().get(index)));
         return agentToAdds;
+    }
+
+    public AgentState getSelectedAgentState() {
+        return agentsStateTableModel.getAgentStates().get(agentStateTable.getSelectedRow());
     }
 
 }
