@@ -8,7 +8,9 @@ package masoes.component.behavioural;
 
 import knowledge.KnowledgeException;
 import masoes.agent.EmotionalAgent;
+import masoes.component.behavioural.emotion.SadnessEmotion;
 import masoes.ontology.stimulus.ActionStimulus;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -25,6 +27,15 @@ public class BehaviouralComponentTest extends PowerMockitoTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+    private BehaviouralComponent behaviouralComponent;
+
+    @Before
+    public void setUp() {
+        EmotionalAgent emotionalAgentMock = mock(EmotionalAgent.class);
+        String agentName = "agentName";
+        doReturn(agentName).when(emotionalAgentMock).getLocalName();
+        behaviouralComponent = new BehaviouralComponent(emotionalAgentMock);
+    }
 
     @Test
     public void shouldThrowExceptionIfAgentNotHaveName() {
@@ -36,12 +47,6 @@ public class BehaviouralComponentTest extends PowerMockitoTest {
 
     @Test
     public void shouldUpdateBehaviourAndEmotion() throws Exception {
-        EmotionalAgent emotionalAgentMock = mock(EmotionalAgent.class);
-        String agentName = "agentName";
-        doReturn(agentName).when(emotionalAgentMock).getLocalName();
-
-        BehaviouralComponent behaviouralComponent = new BehaviouralComponent(emotionalAgentMock);
-
         BehaviourManager behaviourManagerMock = mock(BehaviourManager.class);
         setFieldValue(behaviouralComponent, "behaviourManager", behaviourManagerMock);
 
@@ -65,6 +70,17 @@ public class BehaviouralComponentTest extends PowerMockitoTest {
         assertThat(behaviouralComponent.getCurrentEmotion(), is(emotionMock));
         assertThat(behaviouralComponent.getCurrentBehaviourType(), is(BehaviourType.IMITATIVE));
         assertThat(behaviouralComponent.getCurrentEmotionalState(), is(emotionalStateMock));
+    }
+
+    @Test
+    public void shouldUpdateBehaviourWhenSetEmotionalState() throws Exception {
+        BehaviourManager behaviourManagerMock = mock(BehaviourManager.class);
+        setFieldValue(behaviouralComponent, "behaviourManager", behaviourManagerMock);
+
+        doReturn(BehaviourType.IMITATIVE).when(behaviourManagerMock).getBehaviourType();
+        behaviouralComponent.setEmotionalState(new SadnessEmotion().getRandomEmotionalState());
+
+        verify(behaviourManagerMock).updateBehaviour();
     }
 
 }

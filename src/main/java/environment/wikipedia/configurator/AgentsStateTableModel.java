@@ -43,7 +43,13 @@ public class AgentsStateTableModel extends AbstractTableModel {
 
     public void setAgentStates(List<AgentState> agentStates) {
         this.agentStates = agentStates;
-        int selectedRow = table.getSelectedRow();
+
+        int selectedRow = -1;
+
+        if (table != null) {
+            selectedRow = table.getSelectedRow();
+        }
+
         fireTableDataChanged();
 
         if (selectedRow >= 0) {

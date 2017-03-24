@@ -40,6 +40,7 @@ public class ConfiguratorAgentGui extends JFrame {
     private JButton removeAgentButton;
     private JLabel emotionToAddLabel;
     private JTable agentsToAddTable;
+    private JButton windowAgentButton;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -100,7 +101,7 @@ public class ConfiguratorAgentGui extends JFrame {
         JPanel buttonsPanel = new JPanel(new MigLayout("insets 0"));
         currentStatePanel.add(buttonsPanel, "h 100%, wrap");
 
-        JButton windowAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/window.png")));
+        windowAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/window.png")));
         buttonsPanel.add(windowAgentButton, "w 25, h 25");
     }
 
@@ -232,6 +233,9 @@ public class ConfiguratorAgentGui extends JFrame {
 
         removeAgentButton.setActionCommand(ConfiguratorAgentEvent.REMOVE_AGENTS.toString());
         removeAgentButton.addActionListener(actionListener);
+
+        windowAgentButton.setActionCommand(ConfiguratorAgentEvent.SHOW_EMOTIONAL_STATE_GUI.toString());
+        windowAgentButton.addActionListener(actionListener);
     }
 
     public void showError(String message) {

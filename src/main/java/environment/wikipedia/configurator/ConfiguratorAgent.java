@@ -82,11 +82,18 @@ public class ConfiguratorAgent extends GuiAgent {
                 case REMOVE_AGENTS:
                     removeAgents();
                     break;
+                case SHOW_EMOTIONAL_STATE_GUI:
+                    showEmotionalStateGui();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             configuratorAgentGui.showError(e.getMessage());
         }
+    }
+
+    private void showEmotionalStateGui() {
+
     }
 
     private void removeAgents() {
@@ -145,9 +152,8 @@ public class ConfiguratorAgent extends GuiAgent {
             public void action() {
                 List<AgentState> agentStates = configuratorAgentGui.getAgentsToAdd()
                         .stream()
-                        .map(agentToAdd -> {
-                            return (AgentState) masoesOntologyAssistant.sendRequestAction(getAID(agentToAdd.getAgentName()), new GetEmotionalState());
-                        }).collect(Collectors.toList());
+                        .map(agentToAdd ->
+                                (AgentState) masoesOntologyAssistant.sendRequestAction(getAID(agentToAdd.getAgentName()), new GetEmotionalState())).collect(Collectors.toList());
                 configuratorAgentGui.setAgentStates(agentStates);
                 try {
                     Thread.sleep(500);
