@@ -13,7 +13,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AgentStateTableModel extends AbstractTableModel {
+public class AgentsStateTableModel extends AbstractTableModel {
 
     private static final int COLUMN_AGENT = 0;
     private static final int COLUMN_EMOTION = 1;
@@ -26,7 +26,7 @@ public class AgentStateTableModel extends AbstractTableModel {
     private String[] columns;
     private Translation translation;
 
-    public AgentStateTableModel() {
+    public AgentsStateTableModel() {
         translation = Translation.getInstance();
         agentStates = new ArrayList<>();
         columns = new String[]{
@@ -41,6 +41,11 @@ public class AgentStateTableModel extends AbstractTableModel {
 
     public void setAgentStates(List<AgentState> agentStates) {
         this.agentStates = agentStates;
+        fireTableDataChanged();
+    }
+
+    public void addAgentStates(AgentState agentState) {
+        this.agentStates.add(agentState);
         fireTableDataChanged();
     }
 

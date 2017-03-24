@@ -7,6 +7,7 @@
 package environment.wikipedia.configurator;
 
 import masoes.MasoesSettings;
+import masoes.component.behavioural.EmotionalSpace;
 import masoes.ontology.state.AgentState;
 import net.miginfocom.swing.MigLayout;
 import translate.Translation;
@@ -19,12 +20,14 @@ import java.util.List;
 
 public class ConfiguratorAgentGui extends JFrame {
 
-    private Translation translation;
-    private AgentStateTableModel agentStateTableModel;
+    private AgentsStateTableModel agentsStateTableModel;
+    private AgentsToAddTableModel agentsToAddTableModel;
     private JSpinner activationIncreaseSpinner;
     private JSpinner satisfactionIncreaseSpinner;
     private JButton startButton;
     private JButton cleanButton;
+
+    private Translation translation;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -88,25 +91,49 @@ public class ConfiguratorAgentGui extends JFrame {
         JPanel centerPanel = new JPanel(new MigLayout("insets 10 0 10 10"));
         add(centerPanel, BorderLayout.CENTER);
 
-        JPanel addAgentsPanel = new JPanel(new MigLayout("insets 10"));
+        JPanel addAgentsPanel = new JPanel(new MigLayout("insets 0 5 0 5"));
         addAgentsPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.add_agents")));
         centerPanel.add(addAgentsPanel, "w 100%, h 40%, wrap");
 
+        JPanel configAgentPanel = new JPanel(new MigLayout("insets 0"));
+        addAgentsPanel.add(configAgentPanel, "w 100%, span 2, wrap");
+
+        JComboBox<Object> agentTypesCombo = new JComboBox<>(AgentToAddType.values());
+        configAgentPanel.add(agentTypesCombo);
+
+        Object[] emotions = new EmotionalSpace().getEmotions()
+                .stream()
+                .map(emotion -> new EmotionToAdd(emotion))
+                .toArray();
+
+        JComboBox<Object> emotionCombo = new JComboBox<>(emotions);
+        configAgentPanel.add(emotionCombo);
+
         JButton addAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/add-icon.png")));
-        addAgentsPanel.add(addAgentButton, "w 25, h 25");
+        configAgentPanel.add(addAgentButton, "w 25, h 25");
+
+        agentsToAddTableModel = new AgentsToAddTableModel();
+        JTable agentsToAddTable = new JTable(agentsToAddTableModel);
+        agentsToAddTable.setFillsViewportHeight(true);
+
+        JScrollPane scrollAgentsToAddTable = new JScrollPane(agentsToAddTable);
+        addAgentsPanel.add(scrollAgentsToAddTable, "h 100%, w 100%");
+
+        JPanel buttonsPanel = new JPanel(new MigLayout("insets 0"));
+        addAgentsPanel.add(buttonsPanel, "h 100%, wrap");
 
         JButton removeAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/delete-icon.png")));
-        addAgentsPanel.add(removeAgentButton, "w 25, h 25");
+        buttonsPanel.add(removeAgentButton, "w 25, h 25, wrap");
 
         JButton windowAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/window.png")));
-        addAgentsPanel.add(windowAgentButton, "w 25, h 25");
+        buttonsPanel.add(windowAgentButton, "w 25, h 25");
 
         JPanel currentStatePanel = new JPanel(new MigLayout("insets 0 5 5 5"));
         currentStatePanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.current_emotional_states")));
         centerPanel.add(currentStatePanel, "w 100%, h 60%");
 
-        agentStateTableModel = new AgentStateTableModel();
-        JTable agentStateTable = new JTable(agentStateTableModel);
+        agentsStateTableModel = new AgentsStateTableModel();
+        JTable agentStateTable = new JTable(agentsStateTableModel);
         agentStateTable.setFillsViewportHeight(true);
 
         JScrollPane scrollAgentStateTable = new JScrollPane(agentStateTable);
@@ -119,7 +146,7 @@ public class ConfiguratorAgentGui extends JFrame {
     }
 
     public void setAgentStates(List<AgentState> agentStates) {
-        agentStateTableModel.setAgentStates(agentStates);
+        agentsStateTableModel.setAgentStates(agentStates);
     }
 
     public void showGui() {

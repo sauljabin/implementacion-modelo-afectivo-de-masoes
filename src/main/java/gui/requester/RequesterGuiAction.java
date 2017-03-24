@@ -33,7 +33,6 @@ public enum RequesterGuiAction {
     DELETE_OBJECT("gui.action.delete_object");
 
     private String translationKey;
-    private Translation translation = Translation.getInstance();
 
     RequesterGuiAction(String translationKey) {
         this.translationKey = translationKey;
@@ -41,7 +40,7 @@ public enum RequesterGuiAction {
 
     @Override
     public String toString() {
-        return translation.get(translationKey);
+        return Translation.getInstance().get(translationKey);
     }
 
 }
