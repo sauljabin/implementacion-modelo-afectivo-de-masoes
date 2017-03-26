@@ -164,8 +164,11 @@ public class ConfiguratorAgent extends GuiAgent {
                 List<AgentState> agentStates = configuratorAgentGui.getAgentsToAdd()
                         .stream()
                         .map(agentToAdd ->
-                                (AgentState) masoesOntologyAssistant.sendRequestAction(getAID(agentToAdd.getAgentName()), new GetEmotionalState())).collect(Collectors.toList());
+                                (AgentState) masoesOntologyAssistant.sendRequestAction(getAID(agentToAdd.getAgentName()), new GetEmotionalState()))
+                        .collect(Collectors.toList());
+
                 configuratorAgentGui.setAgentStates(agentStates);
+
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {

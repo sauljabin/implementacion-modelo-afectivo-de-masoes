@@ -50,11 +50,11 @@ import static org.powermock.api.mockito.PowerMockito.when;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static test.ReflectionTestUtils.setFieldValue;
 
-public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
+public class CollectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
-    private ColectiveKnowledgeBaseBehaviour colectiveKnowledgeBaseBehaviour;
+    private CollectiveKnowledgeBaseBehaviour collectiveKnowledgeBaseBehaviour;
     private Agent agentMock;
     @Mock
     private DataBaseConnection dataBaseConnection;
@@ -63,8 +63,8 @@ public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
     @Before
     public void setUp() throws Exception {
         agentMock = mock(Agent.class);
-        colectiveKnowledgeBaseBehaviour = new ColectiveKnowledgeBaseBehaviour(agentMock);
-        setFieldValue(colectiveKnowledgeBaseBehaviour, "connection", dataBaseConnection);
+        collectiveKnowledgeBaseBehaviour = new CollectiveKnowledgeBaseBehaviour(agentMock);
+        setFieldValue(collectiveKnowledgeBaseBehaviour, "connection", dataBaseConnection);
         counter = 0;
     }
 
@@ -72,7 +72,7 @@ public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
     public void shouldUseTransactionsWhenPerformingActions() throws Exception {
         mockEverything();
         Action action = new Action(new AID(), randomModifyAction());
-        colectiveKnowledgeBaseBehaviour.performAction(action);
+        collectiveKnowledgeBaseBehaviour.performAction(action);
         InOrder orderVerifier = inOrder(dataBaseConnection);
         orderVerifier.verify(dataBaseConnection).beginTransaction();
         orderVerifier.verify(dataBaseConnection).endTransaction();
@@ -85,7 +85,7 @@ public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
         when(queryResult.next()).thenReturn(false);
 
         try {
-            colectiveKnowledgeBaseBehaviour.performAction(new Action(new AID(), randomModifyAction()));
+            collectiveKnowledgeBaseBehaviour.performAction(new Action(new AID(), randomModifyAction()));
             fail();
         } catch (FailureException e) {
             InOrder orderVerifier = inOrder(dataBaseConnection);
@@ -100,16 +100,16 @@ public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
         Action createObject = new Action(new AID(), new CreateObject());
         Action deleteObject = new Action(new AID(), new DeleteObject());
         Action updateObject = new Action(new AID(), new UpdateObject());
-        assertTrue(colectiveKnowledgeBaseBehaviour.isValidAction(getObject));
-        assertTrue(colectiveKnowledgeBaseBehaviour.isValidAction(createObject));
-        assertTrue(colectiveKnowledgeBaseBehaviour.isValidAction(deleteObject));
-        assertTrue(colectiveKnowledgeBaseBehaviour.isValidAction(updateObject));
+        assertTrue(collectiveKnowledgeBaseBehaviour.isValidAction(getObject));
+        assertTrue(collectiveKnowledgeBaseBehaviour.isValidAction(createObject));
+        assertTrue(collectiveKnowledgeBaseBehaviour.isValidAction(deleteObject));
+        assertTrue(collectiveKnowledgeBaseBehaviour.isValidAction(updateObject));
     }
 
     @Test
     public void shouldGetCorrectOntologyAndMessageTemplate() {
-        assertThat(colectiveKnowledgeBaseBehaviour.getOntology(), is(instanceOf(MasoesOntology.class)));
-        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), colectiveKnowledgeBaseBehaviour.getMessageTemplate());
+        assertThat(collectiveKnowledgeBaseBehaviour.getOntology(), is(instanceOf(MasoesOntology.class)));
+        assertReflectionEquals(new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), collectiveKnowledgeBaseBehaviour.getMessageTemplate());
     }
 
     @Test
@@ -117,7 +117,7 @@ public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
         when(dataBaseConnection.execute(anyString())).thenReturn(true);
 
         Action createObject = new Action(new AID(), new CreateObject(createObjectEnvironment()));
-        colectiveKnowledgeBaseBehaviour.performAction(createObject);
+        collectiveKnowledgeBaseBehaviour.performAction(createObject);
 
         String expectedInsertObjectSQL = "INSERT INTO object \\(uuid, name, creator_name\\) VALUES \\(\\'.*\\', \\'expectedObjectName\\', \\'expectedAgentName\\'\\);";
         String expectedInsertObjectPropertySQL = "INSERT INTO object_property \\(object_uuid, name, value\\) VALUES \\(\\'.*\\', \\'expectedPropertyName\\', \\'expectedPropertyValue\\'\\);";
@@ -134,7 +134,7 @@ public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
         when(dataBaseConnection.execute(anyString())).thenAnswer(answerRandomlyWithAtLeastOneFalse());
 
         Action createObject = new Action(new AID(), new CreateObject(createObjectEnvironment()));
-        colectiveKnowledgeBaseBehaviour.performAction(createObject);
+        collectiveKnowledgeBaseBehaviour.performAction(createObject);
     }
 
     @Test
@@ -144,7 +144,7 @@ public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
         ObjectEnvironment objectEnvironment = createObjectEnvironment();
         objectEnvironment.setObjectProperties(null);
         Action createObject = new Action(new AID(), new CreateObject(objectEnvironment));
-        colectiveKnowledgeBaseBehaviour.performAction(createObject);
+        collectiveKnowledgeBaseBehaviour.performAction(createObject);
 
         String expectedInsertObjectSQL = "INSERT INTO object \\(uuid, name, creator_name\\) VALUES \\(\\'.*\\', \\'expectedObjectName\\', \\'expectedAgentName\\'\\);";
         String unexpectedInsertObjectPropertySQL = "INSERT INTO object_property \\(object_uuid, name, value\\) VALUES \\(\\'.*\\', \\'expectedPropertyName\\', \\'expectedPropertyValue\\'\\);";
@@ -170,7 +170,7 @@ public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
         objectEnvironment.setObjectProperties(null);
         Action getObject = new Action(agentAID, new GetObject(objectEnvironment));
 
-        ObjectEnvironment actualObject = (ObjectEnvironment) ((ListObjects) colectiveKnowledgeBaseBehaviour.performAction(getObject)).getObjects().get(0);
+        ObjectEnvironment actualObject = (ObjectEnvironment) ((ListObjects) collectiveKnowledgeBaseBehaviour.performAction(getObject)).getObjects().get(0);
         ObjectProperty actualProperty = (ObjectProperty) actualObject.getObjectProperties().get(0);
 
         assertThat(actualObject.getName(), is("expectedObjectName"));
@@ -191,7 +191,7 @@ public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
         objectEnvironment.setObjectProperties(null);
         Action getObject = new Action(null, new GetObject(objectEnvironment));
 
-        colectiveKnowledgeBaseBehaviour.performAction(getObject);
+        collectiveKnowledgeBaseBehaviour.performAction(getObject);
 
         String expectedObjectQuery = "SELECT name, creator_name, uuid FROM object WHERE object.name LIKE 'expectedObjectName' AND object.creator_name LIKE 'expectedAgentName';";
         String expectedObjectPropertySQL = "SELECT name, value FROM object_property WHERE object_uuid LIKE '';";
@@ -212,7 +212,7 @@ public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
         objectEnvironment.setObjectProperties(null);
         Action getObject = new Action(null, new GetObject(objectEnvironment));
 
-        colectiveKnowledgeBaseBehaviour.performAction(getObject);
+        collectiveKnowledgeBaseBehaviour.performAction(getObject);
     }
 
     @Test
@@ -225,7 +225,7 @@ public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
 
         ObjectEnvironment objectEnvironment = createObjectEnvironment();
         Action deleteObject = new Action(new AID(), new DeleteObject(objectEnvironment));
-        colectiveKnowledgeBaseBehaviour.performAction(deleteObject);
+        collectiveKnowledgeBaseBehaviour.performAction(deleteObject);
 
         String expectedQuery = "SELECT uuid FROM object WHERE name LIKE 'expectedObjectName' AND creator_name LIKE 'expectedAgentName';";
         String expectedDeleteObjectPropertySQL = "DELETE FROM object_property WHERE object_uuid LIKE '123';";
@@ -246,7 +246,7 @@ public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
 
         ObjectEnvironment objectEnvironment = createObjectEnvironment();
         Action deleteObject = new Action(new AID(), new DeleteObject(objectEnvironment));
-        colectiveKnowledgeBaseBehaviour.performAction(deleteObject);
+        collectiveKnowledgeBaseBehaviour.performAction(deleteObject);
     }
 
     @Test
@@ -259,7 +259,7 @@ public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
 
         ObjectEnvironment objectEnvironment = createObjectEnvironment();
         Action updateObject = new Action(new AID(), new UpdateObject(objectEnvironment));
-        colectiveKnowledgeBaseBehaviour.performAction(updateObject);
+        collectiveKnowledgeBaseBehaviour.performAction(updateObject);
 
         String expectedQuery = "SELECT uuid FROM object WHERE name LIKE 'expectedObjectName' AND creator_name LIKE 'expectedAgentName';";
         String expectedUpdateObjectPropertySQL = "DELETE FROM object_property WHERE object_uuid LIKE '123';";
@@ -280,7 +280,7 @@ public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
 
         ObjectEnvironment objectEnvironment = createObjectEnvironment();
         Action updateObject = new Action(new AID(), new UpdateObject(objectEnvironment));
-        colectiveKnowledgeBaseBehaviour.performAction(updateObject);
+        collectiveKnowledgeBaseBehaviour.performAction(updateObject);
     }
 
     @Test
@@ -294,7 +294,7 @@ public class ColectiveKnowledgeBaseBehaviourTest extends PowerMockitoTest {
 
         ObjectEnvironment objectEnvironment = createObjectEnvironment();
         Action updateObject = new Action(new AID(), new UpdateObject(objectEnvironment));
-        colectiveKnowledgeBaseBehaviour.performAction(updateObject);
+        collectiveKnowledgeBaseBehaviour.performAction(updateObject);
     }
 
     private ObjectEnvironment createObjectEnvironment() {

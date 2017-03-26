@@ -26,9 +26,9 @@ import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
-public class ColectiveKnowledgeBaseAgentTest {
+public class CollectiveKnowledgeBaseAgentTest {
 
-    private ColectiveKnowledgeBaseAgent colectiveKnowledgeBaseAgentSpy;
+    private CollectiveKnowledgeBaseAgent collectiveKnowledgeBaseAgentSpy;
     private AgentLogger loggerMock;
     private AgentManagementAssistant agentManagementAssistantMock;
     private ArgumentCaptor<ServiceDescription> serviceDescriptionCaptor;
@@ -39,22 +39,22 @@ public class ColectiveKnowledgeBaseAgentTest {
         loggerMock = mock(AgentLogger.class);
         agentManagementAssistantMock = mock(AgentManagementAssistant.class);
 
-        ColectiveKnowledgeBaseAgent colectiveKnowledgeBaseAgent = new ColectiveKnowledgeBaseAgent();
-        setFieldValue(colectiveKnowledgeBaseAgent, "logger", loggerMock);
-        setFieldValue(colectiveKnowledgeBaseAgent, "agentManagementAssistant", agentManagementAssistantMock);
+        CollectiveKnowledgeBaseAgent collectiveKnowledgeBaseAgent = new CollectiveKnowledgeBaseAgent();
+        setFieldValue(collectiveKnowledgeBaseAgent, "logger", loggerMock);
+        setFieldValue(collectiveKnowledgeBaseAgent, "agentManagementAssistant", agentManagementAssistantMock);
 
-        colectiveKnowledgeBaseAgentSpy = spy(colectiveKnowledgeBaseAgent);
+        collectiveKnowledgeBaseAgentSpy = spy(collectiveKnowledgeBaseAgent);
     }
 
     @Test
     public void shouldAddSettingsBehaviour() {
-        colectiveKnowledgeBaseAgentSpy.setup();
-        verify(colectiveKnowledgeBaseAgentSpy).addBehaviour(isA(ColectiveKnowledgeBaseBehaviour.class));
+        collectiveKnowledgeBaseAgentSpy.setup();
+        verify(collectiveKnowledgeBaseAgentSpy).addBehaviour(isA(CollectiveKnowledgeBaseBehaviour.class));
     }
 
     @Test
     public void shouldRegisterAgent() {
-        colectiveKnowledgeBaseAgentSpy.setup();
+        collectiveKnowledgeBaseAgentSpy.setup();
 
         verify(agentManagementAssistantMock).register(serviceDescriptionCaptor.capture());
 
@@ -83,7 +83,7 @@ public class ColectiveKnowledgeBaseAgentTest {
         RuntimeException expectedException = new RuntimeException("error");
         doThrow(expectedException).when(agentManagementAssistantMock).register(any(ServiceDescription.class), any(ServiceDescription.class), any(ServiceDescription.class), any(ServiceDescription.class));
         try {
-            colectiveKnowledgeBaseAgentSpy.setup();
+            collectiveKnowledgeBaseAgentSpy.setup();
         } catch (Exception e) {
         } finally {
             verify(loggerMock).exception(expectedException);

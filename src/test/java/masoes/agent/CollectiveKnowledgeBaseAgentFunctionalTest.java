@@ -41,7 +41,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-public class ColectiveKnowledgeBaseAgentFunctionalTest extends FunctionalTest {
+public class CollectiveKnowledgeBaseAgentFunctionalTest extends FunctionalTest {
 
     private AID persistenceAgent;
     private OntologyAssistant ontologyAssistant;
@@ -51,7 +51,7 @@ public class ColectiveKnowledgeBaseAgentFunctionalTest extends FunctionalTest {
     @Before
     public void setUp() {
         connection = PhoenixDatabase.create();
-        persistenceAgent = createAgent(ColectiveKnowledgeBaseAgent.class, null);
+        persistenceAgent = createAgent(CollectiveKnowledgeBaseAgent.class, null);
         ontologyAssistant = createOntologyAssistant(MasoesOntology.getInstance());
         protocolAssistant = createProtocolAssistant();
     }

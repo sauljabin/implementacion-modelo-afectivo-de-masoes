@@ -6,7 +6,7 @@
 
 package environment;
 
-import masoes.agent.ColectiveKnowledgeBaseAgent;
+import masoes.agent.CollectiveKnowledgeBaseAgent;
 import masoes.agent.NotifierAgent;
 import settings.SettingsAgent;
 import util.ToStringBuilder;
@@ -39,7 +39,7 @@ public abstract class Environment {
 
         agentParameters.add(new AgentParameter(SETTINGS_AGENT, SettingsAgent.class));
         agentParameters.add(new AgentParameter(NOTIFIER_AGENT, NotifierAgent.class));
-        agentParameters.add(new AgentParameter(KNOWLEDGE_AGENT, ColectiveKnowledgeBaseAgent.class));
+        agentParameters.add(new AgentParameter(KNOWLEDGE_AGENT, CollectiveKnowledgeBaseAgent.class));
 
         return agentParameters.stream().map(
                 agentParameter -> agentParameter.toJadeParameter()

@@ -31,11 +31,11 @@ import ontology.OntologyResponderBehaviour;
 import java.util.Arrays;
 import java.util.UUID;
 
-public class ColectiveKnowledgeBaseBehaviour extends OntologyResponderBehaviour {
+public class CollectiveKnowledgeBaseBehaviour extends OntologyResponderBehaviour {
 
     private DataBaseConnection connection;
 
-    public ColectiveKnowledgeBaseBehaviour(Agent agent) {
+    public CollectiveKnowledgeBaseBehaviour(Agent agent) {
         super(agent, new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), MasoesOntology.getInstance());
         connection = DataBaseConnection.getConnection();
     }

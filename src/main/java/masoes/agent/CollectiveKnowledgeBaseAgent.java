@@ -13,12 +13,12 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import masoes.ontology.MasoesOntology;
 import util.ServiceBuilder;
 
-public class ColectiveKnowledgeBaseAgent extends Agent {
+public class CollectiveKnowledgeBaseAgent extends Agent {
 
     private AgentLogger logger;
     private AgentManagementAssistant agentManagementAssistant;
 
-    public ColectiveKnowledgeBaseAgent() {
+    public CollectiveKnowledgeBaseAgent() {
         logger = new AgentLogger(this);
         agentManagementAssistant = new AgentManagementAssistant(this);
     }
@@ -26,7 +26,7 @@ public class ColectiveKnowledgeBaseAgent extends Agent {
     @Override
     protected void setup() {
         try {
-            addBehaviour(new ColectiveKnowledgeBaseBehaviour(this));
+            addBehaviour(new CollectiveKnowledgeBaseBehaviour(this));
 
             agentManagementAssistant.register(
                     createService(MasoesOntology.ACTION_CREATE_OBJECT),
