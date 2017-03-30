@@ -15,6 +15,7 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import masoes.MasoesSettings;
+import masoes.collective.CollectiveCentralEmotion;
 import masoes.component.behavioural.EmotionalSpace;
 import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.MasoesOntology;
@@ -38,6 +39,7 @@ public class ConfiguratorAgent extends GuiAgent {
     private OntologyAssistant masoesOntologyAssistant;
     private EmotionalSpace emotionalSpace;
     private Behaviour configuratorBehaviour;
+    private CollectiveCentralEmotion collectiveCentralEmotion;
 
     public ConfiguratorAgent() {
         configuratorAgentGui = new ConfiguratorAgentGui();
@@ -46,6 +48,7 @@ public class ConfiguratorAgent extends GuiAgent {
         agentManagementAssistant = new AgentManagementAssistant(this);
         masoesOntologyAssistant = new OntologyAssistant(this, MasoesOntology.getInstance());
         emotionalSpace = new EmotionalSpace();
+        collectiveCentralEmotion = new CollectiveCentralEmotion();
     }
 
     @Override
@@ -168,6 +171,14 @@ public class ConfiguratorAgent extends GuiAgent {
                         .collect(Collectors.toList());
 
                 configuratorAgentGui.setAgentStates(agentStates);
+
+                collectiveCentralEmotion.clear();
+
+                agentStates.forEach(agentState -> collectiveCentralEmotion.addEmotionalState(agentState.getEmotionState().getActivation(), agentState.getEmotionState().getSatisfaction()));
+
+                configuratorAgentGui.setCentralEmotion(collectiveCentralEmotion.getCentralEmotionalState());
+                configuratorAgentGui.setEmotionalDispersion(collectiveCentralEmotion.getEmotionalDispersion());
+                configuratorAgentGui.setMaximumDistance(collectiveCentralEmotion.getMaximumDistance());
 
                 try {
                     Thread.sleep(500);

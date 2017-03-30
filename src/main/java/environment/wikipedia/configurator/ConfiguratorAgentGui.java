@@ -42,9 +42,15 @@ public class ConfiguratorAgentGui extends JFrame {
     private JTable agentsToAddTable;
     private JTable agentStateTable;
     private JLabel emotionToAddLabel;
+    private JLabel emotionalDispersionValueLabel;
+    private JLabel maxDistanceEmotionValueLabel;
+    private JLabel collectiveCentralEmotionalStateLabel;
+    private JLabel collectiveCentralEmotionLabel;
+    private EmotionalSpace emotionalSpace;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
+        emotionalSpace = new EmotionalSpace();
         setUp();
     }
 
@@ -71,6 +77,35 @@ public class ConfiguratorAgentGui extends JFrame {
     private void addEastComponents() {
         JPanel westPanel = new JPanel(new MigLayout("insets 10"));
         add(westPanel, BorderLayout.EAST);
+
+        JPanel collectiveEmotionPanel = new JPanel(new MigLayout("insets 5"));
+        collectiveEmotionPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.collective_emotion")));
+        westPanel.add(collectiveEmotionPanel, "wrap 30");
+
+        JLabel centralEmotionLabel = new JLabel(translation.get("gui.central_emotion"));
+        collectiveEmotionPanel.add(centralEmotionLabel);
+
+        collectiveCentralEmotionalStateLabel = new JLabel("-");
+        collectiveCentralEmotionalStateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        collectiveEmotionPanel.add(collectiveCentralEmotionalStateLabel, "grow, wrap");
+
+        collectiveCentralEmotionLabel = new JLabel("-");
+        collectiveCentralEmotionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        collectiveEmotionPanel.add(collectiveCentralEmotionLabel, "w 220, span 2, wrap 30");
+
+        JLabel maxDistanceEmotionLabel = new JLabel(translation.get("gui.max_distance"));
+        collectiveEmotionPanel.add(maxDistanceEmotionLabel);
+
+        maxDistanceEmotionValueLabel = new JLabel("-");
+        maxDistanceEmotionValueLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        collectiveEmotionPanel.add(maxDistanceEmotionValueLabel, "grow, wrap");
+
+        JLabel emotionalDispersionLabel = new JLabel(translation.get("gui.emotional_dispersion"));
+        collectiveEmotionPanel.add(emotionalDispersionLabel);
+
+        emotionalDispersionValueLabel = new JLabel("-)");
+        emotionalDispersionValueLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        collectiveEmotionPanel.add(emotionalDispersionValueLabel, "grow, wrap");
 
         startButton = new JButton(translation.get("gui.start"));
         westPanel.add(startButton, "grow, h 25, wrap");
@@ -295,19 +330,6 @@ public class ConfiguratorAgentGui extends JFrame {
         return agentsStateTableModel.getAgentStates().get(agentStateTable.getSelectedRow());
     }
 
-    public void modeConfiguration() {
-        cleanButton.setEnabled(false);
-        windowAgentButton.setEnabled(false);
-        addAgentButton.setEnabled(true);
-        startButton.setEnabled(true);
-        removeAgentButton.setEnabled(true);
-        agentTypesToAddCombo.setEnabled(true);
-        activationIncreaseSpinner.setEnabled(true);
-        satisfactionIncreaseSpinner.setEnabled(true);
-        activationToAddSpinner.setEnabled(true);
-        satisfactionToAddSpinner.setEnabled(true);
-    }
-
     public void modeSimulation() {
         cleanButton.setEnabled(true);
         windowAgentButton.setEnabled(true);
@@ -319,6 +341,38 @@ public class ConfiguratorAgentGui extends JFrame {
         satisfactionIncreaseSpinner.setEnabled(false);
         activationToAddSpinner.setEnabled(false);
         satisfactionToAddSpinner.setEnabled(false);
+    }
+
+    public void modeConfiguration() {
+        cleanButton.setEnabled(false);
+        windowAgentButton.setEnabled(false);
+        addAgentButton.setEnabled(true);
+        startButton.setEnabled(true);
+        removeAgentButton.setEnabled(true);
+        agentTypesToAddCombo.setEnabled(true);
+        activationIncreaseSpinner.setEnabled(true);
+        satisfactionIncreaseSpinner.setEnabled(true);
+        activationToAddSpinner.setEnabled(true);
+        satisfactionToAddSpinner.setEnabled(true);
+
+        collectiveCentralEmotionalStateLabel.setText("-");
+        collectiveCentralEmotionLabel.setText("-");
+        maxDistanceEmotionValueLabel.setText("-");
+        emotionalDispersionValueLabel.setText("-");
+    }
+
+    public void setEmotionalDispersion(EmotionalState emotionalDispersion) {
+        emotionalDispersionValueLabel.setText(String.format("(%.2f, %.2f)", emotionalDispersion.getActivation(), emotionalDispersion.getSatisfaction()));
+    }
+
+    public void setMaximumDistance(EmotionalState maximumDistance) {
+        maxDistanceEmotionValueLabel.setText(String.format("(%.2f, %.2f)", maximumDistance.getActivation(), maximumDistance.getSatisfaction()));
+    }
+
+    public void setCentralEmotion(EmotionalState centralEmotion) {
+        collectiveCentralEmotionalStateLabel.setText(String.format("(%.2f, %.2f)", centralEmotion.getActivation(), centralEmotion.getSatisfaction()));
+        Emotion emotion = emotionalSpace.searchEmotion(centralEmotion);
+        collectiveCentralEmotionLabel.setText(String.format("%s - %s", translation.get(emotion.getName().toLowerCase()), translation.get(emotion.getType().toString().toLowerCase())));
     }
 
 }
