@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.agent;
+package masoes.collective;
 
 import agent.AgentManagementAssistant;
 import jade.content.Predicate;

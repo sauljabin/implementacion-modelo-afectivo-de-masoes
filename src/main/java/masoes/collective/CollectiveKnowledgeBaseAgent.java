@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.agent;
+package masoes.collective;
 
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
@@ -13,12 +13,12 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import masoes.ontology.MasoesOntology;
 import util.ServiceBuilder;
 
-public class NotifierAgent extends Agent {
+public class CollectiveKnowledgeBaseAgent extends Agent {
 
     private AgentLogger logger;
     private AgentManagementAssistant agentManagementAssistant;
 
-    public NotifierAgent() {
+    public CollectiveKnowledgeBaseAgent() {
         logger = new AgentLogger(this);
         agentManagementAssistant = new AgentManagementAssistant(this);
     }
@@ -26,11 +26,13 @@ public class NotifierAgent extends Agent {
     @Override
     protected void setup() {
         try {
-            addBehaviour(new NotifierBehaviour(this));
+            addBehaviour(new CollectiveKnowledgeBaseBehaviour(this));
+
             agentManagementAssistant.register(
-                    createServiceDescription(MasoesOntology.ACTION_NOTIFY_EVENT),
-                    createServiceDescription(MasoesOntology.ACTION_NOTIFY_ACTION),
-                    createServiceDescription(MasoesOntology.ACTION_NOTIFY_OBJECT)
+                    createService(MasoesOntology.ACTION_CREATE_OBJECT),
+                    createService(MasoesOntology.ACTION_GET_OBJECT),
+                    createService(MasoesOntology.ACTION_UPDATE_OBJECT),
+                    createService(MasoesOntology.ACTION_DELETE_OBJECT)
             );
         } catch (Exception e) {
             logger.exception(e);
@@ -38,12 +40,12 @@ public class NotifierAgent extends Agent {
         }
     }
 
-    private ServiceDescription createServiceDescription(String action) {
+    private ServiceDescription createService(String serviceName) {
         return new ServiceBuilder()
                 .fipaRequest()
                 .fipaSL()
                 .ontology(MasoesOntology.getInstance())
-                .name(action)
+                .name(serviceName)
                 .build();
     }
 

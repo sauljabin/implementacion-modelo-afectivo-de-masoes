@@ -178,7 +178,7 @@ public class ConfiguratorAgent extends GuiAgent {
 
                 collectiveCentralEmotion.clear();
 
-                agentStates.forEach(agentState -> collectiveCentralEmotion.addEmotionalState(agentState.getEmotionState().getActivation(), agentState.getEmotionState().getSatisfaction()));
+                agentStates.forEach(agentState -> collectiveCentralEmotion.addEmotionalState(new EmotionalState(agentState.getEmotionState().getActivation(), agentState.getEmotionState().getSatisfaction())));
 
                 configuratorAgentGui.setCentralEmotion(collectiveCentralEmotion.getCentralEmotionalState());
                 configuratorAgentGui.setEmotionalDispersion(collectiveCentralEmotion.getEmotionalDispersion());

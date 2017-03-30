@@ -8,6 +8,8 @@ package test;
 
 import util.StringGenerator;
 
+import java.util.Random;
+
 public final class RandomUtil {
 
     private RandomUtil() {
@@ -16,6 +18,16 @@ public final class RandomUtil {
     public static String randomString() {
         StringGenerator stringGenerator = new StringGenerator();
         return stringGenerator.getString(20);
+    }
+
+    public static int randomInt() {
+        Random random = new Random();
+        return random.nextInt();
+    }
+
+    public static double randomDouble() {
+        Random random = new Random();
+        return random.nextDouble();
     }
 
 }

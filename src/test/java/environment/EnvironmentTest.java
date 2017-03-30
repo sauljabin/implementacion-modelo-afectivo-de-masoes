@@ -7,8 +7,8 @@
 package environment;
 
 import jade.core.Agent;
-import masoes.agent.CollectiveKnowledgeBaseAgent;
-import masoes.agent.NotifierAgent;
+import masoes.collective.CollectiveKnowledgeBaseAgent;
+import masoes.collective.NotifierAgent;
 import org.junit.Test;
 import settings.SettingsAgent;
 

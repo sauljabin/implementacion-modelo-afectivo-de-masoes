@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.agent;
+package masoes.collective;
 
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
@@ -13,12 +13,12 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import masoes.ontology.MasoesOntology;
 import util.ServiceBuilder;
 
-public class CollectiveKnowledgeBaseAgent extends Agent {
+public class NotifierAgent extends Agent {
 
     private AgentLogger logger;
     private AgentManagementAssistant agentManagementAssistant;
 
-    public CollectiveKnowledgeBaseAgent() {
+    public NotifierAgent() {
         logger = new AgentLogger(this);
         agentManagementAssistant = new AgentManagementAssistant(this);
     }
@@ -26,13 +26,11 @@ public class CollectiveKnowledgeBaseAgent extends Agent {
     @Override
     protected void setup() {
         try {
-            addBehaviour(new CollectiveKnowledgeBaseBehaviour(this));
-
+            addBehaviour(new NotifierBehaviour(this));
             agentManagementAssistant.register(
-                    createService(MasoesOntology.ACTION_CREATE_OBJECT),
-                    createService(MasoesOntology.ACTION_GET_OBJECT),
-                    createService(MasoesOntology.ACTION_UPDATE_OBJECT),
-                    createService(MasoesOntology.ACTION_DELETE_OBJECT)
+                    createServiceDescription(MasoesOntology.ACTION_NOTIFY_EVENT),
+                    createServiceDescription(MasoesOntology.ACTION_NOTIFY_ACTION),
+                    createServiceDescription(MasoesOntology.ACTION_NOTIFY_OBJECT)
             );
         } catch (Exception e) {
             logger.exception(e);
@@ -40,12 +38,12 @@ public class CollectiveKnowledgeBaseAgent extends Agent {
         }
     }
 
-    private ServiceDescription createService(String serviceName) {
+    private ServiceDescription createServiceDescription(String action) {
         return new ServiceBuilder()
                 .fipaRequest()
                 .fipaSL()
                 .ontology(MasoesOntology.getInstance())
-                .name(serviceName)
+                .name(action)
                 .build();
     }
 

@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package masoes.agent;
+package masoes.collective;
 
 import agent.configurable.ConfigurableAgent;
 import jade.content.AgentAction;

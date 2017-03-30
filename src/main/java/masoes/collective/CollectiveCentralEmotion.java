@@ -7,53 +7,88 @@
 package masoes.collective;
 
 import masoes.component.behavioural.EmotionalState;
-import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CollectiveCentralEmotion {
 
-    private DescriptiveStatistics satisfactionStatistics;
-    private DescriptiveStatistics activationStatistics;
+    private List<EmotionalState> emotionalStates;
 
     public CollectiveCentralEmotion() {
-        activationStatistics = new DescriptiveStatistics();
-        satisfactionStatistics = new DescriptiveStatistics();
-    }
-
-    public void addEmotionalState(double activation, double satisfaction) {
-        activationStatistics.addValue(activation);
-        satisfactionStatistics.addValue(satisfaction);
+        emotionalStates = new ArrayList<>();
     }
 
     public void addEmotionalState(EmotionalState emotionalState) {
-        addEmotionalState(emotionalState.getActivation(), emotionalState.getSatisfaction());
+        emotionalStates.add(emotionalState);
     }
 
-    public EmotionalState getCentralEmotionalState() {
-        return new EmotionalState(activationStatistics.getMean(), satisfactionStatistics.getMean());
+    public void clear() {
+        emotionalStates.clear();
     }
 
-    public EmotionalState getMaximumDistance() {
-        return new EmotionalState(calculateMaximum(activationStatistics), calculateMaximum(satisfactionStatistics));
+    public double getActivationMean() {
+        return emotionalStates.stream()
+                .mapToDouble(EmotionalState::getActivation)
+                .average()
+                .getAsDouble();
     }
 
-    private double calculateMaximum(DescriptiveStatistics activationStatistics) {
-        double mean = activationStatistics.getMean();
+    public double getSatisfactionMean() {
+        return emotionalStates.stream()
+                .mapToDouble(EmotionalState::getSatisfaction)
+                .average()
+                .getAsDouble();
+    }
 
-        return Arrays.stream(activationStatistics.getValues())
-                .map(value -> Math.abs(value - mean))
+    public double getActivationStandardDeviation() {
+        return Math.sqrt(getActivationVariance());
+    }
+
+    public double getSatisfactionStandardDeviation() {
+        return Math.sqrt(getSatisfactionVariance());
+    }
+
+    public double getActivationVariance() {
+        double mean = getActivationMean();
+        return emotionalStates.stream()
+                .mapToDouble(value -> Math.pow(value.getActivation() - mean, 2))
+                .sum() / emotionalStates.size();
+    }
+
+    public double getSatisfactionVariance() {
+        double mean = getSatisfactionMean();
+        return emotionalStates.stream()
+                .mapToDouble(value -> Math.pow(value.getSatisfaction() - mean, 2))
+                .sum() / emotionalStates.size();
+    }
+
+    public double getActivationMaximumDistance() {
+        double mean = getActivationMean();
+        return emotionalStates.stream()
+                .mapToDouble(value -> Math.abs(value.getActivation() - mean))
                 .max()
                 .getAsDouble();
     }
 
-    public EmotionalState getEmotionalDispersion() {
-        return new EmotionalState(activationStatistics.getStandardDeviation(), satisfactionStatistics.getStandardDeviation());
+    public double getSatisfactionMaximumDistance() {
+        double mean = getSatisfactionMean();
+        return emotionalStates.stream()
+                .mapToDouble(value -> Math.abs(value.getSatisfaction() - mean))
+                .max()
+                .getAsDouble();
     }
 
-    public void clear() {
-        activationStatistics.clear();
-        satisfactionStatistics.clear();
+    public EmotionalState getCentralEmotionalState() {
+        return new EmotionalState(getActivationMean(), getSatisfactionMean());
+    }
+
+    public EmotionalState getMaximumDistance() {
+        return new EmotionalState(getActivationMaximumDistance(), getSatisfactionMaximumDistance());
+    }
+
+    public EmotionalState getEmotionalDispersion() {
+        return new EmotionalState(getActivationStandardDeviation(), getSatisfactionStandardDeviation());
     }
 
 }
