@@ -346,8 +346,8 @@ public class ConfiguratorAgentGui extends JFrame {
     public void modeConfiguration() {
         cleanButton.setEnabled(false);
         windowAgentButton.setEnabled(false);
+        startButton.setEnabled(false);
         addAgentButton.setEnabled(true);
-        startButton.setEnabled(true);
         removeAgentButton.setEnabled(true);
         agentTypesToAddCombo.setEnabled(true);
         activationIncreaseSpinner.setEnabled(true);
@@ -359,6 +359,14 @@ public class ConfiguratorAgentGui extends JFrame {
         collectiveCentralEmotionLabel.setText("-");
         maxDistanceEmotionValueLabel.setText("-");
         emotionalDispersionValueLabel.setText("-");
+    }
+
+    public void activateStartButton() {
+        startButton.setEnabled(true);
+    }
+
+    public void deactivateStartButton() {
+        startButton.setEnabled(false);
     }
 
     public void setEmotionalDispersion(EmotionalState emotionalDispersion) {

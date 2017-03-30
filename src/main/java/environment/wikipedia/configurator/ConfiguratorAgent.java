@@ -114,6 +114,9 @@ public class ConfiguratorAgent extends GuiAgent {
         configuratorAgentGui.getSelectedAgentToAdd()
                 .forEach(agentToAdd ->
                         configuratorAgentGui.removeAgentToAdd(agentToAdd));
+        if (configuratorAgentGui.getAgentsToAdd().size() == 0) {
+            configuratorAgentGui.deactivateStartButton();
+        }
     }
 
     private void updateEmotionToAdd() {
@@ -148,6 +151,7 @@ public class ConfiguratorAgent extends GuiAgent {
                 emotionalState
         );
         configuratorAgentGui.addAgentToAdd(agentToAdd);
+        configuratorAgentGui.activateStartButton();
     }
 
     private void startSimulation() {
