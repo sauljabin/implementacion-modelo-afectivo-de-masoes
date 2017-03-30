@@ -39,8 +39,8 @@ public class MasoesSettingsTest {
     @Test
     public void shouldLoadInitValues() {
         Map<String, String> expectedValues = new HashMap<>();
-        expectedValues.put(MasoesSettings.MASOES_SATISFACTION_INCREASE, "0.1");
-        expectedValues.put(MasoesSettings.MASOES_ACTIVATION_INCREASE, "0.1");
+        expectedValues.put(MasoesSettings.MASOES_SATISFACTION_INCREASE, "0.01");
+        expectedValues.put(MasoesSettings.MASOES_ACTIVATION_INCREASE, "0.01");
         expectedValues.keySet().forEach(
                 key -> assertThat(masoesSettings.get(key), is(expectedValues.get(key)))
         );

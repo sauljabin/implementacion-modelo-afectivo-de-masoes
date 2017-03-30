@@ -14,6 +14,7 @@ import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
+import masoes.MasoesSettings;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
@@ -45,6 +46,8 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
 
     @Before
     public void setUp() {
+        MasoesSettings.getInstance().set(MasoesSettings.MASOES_ACTIVATION_INCREASE, "0.1");
+        MasoesSettings.getInstance().set(MasoesSettings.MASOES_SATISFACTION_INCREASE, "0.1");
         contentManager = new ContentManager();
         contentManager.registerOntology(MasoesOntology.getInstance());
         contentManager.registerLanguage(new SLCodec());

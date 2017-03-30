@@ -7,6 +7,7 @@
 package masoes.component.behavioural;
 
 import jade.core.AID;
+import masoes.MasoesSettings;
 import masoes.component.behavioural.emotion.CompassionEmotion;
 import masoes.component.behavioural.emotion.DepressionEmotion;
 import masoes.component.behavioural.emotion.HappinessEmotion;
@@ -38,6 +39,8 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
 
     @Before
     public void setUp() {
+        MasoesSettings.getInstance().set(MasoesSettings.MASOES_ACTIVATION_INCREASE, "0.1");
+        MasoesSettings.getInstance().set(MasoesSettings.MASOES_SATISFACTION_INCREASE, "0.1");
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(AGENT_NAME);
         behaviouralKnowledgeBase.addTheory(Paths.get(AGENT_KNOWLEDGE_PATH));
         emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
