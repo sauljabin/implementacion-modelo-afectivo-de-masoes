@@ -91,7 +91,7 @@ public class ConfiguratorAgentGui extends JFrame {
 
         collectiveCentralEmotionLabel = new JLabel("-");
         collectiveCentralEmotionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        collectiveEmotionPanel.add(collectiveCentralEmotionLabel, "w 220, span 2, wrap 30");
+        collectiveEmotionPanel.add(collectiveCentralEmotionLabel, "w 240, span 2, wrap 30");
 
         JLabel maxDistanceEmotionLabel = new JLabel(translation.get("gui.max_distance"));
         collectiveEmotionPanel.add(maxDistanceEmotionLabel);
@@ -370,15 +370,15 @@ public class ConfiguratorAgentGui extends JFrame {
     }
 
     public void setEmotionalDispersion(EmotionalState emotionalDispersion) {
-        emotionalDispersionValueLabel.setText(String.format("(%.2f, %.2f)", emotionalDispersion.getActivation(), emotionalDispersion.getSatisfaction()));
+        emotionalDispersionValueLabel.setText(String.format("(%.3f, %.3f)", emotionalDispersion.getActivation(), emotionalDispersion.getSatisfaction()));
     }
 
     public void setMaximumDistance(EmotionalState maximumDistance) {
-        maxDistanceEmotionValueLabel.setText(String.format("(%.2f, %.2f)", maximumDistance.getActivation(), maximumDistance.getSatisfaction()));
+        maxDistanceEmotionValueLabel.setText(String.format("(%.3f, %.3f)", maximumDistance.getActivation(), maximumDistance.getSatisfaction()));
     }
 
     public void setCentralEmotion(EmotionalState centralEmotion) {
-        collectiveCentralEmotionalStateLabel.setText(String.format("(%.2f, %.2f)", centralEmotion.getActivation(), centralEmotion.getSatisfaction()));
+        collectiveCentralEmotionalStateLabel.setText(String.format("(%.3f, %.3f)", centralEmotion.getActivation(), centralEmotion.getSatisfaction()));
         Emotion emotion = emotionalSpace.searchEmotion(centralEmotion);
         collectiveCentralEmotionLabel.setText(String.format("%s - %s", translation.get(emotion.getName().toLowerCase()), translation.get(emotion.getType().toString().toLowerCase())));
     }

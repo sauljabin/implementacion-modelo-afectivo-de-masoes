@@ -68,6 +68,9 @@ public class AgentsToAddTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        if (rowIndex >= agentsToAdd.size()) {
+            return null;
+        }
         AgentToAdd agentToAdd = agentsToAdd.get(rowIndex);
         switch (columnIndex) {
             case COLUMN_AGENT:

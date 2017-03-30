@@ -45,7 +45,7 @@ public class AgentToAdd {
     }
 
     public String getEmotionalStateString() {
-        return String.format("(%.2f, %.2f)", emotionalState.getActivation(), emotionalState.getSatisfaction());
+        return String.format("(%.3f, %.3f)", emotionalState.getActivation(), emotionalState.getSatisfaction());
     }
 
     public String getEmotionName() {
