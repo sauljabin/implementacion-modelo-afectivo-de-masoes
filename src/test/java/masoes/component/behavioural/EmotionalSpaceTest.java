@@ -29,11 +29,9 @@ public class EmotionalSpaceTest {
     private static final int NEGATIVE_SIGN = -1;
 
     private EmotionalSpace emotionalSpace;
-    private RandomGenerator random;
 
     @Before
     public void setUp() {
-        random = new RandomGenerator();
         emotionalSpace = new EmotionalSpace();
     }
 
@@ -131,17 +129,17 @@ public class EmotionalSpaceTest {
     }
 
     private EmotionalState getRandomPointForExternalEmotion(double xSign, double ySign) {
-        double x = xSign * random.getDouble(0, 1);
-        double y = ySign * random.getDouble(0, 1);
+        double x = xSign * RandomGenerator.getDouble(0, 1);
+        double y = ySign * RandomGenerator.getDouble(0, 1);
         if (xSign * x < 0.5) {
-            y = ySign * random.getDouble(0.5, 1);
+            y = ySign * RandomGenerator.getDouble(0.5, 1);
         }
         return new EmotionalState(x, y);
     }
 
     private EmotionalState getRandomPointForBasicEmotion(double xMin, double xMax, double yMin, double yMax) {
-        double x = random.getDouble(xMin, xMax);
-        double y = random.getDouble(yMin, yMax);
+        double x = RandomGenerator.getDouble(xMin, xMax);
+        double y = RandomGenerator.getDouble(yMin, yMax);
         return new EmotionalState(x, y);
     }
 

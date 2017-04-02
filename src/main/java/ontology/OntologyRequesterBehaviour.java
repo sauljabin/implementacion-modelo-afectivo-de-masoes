@@ -23,7 +23,6 @@ import util.StringGenerator;
 public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
 
     private static final int CONVERSATION_ID_LENGTH = 10;
-    private StringGenerator stringGenerator;
     private AID receiver;
     private Ontology ontology;
     private AgentAction agentAction;
@@ -37,7 +36,6 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
         this.agentAction = agentAction;
         contentManager = new ContentManager();
         logger = new AgentLogger(agent);
-        stringGenerator = new StringGenerator();
     }
 
     public AID getReceiver() {
@@ -65,7 +63,7 @@ public class OntologyRequesterBehaviour extends ProtocolRequesterBehaviour {
         message.setOntology(ontology.getName());
         message.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         message.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
-        message.setConversationId(stringGenerator.getString(CONVERSATION_ID_LENGTH));
+        message.setConversationId(StringGenerator.getString(CONVERSATION_ID_LENGTH));
         message.setSender(myAgent.getAID());
         message.addReceiver(receiver);
 

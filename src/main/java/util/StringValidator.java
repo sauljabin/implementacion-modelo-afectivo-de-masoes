@@ -6,7 +6,7 @@
 
 package util;
 
-public class StringValidator {
+public final class StringValidator {
 
     private StringValidator() {
     }

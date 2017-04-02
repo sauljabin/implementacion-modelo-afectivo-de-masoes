@@ -94,14 +94,12 @@ public class MessageBuilder {
     }
 
     public MessageBuilder conversationId() {
-        StringGenerator stringGenerator = new StringGenerator();
-        this.conversationId = stringGenerator.getString(RANDOM_STRING_LENGTH);
+        this.conversationId = StringGenerator.getString(RANDOM_STRING_LENGTH);
         return this;
     }
 
     public MessageBuilder replyWith() {
-        StringGenerator stringGenerator = new StringGenerator();
-        this.replyWith = stringGenerator.getString(RANDOM_STRING_LENGTH);
+        this.replyWith = StringGenerator.getString(RANDOM_STRING_LENGTH);
         return this;
     }
 

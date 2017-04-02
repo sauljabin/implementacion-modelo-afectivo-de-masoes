@@ -19,18 +19,17 @@ public class EmotionalState {
     private GeometryFactory geometryFactory;
     private double activation;
     private double satisfaction;
+    private EmotionalSpace emotionalSpace;
 
     public EmotionalState() {
-        RandomGenerator randomGenerator = new RandomGenerator();
-        geometryFactory = new GeometryFactory();
-        setActivation(randomGenerator.getDouble(MIN, MAX));
-        setSatisfaction(randomGenerator.getDouble(MIN, MAX));
+        this(RandomGenerator.getDouble(MIN, MAX), RandomGenerator.getDouble(MIN, MAX));
     }
 
     public EmotionalState(double activation, double satisfaction) {
         geometryFactory = new GeometryFactory();
         setActivation(activation);
         setSatisfaction(satisfaction);
+        emotionalSpace = new EmotionalSpace();
     }
 
     public EmotionalState(Point point) {
@@ -67,6 +66,10 @@ public class EmotionalState {
 
     public Point toPoint() {
         return geometryFactory.createPoint(new Coordinate(activation, satisfaction));
+    }
+
+    public Emotion toEmotion() {
+        return emotionalSpace.searchEmotion(this);
     }
 
     @Override

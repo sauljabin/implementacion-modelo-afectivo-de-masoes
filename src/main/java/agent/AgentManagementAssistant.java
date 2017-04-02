@@ -46,7 +46,6 @@ public class AgentManagementAssistant {
 
     private static final int RANDOM_STRING_LENGTH = 30;
     private long timeout;
-    private StringGenerator stringGenerator;
     private Agent agent;
     private OntologyAssistant ontologyAssistantManagement;
     private OntologyAssistant ontologyAssistantConfigurable;
@@ -60,7 +59,6 @@ public class AgentManagementAssistant {
     public AgentManagementAssistant(Agent agent, long timeout) {
         this.agent = agent;
         this.timeout = timeout;
-        stringGenerator = new StringGenerator();
         protocolAssistant = new ProtocolAssistant(agent, timeout);
         ontologyAssistantManagement = new OntologyAssistant(agent, JADEManagementOntology.getInstance());
         ontologyAssistantConfigurable = new OntologyAssistant(agent, ConfigurableOntology.getInstance());
@@ -112,7 +110,7 @@ public class AgentManagementAssistant {
     }
 
     public AID createAgent(Class<? extends Agent> agentClass, List<String> arguments) {
-        return createAgent(stringGenerator.getString(RANDOM_STRING_LENGTH), agentClass, arguments);
+        return createAgent(StringGenerator.getString(RANDOM_STRING_LENGTH), agentClass, arguments);
     }
 
     public void removeBehaviour(AID receiver, String behaviourName) {
@@ -127,7 +125,7 @@ public class AgentManagementAssistant {
     }
 
     public String addBehaviour(AID agent, Class<? extends Behaviour> behaviourClass) {
-        return addBehaviour(agent, stringGenerator.getString(RANDOM_STRING_LENGTH), behaviourClass);
+        return addBehaviour(agent, StringGenerator.getString(RANDOM_STRING_LENGTH), behaviourClass);
     }
 
     public void register(ServiceDescription... serviceDescriptions) {

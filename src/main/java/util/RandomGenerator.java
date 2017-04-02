@@ -8,15 +8,14 @@ package util;
 
 import java.util.Random;
 
-public class RandomGenerator {
+public final class RandomGenerator {
 
-    private Random random;
+    private static Random random = new Random();
 
-    public RandomGenerator() {
-        random = new Random();
+    private RandomGenerator() {
     }
 
-    public double getDouble(double min, double max) {
+    public static double getDouble(double min, double max) {
         return (random.nextDouble() * (max - min)) + min;
     }
 

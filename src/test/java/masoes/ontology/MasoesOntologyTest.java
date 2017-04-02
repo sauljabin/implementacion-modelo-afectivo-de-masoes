@@ -34,13 +34,13 @@ public class MasoesOntologyTest {
 
     @Test
     public void shouldGetAllPredicates() {
-        assertThat(masoesOntology.getPredicateNames().toArray(), arrayContainingInAnyOrder("AgentState", "ListObjects"));
+        assertThat(masoesOntology.getPredicateNames().toArray(), arrayContainingInAnyOrder("AgentState", "ListObjects", "SocialEmotion"));
 
     }
 
     @Test
     public void shouldGetAllActions() {
-        assertThat(masoesOntology.getActionNames().toArray(), arrayContainingInAnyOrder("CreateObject", "DeleteObject", "EvaluateStimulus", "GetEmotionalState", "GetObject", "NotifyAction", "NotifyObject", "NotifyEvent", "UpdateObject"));
+        assertThat(masoesOntology.getActionNames().toArray(), arrayContainingInAnyOrder("CreateObject", "DeleteObject", "EvaluateStimulus", "GetEmotionalState", "GetObject", "NotifyAction", "NotifyObject", "NotifyEvent", "UpdateObject", "GetSocialEmotion"));
     }
 
     @Test

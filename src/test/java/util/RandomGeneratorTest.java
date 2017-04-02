@@ -6,7 +6,6 @@
 
 package util;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.stream.IntStream;
@@ -17,13 +16,6 @@ import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.core.Is.is;
 
 public class RandomGeneratorTest {
-
-    private RandomGenerator random;
-
-    @Before
-    public void setUp() {
-        random = new RandomGenerator();
-    }
 
     @Test
     public void shouldReturnRandomNumberInInterval() {
@@ -41,7 +33,7 @@ public class RandomGeneratorTest {
 
     private void assertRandom(double xMin, double xMax) {
         IntStream.range(0, 1000).forEach(i -> {
-            double value = random.getDouble(xMin, xMax);
+            double value = RandomGenerator.getDouble(xMin, xMax);
             assertThat(value, is(greaterThanOrEqualTo(xMin)));
             assertThat(value, is(lessThanOrEqualTo(xMax)));
         });

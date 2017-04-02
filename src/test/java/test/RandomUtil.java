@@ -16,8 +16,7 @@ public final class RandomUtil {
     }
 
     public static String randomString() {
-        StringGenerator stringGenerator = new StringGenerator();
-        return stringGenerator.getString(20);
+        return StringGenerator.getString(20);
     }
 
     public static int randomInt() {

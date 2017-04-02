@@ -13,13 +13,15 @@ import util.RandomGenerator;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static test.ReflectionTestUtils.setFieldValue;
 
 public class EmotionalStateTest {
 
     @Test
     public void shouldCreatePoint() {
-        RandomGenerator random = new RandomGenerator();
-        testEmotionalState(new EmotionalState(random.getDouble(0, 1), random.getDouble(0, 1)));
+        testEmotionalState(new EmotionalState(RandomGenerator.getDouble(0, 1), RandomGenerator.getDouble(0, 1)));
     }
 
     @Test
@@ -49,6 +51,16 @@ public class EmotionalStateTest {
         assertThat(emotionalState.getActivation(), is(-1.0));
         assertThat(emotionalState.getSatisfaction(), is(-1.0));
         testEmotionalState(emotionalState);
+    }
+
+    @Test
+    public void shouldGetEmotionForEmotionalState() throws Exception {
+        EmotionalState emotionalState = new EmotionalState();
+        EmotionalSpace emotionalSpaceMock = mock(EmotionalSpace.class);
+        setFieldValue(emotionalState, "emotionalSpace", emotionalSpaceMock);
+
+        emotionalState.toEmotion();
+        verify(emotionalSpaceMock).searchEmotion(emotionalState);
     }
 
 }
