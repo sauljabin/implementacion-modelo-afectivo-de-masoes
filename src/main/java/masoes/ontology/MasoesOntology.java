@@ -34,27 +34,13 @@ public class MasoesOntology extends BeanOntology {
     public static final String ACTION_UPDATE_OBJECT = "UpdateObject";
 
     private static MasoesOntology INSTANCE;
+    private static final Reflections REFLECTIONS = new Reflections(MasoesOntology.class.getPackage().getName());
 
     private MasoesOntology() {
         super(NAME);
-
-        Reflections reflections = new Reflections(MasoesOntology.class.getPackage().getName());
-
-        Set<Class<? extends Concept>> subTypesOfConcept = reflections.getSubTypesOf(Concept.class);
-        Set<Class<? extends Predicate>> subTypesOfPredicate = reflections.getSubTypesOf(Predicate.class);
-        Set<Class<? extends AgentAction>> subTypesOfAgentAction = reflections.getSubTypesOf(AgentAction.class);
-
-        Set<String> packages = subTypesOfConcept.stream()
-                .map(aClass -> aClass.getPackage().getName())
-                .collect(Collectors.toSet());
-
-        packages.addAll(subTypesOfPredicate.stream()
-                .map(aClass -> aClass.getPackage().getName())
-                .collect(Collectors.toSet()));
-
-        packages.addAll(subTypesOfAgentAction.stream()
-                .map(aClass -> aClass.getPackage().getName())
-                .collect(Collectors.toSet()));
+        Set<String> packages = getConceptPackages();
+        packages.addAll(getPredicatePackages());
+        packages.addAll(getActionPackages());
 
         packages.forEach(
                 packageName -> {
@@ -65,6 +51,27 @@ public class MasoesOntology extends BeanOntology {
                     }
                 }
         );
+    }
+
+    private Set<String> getActionPackages() {
+        Set<Class<? extends AgentAction>> subTypesOfAgentAction = REFLECTIONS.getSubTypesOf(AgentAction.class);
+        return subTypesOfAgentAction.stream()
+                .map(aClass -> aClass.getPackage().getName())
+                .collect(Collectors.toSet());
+    }
+
+    private Set<String> getPredicatePackages() {
+        Set<Class<? extends Predicate>> subTypesOfPredicate = REFLECTIONS.getSubTypesOf(Predicate.class);
+        return subTypesOfPredicate.stream()
+                .map(aClass -> aClass.getPackage().getName())
+                .collect(Collectors.toSet());
+    }
+
+    private Set<String> getConceptPackages() {
+        Set<Class<? extends Concept>> subTypesOfConcept = REFLECTIONS.getSubTypesOf(Concept.class);
+        return subTypesOfConcept.stream()
+                .map(aClass -> aClass.getPackage().getName())
+                .collect(Collectors.toSet());
     }
 
     public synchronized static MasoesOntology getInstance() {
