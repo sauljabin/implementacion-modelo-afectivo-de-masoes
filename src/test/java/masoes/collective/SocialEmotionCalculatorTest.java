@@ -18,17 +18,17 @@ import java.util.stream.IntStream;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class CollectiveCentralEmotionTest {
+public class SocialEmotionCalculatorTest {
 
-    private CollectiveCentralEmotion collectiveCentralEmotion;
+    private SocialEmotionCalculator socialEmotionCalculator;
     private List<EmotionalState> emotionalStates;
 
     @Before
     public void setUp() {
-        collectiveCentralEmotion = new CollectiveCentralEmotion();
+        socialEmotionCalculator = new SocialEmotionCalculator();
 
         emotionalStates = getRandomValues();
-        emotionalStates.forEach(emotionalState -> collectiveCentralEmotion.addEmotionalState(emotionalState));
+        emotionalStates.forEach(emotionalState -> socialEmotionCalculator.addEmotionalState(emotionalState));
     }
 
     @Test
@@ -36,8 +36,8 @@ public class CollectiveCentralEmotionTest {
         double activationAverage = getActivationAverage();
         double satisfactionAverage = getSatisfactionAverage();
 
-        assertThat(collectiveCentralEmotion.getCentralEmotionalState().getActivation(), is(activationAverage));
-        assertThat(collectiveCentralEmotion.getCentralEmotionalState().getSatisfaction(), is(satisfactionAverage));
+        assertThat(socialEmotionCalculator.getCentralEmotionalState().getActivation(), is(activationAverage));
+        assertThat(socialEmotionCalculator.getCentralEmotionalState().getSatisfaction(), is(satisfactionAverage));
     }
 
     public double getSatisfactionAverage() {
@@ -67,8 +67,8 @@ public class CollectiveCentralEmotionTest {
         double satisfactionStandardDeviation = Math.sqrt(satisfactionVariance);
 
 
-        assertThat(collectiveCentralEmotion.getEmotionalDispersion().getActivation(), is(activationStandardDeviation));
-        assertThat(collectiveCentralEmotion.getEmotionalDispersion().getSatisfaction(), is(satisfactionStandardDeviation));
+        assertThat(socialEmotionCalculator.getEmotionalDispersion().getActivation(), is(activationStandardDeviation));
+        assertThat(socialEmotionCalculator.getEmotionalDispersion().getSatisfaction(), is(satisfactionStandardDeviation));
     }
 
     public double getActivationAverage() {
@@ -96,8 +96,8 @@ public class CollectiveCentralEmotionTest {
                 .getAsDouble();
 
 
-        assertThat(collectiveCentralEmotion.getMaximumDistance().getActivation(), is(maxActivation));
-        assertThat(collectiveCentralEmotion.getMaximumDistance().getSatisfaction(), is(maxSatisfaction));
+        assertThat(socialEmotionCalculator.getMaximumDistances().getActivation(), is(maxActivation));
+        assertThat(socialEmotionCalculator.getMaximumDistances().getSatisfaction(), is(maxSatisfaction));
     }
 
     private List<EmotionalState> getRandomValues() {

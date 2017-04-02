@@ -15,7 +15,7 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import masoes.MasoesSettings;
-import masoes.collective.CollectiveCentralEmotion;
+import masoes.collective.SocialEmotionCalculator;
 import masoes.component.behavioural.EmotionalSpace;
 import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.MasoesOntology;
@@ -39,7 +39,7 @@ public class ConfiguratorAgent extends GuiAgent {
     private OntologyAssistant masoesOntologyAssistant;
     private EmotionalSpace emotionalSpace;
     private Behaviour configuratorBehaviour;
-    private CollectiveCentralEmotion collectiveCentralEmotion;
+    private SocialEmotionCalculator socialEmotionCalculator;
 
     public ConfiguratorAgent() {
         configuratorAgentGui = new ConfiguratorAgentGui();
@@ -48,7 +48,7 @@ public class ConfiguratorAgent extends GuiAgent {
         agentManagementAssistant = new AgentManagementAssistant(this);
         masoesOntologyAssistant = new OntologyAssistant(this, MasoesOntology.getInstance());
         emotionalSpace = new EmotionalSpace();
-        collectiveCentralEmotion = new CollectiveCentralEmotion();
+        socialEmotionCalculator = new SocialEmotionCalculator();
     }
 
     @Override
@@ -176,13 +176,13 @@ public class ConfiguratorAgent extends GuiAgent {
 
                 configuratorAgentGui.setAgentStates(agentStates);
 
-                collectiveCentralEmotion.clear();
+                socialEmotionCalculator.clear();
 
-                agentStates.forEach(agentState -> collectiveCentralEmotion.addEmotionalState(new EmotionalState(agentState.getEmotionState().getActivation(), agentState.getEmotionState().getSatisfaction())));
+                agentStates.forEach(agentState -> socialEmotionCalculator.addEmotionalState(agentState.getEmotionState().toEmotionalState()));
 
-                configuratorAgentGui.setCentralEmotion(collectiveCentralEmotion.getCentralEmotionalState());
-                configuratorAgentGui.setEmotionalDispersion(collectiveCentralEmotion.getEmotionalDispersion());
-                configuratorAgentGui.setMaximumDistance(collectiveCentralEmotion.getMaximumDistance());
+                configuratorAgentGui.setCentralEmotion(socialEmotionCalculator.getCentralEmotionalState());
+                configuratorAgentGui.setEmotionalDispersion(socialEmotionCalculator.getEmotionalDispersion());
+                configuratorAgentGui.setMaximumDistance(socialEmotionCalculator.getMaximumDistances());
 
                 try {
                     Thread.sleep(500);

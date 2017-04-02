@@ -32,9 +32,8 @@ public class MasoesOntology extends BeanOntology {
     public static final String ACTION_DELETE_OBJECT = "DeleteObject";
     public static final String ACTION_GET_OBJECT = "GetObject";
     public static final String ACTION_UPDATE_OBJECT = "UpdateObject";
-
-    private static MasoesOntology INSTANCE;
     private static final Reflections REFLECTIONS = new Reflections(MasoesOntology.class.getPackage().getName());
+    private static MasoesOntology INSTANCE;
 
     private MasoesOntology() {
         super(NAME);
@@ -51,6 +50,13 @@ public class MasoesOntology extends BeanOntology {
                     }
                 }
         );
+    }
+
+    public synchronized static MasoesOntology getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new MasoesOntology();
+        }
+        return INSTANCE;
     }
 
     private Set<String> getActionPackages() {
@@ -72,13 +78,6 @@ public class MasoesOntology extends BeanOntology {
         return subTypesOfConcept.stream()
                 .map(aClass -> aClass.getPackage().getName())
                 .collect(Collectors.toSet());
-    }
-
-    public synchronized static MasoesOntology getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new MasoesOntology();
-        }
-        return INSTANCE;
     }
 
     @Override

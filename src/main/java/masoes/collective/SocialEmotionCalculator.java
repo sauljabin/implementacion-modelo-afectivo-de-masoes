@@ -11,11 +11,11 @@ import masoes.component.behavioural.EmotionalState;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectiveCentralEmotion {
+public class SocialEmotionCalculator {
 
     private List<EmotionalState> emotionalStates;
 
-    public CollectiveCentralEmotion() {
+    public SocialEmotionCalculator() {
         emotionalStates = new ArrayList<>();
     }
 
@@ -83,7 +83,7 @@ public class CollectiveCentralEmotion {
         return new EmotionalState(getActivationMean(), getSatisfactionMean());
     }
 
-    public EmotionalState getMaximumDistance() {
+    public EmotionalState getMaximumDistances() {
         return new EmotionalState(getActivationMaximumDistance(), getSatisfactionMaximumDistance());
     }
 

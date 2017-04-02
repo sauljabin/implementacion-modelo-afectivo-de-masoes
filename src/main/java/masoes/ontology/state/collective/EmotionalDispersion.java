@@ -23,6 +23,11 @@ public class EmotionalDispersion implements Concept {
         this.satisfaction = satisfaction;
     }
 
+    public EmotionalDispersion(EmotionalState emotionalState) {
+        this.activation = emotionalState.getActivation();
+        this.satisfaction = emotionalState.getSatisfaction();
+    }
+
     public double getActivation() {
         return activation;
     }

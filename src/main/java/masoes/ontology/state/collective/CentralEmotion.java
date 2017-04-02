@@ -23,6 +23,11 @@ public class CentralEmotion implements Concept {
         this.satisfaction = satisfaction;
     }
 
+    public CentralEmotion(EmotionalState emotionalState) {
+        this.activation = emotionalState.getActivation();
+        this.satisfaction = emotionalState.getSatisfaction();
+    }
+
     public double getActivation() {
         return activation;
     }

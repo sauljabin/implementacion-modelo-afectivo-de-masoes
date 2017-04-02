@@ -7,6 +7,7 @@
 package masoes.ontology.state;
 
 import jade.content.Concept;
+import masoes.component.behavioural.EmotionalState;
 import util.ToStringBuilder;
 
 public class EmotionState implements Concept {
@@ -26,6 +27,14 @@ public class EmotionState implements Concept {
         this.type = type;
         this.activation = activation;
         this.satisfaction = satisfaction;
+    }
+
+    public EmotionState(String name, String className, String type, EmotionalState emotionalState) {
+        this.name = name;
+        this.className = className;
+        this.type = type;
+        this.activation = emotionalState.getActivation();
+        this.satisfaction = emotionalState.getSatisfaction();
     }
 
     public double getActivation() {
@@ -66,6 +75,10 @@ public class EmotionState implements Concept {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public EmotionalState toEmotionalState() {
+        return new EmotionalState(activation, satisfaction);
     }
 
     @Override

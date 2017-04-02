@@ -25,9 +25,7 @@ import masoes.ontology.stimulus.ObjectStimulus;
 import ontology.OntologyAssistant;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 import test.PowerMockitoTest;
 
@@ -47,8 +45,6 @@ import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class NotifierBehaviourTest extends PowerMockitoTest {
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
     private Agent agentMock;
     private NotifierBehaviour notifierBehaviour;
     private AgentManagementAssistant agentManagementAssistantMock;

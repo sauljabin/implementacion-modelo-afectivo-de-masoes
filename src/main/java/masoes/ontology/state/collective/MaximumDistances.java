@@ -23,6 +23,11 @@ public class MaximumDistances implements Concept {
         this.satisfaction = satisfaction;
     }
 
+    public MaximumDistances(EmotionalState emotionalState) {
+        this.activation = emotionalState.getActivation();
+        this.satisfaction = emotionalState.getSatisfaction();
+    }
+
     public double getActivation() {
         return activation;
     }
