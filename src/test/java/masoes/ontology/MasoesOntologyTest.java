@@ -48,7 +48,7 @@ public class MasoesOntologyTest {
         List<Object> concepts = new ArrayList<>(Arrays.asList(masoesOntology.getConceptNames().toArray()));
         List<Object> actions = Arrays.asList(masoesOntology.getActionNames().toArray());
         concepts.removeAll(actions);
-        assertThat(concepts, containsInAnyOrder("ActionStimulus", "BehaviourState", "EmotionState", "ObjectProperty", "ObjectStimulus", "EventStimulus", "Stimulus", "ObjectEnvironment"));
+        assertThat(concepts, containsInAnyOrder("ActionStimulus", "BehaviourState", "EmotionState", "ObjectProperty", "ObjectStimulus", "EventStimulus", "Stimulus", "ObjectEnvironment", "CentralEmotion", "EmotionalDispersion", "MaximumDistances"));
     }
 
 }
