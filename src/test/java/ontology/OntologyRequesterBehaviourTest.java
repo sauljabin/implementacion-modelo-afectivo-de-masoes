@@ -24,12 +24,11 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 import test.PowerMockitoTest;
-import util.StringGenerator;
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doReturn;
@@ -57,7 +56,6 @@ public class OntologyRequesterBehaviourTest extends PowerMockitoTest {
     private OntologyRequesterBehaviour ontologyRequesterBehaviourSpy;
     private ACLMessage requestMock;
     private AgentLogger loggerMock;
-    private StringGenerator stringGeneratorMock;
 
     @Before
     public void setUp() throws Exception {
@@ -70,7 +68,6 @@ public class OntologyRequesterBehaviourTest extends PowerMockitoTest {
         senderMock = mock(AID.class);
         requestMock = mock(ACLMessage.class);
         loggerMock = mock(AgentLogger.class);
-        stringGeneratorMock = mock(StringGenerator.class);
 
         ontologyRequesterBehaviour = new OntologyRequesterBehaviour(agentMock, receiverMock, ontologyMock, agentActionMock);
         request = new ACLMessage(ACLMessage.REQUEST);
@@ -81,7 +78,6 @@ public class OntologyRequesterBehaviourTest extends PowerMockitoTest {
         contentManagerMock = mock(ContentManager.class);
         setFieldValue(ontologyRequesterBehaviour, "contentManager", contentManagerMock);
         setFieldValue(ontologyRequesterBehaviour, "logger", loggerMock);
-        setFieldValue(ontologyRequesterBehaviour, "stringGenerator", stringGeneratorMock);
 
         ontologyRequesterBehaviourSpy = spy(ontologyRequesterBehaviour);
     }
@@ -89,7 +85,6 @@ public class OntologyRequesterBehaviourTest extends PowerMockitoTest {
     @Test
     public void shouldPrepareCorrectRequestMessage() throws Exception {
         String expectedConversationId = "string";
-        doReturn(expectedConversationId).when(stringGeneratorMock).getString(anyInt());
 
         ACLMessage actualRequest = ontologyRequesterBehaviour.prepareRequestInteraction(request);
         verify(contentManagerMock).registerOntology(ontologyMock);
@@ -99,7 +94,7 @@ public class OntologyRequesterBehaviourTest extends PowerMockitoTest {
         assertThat(actionArgumentCaptor.getValue().getAction(), is(agentActionMock));
         assertThat(actualRequest.getSender(), is(senderMock));
         assertThat(actualRequest.getPerformative(), is(ACLMessage.REQUEST));
-        assertThat(actualRequest.getConversationId(), is(expectedConversationId));
+        assertThat(actualRequest.getConversationId(), is(notNullValue()));
         assertThat(actualRequest.getOntology(), is(ONTOLOGY_NAME));
         assertThat(actualRequest.getLanguage(), is(FIPANames.ContentLanguage.FIPA_SL));
         assertThat(actualRequest.getProtocol(), is(FIPANames.InteractionProtocol.FIPA_REQUEST));
