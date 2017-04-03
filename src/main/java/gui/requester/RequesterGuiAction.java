@@ -15,6 +15,7 @@ public enum RequesterGuiAction {
     ADD_BEHAVIOUR("gui.action.add_behaviour"),
     REMOVE_BEHAVIOUR("gui.action.remove_behaviour"),
     GET_EMOTIONAL_STATE("gui.action.get_emotional_state"),
+    GET_SOCIAL_EMOTION("gui.action.get_social_emotion"),
     EVALUATE_ACTION_STIMULUS("gui.action.evaluate_action_stimulus"),
     EVALUATE_EVENT_STIMULUS("gui.action.evaluate_event_stimulus"),
     EVALUATE_OBJECT_STIMULUS("gui.action.evaluate_object_stimulus"),
