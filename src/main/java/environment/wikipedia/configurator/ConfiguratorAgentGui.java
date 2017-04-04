@@ -34,6 +34,7 @@ public class ConfiguratorAgentGui extends JFrame {
     private JSpinner satisfactionIncreaseSpinner;
     private JSpinner activationToAddSpinner;
     private JSpinner satisfactionToAddSpinner;
+    private JSpinner iterationsSpinner;
     private JButton startButton;
     private JButton cleanButton;
     private JButton addAgentButton;
@@ -80,7 +81,7 @@ public class ConfiguratorAgentGui extends JFrame {
 
         JPanel collectiveEmotionPanel = new JPanel(new MigLayout("insets 5"));
         collectiveEmotionPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.collective_emotion")));
-        westPanel.add(collectiveEmotionPanel, "wrap 30");
+        westPanel.add(collectiveEmotionPanel, "wrap 20");
 
         JLabel centralEmotionLabel = new JLabel(translation.get("gui.central_emotion"));
         collectiveEmotionPanel.add(centralEmotionLabel);
@@ -103,15 +104,26 @@ public class ConfiguratorAgentGui extends JFrame {
         JLabel emotionalDispersionLabel = new JLabel(translation.get("gui.emotional_dispersion"));
         collectiveEmotionPanel.add(emotionalDispersionLabel);
 
-        emotionalDispersionValueLabel = new JLabel("-)");
+        emotionalDispersionValueLabel = new JLabel("-");
         emotionalDispersionValueLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         collectiveEmotionPanel.add(emotionalDispersionValueLabel, "grow, wrap");
 
+        JPanel caseStudyPanel = new JPanel(new MigLayout("insets 5"));
+        caseStudyPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.case_study")));
+        westPanel.add(caseStudyPanel, "grow");
+
+        JLabel iterationsLabel = new JLabel(translation.get("gui.iterations"));
+        caseStudyPanel.add(iterationsLabel, "w 100%");
+
+        iterationsSpinner = new JSpinner();
+        iterationsSpinner.setModel(new SpinnerNumberModel(100, 0, 10000, 1));
+        caseStudyPanel.add(iterationsSpinner, "w 70, wrap");
+
         startButton = new JButton(translation.get("gui.start"));
-        westPanel.add(startButton, "grow, h 25, wrap");
+        caseStudyPanel.add(startButton, "grow, span 2, wrap");
 
         cleanButton = new JButton(translation.get("gui.clean"));
-        westPanel.add(cleanButton, "grow, h 25");
+        caseStudyPanel.add(cleanButton, "grow, span 2");
     }
 
     private void addCenterComponents() {
