@@ -9,7 +9,7 @@ package behaviour;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 
-public class SimpleBehaviour extends Behaviour {
+public class DummyBehaviour extends Behaviour {
 
     @Override
     public void action() {

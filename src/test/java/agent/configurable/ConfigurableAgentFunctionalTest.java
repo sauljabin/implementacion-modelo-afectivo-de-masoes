@@ -7,7 +7,7 @@
 package agent.configurable;
 
 import agent.configurable.ontology.ConfigurableOntology;
-import behaviour.SimpleBehaviour;
+import behaviour.DummyBehaviour;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
@@ -48,7 +48,7 @@ public class ConfigurableAgentFunctionalTest extends FunctionalTest {
 
     @Test
     public void shouldAddAndRemoveBehaviour() {
-        String behaviour = addBehaviour(configurableAid, SimpleBehaviour.class);
+        String behaviour = addBehaviour(configurableAid, DummyBehaviour.class);
 
         ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
         message.addReceiver(configurableAid);

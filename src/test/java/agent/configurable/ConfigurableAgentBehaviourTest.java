@@ -9,7 +9,7 @@ package agent.configurable;
 import agent.configurable.ontology.AddBehaviour;
 import agent.configurable.ontology.ConfigurableOntology;
 import agent.configurable.ontology.RemoveBehaviour;
-import behaviour.SimpleBehaviour;
+import behaviour.DummyBehaviour;
 import jade.content.AgentAction;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
@@ -65,14 +65,14 @@ public class ConfigurableAgentBehaviourTest {
     public void shouldAddBehavior() throws Exception {
         String behaviourName = "behaviourName";
         Action action = new Action();
-        AddBehaviour addBehaviour = new AddBehaviour(behaviourName, SimpleBehaviour.class.getCanonicalName());
+        AddBehaviour addBehaviour = new AddBehaviour(behaviourName, DummyBehaviour.class.getCanonicalName());
         action.setAction(addBehaviour);
 
         Predicate predicate = configurableAgentBehaviour.performAction(action);
 
-        verify(agentMock).addBehaviour(isA(SimpleBehaviour.class));
+        verify(agentMock).addBehaviour(isA(DummyBehaviour.class));
         assertThat(predicate, is(instanceOf(Done.class)));
-        assertThat(behaviourMap.get(behaviourName), is(instanceOf(SimpleBehaviour.class)));
+        assertThat(behaviourMap.get(behaviourName), is(instanceOf(DummyBehaviour.class)));
     }
 
     @Test

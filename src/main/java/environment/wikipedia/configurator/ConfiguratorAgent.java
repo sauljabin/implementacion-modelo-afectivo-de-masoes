@@ -8,6 +8,7 @@ package environment.wikipedia.configurator;
 
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
+import behaviour.CounterBehaviour;
 import environment.wikipedia.state.EmotionalStateAgent;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
@@ -40,6 +41,7 @@ public class ConfiguratorAgent extends GuiAgent {
     private EmotionalSpace emotionalSpace;
     private Behaviour configuratorBehaviour;
     private SocialEmotionCalculator socialEmotionCalculator;
+    private Behaviour sendStimulusBehaviour;
 
     public ConfiguratorAgent() {
         configuratorAgentGui = new ConfiguratorAgentGui();
@@ -185,12 +187,24 @@ public class ConfiguratorAgent extends GuiAgent {
                 configuratorAgentGui.setMaximumDistance(socialEmotionCalculator.getMaximumDistances());
 
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(250);
                 } catch (InterruptedException e) {
                 }
             }
         };
+
+        // TODO: INFORMAR EN VENTANA EL STATUS
+
+        sendStimulusBehaviour = new CounterBehaviour(configuratorAgentGui.getIterations()) {
+            @Override
+            public void count(int i) {
+
+            }
+        };
+
         addBehaviour(configuratorBehaviour);
+        addBehaviour(sendStimulusBehaviour);
+
         configuratorAgentGui.modeSimulation();
     }
 
@@ -198,6 +212,11 @@ public class ConfiguratorAgent extends GuiAgent {
         if (configuratorBehaviour != null) {
             removeBehaviour(configuratorBehaviour);
         }
+
+        if (sendStimulusBehaviour != null) {
+            removeBehaviour(sendStimulusBehaviour);
+        }
+
         List<AgentToAdd> agentsToAdd = configuratorAgentGui.getAgentsToAdd();
 
         agentsToAdd.forEach(agentToAdd -> {

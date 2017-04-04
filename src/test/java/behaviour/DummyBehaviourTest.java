@@ -17,24 +17,24 @@ import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.spy;
 
-public class SimpleBehaviourTest extends PowerMockitoTest {
+public class DummyBehaviourTest extends PowerMockitoTest {
 
-    private SimpleBehaviour simpleBehaviour;
+    private DummyBehaviour dummyBehaviour;
     private Agent agentMock;
-    private SimpleBehaviour simpleBehaviourSpy;
+    private DummyBehaviour dummyBehaviourSpy;
 
     @Before
     public void setUp() {
         agentMock = mock(Agent.class);
-        simpleBehaviour = new SimpleBehaviour();
-        simpleBehaviour.setAgent(agentMock);
-        simpleBehaviourSpy = spy(simpleBehaviour);
+        dummyBehaviour = new DummyBehaviour();
+        dummyBehaviour.setAgent(agentMock);
+        dummyBehaviourSpy = spy(dummyBehaviour);
     }
 
     @Test
     public void shouldBlockWaitingMessage() {
-        simpleBehaviourSpy.action();
-        verify(simpleBehaviourSpy).block();
+        dummyBehaviourSpy.action();
+        verify(dummyBehaviourSpy).block();
     }
 
     @Test
@@ -43,7 +43,7 @@ public class SimpleBehaviourTest extends PowerMockitoTest {
         ACLMessage requestMock = mock(ACLMessage.class);
         doReturn(messageMock).when(agentMock).receive();
         doReturn(requestMock).when(messageMock).createReply();
-        simpleBehaviour.action();
+        dummyBehaviour.action();
         verify(requestMock).setPerformative(ACLMessage.CONFIRM);
         verify(agentMock).send(requestMock);
     }

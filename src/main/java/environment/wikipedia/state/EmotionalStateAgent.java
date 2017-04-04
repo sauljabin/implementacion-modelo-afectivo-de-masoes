@@ -48,7 +48,7 @@ public class EmotionalStateAgent extends GuiAgent {
                 AgentState agentState = (AgentState) masoesOntologyAssistant.sendRequestAction(getAID(agentName), new GetEmotionalState());
                 emotionalStateAgentGui.setAgentState(agentState);
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(250);
                 } catch (InterruptedException e) {
                 }
             }

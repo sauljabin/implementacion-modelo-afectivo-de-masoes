@@ -9,7 +9,7 @@ package agent;
 import agent.configurable.ontology.AddBehaviour;
 import agent.configurable.ontology.ConfigurableOntology;
 import agent.configurable.ontology.RemoveBehaviour;
-import behaviour.SimpleBehaviour;
+import behaviour.DummyBehaviour;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
 import jade.content.onto.Ontology;
@@ -217,23 +217,23 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
                 .performative(ACLMessage.INFORM)
                 .fipaSL()
                 .ontology(ConfigurableOntology.getInstance())
-                .content(new Done(new Action(amsAID, new AddBehaviour(behaviourName, SimpleBehaviour.class.getCanonicalName()))))
+                .content(new Done(new Action(amsAID, new AddBehaviour(behaviourName, DummyBehaviour.class.getCanonicalName()))))
                 .build();
         doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
-        agentManagementAssistant.addBehaviour(amsAID, behaviourName, SimpleBehaviour.class);
+        agentManagementAssistant.addBehaviour(amsAID, behaviourName, DummyBehaviour.class);
         ContentElement contentElement = testSendAndResponseBasicMessage(AMS_NAME, ConfigurableOntology.getInstance());
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(AddBehaviour.class)));
 
         AddBehaviour addBehaviour = (AddBehaviour) action.getAction();
         assertThat(addBehaviour.getName(), is(behaviourName));
-        assertThat(addBehaviour.getClassName(), is(SimpleBehaviour.class.getCanonicalName()));
+        assertThat(addBehaviour.getClassName(), is(DummyBehaviour.class.getCanonicalName()));
     }
 
     @Test
     public void shouldThrowExceptionWhenIsNotDoneInAddBehavior() {
         prepareTestException(ConfigurableOntology.getInstance());
-        agentManagementAssistant.addBehaviour(amsAID, "name", SimpleBehaviour.class);
+        agentManagementAssistant.addBehaviour(amsAID, "name", DummyBehaviour.class);
     }
 
     @Test
@@ -242,23 +242,23 @@ public class AgentManagementAssistantTest extends PowerMockitoTest {
                 .performative(ACLMessage.INFORM)
                 .fipaSL()
                 .ontology(ConfigurableOntology.getInstance())
-                .content(new Done(new Action(amsAID, new AddBehaviour("", SimpleBehaviour.class.getCanonicalName()))))
+                .content(new Done(new Action(amsAID, new AddBehaviour("", DummyBehaviour.class.getCanonicalName()))))
                 .build();
         doReturn(response).when(agentMock).blockingReceive(any(MessageTemplate.class), anyLong());
-        agentManagementAssistant.addBehaviour(amsAID, SimpleBehaviour.class);
+        agentManagementAssistant.addBehaviour(amsAID, DummyBehaviour.class);
         ContentElement contentElement = testSendAndResponseBasicMessage(AMS_NAME, ConfigurableOntology.getInstance());
         Action action = (Action) contentElement;
         assertThat(action.getAction(), is(instanceOf(AddBehaviour.class)));
 
         AddBehaviour addBehaviour = (AddBehaviour) action.getAction();
         assertThat(addBehaviour.getName().length(), is(30));
-        assertThat(addBehaviour.getClassName(), is(SimpleBehaviour.class.getCanonicalName()));
+        assertThat(addBehaviour.getClassName(), is(DummyBehaviour.class.getCanonicalName()));
     }
 
     @Test
     public void shouldThrowExceptionWhenIsNotDoneInAddBehaviorWithRandomName() {
         prepareTestException(ConfigurableOntology.getInstance());
-        agentManagementAssistant.addBehaviour(amsAID, SimpleBehaviour.class);
+        agentManagementAssistant.addBehaviour(amsAID, DummyBehaviour.class);
     }
 
     @Test

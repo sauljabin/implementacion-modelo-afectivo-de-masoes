@@ -110,20 +110,20 @@ public class ConfiguratorAgentGui extends JFrame {
 
         JPanel caseStudyPanel = new JPanel(new MigLayout("insets 5"));
         caseStudyPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.case_study")));
-        westPanel.add(caseStudyPanel, "grow");
+        westPanel.add(caseStudyPanel);
 
         JLabel iterationsLabel = new JLabel(translation.get("gui.iterations"));
-        caseStudyPanel.add(iterationsLabel, "w 100%");
+        caseStudyPanel.add(iterationsLabel);
 
         iterationsSpinner = new JSpinner();
         iterationsSpinner.setModel(new SpinnerNumberModel(100, 0, 10000, 1));
         caseStudyPanel.add(iterationsSpinner, "w 70, wrap");
 
         startButton = new JButton(translation.get("gui.start"));
-        caseStudyPanel.add(startButton, "grow, span 2, wrap");
+        caseStudyPanel.add(startButton, "w 240, span 2, wrap");
 
         cleanButton = new JButton(translation.get("gui.clean"));
-        caseStudyPanel.add(cleanButton, "grow, span 2");
+        caseStudyPanel.add(cleanButton, "w 240, span 2");
     }
 
     private void addCenterComponents() {
@@ -353,6 +353,7 @@ public class ConfiguratorAgentGui extends JFrame {
         satisfactionIncreaseSpinner.setEnabled(false);
         activationToAddSpinner.setEnabled(false);
         satisfactionToAddSpinner.setEnabled(false);
+        iterationsSpinner.setEnabled(false);
     }
 
     public void modeConfiguration() {
@@ -366,6 +367,7 @@ public class ConfiguratorAgentGui extends JFrame {
         satisfactionIncreaseSpinner.setEnabled(true);
         activationToAddSpinner.setEnabled(true);
         satisfactionToAddSpinner.setEnabled(true);
+        iterationsSpinner.setEnabled(true);
 
         collectiveCentralEmotionalStateLabel.setText("-");
         collectiveCentralEmotionLabel.setText("-");
@@ -393,6 +395,10 @@ public class ConfiguratorAgentGui extends JFrame {
         collectiveCentralEmotionalStateLabel.setText(String.format("(%.3f, %.3f)", centralEmotion.getActivation(), centralEmotion.getSatisfaction()));
         Emotion emotion = emotionalSpace.searchEmotion(centralEmotion);
         collectiveCentralEmotionLabel.setText(String.format("%s - %s", translation.get(emotion.getName().toLowerCase()), translation.get(emotion.getType().toString().toLowerCase())));
+    }
+
+    public int getIterations() {
+        return (int) iterationsSpinner.getValue();
     }
 
 }
