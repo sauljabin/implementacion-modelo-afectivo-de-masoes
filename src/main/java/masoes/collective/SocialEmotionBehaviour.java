@@ -59,6 +59,10 @@ public class SocialEmotionBehaviour extends OntologyResponderBehaviour {
                 .forEach(agentState ->
                         socialEmotionCalculator.addEmotionalState(agentState.getEmotionState().toEmotionalState()));
 
+        if (search.isEmpty()) {
+            return new SocialEmotion();
+        }
+
         CentralEmotion centralEmotion = new CentralEmotion(socialEmotionCalculator.getCentralEmotionalState());
         EmotionalDispersion emotionalDispersion = new EmotionalDispersion(socialEmotionCalculator.getEmotionalDispersion());
         MaximumDistances maximumDistances = new MaximumDistances(socialEmotionCalculator.getMaximumDistances());

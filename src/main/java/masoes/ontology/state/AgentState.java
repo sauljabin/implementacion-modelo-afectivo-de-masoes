@@ -54,7 +54,7 @@ public class AgentState implements Predicate {
         return new ToStringBuilder()
                 .append("agent", agent)
                 .append("emotionState", emotionState)
-                .append("emotionState", emotionState)
+                .append("behaviourState", behaviourState)
                 .toString();
     }
 
