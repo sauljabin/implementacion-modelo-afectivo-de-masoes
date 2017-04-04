@@ -37,6 +37,7 @@ import masoes.ontology.notifier.NotifyAction;
 import masoes.ontology.notifier.NotifyEvent;
 import masoes.ontology.notifier.NotifyObject;
 import masoes.ontology.state.GetEmotionalState;
+import masoes.ontology.state.collective.GetSocialEmotion;
 import masoes.ontology.stimulus.ActionStimulus;
 import masoes.ontology.stimulus.EvaluateStimulus;
 import masoes.ontology.stimulus.EventStimulus;
@@ -186,6 +187,9 @@ public class RequesterGuiAgent extends GuiAgent {
                 break;
             case GET_OBJECT:
                 sendGetObject(aid);
+                break;
+            case GET_SOCIAL_EMOTION:
+                sendGetSocialEmotion(aid);
                 break;
         }
 
@@ -358,6 +362,9 @@ public class RequesterGuiAgent extends GuiAgent {
         return listProperties;
     }
 
+    private void sendGetSocialEmotion(AID aid) {
+        sendOntologyMessage(aid, MasoesOntology.getInstance(), new GetSocialEmotion());
+    }
 
     private void sendGetEmotionalState(AID aid) {
         sendOntologyMessage(aid, MasoesOntology.getInstance(), new GetEmotionalState());

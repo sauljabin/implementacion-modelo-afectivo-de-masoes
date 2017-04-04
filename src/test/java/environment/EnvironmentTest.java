@@ -9,6 +9,7 @@ package environment;
 import jade.core.Agent;
 import masoes.collective.CollectiveKnowledgeBaseAgent;
 import masoes.collective.NotifierAgent;
+import masoes.collective.SocialEmotionAgent;
 import org.junit.Test;
 import settings.SettingsAgent;
 
@@ -77,6 +78,7 @@ public class EnvironmentTest {
         assertThat(environment.toJadeParameter(), containsString("notifier:" + NotifierAgent.class.getName()));
         assertThat(environment.toJadeParameter(), containsString("settings:" + SettingsAgent.class.getName()));
         assertThat(environment.toJadeParameter(), containsString("knowledge:" + CollectiveKnowledgeBaseAgent.class.getName()));
+        assertThat(environment.toJadeParameter(), containsString("socialEmotion:" + SocialEmotionAgent.class.getName()));
     }
 
     private Environment createEnvironment(List<AgentParameter> agentParameters) {

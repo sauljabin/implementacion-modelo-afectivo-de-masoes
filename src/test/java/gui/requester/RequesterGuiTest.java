@@ -263,6 +263,12 @@ public class RequesterGuiTest {
     }
 
     @Test
+    public void shouldRemoveAllWhenActionIsGetSocialEmotion() {
+        requesterGuiSpy.setGetSocialEmotionActionComponents();
+        testDynamicContentRepaint();
+    }
+
+    @Test
     public void shouldAddServiceNameWhenActionIsSearchAgent() {
         requesterGuiSpy.setSearchAgentActionComponents();
         testDynamicContentRepaint();

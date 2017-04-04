@@ -152,6 +152,12 @@ public class RequesterGuiComboBoxListenerTest {
         verify(requesterGuiMock).setGetObjectComponents();
     }
 
+    @Test
+    public void shouldInvokeGetSocialEmotion() {
+        prepareTest(RequesterGuiAction.GET_SOCIAL_EMOTION);
+        verify(requesterGuiMock).setGetSocialEmotionActionComponents();
+    }
+
     private void prepareTest(RequesterGuiAction action) {
         doReturn(action).when(requesterGuiMock).getSelectedAction();
         ActionEvent actionEvent = new ActionEvent(requesterGuiMock, RequesterGuiEvent.CHANGE_ACTION.getInt(), RequesterGuiEvent.CHANGE_ACTION.toString());

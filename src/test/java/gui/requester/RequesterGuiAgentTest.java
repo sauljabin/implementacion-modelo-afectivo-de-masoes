@@ -37,6 +37,7 @@ import masoes.ontology.notifier.NotifyAction;
 import masoes.ontology.notifier.NotifyEvent;
 import masoes.ontology.notifier.NotifyObject;
 import masoes.ontology.state.GetEmotionalState;
+import masoes.ontology.state.collective.GetSocialEmotion;
 import masoes.ontology.stimulus.ActionStimulus;
 import masoes.ontology.stimulus.EvaluateStimulus;
 import masoes.ontology.stimulus.EventStimulus;
@@ -173,6 +174,12 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
     public void shouldSendGetAllSettingsToAgent() throws Exception {
         Action action = testRequestAction(SettingsOntology.getInstance(), RequesterGuiAction.GET_ALL_SETTINGS);
         assertThat(action.getAction(), is(instanceOf(GetAllSettings.class)));
+    }
+
+    @Test
+    public void shouldSendGetSocialEmotionToAgent() throws Exception {
+        Action action = testRequestAction(MasoesOntology.getInstance(), RequesterGuiAction.GET_SOCIAL_EMOTION);
+        assertThat(action.getAction(), is(instanceOf(GetSocialEmotion.class)));
     }
 
     @Test

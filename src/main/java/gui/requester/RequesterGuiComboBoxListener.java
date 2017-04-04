@@ -87,6 +87,9 @@ public class RequesterGuiComboBoxListener implements ActionListener {
             case GET_OBJECT:
                 requesterGui.setGetObjectComponents();
                 break;
+            case GET_SOCIAL_EMOTION:
+                requesterGui.setGetSocialEmotionActionComponents();
+                break;
         }
 
     }

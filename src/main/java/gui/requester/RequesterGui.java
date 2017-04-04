@@ -473,4 +473,9 @@ public class RequesterGui extends JFrame {
         return agentNameTextField.getText();
     }
 
+    public void setGetSocialEmotionActionComponents() {
+        refreshDynamicCanvas(() -> {
+        });
+    }
+
 }
