@@ -7,13 +7,12 @@
 package environment.wikipedia.configurator;
 
 import environment.wikipedia.ContributorAgent;
-import environment.wikipedia.ReviewerAgent;
 import jade.core.Agent;
 import translate.Translation;
 
 public enum AgentTypeToAdd {
 
-    CONTRIBUTOR("gui.contributor", ContributorAgent.class), REVIEWER("gui.reviewer", ReviewerAgent.class);
+    CONTRIBUTOR("gui.contributor", ContributorAgent.class);
 
     private String translationKey;
     private Class<? extends Agent> agentClass;
