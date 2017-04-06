@@ -198,7 +198,7 @@ public class ConfiguratorAgent extends GuiAgent {
         sendStimulusBehaviour = new CounterBehaviour(configuratorAgentGui.getIterations()) {
             @Override
             public void count(int i) {
-
+                configuratorAgentGui.setActualIteration(i);
             }
         };
 

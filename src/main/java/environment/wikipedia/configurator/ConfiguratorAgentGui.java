@@ -48,6 +48,7 @@ public class ConfiguratorAgentGui extends JFrame {
     private JLabel collectiveCentralEmotionalStateLabel;
     private JLabel collectiveCentralEmotionLabel;
     private EmotionalSpace emotionalSpace;
+    private JLabel actualIterationLabel;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -110,7 +111,7 @@ public class ConfiguratorAgentGui extends JFrame {
 
         JPanel caseStudyPanel = new JPanel(new MigLayout("insets 5"));
         caseStudyPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.case_study")));
-        westPanel.add(caseStudyPanel);
+        westPanel.add(caseStudyPanel, "wrap 20");
 
         JLabel iterationsLabel = new JLabel(translation.get("gui.iterations"));
         caseStudyPanel.add(iterationsLabel);
@@ -124,6 +125,15 @@ public class ConfiguratorAgentGui extends JFrame {
 
         cleanButton = new JButton(translation.get("gui.clean"));
         caseStudyPanel.add(cleanButton, "w 240, span 2");
+
+        JPanel statusPanel = new JPanel(new MigLayout("insets 5"));
+        statusPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.iteration")));
+        westPanel.add(statusPanel);
+
+        actualIterationLabel = new JLabel("0");
+        actualIterationLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        actualIterationLabel.setFont(new Font("Arial", Font.BOLD, 50));
+        statusPanel.add(actualIterationLabel, "w 240");
     }
 
     private void addCenterComponents() {
@@ -373,6 +383,7 @@ public class ConfiguratorAgentGui extends JFrame {
         collectiveCentralEmotionLabel.setText("-");
         maxDistanceEmotionValueLabel.setText("-");
         emotionalDispersionValueLabel.setText("-");
+        setActualIteration(0);
     }
 
     public void activateStartButton() {
@@ -399,6 +410,10 @@ public class ConfiguratorAgentGui extends JFrame {
 
     public int getIterations() {
         return (int) iterationsSpinner.getValue();
+    }
+
+    public void setActualIteration(int i) {
+        actualIterationLabel.setText(String.format("%d", i));
     }
 
 }
