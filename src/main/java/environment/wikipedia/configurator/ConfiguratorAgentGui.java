@@ -49,6 +49,8 @@ public class ConfiguratorAgentGui extends JFrame {
     private JLabel collectiveCentralEmotionLabel;
     private EmotionalSpace emotionalSpace;
     private JLabel actualIterationLabel;
+    private JSpinner eventFrequencySpinner;
+    private JCheckBox randomFrequencyCheckBox;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -117,8 +119,18 @@ public class ConfiguratorAgentGui extends JFrame {
         caseStudyPanel.add(iterationsLabel);
 
         iterationsSpinner = new JSpinner();
-        iterationsSpinner.setModel(new SpinnerNumberModel(100, 0, 10000, 1));
+        iterationsSpinner.setModel(new SpinnerNumberModel(100, 0, 1000, 1));
         caseStudyPanel.add(iterationsSpinner, "w 70, wrap");
+
+        JLabel frequencyLabel = new JLabel(translation.get("gui.event_frequency"));
+        caseStudyPanel.add(frequencyLabel);
+
+        eventFrequencySpinner = new JSpinner();
+        eventFrequencySpinner.setModel(new SpinnerNumberModel(5, 0, 1000, 1));
+        caseStudyPanel.add(eventFrequencySpinner, "w 70, wrap");
+
+        randomFrequencyCheckBox = new JCheckBox(translation.get("gui.random"));
+        caseStudyPanel.add(randomFrequencyCheckBox, "cell 1 2, wrap");
 
         startButton = new JButton(translation.get("gui.start"));
         caseStudyPanel.add(startButton, "w 240, span 2, wrap");
@@ -364,6 +376,8 @@ public class ConfiguratorAgentGui extends JFrame {
         activationToAddSpinner.setEnabled(false);
         satisfactionToAddSpinner.setEnabled(false);
         iterationsSpinner.setEnabled(false);
+        eventFrequencySpinner.setEnabled(false);
+        randomFrequencyCheckBox.setEnabled(false);
     }
 
     public void modeConfiguration() {
@@ -378,6 +392,9 @@ public class ConfiguratorAgentGui extends JFrame {
         activationToAddSpinner.setEnabled(true);
         satisfactionToAddSpinner.setEnabled(true);
         iterationsSpinner.setEnabled(true);
+        eventFrequencySpinner.setEnabled(true);
+        randomFrequencyCheckBox.setEnabled(true);
+        randomFrequencyCheckBox.setSelected(true);
 
         collectiveCentralEmotionalStateLabel.setText("-");
         collectiveCentralEmotionLabel.setText("-");
@@ -410,6 +427,14 @@ public class ConfiguratorAgentGui extends JFrame {
 
     public int getIterations() {
         return (int) iterationsSpinner.getValue();
+    }
+
+    public int getEventFrequency() {
+        return (int) eventFrequencySpinner.getValue();
+    }
+
+    public boolean isEventFrequencyRandom() {
+        return randomFrequencyCheckBox.isSelected();
     }
 
     public void setActualIteration(int i) {
