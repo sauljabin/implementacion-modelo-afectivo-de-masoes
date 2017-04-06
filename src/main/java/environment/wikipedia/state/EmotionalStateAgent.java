@@ -20,6 +20,7 @@ import ontology.OntologyAssistant;
 
 public class EmotionalStateAgent extends GuiAgent {
 
+    private static final int FPS = 10;
     private OntologyAssistant masoesOntologyAssistant;
     private EmotionalStateAgentGui emotionalStateAgentGui;
     private AgentLogger logger;
@@ -48,7 +49,7 @@ public class EmotionalStateAgent extends GuiAgent {
                 AgentState agentState = (AgentState) masoesOntologyAssistant.sendRequestAction(getAID(agentName), new GetEmotionalState());
                 emotionalStateAgentGui.setAgentState(agentState);
                 try {
-                    Thread.sleep(250);
+                    Thread.sleep(1000 / FPS);
                 } catch (InterruptedException e) {
                 }
             }

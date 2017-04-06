@@ -12,7 +12,6 @@ import behaviour.CounterBehaviour;
 import environment.wikipedia.state.EmotionalStateAgent;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.CyclicBehaviour;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import masoes.MasoesSettings;
@@ -33,6 +32,7 @@ import java.util.stream.Collectors;
 
 public class ConfiguratorAgent extends GuiAgent {
 
+    private static final int FPS = 10;
     private AgentLogger logger;
     private ConfiguratorAgentGui configuratorAgentGui;
     private ConfiguratorAgentListener configuratorAgentListener;
@@ -41,7 +41,6 @@ public class ConfiguratorAgent extends GuiAgent {
     private EmotionalSpace emotionalSpace;
     private Behaviour configuratorBehaviour;
     private SocialEmotionCalculator socialEmotionCalculator;
-    private Behaviour sendStimulusBehaviour;
 
     public ConfiguratorAgent() {
         configuratorAgentGui = new ConfiguratorAgentGui();
@@ -167,9 +166,9 @@ public class ConfiguratorAgent extends GuiAgent {
             );
         });
 
-        configuratorBehaviour = new CyclicBehaviour() {
+        configuratorBehaviour = new CounterBehaviour(configuratorAgentGui.getIterations()) {
             @Override
-            public void action() {
+            public void count(int i) {
                 List<AgentState> agentStates = configuratorAgentGui.getAgentsToAdd()
                         .stream()
                         .map(agentToAdd ->
@@ -186,24 +185,16 @@ public class ConfiguratorAgent extends GuiAgent {
                 configuratorAgentGui.setEmotionalDispersion(socialEmotionCalculator.getEmotionalDispersion());
                 configuratorAgentGui.setMaximumDistance(socialEmotionCalculator.getMaximumDistances());
 
+                configuratorAgentGui.setActualIteration(i);
+
                 try {
-                    Thread.sleep(250);
+                    Thread.sleep(1000 / FPS);
                 } catch (InterruptedException e) {
                 }
             }
         };
 
-        // TODO: INFORMAR EN VENTANA EL STATUS
-
-        sendStimulusBehaviour = new CounterBehaviour(configuratorAgentGui.getIterations()) {
-            @Override
-            public void count(int i) {
-                configuratorAgentGui.setActualIteration(i);
-            }
-        };
-
         addBehaviour(configuratorBehaviour);
-        addBehaviour(sendStimulusBehaviour);
 
         configuratorAgentGui.modeSimulation();
     }
@@ -211,10 +202,6 @@ public class ConfiguratorAgent extends GuiAgent {
     private void cleanSimulation() {
         if (configuratorBehaviour != null) {
             removeBehaviour(configuratorBehaviour);
-        }
-
-        if (sendStimulusBehaviour != null) {
-            removeBehaviour(sendStimulusBehaviour);
         }
 
         List<AgentToAdd> agentsToAdd = configuratorAgentGui.getAgentsToAdd();
