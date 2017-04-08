@@ -20,6 +20,10 @@ public final class RandomGenerator {
         return (random.nextDouble() * (max - min)) + min;
     }
 
+    public static int getInteger(int min, int max) {
+        return random.nextInt(max - min + 1) + min;
+    }
+
     public static <T> T getRandomItem(List<T> list) {
         return list.get(random.nextInt(list.size()));
     }

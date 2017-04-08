@@ -179,10 +179,17 @@ public class ConfiguratorAgent extends GuiAgent {
                 List<AgentState> agentStates = configuratorAgentGui.getAgentsToAdd()
                         .stream()
                         .map(agentToAdd -> {
-                            AID receiver = getAID(agentToAdd.getAgentName());
                             AgentAction agentAction = new GetEmotionalState();
 
-                            if (i % configuratorAgentGui.getEventFrequency() == 0) {
+                            AID receiver = getAID(agentToAdd.getAgentName());
+
+                            int eventFrequency = configuratorAgentGui.getEventFrequency();
+
+                            if (configuratorAgentGui.isEventFrequencyRandom()) {
+                                eventFrequency = RandomGenerator.getInteger(1, 9);
+                            }
+
+                            if (i % eventFrequency == 0) {
                                 EventStimulus stimulus = new EventStimulus(receiver, RandomGenerator.getRandomItem(events));
                                 agentAction = new EvaluateStimulus(stimulus);
                             }
