@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
 public class ConfiguratorAgent extends GuiAgent {
 
     private static final int FPS = 10;
+    private static final String CONTRIBUTOR_KNOWLEDGE = "theories/behavioural/wikipedia/contributorEmotionalAgent.prolog";
     private static List<String> events = Arrays.asList("reputationIncrease", "reputationDecrease", "r1", "r2");
     private AgentLogger logger;
     private ConfiguratorAgentGui configuratorAgentGui;
@@ -170,8 +171,10 @@ public class ConfiguratorAgent extends GuiAgent {
                     agentToAdd.getAgentName(),
                     agentToAdd.getType().getAgentCLass(),
                     Arrays.asList(
-                            String.valueOf(agentToAdd.getEmotionalState().getActivation()),
-                            String.valueOf(agentToAdd.getEmotionalState().getSatisfaction()))
+                            "--activation=" + String.valueOf(agentToAdd.getEmotionalState().getActivation()),
+                            "--satisfaction=" + String.valueOf(agentToAdd.getEmotionalState().getSatisfaction()),
+                            "--knowledge=" + CONTRIBUTOR_KNOWLEDGE
+                    )
             );
         });
 

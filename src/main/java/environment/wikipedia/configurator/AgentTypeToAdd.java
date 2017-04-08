@@ -6,13 +6,13 @@
 
 package environment.wikipedia.configurator;
 
-import environment.wikipedia.ContributorAgent;
+import environment.dummy.DummyEmotionalAgent;
 import jade.core.Agent;
 import translate.Translation;
 
 public enum AgentTypeToAdd {
 
-    CONTRIBUTOR("gui.contributor", ContributorAgent.class);
+    CONTRIBUTOR("gui.contributor", DummyEmotionalAgent.class);
 
     private String translationKey;
     private Class<? extends Agent> agentClass;

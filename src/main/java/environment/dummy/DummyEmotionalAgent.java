@@ -33,7 +33,9 @@ public class DummyEmotionalAgent extends EmotionalAgent {
 
     @Override
     public void setUp() {
+
         String theoryPath = THEORY;
+
         if (hasArgs()) {
 
             EmotionalState emotionalState = new EmotionalState();
