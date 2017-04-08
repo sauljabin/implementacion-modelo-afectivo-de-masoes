@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.state;
+package gui.state;
 
 import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.state.AgentState;

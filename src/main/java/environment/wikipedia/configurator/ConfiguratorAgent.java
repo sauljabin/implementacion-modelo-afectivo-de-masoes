@@ -9,7 +9,7 @@ package environment.wikipedia.configurator;
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import behaviour.CounterBehaviour;
-import environment.wikipedia.state.EmotionalStateAgent;
+import gui.state.EmotionalStateAgent;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.gui.GuiAgent;
