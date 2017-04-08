@@ -9,7 +9,8 @@ package environment.wikipedia.configurator;
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import behaviour.CounterBehaviour;
-import gui.state.EmotionalStateAgent;
+import environment.wikipedia.graphic.EmotionalStateGraphic;
+import environment.wikipedia.state.EmotionalStateAgent;
 import jade.content.AgentAction;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
@@ -25,6 +26,7 @@ import masoes.ontology.state.GetEmotionalState;
 import masoes.ontology.stimulus.EvaluateStimulus;
 import masoes.ontology.stimulus.EventStimulus;
 import ontology.OntologyAssistant;
+import translate.Translation;
 import util.RandomGenerator;
 
 import java.util.ArrayList;
@@ -46,6 +48,8 @@ public class ConfiguratorAgent extends GuiAgent {
     private EmotionalSpace emotionalSpace;
     private Behaviour configuratorBehaviour;
     private SocialEmotionCalculator socialEmotionCalculator;
+    private EmotionalStateGraphic dispersionGraphic;
+    private EmotionalStateGraphic maxDistancesGraphic;
 
     public ConfiguratorAgent() {
         configuratorAgentGui = new ConfiguratorAgentGui();
@@ -171,6 +175,9 @@ public class ConfiguratorAgent extends GuiAgent {
             );
         });
 
+        dispersionGraphic = new EmotionalStateGraphic(Translation.getInstance().get("gui.emotional_dispersion"));
+        maxDistancesGraphic = new EmotionalStateGraphic(Translation.getInstance().get("gui.max_distance"));
+
         configuratorBehaviour = new CounterBehaviour(configuratorAgentGui.getIterations()) {
             @Override
             public void count(int i) {
@@ -202,12 +209,18 @@ public class ConfiguratorAgent extends GuiAgent {
                         })
                         .collect(Collectors.toList());
 
+
+                EmotionalState emotionalDispersion = socialEmotionCalculator.getEmotionalDispersion();
+                EmotionalState centralEmotionalState = socialEmotionCalculator.getCentralEmotionalState();
+                EmotionalState maximumDistances = socialEmotionCalculator.getMaximumDistances();
+
+                dispersionGraphic.addDispersion(i, emotionalDispersion);
+                maxDistancesGraphic.addDispersion(i, maximumDistances);
+
+                configuratorAgentGui.setCentralEmotion(centralEmotionalState);
+                configuratorAgentGui.setEmotionalDispersion(emotionalDispersion);
+                configuratorAgentGui.setMaximumDistance(maximumDistances);
                 configuratorAgentGui.setAgentStates(agentStates);
-
-                configuratorAgentGui.setCentralEmotion(socialEmotionCalculator.getCentralEmotionalState());
-                configuratorAgentGui.setEmotionalDispersion(socialEmotionCalculator.getEmotionalDispersion());
-                configuratorAgentGui.setMaximumDistance(socialEmotionCalculator.getMaximumDistances());
-
                 configuratorAgentGui.setActualIteration(i);
 
                 try {
@@ -225,6 +238,14 @@ public class ConfiguratorAgent extends GuiAgent {
     private void cleanSimulation() {
         if (configuratorBehaviour != null) {
             removeBehaviour(configuratorBehaviour);
+        }
+
+        if (dispersionGraphic != null) {
+            dispersionGraphic.dispose();
+        }
+
+        if (maxDistancesGraphic != null) {
+            maxDistancesGraphic.dispose();
         }
 
         List<AgentToAdd> agentsToAdd = configuratorAgentGui.getAgentsToAdd();

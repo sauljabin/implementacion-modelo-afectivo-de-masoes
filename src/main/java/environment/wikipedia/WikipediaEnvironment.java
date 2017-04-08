@@ -9,7 +9,6 @@ package environment.wikipedia;
 import environment.AgentParameter;
 import environment.Environment;
 import environment.wikipedia.configurator.ConfiguratorAgent;
-import gui.requester.RequesterGuiAgent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,8 +20,7 @@ public class WikipediaEnvironment extends Environment {
     @Override
     public List<AgentParameter> getAgentParameters() {
         return Arrays.asList(
-                new AgentParameter("configurator", ConfiguratorAgent.class),
-                new AgentParameter("requester", RequesterGuiAgent.class)
+                new AgentParameter("configurator", ConfiguratorAgent.class)
         );
     }
 

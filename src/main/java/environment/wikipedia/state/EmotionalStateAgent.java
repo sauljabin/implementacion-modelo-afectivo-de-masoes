@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.state;
+package environment.wikipedia.state;
 
 import agent.AgentLogger;
 import environment.wikipedia.configurator.ConfiguratorAgentEvent;
