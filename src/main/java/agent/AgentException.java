@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package jade;
+package agent;
 
 public class AgentException extends RuntimeException {
 

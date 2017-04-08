@@ -40,7 +40,7 @@ public class EmotionalState {
         return activation;
     }
 
-    private void setActivation(double activation) {
+    public void setActivation(double activation) {
         if (activation > MAX) {
             this.activation = MAX;
         } else if (activation < MIN) {
@@ -54,7 +54,7 @@ public class EmotionalState {
         return satisfaction;
     }
 
-    private void setSatisfaction(double satisfaction) {
+    public void setSatisfaction(double satisfaction) {
         if (satisfaction > MAX) {
             this.satisfaction = MAX;
         } else if (satisfaction < MIN) {

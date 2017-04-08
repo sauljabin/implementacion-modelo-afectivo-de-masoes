@@ -45,7 +45,7 @@ public class RandomGeneratorTest {
         assertThat(RandomGenerator.getRandomItem(stringList), isOneOf(stringList.toArray()));
     }
 
-    private void assertRandomInteger(int xMin,int xMax) {
+    private void assertRandomInteger(int xMin, int xMax) {
         IntStream.range(0, 1000).forEach(i -> {
             int value = RandomGenerator.getInteger(xMin, xMax);
             assertThat(value, is(greaterThanOrEqualTo(xMin)));

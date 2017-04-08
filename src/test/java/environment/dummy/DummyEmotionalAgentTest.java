@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import test.PowerMockitoTest;
 
+import java.nio.file.Paths;
 import java.util.Random;
 
 import static org.hamcrest.core.Is.is;
@@ -27,7 +28,10 @@ import static org.mockito.Mockito.verify;
 
 public class DummyEmotionalAgentTest extends PowerMockitoTest {
 
+    private static final String THEORY = "theories/behavioural/dummy/dummyEmotionalAgent.prolog";
+
     private ArgumentCaptor<EmotionalState> emotionalStateArgumentCaptor;
+    private ArgumentCaptor<Knowledge> knowledgeArgumentCaptor;
 
     private DummyEmotionalAgent dummyEmotionalAgentSpy;
     private BehaviouralComponent behaviouralComponentMock;
@@ -35,6 +39,7 @@ public class DummyEmotionalAgentTest extends PowerMockitoTest {
     @Before
     public void setUp() {
         emotionalStateArgumentCaptor = ArgumentCaptor.forClass(EmotionalState.class);
+        knowledgeArgumentCaptor = ArgumentCaptor.forClass(Knowledge.class);
         dummyEmotionalAgentSpy = spy(DummyEmotionalAgent.class);
         behaviouralComponentMock = mock(BehaviouralComponent.class);
         doReturn(behaviouralComponentMock).when(dummyEmotionalAgentSpy).getBehaviouralComponent();
@@ -50,7 +55,7 @@ public class DummyEmotionalAgentTest extends PowerMockitoTest {
         String activationString = String.valueOf(activation);
         String satisfactionString = String.valueOf(satisfaction);
 
-        Object[] args = {activationString, satisfactionString};
+        Object[] args = {"--activation=" + activationString, "--satisfaction=" + satisfactionString};
 
         dummyEmotionalAgentSpy.setArguments(args);
         dummyEmotionalAgentSpy.setUp();
@@ -64,11 +69,15 @@ public class DummyEmotionalAgentTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldNotSetEmotionalStateWhenArgumentsAreInvalid() {
-        Object[] args = {"TEXT", "TEXT"};
+    public void shouldSetKnowledgeWhenReceivePath() {
+        Object[] args = {"--knowledge=" + THEORY};
         dummyEmotionalAgentSpy.setArguments(args);
         dummyEmotionalAgentSpy.setUp();
-        verify(behaviouralComponentMock, never()).setEmotionalState(any(EmotionalState.class));
+
+        verify(behaviouralComponentMock).addKnowledge(knowledgeArgumentCaptor.capture());
+
+        Knowledge knowledge = knowledgeArgumentCaptor.getValue();
+        assertThat(knowledge.toString(), is(new Knowledge(Paths.get(THEORY)).toString().trim()));
     }
 
     @Test

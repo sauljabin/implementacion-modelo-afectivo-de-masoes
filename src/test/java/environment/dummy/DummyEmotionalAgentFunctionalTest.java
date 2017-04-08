@@ -68,9 +68,9 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
 
     @Test
     public void shouldChangeAgentEmotion() throws Exception {
-        testEvaluateActionStimulus("greeting", getAID(), "compassion", "IMITATIVE", Arrays.asList("-0.45", "0.45"));
-        testEvaluateObjectStimulus("smile", getAID(), "admiration", "IMITATIVE", Arrays.asList("-0.55", "0.55"));
-        testEvaluateEventStimulus("bye", getAID(), "joy", "IMITATIVE", Arrays.asList("0.55", "0.55"));
+        testEvaluateActionStimulus("greeting", getAID(), "compassion", "IMITATIVE", Arrays.asList("--activation=-0.45", "--satisfaction=0.45"));
+        testEvaluateObjectStimulus("smile", getAID(), "admiration", "IMITATIVE", Arrays.asList("--activation=-0.55", "--satisfaction=0.55"));
+        testEvaluateEventStimulus("bye", getAID(), "joy", "IMITATIVE", Arrays.asList("--activation=0.55", "--satisfaction=0.55"));
     }
 
     @Test

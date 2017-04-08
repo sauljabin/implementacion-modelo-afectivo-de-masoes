@@ -6,35 +6,84 @@
 
 package environment.dummy;
 
+import agent.AgentException;
 import knowledge.Knowledge;
 import masoes.agent.EmotionalAgent;
 import masoes.component.behavioural.EmotionalState;
-import util.StringValidator;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class DummyEmotionalAgent extends EmotionalAgent {
 
     private static final String THEORY = "theories/behavioural/dummy/dummyEmotionalAgent.prolog";
+    private static final String ACTIVATION_OPTION = "a";
+    private static final String SATISFACTION_OPTION = "s";
+    private static final String KNOWLEDGE_OPTION = "k";
+    private static final String ACTIVATION = "activation";
+    private static final String SATISFACTION = "satisfaction";
+    private static final String KNOWLEDGE = "knowledge";
 
     @Override
     public void setUp() {
-        if (hasArgs() && argsAreReal()) {
-            double activation = Double.parseDouble((String) getArguments()[0]);
-            double satisfaction = Double.parseDouble((String) getArguments()[1]);
+        String theoryPath = THEORY;
+        if (hasArgs()) {
 
-            EmotionalState emotionalState = new EmotionalState(activation, satisfaction);
+            EmotionalState emotionalState = new EmotionalState();
+
+            String[] args = getStringArgs();
+            Options options = createOptions();
+            CommandLineParser commandLineParser = new DefaultParser();
+
+            try {
+                CommandLine commandLine = commandLineParser.parse(options, args);
+
+                if (commandLine.hasOption(ACTIVATION_OPTION)) {
+                    emotionalState.setActivation(Double.parseDouble(commandLine.getOptionValue(ACTIVATION_OPTION)));
+                }
+
+                if (commandLine.hasOption(SATISFACTION_OPTION)) {
+                    emotionalState.setSatisfaction(Double.parseDouble(commandLine.getOptionValue(SATISFACTION_OPTION)));
+                }
+
+                if (commandLine.hasOption(KNOWLEDGE_OPTION)) {
+                    theoryPath = commandLine.getOptionValue(KNOWLEDGE_OPTION);
+                }
+            } catch (ParseException e) {
+                throw new AgentException(e);
+            }
+
             getBehaviouralComponent().setEmotionalState(emotionalState);
         }
-        getBehaviouralComponent().addKnowledge(new Knowledge(Paths.get(THEORY)));
+
+        getBehaviouralComponent().addKnowledge(new Knowledge(Paths.get(theoryPath)));
     }
 
-    private boolean argsAreReal() {
-        return (getArguments()[0] instanceof String) && (getArguments()[1] instanceof String) && StringValidator.isReal((String) getArguments()[0]) && StringValidator.isReal((String) getArguments()[1]);
+    public Options createOptions() {
+        Options options = new Options();
+        options.addOption(new Option(ACTIVATION_OPTION, ACTIVATION, true, ACTIVATION));
+        options.addOption(new Option(SATISFACTION_OPTION, SATISFACTION, true, SATISFACTION));
+        options.addOption(new Option(KNOWLEDGE_OPTION, KNOWLEDGE, true, KNOWLEDGE));
+        return options;
+    }
+
+    public String[] getStringArgs() {
+        return Arrays.asList(getArguments())
+                .stream()
+                .map(o -> o.toString())
+                .collect(Collectors.toList())
+                .toArray(new String[getArguments().length]);
     }
 
     private boolean hasArgs() {
-        return getArguments() != null && getArguments().length == 2;
+        return getArguments() != null && getArguments().length > 0;
     }
 
 }

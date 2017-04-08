@@ -6,9 +6,9 @@
 
 package environment.wikipedia.state;
 
+import agent.AgentException;
 import agent.AgentLogger;
 import environment.wikipedia.configurator.ConfiguratorAgentEvent;
-import jade.AgentException;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.gui.GuiAgent;

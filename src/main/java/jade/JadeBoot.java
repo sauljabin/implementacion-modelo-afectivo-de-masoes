@@ -6,6 +6,7 @@
 
 package jade;
 
+import agent.AgentException;
 import jade.core.Agent;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;

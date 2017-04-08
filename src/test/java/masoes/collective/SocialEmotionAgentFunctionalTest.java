@@ -47,14 +47,14 @@ public class SocialEmotionAgentFunctionalTest extends FunctionalTest {
         EmotionalState firstEmotionalState = new EmotionalState();
 
         createAgent(DummyEmotionalAgent.class, Arrays.asList(
-                String.valueOf(firstEmotionalState.getActivation()),
-                String.valueOf(firstEmotionalState.getSatisfaction())
+                "--activation=" + String.valueOf(firstEmotionalState.getActivation()),
+                "--satisfaction=" + String.valueOf(firstEmotionalState.getSatisfaction())
         ));
 
         EmotionalState secondEmotionalState = new EmotionalState();
         createAgent(DummyEmotionalAgent.class, Arrays.asList(
-                String.valueOf(secondEmotionalState.getActivation()),
-                String.valueOf(secondEmotionalState.getSatisfaction())
+                "--activation=" + String.valueOf(secondEmotionalState.getActivation()),
+                "--satisfaction=" + String.valueOf(secondEmotionalState.getSatisfaction())
         ));
 
         SocialEmotionCalculator socialEmotionCalculator = new SocialEmotionCalculator();
