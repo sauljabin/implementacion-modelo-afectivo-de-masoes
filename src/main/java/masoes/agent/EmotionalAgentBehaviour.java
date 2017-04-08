@@ -9,7 +9,6 @@ package masoes.agent;
 import jade.content.Concept;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
-import jade.content.onto.basic.Done;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.MessageTemplate;
 import masoes.component.behavioural.BehaviouralComponent;
@@ -41,19 +40,19 @@ public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
     @Override
     public Predicate performAction(Action action) throws FailureException {
         Concept agentAction = action.getAction();
-        if (agentAction instanceof GetEmotionalState) {
-            return responseAgentStatus();
+        if (agentAction instanceof EvaluateStimulus) {
+            return evaluateStimulus((EvaluateStimulus) action.getAction());
         } else {
-            evaluateStimulus((EvaluateStimulus) action.getAction());
+            return responseAgentStatus();
         }
-        return new Done(action);
     }
 
-    private void evaluateStimulus(EvaluateStimulus evaluateStimulus) {
+    private Predicate evaluateStimulus(EvaluateStimulus evaluateStimulus) {
         Emotion currentEmotion = behaviouralComponent.getCurrentEmotion();
         behaviouralComponent.evaluateStimulus(evaluateStimulus.getStimulus());
         Emotion newEmotion = behaviouralComponent.getCurrentEmotion();
         logger.updatingEmotion(currentEmotion, newEmotion);
+        return responseAgentStatus();
     }
 
     private Predicate responseAgentStatus() {

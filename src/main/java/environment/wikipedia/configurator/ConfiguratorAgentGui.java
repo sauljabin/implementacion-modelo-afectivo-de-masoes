@@ -95,7 +95,7 @@ public class ConfiguratorAgentGui extends JFrame {
 
         collectiveCentralEmotionLabel = new JLabel("-");
         collectiveCentralEmotionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        collectiveEmotionPanel.add(collectiveCentralEmotionLabel, "w 240, span 2, wrap 30");
+        collectiveEmotionPanel.add(collectiveCentralEmotionLabel, "w 260, span 2, wrap 30");
 
         JLabel maxDistanceEmotionLabel = new JLabel(translation.get("gui.max_distance"));
         collectiveEmotionPanel.add(maxDistanceEmotionLabel);
@@ -133,10 +133,10 @@ public class ConfiguratorAgentGui extends JFrame {
         caseStudyPanel.add(randomFrequencyCheckBox, "cell 1 2, wrap");
 
         startButton = new JButton(translation.get("gui.start"));
-        caseStudyPanel.add(startButton, "w 240, span 2, wrap");
+        caseStudyPanel.add(startButton, "w 260, span 2, wrap");
 
         cleanButton = new JButton(translation.get("gui.clean"));
-        caseStudyPanel.add(cleanButton, "w 240, span 2");
+        caseStudyPanel.add(cleanButton, "w 260, span 2");
 
         JPanel statusPanel = new JPanel(new MigLayout("insets 5"));
         statusPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.iteration")));
@@ -145,7 +145,7 @@ public class ConfiguratorAgentGui extends JFrame {
         actualIterationLabel = new JLabel("0");
         actualIterationLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         actualIterationLabel.setFont(new Font("Arial", Font.BOLD, 50));
-        statusPanel.add(actualIterationLabel, "w 240");
+        statusPanel.add(actualIterationLabel, "w 260");
     }
 
     private void addCenterComponents() {

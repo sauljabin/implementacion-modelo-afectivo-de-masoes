@@ -10,7 +10,6 @@ import jade.content.ContentElement;
 import jade.content.ContentManager;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.basic.Action;
-import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
@@ -38,6 +37,7 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
 
@@ -125,11 +125,15 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
         ACLMessage response = testMessage(requestMessage);
 
         ContentElement contentElement = contentManager.extractContent(response);
-        assertThat(contentElement, is(instanceOf(Done.class)));
+        assertThat(contentElement, is(instanceOf(AgentState.class)));
+
+        AgentState firstEmotionalResponse = (AgentState) contentElement;
 
         AgentState secondEmotionalResponse = testGetStatus(requestMessage);
         assertThat(secondEmotionalResponse.getEmotionState().getName(), is(expectedEmotion));
         assertThat(secondEmotionalResponse.getBehaviourState().getType(), is(behaviourType.toUpperCase()));
+
+        assertReflectionEquals(firstEmotionalResponse, secondEmotionalResponse);
     }
 
     private AgentState testGetStatus(ACLMessage requestMessage) throws Exception {

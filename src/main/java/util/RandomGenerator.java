@@ -6,6 +6,7 @@
 
 package util;
 
+import java.util.List;
 import java.util.Random;
 
 public final class RandomGenerator {
@@ -17,6 +18,10 @@ public final class RandomGenerator {
 
     public static double getDouble(double min, double max) {
         return (random.nextDouble() * (max - min)) + min;
+    }
+
+    public static <T> T getRandomItem(List<T> list) {
+        return list.get(random.nextInt(list.size()));
     }
 
 }

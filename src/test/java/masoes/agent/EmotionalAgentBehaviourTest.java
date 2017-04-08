@@ -8,7 +8,6 @@ package masoes.agent;
 
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
-import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.lang.acl.MessageTemplate;
 import masoes.component.behavioural.BehaviourType;
@@ -43,6 +42,8 @@ public class EmotionalAgentBehaviourTest extends PowerMockitoTest {
     private EmotionalAgentBehaviour emotionalAgentBehaviour;
     private BehaviouralComponent behaviouralComponentMock;
     private AID agentAID;
+    private HappinessEmotion emotion;
+    private EmotionalState emotionalState;
 
     @Before
     public void setUp() throws Exception {
@@ -57,6 +58,14 @@ public class EmotionalAgentBehaviourTest extends PowerMockitoTest {
         emotionalAgentBehaviour = new EmotionalAgentBehaviour(emotionalAgentMock);
 
         setFieldValue(emotionalAgentBehaviour, "logger", mock(EmotionalAgentLogger.class));
+
+        emotion = new HappinessEmotion();
+        doReturn(emotion).when(behaviouralComponentMock).getCurrentEmotion();
+
+        emotionalState = emotion.getRandomEmotionalState();
+        doReturn(emotionalState).when(behaviouralComponentMock).getCurrentEmotionalState();
+
+        doReturn(BehaviourType.IMITATIVE).when(behaviouralComponentMock).getCurrentBehaviourType();
     }
 
     @Test
@@ -85,10 +94,7 @@ public class EmotionalAgentBehaviourTest extends PowerMockitoTest {
         action.setAction(evaluateStimulus);
 
         Predicate predicate = emotionalAgentBehaviour.performAction(action);
-        assertThat(predicate, is(instanceOf(Done.class)));
-
-        Done done = (Done) predicate;
-        assertThat(done.getAction(), is(action));
+        assertThat(predicate, is(instanceOf(AgentState.class)));
 
         verify(behaviouralComponentMock).evaluateStimulus(stimulus);
     }
@@ -105,10 +111,7 @@ public class EmotionalAgentBehaviourTest extends PowerMockitoTest {
         action.setAction(evaluateStimulus);
 
         Predicate predicate = emotionalAgentBehaviour.performAction(action);
-        assertThat(predicate, is(instanceOf(Done.class)));
-
-        Done done = (Done) predicate;
-        assertThat(done.getAction(), is(action));
+        assertThat(predicate, is(instanceOf(AgentState.class)));
 
         verify(behaviouralComponentMock).evaluateStimulus(stimulus);
     }
@@ -125,24 +128,13 @@ public class EmotionalAgentBehaviourTest extends PowerMockitoTest {
         action.setAction(evaluateStimulus);
 
         Predicate predicate = emotionalAgentBehaviour.performAction(action);
-        assertThat(predicate, is(instanceOf(Done.class)));
-
-        Done done = (Done) predicate;
-        assertThat(done.getAction(), is(action));
+        assertThat(predicate, is(instanceOf(AgentState.class)));
 
         verify(behaviouralComponentMock).evaluateStimulus(stimulus);
     }
 
     @Test
     public void shouldReturnAgentStatus() throws Exception {
-        HappinessEmotion emotion = new HappinessEmotion();
-        doReturn(emotion).when(behaviouralComponentMock).getCurrentEmotion();
-
-        EmotionalState emotionalState = emotion.getRandomEmotionalState();
-        doReturn(emotionalState).when(behaviouralComponentMock).getCurrentEmotionalState();
-
-        doReturn(BehaviourType.IMITATIVE).when(behaviouralComponentMock).getCurrentBehaviourType();
-
         Action action = new Action();
         action.setAction(new GetEmotionalState());
         Predicate predicate = emotionalAgentBehaviour.performAction(action);

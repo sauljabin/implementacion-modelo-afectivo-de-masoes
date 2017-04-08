@@ -10,6 +10,7 @@ import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import behaviour.CounterBehaviour;
 import gui.state.EmotionalStateAgent;
+import jade.content.AgentAction;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.gui.GuiAgent;
@@ -21,7 +22,10 @@ import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
+import masoes.ontology.stimulus.EvaluateStimulus;
+import masoes.ontology.stimulus.EventStimulus;
 import ontology.OntologyAssistant;
+import util.RandomGenerator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +37,7 @@ import java.util.stream.Collectors;
 public class ConfiguratorAgent extends GuiAgent {
 
     private static final int FPS = 10;
+    private static List<String> events = Arrays.asList("reputationIncrease", "reputationDecrease", "r1", "r2");
     private AgentLogger logger;
     private ConfiguratorAgentGui configuratorAgentGui;
     private ConfiguratorAgentListener configuratorAgentListener;
@@ -169,17 +174,28 @@ public class ConfiguratorAgent extends GuiAgent {
         configuratorBehaviour = new CounterBehaviour(configuratorAgentGui.getIterations()) {
             @Override
             public void count(int i) {
+                socialEmotionCalculator.clear();
+
                 List<AgentState> agentStates = configuratorAgentGui.getAgentsToAdd()
                         .stream()
-                        .map(agentToAdd ->
-                                (AgentState) masoesOntologyAssistant.sendRequestAction(getAID(agentToAdd.getAgentName()), new GetEmotionalState()))
+                        .map(agentToAdd -> {
+                            AID receiver = getAID(agentToAdd.getAgentName());
+                            AgentAction agentAction = new GetEmotionalState();
+
+                            if (i % configuratorAgentGui.getEventFrequency() == 0) {
+                                EventStimulus stimulus = new EventStimulus(receiver, RandomGenerator.getRandomItem(events));
+                                agentAction = new EvaluateStimulus(stimulus);
+                            }
+
+                            AgentState agentState = (AgentState) masoesOntologyAssistant.sendRequestAction(receiver, agentAction);
+
+                            socialEmotionCalculator.addEmotionalState(agentState.getEmotionState().toEmotionalState());
+
+                            return agentState;
+                        })
                         .collect(Collectors.toList());
 
                 configuratorAgentGui.setAgentStates(agentStates);
-
-                socialEmotionCalculator.clear();
-
-                agentStates.forEach(agentState -> socialEmotionCalculator.addEmotionalState(agentState.getEmotionState().toEmotionalState()));
 
                 configuratorAgentGui.setCentralEmotion(socialEmotionCalculator.getCentralEmotionalState());
                 configuratorAgentGui.setEmotionalDispersion(socialEmotionCalculator.getEmotionalDispersion());
