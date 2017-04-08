@@ -9,7 +9,7 @@ package environment.wikipedia.configurator;
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import behaviour.CounterBehaviour;
-import environment.wikipedia.graphic.EmotionalStateGraphic;
+import environment.wikipedia.chart.EmotionalStateLineChartGui;
 import environment.wikipedia.state.EmotionalStateAgent;
 import jade.content.AgentAction;
 import jade.core.AID;
@@ -49,8 +49,8 @@ public class ConfiguratorAgent extends GuiAgent {
     private EmotionalSpace emotionalSpace;
     private Behaviour configuratorBehaviour;
     private SocialEmotionCalculator socialEmotionCalculator;
-    private EmotionalStateGraphic dispersionGraphic;
-    private EmotionalStateGraphic maxDistancesGraphic;
+    private EmotionalStateLineChartGui dispersionGraphic;
+    private EmotionalStateLineChartGui maxDistancesGraphic;
 
     public ConfiguratorAgent() {
         configuratorAgentGui = new ConfiguratorAgentGui();
@@ -178,8 +178,10 @@ public class ConfiguratorAgent extends GuiAgent {
             );
         });
 
-        dispersionGraphic = new EmotionalStateGraphic(Translation.getInstance().get("gui.emotional_dispersion"));
-        maxDistancesGraphic = new EmotionalStateGraphic(Translation.getInstance().get("gui.max_distance"));
+        dispersionGraphic = new EmotionalStateLineChartGui(Translation.getInstance().get("gui.emotional_dispersion"));
+        dispersionGraphic.setRange(0,1.2);
+        maxDistancesGraphic = new EmotionalStateLineChartGui(Translation.getInstance().get("gui.max_distance"));
+        maxDistancesGraphic.setRange(0,1.2);
 
         configuratorBehaviour = new CounterBehaviour(configuratorAgentGui.getIterations()) {
             @Override

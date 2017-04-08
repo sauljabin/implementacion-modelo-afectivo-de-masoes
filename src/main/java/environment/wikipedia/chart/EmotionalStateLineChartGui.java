@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.graphic;
+package environment.wikipedia.chart;
 
 import masoes.component.behavioural.EmotionalState;
 import org.jfree.chart.ChartFactory;
@@ -22,15 +22,16 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class EmotionalStateGraphic extends JDialog {
+public class EmotionalStateLineChartGui extends JDialog {
 
     private final Translation translation;
     private XYSeriesCollection collection;
     private JFreeChart chart;
     private XYSeries seriesSatisfaction;
     private XYSeries seriesActivation;
+    private final XYPlot xyPlot;
 
-    public EmotionalStateGraphic(String title) {
+    public EmotionalStateLineChartGui(String title) {
         translation = Translation.getInstance();
 
         setSize(600, 400);
@@ -56,9 +57,9 @@ public class EmotionalStateGraphic extends JDialog {
         chart = ChartFactory.createXYLineChart(title, translation.get("gui.iteration"), "", collection, PlotOrientation.VERTICAL, true, true, false);
         add(new ChartPanel(chart), BorderLayout.CENTER);
 
-        XYPlot xyPlot = chart.getXYPlot();
+        xyPlot = chart.getXYPlot();
         ValueAxis rangeAxis = xyPlot.getRangeAxis();
-        rangeAxis.setRange(0.0, 1.0);
+        rangeAxis.setRange(-1.5, 1.5);
 
         setVisible(true);
     }
@@ -66,6 +67,11 @@ public class EmotionalStateGraphic extends JDialog {
     public void addDispersion(int iteration, EmotionalState emotionalState) {
         seriesSatisfaction.add(iteration, emotionalState.getSatisfaction());
         seriesActivation.add(iteration, emotionalState.getActivation());
+    }
+
+    public void setRange(double lower, double upper) {
+        ValueAxis rangeAxis = xyPlot.getRangeAxis();
+        rangeAxis.setRange(lower, upper);
     }
 
 }
