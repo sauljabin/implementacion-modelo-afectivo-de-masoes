@@ -11,6 +11,8 @@ import masoes.component.behavioural.Emotion;
 import masoes.component.behavioural.EmotionalSpace;
 import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.state.AgentState;
+import masoes.ontology.state.collective.EmotionalDispersion;
+import masoes.ontology.state.collective.MaximumDistances;
 import net.miginfocom.swing.MigLayout;
 import translate.Translation;
 
@@ -411,11 +413,11 @@ public class ConfiguratorAgentGui extends JFrame {
         startButton.setEnabled(false);
     }
 
-    public void setEmotionalDispersion(EmotionalState emotionalDispersion) {
+    public void setEmotionalDispersion(EmotionalDispersion emotionalDispersion) {
         emotionalDispersionValueLabel.setText(String.format("(%.3f, %.3f)", emotionalDispersion.getActivation(), emotionalDispersion.getSatisfaction()));
     }
 
-    public void setMaximumDistance(EmotionalState maximumDistance) {
+    public void setMaximumDistance(MaximumDistances maximumDistance) {
         maxDistanceEmotionValueLabel.setText(String.format("(%.3f, %.3f)", maximumDistance.getActivation(), maximumDistance.getSatisfaction()));
     }
 

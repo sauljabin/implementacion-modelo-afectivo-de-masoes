@@ -7,6 +7,9 @@
 package masoes.collective;
 
 import masoes.component.behavioural.EmotionalState;
+import masoes.ontology.state.collective.CentralEmotion;
+import masoes.ontology.state.collective.EmotionalDispersion;
+import masoes.ontology.state.collective.MaximumDistances;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,16 +82,16 @@ public class SocialEmotionCalculator {
                 .getAsDouble();
     }
 
-    public EmotionalState getCentralEmotionalState() {
-        return new EmotionalState(getActivationMean(), getSatisfactionMean());
+    public CentralEmotion getCentralEmotionalState() {
+        return new CentralEmotion(getActivationMean(), getSatisfactionMean());
     }
 
-    public EmotionalState getMaximumDistances() {
-        return new EmotionalState(getActivationMaximumDistance(), getSatisfactionMaximumDistance());
+    public MaximumDistances getMaximumDistances() {
+        return new MaximumDistances(getActivationMaximumDistance(), getSatisfactionMaximumDistance());
     }
 
-    public EmotionalState getEmotionalDispersion() {
-        return new EmotionalState(getActivationStandardDeviation(), getSatisfactionStandardDeviation());
+    public EmotionalDispersion getEmotionalDispersion() {
+        return new EmotionalDispersion(getActivationStandardDeviation(), getSatisfactionStandardDeviation());
     }
 
 }

@@ -6,7 +6,7 @@
 
 package environment.wikipedia.chart;
 
-import masoes.component.behavioural.EmotionalState;
+import masoes.ontology.state.collective.MaximumDistances;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -22,18 +22,16 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class EmotionalStateLineChartGui extends JDialog {
+public class MaximumDistancesLineChartGui extends JDialog {
 
-    private Translation translation;
+    private Translation translation = Translation.getInstance();
     private XYSeriesCollection collection;
     private JFreeChart chart;
     private XYSeries seriesSatisfaction;
     private XYSeries seriesActivation;
     private XYPlot xyPlot;
 
-    public EmotionalStateLineChartGui(String title) {
-        translation = Translation.getInstance();
-
+    public MaximumDistancesLineChartGui(String title) {
         setSize(560, 400);
         setTitle(title);
         setLayout(new BorderLayout());
@@ -57,17 +55,12 @@ public class EmotionalStateLineChartGui extends JDialog {
 
         xyPlot = chart.getXYPlot();
         ValueAxis rangeAxis = xyPlot.getRangeAxis();
-        rangeAxis.setRange(-1.2, 1.2);
+        rangeAxis.setRange(0, 2.1);
     }
 
-    public void addDispersion(int iteration, EmotionalState emotionalState) {
+    public void addMaximumDistances(int iteration, MaximumDistances emotionalState) {
         seriesSatisfaction.add(iteration, emotionalState.getSatisfaction());
         seriesActivation.add(iteration, emotionalState.getActivation());
-    }
-
-    public void setRange(double lower, double upper) {
-        ValueAxis rangeAxis = xyPlot.getRangeAxis();
-        rangeAxis.setRange(lower, upper);
     }
 
     public void start() {

@@ -17,10 +17,7 @@ import jade.lang.acl.MessageTemplate;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
-import masoes.ontology.state.collective.CentralEmotion;
-import masoes.ontology.state.collective.EmotionalDispersion;
 import masoes.ontology.state.collective.GetSocialEmotion;
-import masoes.ontology.state.collective.MaximumDistances;
 import masoes.ontology.state.collective.SocialEmotion;
 import ontology.OntologyAssistant;
 import ontology.OntologyMatchExpression;
@@ -63,11 +60,11 @@ public class SocialEmotionBehaviour extends OntologyResponderBehaviour {
             return new SocialEmotion();
         }
 
-        CentralEmotion centralEmotion = new CentralEmotion(socialEmotionCalculator.getCentralEmotionalState());
-        EmotionalDispersion emotionalDispersion = new EmotionalDispersion(socialEmotionCalculator.getEmotionalDispersion());
-        MaximumDistances maximumDistances = new MaximumDistances(socialEmotionCalculator.getMaximumDistances());
-
-        return new SocialEmotion(centralEmotion, emotionalDispersion, maximumDistances);
+        return new SocialEmotion(
+                socialEmotionCalculator.getCentralEmotionalState(),
+                socialEmotionCalculator.getEmotionalDispersion(),
+                socialEmotionCalculator.getMaximumDistances()
+        );
     }
 
     public List<AID> searchEmotionalAgents() {

@@ -44,10 +44,6 @@ public class MaximumDistances implements Concept {
         this.satisfaction = satisfaction;
     }
 
-    public EmotionalState toEmotionalState() {
-        return new EmotionalState(activation, satisfaction);
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder()
