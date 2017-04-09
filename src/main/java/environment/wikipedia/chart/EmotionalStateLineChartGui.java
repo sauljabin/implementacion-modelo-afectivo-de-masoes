@@ -35,8 +35,8 @@ public class EmotionalStateLineChartGui extends JDialog {
         translation = Translation.getInstance();
 
         setSize(600, 400);
-        setLocationRelativeTo(this);
         setTitle(title);
+        setLayout(new BorderLayout());
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -44,8 +44,6 @@ public class EmotionalStateLineChartGui extends JDialog {
                 dispose();
             }
         });
-
-        setLayout(new BorderLayout());
 
         seriesActivation = new XYSeries(translation.get("gui.activation"));
         seriesSatisfaction = new XYSeries(translation.get("gui.satisfaction"));
@@ -59,9 +57,7 @@ public class EmotionalStateLineChartGui extends JDialog {
 
         xyPlot = chart.getXYPlot();
         ValueAxis rangeAxis = xyPlot.getRangeAxis();
-        rangeAxis.setRange(-1.5, 1.5);
-
-        setVisible(true);
+        rangeAxis.setRange(-1.2, 1.2);
     }
 
     public void addDispersion(int iteration, EmotionalState emotionalState) {
@@ -72,6 +68,14 @@ public class EmotionalStateLineChartGui extends JDialog {
     public void setRange(double lower, double upper) {
         ValueAxis rangeAxis = xyPlot.getRangeAxis();
         rangeAxis.setRange(lower, upper);
+    }
+
+    public void start() {
+        setVisible(true);
+    }
+
+    public void stop() {
+        dispose();
     }
 
 }

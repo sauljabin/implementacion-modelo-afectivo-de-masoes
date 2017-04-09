@@ -9,6 +9,7 @@ package environment.wikipedia.configurator;
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import behaviour.CounterBehaviour;
+import environment.wikipedia.chart.AgentsEmotionalSpaceChartGui;
 import environment.wikipedia.chart.EmotionalStateLineChartGui;
 import environment.wikipedia.state.EmotionalStateAgent;
 import jade.content.AgentAction;
@@ -51,6 +52,7 @@ public class ConfiguratorAgent extends GuiAgent {
     private SocialEmotionCalculator socialEmotionCalculator;
     private EmotionalStateLineChartGui dispersionGraphic;
     private EmotionalStateLineChartGui maxDistancesGraphic;
+    private AgentsEmotionalSpaceChartGui emotionalSpaceGraphic;
 
     public ConfiguratorAgent() {
         configuratorAgentGui = new ConfiguratorAgentGui();
@@ -166,6 +168,10 @@ public class ConfiguratorAgent extends GuiAgent {
     }
 
     private void startSimulation() {
+        emotionalSpaceGraphic = new AgentsEmotionalSpaceChartGui(Translation.getInstance().get("gui.agents"));
+
+        emotionalSpaceGraphic.addAgent(Translation.getInstance().get("central_emotion"));
+
         configuratorAgentGui.getAgentsToAdd().forEach(agentToAdd -> {
             agentManagementAssistant.createAgent(
                     agentToAdd.getAgentName(),
@@ -176,12 +182,16 @@ public class ConfiguratorAgent extends GuiAgent {
                             "--knowledge=" + CONTRIBUTOR_KNOWLEDGE
                     )
             );
+            emotionalSpaceGraphic.addAgent(agentToAdd.getAgentName());
         });
 
         dispersionGraphic = new EmotionalStateLineChartGui(Translation.getInstance().get("gui.emotional_dispersion"));
-        dispersionGraphic.setRange(0,1.2);
+        dispersionGraphic.setLocation(560, 0);
+        dispersionGraphic.setRange(0, 1.2);
+
         maxDistancesGraphic = new EmotionalStateLineChartGui(Translation.getInstance().get("gui.max_distance"));
-        maxDistancesGraphic.setRange(0,1.2);
+        maxDistancesGraphic.setLocation(560, 420);
+        maxDistancesGraphic.setRange(0, 1.2);
 
         configuratorBehaviour = new CounterBehaviour(configuratorAgentGui.getIterations()) {
             @Override
@@ -208,8 +218,10 @@ public class ConfiguratorAgent extends GuiAgent {
 
                             AgentState agentState = (AgentState) masoesOntologyAssistant.sendRequestAction(receiver, agentAction);
 
-                            socialEmotionCalculator.addEmotionalState(agentState.getEmotionState().toEmotionalState());
+                            EmotionalState emotionalState = agentState.getEmotionState().toEmotionalState();
 
+                            socialEmotionCalculator.addEmotionalState(emotionalState);
+                            emotionalSpaceGraphic.addEmotion(agentToAdd.getAgentName(), emotionalState);
                             return agentState;
                         })
                         .collect(Collectors.toList());
@@ -228,6 +240,8 @@ public class ConfiguratorAgent extends GuiAgent {
                 configuratorAgentGui.setAgentStates(agentStates);
                 configuratorAgentGui.setActualIteration(i);
 
+                emotionalSpaceGraphic.addEmotion(Translation.getInstance().get("central_emotion"), centralEmotionalState);
+
                 try {
                     Thread.sleep(1000 / FPS);
                 } catch (InterruptedException e) {
@@ -238,6 +252,10 @@ public class ConfiguratorAgent extends GuiAgent {
         addBehaviour(configuratorBehaviour);
 
         configuratorAgentGui.modeSimulation();
+
+        emotionalSpaceGraphic.start();
+        dispersionGraphic.start();
+        maxDistancesGraphic.start();
     }
 
     private void cleanSimulation() {
@@ -246,11 +264,15 @@ public class ConfiguratorAgent extends GuiAgent {
         }
 
         if (dispersionGraphic != null) {
-            dispersionGraphic.dispose();
+            dispersionGraphic.stop();
         }
 
         if (maxDistancesGraphic != null) {
-            maxDistancesGraphic.dispose();
+            maxDistancesGraphic.stop();
+        }
+
+        if (emotionalSpaceGraphic != null) {
+            emotionalSpaceGraphic.stop();
         }
 
         List<AgentToAdd> agentsToAdd = configuratorAgentGui.getAgentsToAdd();

@@ -119,7 +119,7 @@ public class ConfiguratorAgentGui extends JFrame {
         caseStudyPanel.add(iterationsLabel);
 
         iterationsSpinner = new JSpinner();
-        iterationsSpinner.setModel(new SpinnerNumberModel(100, 0, 1000, 1));
+        iterationsSpinner.setModel(new SpinnerNumberModel(1000, 0, 1000, 1));
         caseStudyPanel.add(iterationsSpinner, "w 70, wrap");
 
         JLabel frequencyLabel = new JLabel(translation.get("gui.event_frequency"));
@@ -394,7 +394,7 @@ public class ConfiguratorAgentGui extends JFrame {
         iterationsSpinner.setEnabled(true);
         eventFrequencySpinner.setEnabled(true);
         randomFrequencyCheckBox.setEnabled(true);
-        randomFrequencyCheckBox.setSelected(true);
+        randomFrequencyCheckBox.setSelected(false);
 
         collectiveCentralEmotionalStateLabel.setText("-");
         collectiveCentralEmotionLabel.setText("-");
