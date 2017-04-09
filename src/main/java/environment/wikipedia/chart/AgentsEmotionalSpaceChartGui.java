@@ -20,15 +20,13 @@ import java.util.Map;
 
 public class AgentsEmotionalSpaceChartGui extends JDialog {
 
-    private  Translation translation;
-    private  AgentsEmotionalSpaceChart emotionalSpaceChart;
+    private AgentsEmotionalSpaceChart emotionalSpaceChart;
+    private JPanel agentsNamePanel;
+    private Translation translation = Translation.getInstance();
     private Map<String, Color> colorsMap = new HashMap<>();
     private Map<String, EmotionalState> emotionMap = new HashMap<>();
-    private  JPanel agentsNamePanel;
 
     public AgentsEmotionalSpaceChartGui(String title) {
-        translation = Translation.getInstance();
-
         setSize(560, 400);
         setTitle(title);
         setLayout(new BorderLayout());

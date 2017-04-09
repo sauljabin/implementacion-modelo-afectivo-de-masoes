@@ -18,6 +18,7 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import translate.Translation;
+import util.Colors;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,16 +32,15 @@ import java.util.stream.Collectors;
 
 public class AgentsBehaviourModificationChartGui extends JDialog {
 
-    private Translation translation;
     private XYSeriesCollection collection;
     private JFreeChart chart;
     private XYPlot xyPlot;
-    private Map<String, XYSeries> agents;
     private String[] behavioursTypes;
+    private Translation translation = Translation.getInstance();
+    private Map<String, XYSeries> agents = new HashMap<>();
+    private Map<String, Color> colorsMap = new HashMap<>();
 
     public AgentsBehaviourModificationChartGui(String title) {
-        translation = Translation.getInstance();
-        agents = new HashMap<>();
         setSize(560, 400);
         setTitle(title);
         setLayout(new BorderLayout());
@@ -75,20 +75,22 @@ public class AgentsBehaviourModificationChartGui extends JDialog {
         xyPlot.setRangeAxis(rangeAxis);
     }
 
-    public String getBehaviourTypeName(String behaviourType) {
-        return Translation.getInstance().get(behaviourType.toString().toLowerCase().trim());
-    }
-
-
     public static void main(String[] args) {
         AgentsBehaviourModificationChartGui agentsBehaviourModificationChartGui = new AgentsBehaviourModificationChartGui("title");
         agentsBehaviourModificationChartGui.start();
     }
 
+    public String getBehaviourTypeName(String behaviourType) {
+        return Translation.getInstance().get(behaviourType.toString().toLowerCase().trim());
+    }
+
     public void addAgent(String agentName) {
+        Color color = Colors.getColor(colorsMap.size());
+        colorsMap.put(agentName, color);
         XYSeries xySeries = new XYSeries(agentName);
         agents.put(agentName, xySeries);
         collection.addSeries(xySeries);
+        xyPlot.getRendererForDataset(collection).setSeriesPaint(agents.size() - 1, color);
     }
 
     public void addBehaviourType(int iteration, String agentName, AgentState agentState) {

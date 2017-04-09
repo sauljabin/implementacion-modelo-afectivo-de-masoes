@@ -173,7 +173,6 @@ public class ConfiguratorAgent extends GuiAgent {
         String centralEmotionName = Translation.getInstance().get("central_emotion");
 
         emotionalSpaceGraphic = new AgentsEmotionalSpaceChartGui(Translation.getInstance().get("emotional_states"));
-        emotionalSpaceGraphic.addAgent(centralEmotionName);
 
         agentsBehaviourModificationChartGui = new AgentsBehaviourModificationChartGui(Translation.getInstance().get("behaviour_modifications"));
         agentsBehaviourModificationChartGui.setLocation(0, 425);
@@ -191,6 +190,8 @@ public class ConfiguratorAgent extends GuiAgent {
             agentsBehaviourModificationChartGui.addAgent(agentToAdd.getAgentName());
             emotionalSpaceGraphic.addAgent(agentToAdd.getAgentName());
         });
+
+        emotionalSpaceGraphic.addAgent(centralEmotionName);
 
         dispersionGraphic = new EmotionalStateLineChartGui(Translation.getInstance().get("emotional_dispersion"));
         dispersionGraphic.setLocation(560, 0);
