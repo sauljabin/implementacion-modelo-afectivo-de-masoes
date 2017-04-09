@@ -24,17 +24,17 @@ import java.awt.event.WindowEvent;
 
 public class EmotionalStateLineChartGui extends JDialog {
 
-    private final Translation translation;
+    private Translation translation;
     private XYSeriesCollection collection;
     private JFreeChart chart;
     private XYSeries seriesSatisfaction;
     private XYSeries seriesActivation;
-    private final XYPlot xyPlot;
+    private XYPlot xyPlot;
 
     public EmotionalStateLineChartGui(String title) {
         translation = Translation.getInstance();
 
-        setSize(600, 400);
+        setSize(560, 400);
         setTitle(title);
         setLayout(new BorderLayout());
 

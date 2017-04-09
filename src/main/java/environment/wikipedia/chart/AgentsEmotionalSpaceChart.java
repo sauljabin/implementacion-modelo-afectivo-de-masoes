@@ -28,11 +28,12 @@ public class AgentsEmotionalSpaceChart extends Canvas implements Runnable {
     private static final String SADNESS = "sadness";
     private static final String REJECTION = "rejection";
     private static final String ANGER = "anger";
+    private static final Color GRAY_COLOR = new Color(235, 235, 235);
+    private static final int FPS = 26;
+
     private Map<String, Color> colorsMap;
     private Map<String, EmotionalState> emotionMap;
 
-    private static final Color GRAY_COLOR = new Color(235, 235, 235);
-    private static final int FPS = 26;
     private boolean stop;
 
     private Translation translation;
