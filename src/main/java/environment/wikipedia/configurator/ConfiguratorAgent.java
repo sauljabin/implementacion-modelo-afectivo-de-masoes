@@ -46,7 +46,7 @@ public class ConfiguratorAgent extends GuiAgent {
 
     private static final int FPS = 10;
     private static final String CONTRIBUTOR_KNOWLEDGE = "theories/behavioural/wikipedia/contributorEmotionalAgent.prolog";
-    private static List<String> events = Arrays.asList("reputationIncrease", "reputationDecrease", "r1", "r2");
+    private List<KnowledgeRule> knowledgeRules;
     private AgentLogger logger;
     private ConfiguratorAgentGui configuratorAgentGui;
     private ConfiguratorAgentListener configuratorAgentListener;
@@ -69,10 +69,15 @@ public class ConfiguratorAgent extends GuiAgent {
         emotionalSpace = new EmotionalSpace();
         socialEmotionCalculator = new SocialEmotionCalculator();
 
-        configuratorAgentGui.addKnowledgeRule(new KnowledgeRule(true, "reputationIncrease", "positive", "positive"));
-        configuratorAgentGui.addKnowledgeRule(new KnowledgeRule(true, "reputationDecrease", "negative", "negative"));
-        configuratorAgentGui.addKnowledgeRule(new KnowledgeRule(true, "r1", "positive", "negative"));
-        configuratorAgentGui.addKnowledgeRule(new KnowledgeRule(true, "r2", "negative", "positive"));
+        knowledgeRules = Arrays.asList(
+                new KnowledgeRule(true, "reputationIncrease", "positive", "positive"),
+                new KnowledgeRule(true, "reputationDecrease", "negative", "negative"),
+                new KnowledgeRule(true, "r1", "positive", "negative"),
+                new KnowledgeRule(true, "r2", "negative", "positive")
+
+        );
+
+        configuratorAgentGui.setKnowledgeRules(knowledgeRules);
     }
 
     @Override
@@ -228,7 +233,16 @@ public class ConfiguratorAgent extends GuiAgent {
                             }
 
                             if (i % eventFrequency == 0) {
-                                EventStimulus stimulus = new EventStimulus(receiver, RandomGenerator.getRandomItem(events));
+                                List<KnowledgeRule> filterKnowledgeRules = knowledgeRules.stream().filter(KnowledgeRule::isSelected).collect(Collectors.toList());
+
+                                String rule = "";
+
+                                KnowledgeRule randomItem = RandomGenerator.getRandomItem(filterKnowledgeRules);
+                                if (randomItem != null) {
+                                    rule = randomItem.getRule();
+                                }
+
+                                EventStimulus stimulus = new EventStimulus(receiver, rule);
                                 agentAction = new EvaluateStimulus(stimulus);
                             }
 

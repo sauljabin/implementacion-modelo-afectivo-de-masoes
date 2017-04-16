@@ -16,6 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.isOneOf;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
 public class RandomGeneratorTest {
@@ -43,6 +44,15 @@ public class RandomGeneratorTest {
     public void shouldReturnRandomValueFromList() {
         List<String> stringList = Arrays.asList("item1", "item2", "item3");
         assertThat(RandomGenerator.getRandomItem(stringList), isOneOf(stringList.toArray()));
+    }
+
+    @Test
+    public void shouldReturnNullWhenListIsEmpty() {
+        List<String> stringList = Arrays.asList();
+        assertThat(RandomGenerator.getRandomItem(stringList), is(nullValue()));
+
+        stringList = null;
+        assertThat(RandomGenerator.getRandomItem(stringList), is(nullValue()));
     }
 
     private void assertRandomInteger(int xMin, int xMax) {
