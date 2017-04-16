@@ -17,6 +17,7 @@ import net.miginfocom.swing.MigLayout;
 import translate.Translation;
 
 import javax.swing.*;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -53,6 +54,8 @@ public class ConfiguratorAgentGui extends JFrame {
     private JLabel actualIterationLabel;
     private JSpinner eventFrequencySpinner;
     private JCheckBox randomFrequencyCheckBox;
+    private KnowledgeRulesTableModel knowledgeRulesTableModel;
+    private JTable knowledgeRulesTable;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -133,6 +136,22 @@ public class ConfiguratorAgentGui extends JFrame {
 
         randomFrequencyCheckBox = new JCheckBox(translation.get("gui.random"));
         caseStudyPanel.add(randomFrequencyCheckBox, "cell 1 2, wrap");
+
+        caseStudyPanel.add(new JLabel(translation.get("gui.rules")), "wrap");
+        knowledgeRulesTableModel = new KnowledgeRulesTableModel();
+        knowledgeRulesTable = new JTable(knowledgeRulesTableModel);
+        knowledgeRulesTable.setFillsViewportHeight(true);
+        TableColumnModel columnModel = knowledgeRulesTable.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(20);
+        columnModel.getColumn(1).setPreferredWidth(160);
+        knowledgeRulesTable.setRowSelectionAllowed(false);
+        knowledgeRulesTable.setColumnSelectionAllowed(false);
+        knowledgeRulesTable.setFocusable(false);
+        knowledgeRulesTable.getTableHeader().setFont(new Font("Arial", Font.PLAIN, 9));
+        knowledgeRulesTable.setFont(new Font("Arial", Font.PLAIN, 9));
+
+        JScrollPane scrollKnowledgeRulesTable = new JScrollPane(knowledgeRulesTable);
+        caseStudyPanel.add(scrollKnowledgeRulesTable, "h 100, w 260, span 2, wrap");
 
         startButton = new JButton(translation.get("gui.start"));
         caseStudyPanel.add(startButton, "w 260, span 2, wrap");
@@ -380,6 +399,7 @@ public class ConfiguratorAgentGui extends JFrame {
         iterationsSpinner.setEnabled(false);
         eventFrequencySpinner.setEnabled(false);
         randomFrequencyCheckBox.setEnabled(false);
+        knowledgeRulesTable.setEnabled(false);
     }
 
     public void modeConfiguration() {
@@ -397,6 +417,7 @@ public class ConfiguratorAgentGui extends JFrame {
         eventFrequencySpinner.setEnabled(true);
         randomFrequencyCheckBox.setEnabled(true);
         randomFrequencyCheckBox.setSelected(false);
+        knowledgeRulesTable.setEnabled(true);
 
         collectiveCentralEmotionalStateLabel.setText("-");
         collectiveCentralEmotionLabel.setText("-");
@@ -441,6 +462,14 @@ public class ConfiguratorAgentGui extends JFrame {
 
     public void setActualIteration(int i) {
         actualIterationLabel.setText(String.format("%d", i));
+    }
+
+    public void setKnowledgeRules(List<KnowledgeRule> knowledgeRules) {
+        knowledgeRulesTableModel.setKnowledgeRules(knowledgeRules);
+    }
+
+    public void addKnowledgeRule(KnowledgeRule knowledgeRule) {
+        knowledgeRulesTableModel.addKnowledgeRule(knowledgeRule);
     }
 
 }

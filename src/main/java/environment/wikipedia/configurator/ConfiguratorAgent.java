@@ -68,6 +68,11 @@ public class ConfiguratorAgent extends GuiAgent {
         masoesOntologyAssistant = new OntologyAssistant(this, MasoesOntology.getInstance());
         emotionalSpace = new EmotionalSpace();
         socialEmotionCalculator = new SocialEmotionCalculator();
+
+        configuratorAgentGui.addKnowledgeRule(new KnowledgeRule(true, "reputationIncrease", "positive", "positive"));
+        configuratorAgentGui.addKnowledgeRule(new KnowledgeRule(true, "reputationDecrease", "negative", "negative"));
+        configuratorAgentGui.addKnowledgeRule(new KnowledgeRule(true, "r1", "positive", "negative"));
+        configuratorAgentGui.addKnowledgeRule(new KnowledgeRule(true, "r2", "negative", "positive"));
     }
 
     @Override
