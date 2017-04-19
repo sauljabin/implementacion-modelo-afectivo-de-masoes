@@ -64,11 +64,11 @@ public class VersionOption extends ApplicationOption {
     }
 
     private void printVersion(String key) {
-        System.out.printf("%s: %s\n", Translation.getInstance().get("version"), applicationSettings.get(key));
+        System.out.printf("%s: %s\n", Translation.getInstance().get("gui.version"), applicationSettings.get(key));
     }
 
     private void printRevision(String key) {
-        System.out.printf("%s: %s\n", Translation.getInstance().get("revision"), applicationSettings.get(key));
+        System.out.printf("%s: %s\n", Translation.getInstance().get("gui.revision"), applicationSettings.get(key));
     }
 
 }
