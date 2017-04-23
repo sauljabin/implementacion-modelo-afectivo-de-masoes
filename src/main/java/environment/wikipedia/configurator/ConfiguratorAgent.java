@@ -70,11 +70,12 @@ public class ConfiguratorAgent extends GuiAgent {
         socialEmotionCalculator = new SocialEmotionCalculator();
 
         knowledgeRules = Arrays.asList(
-                new KnowledgeRule(true, "reputationIncrease", "positive", "positive"),
-                new KnowledgeRule(true, "reputationDecrease", "negative", "negative"),
-                new KnowledgeRule(true, "r1", "positive", "negative"),
-                new KnowledgeRule(true, "r2", "negative", "positive")
-
+                new KnowledgeRule(true, "highReputationIncrease", "positive", "positive"),
+                new KnowledgeRule(true, "neutralReputationIncrease", "neutral", "positive"),
+                new KnowledgeRule(true, "lowReputationIncrease", "negative", "positive"),
+                new KnowledgeRule(true, "highReputationDecrease", "negative", "negative"),
+                new KnowledgeRule(true, "neutralReputationDecrease", "neutral", "negative"),
+                new KnowledgeRule(true, "lowReputationDecrease", "positive", "negative")
         );
 
         configuratorAgentGui.setKnowledgeRules(knowledgeRules);
