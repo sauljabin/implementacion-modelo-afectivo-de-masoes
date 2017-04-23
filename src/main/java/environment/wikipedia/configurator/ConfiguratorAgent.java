@@ -87,6 +87,7 @@ public class ConfiguratorAgent extends GuiAgent {
 
     @Override
     protected void takeDown() {
+        cleanSimulation();
         configuratorAgentGui.closeGui();
     }
 
