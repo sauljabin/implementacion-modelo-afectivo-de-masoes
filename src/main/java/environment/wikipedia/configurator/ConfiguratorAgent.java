@@ -35,17 +35,14 @@ import ontology.OntologyAssistant;
 import translate.Translation;
 import util.RandomGenerator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConfiguratorAgent extends GuiAgent {
 
     private static final int FPS = 10;
     private static final String CONTRIBUTOR_KNOWLEDGE = "theories/behavioural/wikipedia/contributorEmotionalAgent.prolog";
+    public static final int DIALOG_DISTANCE = 30;
     private List<KnowledgeRule> knowledgeRules;
     private AgentLogger logger;
     private ConfiguratorAgentGui configuratorAgentGui;
@@ -190,9 +187,14 @@ public class ConfiguratorAgent extends GuiAgent {
         String centralEmotionName = Translation.getInstance().get("gui.central_emotion");
 
         emotionalSpaceGraphic = new AgentsEmotionalSpaceChartGui(Translation.getInstance().get("gui.emotional_states"));
+        emotionalSpaceGraphic.setLocation(100,100);
 
         agentsBehaviourModificationChartGui = new AgentsBehaviourModificationChartGui(Translation.getInstance().get("gui.behaviour_modifications"));
-        agentsBehaviourModificationChartGui.setLocation(0, 425);
+
+        agentsBehaviourModificationChartGui.setLocation(
+                emotionalSpaceGraphic.getLocation().x + emotionalSpaceGraphic.getSize().width,
+                emotionalSpaceGraphic.getLocation().y
+        );
 
         configuratorAgentGui.getAgentsToAdd().forEach(agentToAdd -> {
             agentManagementAssistant.createAgent(
@@ -211,10 +213,16 @@ public class ConfiguratorAgent extends GuiAgent {
         emotionalSpaceGraphic.addAgent(centralEmotionName);
 
         dispersionGraphic = new EmotionalDispersionLineChartGui(Translation.getInstance().get("gui.emotional_dispersion"));
-        dispersionGraphic.setLocation(560, 0);
+        dispersionGraphic.setLocation(
+                emotionalSpaceGraphic.getLocation().x,
+                emotionalSpaceGraphic.getLocation().y + emotionalSpaceGraphic.getSize().height + DIALOG_DISTANCE
+        );
 
         maxDistancesGraphic = new MaximumDistancesLineChartGui(Translation.getInstance().get("gui.max_distance"));
-        maxDistancesGraphic.setLocation(560, 425);
+        maxDistancesGraphic.setLocation(
+                emotionalSpaceGraphic.getLocation().x + emotionalSpaceGraphic.getSize().width,
+                emotionalSpaceGraphic.getLocation().y + emotionalSpaceGraphic.getSize().height + DIALOG_DISTANCE
+        );
 
         configuratorBehaviour = new CounterBehaviour(configuratorAgentGui.getIterations()) {
             @Override
