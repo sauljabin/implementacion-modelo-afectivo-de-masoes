@@ -30,7 +30,7 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
     private static final String ANGER = "anger";
 
     private static final Color GRAY_COLOR = new Color(235, 235, 235);
-    private static final int FPS = 26;
+    private static final int FPS = 5;
     private boolean stop;
 
     private Translation translation;

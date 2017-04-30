@@ -35,14 +35,18 @@ import ontology.OntologyAssistant;
 import translate.Translation;
 import util.RandomGenerator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ConfiguratorAgent extends GuiAgent {
 
-    private static final int FPS = 10;
-    private static final String CONTRIBUTOR_KNOWLEDGE = "theories/behavioural/wikipedia/contributorEmotionalAgent.prolog";
     public static final int DIALOG_DISTANCE = 30;
+    private static final int FPS = 5;
+    private static final String CONTRIBUTOR_KNOWLEDGE = "theories/behavioural/wikipedia/contributorEmotionalAgent.prolog";
     private List<KnowledgeRule> knowledgeRules;
     private AgentLogger logger;
     private ConfiguratorAgentGui configuratorAgentGui;
@@ -187,7 +191,7 @@ public class ConfiguratorAgent extends GuiAgent {
         String centralEmotionName = Translation.getInstance().get("gui.central_emotion");
 
         emotionalSpaceGraphic = new AgentsEmotionalSpaceChartGui(Translation.getInstance().get("gui.emotional_states"));
-        emotionalSpaceGraphic.setLocation(100,100);
+        emotionalSpaceGraphic.setLocation(100, 100);
 
         agentsBehaviourModificationChartGui = new AgentsBehaviourModificationChartGui(Translation.getInstance().get("gui.behaviour_modifications"));
 

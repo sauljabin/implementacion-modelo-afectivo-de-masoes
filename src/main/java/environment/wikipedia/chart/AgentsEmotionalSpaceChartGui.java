@@ -15,16 +15,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class AgentsEmotionalSpaceChartGui extends JDialog {
 
     private AgentsEmotionalSpaceChart emotionalSpaceChart;
     private JPanel agentsNamePanel;
     private Translation translation = Translation.getInstance();
-    private Map<String, Color> colorsMap = new HashMap<>();
-    private Map<String, EmotionalState> emotionMap = new HashMap<>();
+    private Map<String, Color> colorsMap = new TreeMap<>();
+    private Map<String, EmotionalState> emotionMap = new TreeMap<>();
 
     public AgentsEmotionalSpaceChartGui(String title) {
         setSize(560, 400);

@@ -20,7 +20,7 @@ import ontology.OntologyAssistant;
 
 public class EmotionalStateAgent extends GuiAgent {
 
-    private static final int FPS = 10;
+    private static final int FPS = 5;
     private OntologyAssistant masoesOntologyAssistant;
     private EmotionalStateAgentGui emotionalStateAgentGui;
     private AgentLogger logger;

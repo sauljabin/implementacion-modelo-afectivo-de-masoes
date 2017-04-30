@@ -29,7 +29,7 @@ public class AgentsEmotionalSpaceChart extends Canvas implements Runnable {
     private static final String REJECTION = "rejection";
     private static final String ANGER = "anger";
     private static final Color GRAY_COLOR = new Color(235, 235, 235);
-    private static final int FPS = 26;
+    private static final int FPS = 5;
 
     private Map<String, Color> colorsMap;
     private Map<String, EmotionalState> emotionMap;
@@ -72,18 +72,31 @@ public class AgentsEmotionalSpaceChart extends Canvas implements Runnable {
             return;
         }
 
-        Iterator<String> iterator = colorsMap.keySet().iterator();
+        Iterator<String> iterator = colorsMap.keySet()
+                .stream()
+                .sorted()
+                .iterator();
 
         while (iterator.hasNext()) {
             String agentName = iterator.next();
+
             graphics.setColor(colorsMap.get(agentName));
+
             EmotionalState emotionalState = emotionMap.get(agentName);
+
             if (emotionalState == null) {
                 continue;
             }
+
             int x = xCanvas(emotionalState.getActivation());
             int y = yCanvas(emotionalState.getSatisfaction());
-            graphics.fillOval(x - 3, y - 3, 6, 6);
+
+            if (iterator.hasNext()) {
+                graphics.fillOval(x - 3, y - 3, 6, 6);
+            } else {
+                graphics.fillRect(x - 4, y - 4, 8, 8);
+            }
+
         }
     }
 

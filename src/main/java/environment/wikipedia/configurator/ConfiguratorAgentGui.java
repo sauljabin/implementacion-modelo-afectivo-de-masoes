@@ -101,7 +101,7 @@ public class ConfiguratorAgentGui extends JFrame {
 
         collectiveCentralEmotionLabel = new JLabel("-");
         collectiveCentralEmotionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        collectiveEmotionPanel.add(collectiveCentralEmotionLabel, W_EAST+", span 2, wrap 30");
+        collectiveEmotionPanel.add(collectiveCentralEmotionLabel, W_EAST + ", span 2, wrap 30");
 
         JLabel maxDistanceEmotionLabel = new JLabel(translation.get("gui.max_distance"));
         collectiveEmotionPanel.add(maxDistanceEmotionLabel);
@@ -152,13 +152,13 @@ public class ConfiguratorAgentGui extends JFrame {
         knowledgeRulesTable.setFont(new Font("Arial", Font.PLAIN, 9));
 
         JScrollPane scrollKnowledgeRulesTable = new JScrollPane(knowledgeRulesTable);
-        caseStudyPanel.add(scrollKnowledgeRulesTable, W_EAST+", h 100, span 2, wrap");
+        caseStudyPanel.add(scrollKnowledgeRulesTable, W_EAST + ", h 100, span 2, wrap");
 
         startButton = new JButton(translation.get("gui.start"));
-        caseStudyPanel.add(startButton, W_EAST+", span 2, wrap");
+        caseStudyPanel.add(startButton, W_EAST + ", span 2, wrap");
 
         cleanButton = new JButton(translation.get("gui.clean"));
-        caseStudyPanel.add(cleanButton, W_EAST+", span 2");
+        caseStudyPanel.add(cleanButton, W_EAST + ", span 2");
 
         JPanel statusPanel = new JPanel(new MigLayout("insets 5"));
         statusPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.iteration")));
