@@ -96,8 +96,9 @@ public class AgentsEmotionalStateChartGui extends JFrame {
     }
 
     private class ChartContainer {
-        private final JFreeChart chart;
-        private final ChartPanel chartPanel;
+
+        private JFreeChart chart;
+        private ChartPanel chartPanel;
         private XYSeriesCollection collection;
         private XYSeries seriesSatisfaction;
         private XYSeries seriesActivation;

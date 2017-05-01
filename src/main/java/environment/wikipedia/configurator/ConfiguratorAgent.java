@@ -205,6 +205,18 @@ public class ConfiguratorAgent extends GuiAgent {
                 agentsEmotionalSpaceChartGui.getLocation().y
         );
 
+        dispersionGraphic = new EmotionalDispersionLineChartGui(Translation.getInstance().get("gui.emotional_dispersion"));
+        dispersionGraphic.setLocation(
+                agentsEmotionalSpaceChartGui.getLocation().x,
+                agentsEmotionalSpaceChartGui.getLocation().y + agentsEmotionalSpaceChartGui.getSize().height + DIALOG_DISTANCE
+        );
+
+        maxDistancesGraphic = new MaximumDistancesLineChartGui(Translation.getInstance().get("gui.max_distance"));
+        maxDistancesGraphic.setLocation(
+                agentsEmotionalSpaceChartGui.getLocation().x + agentsEmotionalSpaceChartGui.getSize().width,
+                agentsEmotionalSpaceChartGui.getLocation().y + agentsEmotionalSpaceChartGui.getSize().height + DIALOG_DISTANCE
+        );
+
         configuratorAgentGui.getAgentsToAdd().forEach(agentToAdd -> {
             agentManagementAssistant.createAgent(
                     agentToAdd.getAgentName(),
@@ -222,18 +234,6 @@ public class ConfiguratorAgent extends GuiAgent {
 
         agentsEmotionalSpaceChartGui.addAgent(centralEmotionName);
         agentsEmotionalStateChartGui.addAgent(centralEmotionName);
-
-        dispersionGraphic = new EmotionalDispersionLineChartGui(Translation.getInstance().get("gui.emotional_dispersion"));
-        dispersionGraphic.setLocation(
-                agentsEmotionalSpaceChartGui.getLocation().x,
-                agentsEmotionalSpaceChartGui.getLocation().y + agentsEmotionalSpaceChartGui.getSize().height + DIALOG_DISTANCE
-        );
-
-        maxDistancesGraphic = new MaximumDistancesLineChartGui(Translation.getInstance().get("gui.max_distance"));
-        maxDistancesGraphic.setLocation(
-                agentsEmotionalSpaceChartGui.getLocation().x + agentsEmotionalSpaceChartGui.getSize().width,
-                agentsEmotionalSpaceChartGui.getLocation().y + agentsEmotionalSpaceChartGui.getSize().height + DIALOG_DISTANCE
-        );
 
         configuratorBehaviour = new CounterBehaviour(configuratorAgentGui.getIterations()) {
             @Override
@@ -308,10 +308,10 @@ public class ConfiguratorAgent extends GuiAgent {
         configuratorAgentGui.modeSimulation();
 
         agentsEmotionalSpaceChartGui.start();
-        agentsEmotionalStateChartGui.start();
         dispersionGraphic.start();
         maxDistancesGraphic.start();
         agentsBehaviourModificationChartGui.start();
+        agentsEmotionalStateChartGui.start();
     }
 
     private void cleanSimulation() {
