@@ -25,10 +25,10 @@ public class EmotionalSpace {
 
     public EmotionalSpace() {
         emotions = Arrays.asList(
-                new HappinessEmotion(),
-                new JoyEmotion(),
-                new AdmirationEmotion(),
                 new CompassionEmotion(),
+                new AdmirationEmotion(),
+                new JoyEmotion(),
+                new HappinessEmotion(),
                 new DepressionEmotion(),
                 new SadnessEmotion(),
                 new RejectionEmotion(),
