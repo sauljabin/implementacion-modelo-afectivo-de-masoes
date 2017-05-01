@@ -24,7 +24,7 @@ import java.util.TreeMap;
 
 import static java.lang.Math.abs;
 
-public class AgentsEmotionalSpaceChartGui extends JDialog {
+public class AgentsEmotionalSpaceChartGui extends JFrame {
 
     private AgentsEmotionalSpaceChart emotionalSpaceChart;
     private JPanel agentsNamePanel;
@@ -70,6 +70,9 @@ public class AgentsEmotionalSpaceChartGui extends JDialog {
     }
 
     public void addAgent(String agent) {
+        if (emotionMap.containsKey(agent)) {
+            return;
+        }
         Color color = Colors.getColor(colorsMap.size());
         colorsMap.put(agent, color);
         JLabel agentName = new JLabel(agent);

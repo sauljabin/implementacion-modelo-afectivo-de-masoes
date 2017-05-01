@@ -27,12 +27,12 @@ public class EmotionalSpace {
         emotions = Arrays.asList(
                 new HappinessEmotion(),
                 new JoyEmotion(),
-                new CompassionEmotion(),
                 new AdmirationEmotion(),
+                new CompassionEmotion(),
                 new DepressionEmotion(),
                 new SadnessEmotion(),
-                new AngerEmotion(),
-                new RejectionEmotion());
+                new RejectionEmotion(),
+                new AngerEmotion());
     }
 
     public List<Emotion> getEmotions() {

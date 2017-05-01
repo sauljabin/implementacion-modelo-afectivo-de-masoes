@@ -7,6 +7,7 @@
 package environment.wikipedia.chart;
 
 import masoes.component.behavioural.BehaviourType;
+import masoes.component.behavioural.EmotionalSpace;
 import masoes.ontology.state.AgentState;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -25,22 +26,23 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class AgentsBehaviourModificationChartGui extends JFrame {
+public class AgentsEmotionModificationChartGui extends JFrame {
 
     private XYSeriesCollection collection;
     private JFreeChart chart;
     private XYPlot xyPlot;
-    private String[] behavioursTypes;
+    private String[] emotionTypes;
     private Translation translation = Translation.getInstance();
     private Map<String, XYSeries> agents = new HashMap<>();
     private Map<String, Color> colorsMap = new HashMap<>();
 
-    public AgentsBehaviourModificationChartGui(String title) {
+    public AgentsEmotionModificationChartGui(String title) {
         setSize(560, 400);
         setTitle(title);
         setLayout(new BorderLayout());
@@ -61,28 +63,34 @@ public class AgentsBehaviourModificationChartGui extends JFrame {
 
         BehaviourType[] values = BehaviourType.values();
 
-        List<String> typesList = Arrays.stream(values)
-                .map(behaviourType -> getBehaviourTypeName(behaviourType.toString()))
+        EmotionalSpace emotionalSpace = new EmotionalSpace();
+
+        List<String> typesList = emotionalSpace.getEmotions()
+                .stream()
+                .map(emotion -> getEmotionName(emotion.getName()))
                 .collect(Collectors.toList());
+
+        Collections.reverse(typesList);
 
         typesList.add(0, "");
 
-        behavioursTypes = typesList.toArray(new String[typesList.size()]);
+        emotionTypes = typesList.toArray(new String[typesList.size()]);
 
-        SymbolAxis rangeAxis = new SymbolAxis("", behavioursTypes);
+        SymbolAxis rangeAxis = new SymbolAxis("", emotionTypes);
         rangeAxis.setTickUnit(new NumberTickUnit(1));
-        rangeAxis.setRange(0, behavioursTypes.length);
+        rangeAxis.setRange(0, emotionTypes.length);
         xyPlot.setRangeAxis(rangeAxis);
     }
 
-    public String getBehaviourTypeName(String behaviourType) {
-        return Translation.getInstance().get(behaviourType.toString().toLowerCase().trim());
+    public String getEmotionName(String emotionName) {
+        return Translation.getInstance().get(emotionName.toString().toLowerCase().trim());
     }
 
     public void addAgent(String agentName) {
         if (agents.containsKey(agentName)) {
             return;
         }
+
         Color color = Colors.getColor(colorsMap.size());
         colorsMap.put(agentName, color);
         XYSeries xySeries = new XYSeries(agentName);
@@ -91,12 +99,12 @@ public class AgentsBehaviourModificationChartGui extends JFrame {
         xyPlot.getRendererForDataset(collection).setSeriesPaint(agents.size() - 1, color);
     }
 
-    public void addBehaviourType(String agentName, int iteration, AgentState agentState) {
+    public void addEmotion(String agentName, int iteration, AgentState agentState) {
         XYSeries xySeries = agents.get(agentName);
         if (xySeries == null) {
             return;
         }
-        int y = Arrays.asList(behavioursTypes).indexOf(getBehaviourTypeName(agentState.getBehaviourState().getType()));
+        int y = Arrays.asList(emotionTypes).indexOf(getEmotionName(agentState.getEmotionState().getName()));
         xySeries.add(iteration, y);
     }
 

@@ -12,11 +12,11 @@ public final class Colors {
 
     private static final Color[] color = {
             new Color(0xff0e10),
-            new Color(0xff6e28),
             new Color(0x1f57ff),
             new Color(0x3ec864),
             new Color(0xff6bad),
             new Color(0x20c3ff),
+            new Color(0xff6e28),
             new Color(0xff20ea),
             new Color(0xb25bff),
             new Color(0x54ff64),

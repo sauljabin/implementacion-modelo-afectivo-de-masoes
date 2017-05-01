@@ -22,7 +22,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class EmotionalDispersionLineChartGui extends JDialog {
+public class EmotionalDispersionLineChartGui extends JFrame {
 
     private Translation translation = Translation.getInstance();
     private XYSeriesCollection collection;

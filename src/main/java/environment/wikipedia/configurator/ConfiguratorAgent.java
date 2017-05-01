@@ -10,6 +10,7 @@ import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import behaviour.CounterBehaviour;
 import environment.wikipedia.chart.AgentsBehaviourModificationChartGui;
+import environment.wikipedia.chart.AgentsEmotionModificationChartGui;
 import environment.wikipedia.chart.AgentsEmotionalSpaceChartGui;
 import environment.wikipedia.chart.AgentsEmotionalStateChartGui;
 import environment.wikipedia.chart.EmotionalDispersionLineChartGui;
@@ -62,6 +63,7 @@ public class ConfiguratorAgent extends GuiAgent {
     private AgentsEmotionalSpaceChartGui agentsEmotionalSpaceChartGui;
     private AgentsBehaviourModificationChartGui agentsBehaviourModificationChartGui;
     private AgentsEmotionalStateChartGui agentsEmotionalStateChartGui;
+    private AgentsEmotionModificationChartGui agentsEmotionModificationChartGui;
 
     public ConfiguratorAgent() {
         configuratorAgentGui = new ConfiguratorAgentGui();
@@ -198,21 +200,26 @@ public class ConfiguratorAgent extends GuiAgent {
         agentsEmotionalSpaceChartGui = new AgentsEmotionalSpaceChartGui(Translation.getInstance().get("gui.emotional_states"));
         agentsEmotionalSpaceChartGui.setLocation(100, 100);
 
-        agentsBehaviourModificationChartGui = new AgentsBehaviourModificationChartGui(Translation.getInstance().get("gui.behaviour_modifications"));
-
-        agentsBehaviourModificationChartGui.setLocation(
+        dispersionGraphic = new EmotionalDispersionLineChartGui(Translation.getInstance().get("gui.emotional_dispersion"));
+        dispersionGraphic.setLocation(
                 agentsEmotionalSpaceChartGui.getLocation().x + agentsEmotionalSpaceChartGui.getSize().width,
                 agentsEmotionalSpaceChartGui.getLocation().y
         );
 
-        dispersionGraphic = new EmotionalDispersionLineChartGui(Translation.getInstance().get("gui.emotional_dispersion"));
-        dispersionGraphic.setLocation(
+        maxDistancesGraphic = new MaximumDistancesLineChartGui(Translation.getInstance().get("gui.max_distance"));
+        maxDistancesGraphic.setLocation(
+                agentsEmotionalSpaceChartGui.getLocation().x + agentsEmotionalSpaceChartGui.getSize().width + dispersionGraphic.getSize().width,
+                agentsEmotionalSpaceChartGui.getLocation().y
+        );
+
+        agentsBehaviourModificationChartGui = new AgentsBehaviourModificationChartGui(Translation.getInstance().get("gui.behaviour_modifications"));
+        agentsBehaviourModificationChartGui.setLocation(
                 agentsEmotionalSpaceChartGui.getLocation().x,
                 agentsEmotionalSpaceChartGui.getLocation().y + agentsEmotionalSpaceChartGui.getSize().height + DIALOG_DISTANCE
         );
 
-        maxDistancesGraphic = new MaximumDistancesLineChartGui(Translation.getInstance().get("gui.max_distance"));
-        maxDistancesGraphic.setLocation(
+        agentsEmotionModificationChartGui = new AgentsEmotionModificationChartGui(Translation.getInstance().get("gui.emotion_modifications"));
+        agentsEmotionModificationChartGui.setLocation(
                 agentsEmotionalSpaceChartGui.getLocation().x + agentsEmotionalSpaceChartGui.getSize().width,
                 agentsEmotionalSpaceChartGui.getLocation().y + agentsEmotionalSpaceChartGui.getSize().height + DIALOG_DISTANCE
         );
@@ -228,12 +235,12 @@ public class ConfiguratorAgent extends GuiAgent {
                     )
             );
             agentsBehaviourModificationChartGui.addAgent(agentToAdd.getAgentName());
+            agentsEmotionModificationChartGui.addAgent(agentToAdd.getAgentName());
             agentsEmotionalSpaceChartGui.addAgent(agentToAdd.getAgentName());
             agentsEmotionalStateChartGui.addAgent(agentToAdd.getAgentName());
         });
 
         agentsEmotionalSpaceChartGui.addAgent(centralEmotionName);
-        agentsEmotionalStateChartGui.addAgent(centralEmotionName);
 
         configuratorBehaviour = new CounterBehaviour(configuratorAgentGui.getIterations()) {
             @Override
@@ -275,6 +282,7 @@ public class ConfiguratorAgent extends GuiAgent {
                             agentsEmotionalSpaceChartGui.addEmotionalState(agentToAdd.getAgentName(), emotionalState);
                             agentsEmotionalStateChartGui.addEmotionalState(agentToAdd.getAgentName(), i, emotionalState);
                             agentsBehaviourModificationChartGui.addBehaviourType(agentToAdd.getAgentName(), i, agentState);
+                            agentsEmotionModificationChartGui.addEmotion(agentToAdd.getAgentName(), i, agentState);
                             return agentState;
                         })
                         .collect(Collectors.toList());
@@ -294,7 +302,6 @@ public class ConfiguratorAgent extends GuiAgent {
                 configuratorAgentGui.setActualIteration(i);
 
                 agentsEmotionalSpaceChartGui.addEmotionalState(centralEmotionName, centralEmotionalState.toEmotionalState());
-                agentsEmotionalStateChartGui.addEmotionalState(centralEmotionName, i, centralEmotionalState.toEmotionalState());
 
                 try {
                     Thread.sleep(1000 / FPS);
@@ -311,6 +318,7 @@ public class ConfiguratorAgent extends GuiAgent {
         dispersionGraphic.start();
         maxDistancesGraphic.start();
         agentsBehaviourModificationChartGui.start();
+        agentsEmotionModificationChartGui.start();
         agentsEmotionalStateChartGui.start();
     }
 
@@ -333,6 +341,10 @@ public class ConfiguratorAgent extends GuiAgent {
 
         if (agentsBehaviourModificationChartGui != null) {
             agentsBehaviourModificationChartGui.stop();
+        }
+
+        if (agentsEmotionModificationChartGui != null) {
+            agentsEmotionModificationChartGui.stop();
         }
 
         if (agentsEmotionalStateChartGui != null) {
