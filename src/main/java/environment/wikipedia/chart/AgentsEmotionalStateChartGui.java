@@ -49,17 +49,6 @@ public class AgentsEmotionalStateChartGui extends JFrame {
         add(centerPanel);
     }
 
-    public static void main(String[] args) {
-        AgentsEmotionalStateChartGui test = new AgentsEmotionalStateChartGui("test");
-        test.start();
-        test.addAgent("agent1");
-        test.addAgent("agent2");
-        test.addAgent("agent3");
-        test.addAgent("agent4");
-        test.addAgent("agent5");
-        test.addAgent("agent6");
-    }
-
     public void start() {
         setVisible(true);
     }
@@ -69,7 +58,7 @@ public class AgentsEmotionalStateChartGui extends JFrame {
     }
 
     public void addAgent(String agentName) {
-        if(agents.containsKey(agentName)){
+        if (agents.containsKey(agentName)) {
             return;
         }
 
@@ -99,6 +88,11 @@ public class AgentsEmotionalStateChartGui extends JFrame {
         }
         int PADDING = 10;
         setSize(w + PADDING, h + PADDING);
+    }
+
+    public void addEmotionalState(String agentName, int iteration, EmotionalState emotionalState) {
+        ChartContainer chartContainer = agents.get(agentName);
+        chartContainer.addEmotionalState(iteration, emotionalState);
     }
 
     private class ChartContainer {

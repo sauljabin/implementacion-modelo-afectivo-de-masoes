@@ -73,7 +73,7 @@ public class AgentsEmotionalSpaceChartGui extends JDialog {
         repaint();
     }
 
-    public void addEmotion(String agent, EmotionalState emotionalState) {
+    public void addEmotionalState(String agent, EmotionalState emotionalState) {
         emotionMap.put(agent, emotionalState);
     }
 

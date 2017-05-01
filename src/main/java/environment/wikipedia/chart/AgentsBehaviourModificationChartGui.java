@@ -93,7 +93,7 @@ public class AgentsBehaviourModificationChartGui extends JDialog {
         xyPlot.getRendererForDataset(collection).setSeriesPaint(agents.size() - 1, color);
     }
 
-    public void addBehaviourType(int iteration, String agentName, AgentState agentState) {
+    public void addBehaviourType(String agentName, int iteration, AgentState agentState) {
         XYSeries xySeries = agents.get(agentName);
         if (xySeries == null) {
             return;
