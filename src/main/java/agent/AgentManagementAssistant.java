@@ -240,7 +240,7 @@ public class AgentManagementAssistant {
     private void delay() {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        while (stopWatch.getTime() < 150) {
+        while (stopWatch.getTime() < 300) {
             continue;
         }
         stopWatch.stop();

@@ -22,8 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
 
 public class SocialEmotionAgentFunctionalTest extends FunctionalTest {
@@ -39,7 +39,7 @@ public class SocialEmotionAgentFunctionalTest extends FunctionalTest {
     public void shouldGetAllServicesFromDF() {
         List<ServiceDescription> services = services(socialEmotionAgent);
         List<String> results = services.stream().map(ServiceDescription::getName).collect(Collectors.toList());
-        assertThat(results, hasItems(MasoesOntology.ACTION_GET_SOCIAL_EMOTION));
+        assertThat(results, hasItem(MasoesOntology.ACTION_GET_SOCIAL_EMOTION));
     }
 
     @Test

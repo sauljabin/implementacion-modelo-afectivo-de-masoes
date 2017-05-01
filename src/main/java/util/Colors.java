@@ -82,7 +82,7 @@ public final class Colors {
     }
 
     public static Color getRandomColor() {
-        return color[RandomGenerator.getInteger(0, color.length)];
+        return color[RandomGenerator.getInteger(0, color.length - 1)];
     }
 
 }

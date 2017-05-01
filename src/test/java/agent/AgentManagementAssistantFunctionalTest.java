@@ -16,26 +16,20 @@ import test.FunctionalTest;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 public class AgentManagementAssistantFunctionalTest extends FunctionalTest {
 
     @Test
     public void shouldCreateAndKillAgentWithAssistant() {
         AID agent = createAgent(ConfigurableAgent.class, null);
-        getAgent(agent.getLocalName());
         killAgent(agent);
-        try {
-            getAgent(agent.getLocalName());
-            fail("Agent not killed");
-        } catch (Exception e) {
-            assertThat(e.getMessage(), containsString(agent.getName()));
-        }
+        List<AID> agents = agents();
+        assertThat(agents, not(hasItem(agent)));
     }
 
     @Test
