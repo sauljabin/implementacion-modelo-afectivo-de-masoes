@@ -105,7 +105,10 @@ public class RequesterGuiAgent extends GuiAgent {
     }
 
     private void saveMessageLogs() throws IOException {
-        String fileNameFormat = "messages%s.log";
+        File folder = new File("output");
+        folder.mkdir();
+
+        String fileNameFormat = "output/messages%s.log";
         File file = new File(String.format(fileNameFormat, ""));
 
         int sequence = 1;
