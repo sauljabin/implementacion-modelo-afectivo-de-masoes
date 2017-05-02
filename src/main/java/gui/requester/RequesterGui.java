@@ -13,6 +13,8 @@ import translate.Translation;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -208,6 +210,10 @@ public class RequesterGui extends JFrame {
         }
 
         StyledDocument document = messageTextPane.getStyledDocument();
+
+        Document blank = new DefaultStyledDocument();
+        messageTextPane.setDocument(blank);
+
         try {
             SimpleAttributeSet attributeSet = new SimpleAttributeSet();
 
@@ -218,6 +224,8 @@ public class RequesterGui extends JFrame {
             attributeSet.addAttribute(StyleConstants.Bold, Boolean.FALSE);
             attributeSet.addAttribute(StyleConstants.Foreground, Color.BLACK);
             document.insertString(document.getLength(), message.toString() + "\n\n", attributeSet);
+
+            messageTextPane.setDocument(document);
         } catch (Exception e) {
             throw new GuiException(e);
         }

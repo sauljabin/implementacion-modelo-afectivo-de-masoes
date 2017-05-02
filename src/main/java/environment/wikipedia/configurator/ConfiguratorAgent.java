@@ -310,7 +310,7 @@ public class ConfiguratorAgent extends GuiAgent {
 
                 agentsEmotionalSpaceChartGui.addEmotionalState(centralEmotionName, centralEmotionalState.toEmotionalState());
 
-                if(configuratorAgentGui.getIterations()==i){
+                if (configuratorAgentGui.getIterations() == i) {
                     configuratorAgentGui.activateSaveButton();
                 }
 
