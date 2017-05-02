@@ -57,6 +57,7 @@ public class ConfiguratorAgentGui extends JFrame {
     private JCheckBox randomFrequencyCheckBox;
     private KnowledgeRulesTableModel knowledgeRulesTableModel;
     private JTable knowledgeRulesTable;
+    private JButton saveButton;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -158,7 +159,10 @@ public class ConfiguratorAgentGui extends JFrame {
         caseStudyPanel.add(startButton, W_EAST + ", span 2, wrap");
 
         cleanButton = new JButton(translation.get("gui.clean"));
-        caseStudyPanel.add(cleanButton, W_EAST + ", span 2");
+        caseStudyPanel.add(cleanButton, W_EAST + ", span 2, wrap");
+
+        saveButton = new JButton(translation.get("gui.save"));
+        caseStudyPanel.add(saveButton, W_EAST + ", span 2, wrap");
 
         JPanel statusPanel = new JPanel(new MigLayout("insets 5"));
         statusPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.iteration")));
@@ -318,6 +322,9 @@ public class ConfiguratorAgentGui extends JFrame {
         startButton.setActionCommand(ConfiguratorAgentEvent.START.toString());
         startButton.addActionListener(actionListener);
 
+        saveButton.setActionCommand(ConfiguratorAgentEvent.SAVE.toString());
+        saveButton.addActionListener(actionListener);
+
         cleanButton.setActionCommand(ConfiguratorAgentEvent.CLEAN.toString());
         cleanButton.addActionListener(actionListener);
 
@@ -388,6 +395,7 @@ public class ConfiguratorAgentGui extends JFrame {
 
     public void modeSimulation() {
         cleanButton.setEnabled(true);
+        saveButton.setEnabled(false);
         windowAgentButton.setEnabled(true);
         addAgentButton.setEnabled(false);
         startButton.setEnabled(false);
@@ -405,6 +413,7 @@ public class ConfiguratorAgentGui extends JFrame {
 
     public void modeConfiguration() {
         cleanButton.setEnabled(false);
+        saveButton.setEnabled(false);
         windowAgentButton.setEnabled(false);
         startButton.setEnabled(false);
         addAgentButton.setEnabled(true);
@@ -429,6 +438,10 @@ public class ConfiguratorAgentGui extends JFrame {
 
     public void activateStartButton() {
         startButton.setEnabled(true);
+    }
+
+    public void activateSaveButton() {
+        saveButton.setEnabled(true);
     }
 
     public void deactivateStartButton() {

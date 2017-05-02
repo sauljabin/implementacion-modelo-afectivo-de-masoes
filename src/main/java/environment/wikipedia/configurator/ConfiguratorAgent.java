@@ -130,11 +130,18 @@ public class ConfiguratorAgent extends GuiAgent {
                 case SHOW_EMOTIONAL_STATE_GUI:
                     showEmotionalStateGui();
                     break;
+                case SAVE:
+                    saveResults();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             configuratorAgentGui.showError(e.getMessage());
         }
+    }
+
+    private void saveResults() {
+
     }
 
     private void showEmotionalStateGui() {
@@ -302,6 +309,10 @@ public class ConfiguratorAgent extends GuiAgent {
                 configuratorAgentGui.setActualIteration(i);
 
                 agentsEmotionalSpaceChartGui.addEmotionalState(centralEmotionName, centralEmotionalState.toEmotionalState());
+
+                if(configuratorAgentGui.getIterations()==i){
+                    configuratorAgentGui.activateSaveButton();
+                }
 
                 try {
                     Thread.sleep(1000 / FPS);

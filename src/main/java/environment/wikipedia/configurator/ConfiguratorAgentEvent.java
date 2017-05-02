@@ -20,7 +20,8 @@ public enum ConfiguratorAgentEvent {
     REMOVE_AGENTS,
     UPDATE_SATISFACTION_TO_ADD,
     UPDATE_ACTIVATION_TO_ADD,
-    SHOW_EMOTIONAL_STATE_GUI;
+    SHOW_EMOTIONAL_STATE_GUI,
+    SAVE;
 
     private static List<ConfiguratorAgentEvent> events = Arrays.asList(ConfiguratorAgentEvent.values());
 
