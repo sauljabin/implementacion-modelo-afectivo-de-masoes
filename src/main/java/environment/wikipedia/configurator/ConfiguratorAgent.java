@@ -37,6 +37,10 @@ import ontology.OntologyAssistant;
 import translate.Translation;
 import util.RandomGenerator;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -141,7 +145,22 @@ public class ConfiguratorAgent extends GuiAgent {
     }
 
     private void saveResults() {
+        try {
+            File folder = new File("output/wikipedia");
+            folder.mkdirs();
 
+            File file = new File(folder, "output.txt");
+
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+
+            out.write("WIKIPEDIA CONFIGURATION\n");
+
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            logger.exception(e);
+            configuratorAgentGui.showError(e.getMessage());
+        }
     }
 
     private void showEmotionalStateGui() {
