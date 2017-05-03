@@ -23,6 +23,7 @@ import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import masoes.MasoesSettings;
 import masoes.collective.SocialEmotionCalculator;
+import masoes.component.behavioural.Emotion;
 import masoes.component.behavioural.EmotionalSpace;
 import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.MasoesOntology;
@@ -199,11 +200,11 @@ public class ConfiguratorAgent extends GuiAgent {
                     .forEach(agentToAdd -> {
                         try {
                             out.write(String.format("%s [%s: %s, %s: %s]\n",
-                                    translation.get(agentToAdd.getAgentName()),
+                                    agentToAdd.getAgentName(),
                                     translation.get("gui.emotional_state"),
-                                    translation.get(agentToAdd.getEmotionalStateString()),
+                                    agentToAdd.getEmotionalStateString(),
                                     translation.get("gui.emotion"),
-                                    translation.get(agentToAdd.getEmotionName())
+                                    agentToAdd.getEmotionName()
                             ));
                         } catch (IOException e) {
                             throw new RuntimeException(e);
@@ -213,6 +214,59 @@ public class ConfiguratorAgent extends GuiAgent {
             out.write("\n");
 
             out.write(String.format("%s:\n", translation.get("gui.final_emotional_states").toUpperCase()));
+
+            configuratorAgentGui.getAgentsToAdd()
+                    .forEach(agentToAdd -> {
+                        AgentAction agentAction = new GetEmotionalState();
+                        AID receiver = getAID(agentToAdd.getAgentName());
+                        AgentState agentState = (AgentState) masoesOntologyAssistant.sendRequestAction(receiver, agentAction);
+
+                        try {
+                            out.write(String.format("%s [%s: (%.3f, %.3f), %s: %s - %s, %s: %s]\n",
+                                    agentToAdd.getAgentName(),
+                                    translation.get("gui.emotional_state"),
+                                    agentState.getEmotionState().getActivation(),
+                                    agentState.getEmotionState().getSatisfaction(),
+                                    translation.get("gui.emotion"),
+                                    translation.get(agentState.getEmotionState().getName().toLowerCase()),
+                                    translation.get(agentState.getEmotionState().getType().toLowerCase()),
+                                    translation.get("gui.behaviour"),
+                                    translation.get(agentState.getBehaviourState().getType().toLowerCase())
+                            ));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+
+            out.write("\n");
+
+            out.write(String.format("%s:\n", translation.get("gui.social_emotion").toUpperCase()));
+
+            EmotionalDispersion emotionalDispersion = socialEmotionCalculator.getEmotionalDispersion();
+            CentralEmotion centralEmotionalState = socialEmotionCalculator.getCentralEmotionalState();
+            MaximumDistances maximumDistances = socialEmotionCalculator.getMaximumDistances();
+
+            Emotion emotion = emotionalSpace.searchEmotion(centralEmotionalState.toEmotionalState());
+
+            out.write(String.format("%s: (%.3f, %.3f), %s - %s\n",
+                    translation.get("gui.central_emotion"),
+                    centralEmotionalState.getActivation(),
+                    centralEmotionalState.getSatisfaction(),
+                    translation.get(emotion.getName().toLowerCase()),
+                    translation.get(emotion.getType().toString().toLowerCase())
+            ));
+
+            out.write(String.format("%s: (%.3f, %.3f)\n",
+                    translation.get("gui.max_distance"),
+                    maximumDistances.getActivation(),
+                    maximumDistances.getSatisfaction()
+            ));
+
+            out.write(String.format("%s: (%.3f, %.3f)\n",
+                    translation.get("gui.emotional_dispersion"),
+                    emotionalDispersion.getActivation(),
+                    emotionalDispersion.getSatisfaction()
+            ));
 
             out.flush();
             out.close();

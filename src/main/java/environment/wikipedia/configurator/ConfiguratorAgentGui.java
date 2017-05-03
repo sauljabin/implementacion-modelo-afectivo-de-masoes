@@ -90,7 +90,7 @@ public class ConfiguratorAgentGui extends JFrame {
         add(westPanel, BorderLayout.EAST);
 
         JPanel collectiveEmotionPanel = new JPanel(new MigLayout("insets 5"));
-        collectiveEmotionPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.collective_emotion")));
+        collectiveEmotionPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.social_emotion")));
         westPanel.add(collectiveEmotionPanel, "wrap 20");
 
         JLabel centralEmotionLabel = new JLabel(translation.get("gui.central_emotion"));
