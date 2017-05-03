@@ -40,6 +40,7 @@ import util.RandomGenerator;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -153,7 +154,65 @@ public class ConfiguratorAgent extends GuiAgent {
 
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
 
-            out.write("WIKIPEDIA CONFIGURATION\n");
+            out.write("WIKIPEDIA\n");
+
+            out.write("\n");
+            Translation translation = Translation.getInstance();
+
+            out.write(String.format("%s:\n", translation.get("gui.global_values").toUpperCase()));
+
+            out.write(String.format("%s: %s\n", translation.get("gui.iterations"), configuratorAgentGui.getIterations()));
+
+            String eventFrequency = configuratorAgentGui.isEventFrequencyRandom() ?
+                    translation.get("gui.random")
+                    : Integer.toString(configuratorAgentGui.getEventFrequency());
+
+            out.write(String.format("%s: %s\n", translation.get("gui.event_frequency"), eventFrequency));
+            out.write(String.format("%s: %s\n", translation.get("gui.activation_increase"), configuratorAgentGui.getActivationIncrease()));
+            out.write(String.format("%s: %s\n", translation.get("gui.satisfaction_increase"), configuratorAgentGui.getSatisfactionIncrease()));
+
+            out.write("\n");
+
+            out.write(String.format("%s:\n", translation.get("gui.events").toUpperCase()));
+
+            knowledgeRules.stream()
+                    .filter(KnowledgeRule::isSelected)
+                    .forEach(knowledgeRule -> {
+                        try {
+                            out.write(String.format("%s [%s: %s, %s: %s]\n",
+                                    translation.get(knowledgeRule.getRule().toLowerCase().trim()),
+                                    translation.get("gui.activation"),
+                                    translation.get(knowledgeRule.getActivation().toLowerCase().trim()),
+                                    translation.get("gui.satisfaction"),
+                                    translation.get(knowledgeRule.getSatisfaction().toLowerCase().trim())
+                            ));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+
+            out.write("\n");
+
+            out.write(String.format("%s:\n", translation.get("gui.initial_agent_configuration").toUpperCase()));
+
+            configuratorAgentGui.getAgentsToAdd()
+                    .forEach(agentToAdd -> {
+                        try {
+                            out.write(String.format("%s [%s: %s, %s: %s]\n",
+                                    translation.get(agentToAdd.getAgentName()),
+                                    translation.get("gui.emotional_state"),
+                                    translation.get(agentToAdd.getEmotionalStateString()),
+                                    translation.get("gui.emotion"),
+                                    translation.get(agentToAdd.getEmotionName())
+                            ));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+
+            out.write("\n");
+
+            out.write(String.format("%s:\n", translation.get("gui.final_emotional_states").toUpperCase()));
 
             out.flush();
             out.close();

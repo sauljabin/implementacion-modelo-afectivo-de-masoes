@@ -139,7 +139,7 @@ public class ConfiguratorAgentGui extends JFrame {
         randomFrequencyCheckBox = new JCheckBox(translation.get("gui.random"));
         caseStudyPanel.add(randomFrequencyCheckBox, "cell 1 2, wrap");
 
-        caseStudyPanel.add(new JLabel(translation.get("gui.rules")), "wrap");
+        caseStudyPanel.add(new JLabel(translation.get("gui.events")), "wrap");
         knowledgeRulesTableModel = new KnowledgeRulesTableModel();
         knowledgeRulesTable = new JTable(knowledgeRulesTableModel);
         knowledgeRulesTable.setFillsViewportHeight(true);
@@ -258,7 +258,7 @@ public class ConfiguratorAgentGui extends JFrame {
 
     private void addGlobalVariablesComponents() {
         JPanel globalVariablesPanel = new JPanel(new MigLayout("insets 5"));
-        globalVariablesPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.variables")));
+        globalVariablesPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.global_values")));
 
         centerPanel.add(globalVariablesPanel, "w 100%, wrap");
 
