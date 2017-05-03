@@ -18,10 +18,13 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import translate.Translation;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -113,12 +116,16 @@ public class AgentsEmotionalStateChartGui extends JFrame {
             collection.addSeries(seriesActivation);
             collection.addSeries(seriesSatisfaction);
 
-            chart = ChartFactory.createXYLineChart(agentName, translation.get("gui.iteration"), "", collection, PlotOrientation.VERTICAL, true, true, false);
+            chart = ChartFactory.createXYLineChart(getTitle() + " " + agentName, translation.get("gui.iteration"), "", collection, PlotOrientation.VERTICAL, true, true, false);
             XYPlot xyPlot = chart.getXYPlot();
             ValueAxis rangeAxis = xyPlot.getRangeAxis();
             rangeAxis.setRange(-1., 1.);
 
             chartPanel = new ChartPanel(chart);
+        }
+
+        public JFreeChart getChart() {
+            return chart;
         }
 
         public ChartPanel getChartPanel() {
@@ -130,6 +137,18 @@ public class AgentsEmotionalStateChartGui extends JFrame {
             seriesActivation.add(iteration, emotionalState.getActivation());
         }
 
+    }
+
+    public void exportImage(File folder, int width, int height) throws IOException {
+        agents.forEach((agentName, chartContainer) -> {
+            String extension = "png";
+            File file = new File(folder, String.format("%s %s.%s", getTitle(), agentName, extension));
+            try {
+                ImageIO.write(chartContainer.getChart().createBufferedImage(width, height), extension, file);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
 }

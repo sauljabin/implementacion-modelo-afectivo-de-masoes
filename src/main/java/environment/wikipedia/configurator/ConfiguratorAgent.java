@@ -270,6 +270,16 @@ public class ConfiguratorAgent extends GuiAgent {
 
             out.flush();
             out.close();
+
+            int width = 600;
+            int height = 400;
+
+            agentsBehaviourModificationChartGui.exportImage(folder, width, height);
+            agentsEmotionModificationChartGui.exportImage(folder, width, height);
+            maxDistancesGraphic.exportImage(folder, width, height);
+            dispersionGraphic.exportImage(folder, width, height);
+            agentsEmotionalStateChartGui.exportImage(folder, width, height);
+
         } catch (Exception e) {
             logger.exception(e);
             configuratorAgentGui.showError(e.getMessage());
@@ -333,7 +343,7 @@ public class ConfiguratorAgent extends GuiAgent {
     private void startSimulation() {
         String centralEmotionName = Translation.getInstance().get("gui.central_emotion");
 
-        agentsEmotionalStateChartGui = new AgentsEmotionalStateChartGui(Translation.getInstance().get("gui.emotional_states"));
+        agentsEmotionalStateChartGui = new AgentsEmotionalStateChartGui(Translation.getInstance().get("gui.emotional_state"));
         agentsEmotionalStateChartGui.setLocation(100, 100);
 
         agentsEmotionalSpaceChartGui = new AgentsEmotionalSpaceChartGui(Translation.getInstance().get("gui.emotional_states"));

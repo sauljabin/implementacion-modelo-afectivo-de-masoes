@@ -20,10 +20,13 @@ import org.jfree.data.xy.XYSeriesCollection;
 import translate.Translation;
 import util.Colors;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -106,6 +109,12 @@ public class AgentsBehaviourModificationChartGui extends JFrame {
 
     public void stop() {
         dispose();
+    }
+
+    public void exportImage(File folder, int width, int height) throws IOException {
+        String extension = "png";
+        File file = new File(folder, getTitle() + "." + extension);
+         ImageIO.write(chart.createBufferedImage(width, height), extension, file);
     }
 
 }
