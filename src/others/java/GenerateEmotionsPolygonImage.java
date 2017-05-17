@@ -20,6 +20,15 @@ import static java.lang.Math.abs;
 
 public class GenerateEmotionsPolygonImage {
 
+    private static final String HAPPINESS = "happiness";
+    private static final String JOY = "joy";
+    private static final String COMPASSION = "compassion";
+    private static final String ADMIRATION = "admiration";
+    private static final String DEPRESSION = "depression";
+    private static final String SADNESS = "sadness";
+    private static final String REJECTION = "rejection";
+    private static final String ANGER = "anger";
+
     private static final int SIZE = 400;
     private static final int PADDING = 50;
     private static final int POINT_SIZE = 8;
@@ -29,11 +38,15 @@ public class GenerateEmotionsPolygonImage {
     private static final String PNG = "png";
 
     private static final Color BLACK_COLOR = Color.BLACK;
-    private static final Color DARKRED_COLOR = new Color(203, 71, 79);
+    private static final Color DARK_RED_COLOR = new Color(203, 71, 79);
     private static final Color BLUE_COLOR = new Color(158, 230, 237);
+    private static final Color RED_COLOR = Color.RED;
+    private static final Color WHITE_COLOR = Color.WHITE;
 
-    private Font font = new Font("Arial", Font.PLAIN, 12);
-    private BasicStroke stroke = new BasicStroke(1.1f);
+    private static final Font FONT_12 = new Font("Arial", Font.PLAIN, 12);
+    private static final Font FONT_10 = new Font("Arial", Font.PLAIN, 10);
+    private static final BasicStroke STROKE = new BasicStroke(1.1f);
+
     private Translation translation = Translation.getInstance();
 
     private BufferedImage image;
@@ -54,6 +67,7 @@ public class GenerateEmotionsPolygonImage {
                 .forEach(emotion -> {
                     renderBackground();
                     drawEmotion(emotion);
+                    renderEmotionName(emotion);
                     writeImage(emotion);
                     logEmotion(emotion);
                 });
@@ -77,11 +91,12 @@ public class GenerateEmotionsPolygonImage {
     }
 
     private void renderBackground() {
-        graphics.setBackground(Color.WHITE);
-        graphics.setColor(Color.BLACK);
-        graphics.setFont(font);
+        graphics.setBackground(WHITE_COLOR);
         graphics.clearRect(0, 0, SIZE_PADDING, SIZE_PADDING);
-        graphics.setStroke(stroke);
+        graphics.setStroke(STROKE);
+
+        setColor(BLACK_COLOR);
+        setFont(FONT_12);
 
         drawLine(-1, 0, 1, 0);
         drawLine(0, -1, 0, 1);
@@ -94,12 +109,17 @@ public class GenerateEmotionsPolygonImage {
     }
 
     private void writeImage(Emotion emotion) {
-        File file = new File(OUTPUT_OTHERS, String.format("%s.%s", emotion.getName(), PNG));
+        File file = new File(OUTPUT_OTHERS, emotionToFileName(emotion));
         try {
             ImageIO.write(image, PNG, file);
         } catch (IOException e) {
             new RuntimeException(e);
         }
+    }
+
+    private String emotionToFileName(Emotion emotion) {
+        String fileName = String.format("poligono-%s.%s", getEmotionTranslation(emotion.getName()), PNG).toLowerCase();
+        return fileName.replace('ó', 'o');
     }
 
     private int xCanvas(double value) {
@@ -134,6 +154,10 @@ public class GenerateEmotionsPolygonImage {
         graphics.fillOval(xCanvas(x) - size / 2, yCanvas(y) - size / 2, size, size);
     }
 
+    private void setFont(Font font) {
+        graphics.setFont(font);
+    }
+
     private void setColor(Color color) {
         graphics.setColor(color);
     }
@@ -146,8 +170,8 @@ public class GenerateEmotionsPolygonImage {
         graphics.fillPolygon(polygon);
     }
 
-    private String getEmotionTranslation(Emotion emotion) {
-        return translation.get(emotion.getName().toLowerCase()).toUpperCase();
+    private String getEmotionTranslation(String emotionName) {
+        return translation.get(emotionName.toLowerCase()).toUpperCase();
     }
 
     private Polygon emotionToPolygon(Emotion emotion) {
@@ -159,8 +183,6 @@ public class GenerateEmotionsPolygonImage {
     }
 
     private void drawEmotion(Emotion emotion) {
-        graphics.drawString(getEmotionTranslation(emotion), 20, 20);
-
         Polygon emotionToPolygon = emotionToPolygon(emotion);
 
         setColor(BLUE_COLOR);
@@ -174,19 +196,51 @@ public class GenerateEmotionsPolygonImage {
         Arrays.stream(emotion.getCoordinates())
                 .collect(Collectors.toSet())
                 .forEach(coordinate -> {
-                    setColor(Color.RED);
+                    setColor(RED_COLOR);
                     String stringPoint = String.format("%s %s",
                             alphabet.next(),
                             toPointStringFormat(coordinate.x, coordinate.y)
                     );
                     drawString(stringPoint, coordinate.x - .18, coordinate.y + .03);
 
-                    setColor(DARKRED_COLOR);
+                    setColor(DARK_RED_COLOR);
                     fillOval(coordinate.x, coordinate.y, POINT_SIZE);
 
                     setColor(BLACK_COLOR);
                     drawOval(coordinate.x, coordinate.y, POINT_SIZE);
                 });
+    }
+
+    private void renderEmotionName(Emotion emotion) {
+        setFont(FONT_10);
+        setColor(BLACK_COLOR);
+
+        switch (emotion.getName().toLowerCase().trim()) {
+            case COMPASSION:
+                drawString(getEmotionTranslation(COMPASSION), -.8, .7);
+                break;
+            case HAPPINESS:
+                drawString(getEmotionTranslation(HAPPINESS), .5, .7);
+                break;
+            case ANGER:
+                drawString(getEmotionTranslation(ANGER), .5, -.8);
+                break;
+            case DEPRESSION:
+                drawString(getEmotionTranslation(DEPRESSION), -.8, -.8);
+                break;
+            case ADMIRATION:
+                drawString(getEmotionTranslation(ADMIRATION), -.42, .24);
+                break;
+            case JOY:
+                drawString(getEmotionTranslation(JOY), .14, .24);
+                break;
+            case SADNESS:
+                drawString(getEmotionTranslation(SADNESS), -.36, -.26);
+                break;
+            case REJECTION:
+                drawString(getEmotionTranslation(REJECTION), .13, -.26);
+                break;
+        }
     }
 
     private String toPointStringFormat(double x, double y) {
