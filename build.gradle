@@ -92,3 +92,12 @@ tasks.withType(Test) {
         events 'passed', 'skipped', 'failed'
     }
 }
+
+sourceSets {
+    others {
+        java.srcDir file('src/others/java')
+        resources.srcDir file('src/others/resources')
+        compileClasspath = sourceSets.main.output + configurations.testRuntime
+        runtimeClasspath = output + compileClasspath
+    }
+}

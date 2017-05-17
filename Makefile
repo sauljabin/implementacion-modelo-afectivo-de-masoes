@@ -37,3 +37,9 @@ clean-db: ; @ ./gradlew -q flywayClean
 
 # target version:             Shows app version.
 version: ; @ ./gradlew -q run -Pargs="-v"
+
+# target install:             Make program and install.
+install: dist ; @ ./gradlew -q installDist
+
+# target dist:                Make program.
+dist: clean ; @ ./gradlew -q assembleDist
