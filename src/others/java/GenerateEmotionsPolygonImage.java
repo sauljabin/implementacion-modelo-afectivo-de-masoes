@@ -53,6 +53,10 @@ public class GenerateEmotionsPolygonImage {
 
     private BufferedImage image;
     private Graphics2D graphics;
+    private BufferedImage quadrantImage;
+    private Graphics2D quadrantGraphics;
+    private boolean saveQuadrant;
+    private String quadrantName = "";
 
     public static void main(String[] args) {
         new GenerateEmotionsPolygonImage();
@@ -60,6 +64,7 @@ public class GenerateEmotionsPolygonImage {
 
     public GenerateEmotionsPolygonImage() {
         makeOutputFolder();
+        makeQuadrantImage();
         makeImage();
         emotionIteration();
     }
@@ -70,13 +75,35 @@ public class GenerateEmotionsPolygonImage {
                     renderBackground();
                     drawEmotion(emotion);
                     renderEmotionName(emotion);
-                    writeImage(emotion);
+                    addToQuadrant(emotion);
+                    writeImage(new File(OUTPUT_OTHERS, emotionToFileName(emotion)), image);
                 });
+    }
+
+    private void addToQuadrant(Emotion emotion) {
+        quadrantName += "-" + getEmotionNameToFile(emotion);
+        if (saveQuadrant) {
+            quadrantGraphics.drawImage(image, null, 500, 0);
+            writeImage(new File(OUTPUT_OTHERS, String.format("cuadrante%s.png", quadrantName)), quadrantImage);
+            quadrantName = "";
+        } else {
+            quadrantGraphics.drawImage(image, null, 0, 0);
+        }
+        saveQuadrant = !saveQuadrant;
+    }
+
+    private String getEmotionNameToFile(Emotion emotion) {
+        return getEmotionTranslation(emotion).toLowerCase().replace("ó", "o");
     }
 
     private void makeOutputFolder() {
         File folder = new File(OUTPUT_OTHERS);
         folder.mkdirs();
+    }
+
+    private void makeQuadrantImage() {
+        quadrantImage = new BufferedImage(SIZE_PADDING * 2, SIZE_PADDING, 1);
+        quadrantGraphics = quadrantImage.createGraphics();
     }
 
     private void makeImage() {
@@ -105,8 +132,7 @@ public class GenerateEmotionsPolygonImage {
         drawString("1", -.02, 1.1);
     }
 
-    private void writeImage(Emotion emotion) {
-        File file = new File(OUTPUT_OTHERS, emotionToFileName(emotion));
+    private void writeImage(File file, BufferedImage image) {
         try {
             ImageIO.write(image, PNG, file);
         } catch (IOException e) {
@@ -115,8 +141,7 @@ public class GenerateEmotionsPolygonImage {
     }
 
     private String emotionToFileName(Emotion emotion) {
-        String fileName = String.format("poligono-%s.%s", getEmotionTranslation(emotion), PNG).toLowerCase();
-        return fileName.replace('ó', 'o');
+        return String.format("poligono-%s.%s", getEmotionNameToFile(emotion), PNG);
     }
 
     private int xCanvas(double value) {
@@ -211,7 +236,7 @@ public class GenerateEmotionsPolygonImage {
                     drawOval(coordinate.x, coordinate.y, POINT_SIZE);
                     return stringPoint;
                 }).collect(Collectors.joining(", "));
-        
+
         System.out.printf("%s", points);
         System.out.println();
     }
