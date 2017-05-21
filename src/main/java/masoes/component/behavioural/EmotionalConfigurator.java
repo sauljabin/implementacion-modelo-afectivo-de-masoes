@@ -28,7 +28,7 @@ public class EmotionalConfigurator {
     private static final String ANSWER_SATISFACTION_VAR_NAME = "Y";
     private static final String POSITIVE = "positive";
     private static final String NEGATIVE = "negative";
-    private static final String DEFAULT_INCREASE_VALUE = "0.1";
+    private static final String DEFAULT_INCREASE_PARAMETER = "0.1";
 
     private EmotionalState emotionalState;
     private EmotionalSpace emotionalSpace;
@@ -68,15 +68,15 @@ public class EmotionalConfigurator {
                 double satisfaction = emotionalState.getSatisfaction();
 
                 if (activationValence.equalsIgnoreCase(POSITIVE)) {
-                    activation += getActivationIncrease();
+                    activation += getActivationParameter();
                 } else if (activationValence.equalsIgnoreCase(NEGATIVE)) {
-                    activation -= getActivationIncrease();
+                    activation -= getActivationParameter();
                 }
 
                 if (satisfactionValence.equalsIgnoreCase(POSITIVE)) {
-                    satisfaction += getSatisfactionIncrease();
+                    satisfaction += getSatisfactionParameter();
                 } else if (satisfactionValence.equalsIgnoreCase(NEGATIVE)) {
-                    satisfaction -= getSatisfactionIncrease();
+                    satisfaction -= getSatisfactionParameter();
                 }
 
                 return new EmotionalState(activation, satisfaction);
@@ -106,20 +106,20 @@ public class EmotionalConfigurator {
         return solutions.get(random);
     }
 
-    private double getActivationIncrease() {
-        String stringIncrease = MasoesSettings.getInstance().get(MasoesSettings.MASOES_ACTIVATION_INCREASE, DEFAULT_INCREASE_VALUE);
-        if (!StringValidator.isReal(stringIncrease)) {
-            stringIncrease = DEFAULT_INCREASE_VALUE;
+    private double getActivationParameter() {
+        String activationParameterString = MasoesSettings.getInstance().get(MasoesSettings.MASOES_ACTIVATION_PARAMETER, DEFAULT_INCREASE_PARAMETER);
+        if (!StringValidator.isReal(activationParameterString)) {
+            activationParameterString = DEFAULT_INCREASE_PARAMETER;
         }
-        return Double.parseDouble(stringIncrease);
+        return Double.parseDouble(activationParameterString);
     }
 
-    private double getSatisfactionIncrease() {
-        String stringIncrease = MasoesSettings.getInstance().get(MasoesSettings.MASOES_SATISFACTION_INCREASE, DEFAULT_INCREASE_VALUE);
-        if (!StringValidator.isReal(stringIncrease)) {
-            stringIncrease = DEFAULT_INCREASE_VALUE;
+    private double getSatisfactionParameter() {
+        String satisfactionParameterString = MasoesSettings.getInstance().get(MasoesSettings.MASOES_SATISFACTION_PARAMETER, DEFAULT_INCREASE_PARAMETER);
+        if (!StringValidator.isReal(satisfactionParameterString)) {
+            satisfactionParameterString = DEFAULT_INCREASE_PARAMETER;
         }
-        return Double.parseDouble(stringIncrease);
+        return Double.parseDouble(satisfactionParameterString);
     }
 
     private String getSatisfactionValence(SolveInfo solveEmotion) throws NoSolutionException, UnknownVarException {

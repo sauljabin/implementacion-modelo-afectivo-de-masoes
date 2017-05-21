@@ -34,8 +34,8 @@ public class ConfiguratorAgentGui extends JFrame {
     private JComboBox<Object> agentTypesToAddCombo;
     private AgentsStateTableModel agentsStateTableModel;
     private AgentsToAddTableModel agentsToAddTableModel;
-    private JSpinner activationIncreaseSpinner;
-    private JSpinner satisfactionIncreaseSpinner;
+    private JSpinner activationParameterSpinner;
+    private JSpinner satisfactionParameterSpinner;
     private JSpinner activationToAddSpinner;
     private JSpinner satisfactionToAddSpinner;
     private JSpinner iterationsSpinner;
@@ -262,23 +262,23 @@ public class ConfiguratorAgentGui extends JFrame {
 
         centerPanel.add(globalVariablesPanel, "w 100%, wrap");
 
-        JLabel activationIncreaseLabel = new JLabel(translation.get("gui.activation_increase"));
-        globalVariablesPanel.add(activationIncreaseLabel, "w 70");
+        JLabel activationParameterLabel = new JLabel(translation.get("gui.activation_parameter"));
+        globalVariablesPanel.add(activationParameterLabel, "w 70");
 
-        double activationIncrease = Double.parseDouble(MasoesSettings.getInstance().get(MasoesSettings.MASOES_ACTIVATION_INCREASE));
+        double activationParameter = Double.parseDouble(MasoesSettings.getInstance().get(MasoesSettings.MASOES_ACTIVATION_PARAMETER));
 
-        activationIncreaseSpinner = new JSpinner();
-        activationIncreaseSpinner.setModel(new SpinnerNumberModel(activationIncrease, 0., 1., .01));
-        globalVariablesPanel.add(activationIncreaseSpinner, "w 70");
+        activationParameterSpinner = new JSpinner();
+        activationParameterSpinner.setModel(new SpinnerNumberModel(activationParameter, 0., 1., .01));
+        globalVariablesPanel.add(activationParameterSpinner, "w 70");
 
-        JLabel satisfactionIncreaseLabel = new JLabel(translation.get("gui.satisfaction_increase"));
-        globalVariablesPanel.add(satisfactionIncreaseLabel, "w 70");
+        JLabel satisfactionParameterLabel = new JLabel(translation.get("gui.satisfaction_parameter"));
+        globalVariablesPanel.add(satisfactionParameterLabel, "w 70");
 
-        double satisfactionIncrease = Double.parseDouble(MasoesSettings.getInstance().get(MasoesSettings.MASOES_SATISFACTION_INCREASE));
+        double satisfactionParameter = Double.parseDouble(MasoesSettings.getInstance().get(MasoesSettings.MASOES_SATISFACTION_PARAMETER));
 
-        satisfactionIncreaseSpinner = new JSpinner();
-        satisfactionIncreaseSpinner.setModel(new SpinnerNumberModel(satisfactionIncrease, 0., 1., .01));
-        globalVariablesPanel.add(satisfactionIncreaseSpinner, "w 70, wrap");
+        satisfactionParameterSpinner = new JSpinner();
+        satisfactionParameterSpinner.setModel(new SpinnerNumberModel(satisfactionParameter, 0., 1., .01));
+        globalVariablesPanel.add(satisfactionParameterSpinner, "w 70, wrap");
     }
 
     public void closeGui() {
@@ -295,16 +295,16 @@ public class ConfiguratorAgentGui extends JFrame {
     }
 
     public void addActionListener(ActionListener actionListener) {
-        activationIncreaseSpinner.addChangeListener(e -> actionListener.actionPerformed(new ActionEvent(
+        activationParameterSpinner.addChangeListener(e -> actionListener.actionPerformed(new ActionEvent(
                 e.getSource(),
-                ConfiguratorAgentEvent.UPDATE_ACTIVATION_INCREASE.getInt(),
-                ConfiguratorAgentEvent.UPDATE_ACTIVATION_INCREASE.toString()
+                ConfiguratorAgentEvent.UPDATE_ACTIVATION_PARAMETER.getInt(),
+                ConfiguratorAgentEvent.UPDATE_ACTIVATION_PARAMETER.toString()
         )));
 
-        satisfactionIncreaseSpinner.addChangeListener(e -> actionListener.actionPerformed(new ActionEvent(
+        satisfactionParameterSpinner.addChangeListener(e -> actionListener.actionPerformed(new ActionEvent(
                 e.getSource(),
-                ConfiguratorAgentEvent.UPDATE_SATISFACTION_INCREASE.getInt(),
-                ConfiguratorAgentEvent.UPDATE_SATISFACTION_INCREASE.toString()
+                ConfiguratorAgentEvent.UPDATE_SATISFACTION_PARAMETER.getInt(),
+                ConfiguratorAgentEvent.UPDATE_SATISFACTION_PARAMETER.toString()
         )));
 
         activationToAddSpinner.addChangeListener(e -> actionListener.actionPerformed(new ActionEvent(
@@ -343,11 +343,11 @@ public class ConfiguratorAgentGui extends JFrame {
     }
 
     public double getActivationParameter() {
-        return (double) activationIncreaseSpinner.getValue();
+        return (double) activationParameterSpinner.getValue();
     }
 
     public double getSatisfactionParameter() {
-        return (double) satisfactionIncreaseSpinner.getValue();
+        return (double) satisfactionParameterSpinner.getValue();
     }
 
     public double getActivationToAdd() {
@@ -401,8 +401,8 @@ public class ConfiguratorAgentGui extends JFrame {
         startButton.setEnabled(false);
         removeAgentButton.setEnabled(false);
         agentTypesToAddCombo.setEnabled(false);
-        activationIncreaseSpinner.setEnabled(false);
-        satisfactionIncreaseSpinner.setEnabled(false);
+        activationParameterSpinner.setEnabled(false);
+        satisfactionParameterSpinner.setEnabled(false);
         activationToAddSpinner.setEnabled(false);
         satisfactionToAddSpinner.setEnabled(false);
         iterationsSpinner.setEnabled(false);
@@ -419,8 +419,8 @@ public class ConfiguratorAgentGui extends JFrame {
         addAgentButton.setEnabled(true);
         removeAgentButton.setEnabled(true);
         agentTypesToAddCombo.setEnabled(true);
-        activationIncreaseSpinner.setEnabled(true);
-        satisfactionIncreaseSpinner.setEnabled(true);
+        activationParameterSpinner.setEnabled(true);
+        satisfactionParameterSpinner.setEnabled(true);
         activationToAddSpinner.setEnabled(true);
         satisfactionToAddSpinner.setEnabled(true);
         iterationsSpinner.setEnabled(true);

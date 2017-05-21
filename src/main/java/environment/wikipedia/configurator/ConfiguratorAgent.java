@@ -111,11 +111,11 @@ public class ConfiguratorAgent extends GuiAgent {
                     cleanSimulation();
                     doDelete();
                     break;
-                case UPDATE_SATISFACTION_INCREASE:
-                    updateSatisfactionIncrease();
+                case UPDATE_SATISFACTION_PARAMETER:
+                    updateSatisfactionParameter();
                     break;
-                case UPDATE_ACTIVATION_INCREASE:
-                    updateActivationIncrease();
+                case UPDATE_ACTIVATION_PARAMETER:
+                    updateActivationParameter();
                     break;
                 case CLEAN:
                     cleanSimulation();
@@ -528,12 +528,12 @@ public class ConfiguratorAgent extends GuiAgent {
         configuratorAgentGui.modeConfiguration();
     }
 
-    private void updateActivationIncrease() {
-        MasoesSettings.getInstance().set(MasoesSettings.MASOES_ACTIVATION_INCREASE, String.valueOf(configuratorAgentGui.getActivationParameter()));
+    private void updateActivationParameter() {
+        MasoesSettings.getInstance().set(MasoesSettings.MASOES_ACTIVATION_PARAMETER, String.valueOf(configuratorAgentGui.getActivationParameter()));
     }
 
-    private void updateSatisfactionIncrease() {
-        MasoesSettings.getInstance().set(MasoesSettings.MASOES_SATISFACTION_INCREASE, String.valueOf(configuratorAgentGui.getSatisfactionParameter()));
+    private void updateSatisfactionParameter() {
+        MasoesSettings.getInstance().set(MasoesSettings.MASOES_SATISFACTION_PARAMETER, String.valueOf(configuratorAgentGui.getSatisfactionParameter()));
     }
 
 }

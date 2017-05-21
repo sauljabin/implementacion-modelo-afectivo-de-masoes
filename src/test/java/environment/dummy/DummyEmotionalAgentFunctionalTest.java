@@ -46,8 +46,8 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
 
     @Before
     public void setUp() {
-        MasoesSettings.getInstance().set(MasoesSettings.MASOES_ACTIVATION_INCREASE, "0.1");
-        MasoesSettings.getInstance().set(MasoesSettings.MASOES_SATISFACTION_INCREASE, "0.1");
+        MasoesSettings.getInstance().set(MasoesSettings.MASOES_ACTIVATION_PARAMETER, "0.1");
+        MasoesSettings.getInstance().set(MasoesSettings.MASOES_SATISFACTION_PARAMETER, "0.1");
         contentManager = new ContentManager();
         contentManager.registerOntology(MasoesOntology.getInstance());
         contentManager.registerLanguage(new SLCodec());
