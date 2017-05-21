@@ -98,6 +98,18 @@ public class AgentsEmotionalStateChartGui extends JFrame {
         chartContainer.addEmotionalState(iteration, emotionalState);
     }
 
+    public void exportImage(File folder, int width, int height) throws IOException {
+        agents.forEach((agentName, chartContainer) -> {
+            String extension = "png";
+            File file = new File(folder, String.format("%s %s.%s", getTitle(), agentName, extension));
+            try {
+                ImageIO.write(chartContainer.getChart().createBufferedImage(width, height), extension, file);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
     private class ChartContainer {
 
         private JFreeChart chart;
@@ -137,18 +149,6 @@ public class AgentsEmotionalStateChartGui extends JFrame {
             seriesActivation.add(iteration, emotionalState.getActivation());
         }
 
-    }
-
-    public void exportImage(File folder, int width, int height) throws IOException {
-        agents.forEach((agentName, chartContainer) -> {
-            String extension = "png";
-            File file = new File(folder, String.format("%s %s.%s", getTitle(), agentName, extension));
-            try {
-                ImageIO.write(chartContainer.getChart().createBufferedImage(width, height), extension, file);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
     }
 
 }

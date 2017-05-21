@@ -53,7 +53,7 @@ public class EmotionalDispersionLineChartGui extends JFrame {
         collection.addSeries(seriesActivation);
         collection.addSeries(seriesSatisfaction);
 
-        chart = ChartFactory.createXYLineChart(title, translation.get("gui.iteration"), "", collection, PlotOrientation.VERTICAL, true, true, false);
+        chart = ChartFactory.createXYLineChart(title, translation.get("gui.iteration"), translation.get("gui.dispersion"), collection, PlotOrientation.VERTICAL, true, true, false);
         add(new ChartPanel(chart), BorderLayout.CENTER);
 
         xyPlot = chart.getXYPlot();
@@ -77,7 +77,7 @@ public class EmotionalDispersionLineChartGui extends JFrame {
     public void exportImage(File folder, int width, int height) throws IOException {
         String extension = "png";
         File file = new File(folder, getTitle() + "." + extension);
-         ImageIO.write(chart.createBufferedImage(width, height), extension, file);
+        ImageIO.write(chart.createBufferedImage(width, height), extension, file);
     }
 
 }

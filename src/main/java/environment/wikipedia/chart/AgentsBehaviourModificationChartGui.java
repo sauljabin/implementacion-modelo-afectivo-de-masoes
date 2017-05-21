@@ -57,7 +57,7 @@ public class AgentsBehaviourModificationChartGui extends JFrame {
 
         collection = new XYSeriesCollection();
 
-        chart = ChartFactory.createXYLineChart(title, translation.get("gui.iteration"), "", collection, PlotOrientation.VERTICAL, true, true, false);
+        chart = ChartFactory.createXYLineChart(title, translation.get("gui.iteration"), translation.get("gui.behaviour"), collection, PlotOrientation.VERTICAL, true, true, false);
         add(new ChartPanel(chart), BorderLayout.CENTER);
 
         xyPlot = chart.getXYPlot();
@@ -72,9 +72,10 @@ public class AgentsBehaviourModificationChartGui extends JFrame {
 
         behavioursTypes = typesList.toArray(new String[typesList.size()]);
 
-        SymbolAxis rangeAxis = new SymbolAxis("", behavioursTypes);
+        SymbolAxis rangeAxis = new SymbolAxis(translation.get("gui.behaviour"), behavioursTypes);
         rangeAxis.setTickUnit(new NumberTickUnit(1));
         rangeAxis.setRange(0, behavioursTypes.length);
+        rangeAxis.setLabelFont(chart.getXYPlot().getDomainAxis().getLabelFont());
         xyPlot.setRangeAxis(rangeAxis);
     }
 
@@ -114,7 +115,7 @@ public class AgentsBehaviourModificationChartGui extends JFrame {
     public void exportImage(File folder, int width, int height) throws IOException {
         String extension = "png";
         File file = new File(folder, getTitle() + "." + extension);
-         ImageIO.write(chart.createBufferedImage(width, height), extension, file);
+        ImageIO.write(chart.createBufferedImage(width, height), extension, file);
     }
 
 }

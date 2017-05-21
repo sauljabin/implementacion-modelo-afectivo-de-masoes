@@ -58,15 +58,15 @@ public class GenerateEmotionsPolygonImage {
     private boolean saveQuadrant;
     private String quadrantName = "";
 
-    public static void main(String[] args) {
-        new GenerateEmotionsPolygonImage();
-    }
-
     public GenerateEmotionsPolygonImage() {
         makeOutputFolder();
         makeQuadrantImage();
         makeImage();
         emotionIteration();
+    }
+
+    public static void main(String[] args) {
+        new GenerateEmotionsPolygonImage();
     }
 
     private void emotionIteration() {

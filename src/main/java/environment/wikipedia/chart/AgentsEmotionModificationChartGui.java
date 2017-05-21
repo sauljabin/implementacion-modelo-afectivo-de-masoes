@@ -59,7 +59,7 @@ public class AgentsEmotionModificationChartGui extends JFrame {
 
         collection = new XYSeriesCollection();
 
-        chart = ChartFactory.createXYLineChart(title, translation.get("gui.iteration"), "", collection, PlotOrientation.VERTICAL, true, true, false);
+        chart = ChartFactory.createXYLineChart(title, translation.get("gui.iteration"), translation.get("gui.emotion"), collection, PlotOrientation.VERTICAL, true, true, false);
         add(new ChartPanel(chart), BorderLayout.CENTER);
 
         xyPlot = chart.getXYPlot();
@@ -79,9 +79,10 @@ public class AgentsEmotionModificationChartGui extends JFrame {
 
         emotionTypes = typesList.toArray(new String[typesList.size()]);
 
-        SymbolAxis rangeAxis = new SymbolAxis("", emotionTypes);
+        SymbolAxis rangeAxis = new SymbolAxis(translation.get("gui.emotion"), emotionTypes);
         rangeAxis.setTickUnit(new NumberTickUnit(1));
         rangeAxis.setRange(0, emotionTypes.length);
+        rangeAxis.setLabelFont(chart.getXYPlot().getDomainAxis().getLabelFont());
         xyPlot.setRangeAxis(rangeAxis);
     }
 
@@ -122,7 +123,7 @@ public class AgentsEmotionModificationChartGui extends JFrame {
     public void exportImage(File folder, int width, int height) throws IOException {
         String extension = "png";
         File file = new File(folder, getTitle() + "." + extension);
-         ImageIO.write(chart.createBufferedImage(width, height), extension, file);
+        ImageIO.write(chart.createBufferedImage(width, height), extension, file);
     }
 
 }
