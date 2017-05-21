@@ -33,6 +33,8 @@ public class AgentsEmotionalStateChartGui extends JFrame {
     private static final int COLUMN_SIZE = 4;
     private static final int CHART_W = 350;
     private static final int CHART_H = 280;
+    private static final int MAX_AGENTS_TO_RESIZE_WINDOW = 12;
+    private static final int PADDING = 20;
     private Translation translation = Translation.getInstance();
     private JPanel centerPanel;
     private Map<String, ChartContainer> agents = new TreeMap<>();
@@ -49,7 +51,11 @@ public class AgentsEmotionalStateChartGui extends JFrame {
         });
 
         centerPanel = new JPanel(new MigLayout());
-        add(centerPanel);
+
+        JScrollPane scrollPane = new JScrollPane(centerPanel,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        add(scrollPane);
     }
 
     public void start() {
@@ -82,15 +88,20 @@ public class AgentsEmotionalStateChartGui extends JFrame {
     }
 
     private void calculateNewWindowSize() {
-        int h = ((int) Math.ceil((double) agents.size() / (double) COLUMN_SIZE)) * CHART_H;
-        int w = 0;
-        if (agents.size() >= COLUMN_SIZE) {
-            w = COLUMN_SIZE * CHART_W;
-        } else {
-            w = agents.size() * CHART_W;
+
+        if (agents.size() >= MAX_AGENTS_TO_RESIZE_WINDOW) {
+            return;
         }
-        int PADDING = 10;
-        setSize(w + PADDING, h + PADDING);
+
+        int COLUMNS = ((int) Math.ceil((double) agents.size() / (double) COLUMN_SIZE));
+        int h = COLUMNS * CHART_H + (COLUMNS + 1) * 8;
+        int w;
+        if (agents.size() >= COLUMN_SIZE) {
+            w = COLUMN_SIZE * CHART_W + (COLUMN_SIZE + 1) * 7;
+        } else {
+            w = agents.size() * CHART_W + (agents.size() + 1) * 7;
+        }
+        setSize(w + PADDING, h);
     }
 
     public void addEmotionalState(String agentName, int iteration, EmotionalState emotionalState) {
