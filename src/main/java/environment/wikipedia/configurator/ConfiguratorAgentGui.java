@@ -342,11 +342,11 @@ public class ConfiguratorAgentGui extends JFrame {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    public double getActivationIncrease() {
+    public double getActivationParameter() {
         return (double) activationIncreaseSpinner.getValue();
     }
 
-    public double getSatisfactionIncrease() {
+    public double getSatisfactionParameter() {
         return (double) satisfactionIncreaseSpinner.getValue();
     }
 

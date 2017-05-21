@@ -169,8 +169,8 @@ public class ConfiguratorAgent extends GuiAgent {
                     : Integer.toString(configuratorAgentGui.getEventFrequency());
 
             out.write(String.format("%s: %s\n", translation.get("gui.event_frequency"), eventFrequency));
-            out.write(String.format("%s: %s\n", translation.get("gui.activation_increase"), configuratorAgentGui.getActivationIncrease()));
-            out.write(String.format("%s: %s\n", translation.get("gui.satisfaction_increase"), configuratorAgentGui.getSatisfactionIncrease()));
+            out.write(String.format("%s: %s\n", translation.get("gui.activation_parameter"), configuratorAgentGui.getActivationParameter()));
+            out.write(String.format("%s: %s\n", translation.get("gui.satisfaction_parameter"), configuratorAgentGui.getSatisfactionParameter()));
 
             out.write("\n");
 
@@ -529,11 +529,11 @@ public class ConfiguratorAgent extends GuiAgent {
     }
 
     private void updateActivationIncrease() {
-        MasoesSettings.getInstance().set(MasoesSettings.MASOES_ACTIVATION_INCREASE, String.valueOf(configuratorAgentGui.getActivationIncrease()));
+        MasoesSettings.getInstance().set(MasoesSettings.MASOES_ACTIVATION_INCREASE, String.valueOf(configuratorAgentGui.getActivationParameter()));
     }
 
     private void updateSatisfactionIncrease() {
-        MasoesSettings.getInstance().set(MasoesSettings.MASOES_SATISFACTION_INCREASE, String.valueOf(configuratorAgentGui.getSatisfactionIncrease()));
+        MasoesSettings.getInstance().set(MasoesSettings.MASOES_SATISFACTION_INCREASE, String.valueOf(configuratorAgentGui.getSatisfactionParameter()));
     }
 
 }

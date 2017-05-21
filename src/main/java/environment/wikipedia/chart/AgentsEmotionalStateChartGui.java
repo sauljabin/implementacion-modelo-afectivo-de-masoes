@@ -128,7 +128,7 @@ public class AgentsEmotionalStateChartGui extends JFrame {
             collection.addSeries(seriesActivation);
             collection.addSeries(seriesSatisfaction);
 
-            chart = ChartFactory.createXYLineChart(getTitle() + " " + agentName, translation.get("gui.iteration"), "", collection, PlotOrientation.VERTICAL, true, true, false);
+            chart = ChartFactory.createXYLineChart(getTitle() + " " + agentName, translation.get("gui.iteration"), translation.get("gui.emotional_range"), collection, PlotOrientation.VERTICAL, true, true, false);
             XYPlot xyPlot = chart.getXYPlot();
             ValueAxis rangeAxis = xyPlot.getRangeAxis();
             rangeAxis.setRange(-1., 1.);
