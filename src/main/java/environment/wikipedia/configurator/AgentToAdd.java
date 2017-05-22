@@ -63,5 +63,5 @@ public class AgentToAdd {
     public void setReceiveStimulus(boolean receiveStimulus) {
         this.receiveStimulus = receiveStimulus;
     }
-    
+
 }

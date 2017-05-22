@@ -58,6 +58,8 @@ public class ConfiguratorAgentGui extends JFrame {
     private KnowledgeRulesTableModel knowledgeRulesTableModel;
     private JTable knowledgeRulesTable;
     private JButton saveButton;
+    private JButton selectAllButton;
+    private JButton deselectAllButton;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -200,7 +202,7 @@ public class ConfiguratorAgentGui extends JFrame {
         currentStatePanel.add(buttonsPanel, "h 100%, wrap");
 
         windowAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/window.png")));
-        buttonsPanel.add(windowAgentButton, "w 25, h 25");
+        buttonsPanel.add(windowAgentButton, "w 25, h 25, wrap 20");
     }
 
     private void addInitialAgentConfigurationComponents() {
@@ -253,7 +255,13 @@ public class ConfiguratorAgentGui extends JFrame {
         initialAgentConfigurationPanel.add(buttonsPanel, "h 100%, wrap");
 
         removeAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/delete-icon.png")));
-        buttonsPanel.add(removeAgentButton, "w 25, h 25, wrap");
+        buttonsPanel.add(removeAgentButton, "w 25, h 25, wrap 20");
+
+        selectAllButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/list-all.png")));
+        buttonsPanel.add(selectAllButton, "w 25, h 25, wrap");
+
+        deselectAllButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/list-delete.png")));
+        buttonsPanel.add(deselectAllButton, "w 25, h 25");
     }
 
     private void addGlobalVariablesComponents() {
@@ -336,6 +344,12 @@ public class ConfiguratorAgentGui extends JFrame {
 
         windowAgentButton.setActionCommand(ConfiguratorAgentEvent.SHOW_EMOTIONAL_STATE_GUI.toString());
         windowAgentButton.addActionListener(actionListener);
+
+        selectAllButton.setActionCommand(ConfiguratorAgentEvent.SELECT_ALL_AGENTS_TO_ADD.toString());
+        selectAllButton.addActionListener(actionListener);
+
+        deselectAllButton.setActionCommand(ConfiguratorAgentEvent.DESELECT_ALL_AGENTS_TO_ADD.toString());
+        deselectAllButton.addActionListener(actionListener);
     }
 
     public void showError(String message) {
@@ -484,6 +498,14 @@ public class ConfiguratorAgentGui extends JFrame {
 
     public void addKnowledgeRule(KnowledgeRule knowledgeRule) {
         knowledgeRulesTableModel.addKnowledgeRule(knowledgeRule);
+    }
+
+    public void deselectAllAgentsToAdd() {
+        agentsToAddTableModel.deselectAllAgentsToAdd();
+    }
+
+    public void selectAllAgentsToAdd() {
+        agentsToAddTableModel.selectAllAgentsToAdd();
     }
 
 }

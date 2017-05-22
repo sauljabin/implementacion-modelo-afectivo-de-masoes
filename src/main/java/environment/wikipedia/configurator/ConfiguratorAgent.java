@@ -139,11 +139,25 @@ public class ConfiguratorAgent extends GuiAgent {
                 case SAVE:
                     saveResults();
                     break;
+                case DESELECT_ALL_AGENTS_TO_ADD:
+                    deselectAllAgentsToAdd();
+                    break;
+                case SELECT_ALL_AGENTS_TO_ADD:
+                    selectAllAgentsToAdd();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             configuratorAgentGui.showError(e.getMessage());
         }
+    }
+
+    private void deselectAllAgentsToAdd() {
+        configuratorAgentGui.deselectAllAgentsToAdd();
+    }
+
+    private void selectAllAgentsToAdd() {
+        configuratorAgentGui.selectAllAgentsToAdd();
     }
 
     private void saveResults() {

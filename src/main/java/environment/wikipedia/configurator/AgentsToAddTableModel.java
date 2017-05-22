@@ -118,4 +118,14 @@ public class AgentsToAddTableModel extends AbstractTableModel {
         fireTableCellUpdated(rowIndex, columnIndex);
     }
 
+    public void deselectAllAgentsToAdd() {
+        agentsToAdd.forEach(agentToAdd -> agentToAdd.setReceiveStimulus(false));
+        fireTableDataChanged();
+    }
+
+    public void selectAllAgentsToAdd() {
+        agentsToAdd.forEach(agentToAdd -> agentToAdd.setReceiveStimulus(true));
+        fireTableDataChanged();
+    }
+
 }
