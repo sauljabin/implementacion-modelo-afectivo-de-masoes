@@ -14,9 +14,10 @@ import java.util.List;
 
 public class AgentsToAddTableModel extends AbstractTableModel {
 
-    private static final int COLUMN_AGENT = 0;
-    private static final int COLUMN_INITIAL_EMOTIONAL_STATE = 1;
-    private static final int COLUMN_EMOTION = 2;
+    private static final int COLUMN_AGENT = 1;
+    private static final int COLUMN_INITIAL_EMOTIONAL_STATE = 2;
+    private static final int COLUMN_EMOTION = 3;
+    private static final int COLUMN_RECEIVE_STIMULUS = 0;
 
     private List<AgentToAdd> agentsToAdd;
     private Translation translation;
@@ -26,6 +27,7 @@ public class AgentsToAddTableModel extends AbstractTableModel {
         agentsToAdd = new ArrayList<>();
         translation = Translation.getInstance();
         columns = new String[]{
+                translation.get("gui.receive_stimulus"),
                 translation.get("gui.agent"),
                 translation.get("gui.initial_emotional_state"),
                 translation.get("gui.emotion")
@@ -73,6 +75,8 @@ public class AgentsToAddTableModel extends AbstractTableModel {
         }
         AgentToAdd agentToAdd = agentsToAdd.get(rowIndex);
         switch (columnIndex) {
+            case COLUMN_RECEIVE_STIMULUS:
+                return agentToAdd.isReceiveStimulus();
             case COLUMN_AGENT:
                 return agentToAdd.getAgentName();
             case COLUMN_INITIAL_EMOTIONAL_STATE:
@@ -82,6 +86,36 @@ public class AgentsToAddTableModel extends AbstractTableModel {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (columnIndex) {
+            case COLUMN_RECEIVE_STIMULUS:
+                return Boolean.class;
+            case COLUMN_AGENT:
+                return String.class;
+            case COLUMN_INITIAL_EMOTIONAL_STATE:
+                return String.class;
+            case COLUMN_EMOTION:
+                return String.class;
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return columnIndex == COLUMN_RECEIVE_STIMULUS ? true : false;
+    }
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        if (columnIndex == COLUMN_RECEIVE_STIMULUS) {
+            AgentToAdd agentToAdd = agentsToAdd.get(rowIndex);
+            agentToAdd.setReceiveStimulus((Boolean) aValue);
+        }
+        fireTableCellUpdated(rowIndex, columnIndex);
     }
 
 }

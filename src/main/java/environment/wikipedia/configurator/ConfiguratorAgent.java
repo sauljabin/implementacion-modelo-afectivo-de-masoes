@@ -409,7 +409,7 @@ public class ConfiguratorAgent extends GuiAgent {
                                 eventFrequency = RandomGenerator.getInteger(1, 9);
                             }
 
-                            if (i % eventFrequency == 0) {
+                            if (i % eventFrequency == 0 && agentToAdd.isReceiveStimulus()) {
                                 List<KnowledgeRule> filterKnowledgeRules = knowledgeRules.stream().filter(KnowledgeRule::isSelected).collect(Collectors.toList());
 
                                 String rule = "";

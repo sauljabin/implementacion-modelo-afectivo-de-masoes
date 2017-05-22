@@ -14,18 +14,21 @@ import translate.Translation;
 public class AgentToAdd {
 
     private int sequence;
+    private boolean receiveStimulus;
     private AgentTypeToAdd type;
     private EmotionalState emotionalState;
     private EmotionalSpace emotionalSpace;
 
-    public AgentToAdd() {
-    }
-
-    public AgentToAdd(int sequence, AgentTypeToAdd type, EmotionalState emotionalState) {
+    public AgentToAdd(int sequence, boolean receiveStimulus, AgentTypeToAdd type, EmotionalState emotionalState) {
         this.sequence = sequence;
+        this.receiveStimulus = receiveStimulus;
         this.type = type;
         this.emotionalState = emotionalState;
         emotionalSpace = new EmotionalSpace();
+    }
+
+    public AgentToAdd(int sequence, AgentTypeToAdd type, EmotionalState emotionalState) {
+        this(sequence, true, type, emotionalState);
     }
 
     public AgentTypeToAdd getType() {
@@ -53,4 +56,12 @@ public class AgentToAdd {
         return String.format("%s - %s", Translation.getInstance().get(emotion.getName().toLowerCase()), Translation.getInstance().get(emotion.getType().toString().toLowerCase()));
     }
 
+    public boolean isReceiveStimulus() {
+        return receiveStimulus;
+    }
+
+    public void setReceiveStimulus(boolean receiveStimulus) {
+        this.receiveStimulus = receiveStimulus;
+    }
+    
 }
