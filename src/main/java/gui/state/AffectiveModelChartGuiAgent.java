@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.state;
+package gui.state;
 
 import agent.AgentException;
 import agent.AgentLogger;
@@ -18,36 +18,39 @@ import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
 import ontology.OntologyAssistant;
 
-public class EmotionalStateAgent extends GuiAgent {
+import javax.swing.*;
+
+public class AffectiveModelChartGuiAgent extends GuiAgent {
 
     private static final int FPS = 5;
     private OntologyAssistant masoesOntologyAssistant;
-    private EmotionalStateAgentGui emotionalStateAgentGui;
+    private AffectiveModelChartGui affectiveModelChartGui;
     private AgentLogger logger;
     private Behaviour emotionalStateAgentBehaviour;
-    private EmotionalStateAgentListener emotionalStateAgentListener;
+    private AffectiveModelChartGuiListener affectiveModelChartGuiListener;
 
-    public EmotionalStateAgent() {
-        emotionalStateAgentGui = new EmotionalStateAgentGui();
-        emotionalStateAgentListener = new EmotionalStateAgentListener(this, emotionalStateAgentGui);
+    public AffectiveModelChartGuiAgent() {
+        affectiveModelChartGui = new AffectiveModelChartGui();
+        affectiveModelChartGuiListener = new AffectiveModelChartGuiListener(this, affectiveModelChartGui);
         logger = new AgentLogger(this);
         masoesOntologyAssistant = new OntologyAssistant(this, MasoesOntology.getInstance());
     }
 
     @Override
     protected void setup() {
-
         if (!hasArgument()) {
-            throw new AgentException(getLocalName() + " no has argument");
+            String message = getLocalName() + " no has argument: emotional agent name is necessary";
+            JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+            throw new AgentException(message);
         }
 
-        String agentName = (String) getArguments()[0];
+        String agentName = getEmotionalAgentName();
 
         emotionalStateAgentBehaviour = new CyclicBehaviour() {
             @Override
             public void action() {
                 AgentState agentState = (AgentState) masoesOntologyAssistant.sendRequestAction(getAID(agentName), new GetEmotionalState());
-                emotionalStateAgentGui.setAgentState(agentState);
+                affectiveModelChartGui.setAgentState(agentState);
                 try {
                     Thread.sleep(1000 / FPS);
                 } catch (InterruptedException e) {
@@ -55,7 +58,11 @@ public class EmotionalStateAgent extends GuiAgent {
             }
         };
         addBehaviour(emotionalStateAgentBehaviour);
-        emotionalStateAgentGui.showGui();
+        affectiveModelChartGui.showGui();
+    }
+
+    private String getEmotionalAgentName() {
+        return (String) getArguments()[0];
     }
 
     private boolean hasArgument() {
@@ -64,7 +71,7 @@ public class EmotionalStateAgent extends GuiAgent {
 
     @Override
     protected void takeDown() {
-        emotionalStateAgentGui.closeGui();
+        affectiveModelChartGui.closeGui();
     }
 
     @Override

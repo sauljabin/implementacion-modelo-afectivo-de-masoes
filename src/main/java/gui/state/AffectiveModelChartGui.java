@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.state;
+package gui.state;
 
 import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.state.AgentState;
@@ -14,7 +14,7 @@ import translate.Translation;
 import javax.swing.*;
 import java.awt.*;
 
-public class EmotionalStateAgentGui extends JFrame {
+public class AffectiveModelChartGui extends JFrame {
 
     private static final String INSETS_10 = "insets 10";
     private static final String FIELD_W = "grow, wrap 15";
@@ -27,7 +27,7 @@ public class EmotionalStateAgentGui extends JFrame {
     private JLabel satisfactionValueLabel;
     private Translation translation;
 
-    public EmotionalStateAgentGui() {
+    public AffectiveModelChartGui() {
         translation = Translation.getInstance();
         setSize(320, 550);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -38,8 +38,8 @@ public class EmotionalStateAgentGui extends JFrame {
     }
 
     public static void main(String[] args) {
-        EmotionalStateAgentGui emotionalStateAgentGui = new EmotionalStateAgentGui();
-        emotionalStateAgentGui.showGui();
+        AffectiveModelChartGui affectiveModelChartGui = new AffectiveModelChartGui();
+        affectiveModelChartGui.showGui();
     }
 
     private void addComponents() {
@@ -47,9 +47,6 @@ public class EmotionalStateAgentGui extends JFrame {
     }
 
     private void addCenterComponent() {
-        Font font14 = new Font("Arial", Font.BOLD, 14);
-        Font font12 = new Font("Arial", Font.BOLD, 12);
-
         JPanel centerPanel = new JPanel(new MigLayout(INSETS_10));
         add(centerPanel, BorderLayout.CENTER);
 
@@ -57,42 +54,36 @@ public class EmotionalStateAgentGui extends JFrame {
         centerPanel.add(agentLabel, "w 100");
 
         agentNameLabel = new JLabel();
-        agentNameLabel.setFont(font14);
         centerPanel.add(agentNameLabel, FIELD_W);
 
         JLabel emotionLabel = new JLabel(translation.get("gui.emotion"));
         centerPanel.add(emotionLabel, "grow");
 
         emotionNameLabel = new JLabel();
-        emotionNameLabel.setFont(font14);
         centerPanel.add(emotionNameLabel, FIELD_W);
 
         JLabel emotionTypeLabel = new JLabel(translation.get("gui.emotion_type"));
         centerPanel.add(emotionTypeLabel, "grow");
 
         emotionTypeNameLabel = new JLabel();
-        emotionTypeNameLabel.setFont(font14);
         centerPanel.add(emotionTypeNameLabel, FIELD_W);
 
         JLabel activationLabel = new JLabel(translation.get("gui.activation_x"));
         centerPanel.add(activationLabel, "grow");
 
         activationValueLabel = new JLabel();
-        activationValueLabel.setFont(font14);
         centerPanel.add(activationValueLabel, FIELD_W);
 
         JLabel satisfactionLabel = new JLabel(translation.get("gui.satisfaction_y"));
         centerPanel.add(satisfactionLabel, "grow");
 
         satisfactionValueLabel = new JLabel();
-        satisfactionValueLabel.setFont(font14);
         centerPanel.add(satisfactionValueLabel, FIELD_W);
 
         JLabel behaviourLabel = new JLabel(translation.get("gui.behaviour"));
         centerPanel.add(behaviourLabel, "grow");
 
         behaviourTypeLabel = new JLabel();
-        behaviourTypeLabel.setFont(font14);
         centerPanel.add(behaviourTypeLabel, FIELD_W);
 
         affectiveModelChart = new AffectiveModelChart();
@@ -107,7 +98,6 @@ public class EmotionalStateAgentGui extends JFrame {
         blueLabel.setOpaque(true);
         legendPanel.add(blueLabel, "w 30, grow");
         JLabel legendActualEmotion = new JLabel(translation.get("gui.current_emotion"));
-        legendActualEmotion.setFont(font12);
         legendPanel.add(legendActualEmotion);
     }
 

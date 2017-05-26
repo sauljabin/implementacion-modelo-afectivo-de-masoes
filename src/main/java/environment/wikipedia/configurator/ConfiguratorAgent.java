@@ -9,13 +9,13 @@ package environment.wikipedia.configurator;
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import behaviour.CounterBehaviour;
+import environment.wikipedia.chart.AgentsAffectiveModelChartGui;
 import environment.wikipedia.chart.AgentsBehaviourModificationChartGui;
 import environment.wikipedia.chart.AgentsEmotionModificationChartGui;
-import environment.wikipedia.chart.AgentsAffectiveModelChartGui;
 import environment.wikipedia.chart.AgentsEmotionalStateChartGui;
 import environment.wikipedia.chart.EmotionalDispersionLineChartGui;
 import environment.wikipedia.chart.MaximumDistancesLineChartGui;
-import environment.wikipedia.state.EmotionalStateAgent;
+import gui.state.AffectiveModelChartGuiAgent;
 import jade.content.AgentAction;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
@@ -305,7 +305,7 @@ public class ConfiguratorAgent extends GuiAgent {
 
         agentManagementAssistant.createAgent(
                 agentState.getAgent().getLocalName() + "_GUI",
-                EmotionalStateAgent.class,
+                AffectiveModelChartGuiAgent.class,
                 Arrays.asList(agentState.getAgent().getLocalName())
         );
     }
