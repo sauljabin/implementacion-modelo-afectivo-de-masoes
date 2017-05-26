@@ -154,8 +154,6 @@ public class RequesterGui extends JFrame {
 
         messageTextPane = new JTextPane();
         messageTextPane.setEditable(false);
-        DefaultCaret caret = (DefaultCaret) messageTextPane.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         JPanel messageTextWrapPanel = new JPanel(new BorderLayout());
         messageTextWrapPanel.add(messageTextPane);
@@ -196,39 +194,41 @@ public class RequesterGui extends JFrame {
     }
 
     public void logMessage(ACLMessage message) {
-
-        if (!colorIterator.hasNext()) {
-            colorIterator = colors.iterator();
-        }
-
-        if (conversations.get(message.getConversationId()) == null) {
-            if (conversations.size() >= CONVERSATIONS_CACHE) {
-                String key = conversations.keySet().iterator().next();
-                conversations.remove(key);
+        SwingUtilities.invokeLater(() -> {
+            if (!colorIterator.hasNext()) {
+                colorIterator = colors.iterator();
             }
-            conversations.put(message.getConversationId(), colorIterator.next());
-        }
 
-        StyledDocument document = messageTextPane.getStyledDocument();
+            if (conversations.get(message.getConversationId()) == null) {
+                if (conversations.size() >= CONVERSATIONS_CACHE) {
+                    String key = conversations.keySet().iterator().next();
+                    conversations.remove(key);
+                }
+                conversations.put(message.getConversationId(), colorIterator.next());
+            }
 
-        Document blank = new DefaultStyledDocument();
-        messageTextPane.setDocument(blank);
+            StyledDocument document = messageTextPane.getStyledDocument();
 
-        try {
-            SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+            Document blank = new DefaultStyledDocument();
+            messageTextPane.setDocument(blank);
 
-            attributeSet.addAttribute(StyleConstants.Bold, Boolean.TRUE);
-            attributeSet.addAttribute(StyleConstants.Foreground, conversations.get(message.getConversationId()));
-            document.insertString(document.getLength(), String.format("%s %s\n", translation.get("gui.conversation"), message.getConversationId()), attributeSet);
+            try {
+                SimpleAttributeSet attributeSet = new SimpleAttributeSet();
 
-            attributeSet.addAttribute(StyleConstants.Bold, Boolean.FALSE);
-            attributeSet.addAttribute(StyleConstants.Foreground, Color.BLACK);
-            document.insertString(document.getLength(), message.toString() + "\n\n", attributeSet);
+                attributeSet.addAttribute(StyleConstants.Bold, Boolean.TRUE);
+                attributeSet.addAttribute(StyleConstants.Foreground, conversations.get(message.getConversationId()));
+                document.insertString(document.getLength(), String.format("%s %s\n", translation.get("gui.conversation"), message.getConversationId()), attributeSet);
 
-            messageTextPane.setDocument(document);
-        } catch (Exception e) {
-            throw new GuiException(e);
-        }
+                attributeSet.addAttribute(StyleConstants.Bold, Boolean.FALSE);
+                attributeSet.addAttribute(StyleConstants.Foreground, Color.BLACK);
+                document.insertString(document.getLength(), message.toString() + "\n\n", attributeSet);
+
+                messageTextPane.setDocument(document);
+                messageTextPane.setCaretPosition(document.getLength());
+            } catch (Exception e) {
+                throw new GuiException(e);
+            }
+        });
     }
 
     public void clearMessagesLog() {
