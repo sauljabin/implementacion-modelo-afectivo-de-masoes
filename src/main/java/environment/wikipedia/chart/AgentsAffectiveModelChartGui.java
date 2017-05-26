@@ -24,15 +24,15 @@ import java.util.TreeMap;
 
 import static java.lang.Math.abs;
 
-public class AgentsEmotionalSpaceChartGui extends JFrame {
+public class AgentsAffectiveModelChartGui extends JFrame {
 
-    private AgentsEmotionalSpaceChart emotionalSpaceChart;
+    private AgentsAffectiveModelChart agentsAffectiveModelChart;
     private JPanel agentsNamePanel;
     private Translation translation = Translation.getInstance();
     private Map<String, Color> colorsMap = new TreeMap<>();
     private Map<String, EmotionalState> emotionMap = new TreeMap<>();
 
-    public AgentsEmotionalSpaceChartGui(String title) {
+    public AgentsAffectiveModelChartGui(String title) {
         setSize(560, 400);
         setTitle(title);
         setLayout(new BorderLayout());
@@ -40,13 +40,13 @@ public class AgentsEmotionalSpaceChartGui extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent arg0) {
-                emotionalSpaceChart.stop();
+                agentsAffectiveModelChart.stop();
                 dispose();
             }
         });
 
-        emotionalSpaceChart = new AgentsEmotionalSpaceChart(colorsMap, emotionMap);
-        add(emotionalSpaceChart, BorderLayout.CENTER);
+        agentsAffectiveModelChart = new AgentsAffectiveModelChart(colorsMap, emotionMap);
+        add(agentsAffectiveModelChart, BorderLayout.CENTER);
 
         agentsNamePanel = new JPanel(new MigLayout("insets 3"));
 
@@ -61,11 +61,11 @@ public class AgentsEmotionalSpaceChartGui extends JFrame {
 
     public void start() {
         setVisible(true);
-        emotionalSpaceChart.start();
+        agentsAffectiveModelChart.start();
     }
 
     public void stop() {
-        emotionalSpaceChart.stop();
+        agentsAffectiveModelChart.stop();
         dispose();
     }
 
@@ -86,7 +86,7 @@ public class AgentsEmotionalSpaceChartGui extends JFrame {
         emotionMap.put(agent, emotionalState);
     }
 
-    private class AgentsEmotionalSpaceChart extends Canvas implements Runnable {
+    private class AgentsAffectiveModelChart extends Canvas implements Runnable {
 
         private final String HAPPINESS = "happiness";
         private final String JOY = "joy";
@@ -110,7 +110,7 @@ public class AgentsEmotionalSpaceChartGui extends JFrame {
         private BufferedImage image;
         private Graphics2D graphics;
 
-        public AgentsEmotionalSpaceChart(Map<String, Color> colorsMap, Map<String, EmotionalState> emotionMap) {
+        public AgentsAffectiveModelChart(Map<String, Color> colorsMap, Map<String, EmotionalState> emotionMap) {
             this.colorsMap = colorsMap;
             this.emotionMap = emotionMap;
             thread = new Thread(this);

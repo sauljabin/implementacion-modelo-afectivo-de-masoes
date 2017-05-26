@@ -18,7 +18,7 @@ public class EmotionalStateAgentGui extends JFrame {
 
     private static final String INSETS_10 = "insets 10";
     private static final String FIELD_W = "grow, wrap 15";
-    private EmotionalSpaceChart emotionalSpaceChart;
+    private AffectiveModelChart affectiveModelChart;
     private JLabel agentNameLabel;
     private JLabel emotionNameLabel;
     private JLabel behaviourTypeLabel;
@@ -95,8 +95,8 @@ public class EmotionalStateAgentGui extends JFrame {
         behaviourTypeLabel.setFont(font14);
         centerPanel.add(behaviourTypeLabel, FIELD_W);
 
-        emotionalSpaceChart = new EmotionalSpaceChart();
-        centerPanel.add(emotionalSpaceChart, "w 300, h 300, span 2, wrap");
+        affectiveModelChart = new AffectiveModelChart();
+        centerPanel.add(affectiveModelChart, "w 300, h 300, span 2, wrap");
 
         JPanel legendPanel = new JPanel(new MigLayout("insets 0"));
         centerPanel.add(legendPanel, "span 2, wrap");
@@ -115,7 +115,7 @@ public class EmotionalStateAgentGui extends JFrame {
         agentNameLabel.setText(agentState.getAgent().getLocalName());
 
         EmotionalState emotionalState = new EmotionalState(agentState.getEmotionState().getActivation(), agentState.getEmotionState().getSatisfaction());
-        emotionalSpaceChart.setEmotionalState(emotionalState);
+        affectiveModelChart.setEmotionalState(emotionalState);
         satisfactionValueLabel.setText(String.format("%.3f", emotionalState.getSatisfaction()));
         activationValueLabel.setText(String.format("%.3f", emotionalState.getActivation()));
 
@@ -130,14 +130,14 @@ public class EmotionalStateAgentGui extends JFrame {
     }
 
     public void closeGui() {
-        emotionalSpaceChart.stop();
+        affectiveModelChart.stop();
         setVisible(false);
         dispose();
     }
 
     public void showGui() {
         setVisible(true);
-        emotionalSpaceChart.start();
+        affectiveModelChart.start();
     }
 
 }

@@ -17,7 +17,7 @@ import java.awt.image.BufferedImage;
 
 import static java.lang.Math.abs;
 
-public class EmotionalSpaceChart extends Canvas implements Runnable {
+public class AffectiveModelChart extends Canvas implements Runnable {
 
     private static final String HAPPINESS = "happiness";
     private static final String JOY = "joy";
@@ -40,7 +40,7 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
     private EmotionalState emotionalState;
     private AffectiveModel affectiveModel;
 
-    public EmotionalSpaceChart() {
+    public AffectiveModelChart() {
         thread = new Thread(this);
         font = new Font("Arial", Font.PLAIN, 10);
         translation = Translation.getInstance();
