@@ -6,7 +6,6 @@
 
 package gui.requester;
 
-import gui.GuiException;
 import jade.lang.acl.ACLMessage;
 import org.junit.Before;
 import org.junit.Rule;
@@ -31,7 +30,6 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -140,20 +138,6 @@ public class RequesterGuiTest {
     public void shouldClearLogMessage() {
         requesterGui.clearMessagesLog();
         verify(messageTextPaneMock).setText("");
-    }
-
-    @Test
-    public void shouldThrowGuiExceptionInLogMessageWhenErrorInPane() throws Exception {
-        String expectedMessage = "expectedMessage";
-        expectedException.expectMessage(expectedMessage);
-        expectedException.expect(GuiException.class);
-
-        StyledDocument styledDocumentMock = mock(StyledDocument.class);
-        doReturn(styledDocumentMock).when(messageTextPaneMock).getStyledDocument();
-        doThrow(new RuntimeException(expectedMessage)).when(styledDocumentMock).insertString(anyInt(), anyString(), any(AttributeSet.class));
-
-        ACLMessage messageMock = mock(ACLMessage.class);
-        requesterGui.logMessage(messageMock);
     }
 
     @Test

@@ -6,9 +6,11 @@
 
 package gui.requester;
 
-import gui.GuiException;
 import jade.lang.acl.ACLMessage;
+import logger.LogWriter;
 import net.miginfocom.swing.MigLayout;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import translate.Translation;
 
 import javax.swing.*;
@@ -58,6 +60,9 @@ public class RequesterGui extends JFrame {
     private Iterator<Color> colorIterator;
     private LinkedHashMap<String, Color> conversations;
     private Translation translation;
+
+    private Logger logger = LoggerFactory.getLogger(RequesterGui.class);
+    private LogWriter logWriter = new LogWriter();
 
     public RequesterGui() {
         translation = Translation.getInstance();
@@ -226,7 +231,7 @@ public class RequesterGui extends JFrame {
                 messageTextPane.setDocument(document);
                 messageTextPane.setCaretPosition(document.getLength());
             } catch (Exception e) {
-                throw new GuiException(e);
+                logWriter.exception(e).error(logger);
             }
         });
     }

@@ -27,14 +27,13 @@ import static test.ReflectionTestUtils.setFieldValue;
 
 public class ActionMatchExpressionTest {
 
-    private ACLMessage message;
     private static final String EXPECTED_ONTOLOGY = "expectedOntology";
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+    private ACLMessage message;
     private Ontology ontologyMock;
     private ActionMatchExpression actionMatchExpression;
     private ContentManager contentManagerMock;
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
