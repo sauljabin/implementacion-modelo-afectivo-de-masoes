@@ -6,8 +6,8 @@
 
 package environment.wikipedia.configurator;
 
+import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
-import masoes.component.behavioural.EmotionalSpace;
 import masoes.component.behavioural.EmotionalState;
 import translate.Translation;
 
@@ -17,14 +17,14 @@ public class AgentToAdd {
     private boolean receiveStimulus;
     private AgentTypeToAdd type;
     private EmotionalState emotionalState;
-    private EmotionalSpace emotionalSpace;
+    private AffectiveModel affectiveModel;
 
     public AgentToAdd(int sequence, boolean receiveStimulus, AgentTypeToAdd type, EmotionalState emotionalState) {
         this.sequence = sequence;
         this.receiveStimulus = receiveStimulus;
         this.type = type;
         this.emotionalState = emotionalState;
-        emotionalSpace = new EmotionalSpace();
+        affectiveModel = AffectiveModel.getInstance();
     }
 
     public AgentToAdd(int sequence, AgentTypeToAdd type, EmotionalState emotionalState) {
@@ -52,7 +52,7 @@ public class AgentToAdd {
     }
 
     public String getEmotionName() {
-        Emotion emotion = emotionalSpace.searchEmotion(emotionalState);
+        Emotion emotion = affectiveModel.searchEmotion(emotionalState);
         return String.format("%s - %s", Translation.getInstance().get(emotion.getName().toLowerCase()), Translation.getInstance().get(emotion.getType().toString().toLowerCase()));
     }
 

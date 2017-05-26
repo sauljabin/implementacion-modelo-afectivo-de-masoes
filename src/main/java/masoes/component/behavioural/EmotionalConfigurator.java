@@ -31,17 +31,17 @@ public class EmotionalConfigurator {
     private static final String DEFAULT_INCREASE_PARAMETER = "0.1";
 
     private EmotionalState emotionalState;
-    private EmotionalSpace emotionalSpace;
+    private AffectiveModel affectiveModel;
     private BehaviouralKnowledgeBase behaviouralKnowledgeBase;
 
     public EmotionalConfigurator(BehaviouralKnowledgeBase behaviouralKnowledgeBase) {
         this.behaviouralKnowledgeBase = behaviouralKnowledgeBase;
         emotionalState = new EmotionalState();
-        emotionalSpace = new EmotionalSpace();
+        affectiveModel = AffectiveModel.getInstance();
     }
 
     public Emotion getEmotion() {
-        return emotionalSpace.searchEmotion(emotionalState);
+        return affectiveModel.searchEmotion(emotionalState);
     }
 
     public EmotionalState getEmotionalState() {
@@ -169,7 +169,7 @@ public class EmotionalConfigurator {
         return new ToStringBuilder()
                 .append("emotion", getEmotion())
                 .append("emotionalState", emotionalState)
-                .append("emotionalSpace", emotionalSpace)
+                .append("affectiveModel", affectiveModel)
                 .append("behaviouralKnowledgeBase", behaviouralKnowledgeBase)
                 .toString();
     }

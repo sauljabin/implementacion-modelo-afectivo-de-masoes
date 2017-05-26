@@ -19,11 +19,12 @@ import util.ToStringBuilder;
 import java.util.Arrays;
 import java.util.List;
 
-public class EmotionalSpace {
+public class AffectiveModel {
 
+    private static AffectiveModel INSTANCE;
     private List<Emotion> emotions;
 
-    public EmotionalSpace() {
+    private AffectiveModel() {
         emotions = Arrays.asList(
                 new CompassionEmotion(),
                 new AdmirationEmotion(),
@@ -33,6 +34,13 @@ public class EmotionalSpace {
                 new SadnessEmotion(),
                 new RejectionEmotion(),
                 new AngerEmotion());
+    }
+
+    public synchronized static AffectiveModel getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new AffectiveModel();
+        }
+        return INSTANCE;
     }
 
     public List<Emotion> getEmotions() {

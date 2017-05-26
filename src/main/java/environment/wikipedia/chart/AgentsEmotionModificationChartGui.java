@@ -6,8 +6,8 @@
 
 package environment.wikipedia.chart;
 
+import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.BehaviourType;
-import masoes.component.behavioural.EmotionalSpace;
 import masoes.ontology.state.AgentState;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -66,9 +66,9 @@ public class AgentsEmotionModificationChartGui extends JFrame {
 
         BehaviourType[] values = BehaviourType.values();
 
-        EmotionalSpace emotionalSpace = new EmotionalSpace();
+        AffectiveModel affectiveModel = AffectiveModel.getInstance();
 
-        List<String> typesList = emotionalSpace.getEmotions()
+        List<String> typesList = affectiveModel.getEmotions()
                 .stream()
                 .map(emotion -> getEmotionName(emotion.getName()))
                 .collect(Collectors.toList());

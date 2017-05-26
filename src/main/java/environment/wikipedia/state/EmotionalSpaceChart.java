@@ -6,11 +6,10 @@
 
 package environment.wikipedia.state;
 
-import masoes.component.behavioural.EmotionalSpace;
+import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.EmotionalState;
 import translate.Translation;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -39,39 +38,17 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
     private BufferedImage image;
     private Graphics2D graphics;
     private EmotionalState emotionalState;
-    private EmotionalSpace emotionalSpace;
+    private AffectiveModel affectiveModel;
 
     public EmotionalSpaceChart() {
         thread = new Thread(this);
         font = new Font("Arial", Font.PLAIN, 10);
         translation = Translation.getInstance();
-        emotionalSpace = new EmotionalSpace();
+        affectiveModel = AffectiveModel.getInstance();
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 makeImage();
-            }
-        });
-    }
-
-    public static void main(String[] args) {
-        EmotionalSpaceChart spaceChart = new EmotionalSpaceChart();
-
-        JFrame jFrame = new JFrame();
-        jFrame.setSize(500, 500);
-        jFrame.setLayout(new BorderLayout());
-        jFrame.add(spaceChart, BorderLayout.CENTER);
-        jFrame.setLocationRelativeTo(jFrame);
-        jFrame.setVisible(true);
-
-        spaceChart.start();
-
-        new EmotionalSpace().getEmotions().forEach(emotion -> {
-            spaceChart.setEmotionalState(emotion.getRandomEmotionalState());
-            try {
-                Thread.sleep(4000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         });
     }
@@ -130,7 +107,7 @@ public class EmotionalSpaceChart extends Canvas implements Runnable {
 
         graphics.setColor(Color.RED);
 
-        String emotionName = emotionalSpace.searchEmotion(emotionalState).getName();
+        String emotionName = affectiveModel.searchEmotion(emotionalState).getName();
 
         Polygon polygon = new Polygon();
         switch (emotionName) {

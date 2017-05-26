@@ -4,8 +4,8 @@
  * Please see the LICENSE.txt file
  */
 
+import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
-import masoes.component.behavioural.EmotionalSpace;
 import translate.Translation;
 
 import javax.imageio.ImageIO;
@@ -70,7 +70,7 @@ public class GenerateEmotionsPolygonImage {
     }
 
     private void emotionIteration() {
-        new EmotionalSpace().getEmotions()
+        AffectiveModel.getInstance().getEmotions()
                 .forEach(emotion -> {
                     renderBackground();
                     drawEmotion(emotion);

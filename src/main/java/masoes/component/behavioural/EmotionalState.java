@@ -19,7 +19,6 @@ public class EmotionalState {
     private GeometryFactory geometryFactory;
     private double activation;
     private double satisfaction;
-    private EmotionalSpace emotionalSpace;
 
     public EmotionalState() {
         this(RandomGenerator.getDouble(MIN, MAX), RandomGenerator.getDouble(MIN, MAX));
@@ -29,7 +28,6 @@ public class EmotionalState {
         geometryFactory = new GeometryFactory();
         setActivation(activation);
         setSatisfaction(satisfaction);
-        emotionalSpace = new EmotionalSpace();
     }
 
     public EmotionalState(Point point) {
@@ -66,10 +64,6 @@ public class EmotionalState {
 
     public Point toPoint() {
         return geometryFactory.createPoint(new Coordinate(activation, satisfaction));
-    }
-
-    public Emotion toEmotion() {
-        return emotionalSpace.searchEmotion(this);
     }
 
     @Override

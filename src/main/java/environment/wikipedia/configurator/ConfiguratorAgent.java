@@ -23,8 +23,8 @@ import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import masoes.MasoesSettings;
 import masoes.collective.SocialEmotionCalculator;
+import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
-import masoes.component.behavioural.EmotionalSpace;
 import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.state.AgentState;
@@ -61,7 +61,7 @@ public class ConfiguratorAgent extends GuiAgent {
     private ConfiguratorAgentListener configuratorAgentListener;
     private AgentManagementAssistant agentManagementAssistant;
     private OntologyAssistant masoesOntologyAssistant;
-    private EmotionalSpace emotionalSpace;
+    private AffectiveModel affectiveModel;
     private Behaviour configuratorBehaviour;
     private SocialEmotionCalculator socialEmotionCalculator;
     private EmotionalDispersionLineChartGui dispersionGraphic;
@@ -77,7 +77,7 @@ public class ConfiguratorAgent extends GuiAgent {
         logger = new AgentLogger(this);
         agentManagementAssistant = new AgentManagementAssistant(this);
         masoesOntologyAssistant = new OntologyAssistant(this, MasoesOntology.getInstance());
-        emotionalSpace = new EmotionalSpace();
+        affectiveModel = AffectiveModel.getInstance();
         socialEmotionCalculator = new SocialEmotionCalculator();
 
         knowledgeRules = Arrays.asList(
@@ -260,7 +260,7 @@ public class ConfiguratorAgent extends GuiAgent {
             CentralEmotion centralEmotionalState = socialEmotionCalculator.getCentralEmotionalState();
             MaximumDistances maximumDistances = socialEmotionCalculator.getMaximumDistances();
 
-            Emotion emotion = emotionalSpace.searchEmotion(centralEmotionalState.toEmotionalState());
+            Emotion emotion = affectiveModel.searchEmotion(centralEmotionalState.toEmotionalState());
 
             out.write(String.format("%s: (%.3f, %.3f), %s - %s\n",
                     translation.get("gui.central_emotion"),
@@ -324,7 +324,7 @@ public class ConfiguratorAgent extends GuiAgent {
                 configuratorAgentGui.getActivationToAdd(),
                 configuratorAgentGui.getSatisfactionToAdd()
         );
-        configuratorAgentGui.setEmotionToAdd(emotionalSpace.searchEmotion(emotionalState));
+        configuratorAgentGui.setEmotionToAdd(affectiveModel.searchEmotion(emotionalState));
     }
 
     private void addAgent() {

@@ -7,8 +7,8 @@
 package environment.wikipedia.configurator;
 
 import masoes.MasoesSettings;
+import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
-import masoes.component.behavioural.EmotionalSpace;
 import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.state.AgentState;
 import masoes.ontology.state.collective.EmotionalDispersion;
@@ -51,7 +51,7 @@ public class ConfiguratorAgentGui extends JFrame {
     private JLabel maxDistanceEmotionValueLabel;
     private JLabel collectiveCentralEmotionalStateLabel;
     private JLabel collectiveCentralEmotionLabel;
-    private EmotionalSpace emotionalSpace;
+    private AffectiveModel affectiveModel;
     private JLabel actualIterationLabel;
     private JSpinner eventFrequencySpinner;
     private JCheckBox randomFrequencyCheckBox;
@@ -63,7 +63,7 @@ public class ConfiguratorAgentGui extends JFrame {
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
-        emotionalSpace = new EmotionalSpace();
+        affectiveModel = AffectiveModel.getInstance();
         setUp();
     }
 
@@ -219,7 +219,7 @@ public class ConfiguratorAgentGui extends JFrame {
         configAgentPanel.add(new JLabel(translation.get("gui.activation_x")));
 
         EmotionalState initialEmotionalState = new EmotionalState(.5, .5);
-        Emotion initialEmotion = new EmotionalSpace().searchEmotion(initialEmotionalState);
+        Emotion initialEmotion = AffectiveModel.getInstance().searchEmotion(initialEmotionalState);
 
         activationToAddSpinner = new JSpinner();
         activationToAddSpinner.setModel(new SpinnerNumberModel(initialEmotionalState.getActivation(), -1., 1., .01));
@@ -472,7 +472,7 @@ public class ConfiguratorAgentGui extends JFrame {
 
     public void setCentralEmotion(EmotionalState centralEmotion) {
         collectiveCentralEmotionalStateLabel.setText(String.format("(%.3f, %.3f)", centralEmotion.getActivation(), centralEmotion.getSatisfaction()));
-        Emotion emotion = emotionalSpace.searchEmotion(centralEmotion);
+        Emotion emotion = affectiveModel.searchEmotion(centralEmotion);
         collectiveCentralEmotionLabel.setText(String.format("%s - %s", translation.get(emotion.getName().toLowerCase()), translation.get(emotion.getType().toString().toLowerCase())));
     }
 
