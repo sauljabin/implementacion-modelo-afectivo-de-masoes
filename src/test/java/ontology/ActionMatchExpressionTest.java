@@ -9,14 +9,13 @@ package ontology;
 import jade.content.ContentManager;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
+import jade.content.onto.basic.Action;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import masoes.ontology.state.GetEmotionalState;
 import masoes.ontology.stimulus.EvaluateStimulus;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -28,8 +27,6 @@ import static test.ReflectionTestUtils.setFieldValue;
 public class ActionMatchExpressionTest {
 
     private static final String EXPECTED_ONTOLOGY = "expectedOntology";
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
     private ACLMessage message;
     private Ontology ontologyMock;
     private ActionMatchExpression actionMatchExpression;
@@ -53,7 +50,9 @@ public class ActionMatchExpressionTest {
 
     @Test
     public void shouldReturnTrueWhenIsCorrectAction() throws Exception {
-        doReturn(new GetEmotionalState()).when(contentManagerMock).extractContent(message);
+        Action action = new Action();
+        action.setAction(new GetEmotionalState());
+        doReturn(action).when(contentManagerMock).extractContent(message);
         assertTrue(actionMatchExpression.match(message));
     }
 
@@ -72,10 +71,8 @@ public class ActionMatchExpressionTest {
 
     @Test
     public void shouldThrowExceptionWhenContentManagerThrowError() throws Exception {
-        expectedException.expect(ExtractOntologyContentException.class);
-
         doThrow(new OntologyException("message")).when(contentManagerMock).extractContent(message);
-        actionMatchExpression.match(message);
+        assertFalse(actionMatchExpression.match(message));
     }
 
 }

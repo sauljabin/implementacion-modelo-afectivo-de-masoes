@@ -17,6 +17,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import protocol.ProtocolAssistant;
+import settings.ontology.GetSetting;
+import settings.ontology.Setting;
+import settings.ontology.SettingsOntology;
+import settings.ontology.SystemSettings;
 import test.FunctionalTest;
 
 import static org.hamcrest.core.Is.is;
@@ -52,6 +56,25 @@ public class OntologyResponderBehaviourFunctionalTest extends FunctionalTest {
         ContentElement contentElement = ontologyAssistant.extractMessageContent(message);
 
         assertThat(contentElement, is(instanceOf(Done.class)));
+    }
+
+    @Test
+    public void shouldReceiveValidActionFromActionResponder() {
+        addBehaviour(agent, ActionResponderValidActionBehaviour.class);
+
+        GetSetting getSetting = new GetSetting("any");
+
+        OntologyAssistant ontologyAssistantSettings = createOntologyAssistant(SettingsOntology.getInstance());
+
+        ACLMessage requestAction = ontologyAssistantSettings.createRequestAction(agent, getSetting);
+        ACLMessage message = protocolAssistant.sendRequest(requestAction, ACLMessage.INFORM);
+        ContentElement contentElement = ontologyAssistantSettings.extractMessageContent(message);
+
+        assertThat(contentElement, is(instanceOf(SystemSettings.class)));
+
+        SystemSettings systemSettings = (SystemSettings) contentElement;
+        Setting setting = (Setting) systemSettings.getSettings().get(0);
+        assertThat(setting.getValue(), is("functionalTest"));
     }
 
     @Test

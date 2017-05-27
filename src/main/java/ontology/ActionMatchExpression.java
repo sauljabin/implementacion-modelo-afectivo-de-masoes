@@ -9,6 +9,7 @@ package ontology;
 import jade.content.AgentAction;
 import jade.content.ContentManager;
 import jade.content.onto.Ontology;
+import jade.content.onto.basic.Action;
 import jade.lang.acl.ACLMessage;
 import language.SemanticLanguage;
 
@@ -32,9 +33,10 @@ public class ActionMatchExpression extends OntologyMatchExpression {
 
     private boolean isCorrectAction(ACLMessage aclMessage) {
         try {
-            return contentManager.extractContent(aclMessage).getClass().equals(actionClass);
+            Action contentElement = (Action) contentManager.extractContent(aclMessage);
+            return contentElement.getAction().getClass().equals(actionClass);
         } catch (Exception e) {
-            throw new ExtractOntologyContentException(e);
+            return false;
         }
     }
 

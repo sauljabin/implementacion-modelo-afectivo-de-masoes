@@ -8,6 +8,7 @@ package masoes.ontology.state;
 
 import jade.content.Predicate;
 import jade.core.AID;
+import masoes.component.behavioural.BehaviouralComponent;
 import util.ToStringBuilder;
 
 public class AgentState implements Predicate {
@@ -23,6 +24,19 @@ public class AgentState implements Predicate {
         this.agent = agent;
         this.emotionState = emotionState;
         this.behaviourState = behaviourState;
+    }
+
+    public AgentState(AID agent, BehaviouralComponent behaviouralComponent) {
+        this.agent = agent;
+        this.emotionState = new EmotionState();
+        this.emotionState.setName(behaviouralComponent.getCurrentEmotion().getName());
+        this.emotionState.setClassName(behaviouralComponent.getCurrentEmotion().getClass().getSimpleName());
+        this.emotionState.setActivation(behaviouralComponent.getCurrentEmotionalState().getActivation());
+        this.emotionState.setSatisfaction(behaviouralComponent.getCurrentEmotionalState().getSatisfaction());
+        this.emotionState.setType(behaviouralComponent.getCurrentEmotion().getType().toString());
+
+        this.behaviourState = new BehaviourState();
+        this.behaviourState.setType(behaviouralComponent.getCurrentBehaviourType().toString());
     }
 
     public AID getAgent() {
