@@ -14,25 +14,25 @@ import language.SemanticLanguage;
 
 public class ActionMatchExpression extends OntologyMatchExpression {
 
-    private Class<? extends AgentAction> action;
+    private Class<? extends AgentAction> actionClass;
     private ContentManager contentManager;
 
-    public ActionMatchExpression(Ontology ontology, Class<? extends AgentAction> action) {
+    public ActionMatchExpression(Ontology ontology, Class<? extends AgentAction> actionClass) {
         super(ontology);
         contentManager = new ContentManager();
         contentManager.registerLanguage(SemanticLanguage.getInstance());
         contentManager.registerOntology(ontology);
-        this.action = action;
+        this.actionClass = actionClass;
     }
 
     @Override
     public boolean match(ACLMessage aclMessage) {
-        return super.match(aclMessage) && isCorrectAction(aclMessage, action);
+        return super.match(aclMessage) && isCorrectAction(aclMessage);
     }
 
-    private boolean isCorrectAction(ACLMessage aclMessage, Class<? extends AgentAction> action) {
+    private boolean isCorrectAction(ACLMessage aclMessage) {
         try {
-            return contentManager.extractContent(aclMessage).getClass().equals(action);
+            return contentManager.extractContent(aclMessage).getClass().equals(actionClass);
         } catch (Exception e) {
             throw new ExtractOntologyContentException(e);
         }
