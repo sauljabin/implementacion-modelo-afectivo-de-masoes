@@ -14,7 +14,6 @@ import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.FailureException;
-import jade.lang.acl.MessageTemplate;
 import jade.util.leap.ArrayList;
 import jade.util.leap.List;
 import masoes.ontology.MasoesOntology;
@@ -25,7 +24,6 @@ import masoes.ontology.knowledge.ListObjects;
 import masoes.ontology.knowledge.ObjectEnvironment;
 import masoes.ontology.knowledge.ObjectProperty;
 import masoes.ontology.knowledge.UpdateObject;
-import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
 
 import java.util.Arrays;
@@ -36,7 +34,7 @@ public class CollectiveKnowledgeBaseBehaviour extends OntologyResponderBehaviour
     private DataBaseConnection connection;
 
     public CollectiveKnowledgeBaseBehaviour(Agent agent) {
-        super(agent, new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), MasoesOntology.getInstance());
+        super(agent, MasoesOntology.getInstance());
         connection = DataBaseConnection.getConnection();
     }
 

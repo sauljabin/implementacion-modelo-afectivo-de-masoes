@@ -14,7 +14,6 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.lang.acl.MessageTemplate;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.notifier.NotifyAction;
 import masoes.ontology.notifier.NotifyEvent;
@@ -22,7 +21,6 @@ import masoes.ontology.notifier.NotifyObject;
 import masoes.ontology.stimulus.EvaluateStimulus;
 import masoes.ontology.stimulus.Stimulus;
 import ontology.OntologyAssistant;
-import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
 import util.ServiceBuilder;
 
@@ -36,7 +34,7 @@ public class NotifierBehaviour extends OntologyResponderBehaviour {
     private Agent agent;
 
     public NotifierBehaviour(Agent agent) {
-        super(agent, new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), MasoesOntology.getInstance());
+        super(agent, MasoesOntology.getInstance());
         this.agent = agent;
         agentManagementAssistant = new AgentManagementAssistant(agent);
         ontologyAssistant = new OntologyAssistant(agent, MasoesOntology.getInstance());

@@ -12,10 +12,8 @@ import jade.content.Concept;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.core.Agent;
-import jade.lang.acl.MessageTemplate;
 import jade.util.leap.ArrayList;
 import masoes.MasoesSettings;
-import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
 import settings.ontology.GetAllSettings;
 import settings.ontology.GetSetting;
@@ -32,7 +30,7 @@ public class SettingsBehaviour extends OntologyResponderBehaviour {
     private MasoesSettings masoesSettings;
 
     public SettingsBehaviour(Agent agent) {
-        super(agent, new MessageTemplate(new OntologyMatchExpression(SettingsOntology.getInstance())), SettingsOntology.getInstance());
+        super(agent, SettingsOntology.getInstance());
         applicationSettings = ApplicationSettings.getInstance();
         jadeSettings = JadeSettings.getInstance();
         masoesSettings = MasoesSettings.getInstance();

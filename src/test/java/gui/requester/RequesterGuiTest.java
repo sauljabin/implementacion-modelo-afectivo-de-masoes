@@ -130,6 +130,8 @@ public class RequesterGuiTest {
 
         requesterGui.logMessage(messageMock);
 
+        Thread.sleep(500);
+
         verify(styledDocumentMock).insertString(anyInt(), contains(expectedConversationId), any(AttributeSet.class));
         verify(styledDocumentMock).insertString(anyInt(), eq(expectedMessageToString + "\n\n"), any(AttributeSet.class));
     }

@@ -10,7 +10,6 @@ import jade.content.Concept;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;
 import jade.domain.FIPAAgentManagement.FailureException;
-import jade.lang.acl.MessageTemplate;
 import masoes.component.behavioural.BehaviouralComponent;
 import masoes.component.behavioural.Emotion;
 import masoes.ontology.MasoesOntology;
@@ -19,7 +18,6 @@ import masoes.ontology.state.BehaviourState;
 import masoes.ontology.state.EmotionState;
 import masoes.ontology.state.GetEmotionalState;
 import masoes.ontology.stimulus.EvaluateStimulus;
-import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
 
 import java.util.Arrays;
@@ -31,7 +29,7 @@ public class EmotionalAgentBehaviour extends OntologyResponderBehaviour {
     private EmotionalAgentLogger logger;
 
     public EmotionalAgentBehaviour(EmotionalAgent emotionalAgent) {
-        super(emotionalAgent, new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), MasoesOntology.getInstance());
+        super(emotionalAgent, MasoesOntology.getInstance());
         this.emotionalAgent = emotionalAgent;
         logger = new EmotionalAgentLogger(emotionalAgent);
         behaviouralComponent = emotionalAgent.getBehaviouralComponent();

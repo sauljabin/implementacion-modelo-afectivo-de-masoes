@@ -32,6 +32,10 @@ public class OntologyResponderBehaviour extends ProtocolResponderBehaviour {
         contentManager.registerOntology(ontology);
     }
 
+    public OntologyResponderBehaviour(Agent agent, Ontology ontology) {
+        this(agent, new MessageTemplate(new OntologyMatchExpression(ontology)), ontology);
+    }
+
     public ContentManager getContentManager() {
         return contentManager;
     }

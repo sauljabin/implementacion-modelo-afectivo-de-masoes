@@ -19,6 +19,7 @@ import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import masoes.ontology.MasoesOntology;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,6 +34,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
 
 public class OntologyResponderBehaviourTest {
@@ -121,6 +123,13 @@ public class OntologyResponderBehaviourTest {
         RuntimeException toBeThrown = new RuntimeException(EXPECTED_EXCEPTION_MESSAGE);
         doThrow(toBeThrown).when(ontologyResponderBehaviourSpy).performAction(actionMock);
         ontologyResponderBehaviourSpy.prepareInformResultResponse(request, request.createReply());
+    }
+
+    @Test
+    public void shouldReturnCorrectOntologyTemplateMatch() {
+        ontologyResponderBehaviour = new OntologyResponderBehaviour(agentMock, MasoesOntology.getInstance());
+        MessageTemplate expected = new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance()));
+        assertReflectionEquals(expected, ontologyResponderBehaviour.getMessageTemplate());
     }
 
 }

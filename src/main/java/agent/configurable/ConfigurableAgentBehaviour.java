@@ -16,8 +16,6 @@ import jade.content.onto.basic.Done;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.domain.FIPAAgentManagement.FailureException;
-import jade.lang.acl.MessageTemplate;
-import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
 
 import java.util.Arrays;
@@ -30,7 +28,7 @@ public class ConfigurableAgentBehaviour extends OntologyResponderBehaviour {
     private Map<String, Behaviour> behaviours;
 
     public ConfigurableAgentBehaviour(Agent agent) {
-        super(agent, new MessageTemplate(new OntologyMatchExpression(ConfigurableOntology.getInstance())), ConfigurableOntology.getInstance());
+        super(agent, ConfigurableOntology.getInstance());
         behaviours = new HashMap<>();
     }
 

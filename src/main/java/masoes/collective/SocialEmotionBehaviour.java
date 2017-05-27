@@ -13,14 +13,12 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.lang.acl.MessageTemplate;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
 import masoes.ontology.state.collective.GetSocialEmotion;
 import masoes.ontology.state.collective.SocialEmotion;
 import ontology.OntologyAssistant;
-import ontology.OntologyMatchExpression;
 import ontology.OntologyResponderBehaviour;
 import util.ServiceBuilder;
 
@@ -33,7 +31,7 @@ public class SocialEmotionBehaviour extends OntologyResponderBehaviour {
     private OntologyAssistant masoesOntologyAssistant;
 
     public SocialEmotionBehaviour(Agent agent) {
-        super(agent, new MessageTemplate(new OntologyMatchExpression(MasoesOntology.getInstance())), MasoesOntology.getInstance());
+        super(agent, MasoesOntology.getInstance());
         agentManagementAssistant = new AgentManagementAssistant(agent);
         masoesOntologyAssistant = new OntologyAssistant(agent, MasoesOntology.getInstance());
     }
