@@ -30,7 +30,8 @@ public abstract class EmotionalAgent extends Agent {
         try {
             behaviouralComponent = new BehaviouralComponent(this);
 
-            addBehaviour(new EmotionalAgentBehaviour(this));
+            addBehaviour(new EvaluateStimulusBehaviour(this));
+            addBehaviour(new ResponseAgentStateBehaviour(this));
 
             setUp();
 

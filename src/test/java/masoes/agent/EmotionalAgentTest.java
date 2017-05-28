@@ -57,7 +57,8 @@ public class EmotionalAgentTest extends PowerMockitoTest {
     public void shouldAddBasicBehaviors() {
         emotionalAgentSpy.setup();
         InOrder inOrder = inOrder(emotionalAgentSpy);
-        inOrder.verify(emotionalAgentSpy).addBehaviour(isA(EmotionalAgentBehaviour.class));
+        inOrder.verify(emotionalAgentSpy).addBehaviour(isA(EvaluateStimulusBehaviour.class));
+        inOrder.verify(emotionalAgentSpy).addBehaviour(isA(ResponseAgentStateBehaviour.class));
         inOrder.verify(emotionalAgentSpy).setUp();
     }
 
