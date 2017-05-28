@@ -145,11 +145,21 @@ public class ConfiguratorAgent extends GuiAgent {
                 case SELECT_ALL_AGENTS_TO_ADD:
                     selectAllAgentsToAdd();
                     break;
+                case UPDATE_INTERVAL_BETWEEN_EVENTS:
+                    updateFrequency();
+                    break;
+                case UPDATE_ITERATIONS:
+                    updateFrequency();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             configuratorAgentGui.showError(e.getMessage());
         }
+    }
+
+    private void updateFrequency() {
+        configuratorAgentGui.updateFrequency();
     }
 
     private void deselectAllAgentsToAdd() {
@@ -180,7 +190,7 @@ public class ConfiguratorAgent extends GuiAgent {
 
             String eventFrequency = configuratorAgentGui.isEventFrequencyRandom() ?
                     translation.get("gui.random")
-                    : Integer.toString(configuratorAgentGui.getEventFrequency());
+                    : Integer.toString(configuratorAgentGui.getIntervalBetweenEvents());
 
             out.write(String.format("%s: %s\n", translation.get("gui.event_frequency"), eventFrequency));
             out.write(String.format("%s: %s\n", translation.get("gui.activation_parameter"), configuratorAgentGui.getActivationParameter()));
@@ -418,7 +428,7 @@ public class ConfiguratorAgent extends GuiAgent {
 
                             AID receiver = getAID(agentToAdd.getAgentName());
 
-                            int eventFrequency = configuratorAgentGui.getEventFrequency();
+                            int eventFrequency = configuratorAgentGui.getIntervalBetweenEvents();
 
                             if (configuratorAgentGui.isEventFrequencyRandom()) {
                                 eventFrequency = RandomGenerator.getInteger(1, 9);

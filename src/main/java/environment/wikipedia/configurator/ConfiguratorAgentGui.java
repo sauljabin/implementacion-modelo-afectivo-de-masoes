@@ -53,13 +53,14 @@ public class ConfiguratorAgentGui extends JFrame {
     private JLabel collectiveCentralEmotionLabel;
     private AffectiveModel affectiveModel;
     private JLabel actualIterationLabel;
-    private JSpinner eventFrequencySpinner;
+    private JSpinner intervalBetweenEventsSpinner;
     private JCheckBox randomFrequencyCheckBox;
     private KnowledgeRulesTableModel knowledgeRulesTableModel;
     private JTable knowledgeRulesTable;
     private JButton saveButton;
     private JButton selectAllButton;
     private JButton deselectAllButton;
+    private JLabel frequencyValueLabel;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -131,15 +132,22 @@ public class ConfiguratorAgentGui extends JFrame {
         iterationsSpinner.setModel(new SpinnerNumberModel(1000, 0, 1000, 1));
         caseStudyPanel.add(iterationsSpinner, "w 70, wrap");
 
-        JLabel frequencyLabel = new JLabel(translation.get("gui.event_frequency"));
-        caseStudyPanel.add(frequencyLabel);
+        JLabel intervalBetweenEventsLabel = new JLabel(translation.get("gui.interval_between_events"));
+        caseStudyPanel.add(intervalBetweenEventsLabel);
 
-        eventFrequencySpinner = new JSpinner();
-        eventFrequencySpinner.setModel(new SpinnerNumberModel(5, 0, 1000, 1));
-        caseStudyPanel.add(eventFrequencySpinner, "w 70, wrap");
+        intervalBetweenEventsSpinner = new JSpinner();
+        intervalBetweenEventsSpinner.setModel(new SpinnerNumberModel(5, 1, 1000, 1));
+        caseStudyPanel.add(intervalBetweenEventsSpinner, "w 70, wrap");
 
         randomFrequencyCheckBox = new JCheckBox(translation.get("gui.random"));
         caseStudyPanel.add(randomFrequencyCheckBox, "cell 1 2, wrap");
+
+        JLabel frequencyLabel = new JLabel(translation.get("gui.event_frequency"));
+        caseStudyPanel.add(frequencyLabel);
+
+        frequencyValueLabel = new JLabel();
+        caseStudyPanel.add(frequencyValueLabel, "w 70, wrap 20");
+        updateFrequency();
 
         caseStudyPanel.add(new JLabel(translation.get("gui.events")), "wrap");
         knowledgeRulesTableModel = new KnowledgeRulesTableModel();
@@ -327,6 +335,18 @@ public class ConfiguratorAgentGui extends JFrame {
                 ConfiguratorAgentEvent.UPDATE_SATISFACTION_TO_ADD.toString()
         )));
 
+        iterationsSpinner.addChangeListener(e -> actionListener.actionPerformed(new ActionEvent(
+                e.getSource(),
+                ConfiguratorAgentEvent.UPDATE_ITERATIONS.getInt(),
+                ConfiguratorAgentEvent.UPDATE_ITERATIONS.toString()
+        )));
+
+        intervalBetweenEventsSpinner.addChangeListener(e -> actionListener.actionPerformed(new ActionEvent(
+                e.getSource(),
+                ConfiguratorAgentEvent.UPDATE_INTERVAL_BETWEEN_EVENTS.getInt(),
+                ConfiguratorAgentEvent.UPDATE_INTERVAL_BETWEEN_EVENTS.toString()
+        )));
+
         startButton.setActionCommand(ConfiguratorAgentEvent.START.toString());
         startButton.addActionListener(actionListener);
 
@@ -420,7 +440,7 @@ public class ConfiguratorAgentGui extends JFrame {
         activationToAddSpinner.setEnabled(false);
         satisfactionToAddSpinner.setEnabled(false);
         iterationsSpinner.setEnabled(false);
-        eventFrequencySpinner.setEnabled(false);
+        intervalBetweenEventsSpinner.setEnabled(false);
         randomFrequencyCheckBox.setEnabled(false);
         knowledgeRulesTable.setEnabled(false);
         deselectAllButton.setEnabled(false);
@@ -441,7 +461,7 @@ public class ConfiguratorAgentGui extends JFrame {
         activationToAddSpinner.setEnabled(true);
         satisfactionToAddSpinner.setEnabled(true);
         iterationsSpinner.setEnabled(true);
-        eventFrequencySpinner.setEnabled(true);
+        intervalBetweenEventsSpinner.setEnabled(true);
         randomFrequencyCheckBox.setEnabled(true);
         randomFrequencyCheckBox.setSelected(false);
         knowledgeRulesTable.setEnabled(true);
@@ -486,8 +506,8 @@ public class ConfiguratorAgentGui extends JFrame {
         return (int) iterationsSpinner.getValue();
     }
 
-    public int getEventFrequency() {
-        return (int) eventFrequencySpinner.getValue();
+    public int getIntervalBetweenEvents() {
+        return (int) intervalBetweenEventsSpinner.getValue();
     }
 
     public boolean isEventFrequencyRandom() {
@@ -512,6 +532,11 @@ public class ConfiguratorAgentGui extends JFrame {
 
     public void selectAllAgentsToAdd() {
         agentsToAddTableModel.selectAllAgentsToAdd();
+    }
+
+    public void updateFrequency() {
+        int frequency = (int) iterationsSpinner.getValue() / (int) intervalBetweenEventsSpinner.getValue();
+        frequencyValueLabel.setText(String.valueOf(frequency));
     }
 
 }
