@@ -151,10 +151,21 @@ public class ConfiguratorAgent extends GuiAgent {
                 case UPDATE_ITERATIONS:
                     updateFrequency();
                     break;
+                case UPDATE_RANDOM_CHECKBOX:
+                    updateRandomCheckBox();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             configuratorAgentGui.showError(e.getMessage());
+        }
+    }
+
+    private void updateRandomCheckBox() {
+        if(configuratorAgentGui.isEventFrequencyRandom()){
+            configuratorAgentGui.enabledIntervalBetweenEvents(false);
+        }else{
+            configuratorAgentGui.enabledIntervalBetweenEvents(true);
         }
     }
 
@@ -416,6 +427,13 @@ public class ConfiguratorAgent extends GuiAgent {
 
         agentsAffectiveModelChartGui.addAgent(centralEmotionName);
 
+        if (configuratorAgentGui.isEventFrequencyRandom()) {
+            configuratorAgentGui.setIntervalBetweenEvents(RandomGenerator.getInteger(1, 10));
+            configuratorAgentGui.updateFrequency();
+        }
+
+        final int eventFrequency = configuratorAgentGui.getIntervalBetweenEvents();
+
         configuratorBehaviour = new CounterBehaviour(configuratorAgentGui.getIterations()) {
             @Override
             public void count(int i) {
@@ -427,12 +445,6 @@ public class ConfiguratorAgent extends GuiAgent {
                             AgentAction agentAction = new GetEmotionalState();
 
                             AID receiver = getAID(agentToAdd.getAgentName());
-
-                            int eventFrequency = configuratorAgentGui.getIntervalBetweenEvents();
-
-                            if (configuratorAgentGui.isEventFrequencyRandom()) {
-                                eventFrequency = RandomGenerator.getInteger(1, 9);
-                            }
 
                             if (i % eventFrequency == 0 && agentToAdd.isReceiveStimulus()) {
                                 List<KnowledgeRule> filterKnowledgeRules = knowledgeRules.stream().filter(KnowledgeRule::isSelected).collect(Collectors.toList());

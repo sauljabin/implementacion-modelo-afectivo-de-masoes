@@ -25,7 +25,8 @@ public enum ConfiguratorAgentEvent {
     SELECT_ALL_AGENTS_TO_ADD,
     DESELECT_ALL_AGENTS_TO_ADD,
     UPDATE_INTERVAL_BETWEEN_EVENTS,
-    UPDATE_ITERATIONS;
+    UPDATE_ITERATIONS,
+    UPDATE_RANDOM_CHECKBOX;
 
     private static List<ConfiguratorAgentEvent> events = Arrays.asList(ConfiguratorAgentEvent.values());
 

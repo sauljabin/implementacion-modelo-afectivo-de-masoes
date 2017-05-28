@@ -137,10 +137,10 @@ public class ConfiguratorAgentGui extends JFrame {
 
         intervalBetweenEventsSpinner = new JSpinner();
         intervalBetweenEventsSpinner.setModel(new SpinnerNumberModel(5, 1, 1000, 1));
-        caseStudyPanel.add(intervalBetweenEventsSpinner, "w 70, wrap");
+        caseStudyPanel.add(intervalBetweenEventsSpinner, "w 70");
 
         randomFrequencyCheckBox = new JCheckBox(translation.get("gui.random"));
-        caseStudyPanel.add(randomFrequencyCheckBox, "cell 1 2, wrap");
+        caseStudyPanel.add(randomFrequencyCheckBox, "wrap");
 
         JLabel frequencyLabel = new JLabel(translation.get("gui.event_frequency"));
         caseStudyPanel.add(frequencyLabel);
@@ -163,16 +163,16 @@ public class ConfiguratorAgentGui extends JFrame {
         knowledgeRulesTable.setFont(new Font("Arial", Font.PLAIN, 9));
 
         JScrollPane scrollKnowledgeRulesTable = new JScrollPane(knowledgeRulesTable);
-        caseStudyPanel.add(scrollKnowledgeRulesTable, W_EAST + ", h 100, span 2, wrap");
+        caseStudyPanel.add(scrollKnowledgeRulesTable, W_EAST + ", h 100, span 3, wrap");
 
         startButton = new JButton(translation.get("gui.start"));
-        caseStudyPanel.add(startButton, W_EAST + ", span 2, wrap");
+        caseStudyPanel.add(startButton, W_EAST + ", span 3, wrap");
 
         cleanButton = new JButton(translation.get("gui.clean"));
-        caseStudyPanel.add(cleanButton, W_EAST + ", span 2, wrap");
+        caseStudyPanel.add(cleanButton, W_EAST + ", span 3, wrap");
 
         saveButton = new JButton(translation.get("gui.save"));
-        caseStudyPanel.add(saveButton, W_EAST + ", span 2, wrap");
+        caseStudyPanel.add(saveButton, W_EAST + ", span 3, wrap");
 
         JPanel statusPanel = new JPanel(new MigLayout("insets 5"));
         statusPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.iteration")));
@@ -347,6 +347,9 @@ public class ConfiguratorAgentGui extends JFrame {
                 ConfiguratorAgentEvent.UPDATE_INTERVAL_BETWEEN_EVENTS.toString()
         )));
 
+        randomFrequencyCheckBox.setActionCommand(ConfiguratorAgentEvent.UPDATE_RANDOM_CHECKBOX.toString());
+        randomFrequencyCheckBox.addActionListener(actionListener);
+
         startButton.setActionCommand(ConfiguratorAgentEvent.START.toString());
         startButton.addActionListener(actionListener);
 
@@ -510,6 +513,10 @@ public class ConfiguratorAgentGui extends JFrame {
         return (int) intervalBetweenEventsSpinner.getValue();
     }
 
+    public void setIntervalBetweenEvents(int value) {
+        intervalBetweenEventsSpinner.setValue(value);
+    }
+
     public boolean isEventFrequencyRandom() {
         return randomFrequencyCheckBox.isSelected();
     }
@@ -537,6 +544,10 @@ public class ConfiguratorAgentGui extends JFrame {
     public void updateFrequency() {
         int frequency = (int) iterationsSpinner.getValue() / (int) intervalBetweenEventsSpinner.getValue();
         frequencyValueLabel.setText(String.valueOf(frequency));
+    }
+
+    public void enabledIntervalBetweenEvents(boolean enabled) {
+        intervalBetweenEventsSpinner.setEnabled(enabled);
     }
 
 }
