@@ -480,7 +480,7 @@ public class ConfiguratorAgent extends GuiAgent {
 
         addBehaviour(configuratorBehaviour);
 
-        configuratorAgentGui.modeSimulation();
+        configuratorAgentGui.simulationMode();
 
         agentsAffectiveModelChartGui.start();
         dispersionGraphic.start();
@@ -540,7 +540,7 @@ public class ConfiguratorAgent extends GuiAgent {
             configuratorAgentGui.setAgentStates(new ArrayList<>());
             configuratorAgentGui.setAgentsToAdd(new ArrayList<>());
         });
-        configuratorAgentGui.modeConfiguration();
+        configuratorAgentGui.configurationMode();
     }
 
     private void updateActivationParameter() {

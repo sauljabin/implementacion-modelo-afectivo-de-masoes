@@ -78,7 +78,7 @@ public class ConfiguratorAgentGui extends JFrame {
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
         addComponents();
-        modeConfiguration();
+        configurationMode();
         setLocationRelativeTo(this);
     }
 
@@ -407,7 +407,7 @@ public class ConfiguratorAgentGui extends JFrame {
         return agentsStateTableModel.getAgentStates().get(agentStateTable.getSelectedRow());
     }
 
-    public void modeSimulation() {
+    public void simulationMode() {
         cleanButton.setEnabled(true);
         saveButton.setEnabled(false);
         windowAgentButton.setEnabled(true);
@@ -423,9 +423,12 @@ public class ConfiguratorAgentGui extends JFrame {
         eventFrequencySpinner.setEnabled(false);
         randomFrequencyCheckBox.setEnabled(false);
         knowledgeRulesTable.setEnabled(false);
+        deselectAllButton.setEnabled(false);
+        selectAllButton.setEnabled(false);
+        agentsToAddTable.setEnabled(false);
     }
 
-    public void modeConfiguration() {
+    public void configurationMode() {
         cleanButton.setEnabled(false);
         saveButton.setEnabled(false);
         windowAgentButton.setEnabled(false);
@@ -442,6 +445,9 @@ public class ConfiguratorAgentGui extends JFrame {
         randomFrequencyCheckBox.setEnabled(true);
         randomFrequencyCheckBox.setSelected(false);
         knowledgeRulesTable.setEnabled(true);
+        deselectAllButton.setEnabled(true);
+        selectAllButton.setEnabled(true);
+        agentsToAddTable.setEnabled(true);
 
         collectiveCentralEmotionalStateLabel.setText("-");
         collectiveCentralEmotionLabel.setText("-");
