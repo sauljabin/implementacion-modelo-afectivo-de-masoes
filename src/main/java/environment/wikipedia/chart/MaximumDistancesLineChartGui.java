@@ -11,8 +11,10 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import translate.Translation;
@@ -59,6 +61,18 @@ public class MaximumDistancesLineChartGui extends JFrame {
         xyPlot = chart.getXYPlot();
         ValueAxis rangeAxis = xyPlot.getRangeAxis();
         rangeAxis.setRange(0, 2.1);
+
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+
+        xyPlot.setRenderer(renderer);
+        xyPlot.setBackgroundPaint(Color.WHITE);
+        xyPlot.setDomainGridlinePaint(Color.BLACK);
+        xyPlot.setRangeGridlinePaint(Color.BLACK);
+
+        xyPlot.setRangeGridlinesVisible(true);
+        xyPlot.setDomainGridlinesVisible(true);
+
+        chart.getLegend().setFrame(BlockBorder.NONE);
     }
 
     public void addMaximumDistances(int iteration, MaximumDistances emotionalState) {

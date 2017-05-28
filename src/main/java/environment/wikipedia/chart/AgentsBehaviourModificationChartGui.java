@@ -13,8 +13,10 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.axis.SymbolAxis;
+import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import translate.Translation;
@@ -77,6 +79,18 @@ public class AgentsBehaviourModificationChartGui extends JFrame {
         rangeAxis.setRange(0, behavioursTypes.length);
         rangeAxis.setLabelFont(chart.getXYPlot().getDomainAxis().getLabelFont());
         xyPlot.setRangeAxis(rangeAxis);
+
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+
+        xyPlot.setRenderer(renderer);
+        xyPlot.setBackgroundPaint(Color.WHITE);
+        xyPlot.setDomainGridlinePaint(Color.BLACK);
+        xyPlot.setRangeGridlinePaint(Color.BLACK);
+
+        xyPlot.setRangeGridlinesVisible(true);
+        xyPlot.setDomainGridlinesVisible(true);
+
+        chart.getLegend().setFrame(BlockBorder.NONE);
     }
 
     public String getBehaviourTypeName(String behaviourType) {
