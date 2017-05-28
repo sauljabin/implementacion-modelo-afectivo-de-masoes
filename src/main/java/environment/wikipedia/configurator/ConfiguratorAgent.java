@@ -293,6 +293,7 @@ public class ConfiguratorAgent extends GuiAgent {
             maxDistancesGraphic.exportImage(folder, width, height);
             dispersionGraphic.exportImage(folder, width, height);
             agentsEmotionalStateChartGui.exportImage(folder, width, height);
+            agentsAffectiveModelChartGui.exportImage(folder, height);
 
         } catch (Exception e) {
             logger.exception(e);
