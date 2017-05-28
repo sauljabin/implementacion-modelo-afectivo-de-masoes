@@ -154,11 +154,25 @@ public class ConfiguratorAgent extends GuiAgent {
                 case UPDATE_RANDOM_CHECKBOX:
                     updateRandomCheckBox();
                     break;
+                case DESELECT_ALL_EVENTS:
+                    deselectAllEvents();
+                    break;
+                case SELECT_ALL_EVENTS:
+                    selectAllEvents();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             configuratorAgentGui.showError(e.getMessage());
         }
+    }
+
+    private void selectAllEvents() {
+        configuratorAgentGui.selectAllEvents();
+    }
+
+    private void deselectAllEvents() {
+        configuratorAgentGui.deselectAllEvents();
     }
 
     private void updateRandomCheckBox() {

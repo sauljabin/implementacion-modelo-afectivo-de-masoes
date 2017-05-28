@@ -117,4 +117,14 @@ public class KnowledgeRulesTableModel extends AbstractTableModel {
         fireTableCellUpdated(rowIndex, columnIndex);
     }
 
+    public void selectAllEvents() {
+        knowledgeRules.forEach(knowledgeRule -> knowledgeRule.setSelected(true));
+        fireTableDataChanged();
+    }
+
+    public void deselectAllEvents() {
+        knowledgeRules.forEach(knowledgeRule -> knowledgeRule.setSelected(false));
+        fireTableDataChanged();
+    }
+
 }

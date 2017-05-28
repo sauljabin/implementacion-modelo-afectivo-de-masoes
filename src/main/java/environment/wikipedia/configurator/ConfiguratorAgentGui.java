@@ -61,6 +61,8 @@ public class ConfiguratorAgentGui extends JFrame {
     private JButton selectAllButton;
     private JButton deselectAllButton;
     private JLabel frequencyValueLabel;
+    private JButton selectAllEventsButton;
+    private JButton deselectAllEventsButton;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -149,7 +151,17 @@ public class ConfiguratorAgentGui extends JFrame {
         caseStudyPanel.add(frequencyValueLabel, "w 70, wrap 20");
         updateFrequency();
 
-        caseStudyPanel.add(new JLabel(translation.get("gui.events")), "wrap");
+        caseStudyPanel.add(new JLabel(translation.get("gui.events")));
+        caseStudyPanel.add(new JLabel());
+
+        selectAllEventsButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/list-all.png")));
+        selectAllEventsButton.setMinimumSize(new Dimension(25, 25));
+        caseStudyPanel.add(selectAllEventsButton, "w 25, h 25, al right, split 2");
+
+        deselectAllEventsButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/list-delete.png")));
+        deselectAllEventsButton.setMinimumSize(new Dimension(25, 25));
+        caseStudyPanel.add(deselectAllEventsButton, "w 25, h 25, al right, wrap");
+
         knowledgeRulesTableModel = new KnowledgeRulesTableModel();
         knowledgeRulesTable = new JTable(knowledgeRulesTableModel);
         knowledgeRulesTable.setFillsViewportHeight(true);
@@ -373,6 +385,12 @@ public class ConfiguratorAgentGui extends JFrame {
 
         deselectAllButton.setActionCommand(ConfiguratorAgentEvent.DESELECT_ALL_AGENTS_TO_ADD.toString());
         deselectAllButton.addActionListener(actionListener);
+
+        selectAllEventsButton.setActionCommand(ConfiguratorAgentEvent.SELECT_ALL_EVENTS.toString());
+        selectAllEventsButton.addActionListener(actionListener);
+
+        deselectAllEventsButton.setActionCommand(ConfiguratorAgentEvent.DESELECT_ALL_EVENTS.toString());
+        deselectAllEventsButton.addActionListener(actionListener);
     }
 
     public void showError(String message) {
@@ -553,4 +571,13 @@ public class ConfiguratorAgentGui extends JFrame {
     public String getEventFrequency() {
         return frequencyValueLabel.getText();
     }
+
+    public void selectAllEvents() {
+        knowledgeRulesTableModel.selectAllEvents();
+    }
+
+    public void deselectAllEvents() {
+        knowledgeRulesTableModel.deselectAllEvents();
+    }
+
 }
