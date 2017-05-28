@@ -162,9 +162,9 @@ public class ConfiguratorAgent extends GuiAgent {
     }
 
     private void updateRandomCheckBox() {
-        if(configuratorAgentGui.isEventFrequencyRandom()){
+        if (configuratorAgentGui.isEventFrequencyRandom()) {
             configuratorAgentGui.enabledIntervalBetweenEvents(false);
-        }else{
+        } else {
             configuratorAgentGui.enabledIntervalBetweenEvents(true);
         }
     }
@@ -199,11 +199,10 @@ public class ConfiguratorAgent extends GuiAgent {
 
             out.write(String.format("%s: %s\n", translation.get("gui.iterations"), configuratorAgentGui.getIterations()));
 
-            String eventFrequency = configuratorAgentGui.isEventFrequencyRandom() ?
-                    translation.get("gui.random")
-                    : Integer.toString(configuratorAgentGui.getIntervalBetweenEvents());
+            String intervalBetweenEvents = (configuratorAgentGui.isEventFrequencyRandom() ? translation.get("gui.random") + "=" : "") + Integer.toString(configuratorAgentGui.getIntervalBetweenEvents());
 
-            out.write(String.format("%s: %s\n", translation.get("gui.event_frequency"), eventFrequency));
+            out.write(String.format("%s: %s\n", translation.get("gui.interval_between_events"), intervalBetweenEvents));
+            out.write(String.format("%s: %s\n", translation.get("gui.event_frequency"), configuratorAgentGui.getEventFrequency()));
             out.write(String.format("%s: %s\n", translation.get("gui.activation_parameter"), configuratorAgentGui.getActivationParameter()));
             out.write(String.format("%s: %s\n", translation.get("gui.satisfaction_parameter"), configuratorAgentGui.getSatisfactionParameter()));
 

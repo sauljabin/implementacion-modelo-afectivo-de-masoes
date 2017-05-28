@@ -550,4 +550,7 @@ public class ConfiguratorAgentGui extends JFrame {
         intervalBetweenEventsSpinner.setEnabled(enabled);
     }
 
+    public String getEventFrequency() {
+        return frequencyValueLabel.getText();
+    }
 }
