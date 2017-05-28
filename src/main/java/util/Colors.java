@@ -7,6 +7,7 @@
 package util;
 
 import java.awt.*;
+import java.util.Arrays;
 
 public final class Colors {
 
@@ -82,7 +83,7 @@ public final class Colors {
     }
 
     public static Color getRandomColor() {
-        return color[RandomGenerator.getInteger(0, color.length - 1)];
+        return RandomGenerator.getRandomItem(Arrays.asList(color));
     }
 
 }

@@ -18,8 +18,14 @@ import org.junit.Before;
 import org.junit.Test;
 import util.RandomGenerator;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
@@ -146,6 +152,18 @@ public class AffectiveModelTest {
         double x = RandomGenerator.getDouble(xMin, xMax);
         double y = RandomGenerator.getDouble(yMin, yMax);
         return new EmotionalState(x, y);
+    }
+
+    @Test
+    public void shouldGetRandomEmotion() {
+        Emotion randomEmotion = affectiveModel.getRandomEmotion();
+
+        List<Emotion> occurrences = IntStream.range(0, 5)
+                .mapToObj(i -> affectiveModel.getRandomEmotion())
+                .filter(emotion -> !emotion.getName().equals(randomEmotion.getName()))
+                .collect(Collectors.toList());
+
+        assertThat(occurrences, is(not(empty())));
     }
 
 }

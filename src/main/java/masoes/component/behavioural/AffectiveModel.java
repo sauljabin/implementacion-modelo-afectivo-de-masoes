@@ -14,6 +14,7 @@ import masoes.component.behavioural.emotion.HappinessEmotion;
 import masoes.component.behavioural.emotion.JoyEmotion;
 import masoes.component.behavioural.emotion.RejectionEmotion;
 import masoes.component.behavioural.emotion.SadnessEmotion;
+import util.RandomGenerator;
 import util.ToStringBuilder;
 
 import java.util.Arrays;
@@ -61,6 +62,10 @@ public class AffectiveModel {
                 .filter(emotion -> emotion.getName().equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public Emotion getRandomEmotion() {
+        return RandomGenerator.getRandomItem(emotions);
     }
 
     @Override

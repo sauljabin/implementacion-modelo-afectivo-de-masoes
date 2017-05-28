@@ -9,7 +9,11 @@ package util;
 import org.junit.Test;
 
 import java.awt.*;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
+import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
@@ -18,9 +22,14 @@ public class ColorsTest {
 
     @Test
     public void shouldGetRandomColorWhenNumberIsNotFound() {
-        Color color1 = Colors.getColor(1000);
-        Color color2 = Colors.getColor(1000);
-        assertThat(color1, is(not(color2)));
+        Color originalColor = Colors.getColor(1000);
+
+        List<Color> occurrences = IntStream.range(0, 5)
+                .mapToObj(i -> Colors.getRandomColor())
+                .filter(emotion -> !emotion.equals(originalColor))
+                .collect(Collectors.toList());
+
+        assertThat(occurrences, is(not(empty())));
     }
 
 }
