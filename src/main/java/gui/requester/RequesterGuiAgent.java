@@ -57,6 +57,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+// TODO: TRANSFORMAR ACCIONES A CLASES
 public class RequesterGuiAgent extends GuiAgent {
 
     private AgentLogger logger;

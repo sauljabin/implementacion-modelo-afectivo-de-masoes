@@ -6,16 +6,16 @@
 
 import java.util.Iterator;
 
-public class Alphabet implements Iterator<Character> {
+public class AlphabetIterator implements Iterator<Character> {
 
     private static final int CHAR_TO_START = 64;
     private static final int CHAR_TO_END = 90;
     private int currentChar = CHAR_TO_START;
 
     public static void main(String[] args) {
-        Alphabet alphabet = new Alphabet();
-        while (alphabet.hasNext()) {
-            System.out.println(alphabet.next());
+        AlphabetIterator alphabetIterator = new AlphabetIterator();
+        while (alphabetIterator.hasNext()) {
+            System.out.println(alphabetIterator.next());
         }
     }
 

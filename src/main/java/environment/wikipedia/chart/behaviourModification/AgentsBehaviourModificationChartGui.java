@@ -4,9 +4,8 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.chart;
+package environment.wikipedia.chart.behaviourModification;
 
-import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.BehaviourType;
 import masoes.ontology.state.AgentState;
 import org.jfree.chart.ChartFactory;
@@ -21,69 +20,55 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import translate.Translation;
-import util.Colors;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class AgentsEmotionModificationChartGui extends JFrame {
+public class AgentsBehaviourModificationChartGui extends JFrame {
 
+    private final List<String> behaviourTypesList;
     private XYSeriesCollection collection;
     private JFreeChart chart;
     private XYPlot xyPlot;
-    private String[] emotionTypes;
+    private String[] behavioursTypes;
     private Translation translation = Translation.getInstance();
-    private Map<String, XYSeries> agents = new HashMap<>();
-    private Map<String, Color> colorsMap = new HashMap<>();
+    private List<SeriesBehaviourContainer> seriesBehaviourContainers = new LinkedList<>();
 
-    public AgentsEmotionModificationChartGui(String title) {
+    public AgentsBehaviourModificationChartGui(String title) {
         setSize(560, 400);
         setTitle(title);
         setLayout(new BorderLayout());
 
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent arg0) {
-                dispose();
-            }
-        });
+        addWindowListener(new AgentsBehaviourModificationChartGuiWindowListener(this));
 
         collection = new XYSeriesCollection();
 
-        chart = ChartFactory.createXYLineChart(title, translation.get("gui.iteration"), translation.get("gui.emotion"), collection, PlotOrientation.VERTICAL, true, true, false);
+        chart = ChartFactory.createXYLineChart(title, translation.get("gui.iteration"), translation.get("gui.behaviour"), collection, PlotOrientation.VERTICAL, true, true, false);
         add(new ChartPanel(chart), BorderLayout.CENTER);
 
         xyPlot = chart.getXYPlot();
 
         BehaviourType[] values = BehaviourType.values();
 
-        AffectiveModel affectiveModel = AffectiveModel.getInstance();
-
-        List<String> typesList = affectiveModel.getEmotions()
-                .stream()
-                .map(emotion -> getEmotionName(emotion.getName()))
+        behaviourTypesList = Arrays.stream(values)
+                .map(behaviourType -> getBehaviourTypeName(behaviourType.toString()))
                 .collect(Collectors.toList());
 
-        Collections.reverse(typesList);
+        behaviourTypesList.add(0, "");
 
-        typesList.add(0, "");
+        behavioursTypes = behaviourTypesList.toArray(new String[behaviourTypesList.size()]);
 
-        emotionTypes = typesList.toArray(new String[typesList.size()]);
-
-        SymbolAxis rangeAxis = new SymbolAxis(translation.get("gui.emotion"), emotionTypes);
+        SymbolAxis rangeAxis = new SymbolAxis(translation.get("gui.behaviour"), behavioursTypes);
         rangeAxis.setTickUnit(new NumberTickUnit(1));
-        rangeAxis.setRange(0, emotionTypes.length);
+        rangeAxis.setRange(0, behavioursTypes.length);
         rangeAxis.setLabelFont(chart.getXYPlot().getDomainAxis().getLabelFont());
         xyPlot.setRangeAxis(rangeAxis);
 
@@ -100,30 +85,50 @@ public class AgentsEmotionModificationChartGui extends JFrame {
         chart.getLegend().setFrame(BlockBorder.NONE);
     }
 
-    public String getEmotionName(String emotionName) {
-        return Translation.getInstance().get(emotionName.toString().toLowerCase().trim());
+    public String getBehaviourTypeName(String behaviourType) {
+        return Translation.getInstance().get(behaviourType.toString().toLowerCase().trim());
+    }
+
+    public Optional<SeriesBehaviourContainer> getSeriesBehaviourContainer(String agent) {
+        return seriesBehaviourContainers.stream()
+                .filter(seriesBehaviourContainer -> seriesBehaviourContainer.sameName(agent))
+                .findFirst();
     }
 
     public void addAgent(String agentName) {
-        if (agents.containsKey(agentName)) {
+        if (getSeriesBehaviourContainer(agentName).isPresent()) {
             return;
         }
 
-        Color color = Colors.getColor(colorsMap.size());
-        colorsMap.put(agentName, color);
-        XYSeries xySeries = new XYSeries(agentName);
-        agents.put(agentName, xySeries);
-        collection.addSeries(xySeries);
-        xyPlot.getRendererForDataset(collection).setSeriesPaint(agents.size() - 1, color);
+        SeriesBehaviourContainer seriesBehaviourContainer = new SeriesBehaviourContainer(agentName, seriesBehaviourContainers.size());
+
+        seriesBehaviourContainers.add(seriesBehaviourContainer);
+
+        collection.addSeries(seriesBehaviourContainer.getSeries());
+
+        xyPlot.getRendererForDataset(collection)
+                .setSeriesPaint(seriesBehaviourContainer.getSequence(), seriesBehaviourContainer.getColor());
     }
 
-    public void addEmotion(String agentName, int iteration, AgentState agentState) {
-        XYSeries xySeries = agents.get(agentName);
+    public void addBehaviourType(String agentName, int iteration, AgentState agentState) {
+        Optional<SeriesBehaviourContainer> seriesBehaviourContainer = getSeriesBehaviourContainer(agentName);
+
+        if (!seriesBehaviourContainer.isPresent()) {
+            return;
+        }
+
+        XYSeries xySeries = seriesBehaviourContainer.get().getSeries();
         if (xySeries == null) {
             return;
         }
-        int y = Arrays.asList(emotionTypes).indexOf(getEmotionName(agentState.getEmotionState().getName()));
+
+        int y = getTypeIndex(agentState);
+
         xySeries.add(iteration, y);
+    }
+
+    public int getTypeIndex(AgentState agentState) {
+        return behaviourTypesList.indexOf(getBehaviourTypeName(agentState.getBehaviourState().getType()));
     }
 
     public void start() {

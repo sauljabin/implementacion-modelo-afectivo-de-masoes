@@ -4,9 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.chart;
+package environment.wikipedia.chart.emotionalDispersion;
 
-import masoes.ontology.state.collective.MaximumDistances;
+import masoes.ontology.state.collective.EmotionalDispersion;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -22,12 +22,10 @@ import translate.Translation;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class MaximumDistancesLineChartGui extends JFrame {
+public class EmotionalDispersionLineChartGui extends JFrame {
 
     private Translation translation = Translation.getInstance();
     private XYSeriesCollection collection;
@@ -36,17 +34,12 @@ public class MaximumDistancesLineChartGui extends JFrame {
     private XYSeries seriesActivation;
     private XYPlot xyPlot;
 
-    public MaximumDistancesLineChartGui(String title) {
+    public EmotionalDispersionLineChartGui(String title) {
         setSize(560, 400);
         setTitle(title);
         setLayout(new BorderLayout());
 
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent arg0) {
-                dispose();
-            }
-        });
+        addWindowListener(new EmotionalDispersionLineChartGuiWindowListener(this));
 
         seriesActivation = new XYSeries(translation.get("gui.activation"));
         seriesSatisfaction = new XYSeries(translation.get("gui.satisfaction"));
@@ -55,12 +48,12 @@ public class MaximumDistancesLineChartGui extends JFrame {
         collection.addSeries(seriesActivation);
         collection.addSeries(seriesSatisfaction);
 
-        chart = ChartFactory.createXYLineChart(title, translation.get("gui.iteration"), translation.get("gui.distance"), collection, PlotOrientation.VERTICAL, true, true, false);
+        chart = ChartFactory.createXYLineChart(title, translation.get("gui.iteration"), translation.get("gui.dispersion"), collection, PlotOrientation.VERTICAL, true, true, false);
         add(new ChartPanel(chart), BorderLayout.CENTER);
 
         xyPlot = chart.getXYPlot();
         ValueAxis rangeAxis = xyPlot.getRangeAxis();
-        rangeAxis.setRange(0, 2.1);
+        rangeAxis.setRange(0, 1.1);
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
@@ -75,9 +68,9 @@ public class MaximumDistancesLineChartGui extends JFrame {
         chart.getLegend().setFrame(BlockBorder.NONE);
     }
 
-    public void addMaximumDistances(int iteration, MaximumDistances emotionalState) {
-        seriesSatisfaction.add(iteration, emotionalState.getSatisfaction());
-        seriesActivation.add(iteration, emotionalState.getActivation());
+    public void addDispersion(int iteration, EmotionalDispersion emotionalDispersion) {
+        seriesSatisfaction.add(iteration, emotionalDispersion.getSatisfaction());
+        seriesActivation.add(iteration, emotionalDispersion.getActivation());
     }
 
     public void start() {

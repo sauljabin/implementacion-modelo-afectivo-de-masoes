@@ -9,31 +9,22 @@ package gui.state;
 import agent.AgentException;
 import agent.AgentLogger;
 import environment.wikipedia.configurator.ConfiguratorAgentEvent;
-import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.CyclicBehaviour;
+import jade.core.AID;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
-import masoes.ontology.MasoesOntology;
-import masoes.ontology.state.AgentState;
-import masoes.ontology.state.GetEmotionalState;
-import ontology.OntologyAssistant;
 
 import javax.swing.*;
 
 public class AffectiveModelChartGuiAgent extends GuiAgent {
 
-    private static final int FPS = 5;
-    private OntologyAssistant masoesOntologyAssistant;
     private AffectiveModelChartGui affectiveModelChartGui;
     private AgentLogger logger;
-    private Behaviour emotionalStateAgentBehaviour;
     private AffectiveModelChartGuiListener affectiveModelChartGuiListener;
 
     public AffectiveModelChartGuiAgent() {
         affectiveModelChartGui = new AffectiveModelChartGui();
         affectiveModelChartGuiListener = new AffectiveModelChartGuiListener(this, affectiveModelChartGui);
         logger = new AgentLogger(this);
-        masoesOntologyAssistant = new OntologyAssistant(this, MasoesOntology.getInstance());
     }
 
     @Override
@@ -44,25 +35,20 @@ public class AffectiveModelChartGuiAgent extends GuiAgent {
             throw new AgentException(message);
         }
 
-        String agentName = getEmotionalAgentName();
-
-        emotionalStateAgentBehaviour = new CyclicBehaviour() {
-            @Override
-            public void action() {
-                AgentState agentState = (AgentState) masoesOntologyAssistant.sendRequestAction(getAID(agentName), new GetEmotionalState());
-                affectiveModelChartGui.setAgentState(agentState);
-                try {
-                    Thread.sleep(1000 / FPS);
-                } catch (InterruptedException e) {
-                }
-            }
-        };
-        addBehaviour(emotionalStateAgentBehaviour);
+        addBehaviour(new AffectiveModelChartGuiAgentBehaviour(this));
         affectiveModelChartGui.showGui();
     }
 
-    private String getEmotionalAgentName() {
+    public AffectiveModelChartGui getAffectiveModelChartGui() {
+        return affectiveModelChartGui;
+    }
+
+    public String getEmotionalAgentName() {
         return (String) getArguments()[0];
+    }
+
+    public AID getEmotionalAgentAID() {
+        return getAID(getEmotionalAgentName());
     }
 
     private boolean hasArgument() {

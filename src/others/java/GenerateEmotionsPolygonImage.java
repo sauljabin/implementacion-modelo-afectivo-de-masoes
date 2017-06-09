@@ -215,7 +215,7 @@ public class GenerateEmotionsPolygonImage {
         setColor(BLACK_COLOR);
         drawPolygon(emotionToPolygon);
 
-        Alphabet alphabet = new Alphabet();
+        AlphabetIterator alphabetIterator = new AlphabetIterator();
 
         String points = Arrays.stream(emotion.getCoordinates())
                 .collect(Collectors.toSet())
@@ -223,7 +223,7 @@ public class GenerateEmotionsPolygonImage {
                 .map(coordinate -> {
                     setColor(RED_COLOR);
                     String stringPoint = String.format("%s%s",
-                            alphabet.next(),
+                            alphabetIterator.next(),
                             toPointStringFormat(coordinate.x, coordinate.y)
                     );
 

@@ -18,13 +18,13 @@ public class EnvironmentFactory {
 
         Set<Class<? extends Environment>> subTypes = reflections.getSubTypesOf(Environment.class);
 
-        Optional<Class<? extends Environment>> first = subTypes.stream()
+        Optional<Class<? extends Environment>> environmentClass = subTypes.stream()
                 .filter(aClass -> aClass.getSimpleName().toLowerCase().contains(environment.toLowerCase()))
                 .findFirst();
 
-        if (first.isPresent()) {
+        if (environmentClass.isPresent()) {
             try {
-                return first.get().newInstance();
+                return environmentClass.get().newInstance();
             } catch (Exception e) {
                 throw new InvalidEnvironmentException(e);
             }
