@@ -136,9 +136,6 @@ public class ConfiguratorAgent extends GuiAgent {
                 case SHOW_EMOTIONAL_STATE_GUI:
                     showEmotionalStateGui();
                     break;
-                case SAVE:
-                    saveResults();
-                    break;
                 case DESELECT_ALL_AGENTS_TO_ADD:
                     deselectAllAgentsToAdd();
                     break;
@@ -448,6 +445,13 @@ public class ConfiguratorAgent extends GuiAgent {
         final int eventFrequency = configuratorAgentGui.getIntervalBetweenEvents();
 
         configuratorBehaviour = new CounterBehaviour(configuratorAgentGui.getIterations()) {
+
+            @Override
+            public int onEnd() {
+                saveResults();
+                return 0;
+            }
+
             @Override
             public void count(int i) {
                 socialEmotionCalculator.clear();
@@ -501,10 +505,6 @@ public class ConfiguratorAgent extends GuiAgent {
                 configuratorAgentGui.setActualIteration(i);
 
                 agentsAffectiveModelChartGui.addEmotionalState(centralEmotionName, centralEmotionalState.toEmotionalState());
-
-                if (configuratorAgentGui.getIterations() == i) {
-                    configuratorAgentGui.activateSaveButton();
-                }
 
                 try {
                     Thread.sleep(1000 / FPS);
