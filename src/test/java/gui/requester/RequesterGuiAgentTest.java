@@ -6,10 +6,12 @@
 
 package gui.requester;
 
+import agent.AgentException;
 import agent.AgentLogger;
 import agent.configurable.ontology.AddBehaviour;
 import agent.configurable.ontology.ConfigurableOntology;
 import agent.configurable.ontology.RemoveBehaviour;
+import jade.JadeSettings;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
 import jade.content.onto.Ontology;
@@ -42,8 +44,11 @@ import masoes.ontology.stimulus.ActionStimulus;
 import masoes.ontology.stimulus.EvaluateStimulus;
 import masoes.ontology.stimulus.EventStimulus;
 import masoes.ontology.stimulus.ObjectStimulus;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 import settings.ontology.GetAllSettings;
 import settings.ontology.GetSetting;
@@ -62,12 +67,14 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.spy;
-import static org.unitils.util.ReflectionUtils.setFieldValue;
+import static test.ReflectionTestUtils.setFieldValue;
 
 public class RequesterGuiAgentTest extends PowerMockitoTest {
 
     private static final String RECEIVER_AGENT_NAME = "receiverAgentName";
     private static final String SENDER_AGENT_NAME = "senderAgentName";
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
     private ArgumentCaptor<ACLMessage> messageArgumentCaptor;
     private RequesterGuiAgent requesterGuiAgent;
     private RequesterGuiAgent requesterGuiAgentSpy;
@@ -75,6 +82,7 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
     private AID senderAgentAID;
     private AID receiverAgentAID;
     private AgentLogger logger;
+    private JadeSettings jadeSettings;
 
     @Before
     public void setUp() throws Exception {
@@ -92,9 +100,24 @@ public class RequesterGuiAgentTest extends PowerMockitoTest {
         senderAgentAID = new AID(SENDER_AGENT_NAME, AID.ISGUID);
         receiverAgentAID = new AID(RECEIVER_AGENT_NAME, AID.ISGUID);
         doReturn(senderAgentAID).when(requesterGuiAgentSpy).getAID();
+        doReturn(SENDER_AGENT_NAME).when(requesterGuiAgentSpy).getLocalName();
         doReturn(receiverAgentAID).when(requesterGuiAgentSpy).getAID(RECEIVER_AGENT_NAME);
 
         doReturn(RECEIVER_AGENT_NAME).when(requesterGuiMock).getReceiverAgentName();
+        jadeSettings = JadeSettings.getInstance();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        setFieldValue(jadeSettings, "INSTANCE", null);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenJadeGuiOptionIsDisable() {
+        expectedException.expect(AgentException.class);
+        expectedException.expectMessage(SENDER_AGENT_NAME + ": gui option is disabled");
+        jadeSettings.set(JadeSettings.GUI, Boolean.toString(false));
+        requesterGuiAgentSpy.setup();
     }
 
     @Test

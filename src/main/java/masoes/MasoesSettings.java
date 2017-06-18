@@ -10,8 +10,6 @@ import settings.SettingsLoader;
 
 public class MasoesSettings extends SettingsLoader {
 
-    public static final String MASOES_SATISFACTION_PARAMETER = "masoes.satisfaction_parameter";
-    public static final String MASOES_ACTIVATION_PARAMETER = "masoes.activation_parameter";
     public static final String MASOES_ENV = "masoes.env";
 
     private static final String SETTINGS_PROPERTIES_FILE = "masoes.properties";

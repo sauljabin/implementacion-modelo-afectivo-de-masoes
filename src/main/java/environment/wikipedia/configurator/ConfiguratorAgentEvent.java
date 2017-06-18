@@ -12,8 +12,6 @@ import java.util.List;
 public enum ConfiguratorAgentEvent {
 
     CLOSE_WINDOW,
-    UPDATE_SATISFACTION_PARAMETER,
-    UPDATE_ACTIVATION_PARAMETER,
     START,
     CLEAN,
     ADD_AGENT,

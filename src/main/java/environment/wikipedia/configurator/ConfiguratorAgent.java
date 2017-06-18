@@ -21,7 +21,6 @@ import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
-import masoes.MasoesSettings;
 import masoes.collective.SocialEmotionCalculator;
 import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
@@ -110,12 +109,6 @@ public class ConfiguratorAgent extends GuiAgent {
                 case CLOSE_WINDOW:
                     cleanSimulation();
                     doDelete();
-                    break;
-                case UPDATE_SATISFACTION_PARAMETER:
-                    updateSatisfactionParameter();
-                    break;
-                case UPDATE_ACTIVATION_PARAMETER:
-                    updateActivationParameter();
                     break;
                 case CLEAN:
                     cleanSimulation();
@@ -576,14 +569,6 @@ public class ConfiguratorAgent extends GuiAgent {
             configuratorAgentGui.setAgentsToAdd(new ArrayList<>());
         });
         configuratorAgentGui.configurationMode();
-    }
-
-    private void updateActivationParameter() {
-        MasoesSettings.getInstance().set(MasoesSettings.MASOES_ACTIVATION_PARAMETER, String.valueOf(configuratorAgentGui.getActivationParameter()));
-    }
-
-    private void updateSatisfactionParameter() {
-        MasoesSettings.getInstance().set(MasoesSettings.MASOES_SATISFACTION_PARAMETER, String.valueOf(configuratorAgentGui.getSatisfactionParameter()));
     }
 
 }

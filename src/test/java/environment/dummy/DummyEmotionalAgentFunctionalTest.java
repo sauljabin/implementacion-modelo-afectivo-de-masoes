@@ -13,7 +13,6 @@ import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
-import masoes.MasoesSettings;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
@@ -46,8 +45,6 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
 
     @Before
     public void setUp() {
-        MasoesSettings.getInstance().set(MasoesSettings.MASOES_ACTIVATION_PARAMETER, "0.1");
-        MasoesSettings.getInstance().set(MasoesSettings.MASOES_SATISFACTION_PARAMETER, "0.1");
         contentManager = new ContentManager();
         contentManager.registerOntology(MasoesOntology.getInstance());
         contentManager.registerLanguage(new SLCodec());
@@ -69,7 +66,7 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
     @Test
     public void shouldChangeAgentEmotion() throws Exception {
         testEvaluateActionStimulus("greeting", getAID(), "compassion", "IMITATIVE", Arrays.asList("--activation=-0.45", "--satisfaction=0.45"));
-        testEvaluateObjectStimulus("smile", getAID(), "admiration", "IMITATIVE", Arrays.asList("--activation=-0.55", "--satisfaction=0.55"));
+        testEvaluateObjectStimulus("smile", getAID(), "admiration", "IMITATIVE", Arrays.asList("--activation=-0.55", "--satisfaction=-0.45"));
         testEvaluateEventStimulus("bye", getAID(), "joy", "IMITATIVE", Arrays.asList("--activation=0.55", "--satisfaction=0.55"));
     }
 

@@ -10,9 +10,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.unitils.util.ReflectionUtils.setFieldValue;
@@ -34,16 +31,6 @@ public class MasoesSettingsTest {
     @Test
     public void shouldGetSameInstance() {
         assertThat(MasoesSettings.getInstance(), is(masoesSettings));
-    }
-
-    @Test
-    public void shouldLoadInitValues() {
-        Map<String, String> expectedValues = new HashMap<>();
-        expectedValues.put(MasoesSettings.MASOES_SATISFACTION_PARAMETER, "0.01");
-        expectedValues.put(MasoesSettings.MASOES_ACTIVATION_PARAMETER, "0.01");
-        expectedValues.keySet().forEach(
-                key -> assertThat(masoesSettings.get(key), is(expectedValues.get(key)))
-        );
     }
 
 }

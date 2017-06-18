@@ -72,18 +72,12 @@ public class BehaviouralKnowledgeBaseTest extends PowerMockitoTest {
 
     @Test
     public void shouldSolveCorrectlyEmotionalConfiguratorQuestionsWithAction() throws Exception {
-        testEmotionByAction("other", "greeting", "negative", "positive");
-        testEmotionByAction("other", "smile", "positive", "negative");
-        testEmotionByAction("other", "run", "negative", "negative");
-        testEmotionByAction("other", "bye", "negative", "negative");
-        testEmotionByAction(AGENT_NAME, "eat", "positive", "positive");
-        testEmotionByAction(AGENT_NAME, "sleep", "positive", "positive");
-        testEmotionByAction(AGENT_NAME, "wake", "negative", "negative");
-        testEmotionByAction(AGENT_NAME, "pay", "negative", "negative");
+        testEmotionByAction("other", "greeting", "0.1", "0.1");
+        testEmotionByAction(AGENT_NAME, "eat", "0.5", "0.5");
     }
 
     private void testEmotionByAction(String agent, String parameter, String expectedActivation, String expectedSatisfaction) throws Exception {
-        SolveInfo solve = behaviouralKnowledgeBase.solve("valence('" + agent + "', '" + parameter + "', X, Y).");
+        SolveInfo solve = behaviouralKnowledgeBase.solve("stimulus('" + agent + "', '" + parameter + "', X, Y).");
         assertThat(solve.getVarValue("X").toString(), is(expectedActivation));
         assertThat(solve.getVarValue("Y").toString(), is(expectedSatisfaction));
     }

@@ -6,11 +6,13 @@
 
 package gui.requester;
 
+import agent.AgentException;
 import agent.AgentLogger;
 import agent.configurable.ontology.AddBehaviour;
 import agent.configurable.ontology.ConfigurableOntology;
 import agent.configurable.ontology.RemoveBehaviour;
 import gui.GuiException;
+import jade.JadeSettings;
 import jade.content.AgentAction;
 import jade.content.onto.Ontology;
 import jade.core.AID;
@@ -71,9 +73,17 @@ public class RequesterGuiAgent extends GuiAgent {
 
     @Override
     protected void setup() {
+        if (!isGUIEnabled()) {
+            throw new AgentException(getLocalName() + ": gui option is disabled");
+        }
+
         addBehaviour(new RequesterGuiResponseHandlerBehaviour(this, requesterGui));
         requesterGui.setSenderAgentName(getLocalName());
         requesterGui.showGui();
+    }
+
+    private boolean isGUIEnabled() {
+        return Boolean.parseBoolean(JadeSettings.getInstance().get(JadeSettings.GUI));
     }
 
     @Override

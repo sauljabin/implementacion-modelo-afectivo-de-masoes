@@ -9,6 +9,7 @@ package gui.state;
 import agent.AgentException;
 import agent.AgentLogger;
 import environment.wikipedia.configurator.ConfiguratorAgentEvent;
+import jade.JadeSettings;
 import jade.core.AID;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
@@ -29,6 +30,10 @@ public class AffectiveModelChartGuiAgent extends GuiAgent {
 
     @Override
     protected void setup() {
+        if (!isGUIEnabled()) {
+            throw new AgentException(getLocalName() + ": gui option is disabled");
+        }
+
         if (!hasArgument()) {
             String message = getLocalName() + " no has argument: emotional agent name is necessary";
             JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
@@ -37,6 +42,10 @@ public class AffectiveModelChartGuiAgent extends GuiAgent {
 
         addBehaviour(new AffectiveModelChartGuiAgentBehaviour(this));
         affectiveModelChartGui.showGui();
+    }
+
+    private boolean isGUIEnabled() {
+        return Boolean.parseBoolean(JadeSettings.getInstance().get(JadeSettings.GUI));
     }
 
     public AffectiveModelChartGui getAffectiveModelChartGui() {

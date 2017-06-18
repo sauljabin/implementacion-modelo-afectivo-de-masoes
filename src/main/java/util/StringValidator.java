@@ -16,7 +16,11 @@ public final class StringValidator {
     }
 
     public static boolean isReal(String string) {
-        return string.matches("-?[0-9]+.[0-9]+");
+        return string.matches("-?([0-9]+)?.[0-9]+");
+    }
+
+    public static boolean isNumber(String string) {
+        return isInteger(string) || isReal(string);
     }
 
 }

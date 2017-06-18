@@ -26,7 +26,14 @@ public final class ReflectionTestUtils {
         if (first.isPresent()) {
             affectedField = aClass.getDeclaredField(fieldName);
         } else {
-            affectedField = aClass.getSuperclass().getDeclaredField(fieldName);
+            Optional<Field> firstSuperClass = Arrays.stream(aClass.getSuperclass().getDeclaredFields())
+                    .filter(field -> field.getName().equals(fieldName))
+                    .findFirst();
+            if (firstSuperClass.isPresent()) {
+                affectedField = aClass.getSuperclass().getDeclaredField(fieldName);
+            } else {
+                affectedField = aClass.getSuperclass().getSuperclass().getDeclaredField(fieldName);
+            }
         }
 
         boolean shouldResetAccessibility = false;

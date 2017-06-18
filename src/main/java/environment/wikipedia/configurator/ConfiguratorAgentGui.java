@@ -6,7 +6,6 @@
 
 package environment.wikipedia.configurator;
 
-import masoes.MasoesSettings;
 import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
 import masoes.component.behavioural.EmotionalState;
@@ -289,19 +288,16 @@ public class ConfiguratorAgentGui extends JFrame {
         JLabel activationParameterLabel = new JLabel(translation.get("gui.activation_parameter"));
         globalVariablesPanel.add(activationParameterLabel, "w 70");
 
-        double activationParameter = Double.parseDouble(MasoesSettings.getInstance().get(MasoesSettings.MASOES_ACTIVATION_PARAMETER));
 
         activationParameterSpinner = new JSpinner();
-        activationParameterSpinner.setModel(new SpinnerNumberModel(activationParameter, 0., 1., .01));
+        activationParameterSpinner.setModel(new SpinnerNumberModel(0, 0., 1., .01));
         globalVariablesPanel.add(activationParameterSpinner, "w 70");
 
         JLabel satisfactionParameterLabel = new JLabel(translation.get("gui.satisfaction_parameter"));
         globalVariablesPanel.add(satisfactionParameterLabel, "w 70");
 
-        double satisfactionParameter = Double.parseDouble(MasoesSettings.getInstance().get(MasoesSettings.MASOES_SATISFACTION_PARAMETER));
-
         satisfactionParameterSpinner = new JSpinner();
-        satisfactionParameterSpinner.setModel(new SpinnerNumberModel(satisfactionParameter, 0., 1., .01));
+        satisfactionParameterSpinner.setModel(new SpinnerNumberModel(0, 0., 1., .01));
         globalVariablesPanel.add(satisfactionParameterSpinner, "w 70, wrap");
     }
 
@@ -319,18 +315,6 @@ public class ConfiguratorAgentGui extends JFrame {
     }
 
     public void addActionListener(ActionListener actionListener) {
-        activationParameterSpinner.addChangeListener(e -> actionListener.actionPerformed(new ActionEvent(
-                e.getSource(),
-                ConfiguratorAgentEvent.UPDATE_ACTIVATION_PARAMETER.getInt(),
-                ConfiguratorAgentEvent.UPDATE_ACTIVATION_PARAMETER.toString()
-        )));
-
-        satisfactionParameterSpinner.addChangeListener(e -> actionListener.actionPerformed(new ActionEvent(
-                e.getSource(),
-                ConfiguratorAgentEvent.UPDATE_SATISFACTION_PARAMETER.getInt(),
-                ConfiguratorAgentEvent.UPDATE_SATISFACTION_PARAMETER.toString()
-        )));
-
         activationToAddSpinner.addChangeListener(e -> actionListener.actionPerformed(new ActionEvent(
                 e.getSource(),
                 ConfiguratorAgentEvent.UPDATE_ACTIVATION_TO_ADD.getInt(),

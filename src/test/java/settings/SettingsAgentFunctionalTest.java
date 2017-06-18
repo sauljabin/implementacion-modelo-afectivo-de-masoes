@@ -108,11 +108,11 @@ public class SettingsAgentFunctionalTest extends FunctionalTest {
 
     @Test
     public void shouldReceiveOneMasoesSetting() {
-        ContentElement contentElement = sendAction(new GetSetting(MasoesSettings.MASOES_ACTIVATION_PARAMETER));
+        ContentElement contentElement = sendAction(new GetSetting(MasoesSettings.MASOES_ENV));
         assertThat(contentElement, is(instanceOf(SystemSettings.class)));
 
         SystemSettings expectedSystemSettings = new SystemSettings();
-        expectedSystemSettings.getSettings().add(new Setting(MasoesSettings.MASOES_ACTIVATION_PARAMETER, MasoesSettings.getInstance().get(MasoesSettings.MASOES_ACTIVATION_PARAMETER)));
+        expectedSystemSettings.getSettings().add(new Setting(MasoesSettings.MASOES_ENV, MasoesSettings.getInstance().get(MasoesSettings.MASOES_ENV)));
 
         SystemSettings systemSettings = (SystemSettings) contentElement;
         assertReflectionEquals("Content", expectedSystemSettings.getSettings().toArray(), systemSettings.getSettings().toArray());

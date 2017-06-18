@@ -8,10 +8,12 @@ package environment.dummy;
 
 import environment.AgentParameter;
 import gui.requester.RequesterGuiAgent;
+import gui.state.AffectiveModelChartGuiAgent;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -27,6 +29,7 @@ public class DummyEnvironmentTest {
     public void setUp() {
         expectedAgentsInfo = new ArrayList<>();
         expectedAgentsInfo.add(new AgentParameter("dummy", DummyEmotionalAgent.class));
+        expectedAgentsInfo.add(new AgentParameter("dummyGUI", AffectiveModelChartGuiAgent.class, Arrays.asList("dummy")));
         expectedAgentsInfo.add(new AgentParameter("requester", RequesterGuiAgent.class));
         dummyEnvironment = new DummyEnvironment();
     }

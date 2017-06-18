@@ -7,7 +7,6 @@
 package masoes.component.behavioural;
 
 import jade.core.AID;
-import masoes.MasoesSettings;
 import masoes.component.behavioural.emotion.CompassionEmotion;
 import masoes.component.behavioural.emotion.DepressionEmotion;
 import masoes.component.behavioural.emotion.HappinessEmotion;
@@ -25,8 +24,6 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 
@@ -39,8 +36,6 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
 
     @Before
     public void setUp() {
-        MasoesSettings.getInstance().set(MasoesSettings.MASOES_ACTIVATION_PARAMETER, "0.1");
-        MasoesSettings.getInstance().set(MasoesSettings.MASOES_SATISFACTION_PARAMETER, "0.1");
         behaviouralKnowledgeBase = new BehaviouralKnowledgeBase(AGENT_NAME);
         behaviouralKnowledgeBase.addTheory(Paths.get(AGENT_KNOWLEDGE_PATH));
         emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
@@ -80,8 +75,8 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
         emotionalConfigurator.updateEmotion(stimulus);
 
         assertThat(emotionalConfigurator.getEmotion(), is(instanceOf(HappinessEmotion.class)));
-        assertThat(emotionalConfigurator.getEmotionalState().getActivation(), is(greaterThan(initialState)));
-        assertThat(emotionalConfigurator.getEmotionalState().getSatisfaction(), is(greaterThan(initialState)));
+        assertThat(emotionalConfigurator.getEmotionalState().getActivation(), is(initialState + .5));
+        assertThat(emotionalConfigurator.getEmotionalState().getSatisfaction(), is(initialState + .5));
     }
 
     @Test
@@ -95,8 +90,8 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
         emotionalConfigurator.updateEmotion(stimulus);
 
         assertThat(emotionalConfigurator.getEmotion(), is(instanceOf(JoyEmotion.class)));
-        assertThat(emotionalConfigurator.getEmotionalState().getActivation(), is(lessThan(initialState)));
-        assertThat(emotionalConfigurator.getEmotionalState().getSatisfaction(), is(lessThan(initialState)));
+        assertThat(emotionalConfigurator.getEmotionalState().getActivation(), is(initialState - .3));
+        assertThat(emotionalConfigurator.getEmotionalState().getSatisfaction(), is(initialState - .5));
     }
 
     @Test
@@ -106,7 +101,7 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
         behaviouralKnowledgeBase.addTheory(Paths.get(AGENT_KNOWLEDGE_PATH));
         emotionalConfigurator = new EmotionalConfigurator(behaviouralKnowledgeBase);
 
-        double initialState = -.55;
+        double initialState = -.1;
         EmotionalState emotionalState = new EmotionalState(initialState, initialState);
         emotionalConfigurator.setEmotionalState(emotionalState);
 
@@ -115,13 +110,13 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
         emotionalConfigurator.updateEmotion(stimulus);
 
         assertThat(emotionalConfigurator.getEmotion(), is(instanceOf(DepressionEmotion.class)));
-        assertThat(emotionalConfigurator.getEmotionalState().getActivation(), is(lessThan(initialState)));
-        assertThat(emotionalConfigurator.getEmotionalState().getSatisfaction(), is(lessThan(initialState)));
+        assertThat(emotionalConfigurator.getEmotionalState().getActivation(), is(initialState - .3));
+        assertThat(emotionalConfigurator.getEmotionalState().getSatisfaction(), is(initialState - .5));
     }
 
     @Test
     public void shouldUpdateCorrectlyTheEmotionWithUpperAction() {
-        behaviouralKnowledgeBase.addTheory("valence(AGENT, 'Eat', negative, positive) :- self(AGENT).");
+        behaviouralKnowledgeBase.addTheory("stimulus(AGENT, 'Eat', -0.1, -0.1) :- self(AGENT).");
 
         EmotionalState emotionalState = new EmotionalState(-.45, .45);
         emotionalConfigurator.setEmotionalState(emotionalState);
@@ -131,15 +126,15 @@ public class EmotionalConfiguratorTest extends PowerMockitoTest {
         emotionalConfigurator.updateEmotion(stimulus);
 
         assertThat(emotionalConfigurator.getEmotion(), is(instanceOf(CompassionEmotion.class)));
-        assertThat(emotionalConfigurator.getEmotionalState().getActivation(), is(lessThan(-.45)));
-        assertThat(emotionalConfigurator.getEmotionalState().getSatisfaction(), is(greaterThan(.45)));
+        assertThat(emotionalConfigurator.getEmotionalState().getActivation(), is(-.55));
+        assertThat(emotionalConfigurator.getEmotionalState().getSatisfaction(), is(.35));
     }
 
     @Test
     public void shouldReturnRandomValueWhenResultHasMoreThanOneSolution() {
         String actionName = "actionName";
-        behaviouralKnowledgeBase.addTheory("valence(AGENT, actionName, positive, positive) :- self(AGENT).");
-        behaviouralKnowledgeBase.addTheory("valence(AGENT, actionName, negative, negative) :- self(AGENT).");
+        behaviouralKnowledgeBase.addTheory("stimulus(AGENT, actionName, 0.1, 0.1) :- self(AGENT).");
+        behaviouralKnowledgeBase.addTheory("stimulus(AGENT, actionName, -0.1, -0.1) :- self(AGENT).");
 
         List<Emotion> emotions = new LinkedList<>();
 

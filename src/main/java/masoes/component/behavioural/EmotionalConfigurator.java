@@ -10,25 +10,23 @@ import alice.tuprolog.NoSolutionException;
 import alice.tuprolog.SolveInfo;
 import alice.tuprolog.UnknownVarException;
 import knowledge.KnowledgeException;
-import masoes.MasoesSettings;
 import masoes.ontology.stimulus.ActionStimulus;
 import masoes.ontology.stimulus.EventStimulus;
 import masoes.ontology.stimulus.ObjectStimulus;
 import masoes.ontology.stimulus.Stimulus;
-import util.StringValidator;
 import util.ToStringBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static util.StringValidator.isNumber;
+
 public class EmotionalConfigurator {
 
     private static final String ANSWER_ACTIVATION_VAR_NAME = "X";
     private static final String ANSWER_SATISFACTION_VAR_NAME = "Y";
-    private static final String POSITIVE = "positive";
-    private static final String NEGATIVE = "negative";
-    private static final String DEFAULT_INCREASE_PARAMETER = "0.1";
+    private static final double DEFAULT_PARAMETER_VALUE = 0;
 
     private EmotionalState emotionalState;
     private AffectiveModel affectiveModel;
@@ -61,23 +59,8 @@ public class EmotionalConfigurator {
             SolveInfo solveEmotion = getSolutionQuestion(stimulus);
 
             if (solveEmotion.isSuccess()) {
-                String activationValence = getActivationValence(solveEmotion);
-                String satisfactionValence = getSatisfactionValence(solveEmotion);
-
-                double activation = emotionalState.getActivation();
-                double satisfaction = emotionalState.getSatisfaction();
-
-                if (activationValence.equalsIgnoreCase(POSITIVE)) {
-                    activation += getActivationParameter();
-                } else if (activationValence.equalsIgnoreCase(NEGATIVE)) {
-                    activation -= getActivationParameter();
-                }
-
-                if (satisfactionValence.equalsIgnoreCase(POSITIVE)) {
-                    satisfaction += getSatisfactionParameter();
-                } else if (satisfactionValence.equalsIgnoreCase(NEGATIVE)) {
-                    satisfaction -= getSatisfactionParameter();
-                }
+                double activation = emotionalState.getActivation() + getActivationParameter(solveEmotion);
+                double satisfaction = emotionalState.getSatisfaction() + getSatisfactionParameter(solveEmotion);
 
                 return new EmotionalState(activation, satisfaction);
             }
@@ -106,32 +89,36 @@ public class EmotionalConfigurator {
         return solutions.get(random);
     }
 
-    private double getActivationParameter() {
-        String activationParameterString = MasoesSettings.getInstance().get(MasoesSettings.MASOES_ACTIVATION_PARAMETER, DEFAULT_INCREASE_PARAMETER);
-        if (!StringValidator.isReal(activationParameterString)) {
-            activationParameterString = DEFAULT_INCREASE_PARAMETER;
+    private double getSatisfactionParameter(SolveInfo solveEmotion) throws NoSolutionException, UnknownVarException {
+        String stringValue = solveEmotion
+                .getTerm(ANSWER_SATISFACTION_VAR_NAME)
+                .toString()
+                .replace("'", "")
+                .toLowerCase();
+
+        if (isNumber(stringValue)) {
+            return Double.parseDouble(stringValue);
+        } else {
+            return DEFAULT_PARAMETER_VALUE;
         }
-        return Double.parseDouble(activationParameterString);
     }
 
-    private double getSatisfactionParameter() {
-        String satisfactionParameterString = MasoesSettings.getInstance().get(MasoesSettings.MASOES_SATISFACTION_PARAMETER, DEFAULT_INCREASE_PARAMETER);
-        if (!StringValidator.isReal(satisfactionParameterString)) {
-            satisfactionParameterString = DEFAULT_INCREASE_PARAMETER;
+    private double getActivationParameter(SolveInfo solveEmotion) throws NoSolutionException, UnknownVarException {
+        String stringValue = solveEmotion
+                .getTerm(ANSWER_ACTIVATION_VAR_NAME)
+                .toString()
+                .replace("'", "")
+                .toLowerCase();
+
+        if (isNumber(stringValue)) {
+            return Double.parseDouble(stringValue);
+        } else {
+            return DEFAULT_PARAMETER_VALUE;
         }
-        return Double.parseDouble(satisfactionParameterString);
-    }
-
-    private String getSatisfactionValence(SolveInfo solveEmotion) throws NoSolutionException, UnknownVarException {
-        return solveEmotion.getTerm(ANSWER_SATISFACTION_VAR_NAME).toString().replace("'", "").toLowerCase();
-    }
-
-    private String getActivationValence(SolveInfo solveEmotion) throws NoSolutionException, UnknownVarException {
-        return solveEmotion.getTerm(ANSWER_ACTIVATION_VAR_NAME).toString().replace("'", "").toLowerCase();
     }
 
     private String getQuestion(Stimulus stimulus) {
-        return String.format("valence(%s, %s, " + ANSWER_ACTIVATION_VAR_NAME + ", " + ANSWER_SATISFACTION_VAR_NAME + ").", getAgent(stimulus), getItemName(stimulus));
+        return String.format("stimulus(%s, %s, " + ANSWER_ACTIVATION_VAR_NAME + ", " + ANSWER_SATISFACTION_VAR_NAME + ").", getAgent(stimulus), getItemName(stimulus));
     }
 
     private String getItemName(Stimulus stimulus) {
