@@ -222,6 +222,8 @@ public class ConfiguratorAgentGui extends JFrame {
         agentsToAddTable.setFillsViewportHeight(true);
         agentsToAddTable.getTableHeader().setFont(FONT_9);
         agentsToAddTable.setFont(FONT_9);
+        TableColumnModel columnModel = agentsToAddTable.getColumnModel();
+        columnModel.getColumn(0).setMaxWidth(100);
 
         JScrollPane scrollAgentsToAddTable = new JScrollPane(agentsToAddTable);
         initialAgentConfigurationPanel.add(scrollAgentsToAddTable, "h 100%, w 100%");
@@ -252,8 +254,7 @@ public class ConfiguratorAgentGui extends JFrame {
         knowledgeRulesTable = new JTable(knowledgeRulesTableModel);
         knowledgeRulesTable.setFillsViewportHeight(true);
         TableColumnModel columnModel = knowledgeRulesTable.getColumnModel();
-        columnModel.getColumn(0).setPreferredWidth(20);
-        columnModel.getColumn(1).setPreferredWidth(160);
+        columnModel.getColumn(0).setMaxWidth(100);
         knowledgeRulesTable.setRowSelectionAllowed(false);
         knowledgeRulesTable.setColumnSelectionAllowed(false);
         knowledgeRulesTable.setFocusable(false);

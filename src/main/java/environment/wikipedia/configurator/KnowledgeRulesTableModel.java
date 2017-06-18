@@ -27,10 +27,10 @@ public class KnowledgeRulesTableModel extends AbstractTableModel {
         knowledgeRules = new ArrayList<>();
         translation = Translation.getInstance();
         columns = new String[]{
-                "",
+                translation.get("gui.send"),
                 translation.get("gui.event"),
-                translation.get("gui.activation"),
-                translation.get("gui.satisfaction")
+                translation.get("gui.activation_parameter"),
+                translation.get("gui.satisfaction_parameter")
         };
     }
 

@@ -27,7 +27,7 @@ public class AgentsToAddTableModel extends AbstractTableModel {
         agentsToAdd = new ArrayList<>();
         translation = Translation.getInstance();
         columns = new String[]{
-                translation.get("gui.receive_stimulus"),
+                translation.get("gui.receive"),
                 translation.get("gui.agent"),
                 translation.get("gui.initial_emotional_state"),
                 translation.get("gui.emotion")
