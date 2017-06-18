@@ -26,15 +26,15 @@ import java.util.List;
 
 public class ConfiguratorAgentGui extends JFrame {
 
-    public static final String W_EAST = "w 400";
-    private JPanel centerPanel;
+    private static final Font FONT_9 = new Font("Arial", Font.PLAIN, 9);
+    private static final Font FONT_10 = new Font("Arial", Font.PLAIN, 10);
+    private static final Font FONT_50 = new Font("Arial", Font.BOLD, 50);
+    private JPanel leftPanel;
     private Translation translation;
 
     private JComboBox<Object> agentTypesToAddCombo;
     private AgentsStateTableModel agentsStateTableModel;
     private AgentsToAddTableModel agentsToAddTableModel;
-    private JSpinner activationParameterSpinner;
-    private JSpinner satisfactionParameterSpinner;
     private JSpinner activationToAddSpinner;
     private JSpinner satisfactionToAddSpinner;
     private JSpinner iterationsSpinner;
@@ -61,6 +61,8 @@ public class ConfiguratorAgentGui extends JFrame {
     private JLabel frequencyValueLabel;
     private JButton selectAllEventsButton;
     private JButton deselectAllEventsButton;
+    private JPanel rightPanel;
+    private JPanel mainPanel;
 
     public ConfiguratorAgentGui() {
         translation = Translation.getInstance();
@@ -75,7 +77,7 @@ public class ConfiguratorAgentGui extends JFrame {
 
     private void setUp() {
         setTitle(translation.get("gui.configurator"));
-        setSize(1200, 780);
+        setSize(1400, 780);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
         addComponents();
@@ -84,81 +86,167 @@ public class ConfiguratorAgentGui extends JFrame {
     }
 
     private void addComponents() {
-        addEastComponents();
-        addCenterComponents();
+        mainPanel = new JPanel(new MigLayout("insets 0"));
+        add(mainPanel, BorderLayout.CENTER);
+
+        leftPanel = new JPanel(new MigLayout("insets 10 10 10 0"));
+        mainPanel.add(leftPanel, "w 50%, h 100%");
+
+        rightPanel = new JPanel(new MigLayout("insets 10"));
+        mainPanel.add(rightPanel, "w 50%, h 100%");
+
+        addResultsComponents(rightPanel);
+        addConfigComponents(leftPanel);
     }
 
-    private void addEastComponents() {
-        JPanel westPanel = new JPanel(new MigLayout("insets 10"));
-        add(westPanel, BorderLayout.EAST);
+    private void addResultsComponents(JPanel panel) {
+        addIterationPanel(panel);
+        addCollectiveEmotionPanel(panel);
+        addCurrentStateComponents(panel);
+    }
 
+    private void addIterationPanel(JPanel panel) {
+        JPanel statusPanel = new JPanel(new MigLayout("insets 5"));
+        statusPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.iteration")));
+        panel.add(statusPanel, "w 100%, wrap 20");
+
+        actualIterationLabel = new JLabel("0");
+        actualIterationLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        actualIterationLabel.setFont(FONT_50);
+        statusPanel.add(actualIterationLabel, "w 100%");
+    }
+
+    private void addCollectiveEmotionPanel(JPanel panel) {
         JPanel collectiveEmotionPanel = new JPanel(new MigLayout("insets 5"));
         collectiveEmotionPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.social_emotion")));
-        westPanel.add(collectiveEmotionPanel, "wrap 20");
+        panel.add(collectiveEmotionPanel, "w 100%, wrap 20");
 
         JLabel centralEmotionLabel = new JLabel(translation.get("gui.central_emotion"));
         collectiveEmotionPanel.add(centralEmotionLabel);
 
         collectiveCentralEmotionalStateLabel = new JLabel("-");
         collectiveCentralEmotionalStateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        collectiveEmotionPanel.add(collectiveCentralEmotionalStateLabel, "grow, wrap");
+        collectiveEmotionPanel.add(collectiveCentralEmotionalStateLabel, "wrap");
 
         collectiveCentralEmotionLabel = new JLabel("-");
         collectiveCentralEmotionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        collectiveEmotionPanel.add(collectiveCentralEmotionLabel, W_EAST + ", span 2, wrap 30");
+        collectiveEmotionPanel.add(new JLabel());
+        collectiveEmotionPanel.add(collectiveCentralEmotionLabel, "wrap");
 
         JLabel maxDistanceEmotionLabel = new JLabel(translation.get("gui.max_distance"));
         collectiveEmotionPanel.add(maxDistanceEmotionLabel);
 
         maxDistanceEmotionValueLabel = new JLabel("-");
         maxDistanceEmotionValueLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        collectiveEmotionPanel.add(maxDistanceEmotionValueLabel, "grow, wrap");
+        collectiveEmotionPanel.add(maxDistanceEmotionValueLabel, "wrap");
 
         JLabel emotionalDispersionLabel = new JLabel(translation.get("gui.emotional_dispersion"));
         collectiveEmotionPanel.add(emotionalDispersionLabel);
 
         emotionalDispersionValueLabel = new JLabel("-");
         emotionalDispersionValueLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        collectiveEmotionPanel.add(emotionalDispersionValueLabel, "grow, wrap");
+        collectiveEmotionPanel.add(emotionalDispersionValueLabel, "wrap");
+    }
 
-        JPanel caseStudyPanel = new JPanel(new MigLayout("insets 5"));
-        caseStudyPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.case_study")));
-        westPanel.add(caseStudyPanel, "wrap 20");
+    private void addCurrentStateComponents(JPanel panel) {
+        JPanel currentStatePanel = new JPanel(new MigLayout("insets 5"));
+        currentStatePanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.current_emotional_states")));
+        panel.add(currentStatePanel, "w 100%, h 100%");
 
-        JLabel iterationsLabel = new JLabel(translation.get("gui.iterations"));
-        caseStudyPanel.add(iterationsLabel);
+        agentsStateTableModel = new AgentsStateTableModel();
+        agentStateTable = new JTable(agentsStateTableModel);
+        agentStateTable.setFillsViewportHeight(true);
+        agentStateTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        agentsStateTableModel.setTable(agentStateTable);
+        agentStateTable.getTableHeader().setFont(FONT_9);
+        agentStateTable.setFont(FONT_9);
 
-        iterationsSpinner = new JSpinner();
-        iterationsSpinner.setModel(new SpinnerNumberModel(1000, 0, 1000, 1));
-        caseStudyPanel.add(iterationsSpinner, "w 70, wrap");
+        JScrollPane scrollAgentStateTable = new JScrollPane(agentStateTable);
+        currentStatePanel.add(scrollAgentStateTable, "h 100%, w 100%");
 
-        JLabel intervalBetweenEventsLabel = new JLabel(translation.get("gui.interval_between_events"));
-        caseStudyPanel.add(intervalBetweenEventsLabel);
+        JPanel buttonsPanel = new JPanel(new MigLayout("insets 0"));
+        currentStatePanel.add(buttonsPanel, "h 100%, wrap");
 
-        intervalBetweenEventsSpinner = new JSpinner();
-        intervalBetweenEventsSpinner.setModel(new SpinnerNumberModel(5, 1, 1000, 1));
-        caseStudyPanel.add(intervalBetweenEventsSpinner, "w 70");
+        windowAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/window.png")));
+        buttonsPanel.add(windowAgentButton);
+    }
 
-        randomFrequencyCheckBox = new JCheckBox(translation.get("gui.random"));
-        caseStudyPanel.add(randomFrequencyCheckBox, "wrap");
+    private void addConfigComponents(JPanel panel) {
+        addInitialAgentConfigurationComponents(panel);
+        addStimuliComponents(panel);
+        addCaseStudyPanel(panel);
+    }
 
-        JLabel frequencyLabel = new JLabel(translation.get("gui.event_frequency"));
-        caseStudyPanel.add(frequencyLabel);
+    private void addInitialAgentConfigurationComponents(JPanel panel) {
+        JPanel initialAgentConfigurationPanel = new JPanel(new MigLayout("insets 5"));
+        initialAgentConfigurationPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.initial_agent_configuration")));
+        panel.add(initialAgentConfigurationPanel, "w 100%, h 100%, wrap");
 
-        frequencyValueLabel = new JLabel();
-        caseStudyPanel.add(frequencyValueLabel, "w 70, wrap 20");
-        updateFrequency();
+        JPanel configAgentPanel = new JPanel(new MigLayout("insets 0"));
+        initialAgentConfigurationPanel.add(configAgentPanel, "w 100%, span 2, wrap");
 
-        caseStudyPanel.add(new JLabel(translation.get("gui.events")));
-        caseStudyPanel.add(new JLabel());
+        JLabel agentLabel = new JLabel(translation.get("gui.agent"));
+        configAgentPanel.add(agentLabel);
 
-        selectAllEventsButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/list-all.png")));
-        selectAllEventsButton.setMinimumSize(new Dimension(25, 25));
-        caseStudyPanel.add(selectAllEventsButton, "w 25, h 25, al right, split 2");
+        agentTypesToAddCombo = new JComboBox<>(AgentTypeToAdd.values());
+        configAgentPanel.add(agentTypesToAddCombo, "wrap");
 
-        deselectAllEventsButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/list-delete.png")));
-        deselectAllEventsButton.setMinimumSize(new Dimension(25, 25));
-        caseStudyPanel.add(deselectAllEventsButton, "w 25, h 25, al right, wrap");
+        JLabel activationLabel = new JLabel(translation.get("gui.activation_x"));
+        configAgentPanel.add(activationLabel);
+
+        EmotionalState initialEmotionalState = new EmotionalState(.5, .5);
+        Emotion initialEmotion = AffectiveModel.getInstance().searchEmotion(initialEmotionalState);
+
+        activationToAddSpinner = new JSpinner();
+        activationToAddSpinner.setModel(new SpinnerNumberModel(initialEmotionalState.getActivation(), -1., 1., .01));
+        configAgentPanel.add(activationToAddSpinner, "grow");
+
+        emotionToAddLabel = new JLabel();
+        emotionToAddLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        emotionToAddLabel.setBackground(new Color(210, 210, 210));
+        emotionToAddLabel.setOpaque(true);
+        emotionToAddLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        setEmotionToAdd(initialEmotion);
+
+        configAgentPanel.add(emotionToAddLabel, "growy, w 100%, span 0 2, wrap");
+
+        JLabel satisfactionLabel = new JLabel(translation.get("gui.satisfaction_y"));
+        configAgentPanel.add(satisfactionLabel);
+
+        satisfactionToAddSpinner = new JSpinner();
+        satisfactionToAddSpinner.setModel(new SpinnerNumberModel(initialEmotionalState.getSatisfaction(), -1., 1., .01));
+        configAgentPanel.add(satisfactionToAddSpinner, "grow, wrap");
+
+        agentsToAddTableModel = new AgentsToAddTableModel();
+        agentsToAddTable = new JTable(agentsToAddTableModel);
+        agentsToAddTable.setFillsViewportHeight(true);
+        agentsToAddTable.getTableHeader().setFont(FONT_9);
+        agentsToAddTable.setFont(FONT_9);
+
+        JScrollPane scrollAgentsToAddTable = new JScrollPane(agentsToAddTable);
+        initialAgentConfigurationPanel.add(scrollAgentsToAddTable, "h 100%, w 100%");
+
+        JPanel buttonsPanel = new JPanel(new MigLayout("insets 0"));
+        initialAgentConfigurationPanel.add(buttonsPanel, "h 100%, wrap");
+
+        addAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/plus.png")));
+        buttonsPanel.add(addAgentButton, "wrap");
+
+        removeAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/minus.png")));
+        buttonsPanel.add(removeAgentButton, "wrap");
+
+        selectAllButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/table-select-all.png")));
+        buttonsPanel.add(selectAllButton, "wrap");
+
+        deselectAllButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/table-exclamation.png")));
+        buttonsPanel.add(deselectAllButton);
+    }
+
+    private void addStimuliComponents(JPanel panel) {
+        JPanel stimuliPanel = new JPanel(new MigLayout("insets 5"));
+        stimuliPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.stimuli")));
+
+        panel.add(stimuliPanel, "w 100%, h 100%, wrap");
 
         knowledgeRulesTableModel = new KnowledgeRulesTableModel();
         knowledgeRulesTable = new JTable(knowledgeRulesTableModel);
@@ -169,136 +257,62 @@ public class ConfiguratorAgentGui extends JFrame {
         knowledgeRulesTable.setRowSelectionAllowed(false);
         knowledgeRulesTable.setColumnSelectionAllowed(false);
         knowledgeRulesTable.setFocusable(false);
-        knowledgeRulesTable.getTableHeader().setFont(new Font("Arial", Font.PLAIN, 9));
-        knowledgeRulesTable.setFont(new Font("Arial", Font.PLAIN, 9));
+        knowledgeRulesTable.getTableHeader().setFont(FONT_9);
+        knowledgeRulesTable.setFont(FONT_9);
 
         JScrollPane scrollKnowledgeRulesTable = new JScrollPane(knowledgeRulesTable);
-        caseStudyPanel.add(scrollKnowledgeRulesTable, W_EAST + ", h 100, span 3, wrap");
-
-        startButton = new JButton(translation.get("gui.start"));
-        caseStudyPanel.add(startButton, W_EAST + ", span 3, wrap");
-
-        cleanButton = new JButton(translation.get("gui.clean"));
-        caseStudyPanel.add(cleanButton, W_EAST + ", span 3, wrap");
-
-        JPanel statusPanel = new JPanel(new MigLayout("insets 5"));
-        statusPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.iteration")));
-        westPanel.add(statusPanel);
-
-        actualIterationLabel = new JLabel("0");
-        actualIterationLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        actualIterationLabel.setFont(new Font("Arial", Font.BOLD, 50));
-        statusPanel.add(actualIterationLabel, W_EAST);
-    }
-
-    private void addCenterComponents() {
-        centerPanel = new JPanel(new MigLayout("insets 10 10 10 0"));
-        add(centerPanel, BorderLayout.CENTER);
-        addGlobalVariablesComponents();
-        addInitialAgentConfigurationComponents();
-        addCurrentStateComponents();
-    }
-
-    private void addCurrentStateComponents() {
-        JPanel currentStatePanel = new JPanel(new MigLayout("insets 0 5 0 5"));
-        currentStatePanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.current_emotional_states")));
-        centerPanel.add(currentStatePanel, "w 100%, h 60%");
-
-        agentsStateTableModel = new AgentsStateTableModel();
-        agentStateTable = new JTable(agentsStateTableModel);
-        agentStateTable.setFillsViewportHeight(true);
-        agentStateTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        agentsStateTableModel.setTable(agentStateTable);
-
-        JScrollPane scrollAgentStateTable = new JScrollPane(agentStateTable);
-        currentStatePanel.add(scrollAgentStateTable, "h 100%, w 100%");
+        stimuliPanel.add(scrollKnowledgeRulesTable, "w 100%, h 100%");
 
         JPanel buttonsPanel = new JPanel(new MigLayout("insets 0"));
-        currentStatePanel.add(buttonsPanel, "h 100%, wrap");
+        stimuliPanel.add(buttonsPanel, "h 100%, wrap");
 
-        windowAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/window.png")));
-        buttonsPanel.add(windowAgentButton, "w 25, h 25, wrap 20");
+        selectAllEventsButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/table-select-all.png")));
+        buttonsPanel.add(selectAllEventsButton, "wrap");
+
+        deselectAllEventsButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/table-exclamation.png")));
+        buttonsPanel.add(deselectAllEventsButton);
     }
 
-    private void addInitialAgentConfigurationComponents() {
-        JPanel initialAgentConfigurationPanel = new JPanel(new MigLayout("insets 5 5 0 5"));
-        initialAgentConfigurationPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.initial_agent_configuration")));
-        centerPanel.add(initialAgentConfigurationPanel, "w 100%, h 40%, wrap");
+    private void addCaseStudyPanel(JPanel panel) {
+        JPanel caseStudyPanel = new JPanel(new MigLayout("insets 5"));
+        caseStudyPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.case_study")));
+        panel.add(caseStudyPanel, "w 100%");
 
-        JPanel configAgentPanel = new JPanel(new MigLayout("insets 0"));
-        initialAgentConfigurationPanel.add(configAgentPanel, "w 100%, span 2, wrap");
+        JPanel valuesPanel = new JPanel(new MigLayout("insets 0"));
+        caseStudyPanel.add(valuesPanel, "w 100%");
 
-        agentTypesToAddCombo = new JComboBox<>(AgentTypeToAdd.values());
-        configAgentPanel.add(agentTypesToAddCombo);
+        JLabel iterationsLabel = new JLabel(translation.get("gui.iterations"));
+        valuesPanel.add(iterationsLabel);
 
-        configAgentPanel.add(new JLabel(translation.get("gui.activation_x")));
+        iterationsSpinner = new JSpinner();
+        iterationsSpinner.setModel(new SpinnerNumberModel(1000, 0, 1000, 1));
+        valuesPanel.add(iterationsSpinner, "w 70, wrap");
 
-        EmotionalState initialEmotionalState = new EmotionalState(.5, .5);
-        Emotion initialEmotion = AffectiveModel.getInstance().searchEmotion(initialEmotionalState);
+        JLabel intervalBetweenEventsLabel = new JLabel(translation.get("gui.interval_between_events"));
+        valuesPanel.add(intervalBetweenEventsLabel);
 
-        activationToAddSpinner = new JSpinner();
-        activationToAddSpinner.setModel(new SpinnerNumberModel(initialEmotionalState.getActivation(), -1., 1., .01));
-        configAgentPanel.add(activationToAddSpinner, "w 70");
+        intervalBetweenEventsSpinner = new JSpinner();
+        intervalBetweenEventsSpinner.setModel(new SpinnerNumberModel(5, 1, 1000, 1));
+        valuesPanel.add(intervalBetweenEventsSpinner, "w 70");
 
-        configAgentPanel.add(new JLabel(translation.get("gui.satisfaction_y")));
+        randomFrequencyCheckBox = new JCheckBox(translation.get("gui.random"));
+        valuesPanel.add(randomFrequencyCheckBox, "wrap");
 
-        satisfactionToAddSpinner = new JSpinner();
-        satisfactionToAddSpinner.setModel(new SpinnerNumberModel(initialEmotionalState.getSatisfaction(), -1., 1., .01));
-        configAgentPanel.add(satisfactionToAddSpinner, "w 70");
+        JLabel frequencyLabel = new JLabel(translation.get("gui.event_frequency"));
+        valuesPanel.add(frequencyLabel);
 
-        emotionToAddLabel = new JLabel();
-        emotionToAddLabel.setFont(new Font("Arial", Font.PLAIN, 10));
-        emotionToAddLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        emotionToAddLabel.setBackground(new Color(210, 210, 210));
-        emotionToAddLabel.setOpaque(true);
-        emotionToAddLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        setEmotionToAdd(initialEmotion);
-
-        configAgentPanel.add(emotionToAddLabel, "h 20, w 200");
-
-        addAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/add-icon.png")));
-        configAgentPanel.add(addAgentButton, "w 25, h 25");
-
-        agentsToAddTableModel = new AgentsToAddTableModel();
-        agentsToAddTable = new JTable(agentsToAddTableModel);
-        agentsToAddTable.setFillsViewportHeight(true);
-
-        JScrollPane scrollAgentsToAddTable = new JScrollPane(agentsToAddTable);
-        initialAgentConfigurationPanel.add(scrollAgentsToAddTable, "h 100%, w 100%");
+        frequencyValueLabel = new JLabel();
+        valuesPanel.add(frequencyValueLabel, "w 70");
+        updateFrequency();
 
         JPanel buttonsPanel = new JPanel(new MigLayout("insets 0"));
-        initialAgentConfigurationPanel.add(buttonsPanel, "h 100%, wrap");
+        caseStudyPanel.add(buttonsPanel, "h 100%");
 
-        removeAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/delete-icon.png")));
-        buttonsPanel.add(removeAgentButton, "w 25, h 25, wrap 20");
+        startButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/play.png")));
+        buttonsPanel.add(startButton, "wrap");
 
-        selectAllButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/list-all.png")));
-        buttonsPanel.add(selectAllButton, "w 25, h 25, wrap");
-
-        deselectAllButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/list-delete.png")));
-        buttonsPanel.add(deselectAllButton, "w 25, h 25");
-    }
-
-    private void addGlobalVariablesComponents() {
-        JPanel globalVariablesPanel = new JPanel(new MigLayout("insets 5"));
-        globalVariablesPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.global_values")));
-
-        centerPanel.add(globalVariablesPanel, "w 100%, wrap");
-
-        JLabel activationParameterLabel = new JLabel(translation.get("gui.activation_parameter"));
-        globalVariablesPanel.add(activationParameterLabel, "w 70");
-
-
-        activationParameterSpinner = new JSpinner();
-        activationParameterSpinner.setModel(new SpinnerNumberModel(0, 0., 1., .01));
-        globalVariablesPanel.add(activationParameterSpinner, "w 70");
-
-        JLabel satisfactionParameterLabel = new JLabel(translation.get("gui.satisfaction_parameter"));
-        globalVariablesPanel.add(satisfactionParameterLabel, "w 70");
-
-        satisfactionParameterSpinner = new JSpinner();
-        satisfactionParameterSpinner.setModel(new SpinnerNumberModel(0, 0., 1., .01));
-        globalVariablesPanel.add(satisfactionParameterSpinner, "w 70, wrap");
+        cleanButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/refresh.png")));
+        buttonsPanel.add(cleanButton);
     }
 
     public void closeGui() {
@@ -374,14 +388,6 @@ public class ConfiguratorAgentGui extends JFrame {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    public double getActivationParameter() {
-        return (double) activationParameterSpinner.getValue();
-    }
-
-    public double getSatisfactionParameter() {
-        return (double) satisfactionParameterSpinner.getValue();
-    }
-
     public double getActivationToAdd() {
         return (double) activationToAddSpinner.getValue();
     }
@@ -432,8 +438,6 @@ public class ConfiguratorAgentGui extends JFrame {
         startButton.setEnabled(false);
         removeAgentButton.setEnabled(false);
         agentTypesToAddCombo.setEnabled(false);
-        activationParameterSpinner.setEnabled(false);
-        satisfactionParameterSpinner.setEnabled(false);
         activationToAddSpinner.setEnabled(false);
         satisfactionToAddSpinner.setEnabled(false);
         iterationsSpinner.setEnabled(false);
@@ -443,6 +447,8 @@ public class ConfiguratorAgentGui extends JFrame {
         deselectAllButton.setEnabled(false);
         selectAllButton.setEnabled(false);
         agentsToAddTable.setEnabled(false);
+        selectAllEventsButton.setEnabled(false);
+        deselectAllEventsButton.setEnabled(false);
     }
 
     public void configurationMode() {
@@ -452,8 +458,6 @@ public class ConfiguratorAgentGui extends JFrame {
         addAgentButton.setEnabled(true);
         removeAgentButton.setEnabled(true);
         agentTypesToAddCombo.setEnabled(true);
-        activationParameterSpinner.setEnabled(true);
-        satisfactionParameterSpinner.setEnabled(true);
         activationToAddSpinner.setEnabled(true);
         satisfactionToAddSpinner.setEnabled(true);
         iterationsSpinner.setEnabled(true);
@@ -464,6 +468,8 @@ public class ConfiguratorAgentGui extends JFrame {
         deselectAllButton.setEnabled(true);
         selectAllButton.setEnabled(true);
         agentsToAddTable.setEnabled(true);
+        selectAllEventsButton.setEnabled(true);
+        deselectAllEventsButton.setEnabled(true);
 
         collectiveCentralEmotionalStateLabel.setText("-");
         collectiveCentralEmotionLabel.setText("-");

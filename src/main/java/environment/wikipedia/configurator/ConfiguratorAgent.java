@@ -81,10 +81,10 @@ public class ConfiguratorAgent extends GuiAgent {
 
         knowledgeRules = Arrays.asList(
                 new KnowledgeRule(true, "highReputationIncrease", "positive", "positive"),
-                new KnowledgeRule(true, "neutralReputationIncrease", "neutral", "positive"),
+                new KnowledgeRule(true, "mediumReputationIncrease", "neutral", "positive"),
                 new KnowledgeRule(true, "lowReputationIncrease", "negative", "positive"),
                 new KnowledgeRule(true, "highReputationDecrease", "negative", "negative"),
-                new KnowledgeRule(true, "neutralReputationDecrease", "neutral", "negative"),
+                new KnowledgeRule(true, "mediumReputationDecrease", "neutral", "negative"),
                 new KnowledgeRule(true, "lowReputationDecrease", "positive", "negative")
         );
 
@@ -207,8 +207,6 @@ public class ConfiguratorAgent extends GuiAgent {
 
             out.write(String.format("%s: %s\n", translation.get("gui.interval_between_events"), intervalBetweenEvents));
             out.write(String.format("%s: %s\n", translation.get("gui.event_frequency"), configuratorAgentGui.getEventFrequency()));
-            out.write(String.format("%s: %s\n", translation.get("gui.activation_parameter"), configuratorAgentGui.getActivationParameter()));
-            out.write(String.format("%s: %s\n", translation.get("gui.satisfaction_parameter"), configuratorAgentGui.getSatisfactionParameter()));
 
             out.write("\n");
 
