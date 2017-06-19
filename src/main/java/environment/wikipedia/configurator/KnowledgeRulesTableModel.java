@@ -28,7 +28,7 @@ public class KnowledgeRulesTableModel extends AbstractTableModel {
         translation = Translation.getInstance();
         columns = new String[]{
                 translation.get("gui.send"),
-                translation.get("gui.event"),
+                translation.get("gui.stimulus"),
                 translation.get("gui.activation_parameter"),
                 translation.get("gui.satisfaction_parameter")
         };
