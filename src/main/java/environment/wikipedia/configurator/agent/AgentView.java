@@ -26,6 +26,9 @@ public class AgentView extends JFrame {
     private JSpinner satisfactionSpinner;
     private JButton activationRandomButton;
     private JButton satisfactionRandomButton;
+    private JButton saveAndNewButton;
+    private JButton saveButton;
+    private JButton cancelButton;
 
     public AgentView() {
         setTitle(translation.get("gui.agent"));
@@ -40,8 +43,7 @@ public class AgentView extends JFrame {
 
         mainPanel.add(createInitialEmotionPanel(), PANELS_SIZE);
 
-        /*
-        mainPanel.add(createButtonsPanel(), PANELS_SIZE);*/
+        mainPanel.add(createButtonsPanel(), PANELS_SIZE);
 
         setLocationRelativeTo(this);
     }
@@ -53,7 +55,7 @@ public class AgentView extends JFrame {
         emotionPanel.add(activationLabel);
 
         activationSpinner = new JSpinner();
-        activationSpinner.setModel(new SpinnerNumberModel(0, -1., 1., .01));
+        activationSpinner.setModel(new SpinnerNumberModel(0.0, -1., 1., .01));
         emotionPanel.add(activationSpinner, EMOTION_FIELDS_SIZE);
 
         activationRandomButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/random.png")));
@@ -64,7 +66,7 @@ public class AgentView extends JFrame {
         emotionPanel.add(satisfactionLabel);
 
         satisfactionSpinner = new JSpinner();
-        satisfactionSpinner.setModel(new SpinnerNumberModel(0, -1., 1., .01));
+        satisfactionSpinner.setModel(new SpinnerNumberModel(0.0, -1., 1., .01));
         emotionPanel.add(satisfactionSpinner, EMOTION_FIELDS_SIZE);
 
         satisfactionRandomButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/random.png")));
@@ -99,4 +101,58 @@ public class AgentView extends JFrame {
         return agentPanel;
     }
 
+    private JPanel createButtonsPanel() {
+        JPanel buttonsPanel = new JPanel();
+
+        saveAndNewButton = new JButton(translation.get("gui.save_and_new"));
+        buttonsPanel.add(saveAndNewButton);
+
+        saveButton = new JButton(translation.get("gui.save"));
+        buttonsPanel.add(saveButton);
+
+        cancelButton = new JButton(translation.get("gui.cancel"));
+        buttonsPanel.add(cancelButton);
+
+        return buttonsPanel;
+    }
+
+    public JComboBox<AgentType> getAgentTypesCombo() {
+        return agentTypesCombo;
+    }
+
+    public JTextField getNameField() {
+        return nameField;
+    }
+
+    public JSpinner getActivationSpinner() {
+        return activationSpinner;
+    }
+
+    public JLabel getEmotionLabel() {
+        return emotionLabel;
+    }
+
+    public JSpinner getSatisfactionSpinner() {
+        return satisfactionSpinner;
+    }
+
+    public JButton getActivationRandomButton() {
+        return activationRandomButton;
+    }
+
+    public JButton getSatisfactionRandomButton() {
+        return satisfactionRandomButton;
+    }
+
+    public JButton getSaveAndNewButton() {
+        return saveAndNewButton;
+    }
+
+    public JButton getSaveButton() {
+        return saveButton;
+    }
+
+    public JButton getCancelButton() {
+        return cancelButton;
+    }
 }

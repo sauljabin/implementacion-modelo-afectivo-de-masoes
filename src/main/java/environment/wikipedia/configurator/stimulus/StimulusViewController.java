@@ -51,6 +51,9 @@ public class StimulusViewController extends WindowsEventsAdapter {
         stimulusView.getSaveButton().setActionCommand(StimulusViewEvent.SAVE.toString());
         stimulusView.getSaveButton().addActionListener(this);
 
+        stimulusView.getSaveAndNewButton().setActionCommand(StimulusViewEvent.SAVE_AND_NEW.toString());
+        stimulusView.getSaveAndNewButton().addActionListener(this);
+
         stimulusView.getCancelButton().setActionCommand(StimulusViewEvent.CANCEL.toString());
         stimulusView.getCancelButton().addActionListener(this);
 
@@ -115,7 +118,7 @@ public class StimulusViewController extends WindowsEventsAdapter {
     }
 
     public static void main(String[] args) {
-        new StimulusViewController(stimulusModel -> System.out.println());
+        new StimulusViewController(stimulusModel -> System.out.println(stimulusModel));
     }
 
 }

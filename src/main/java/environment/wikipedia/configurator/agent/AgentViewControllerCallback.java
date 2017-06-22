@@ -7,4 +7,7 @@
 package environment.wikipedia.configurator.agent;
 
 public interface AgentViewControllerCallback {
+
+    void afterSave(AgentModel agentModel);
+
 }

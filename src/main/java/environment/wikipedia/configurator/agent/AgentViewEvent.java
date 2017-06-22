@@ -7,4 +7,9 @@
 package environment.wikipedia.configurator.agent;
 
 public enum AgentViewEvent {
+    SAVE,
+    SAVE_AND_NEW,
+    CANCEL,
+    SET_RANDOM_ACTIVATION,
+    SET_RANDOM_SATISFACTION;
 }
