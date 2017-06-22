@@ -6,6 +6,7 @@
 
 package environment.wikipedia.configurator;
 
+import environment.wikipedia.configurator.agent.AgentType;
 import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
 import masoes.component.behavioural.EmotionalState;
@@ -76,7 +77,7 @@ public class ConfiguratorAgentGui extends JFrame {
     }
 
     private void setUp() {
-        setTitle(translation.get("gui.configurator"));
+        setTitle(translation.get("gui.configurator") + " - Wikipedia");
         setSize(1400, 780);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -188,7 +189,7 @@ public class ConfiguratorAgentGui extends JFrame {
         JLabel agentLabel = new JLabel(translation.get("gui.agent"));
         configAgentPanel.add(agentLabel);
 
-        agentTypesToAddCombo = new JComboBox<>(AgentTypeToAdd.values());
+        agentTypesToAddCombo = new JComboBox<>(AgentType.values());
         configAgentPanel.add(agentTypesToAddCombo, "wrap");
 
         JLabel activationLabel = new JLabel(translation.get("gui.activation_x"));
@@ -397,8 +398,8 @@ public class ConfiguratorAgentGui extends JFrame {
         return (double) satisfactionToAddSpinner.getValue();
     }
 
-    public AgentTypeToAdd getAgentTypeToAdd() {
-        return (AgentTypeToAdd) agentTypesToAddCombo.getSelectedItem();
+    public AgentType getAgentTypeToAdd() {
+        return (AgentType) agentTypesToAddCombo.getSelectedItem();
     }
 
     public void setEmotionToAdd(Emotion emotion) {

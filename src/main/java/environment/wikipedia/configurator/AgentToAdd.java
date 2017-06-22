@@ -6,6 +6,7 @@
 
 package environment.wikipedia.configurator;
 
+import environment.wikipedia.configurator.agent.AgentType;
 import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
 import masoes.component.behavioural.EmotionalState;
@@ -15,11 +16,11 @@ public class AgentToAdd {
 
     private int sequence;
     private boolean receiveStimulus;
-    private AgentTypeToAdd type;
+    private AgentType type;
     private EmotionalState emotionalState;
     private AffectiveModel affectiveModel;
 
-    public AgentToAdd(int sequence, boolean receiveStimulus, AgentTypeToAdd type, EmotionalState emotionalState) {
+    public AgentToAdd(int sequence, boolean receiveStimulus, AgentType type, EmotionalState emotionalState) {
         this.sequence = sequence;
         this.receiveStimulus = receiveStimulus;
         this.type = type;
@@ -27,11 +28,11 @@ public class AgentToAdd {
         affectiveModel = AffectiveModel.getInstance();
     }
 
-    public AgentToAdd(int sequence, AgentTypeToAdd type, EmotionalState emotionalState) {
+    public AgentToAdd(int sequence, AgentType type, EmotionalState emotionalState) {
         this(sequence, true, type, emotionalState);
     }
 
-    public AgentTypeToAdd getType() {
+    public AgentType getType() {
         return type;
     }
 

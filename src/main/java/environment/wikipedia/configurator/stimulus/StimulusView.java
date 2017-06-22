@@ -31,7 +31,7 @@ public class StimulusView extends JFrame {
 
     public StimulusView() {
         setTitle(translation.get("gui.stimulus"));
-        setSize(400, 200);
+        setSize(400, 230);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
 

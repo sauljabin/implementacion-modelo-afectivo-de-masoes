@@ -4,20 +4,20 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.configurator;
+package environment.wikipedia.configurator.agent;
 
 import environment.dummy.DummyEmotionalAgent;
 import jade.core.Agent;
 import translate.Translation;
 
-public enum AgentTypeToAdd {
+public enum AgentType {
 
     CONTRIBUTOR("gui.contributor", DummyEmotionalAgent.class);
 
     private String translationKey;
     private Class<? extends Agent> agentClass;
 
-    AgentTypeToAdd(String translationKey, Class<? extends Agent> agentClass) {
+    AgentType(String translationKey, Class<? extends Agent> agentClass) {
         this.translationKey = translationKey;
         this.agentClass = agentClass;
     }
