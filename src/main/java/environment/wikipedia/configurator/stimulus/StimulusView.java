@@ -27,6 +27,7 @@ public class StimulusView extends JFrame {
     private JButton cancelButton;
     private JRadioButton selfButton;
     private JRadioButton othersButton;
+    private JButton saveAndNewButton;
 
     public StimulusView() {
         setTitle(translation.get("gui.stimulus"));
@@ -95,6 +96,9 @@ public class StimulusView extends JFrame {
     private JPanel createButtonsPanel() {
         JPanel buttonsPanel = new JPanel();
 
+        saveAndNewButton = new JButton(translation.get("gui.save_and_new"));
+        buttonsPanel.add(saveAndNewButton);
+
         saveButton = new JButton(translation.get("gui.save"));
         buttonsPanel.add(saveButton);
 
@@ -134,6 +138,10 @@ public class StimulusView extends JFrame {
 
     public JRadioButton getOthersButton() {
         return othersButton;
+    }
+
+    public JButton getSaveAndNewButton() {
+        return saveAndNewButton;
     }
 
 }

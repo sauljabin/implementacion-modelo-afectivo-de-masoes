@@ -8,6 +8,6 @@ package environment.wikipedia.configurator.stimulus;
 
 public interface StimulusViewControllerCallback {
 
-    void afterSave();
+    void afterSave(StimulusModel stimulusModel);
 
 }

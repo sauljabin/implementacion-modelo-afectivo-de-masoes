@@ -19,16 +19,30 @@ public class StimulusViewController extends WindowsEventsAdapter {
     private StimulusView stimulusView;
     private StimulusViewControllerCallback callback;
 
-    public StimulusViewController(StimulusModel stimulusModel) {
-        this(stimulusModel, null);
+    public StimulusViewController(StimulusViewControllerCallback callback) {
+        this(null, callback);
     }
 
     public StimulusViewController(StimulusModel stimulusModel, StimulusViewControllerCallback callback) {
         this.stimulusModel = stimulusModel;
         this.stimulusView = new StimulusView();
         configView();
+        initView();
         this.stimulusView.setVisible(true);
         this.callback = callback;
+    }
+
+    private void initView() {
+        if (stimulusModel == null) {
+            stimulusModel = new StimulusModel();
+        }
+
+        stimulusView.getNameField().setText(stimulusModel.getName());
+        stimulusView.getValueField().setText(stimulusModel.getValue());
+        stimulusView.getActivationSpinner().setValue(stimulusModel.getActivation());
+        stimulusView.getSatisfactionSpinner().setValue(stimulusModel.getSatisfaction());
+        stimulusView.getSelfButton().setSelected(stimulusModel.isSelf());
+        stimulusView.getOthersButton().setSelected(!stimulusModel.isSelf());
     }
 
     private void configView() {
@@ -41,6 +55,10 @@ public class StimulusViewController extends WindowsEventsAdapter {
         stimulusView.getCancelButton().addActionListener(this);
 
         stimulusView.getNameField().addKeyListener(this);
+
+        if (stimulusModel != null) {
+            stimulusView.getSaveAndNewButton().setVisible(false);
+        }
     }
 
     @Override
@@ -57,6 +75,12 @@ public class StimulusViewController extends WindowsEventsAdapter {
         switch (event) {
             case SAVE:
                 updateModel();
+                stimulusView.dispose();
+                break;
+            case SAVE_AND_NEW:
+                updateModel();
+                stimulusModel = null;
+                initView();
                 break;
             case CANCEL:
                 stimulusView.dispose();
@@ -78,9 +102,8 @@ public class StimulusViewController extends WindowsEventsAdapter {
         stimulusModel.setActivation((Double) stimulusView.getActivationSpinner().getValue());
         stimulusModel.setSatisfaction((Double) stimulusView.getSatisfactionSpinner().getValue());
         stimulusModel.setSelf(stimulusView.getSelfButton().isSelected());
-        stimulusView.dispose();
-        if(callback!=null){
-            callback.afterSave();
+        if (callback != null) {
+            callback.afterSave(stimulusModel);
         }
     }
 
@@ -92,7 +115,7 @@ public class StimulusViewController extends WindowsEventsAdapter {
     }
 
     public static void main(String[] args) {
-        new StimulusViewController(new StimulusModel());
+        new StimulusViewController(stimulusModel -> System.out.println());
     }
 
 }

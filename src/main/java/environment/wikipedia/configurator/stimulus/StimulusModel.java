@@ -16,6 +16,14 @@ public class StimulusModel {
     private double satisfaction;
     private boolean self;
 
+    public StimulusModel() {
+        name = "";
+        value = "";
+        activation = 0;
+        satisfaction = 0;
+        self = true;
+    }
+
     public String getName() {
         return name;
     }

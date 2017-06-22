@@ -8,6 +8,7 @@ package environment.wikipedia.configurator.stimulus;
 
 public enum StimulusViewEvent {
     SAVE,
+    SAVE_AND_NEW,
     CANCEL,
     NAME_CHANGED;
 }
