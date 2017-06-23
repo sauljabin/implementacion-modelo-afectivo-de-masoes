@@ -20,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AgentViewController extends WindowsEventsAdapter {
 
@@ -27,16 +28,18 @@ public class AgentViewController extends WindowsEventsAdapter {
 
     private AgentView agentView;
     private AgentModel agentModel;
+    private List<AgentModel> agents;
     private AgentViewControllerCallback callback;
     private SelectableStimulusTableModel stimulusTableModel;
     private List<StimulusModel> stimuli;
 
-    public AgentViewController(List<StimulusModel> stimuli, AgentViewControllerCallback callback) {
-        this(null, stimuli, callback);
+    public AgentViewController(List<AgentModel> agents, List<StimulusModel> stimuli, AgentViewControllerCallback callback) {
+        this(null, agents, stimuli, callback);
     }
 
-    public AgentViewController(AgentModel agentModel, List<StimulusModel> stimuli, AgentViewControllerCallback callback) {
+    public AgentViewController(AgentModel agentModel, List<AgentModel> agents, List<StimulusModel> stimuli, AgentViewControllerCallback callback) {
         this.agentModel = agentModel;
+        this.agents = agents;
         this.callback = callback;
         this.stimuli = stimuli;
 
@@ -54,6 +57,7 @@ public class AgentViewController extends WindowsEventsAdapter {
     private void initView() {
         if (agentModel == null) {
             agentModel = new AgentModel();
+            agentModel.setName(generateAgentName());
             agentModel.setStimuli(stimuli);
         }
 
@@ -66,6 +70,22 @@ public class AgentViewController extends WindowsEventsAdapter {
         stimulusTableModel.selectStimuli(agentModel.getStimuli());
 
         updateEmotion();
+    }
+
+    private String generateAgentName() {
+        List<String> agentsName = agents.stream()
+                .map(agentModel -> agentModel.getName())
+                .collect(Collectors.toList());
+
+        int sequence = 1;
+        AgentType agentType = (AgentType) agentView.getAgentTypesCombo().getSelectedItem();
+        String tempName = agentType.toString() + sequence;
+
+        while (agentsName.contains(tempName)) {
+            tempName = agentType.toString() + ++sequence;
+        }
+
+        return tempName;
     }
 
     public void updateEmotion() {
@@ -104,6 +124,8 @@ public class AgentViewController extends WindowsEventsAdapter {
         if (agentModel != null) {
             agentView.getSaveAndNewButton().setVisible(false);
         }
+
+        agentView.getNameField().setEditable(false);
     }
 
     @Override
@@ -135,6 +157,7 @@ public class AgentViewController extends WindowsEventsAdapter {
                 break;
             case SAVE_AND_NEW:
                 updateModel();
+                agents.add(agentModel);
                 agentModel = null;
                 initView();
                 break;
@@ -167,14 +190,6 @@ public class AgentViewController extends WindowsEventsAdapter {
 
     private void setRandomActivation() {
         agentView.getActivationSpinner().setValue(RandomGenerator.getDouble(-1., 1.));
-    }
-
-    public static void main(String[] args) {
-        ArrayList<StimulusModel> stimulusModels = new ArrayList<>();
-        for (int i = 0; i < 20; i++)
-            stimulusModels.add(new StimulusModel("hola" + i, "", 0, 0, true));
-
-        new AgentViewController(stimulusModels, agentModel -> System.out.println(agentModel));
     }
 
 }

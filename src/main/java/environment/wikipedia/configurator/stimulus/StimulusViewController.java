@@ -116,9 +116,5 @@ public class StimulusViewController extends WindowsEventsAdapter {
             eventHandler(StimulusViewEvent.NAME_CHANGED);
         }
     }
-
-    public static void main(String[] args) {
-        new StimulusViewController(stimulusModel -> System.out.println(stimulusModel));
-    }
-
+    
 }

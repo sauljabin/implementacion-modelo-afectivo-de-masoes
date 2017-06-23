@@ -21,11 +21,15 @@ public class AgentModel {
     private List<StimulusModel> stimuli;
 
     public AgentModel() {
-        agentType = AgentType.CONTRIBUTOR;
-        name = "";
-        activation = 0;
-        satisfaction = 0;
-        stimuli = new ArrayList<>();
+        this(AgentType.CONTRIBUTOR, "", 0, 0, new ArrayList<>());
+    }
+
+    public AgentModel(AgentType agentType, String name, double activation, double satisfaction, List<StimulusModel> stimuli) {
+        this.agentType = agentType;
+        this.name = name;
+        this.activation = activation;
+        this.satisfaction = satisfaction;
+        this.stimuli = stimuli;
     }
 
     public AgentType getAgentType() {
