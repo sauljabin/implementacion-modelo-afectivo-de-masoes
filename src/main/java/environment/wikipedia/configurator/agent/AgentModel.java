@@ -6,7 +6,11 @@
 
 package environment.wikipedia.configurator.agent;
 
+import environment.wikipedia.configurator.stimulus.StimulusModel;
 import util.ToStringBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AgentModel {
 
@@ -14,12 +18,14 @@ public class AgentModel {
     private String name;
     private double activation;
     private double satisfaction;
+    private List<StimulusModel> stimuli;
 
     public AgentModel() {
         agentType = AgentType.CONTRIBUTOR;
         name = "";
         activation = 0;
         satisfaction = 0;
+        stimuli = new ArrayList<>();
     }
 
     public AgentType getAgentType() {
@@ -54,6 +60,14 @@ public class AgentModel {
         this.satisfaction = satisfaction;
     }
 
+    public List<StimulusModel> getStimuli() {
+        return stimuli;
+    }
+
+    public void setStimuli(List<StimulusModel> stimuli) {
+        this.stimuli = stimuli;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder()
@@ -61,6 +75,7 @@ public class AgentModel {
                 .append("name", name)
                 .append("activation", activation)
                 .append("satisfaction", satisfaction)
+                .append("stimuli", stimuli)
                 .toString();
     }
 

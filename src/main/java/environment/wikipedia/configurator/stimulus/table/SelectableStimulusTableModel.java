@@ -12,7 +12,6 @@ import translate.Translation;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
-import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -108,14 +107,32 @@ public class SelectableStimulusTableModel extends AbstractTableModel {
         fireTableCellUpdated(rowIndex, columnIndex);
     }
 
-    public void selectAllEvents() {
+    public void selectStimuli() {
         selectableStimulusModels.forEach(model -> model.setSelected(true));
         fireTableDataChanged();
     }
 
-    public void deselectAllEvents() {
+    public void deselectStimuli() {
         selectableStimulusModels.forEach(model -> model.setSelected(false));
         fireTableDataChanged();
+    }
+
+    public void selectStimuli(List<StimulusModel> stimuli) {
+        selectableStimulusModels.forEach(selectableStimulusModel -> {
+            if (stimuli.contains(selectableStimulusModel.getModel())) {
+                selectableStimulusModel.setSelected(true);
+            } else {
+                selectableStimulusModel.setSelected(false);
+            }
+        });
+        fireTableDataChanged();
+    }
+
+    public List<StimulusModel> getSelectedStimuli() {
+        return selectableStimulusModels.stream()
+                .filter(SelectableStimulusModel::isSelected)
+                .map(SelectableStimulusModel::getModel)
+                .collect(Collectors.toList());
     }
 
 }
