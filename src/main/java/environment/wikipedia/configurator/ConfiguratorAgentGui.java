@@ -238,10 +238,10 @@ public class ConfiguratorAgentGui extends JFrame {
         removeAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/minus.png")));
         buttonsPanel.add(removeAgentButton, "wrap");
 
-        selectAllButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/table-select-all.png")));
+        selectAllButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/select-all.png")));
         buttonsPanel.add(selectAllButton, "wrap");
 
-        deselectAllButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/table-exclamation.png")));
+        deselectAllButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/deselect-all.png")));
         buttonsPanel.add(deselectAllButton);
     }
 
@@ -268,10 +268,10 @@ public class ConfiguratorAgentGui extends JFrame {
         JPanel buttonsPanel = new JPanel(new MigLayout("insets 0"));
         stimuliPanel.add(buttonsPanel, "h 100%, wrap");
 
-        selectAllEventsButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/table-select-all.png")));
+        selectAllEventsButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/select-all.png")));
         buttonsPanel.add(selectAllEventsButton, "wrap");
 
-        deselectAllEventsButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/table-exclamation.png")));
+        deselectAllEventsButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/deselect-all.png")));
         buttonsPanel.add(deselectAllEventsButton);
     }
 

@@ -17,11 +17,15 @@ public class StimulusModel {
     private boolean self;
 
     public StimulusModel() {
-        name = "";
-        value = "";
-        activation = 0;
-        satisfaction = 0;
-        self = true;
+        this("", "", 0, 0, true);
+    }
+
+    public StimulusModel(String name, String value, double activation, double satisfaction, boolean self) {
+        this.name = name;
+        this.value = value;
+        this.activation = activation;
+        this.satisfaction = satisfaction;
+        this.self = self;
     }
 
     public String getName() {

@@ -17,6 +17,7 @@ public class AgentView extends JFrame {
     private static final String FIELDS_SIZE = "w 100%, h 30, wrap";
     private static final String EMOTION_FIELDS_SIZE = "w 100%, h 30";
     private static final String PANELS_SIZE = "w 100%, wrap";
+    private static final String TABLE_PANEL_SIZE = PANELS_SIZE + ", h 150";
 
     private Translation translation = Translation.getInstance();
     private JComboBox<AgentType> agentTypesCombo;
@@ -29,10 +30,13 @@ public class AgentView extends JFrame {
     private JButton saveAndNewButton;
     private JButton saveButton;
     private JButton cancelButton;
+    private JButton selectAllButton;
+    private JButton deselectAllButton;
+    private JTable stimulusTable;
 
     public AgentView() {
         setTitle(translation.get("gui.agent"));
-        setSize(400, 500);
+        setSize(500, 430);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -43,9 +47,30 @@ public class AgentView extends JFrame {
 
         mainPanel.add(createInitialEmotionPanel(), PANELS_SIZE);
 
+        mainPanel.add(createStimuliPanel(), TABLE_PANEL_SIZE);
+
         mainPanel.add(createButtonsPanel(), PANELS_SIZE);
 
         setLocationRelativeTo(this);
+    }
+
+    private JPanel createStimuliPanel() {
+        JPanel tablePanel = new JPanel(new MigLayout("insets 0"));
+
+        stimulusTable = new JTable();
+        JScrollPane scrollAgentsToAddTable = new JScrollPane(stimulusTable);
+        tablePanel.add(scrollAgentsToAddTable, "h 100%, w 100%");
+
+        JPanel buttonsPanel = new JPanel(new MigLayout("insets 0"));
+        tablePanel.add(buttonsPanel, "h 100%, wrap");
+
+        selectAllButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/select-all.png")));
+        buttonsPanel.add(selectAllButton, "wrap");
+
+        deselectAllButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/deselect-all.png")));
+        buttonsPanel.add(deselectAllButton);
+
+        return tablePanel;
     }
 
     private JPanel createInitialEmotionPanel() {
@@ -155,4 +180,17 @@ public class AgentView extends JFrame {
     public JButton getCancelButton() {
         return cancelButton;
     }
+
+    public JButton getSelectAllButton() {
+        return selectAllButton;
+    }
+
+    public JButton getDeselectAllButton() {
+        return deselectAllButton;
+    }
+
+    public JTable getStimulusTable() {
+        return stimulusTable;
+    }
+
 }

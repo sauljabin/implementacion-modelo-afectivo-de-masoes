@@ -6,6 +6,8 @@
 
 package environment.wikipedia.configurator.agent;
 
+import environment.wikipedia.configurator.stimulus.StimulusModel;
+import environment.wikipedia.configurator.stimulus.table.SelectableStimulusTableModel;
 import gui.WindowsEventsAdapter;
 import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
@@ -16,6 +18,8 @@ import util.RandomGenerator;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AgentViewController extends WindowsEventsAdapter {
 
@@ -24,14 +28,18 @@ public class AgentViewController extends WindowsEventsAdapter {
     private AgentView agentView;
     private AgentModel agentModel;
     private AgentViewControllerCallback callback;
+    private SelectableStimulusTableModel stimulusTableModel;
+    private List<StimulusModel> stimulus;
 
-    public AgentViewController(AgentViewControllerCallback callback) {
-        this(null, callback);
+    public AgentViewController(List<StimulusModel> stimulus, AgentViewControllerCallback callback) {
+        this(null, stimulus, callback);
     }
 
-    public AgentViewController(AgentModel agentModel, AgentViewControllerCallback callback) {
+    public AgentViewController(AgentModel agentModel, List<StimulusModel> stimulus, AgentViewControllerCallback callback) {
         this.agentModel = agentModel;
         this.callback = callback;
+        this.stimulus = stimulus;
+
         this.agentView = new AgentView();
         configView();
         initView();
@@ -52,6 +60,8 @@ public class AgentViewController extends WindowsEventsAdapter {
         agentView.getActivationSpinner().setValue(agentModel.getActivation());
         agentView.getSatisfactionSpinner().setValue(agentModel.getSatisfaction());
         agentView.getAgentTypesCombo().setSelectedItem(agentModel.getAgentType());
+
+        stimulusTableModel = new SelectableStimulusTableModel(agentView.getStimulusTable(), stimulus);
 
         updateEmotion();
     }
@@ -82,6 +92,12 @@ public class AgentViewController extends WindowsEventsAdapter {
 
         agentView.getSatisfactionSpinner().addChangeListener(this);
         agentView.getActivationSpinner().addChangeListener(this);
+
+        agentView.getSelectAllButton().setActionCommand(AgentViewEvent.SELECT_ALL.toString());
+        agentView.getSelectAllButton().addActionListener(this);
+
+        agentView.getDeselectAllButton().setActionCommand(AgentViewEvent.DESELECT_ALL.toString());
+        agentView.getDeselectAllButton().addActionListener(this);
 
         if (agentModel != null) {
             agentView.getSaveAndNewButton().setVisible(false);
@@ -133,6 +149,12 @@ public class AgentViewController extends WindowsEventsAdapter {
             case UPDATE_EMOTION:
                 updateEmotion();
                 break;
+            case SELECT_ALL:
+                stimulusTableModel.selectAllEvents();
+                break;
+            case DESELECT_ALL:
+                stimulusTableModel.deselectAllEvents();
+                break;
         }
     }
 
@@ -145,7 +167,11 @@ public class AgentViewController extends WindowsEventsAdapter {
     }
 
     public static void main(String[] args) {
-        new AgentViewController(agentModel -> System.out.println(agentModel));
+        ArrayList<StimulusModel> stimulusModels = new ArrayList<>();
+        for (int i = 0; i < 20; i++)
+            stimulusModels.add(new StimulusModel("hola0", "", 0, 0, true));
+
+        new AgentViewController(new AgentModel(), stimulusModels, agentModel -> System.out.println(agentModel));
     }
 
 }
