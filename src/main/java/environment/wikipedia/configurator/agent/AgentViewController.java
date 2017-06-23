@@ -7,12 +7,19 @@
 package environment.wikipedia.configurator.agent;
 
 import gui.WindowsEventsAdapter;
+import masoes.component.behavioural.AffectiveModel;
+import masoes.component.behavioural.Emotion;
+import masoes.component.behavioural.EmotionalState;
+import translate.Translation;
 import util.RandomGenerator;
 
+import javax.swing.event.ChangeEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 
 public class AgentViewController extends WindowsEventsAdapter {
+
+    private Translation translation = Translation.getInstance();
 
     private AgentView agentView;
     private AgentModel agentModel;
@@ -45,6 +52,14 @@ public class AgentViewController extends WindowsEventsAdapter {
         agentView.getActivationSpinner().setValue(agentModel.getActivation());
         agentView.getSatisfactionSpinner().setValue(agentModel.getSatisfaction());
         agentView.getAgentTypesCombo().setSelectedItem(agentModel.getAgentType());
+
+        updateEmotion();
+    }
+
+    public void updateEmotion() {
+        EmotionalState emotionalState = new EmotionalState((Double) agentView.getActivationSpinner().getValue(), (Double) agentView.getSatisfactionSpinner().getValue());
+        Emotion emotion = AffectiveModel.getInstance().searchEmotion(emotionalState);
+        agentView.getEmotionLabel().setText(String.format("%s - %s", translation.get(emotion.getName().toLowerCase()), translation.get(emotion.getType().toString().toLowerCase())));
     }
 
     private void configView() {
@@ -65,9 +80,17 @@ public class AgentViewController extends WindowsEventsAdapter {
         agentView.getSatisfactionRandomButton().setActionCommand(AgentViewEvent.SET_RANDOM_SATISFACTION.toString());
         agentView.getSatisfactionRandomButton().addActionListener(this);
 
+        agentView.getSatisfactionSpinner().addChangeListener(this);
+        agentView.getActivationSpinner().addChangeListener(this);
+
         if (agentModel != null) {
             agentView.getSaveAndNewButton().setVisible(false);
         }
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        eventHandler(AgentViewEvent.UPDATE_EMOTION);
     }
 
     @Override
@@ -101,9 +124,14 @@ public class AgentViewController extends WindowsEventsAdapter {
                 break;
             case SET_RANDOM_ACTIVATION:
                 setRandomActivation();
+                updateEmotion();
                 break;
             case SET_RANDOM_SATISFACTION:
                 setRandomSatisfaction();
+                updateEmotion();
+                break;
+            case UPDATE_EMOTION:
+                updateEmotion();
                 break;
         }
     }
