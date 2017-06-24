@@ -27,7 +27,7 @@ public class StimulusTableModel extends AbstractTableModel {
     private static final int COLUMN_SATISFACTION = 3;
     private static final int COLUMN_CONDITION = 4;
 
-    private List<StimulusModel> stimulusModels;
+    private List<StimulusModel> stimuli;
 
     private Translation translation = Translation.getInstance();
     private String[] columns;
@@ -35,7 +35,7 @@ public class StimulusTableModel extends AbstractTableModel {
 
     public StimulusTableModel(JTable table) {
         this.table = table;
-        this.stimulusModels = new ArrayList<>();
+        this.stimuli = new ArrayList<>();
 
         columns = new String[]{
                 translation.get("gui.stimulus"),
@@ -66,7 +66,7 @@ public class StimulusTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return stimulusModels.size();
+        return stimuli.size();
     }
 
     @Override
@@ -81,11 +81,11 @@ public class StimulusTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        if (rowIndex >= stimulusModels.size()) {
+        if (rowIndex >= stimuli.size()) {
             return null;
         }
 
-        StimulusModel stimulusModel = stimulusModels.get(rowIndex);
+        StimulusModel stimulusModel = stimuli.get(rowIndex);
 
         switch (columnIndex) {
             case COLUMN_STIMULUS:
@@ -104,24 +104,22 @@ public class StimulusTableModel extends AbstractTableModel {
     }
 
     public void addStimulus(StimulusModel stimulus) {
-        this.stimulusModels.add(stimulus);
+        this.stimuli.add(stimulus);
         fireTableDataChanged();
     }
 
-    public List<StimulusModel> getStimulusModels() {
-        return stimulusModels;
+    public List<StimulusModel> getStimuli() {
+        return stimuli;
     }
 
     public void deleteSelectedStimuli() {
         Arrays.stream(table.getSelectedRows())
-                .forEach(i ->
-                        stimulusModels.remove(i)
-                );
+                .forEach(i -> stimuli.remove(i));
         fireTableDataChanged();
     }
 
     public StimulusModel getSelectedStimulus() {
-        return stimulusModels.get(table.getSelectedRow());
+        return stimuli.get(table.getSelectedRow());
     }
 
     public boolean hasSelectedStimulus() {

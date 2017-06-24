@@ -29,6 +29,15 @@ public class ConfiguratorViewListener extends WindowsEventsAdapter {
 
         view.getEditStimulusButton().setActionCommand(ConfiguratorViewEvent.EDIT_STIMULUS.toString());
         view.getEditStimulusButton().addActionListener(this);
+
+        view.getAddAgentButton().setActionCommand(ConfiguratorViewEvent.ADD_AGENT.toString());
+        view.getAddAgentButton().addActionListener(this);
+
+        view.getDeleteAgentButton().setActionCommand(ConfiguratorViewEvent.DELETE_AGENT.toString());
+        view.getDeleteAgentButton().addActionListener(this);
+
+        view.getEditAgentButton().setActionCommand(ConfiguratorViewEvent.EDIT_AGENT.toString());
+        view.getEditAgentButton().addActionListener(this);
     }
 
     @Override

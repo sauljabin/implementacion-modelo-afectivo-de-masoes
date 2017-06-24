@@ -7,6 +7,8 @@
 package environment.wikipedia.configurator;
 
 import agent.AgentLogger;
+import environment.wikipedia.configurator.agent.AgentViewController;
+import environment.wikipedia.configurator.agent.table.AgentTableModel;
 import environment.wikipedia.configurator.stimulus.StimulusModel;
 import environment.wikipedia.configurator.stimulus.StimulusViewController;
 import environment.wikipedia.configurator.stimulus.table.StimulusTableModel;
@@ -22,6 +24,7 @@ public class ConfiguratorViewController extends GuiAgent {
     private ConfiguratorView configuratorView;
     private StimulusTableModel stimulusTableModel;
     private AgentLogger logger;
+    private AgentTableModel agentTableModel;
 
     public ConfiguratorViewController() {
         logger = new AgentLogger(this);
@@ -39,6 +42,8 @@ public class ConfiguratorViewController extends GuiAgent {
         stimulusTableModel.addStimulus(createStimulus("Decremento de reputación alta", -.3, -.3));
         stimulusTableModel.addStimulus(createStimulus("Decremento de reputación media", 0, -.1));
         stimulusTableModel.addStimulus(createStimulus("Decremento de reputación baja", -.05, -.05));
+
+        agentTableModel = new AgentTableModel(configuratorView.getAgentsTable());
     }
 
     private StimulusModel createStimulus(String name, double activation, double satisfaction) {
@@ -55,29 +60,77 @@ public class ConfiguratorViewController extends GuiAgent {
         try {
             switch (ConfiguratorViewEvent.fromInt(guiEvent.getType())) {
                 case CLOSE_WINDOW:
-                    doDelete();
+                    closeWindow();
                     break;
                 case ADD_STIMULUS:
-                    new StimulusViewController(
-                            newStimulus -> stimulusTableModel.addStimulus(newStimulus)
-                    );
+                    addStimulus();
                     break;
                 case DELETE_STIMULUS:
-                    stimulusTableModel.deleteSelectedStimuli();
+                    deleteStimulus();
                     break;
                 case EDIT_STIMULUS:
-                    if (stimulusTableModel.hasSelectedStimulus()) {
-                        new StimulusViewController(
-                                stimulusTableModel.getSelectedStimulus(),
-                                updatedStimulus -> stimulusTableModel.fireTableDataChanged()
-                        );
-                    }
+                    editStimulus();
+                    break;
+                case ADD_AGENT:
+                    addAgent();
+                    break;
+                case DELETE_AGENT:
+                    deleteAgent();
+                    break;
+                case EDIT_AGENT:
+                    editAgent();
                     break;
             }
         } catch (Exception e) {
             logger.exception(e);
             showError(e.getMessage());
         }
+    }
+
+    private void editAgent() {
+        if (agentTableModel.hasSelectedAgent()) {
+            new AgentViewController(
+                    agentTableModel.getSelectedAgent(),
+                    agentTableModel.getAgents(),
+                    stimulusTableModel.getStimuli(),
+                    updatedAgent -> agentTableModel.fireTableDataChanged()
+            );
+        }
+    }
+
+    private void deleteAgent() {
+        agentTableModel.deleteSelectedAgent();
+    }
+
+    private void addAgent() {
+        new AgentViewController(
+                agentTableModel.getAgents(),
+                stimulusTableModel.getStimuli(),
+                newAgent -> agentTableModel.addAgent(newAgent)
+        );
+    }
+
+    private void editStimulus() {
+        if (stimulusTableModel.hasSelectedStimulus()) {
+            new StimulusViewController(
+                    stimulusTableModel.getSelectedStimulus(),
+                    updatedStimulus -> stimulusTableModel.fireTableDataChanged()
+            );
+        }
+    }
+
+    private void deleteStimulus() {
+        stimulusTableModel.deleteSelectedStimuli();
+    }
+
+    private void addStimulus() {
+        new StimulusViewController(
+                newStimulus -> stimulusTableModel.addStimulus(newStimulus)
+        );
+    }
+
+    private void closeWindow() {
+        doDelete();
     }
 
     public void showError(String message) {

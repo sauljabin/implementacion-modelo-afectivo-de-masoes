@@ -148,22 +148,26 @@ public class ConfiguratorView extends JFrame {
         collectiveEmotionPanel.add(centralEmotionLabel);
 
         collectiveCentralEmotionalStateLabel = new JLabel("-");
+        collectiveCentralEmotionalStateLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
         collectiveEmotionPanel.add(collectiveCentralEmotionalStateLabel, "wrap");
 
         collectiveCentralEmotionLabel = new JLabel("-");
         collectiveEmotionPanel.add(new JLabel());
+        collectiveCentralEmotionLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
         collectiveEmotionPanel.add(collectiveCentralEmotionLabel, "wrap");
 
         JLabel maxDistanceEmotionLabel = new JLabel(translation.get("gui.maximum_distance"));
         collectiveEmotionPanel.add(maxDistanceEmotionLabel);
 
         maxDistanceEmotionValueLabel = new JLabel("-");
+        maxDistanceEmotionValueLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
         collectiveEmotionPanel.add(maxDistanceEmotionValueLabel, "wrap");
 
         JLabel emotionalDispersionLabel = new JLabel(translation.get("gui.emotional_dispersion"));
         collectiveEmotionPanel.add(emotionalDispersionLabel);
 
         emotionalDispersionValueLabel = new JLabel("-");
+        emotionalDispersionValueLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
         collectiveEmotionPanel.add(emotionalDispersionValueLabel, "wrap");
 
         return collectiveEmotionPanel;

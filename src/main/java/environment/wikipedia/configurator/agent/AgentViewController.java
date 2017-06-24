@@ -17,6 +17,7 @@ import util.RandomGenerator;
 
 import javax.swing.event.ChangeEvent;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,7 +51,7 @@ public class AgentViewController extends WindowsEventsAdapter {
 
     @Override
     public void windowClosing(WindowEvent e) {
-        agentView.dispose();
+        close();
     }
 
     private void initView() {
@@ -120,6 +121,8 @@ public class AgentViewController extends WindowsEventsAdapter {
         agentView.getDeselectAllButton().setActionCommand(AgentViewEvent.DESELECT_ALL.toString());
         agentView.getDeselectAllButton().addActionListener(this);
 
+        agentView.getAgentTypesCombo().addItemListener(this);
+
         if (agentModel != null) {
             agentView.getSaveAndNewButton().setVisible(false);
         }
@@ -129,12 +132,22 @@ public class AgentViewController extends WindowsEventsAdapter {
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        eventHandler(AgentViewEvent.UPDATE_EMOTION);
+        if (e.getSource().equals(agentView.getSatisfactionSpinner())
+                || e.getSource().equals(agentView.getActivationSpinner())) {
+            eventHandler(AgentViewEvent.UPDATE_EMOTION);
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         eventHandler(AgentViewEvent.valueOf(e.getActionCommand()));
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getSource().equals(agentView.getAgentTypesCombo())) {
+            eventHandler(AgentViewEvent.UPDATE_AGENT_TYPE);
+        }
     }
 
     private void updateModel() {
@@ -151,44 +164,70 @@ public class AgentViewController extends WindowsEventsAdapter {
     private void eventHandler(AgentViewEvent event) {
         switch (event) {
             case SAVE:
-                updateModel();
-                agentView.dispose();
+                save();
                 break;
             case SAVE_AND_NEW:
-                updateModel();
-                agents.add(agentModel);
-                agentModel = null;
-                initView();
+                saveAndNew();
                 break;
             case CANCEL:
-                agentView.dispose();
+                close();
                 break;
             case SET_RANDOM_ACTIVATION:
                 setRandomActivation();
-                updateEmotion();
                 break;
             case SET_RANDOM_SATISFACTION:
                 setRandomSatisfaction();
-                updateEmotion();
                 break;
             case UPDATE_EMOTION:
                 updateEmotion();
                 break;
             case SELECT_ALL:
-                stimulusTableModel.selectStimuli();
+                selectAll();
                 break;
             case DESELECT_ALL:
-                stimulusTableModel.deselectStimuli();
+                deselectAll();
+                break;
+            case UPDATE_AGENT_TYPE:
+                updateAgentType();
                 break;
         }
     }
 
+    private void updateAgentType() {
+        agentView.getNameField().setText(generateAgentName());
+    }
+
+    private void deselectAll() {
+        stimulusTableModel.deselectStimuli();
+    }
+
+    private void selectAll() {
+        stimulusTableModel.selectStimuli();
+    }
+
+    private void close() {
+        agentView.dispose();
+    }
+
+    private void saveAndNew() {
+        updateModel();
+        agentModel = null;
+        initView();
+    }
+
+    private void save() {
+        updateModel();
+        close();
+    }
+
     private void setRandomSatisfaction() {
         agentView.getSatisfactionSpinner().setValue(RandomGenerator.getDouble(-1., 1.));
+        updateEmotion();
     }
 
     private void setRandomActivation() {
         agentView.getActivationSpinner().setValue(RandomGenerator.getDouble(-1., 1.));
+        updateEmotion();
     }
 
 }

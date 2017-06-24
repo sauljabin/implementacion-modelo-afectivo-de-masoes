@@ -66,7 +66,7 @@ public class StimulusViewController extends WindowsEventsAdapter {
 
     @Override
     public void windowClosing(WindowEvent e) {
-        stimulusView.dispose();
+        close();
     }
 
     @Override
@@ -77,21 +77,33 @@ public class StimulusViewController extends WindowsEventsAdapter {
     private void eventHandler(StimulusViewEvent event) {
         switch (event) {
             case SAVE:
-                updateModel();
-                stimulusView.dispose();
+                save();
                 break;
             case SAVE_AND_NEW:
-                updateModel();
-                stimulusModel = null;
-                initView();
+                saveAndNew();
                 break;
             case CANCEL:
-                stimulusView.dispose();
+                close();
                 break;
             case NAME_CHANGED:
                 changeValue();
                 break;
         }
+    }
+
+    private void close() {
+        stimulusView.dispose();
+    }
+
+    private void saveAndNew() {
+        updateModel();
+        stimulusModel = null;
+        initView();
+    }
+
+    private void save() {
+        updateModel();
+        close();
     }
 
     private void changeValue() {

@@ -14,5 +14,6 @@ public enum AgentViewEvent {
     SET_RANDOM_SATISFACTION,
     UPDATE_EMOTION,
     SELECT_ALL,
-    DESELECT_ALL;
+    DESELECT_ALL,
+    UPDATE_AGENT_TYPE;
 }

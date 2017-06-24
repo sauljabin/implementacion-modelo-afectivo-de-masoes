@@ -14,7 +14,10 @@ public enum ConfiguratorViewEvent {
     CLOSE_WINDOW,
     ADD_STIMULUS,
     DELETE_STIMULUS,
-    EDIT_STIMULUS;
+    EDIT_STIMULUS,
+    ADD_AGENT,
+    DELETE_AGENT,
+    EDIT_AGENT;
 
     private static List<ConfiguratorViewEvent> events = Arrays.asList(ConfiguratorViewEvent.values());
 
