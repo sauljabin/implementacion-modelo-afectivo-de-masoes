@@ -8,6 +8,7 @@ package environment.wikipedia.configurator.stimulus.table;
 
 import environment.wikipedia.configurator.stimulus.StimulusModel;
 import translate.Translation;
+import util.StringFormatter;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -93,9 +94,9 @@ public class StimulusTableModel extends AbstractTableModel {
             case COLUMN_VALUE:
                 return stimulusModel.getValue();
             case COLUMN_ACTIVATION:
-                return stimulusModel.getActivation();
+                return StringFormatter.toString(stimulusModel.getActivation());
             case COLUMN_SATISFACTION:
-                return stimulusModel.getSatisfaction();
+                return StringFormatter.toString(stimulusModel.getSatisfaction());
             case COLUMN_CONDITION:
                 return stimulusModel.isSelf() ? translation.get("gui.self") : translation.get("gui.others");
             default:

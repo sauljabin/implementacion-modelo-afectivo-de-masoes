@@ -6,7 +6,23 @@
 
 package util;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 public class StringFormatter {
+
+    private static DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
+    private static DecimalFormat decimalFormat = new DecimalFormat("#.###", decimalFormatSymbols);
+
+    static {
+        decimalFormat.setRoundingMode(RoundingMode.DOWN);
+    }
+
+    public static String toString(double number) {
+        return decimalFormat.format(number);
+    }
 
     public static String toCamelCase(String string) {
         StringBuilder stringBuilder = new StringBuilder();

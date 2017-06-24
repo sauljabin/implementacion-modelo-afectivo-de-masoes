@@ -6,9 +6,12 @@
 
 package application;
 
+import java.util.Locale;
+
 public class ApplicationMain {
 
     public static void main(String[] args) {
+        Locale.setDefault(Locale.Category.FORMAT, Locale.ENGLISH);
         ApplicationBoot applicationBoot = new ApplicationBoot();
         applicationBoot.boot(args);
     }

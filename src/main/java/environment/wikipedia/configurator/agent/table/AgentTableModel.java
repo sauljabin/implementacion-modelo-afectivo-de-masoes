@@ -11,6 +11,7 @@ import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
 import masoes.component.behavioural.EmotionalState;
 import translate.Translation;
+import util.StringFormatter;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -102,9 +103,9 @@ public class AgentTableModel extends AbstractTableModel {
             case COLUMN_EMOTION_TYPE:
                 return translate(emotion.getType().toString());
             case COLUMN_ACTIVATION:
-                return toString(agentState.getActivation());
+                return StringFormatter.toString(agentState.getActivation());
             case COLUMN_SATISFACTION:
-                return toString(agentState.getSatisfaction());
+                return StringFormatter.toString(agentState.getSatisfaction());
             default:
                 return null;
         }
@@ -112,10 +113,6 @@ public class AgentTableModel extends AbstractTableModel {
 
     private String translate(String string) {
         return translation.get(string.toLowerCase());
-    }
-
-    private String toString(double number) {
-        return String.format("%.2f", number);
     }
 
     private Emotion getEmotion(AgentModel agentState) {

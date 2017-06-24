@@ -62,6 +62,8 @@ public class StimulusViewController extends WindowsEventsAdapter {
         if (stimulusModel != null) {
             stimulusView.getSaveAndNewButton().setVisible(false);
         }
+
+        stimulusView.getValueField().setEditable(false);
     }
 
     @Override

@@ -29,4 +29,24 @@ public class StringFormatterTest {
         assertThat(StringFormatter.toCamelCase(inputString), is(expectedString));
     }
 
+    @Test
+    public void shouldShowZeroDecimalSize() {
+        assertThat(StringFormatter.toString(0.0), is("0"));
+    }
+
+    @Test
+    public void shouldShowOneDecimalSize() {
+        assertThat(StringFormatter.toString(0.2), is("0.2"));
+    }
+
+    @Test
+    public void shouldShowTwoDecimalSize() {
+        assertThat(StringFormatter.toString(0.23), is("0.23"));
+    }
+
+    @Test
+    public void shouldShowThreeDecimalSize() {
+        assertThat(StringFormatter.toString(0.2359), is("0.235"));
+    }
+
 }

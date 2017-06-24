@@ -7,13 +7,13 @@
 import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
 import translate.Translation;
+import util.StringFormatter;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -49,7 +49,6 @@ public class GenerateEmotionsPolygonImage {
     private static final BasicStroke STROKE = new BasicStroke(1.1f);
 
     private Translation translation = Translation.getInstance();
-    private DecimalFormat decimalFormat = new DecimalFormat("#.#");
 
     private BufferedImage image;
     private Graphics2D graphics;
@@ -275,8 +274,8 @@ public class GenerateEmotionsPolygonImage {
 
     private String toPointStringFormat(double x, double y) {
         return String.format("(%s,%s)",
-                decimalFormat.format(x).replace(",", "."),
-                decimalFormat.format(y).replace(",", ".")
+                StringFormatter.toString(x),
+                StringFormatter.toString(y)
         );
     }
 
