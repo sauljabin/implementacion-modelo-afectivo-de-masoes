@@ -8,7 +8,6 @@ package gui.state;
 
 import agent.AgentException;
 import agent.AgentLogger;
-import environment.wikipedia.configurator.ConfiguratorAgentEvent;
 import jade.JadeSettings;
 import jade.core.AID;
 import jade.gui.GuiAgent;
@@ -61,7 +60,7 @@ public class AffectiveModelChartGuiAgent extends GuiAgent {
     }
 
     private boolean hasArgument() {
-        return getArguments() != null && getArguments().length == 1 && (getArguments()[0] instanceof String);
+        return getArguments() != null && getArguments().length > 0 && (getArguments()[0] instanceof String);
     }
 
     @Override
@@ -72,7 +71,7 @@ public class AffectiveModelChartGuiAgent extends GuiAgent {
     @Override
     protected void onGuiEvent(GuiEvent guiEvent) {
         try {
-            switch (ConfiguratorAgentEvent.fromInt(guiEvent.getType())) {
+            switch (AffectiveModelChartGuiEvent.fromInt(guiEvent.getType())) {
                 case CLOSE_WINDOW:
                     doDelete();
                     break;

@@ -18,7 +18,6 @@ import util.RandomGenerator;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,7 +65,7 @@ public class AgentViewController extends WindowsEventsAdapter {
         agentView.getSatisfactionSpinner().setValue(agentModel.getSatisfaction());
         agentView.getAgentTypesCombo().setSelectedItem(agentModel.getAgentType());
 
-        stimulusTableModel = new SelectableStimulusTableModel(agentView.getStimulusTable(), stimuli);
+        stimulusTableModel = new SelectableStimulusTableModel(agentView.getStimuliTable(), stimuli);
         stimulusTableModel.selectStimuli(agentModel.getStimuli());
 
         updateEmotion();

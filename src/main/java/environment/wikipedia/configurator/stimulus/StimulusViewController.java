@@ -116,5 +116,5 @@ public class StimulusViewController extends WindowsEventsAdapter {
             eventHandler(StimulusViewEvent.NAME_CHANGED);
         }
     }
-    
+
 }

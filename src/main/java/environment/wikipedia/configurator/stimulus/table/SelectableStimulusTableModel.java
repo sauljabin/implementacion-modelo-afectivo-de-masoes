@@ -19,25 +19,21 @@ public class SelectableStimulusTableModel extends AbstractTableModel {
 
     private static final int COLUMN_SELECTED = 0;
     private static final int COLUMN_STIMULUS = 1;
-    private final JTable table;
-    private final List<StimulusModel> stimulusModels;
-
-    private Translation translation = Translation.getInstance();
+    private List<StimulusModel> stimulusModels;
 
     private List<SelectableStimulusModel> selectableStimulusModels;
     private String[] columns;
 
     public SelectableStimulusTableModel(JTable table, List<StimulusModel> stimulusModels) {
-        this.table = table;
         this.stimulusModels = stimulusModels;
         this.selectableStimulusModels = createSelectableStimuli();
 
         this.columns = new String[]{
                 "",
-                translation.get("gui.stimulus")
+                Translation.getInstance().get("gui.stimulus")
         };
 
-        this.table.setModel(this);
+        table.setModel(this);
 
         TableColumnModel columnModel = table.getColumnModel();
         columnModel.getColumn(COLUMN_SELECTED).setMaxWidth(40);
@@ -45,7 +41,7 @@ public class SelectableStimulusTableModel extends AbstractTableModel {
 
     private List<SelectableStimulusModel> createSelectableStimuli() {
         return stimulusModels.stream()
-                .map(stimulusModel -> new SelectableStimulusModel(stimulusModel))
+                .map(SelectableStimulusModel::new)
                 .collect(Collectors.toList());
     }
 
@@ -95,7 +91,7 @@ public class SelectableStimulusTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex == COLUMN_SELECTED ? true : false;
+        return columnIndex == COLUMN_SELECTED;
     }
 
     @Override

@@ -32,7 +32,7 @@ public class AgentView extends JFrame {
     private JButton cancelButton;
     private JButton selectAllButton;
     private JButton deselectAllButton;
-    private JTable stimulusTable;
+    private JTable stimuliTable;
 
     public AgentView() {
         setTitle(translation.get("gui.agent"));
@@ -57,8 +57,8 @@ public class AgentView extends JFrame {
     private JPanel createStimuliPanel() {
         JPanel tablePanel = new JPanel(new MigLayout("insets 0"));
 
-        stimulusTable = new JTable();
-        JScrollPane scrollAgentsToAddTable = new JScrollPane(stimulusTable);
+        stimuliTable = new JTable();
+        JScrollPane scrollAgentsToAddTable = new JScrollPane(stimuliTable);
         tablePanel.add(scrollAgentsToAddTable, "h 100%, w 100%");
 
         JPanel buttonsPanel = new JPanel(new MigLayout("insets 0"));
@@ -189,8 +189,8 @@ public class AgentView extends JFrame {
         return deselectAllButton;
     }
 
-    public JTable getStimulusTable() {
-        return stimulusTable;
+    public JTable getStimuliTable() {
+        return stimuliTable;
     }
 
 }
