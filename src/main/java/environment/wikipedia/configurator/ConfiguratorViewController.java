@@ -6,135 +6,53 @@
 
 package environment.wikipedia.configurator;
 
-import agent.AgentLogger;
-import environment.wikipedia.configurator.agent.AgentViewController;
-import environment.wikipedia.configurator.agent.table.AgentTableModel;
-import environment.wikipedia.configurator.stimulus.StimulusModel;
-import environment.wikipedia.configurator.stimulus.StimulusViewController;
-import environment.wikipedia.configurator.stimulus.table.StimulusTableModel;
-import jade.gui.GuiAgent;
+import gui.WindowsEventsAdapter;
 import jade.gui.GuiEvent;
-import util.StringFormatter;
 
-import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 
-public class ConfiguratorViewController extends GuiAgent {
+public class ConfiguratorViewController extends WindowsEventsAdapter {
 
-    private ConfiguratorViewListener configuratorViewListener;
-    private ConfiguratorView configuratorView;
-    private StimulusTableModel stimulusTableModel;
-    private AgentLogger logger;
-    private AgentTableModel agentTableModel;
+    private ConfiguratorViewAgent controller;
 
-    public ConfiguratorViewController() {
-        logger = new AgentLogger(this);
-        configuratorView = new ConfiguratorView();
-        configuratorViewListener = new ConfiguratorViewListener(configuratorView, this);
-        configView();
-        configuratorView.setVisible(true);
-    }
+    public ConfiguratorViewController(ConfiguratorView view, ConfiguratorViewAgent controller) {
+        this.controller = controller;
 
-    private void configView() {
-        stimulusTableModel = new StimulusTableModel(configuratorView.getStimuliTable());
-        stimulusTableModel.addStimulus(createStimulus("Incremento de reputación alta", .3, .3));
-        stimulusTableModel.addStimulus(createStimulus("Incremento de reputación media", 0, .1));
-        stimulusTableModel.addStimulus(createStimulus("Incremento de reputación baja", -.05, .05));
-        stimulusTableModel.addStimulus(createStimulus("Decremento de reputación alta", -.3, -.3));
-        stimulusTableModel.addStimulus(createStimulus("Decremento de reputación media", 0, -.1));
-        stimulusTableModel.addStimulus(createStimulus("Decremento de reputación baja", -.05, -.05));
+        view.addWindowListener(this);
 
-        agentTableModel = new AgentTableModel(configuratorView.getAgentsTable());
-    }
+        view.getAddStimulusButton().setActionCommand(ConfiguratorViewEvent.ADD_STIMULUS.toString());
+        view.getAddStimulusButton().addActionListener(this);
 
-    private StimulusModel createStimulus(String name, double activation, double satisfaction) {
-        return new StimulusModel(name, StringFormatter.toCamelCase(name), activation, satisfaction, true);
-    }
+        view.getDeleteStimulusButton().setActionCommand(ConfiguratorViewEvent.DELETE_STIMULUS.toString());
+        view.getDeleteStimulusButton().addActionListener(this);
 
-    @Override
-    protected void takeDown() {
-        configuratorView.dispose();
+        view.getEditStimulusButton().setActionCommand(ConfiguratorViewEvent.EDIT_STIMULUS.toString());
+        view.getEditStimulusButton().addActionListener(this);
+
+        view.getAddAgentButton().setActionCommand(ConfiguratorViewEvent.ADD_AGENT.toString());
+        view.getAddAgentButton().addActionListener(this);
+
+        view.getDeleteAgentButton().setActionCommand(ConfiguratorViewEvent.DELETE_AGENT.toString());
+        view.getDeleteAgentButton().addActionListener(this);
+
+        view.getEditAgentButton().setActionCommand(ConfiguratorViewEvent.EDIT_AGENT.toString());
+        view.getEditAgentButton().addActionListener(this);
+
+        view.getPlayButton().setActionCommand(ConfiguratorViewEvent.PLAY.toString());
+        view.getPlayButton().addActionListener(this);
     }
 
     @Override
-    protected void onGuiEvent(GuiEvent guiEvent) {
-        try {
-            switch (ConfiguratorViewEvent.fromInt(guiEvent.getType())) {
-                case CLOSE_WINDOW:
-                    closeWindow();
-                    break;
-                case ADD_STIMULUS:
-                    addStimulus();
-                    break;
-                case DELETE_STIMULUS:
-                    deleteStimulus();
-                    break;
-                case EDIT_STIMULUS:
-                    editStimulus();
-                    break;
-                case ADD_AGENT:
-                    addAgent();
-                    break;
-                case DELETE_AGENT:
-                    deleteAgent();
-                    break;
-                case EDIT_AGENT:
-                    editAgent();
-                    break;
-            }
-        } catch (Exception e) {
-            logger.exception(e);
-            showError(e.getMessage());
-        }
+    public void windowClosing(WindowEvent e) {
+        GuiEvent guiEvent = new GuiEvent(controller, ConfiguratorViewEvent.CLOSE_WINDOW.getInt());
+        controller.postGuiEvent(guiEvent);
     }
 
-    private void editAgent() {
-        if (agentTableModel.hasSelectedAgent()) {
-            new AgentViewController(
-                    agentTableModel.getSelectedAgent(),
-                    agentTableModel.getAgents(),
-                    stimulusTableModel.getStimuli(),
-                    updatedAgent -> agentTableModel.fireTableDataChanged()
-            );
-        }
-    }
-
-    private void deleteAgent() {
-        agentTableModel.deleteSelectedAgent();
-    }
-
-    private void addAgent() {
-        new AgentViewController(
-                agentTableModel.getAgents(),
-                stimulusTableModel.getStimuli(),
-                newAgent -> agentTableModel.addAgent(newAgent)
-        );
-    }
-
-    private void editStimulus() {
-        if (stimulusTableModel.hasSelectedStimulus()) {
-            new StimulusViewController(
-                    stimulusTableModel.getSelectedStimulus(),
-                    updatedStimulus -> stimulusTableModel.fireTableDataChanged()
-            );
-        }
-    }
-
-    private void deleteStimulus() {
-        stimulusTableModel.deleteSelectedStimuli();
-    }
-
-    private void addStimulus() {
-        new StimulusViewController(
-                newStimulus -> stimulusTableModel.addStimulus(newStimulus)
-        );
-    }
-
-    private void closeWindow() {
-        doDelete();
-    }
-
-    public void showError(String message) {
-        JOptionPane.showMessageDialog(configuratorView, message, "Error", JOptionPane.ERROR_MESSAGE);
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        GuiEvent guiEvent = new GuiEvent(controller, ConfiguratorViewEvent.valueOf(e.getActionCommand()).getInt());
+        controller.postGuiEvent(guiEvent);
     }
 
 }

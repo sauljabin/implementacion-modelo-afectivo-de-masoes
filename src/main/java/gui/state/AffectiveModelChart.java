@@ -6,6 +6,8 @@
 
 package gui.state;
 
+import application.ApplicationSettings;
+import masoes.MasoesSettings;
 import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.EmotionalState;
 import translate.Translation;
@@ -29,7 +31,6 @@ public class AffectiveModelChart extends Canvas implements Runnable {
     private static final String ANGER = "anger";
 
     private static final Color GRAY_COLOR = new Color(235, 235, 235);
-    private static final int FPS = 5;
     private boolean stop;
 
     private Translation translation;
@@ -244,11 +245,15 @@ public class AffectiveModelChart extends Canvas implements Runnable {
         while (!stop) {
             render();
             try {
-                Thread.sleep(1000 / FPS);
+                Thread.sleep(1000 / getFPS());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private long getFPS() {
+        return Long.parseLong(MasoesSettings.getInstance().get(MasoesSettings.GUI_FPS));
     }
 
 }

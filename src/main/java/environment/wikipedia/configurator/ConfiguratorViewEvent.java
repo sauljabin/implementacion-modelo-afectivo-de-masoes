@@ -17,7 +17,8 @@ public enum ConfiguratorViewEvent {
     EDIT_STIMULUS,
     ADD_AGENT,
     DELETE_AGENT,
-    EDIT_AGENT;
+    EDIT_AGENT,
+    PLAY;
 
     private static List<ConfiguratorViewEvent> events = Arrays.asList(ConfiguratorViewEvent.values());
 

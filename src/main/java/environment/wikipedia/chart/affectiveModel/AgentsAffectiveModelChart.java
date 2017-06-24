@@ -6,6 +6,7 @@
 
 package environment.wikipedia.chart.affectiveModel;
 
+import masoes.MasoesSettings;
 import masoes.component.behavioural.EmotionalState;
 import translate.Translation;
 
@@ -28,7 +29,6 @@ public class AgentsAffectiveModelChart extends Canvas implements Runnable {
     private final String REJECTION = "rejection";
     private final String ANGER = "anger";
     private final Color GRAY_COLOR = new Color(235, 235, 235);
-    private final int FPS = 5;
 
     private boolean stop;
 
@@ -191,11 +191,15 @@ public class AgentsAffectiveModelChart extends Canvas implements Runnable {
             render(getWidth(), getHeight(), graphics);
             drawImage();
             try {
-                Thread.sleep(1000 / FPS);
+                Thread.sleep(1000 / getFPS());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private long getFPS() {
+        return Long.parseLong(MasoesSettings.getInstance().get(MasoesSettings.GUI_FPS));
     }
 
 }

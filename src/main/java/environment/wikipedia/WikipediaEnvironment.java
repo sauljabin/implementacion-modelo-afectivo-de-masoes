@@ -8,7 +8,7 @@ package environment.wikipedia;
 
 import environment.AgentParameter;
 import environment.Environment;
-import environment.wikipedia.configurator.ConfiguratorViewController;
+import environment.wikipedia.configurator.ConfiguratorViewAgent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +20,7 @@ public class WikipediaEnvironment extends Environment {
     @Override
     public List<AgentParameter> getAgentParameters() {
         return Arrays.asList(
-                new AgentParameter("configurator", ConfiguratorViewController.class)
+                new AgentParameter("configurator", ConfiguratorViewAgent.class)
         );
     }
 

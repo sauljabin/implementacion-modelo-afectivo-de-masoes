@@ -7,6 +7,7 @@
 package gui.state;
 
 import jade.core.behaviours.CyclicBehaviour;
+import masoes.MasoesSettings;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
@@ -14,7 +15,6 @@ import ontology.OntologyAssistant;
 
 public class AffectiveModelChartGuiAgentBehaviour extends CyclicBehaviour {
 
-    private static final int FPS = 5;
     private AffectiveModelChartGuiAgent affectiveModelChartGuiAgent;
     private OntologyAssistant masoesOntologyAssistant;
 
@@ -27,10 +27,11 @@ public class AffectiveModelChartGuiAgentBehaviour extends CyclicBehaviour {
     public void action() {
         AgentState agentState = (AgentState) masoesOntologyAssistant.sendRequestAction(affectiveModelChartGuiAgent.getEmotionalAgentAID(), new GetEmotionalState());
         affectiveModelChartGuiAgent.getAffectiveModelChartGui().setAgentState(agentState);
-        try {
-            Thread.sleep(1000 / FPS);
-        } catch (InterruptedException e) {
-        }
+        sleep();
+    }
+
+    private void sleep() {
+        myAgent.doWait(1000 / Long.parseLong(MasoesSettings.getInstance().get(MasoesSettings.BEHAVIOUR_IPS)));
     }
 
 }

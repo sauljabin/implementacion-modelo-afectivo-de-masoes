@@ -11,6 +11,8 @@ import settings.SettingsLoader;
 public class MasoesSettings extends SettingsLoader {
 
     public static final String MASOES_ENV = "masoes.env";
+    public static final String GUI_FPS = "gui.fps";
+    public static final String BEHAVIOUR_IPS = "behaviour.ips";
 
     private static final String SETTINGS_PROPERTIES_FILE = "masoes.properties";
     private static MasoesSettings INSTANCE;
