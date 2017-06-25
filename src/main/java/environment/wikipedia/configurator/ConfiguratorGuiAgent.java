@@ -9,8 +9,8 @@ package environment.wikipedia.configurator;
 import agent.AgentLogger;
 import environment.wikipedia.configurator.agent.AgentGuiListener;
 import environment.wikipedia.configurator.agent.table.AgentTableModel;
-import environment.wikipedia.configurator.stimulus.StimulusModel;
 import environment.wikipedia.configurator.stimulus.StimulusGuiListener;
+import environment.wikipedia.configurator.stimulus.StimulusModel;
 import environment.wikipedia.configurator.stimulus.table.StimulusTableModel;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
@@ -25,6 +25,8 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     private StimulusTableModel stimulusTableModel;
     private AgentLogger logger;
     private AgentTableModel agentTableModel;
+    private boolean suspended;
+    private ConfiguratorGuiAgentBehaviour agentBehaviour;
 
     public ConfiguratorGuiAgent() {
         logger = new AgentLogger(this);
@@ -83,6 +85,12 @@ public class ConfiguratorGuiAgent extends GuiAgent {
                 case PLAY:
                     play();
                     break;
+                case PAUSE:
+                    pause();
+                    break;
+                case REFRESH:
+                    refresh();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
@@ -90,11 +98,28 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         }
     }
 
+    private void refresh() {
+        if (agentBehaviour != null) {
+            removeBehaviour(agentBehaviour);
+        }
+    }
+
+    private void pause() {
+        doWait();
+        suspended = true;
+    }
+
     private void play() {
-        addBehaviour(new ConfiguratorGuiAgentBehaviour(
-                this,
-                (Integer) configuratorGui.getIterationsSpinner().getValue()
-        ));
+        if (suspended) {
+            doWake();
+            suspended = false;
+        } else {
+            agentBehaviour = new ConfiguratorGuiAgentBehaviour(
+                    this,
+                    (Integer) configuratorGui.getIterationsSpinner().getValue()
+            );
+            addBehaviour(agentBehaviour);
+        }
     }
 
     private void editAgent() {
