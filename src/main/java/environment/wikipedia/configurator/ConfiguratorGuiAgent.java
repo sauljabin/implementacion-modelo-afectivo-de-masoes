@@ -7,6 +7,8 @@
 package environment.wikipedia.configurator;
 
 import agent.AgentLogger;
+import agent.AgentManagementAssistant;
+import environment.dummy.DummyEmotionalAgentArgumentsBuilder;
 import environment.wikipedia.configurator.agent.AgentGuiListener;
 import environment.wikipedia.configurator.agent.table.AgentTableModel;
 import environment.wikipedia.configurator.stimulus.StimulusGuiListener;
@@ -17,9 +19,12 @@ import jade.gui.GuiEvent;
 import util.StringFormatter;
 
 import javax.swing.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ConfiguratorGuiAgent extends GuiAgent {
 
+    private AgentManagementAssistant assistant;
     private ConfiguratorGuiListener configuratorGuiListener;
     private ConfiguratorGui configuratorGui;
     private StimulusTableModel stimulusTableModel;
@@ -30,6 +35,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     public ConfiguratorGuiAgent() {
         logger = new AgentLogger(this);
+        assistant = new AgentManagementAssistant(this);
         configuratorGui = new ConfiguratorGui();
         configuratorGuiListener = new ConfiguratorGuiListener(configuratorGui, this);
         configView();
@@ -114,6 +120,27 @@ public class ConfiguratorGuiAgent extends GuiAgent {
             doWake();
             suspended = false;
         } else {
+
+            agentTableModel.getAgents().forEach(agent -> {
+
+                String knowledge = agent.getStimuli()
+                        .stream()
+                        .map(stimulus -> stimulus.toClause())
+                        .collect(Collectors.joining("\n"));
+
+                List<String> arguments = new DummyEmotionalAgentArgumentsBuilder()
+                        .activation(agent.getActivation())
+                        .satisfaction(agent.getSatisfaction())
+                        .knowledge(knowledge)
+                        .build();
+
+                assistant.createAgent(
+                        agent.getName(),
+                        agent.getAgentType().getAgentCLass(),
+                        arguments
+                );
+            });
+
             agentBehaviour = new ConfiguratorGuiAgentBehaviour(
                     this,
                     (Integer) configuratorGui.getIterationsSpinner().getValue()

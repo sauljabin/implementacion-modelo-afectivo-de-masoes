@@ -40,6 +40,11 @@ public class StringFormatterTest {
     }
 
     @Test
+    public void shouldShowOneDecimalSizeWithoutNumber() {
+        assertThat(StringFormatter.toString(.2), is("0.2"));
+    }
+
+    @Test
     public void shouldShowTwoDecimalSize() {
         assertThat(StringFormatter.toString(0.23), is("0.23"));
     }

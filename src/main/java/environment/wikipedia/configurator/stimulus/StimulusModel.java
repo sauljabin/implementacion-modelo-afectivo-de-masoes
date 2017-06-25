@@ -6,6 +6,8 @@
 
 package environment.wikipedia.configurator.stimulus;
 
+import knowledge.KnowledgeClause;
+import util.StringFormatter;
 import util.ToStringBuilder;
 
 public class StimulusModel {
@@ -66,6 +68,16 @@ public class StimulusModel {
 
     public void setSelf(boolean self) {
         this.self = self;
+    }
+
+    public String toClause() {
+        return new KnowledgeClause("stimulus")
+                .argument("AGENT")
+                .argument(value)
+                .argument(StringFormatter.toString(activation))
+                .argument(StringFormatter.toString(satisfaction))
+                .body(self ? "self(AGENT)" : "other(AGENT)")
+                .toString();
     }
 
     @Override
