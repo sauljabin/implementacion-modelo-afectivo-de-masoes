@@ -45,8 +45,8 @@ public class AgentTableModel extends AbstractTableModel {
                 translation.get("gui.agent"),
                 translation.get("gui.emotion"),
                 translation.get("gui.emotion_type"),
-                translation.get("A"),
-                translation.get("S")
+                "A",
+                "S"
         };
 
         table.setModel(this);

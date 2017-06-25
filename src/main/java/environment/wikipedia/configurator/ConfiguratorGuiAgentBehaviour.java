@@ -7,21 +7,41 @@
 package environment.wikipedia.configurator;
 
 import behaviour.CounterBehaviour;
+import jade.content.AgentAction;
+import jade.core.AID;
 import masoes.MasoesSettings;
+import masoes.ontology.MasoesOntology;
+import masoes.ontology.state.AgentState;
+import masoes.ontology.state.GetEmotionalState;
+import ontology.OntologyAssistant;
 
 public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
 
-    private ConfiguratorGuiAgent agent;
+    private final OntologyAssistant assistant;
+    private ConfiguratorGuiAgent configuratorAgent;
 
-    public ConfiguratorGuiAgentBehaviour(ConfiguratorGuiAgent agent, int maxCount) {
-        super(agent, maxCount);
-        this.agent = agent;
+    public ConfiguratorGuiAgentBehaviour(ConfiguratorGuiAgent configuratorAgent, int maxCount) {
+        super(configuratorAgent, maxCount);
+        this.configuratorAgent = configuratorAgent;
+        assistant = new OntologyAssistant(configuratorAgent, MasoesOntology.getInstance());
     }
 
     @Override
     public void count(int i) {
-        agent.getConfiguratorGui().getIterationLabel().setText(String.valueOf(i));
+        setIteration(i);
+
+        configuratorAgent.getAgentTableModel().getAgents().forEach(agent -> {
+            AgentAction agentAction = new GetEmotionalState();
+            AID receiver = myAgent.getAID(agent.getName());
+            AgentState agentState = (AgentState) assistant.sendRequestAction(receiver, agentAction);
+            configuratorAgent.getAgentStateTableModel().addAgent(agentState);
+        });
+
         sleep();
+    }
+
+    private void setIteration(int i) {
+        configuratorAgent.getConfiguratorGui().getIterationLabel().setText(String.valueOf(i));
     }
 
     private void sleep() {

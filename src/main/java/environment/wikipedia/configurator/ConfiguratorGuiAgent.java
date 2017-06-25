@@ -10,6 +10,7 @@ import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import environment.dummy.DummyEmotionalAgentArgumentsBuilder;
 import environment.wikipedia.configurator.agent.AgentGuiListener;
+import environment.wikipedia.configurator.agent.table.AgentStateTableModel;
 import environment.wikipedia.configurator.agent.table.AgentTableModel;
 import environment.wikipedia.configurator.stimulus.StimulusGuiListener;
 import environment.wikipedia.configurator.stimulus.StimulusModel;
@@ -32,6 +33,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     private AgentTableModel agentTableModel;
     private boolean suspended;
     private ConfiguratorGuiAgentBehaviour agentBehaviour;
+    private AgentStateTableModel agentStateTableModel;
 
     public ConfiguratorGuiAgent() {
         logger = new AgentLogger(this);
@@ -52,6 +54,8 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         stimulusTableModel.addStimulus(createStimulus("Decremento de reputación baja", -.05, -.05));
 
         agentTableModel = new AgentTableModel(configuratorGui.getAgentsTable());
+
+        agentStateTableModel = new AgentStateTableModel(configuratorGui.getCurrentAgentStatesTable());
     }
 
     private StimulusModel createStimulus(String name, double activation, double satisfaction) {
@@ -209,6 +213,10 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     public AgentTableModel getAgentTableModel() {
         return agentTableModel;
+    }
+
+    public AgentStateTableModel getAgentStateTableModel() {
+        return agentStateTableModel;
     }
 
 }
