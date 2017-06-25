@@ -20,7 +20,8 @@ public enum ConfiguratorGuiEvent {
     EDIT_AGENT,
     PLAY,
     PAUSE,
-    REFRESH;
+    REFRESH,
+    SHOW_AGENT_STATE;
 
     private static List<ConfiguratorGuiEvent> events = Arrays.asList(ConfiguratorGuiEvent.values());
 

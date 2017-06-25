@@ -47,6 +47,9 @@ public class ConfiguratorGuiListener extends WindowsEventsAdapter {
 
         view.getRefreshButton().setActionCommand(ConfiguratorGuiEvent.REFRESH.toString());
         view.getRefreshButton().addActionListener(this);
+
+        view.getShowAgentStateButton().setActionCommand(ConfiguratorGuiEvent.SHOW_AGENT_STATE.toString());
+        view.getShowAgentStateButton().addActionListener(this);
     }
 
     @Override

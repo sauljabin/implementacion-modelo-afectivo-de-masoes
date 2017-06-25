@@ -29,15 +29,17 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
     @Override
     public void count(int i) {
         setIteration(i);
+        updateStates();
+        sleep();
+    }
 
+    private void updateStates() {
         configuratorAgent.getAgentTableModel().getAgents().forEach(agent -> {
             AgentAction agentAction = new GetEmotionalState();
             AID receiver = myAgent.getAID(agent.getName());
             AgentState agentState = (AgentState) assistant.sendRequestAction(receiver, agentAction);
             configuratorAgent.getAgentStateTableModel().addAgent(agentState);
         });
-
-        sleep();
     }
 
     private void setIteration(int i) {

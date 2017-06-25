@@ -10,6 +10,7 @@ import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.state.AgentState;
 import net.miginfocom.swing.MigLayout;
 import translate.Translation;
+import util.StringFormatter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -106,8 +107,8 @@ public class AffectiveModelChartGui extends JFrame {
 
         EmotionalState emotionalState = new EmotionalState(agentState.getEmotionState().getActivation(), agentState.getEmotionState().getSatisfaction());
         affectiveModelChart.setEmotionalState(emotionalState);
-        satisfactionValueLabel.setText(String.format("%.3f", emotionalState.getSatisfaction()));
-        activationValueLabel.setText(String.format("%.3f", emotionalState.getActivation()));
+        satisfactionValueLabel.setText(StringFormatter.toString(emotionalState.getSatisfaction()));
+        activationValueLabel.setText(StringFormatter.toString(emotionalState.getActivation()));
 
         String typeName = translation.get(agentState.getEmotionState().getType().toLowerCase());
         String name = translation.get(agentState.getEmotionState().getName().toLowerCase());

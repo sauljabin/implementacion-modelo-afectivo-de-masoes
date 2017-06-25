@@ -15,11 +15,14 @@ import environment.wikipedia.configurator.agent.table.AgentTableModel;
 import environment.wikipedia.configurator.stimulus.StimulusGuiListener;
 import environment.wikipedia.configurator.stimulus.StimulusModel;
 import environment.wikipedia.configurator.stimulus.table.StimulusTableModel;
+import gui.state.AffectiveModelChartGuiAgent;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
+import masoes.ontology.state.AgentState;
 import util.StringFormatter;
 
 import javax.swing.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -101,10 +104,25 @@ public class ConfiguratorGuiAgent extends GuiAgent {
                 case REFRESH:
                     refresh();
                     break;
+                case SHOW_AGENT_STATE:
+                    showAgentState();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             showError(e.getMessage());
+        }
+    }
+
+    private void showAgentState() {
+        if (agentStateTableModel.hasSelectedAgent()) {
+            AgentState agentState = agentStateTableModel.getSelectedAgent();
+
+            assistant.createAgent(
+                    agentState.getAgent().getLocalName() + "GUI",
+                    AffectiveModelChartGuiAgent.class,
+                    Arrays.asList(agentState.getAgent().getLocalName())
+            );
         }
     }
 
