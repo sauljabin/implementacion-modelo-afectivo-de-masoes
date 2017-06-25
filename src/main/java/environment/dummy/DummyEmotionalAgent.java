@@ -62,16 +62,16 @@ public class DummyEmotionalAgent extends EmotionalAgent {
 
                 if (commandLine.hasOption(KNOWLEDGE_PATH_OPTION)) {
                     String knowledgePath = commandLine.getOptionValue(KNOWLEDGE_PATH_OPTION);
-                    getBehaviouralComponent().addKnowledge(new Knowledge(Paths.get(knowledgePath)));
+                    setKnowledgePath(knowledgePath);
                 }
 
                 if (commandLine.hasOption(KNOWLEDGE_OPTION)) {
                     String knowledge = commandLine.getOptionValue(KNOWLEDGE_OPTION);
-                    getBehaviouralComponent().addKnowledge(new Knowledge(knowledge));
+                    setKnowledge(knowledge);
                 }
 
                 if (!commandLine.hasOption(KNOWLEDGE_PATH_OPTION) && !commandLine.hasOption(KNOWLEDGE_OPTION)) {
-                    setDefaultKnowledge();
+                    setKnowledgePath(THEORY);
                 }
             } catch (ParseException e) {
                 throw new AgentException(e);
@@ -79,12 +79,16 @@ public class DummyEmotionalAgent extends EmotionalAgent {
 
             getBehaviouralComponent().setEmotionalState(emotionalState);
         } else {
-            setDefaultKnowledge();
+            setKnowledgePath(THEORY);
         }
     }
 
-    private void setDefaultKnowledge() {
-        getBehaviouralComponent().addKnowledge(new Knowledge(Paths.get(THEORY)));
+    private void setKnowledge(String knowledge) {
+        getBehaviouralComponent().addKnowledge(new Knowledge(knowledge));
+    }
+
+    private void setKnowledgePath(String path) {
+        getBehaviouralComponent().addKnowledge(new Knowledge(Paths.get(path)));
     }
 
     public Options createOptions() {
