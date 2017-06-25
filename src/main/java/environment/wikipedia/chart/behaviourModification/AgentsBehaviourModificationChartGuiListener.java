@@ -8,7 +8,6 @@ package environment.wikipedia.chart.behaviourModification;
 
 import gui.WindowsEventsAdapter;
 
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class AgentsBehaviourModificationChartGuiListener extends WindowsEventsAdapter {

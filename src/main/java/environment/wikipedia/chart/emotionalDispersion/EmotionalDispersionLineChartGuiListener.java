@@ -8,7 +8,6 @@ package environment.wikipedia.chart.emotionalDispersion;
 
 import gui.WindowsEventsAdapter;
 
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class EmotionalDispersionLineChartGuiListener extends WindowsEventsAdapter {

@@ -11,13 +11,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Clause {
+public class KnowledgeClause {
 
     private String predicate;
     private List<String> arguments = new LinkedList<>();
     private List<String> bodies = new LinkedList<>();
 
-    public Clause(String predicate) {
+    public KnowledgeClause(String predicate) {
         this.predicate = predicate;
     }
 
@@ -41,22 +41,22 @@ public class Clause {
         return stringBuilder.toString();
     }
 
-    public Clause argument(String argument) {
+    public KnowledgeClause argument(String argument) {
         arguments.add(argument);
         return this;
     }
 
-    public Clause arguments(String... arguments) {
+    public KnowledgeClause arguments(String... arguments) {
         Arrays.stream(arguments).forEach(argument -> argument(argument));
         return this;
     }
 
-    public Clause body(String body) {
+    public KnowledgeClause body(String body) {
         bodies.add(body);
         return this;
     }
 
-    public Clause bodies(String... bodies) {
+    public KnowledgeClause bodies(String... bodies) {
         Arrays.stream(bodies).forEach(body -> body(body));
         return this;
     }

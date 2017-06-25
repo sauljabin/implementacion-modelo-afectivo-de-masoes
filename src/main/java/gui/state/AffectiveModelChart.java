@@ -6,7 +6,6 @@
 
 package gui.state;
 
-import application.ApplicationSettings;
 import masoes.MasoesSettings;
 import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.EmotionalState;

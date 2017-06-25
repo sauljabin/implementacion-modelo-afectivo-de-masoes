@@ -27,7 +27,6 @@ import org.junit.Test;
 import test.FunctionalTest;
 import util.MessageBuilder;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,10 +63,49 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
     }
 
     @Test
-    public void shouldChangeAgentEmotion() throws Exception {
-        testEvaluateActionStimulus("greeting", getAID(), "compassion", "IMITATIVE", Arrays.asList("--activation=-0.45", "--satisfaction=0.45"));
-        testEvaluateObjectStimulus("smile", getAID(), "admiration", "IMITATIVE", Arrays.asList("--activation=-0.55", "--satisfaction=-0.45"));
-        testEvaluateEventStimulus("bye", getAID(), "joy", "IMITATIVE", Arrays.asList("--activation=0.55", "--satisfaction=0.55"));
+    public void shouldSetArguments() throws Exception {
+        List<String> arguments = createArguments(
+                -.45,
+                .45,
+                "stimulus(AGENT, testStimulus, 0.1, 0.1) :- self(AGENT).");
+
+        dummyAgentAID = createAgent(DummyEmotionalAgent.class, arguments);
+
+        ActionStimulus stimulus = new ActionStimulus();
+        stimulus.setActor(dummyAgentAID);
+        stimulus.setActionName("testStimulus");
+
+        testEvaluateStimulus(dummyAgentAID, "compassion", "IMITATIVE", stimulus);
+    }
+
+    @Test
+    public void shouldChangeAgentEmotionWithAction() throws Exception {
+        testEvaluateActionStimulus("greeting", getAID(), "compassion", "IMITATIVE", createArguments(-0.45, 0.45));
+    }
+
+    @Test
+    public void shouldChangeAgentEmotionWithObject() throws Exception {
+        testEvaluateObjectStimulus("smile", getAID(), "admiration", "IMITATIVE", createArguments(-0.55, -0.45));
+    }
+
+    @Test
+    public void shouldChangeAgentEmotionWithEvent() throws Exception {
+        testEvaluateEventStimulus("bye", getAID(), "joy", "IMITATIVE", createArguments(0.55, 0.55));
+    }
+
+    private List<String> createArguments(double activation, double satisfaction) {
+        return new DummyEmotionalAgentArgumentsBuilder()
+                .activation(activation)
+                .satisfaction(satisfaction)
+                .build();
+    }
+
+    private List<String> createArguments(double activation, double satisfaction, String knowledge) {
+        return new DummyEmotionalAgentArgumentsBuilder()
+                .activation(activation)
+                .satisfaction(satisfaction)
+                .knowledge(knowledge)
+                .build();
     }
 
     @Test
@@ -116,6 +154,34 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
         EvaluateStimulus evaluateStimulus = new EvaluateStimulus(stimulus);
 
         Action action = new Action(dummyAgentAID, evaluateStimulus);
+        contentManager.fillContent(requestMessage, action);
+        sendMessage(requestMessage);
+
+        ACLMessage response = testMessage(requestMessage);
+
+        ContentElement contentElement = contentManager.extractContent(response);
+        assertThat(contentElement, is(instanceOf(AgentState.class)));
+
+        AgentState firstEmotionalResponse = (AgentState) contentElement;
+
+        AgentState secondEmotionalResponse = testGetStatus(requestMessage);
+        assertThat(secondEmotionalResponse.getEmotionState().getName(), is(expectedEmotion));
+        assertThat(secondEmotionalResponse.getBehaviourState().getType(), is(behaviourType.toUpperCase()));
+
+        assertReflectionEquals(firstEmotionalResponse, secondEmotionalResponse);
+    }
+
+    private void testEvaluateStimulus(AID agentAID, String expectedEmotion, String behaviourType, Stimulus stimulus) throws Exception {
+        ACLMessage requestMessage = new MessageBuilder().request()
+                .fipaSL()
+                .fipaRequest()
+                .receiver(agentAID)
+                .ontology(MasoesOntology.getInstance())
+                .build();
+
+        EvaluateStimulus evaluateStimulus = new EvaluateStimulus(stimulus);
+
+        Action action = new Action(agentAID, evaluateStimulus);
         contentManager.fillContent(requestMessage, action);
         sendMessage(requestMessage);
 

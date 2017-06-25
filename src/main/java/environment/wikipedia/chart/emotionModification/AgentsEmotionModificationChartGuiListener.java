@@ -8,7 +8,6 @@ package environment.wikipedia.chart.emotionModification;
 
 import gui.WindowsEventsAdapter;
 
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class AgentsEmotionModificationChartGuiListener extends WindowsEventsAdapter {

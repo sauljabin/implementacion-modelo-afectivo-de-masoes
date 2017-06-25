@@ -69,8 +69,8 @@ public class DummyEmotionalAgentTest extends PowerMockitoTest {
     }
 
     @Test
-    public void shouldSetKnowledgeWhenReceivePath() {
-        Object[] args = {"--knowledge=" + THEORY};
+    public void shouldSetKnowledgePathWhenReceivePath() {
+        Object[] args = {"-kp", THEORY};
         dummyEmotionalAgentSpy.setArguments(args);
         dummyEmotionalAgentSpy.setUp();
 
@@ -78,6 +78,31 @@ public class DummyEmotionalAgentTest extends PowerMockitoTest {
 
         Knowledge knowledge = knowledgeArgumentCaptor.getValue();
         assertThat(knowledge.toString(), is(new Knowledge(Paths.get(THEORY)).toString().trim()));
+    }
+
+    @Test
+    public void shouldSetKnowledgePathWhenReceivePathAndLongOption() {
+        Object[] args = {"--knowledge-path=" + THEORY};
+        dummyEmotionalAgentSpy.setArguments(args);
+        dummyEmotionalAgentSpy.setUp();
+
+        verify(behaviouralComponentMock).addKnowledge(knowledgeArgumentCaptor.capture());
+
+        Knowledge knowledge = knowledgeArgumentCaptor.getValue();
+        assertThat(knowledge.toString(), is(new Knowledge(Paths.get(THEORY)).toString().trim()));
+    }
+
+    @Test
+    public void shouldSetKnowledge() {
+        String expectedRule = "stimulus(AGENT, eventName, 0.1, 0.1) :- self(AGENT).";
+        Object[] args = {"-k", expectedRule};
+        dummyEmotionalAgentSpy.setArguments(args);
+        dummyEmotionalAgentSpy.setUp();
+
+        verify(behaviouralComponentMock).addKnowledge(knowledgeArgumentCaptor.capture());
+
+        Knowledge knowledge = knowledgeArgumentCaptor.getValue();
+        assertThat(knowledge.toString(), is(new Knowledge(expectedRule).toString().trim()));
     }
 
     @Test
