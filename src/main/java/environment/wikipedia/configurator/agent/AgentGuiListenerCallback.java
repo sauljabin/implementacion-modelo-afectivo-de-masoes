@@ -6,14 +6,8 @@
 
 package environment.wikipedia.configurator.agent;
 
-public enum AgentViewEvent {
-    SAVE,
-    SAVE_AND_NEW,
-    CANCEL,
-    SET_RANDOM_ACTIVATION,
-    SET_RANDOM_SATISFACTION,
-    UPDATE_EMOTION,
-    SELECT_ALL,
-    DESELECT_ALL,
-    UPDATE_AGENT_TYPE;
+public interface AgentGuiListenerCallback {
+
+    void afterSave(AgentModel agentModel);
+
 }

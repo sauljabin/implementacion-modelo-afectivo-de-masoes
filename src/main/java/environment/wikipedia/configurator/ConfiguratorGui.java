@@ -12,7 +12,7 @@ import translate.Translation;
 import javax.swing.*;
 import java.awt.*;
 
-public class ConfiguratorView extends JFrame {
+public class ConfiguratorGui extends JFrame {
 
     private static final Font FONT_50 = new Font("Arial", Font.BOLD, 50);
 
@@ -48,7 +48,7 @@ public class ConfiguratorView extends JFrame {
     private JCheckBox emotionsCheckBox;
     private JTable currentAgentStatesTable;
 
-    public ConfiguratorView() {
+    public ConfiguratorGui() {
         setTitle(translation.get("gui.configurator") + " - Wikipedia");
         setSize(1400, 780);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -76,8 +76,8 @@ public class ConfiguratorView extends JFrame {
     }
 
     public static void main(String[] args) {
-        ConfiguratorView configuratorView = new ConfiguratorView();
-        configuratorView.setVisible(true);
+        ConfiguratorGui configuratorGui = new ConfiguratorGui();
+        configuratorGui.setVisible(true);
     }
 
     private JPanel createSelectChartsPanel() {

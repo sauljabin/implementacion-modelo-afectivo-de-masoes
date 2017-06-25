@@ -47,7 +47,7 @@ public class AgentsEmotionModificationChartGui extends JFrame {
         setTitle(title);
         setLayout(new BorderLayout());
 
-        addWindowListener(new AgentsEmotionModificationChartGuiWindowListener(this));
+        addWindowListener(new AgentsEmotionModificationChartGuiListener(this));
 
         collection = new XYSeriesCollection();
 

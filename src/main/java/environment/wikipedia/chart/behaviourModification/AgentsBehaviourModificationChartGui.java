@@ -47,7 +47,7 @@ public class AgentsBehaviourModificationChartGui extends JFrame {
         setTitle(title);
         setLayout(new BorderLayout());
 
-        addWindowListener(new AgentsBehaviourModificationChartGuiWindowListener(this));
+        addWindowListener(new AgentsBehaviourModificationChartGuiListener(this));
 
         collection = new XYSeriesCollection();
 

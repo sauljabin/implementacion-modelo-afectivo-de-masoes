@@ -4,16 +4,18 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.chart.emotionModification;
+package environment.wikipedia.chart.maximunDistance;
+
+import gui.WindowsEventsAdapter;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class AgentsEmotionModificationChartGuiWindowListener extends WindowAdapter {
+public class MaximumDistancesLineChartGuiListener extends WindowsEventsAdapter {
 
-    private AgentsEmotionModificationChartGui chartGui;
+    private MaximumDistancesLineChartGui chartGui;
 
-    public AgentsEmotionModificationChartGuiWindowListener(AgentsEmotionModificationChartGui chartGui) {
+    public MaximumDistancesLineChartGuiListener(MaximumDistancesLineChartGui chartGui) {
         this.chartGui = chartGui;
     }
 

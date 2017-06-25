@@ -32,7 +32,7 @@ public class AgentsEmotionalStateChartGui extends JFrame {
         setTitle(title);
         setLayout(new BorderLayout());
 
-        addWindowListener(new AgentsEmotionalStateChartGuiWindowListener(this));
+        addWindowListener(new AgentsEmotionalStateChartGuiListener(this));
 
         centerPanel = new JPanel(new MigLayout());
 

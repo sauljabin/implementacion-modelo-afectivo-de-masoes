@@ -7,10 +7,10 @@
 package environment.wikipedia.configurator;
 
 import agent.AgentLogger;
-import environment.wikipedia.configurator.agent.AgentViewController;
+import environment.wikipedia.configurator.agent.AgentGuiListener;
 import environment.wikipedia.configurator.agent.table.AgentTableModel;
 import environment.wikipedia.configurator.stimulus.StimulusModel;
-import environment.wikipedia.configurator.stimulus.StimulusViewController;
+import environment.wikipedia.configurator.stimulus.StimulusGuiListener;
 import environment.wikipedia.configurator.stimulus.table.StimulusTableModel;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
@@ -18,24 +18,24 @@ import util.StringFormatter;
 
 import javax.swing.*;
 
-public class ConfiguratorViewAgent extends GuiAgent {
+public class ConfiguratorGuiAgent extends GuiAgent {
 
-    private ConfiguratorViewController configuratorViewController;
-    private ConfiguratorView configuratorView;
+    private ConfiguratorGuiListener configuratorGuiListener;
+    private ConfiguratorGui configuratorGui;
     private StimulusTableModel stimulusTableModel;
     private AgentLogger logger;
     private AgentTableModel agentTableModel;
 
-    public ConfiguratorViewAgent() {
+    public ConfiguratorGuiAgent() {
         logger = new AgentLogger(this);
-        configuratorView = new ConfiguratorView();
-        configuratorViewController = new ConfiguratorViewController(configuratorView, this);
+        configuratorGui = new ConfiguratorGui();
+        configuratorGuiListener = new ConfiguratorGuiListener(configuratorGui, this);
         configView();
-        configuratorView.setVisible(true);
+        configuratorGui.setVisible(true);
     }
 
     private void configView() {
-        stimulusTableModel = new StimulusTableModel(configuratorView.getStimuliTable());
+        stimulusTableModel = new StimulusTableModel(configuratorGui.getStimuliTable());
         stimulusTableModel.addStimulus(createStimulus("Incremento de reputación alta", .3, .3));
         stimulusTableModel.addStimulus(createStimulus("Incremento de reputación media", 0, .1));
         stimulusTableModel.addStimulus(createStimulus("Incremento de reputación baja", -.05, .05));
@@ -43,7 +43,7 @@ public class ConfiguratorViewAgent extends GuiAgent {
         stimulusTableModel.addStimulus(createStimulus("Decremento de reputación media", 0, -.1));
         stimulusTableModel.addStimulus(createStimulus("Decremento de reputación baja", -.05, -.05));
 
-        agentTableModel = new AgentTableModel(configuratorView.getAgentsTable());
+        agentTableModel = new AgentTableModel(configuratorGui.getAgentsTable());
     }
 
     private StimulusModel createStimulus(String name, double activation, double satisfaction) {
@@ -52,13 +52,13 @@ public class ConfiguratorViewAgent extends GuiAgent {
 
     @Override
     protected void takeDown() {
-        configuratorView.dispose();
+        configuratorGui.dispose();
     }
 
     @Override
     protected void onGuiEvent(GuiEvent guiEvent) {
         try {
-            switch (ConfiguratorViewEvent.fromInt(guiEvent.getType())) {
+            switch (ConfiguratorGuiEvent.fromInt(guiEvent.getType())) {
                 case CLOSE_WINDOW:
                     closeWindow();
                     break;
@@ -91,15 +91,15 @@ public class ConfiguratorViewAgent extends GuiAgent {
     }
 
     private void play() {
-        addBehaviour(new ConfiguratorViewAgentBehaviour(
+        addBehaviour(new ConfiguratorGuiAgentBehaviour(
                 this,
-                (Integer) configuratorView.getIterationsSpinner().getValue()
+                (Integer) configuratorGui.getIterationsSpinner().getValue()
         ));
     }
 
     private void editAgent() {
         if (agentTableModel.hasSelectedAgent()) {
-            new AgentViewController(
+            new AgentGuiListener(
                     agentTableModel.getSelectedAgent(),
                     agentTableModel.getAgents(),
                     stimulusTableModel.getStimuli(),
@@ -113,7 +113,7 @@ public class ConfiguratorViewAgent extends GuiAgent {
     }
 
     private void addAgent() {
-        new AgentViewController(
+        new AgentGuiListener(
                 agentTableModel.getAgents(),
                 stimulusTableModel.getStimuli(),
                 newAgent -> agentTableModel.addAgent(newAgent)
@@ -122,7 +122,7 @@ public class ConfiguratorViewAgent extends GuiAgent {
 
     private void editStimulus() {
         if (stimulusTableModel.hasSelectedStimulus()) {
-            new StimulusViewController(
+            new StimulusGuiListener(
                     stimulusTableModel.getSelectedStimulus(),
                     updatedStimulus -> stimulusTableModel.fireTableDataChanged()
             );
@@ -134,7 +134,7 @@ public class ConfiguratorViewAgent extends GuiAgent {
     }
 
     private void addStimulus() {
-        new StimulusViewController(
+        new StimulusGuiListener(
                 newStimulus -> stimulusTableModel.addStimulus(newStimulus)
         );
     }
@@ -144,11 +144,11 @@ public class ConfiguratorViewAgent extends GuiAgent {
     }
 
     public void showError(String message) {
-        JOptionPane.showMessageDialog(configuratorView, message, "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(configuratorGui, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    public ConfiguratorView getConfiguratorView() {
-        return configuratorView;
+    public ConfiguratorGui getConfiguratorGui() {
+        return configuratorGui;
     }
 
     public StimulusTableModel getStimulusTableModel() {

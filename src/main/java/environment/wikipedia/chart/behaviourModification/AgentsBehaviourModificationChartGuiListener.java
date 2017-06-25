@@ -4,16 +4,18 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.chart.emotionalState;
+package environment.wikipedia.chart.behaviourModification;
+
+import gui.WindowsEventsAdapter;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class AgentsEmotionalStateChartGuiWindowListener extends WindowAdapter {
+public class AgentsBehaviourModificationChartGuiListener extends WindowsEventsAdapter {
 
-    private AgentsEmotionalStateChartGui chartGui;
+    private AgentsBehaviourModificationChartGui chartGui;
 
-    public AgentsEmotionalStateChartGuiWindowListener(AgentsEmotionalStateChartGui chartGui) {
+    public AgentsBehaviourModificationChartGuiListener(AgentsBehaviourModificationChartGui chartGui) {
         this.chartGui = chartGui;
     }
 

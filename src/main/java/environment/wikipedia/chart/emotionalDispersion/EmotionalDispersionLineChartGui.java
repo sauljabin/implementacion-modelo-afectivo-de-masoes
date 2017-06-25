@@ -39,7 +39,7 @@ public class EmotionalDispersionLineChartGui extends JFrame {
         setTitle(title);
         setLayout(new BorderLayout());
 
-        addWindowListener(new EmotionalDispersionLineChartGuiWindowListener(this));
+        addWindowListener(new EmotionalDispersionLineChartGuiListener(this));
 
         seriesActivation = new XYSeries(translation.get("gui.activation"));
         seriesSatisfaction = new XYSeries(translation.get("gui.satisfaction"));

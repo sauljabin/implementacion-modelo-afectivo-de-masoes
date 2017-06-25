@@ -4,16 +4,18 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.chart.behaviourModification;
+package environment.wikipedia.chart.emotionalDispersion;
+
+import gui.WindowsEventsAdapter;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class AgentsBehaviourModificationChartGuiWindowListener extends WindowAdapter {
+public class EmotionalDispersionLineChartGuiListener extends WindowsEventsAdapter {
 
-    private AgentsBehaviourModificationChartGui chartGui;
+    private EmotionalDispersionLineChartGui chartGui;
 
-    public AgentsBehaviourModificationChartGuiWindowListener(AgentsBehaviourModificationChartGui chartGui) {
+    public EmotionalDispersionLineChartGuiListener(EmotionalDispersionLineChartGui chartGui) {
         this.chartGui = chartGui;
     }
 

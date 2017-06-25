@@ -9,7 +9,7 @@ package environment.wikipedia.configurator;
 import java.util.Arrays;
 import java.util.List;
 
-public enum ConfiguratorViewEvent {
+public enum ConfiguratorGuiEvent {
 
     CLOSE_WINDOW,
     ADD_STIMULUS,
@@ -20,13 +20,13 @@ public enum ConfiguratorViewEvent {
     EDIT_AGENT,
     PLAY;
 
-    private static List<ConfiguratorViewEvent> events = Arrays.asList(ConfiguratorViewEvent.values());
+    private static List<ConfiguratorGuiEvent> events = Arrays.asList(ConfiguratorGuiEvent.values());
 
-    public static ConfiguratorViewEvent fromInt(int i) {
+    public static ConfiguratorGuiEvent fromInt(int i) {
         return events.get(i);
     }
 
-    public static int toInt(ConfiguratorViewEvent event) {
+    public static int toInt(ConfiguratorGuiEvent event) {
         return events.indexOf(event);
     }
 

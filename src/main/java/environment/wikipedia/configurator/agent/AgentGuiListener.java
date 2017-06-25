@@ -22,31 +22,31 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AgentViewController extends WindowsEventsAdapter {
+public class AgentGuiListener extends WindowsEventsAdapter {
 
     private Translation translation = Translation.getInstance();
 
-    private AgentView agentView;
+    private AgentGui agentGui;
     private AgentModel agentModel;
     private List<AgentModel> agents;
-    private AgentViewControllerCallback callback;
+    private AgentGuiListenerCallback callback;
     private SelectableStimulusTableModel stimulusTableModel;
     private List<StimulusModel> stimuli;
 
-    public AgentViewController(List<AgentModel> agents, List<StimulusModel> stimuli, AgentViewControllerCallback callback) {
+    public AgentGuiListener(List<AgentModel> agents, List<StimulusModel> stimuli, AgentGuiListenerCallback callback) {
         this(null, agents, stimuli, callback);
     }
 
-    public AgentViewController(AgentModel agentModel, List<AgentModel> agents, List<StimulusModel> stimuli, AgentViewControllerCallback callback) {
+    public AgentGuiListener(AgentModel agentModel, List<AgentModel> agents, List<StimulusModel> stimuli, AgentGuiListenerCallback callback) {
         this.agentModel = agentModel;
         this.agents = agents;
         this.callback = callback;
         this.stimuli = stimuli;
 
-        this.agentView = new AgentView();
+        this.agentGui = new AgentGui();
         configView();
         initView();
-        this.agentView.setVisible(true);
+        this.agentGui.setVisible(true);
     }
 
     @Override
@@ -61,12 +61,12 @@ public class AgentViewController extends WindowsEventsAdapter {
             agentModel.setStimuli(stimuli);
         }
 
-        agentView.getNameField().setText(agentModel.getName());
-        agentView.getActivationSpinner().setValue(agentModel.getActivation());
-        agentView.getSatisfactionSpinner().setValue(agentModel.getSatisfaction());
-        agentView.getAgentTypesCombo().setSelectedItem(agentModel.getAgentType());
+        agentGui.getNameField().setText(agentModel.getName());
+        agentGui.getActivationSpinner().setValue(agentModel.getActivation());
+        agentGui.getSatisfactionSpinner().setValue(agentModel.getSatisfaction());
+        agentGui.getAgentTypesCombo().setSelectedItem(agentModel.getAgentType());
 
-        stimulusTableModel = new SelectableStimulusTableModel(agentView.getStimuliTable(), stimuli);
+        stimulusTableModel = new SelectableStimulusTableModel(agentGui.getStimuliTable(), stimuli);
         stimulusTableModel.selectStimuli(agentModel.getStimuli());
 
         updateEmotion();
@@ -78,7 +78,7 @@ public class AgentViewController extends WindowsEventsAdapter {
                 .collect(Collectors.toList());
 
         int sequence = 1;
-        AgentType agentType = (AgentType) agentView.getAgentTypesCombo().getSelectedItem();
+        AgentType agentType = (AgentType) agentGui.getAgentTypesCombo().getSelectedItem();
         String tempName = agentType.toString() + sequence;
 
         while (agentsName.contains(tempName)) {
@@ -89,79 +89,79 @@ public class AgentViewController extends WindowsEventsAdapter {
     }
 
     public void updateEmotion() {
-        EmotionalState emotionalState = new EmotionalState((Double) agentView.getActivationSpinner().getValue(), (Double) agentView.getSatisfactionSpinner().getValue());
+        EmotionalState emotionalState = new EmotionalState((Double) agentGui.getActivationSpinner().getValue(), (Double) agentGui.getSatisfactionSpinner().getValue());
         Emotion emotion = AffectiveModel.getInstance().searchEmotion(emotionalState);
-        agentView.getEmotionLabel().setText(String.format("%s - %s", translation.get(emotion.getName().toLowerCase()), translation.get(emotion.getType().toString().toLowerCase())));
+        agentGui.getEmotionLabel().setText(String.format("%s - %s", translation.get(emotion.getName().toLowerCase()), translation.get(emotion.getType().toString().toLowerCase())));
     }
 
     private void configView() {
-        agentView.addWindowListener(this);
+        agentGui.addWindowListener(this);
 
-        agentView.getSaveButton().setActionCommand(AgentViewEvent.SAVE.toString());
-        agentView.getSaveButton().addActionListener(this);
+        agentGui.getSaveButton().setActionCommand(AgentGuiEvent.SAVE.toString());
+        agentGui.getSaveButton().addActionListener(this);
 
-        agentView.getSaveAndNewButton().setActionCommand(AgentViewEvent.SAVE_AND_NEW.toString());
-        agentView.getSaveAndNewButton().addActionListener(this);
+        agentGui.getSaveAndNewButton().setActionCommand(AgentGuiEvent.SAVE_AND_NEW.toString());
+        agentGui.getSaveAndNewButton().addActionListener(this);
 
-        agentView.getCancelButton().setActionCommand(AgentViewEvent.CANCEL.toString());
-        agentView.getCancelButton().addActionListener(this);
+        agentGui.getCancelButton().setActionCommand(AgentGuiEvent.CANCEL.toString());
+        agentGui.getCancelButton().addActionListener(this);
 
-        agentView.getActivationRandomButton().setActionCommand(AgentViewEvent.SET_RANDOM_ACTIVATION.toString());
-        agentView.getActivationRandomButton().addActionListener(this);
+        agentGui.getActivationRandomButton().setActionCommand(AgentGuiEvent.SET_RANDOM_ACTIVATION.toString());
+        agentGui.getActivationRandomButton().addActionListener(this);
 
-        agentView.getSatisfactionRandomButton().setActionCommand(AgentViewEvent.SET_RANDOM_SATISFACTION.toString());
-        agentView.getSatisfactionRandomButton().addActionListener(this);
+        agentGui.getSatisfactionRandomButton().setActionCommand(AgentGuiEvent.SET_RANDOM_SATISFACTION.toString());
+        agentGui.getSatisfactionRandomButton().addActionListener(this);
 
-        agentView.getSatisfactionSpinner().addChangeListener(this);
-        agentView.getActivationSpinner().addChangeListener(this);
+        agentGui.getSatisfactionSpinner().addChangeListener(this);
+        agentGui.getActivationSpinner().addChangeListener(this);
 
-        agentView.getSelectAllButton().setActionCommand(AgentViewEvent.SELECT_ALL.toString());
-        agentView.getSelectAllButton().addActionListener(this);
+        agentGui.getSelectAllButton().setActionCommand(AgentGuiEvent.SELECT_ALL.toString());
+        agentGui.getSelectAllButton().addActionListener(this);
 
-        agentView.getDeselectAllButton().setActionCommand(AgentViewEvent.DESELECT_ALL.toString());
-        agentView.getDeselectAllButton().addActionListener(this);
+        agentGui.getDeselectAllButton().setActionCommand(AgentGuiEvent.DESELECT_ALL.toString());
+        agentGui.getDeselectAllButton().addActionListener(this);
 
-        agentView.getAgentTypesCombo().addItemListener(this);
+        agentGui.getAgentTypesCombo().addItemListener(this);
 
         if (agentModel != null) {
-            agentView.getSaveAndNewButton().setVisible(false);
+            agentGui.getSaveAndNewButton().setVisible(false);
         }
 
-        agentView.getNameField().setEditable(false);
+        agentGui.getNameField().setEditable(false);
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        if (e.getSource().equals(agentView.getSatisfactionSpinner())
-                || e.getSource().equals(agentView.getActivationSpinner())) {
-            eventHandler(AgentViewEvent.UPDATE_EMOTION);
+        if (e.getSource().equals(agentGui.getSatisfactionSpinner())
+                || e.getSource().equals(agentGui.getActivationSpinner())) {
+            eventHandler(AgentGuiEvent.UPDATE_EMOTION);
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        eventHandler(AgentViewEvent.valueOf(e.getActionCommand()));
+        eventHandler(AgentGuiEvent.valueOf(e.getActionCommand()));
     }
 
     @Override
     public void itemStateChanged(ItemEvent e) {
-        if (e.getSource().equals(agentView.getAgentTypesCombo())) {
-            eventHandler(AgentViewEvent.UPDATE_AGENT_TYPE);
+        if (e.getSource().equals(agentGui.getAgentTypesCombo())) {
+            eventHandler(AgentGuiEvent.UPDATE_AGENT_TYPE);
         }
     }
 
     private void updateModel() {
-        agentModel.setAgentType((AgentType) agentView.getAgentTypesCombo().getSelectedItem());
-        agentModel.setName(agentView.getNameField().getText());
-        agentModel.setActivation((Double) agentView.getActivationSpinner().getValue());
-        agentModel.setSatisfaction((Double) agentView.getSatisfactionSpinner().getValue());
+        agentModel.setAgentType((AgentType) agentGui.getAgentTypesCombo().getSelectedItem());
+        agentModel.setName(agentGui.getNameField().getText());
+        agentModel.setActivation((Double) agentGui.getActivationSpinner().getValue());
+        agentModel.setSatisfaction((Double) agentGui.getSatisfactionSpinner().getValue());
         agentModel.setStimuli(stimulusTableModel.getSelectedStimuli());
         if (callback != null) {
             callback.afterSave(agentModel);
         }
     }
 
-    private void eventHandler(AgentViewEvent event) {
+    private void eventHandler(AgentGuiEvent event) {
         switch (event) {
             case SAVE:
                 save();
@@ -194,7 +194,7 @@ public class AgentViewController extends WindowsEventsAdapter {
     }
 
     private void updateAgentType() {
-        agentView.getNameField().setText(generateAgentName());
+        agentGui.getNameField().setText(generateAgentName());
     }
 
     private void deselectAll() {
@@ -206,7 +206,7 @@ public class AgentViewController extends WindowsEventsAdapter {
     }
 
     private void close() {
-        agentView.dispose();
+        agentGui.dispose();
     }
 
     private void saveAndNew() {
@@ -221,12 +221,12 @@ public class AgentViewController extends WindowsEventsAdapter {
     }
 
     private void setRandomSatisfaction() {
-        agentView.getSatisfactionSpinner().setValue(RandomGenerator.getDouble(-1., 1.));
+        agentGui.getSatisfactionSpinner().setValue(RandomGenerator.getDouble(-1., 1.));
         updateEmotion();
     }
 
     private void setRandomActivation() {
-        agentView.getActivationSpinner().setValue(RandomGenerator.getDouble(-1., 1.));
+        agentGui.getActivationSpinner().setValue(RandomGenerator.getDouble(-1., 1.));
         updateEmotion();
     }
 

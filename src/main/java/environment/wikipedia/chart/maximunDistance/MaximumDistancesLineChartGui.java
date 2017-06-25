@@ -39,7 +39,7 @@ public class MaximumDistancesLineChartGui extends JFrame {
         setTitle(title);
         setLayout(new BorderLayout());
 
-        addWindowListener(new MaximumDistancesLineChartGuiWindowListener(this));
+        addWindowListener(new MaximumDistancesLineChartGuiListener(this));
 
         seriesActivation = new XYSeries(translation.get("gui.activation"));
         seriesSatisfaction = new XYSeries(translation.get("gui.satisfaction"));

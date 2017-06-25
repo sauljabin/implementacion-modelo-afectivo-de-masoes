@@ -4,10 +4,11 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.configurator.agent;
+package environment.wikipedia.configurator.stimulus;
 
-public interface AgentViewControllerCallback {
-
-    void afterSave(AgentModel agentModel);
-
+public enum StimulusGuiEvent {
+    SAVE,
+    SAVE_AND_NEW,
+    CANCEL,
+    NAME_CHANGED;
 }

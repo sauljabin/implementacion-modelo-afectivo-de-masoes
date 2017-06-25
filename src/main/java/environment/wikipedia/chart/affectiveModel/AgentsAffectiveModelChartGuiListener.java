@@ -6,14 +6,16 @@
 
 package environment.wikipedia.chart.affectiveModel;
 
+import gui.WindowsEventsAdapter;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class AgentsAffectiveModelChartGuiWindowListener extends WindowAdapter {
+public class AgentsAffectiveModelChartGuiListener extends WindowsEventsAdapter {
 
     private AgentsAffectiveModelChartGui chartGui;
 
-    public AgentsAffectiveModelChartGuiWindowListener(AgentsAffectiveModelChartGui chartGui) {
+    public AgentsAffectiveModelChartGuiListener(AgentsAffectiveModelChartGui chartGui) {
         this.chartGui = chartGui;
     }
 

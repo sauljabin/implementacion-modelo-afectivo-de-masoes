@@ -33,7 +33,7 @@ public class AgentsAffectiveModelChartGui extends JFrame {
         setTitle(title);
         setLayout(new BorderLayout());
 
-        addWindowListener(new AgentsAffectiveModelChartGuiWindowListener(this));
+        addWindowListener(new AgentsAffectiveModelChartGuiListener(this));
 
         agentsAffectiveModelChart = new AgentsAffectiveModelChart(emotionalStateContainers);
         add(agentsAffectiveModelChart, BorderLayout.CENTER);

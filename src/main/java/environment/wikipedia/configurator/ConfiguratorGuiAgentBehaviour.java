@@ -9,18 +9,18 @@ package environment.wikipedia.configurator;
 import behaviour.CounterBehaviour;
 import masoes.MasoesSettings;
 
-public class ConfiguratorViewAgentBehaviour extends CounterBehaviour {
+public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
 
-    private ConfiguratorViewAgent agent;
+    private ConfiguratorGuiAgent agent;
 
-    public ConfiguratorViewAgentBehaviour(ConfiguratorViewAgent agent, int maxCount) {
+    public ConfiguratorGuiAgentBehaviour(ConfiguratorGuiAgent agent, int maxCount) {
         super(agent, maxCount);
         this.agent = agent;
     }
 
     @Override
     public void count(int i) {
-        agent.getConfiguratorView().getIterationLabel().setText(String.valueOf(i));
+        agent.getConfiguratorGui().getIterationLabel().setText(String.valueOf(i));
         sleep();
     }
 
