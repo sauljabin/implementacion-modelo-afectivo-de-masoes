@@ -211,13 +211,19 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     private void deleteAgent() {
         agentTableModel.deleteSelectedAgent();
+        if (agentTableModel.getAgents().isEmpty()) {
+            configuratorGui.getPlayButton().setEnabled(false);
+        }
     }
 
     private void addAgent() {
         new AgentGuiListener(
                 agentTableModel.getAgents(),
                 stimulusTableModel.getStimuli(),
-                newAgent -> agentTableModel.addAgent(newAgent)
+                newAgent -> {
+                    agentTableModel.addAgent(newAgent);
+                    configuratorGui.getPlayButton().setEnabled(true);
+                }
         );
     }
 
@@ -268,8 +274,8 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         configuratorGui.getRefreshButton().setEnabled(false);
         configuratorGui.getPauseButton().setEnabled(false);
         configuratorGui.getShowAgentStateButton().setEnabled(false);
+        configuratorGui.getPlayButton().setEnabled(false);
 
-        configuratorGui.getPlayButton().setEnabled(true);
         configuratorGui.getIterationsSpinner().setEnabled(true);
 
         configuratorGui.getIterationLabel().setText("0");

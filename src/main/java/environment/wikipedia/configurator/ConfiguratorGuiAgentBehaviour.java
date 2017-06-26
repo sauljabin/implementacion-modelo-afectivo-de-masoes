@@ -44,6 +44,12 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
         sleep();
     }
 
+    @Override
+    public int onEnd() {
+        configuratorAgent.getConfiguratorGui().getPauseButton().setEnabled(false);
+        return super.onEnd();
+    }
+
     private void updateStates() {
         socialEmotionCalculator.clear();
 
