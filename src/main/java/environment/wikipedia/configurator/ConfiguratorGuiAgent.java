@@ -16,12 +16,14 @@ import environment.wikipedia.configurator.stimulus.StimulusGuiListener;
 import environment.wikipedia.configurator.stimulus.StimulusModel;
 import environment.wikipedia.configurator.stimulus.table.StimulusTableModel;
 import gui.state.AffectiveModelChartGuiAgent;
+import jade.core.AID;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import masoes.ontology.state.AgentState;
 import util.StringFormatter;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -130,6 +132,24 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         if (agentBehaviour != null) {
             removeBehaviour(agentBehaviour);
         }
+
+        List<AID> agents = assistant.agents();
+
+        agentTableModel.getAgents().forEach(agent -> {
+            try {
+                AID gui = getAID(agent.getName() + "GUI");
+                if (agents.contains(gui)) {
+                    assistant.killAgent(gui);
+                }
+
+                AID aid = getAID(agent.getName());
+                if (agents.contains(aid)) {
+                    assistant.killAgent(aid);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void pause() {

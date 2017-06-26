@@ -7,6 +7,7 @@
 package environment.wikipedia.configurator;
 
 import behaviour.CounterBehaviour;
+import environment.wikipedia.configurator.stimulus.StimulusModel;
 import jade.content.AgentAction;
 import jade.core.AID;
 import masoes.MasoesSettings;
@@ -17,8 +18,11 @@ import masoes.ontology.state.GetEmotionalState;
 import masoes.ontology.state.collective.CentralEmotion;
 import masoes.ontology.state.collective.EmotionalDispersion;
 import masoes.ontology.state.collective.MaximumDistances;
+import masoes.ontology.stimulus.EvaluateStimulus;
+import masoes.ontology.stimulus.EventStimulus;
 import ontology.OntologyAssistant;
 import translate.Translation;
+import util.RandomGenerator;
 
 public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
 
@@ -44,8 +48,15 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
         socialEmotionCalculator.clear();
 
         configuratorAgent.getAgentTableModel().getAgents().forEach(agent -> {
-            AgentAction agentAction = new GetEmotionalState();
             AID receiver = myAgent.getAID(agent.getName());
+
+            AgentAction agentAction = new GetEmotionalState();
+
+            if (!agent.getStimuli().isEmpty()) {
+                StimulusModel randomItem = RandomGenerator.getRandomItem(agent.getStimuli());
+                EventStimulus stimulus = new EventStimulus(receiver, randomItem.getValue());
+                agentAction = new EvaluateStimulus(stimulus);
+            }
 
             AgentState agentState = (AgentState) assistant.sendRequestAction(receiver, agentAction);
 
