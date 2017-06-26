@@ -144,7 +144,6 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         } else {
 
             agentTableModel.getAgents().forEach(agent -> {
-
                 String knowledge = agent.getStimuli()
                         .stream()
                         .map(stimulus -> stimulus.toClause())
@@ -167,6 +166,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
                     this,
                     (Integer) configuratorGui.getIterationsSpinner().getValue()
             );
+
             addBehaviour(agentBehaviour);
         }
     }

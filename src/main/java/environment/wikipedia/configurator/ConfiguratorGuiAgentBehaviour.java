@@ -10,20 +10,27 @@ import behaviour.CounterBehaviour;
 import jade.content.AgentAction;
 import jade.core.AID;
 import masoes.MasoesSettings;
+import masoes.collective.SocialEmotionCalculator;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
+import masoes.ontology.state.collective.CentralEmotion;
+import masoes.ontology.state.collective.EmotionalDispersion;
+import masoes.ontology.state.collective.MaximumDistances;
 import ontology.OntologyAssistant;
+import translate.Translation;
 
 public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
 
-    private final OntologyAssistant assistant;
+    private OntologyAssistant assistant;
     private ConfiguratorGuiAgent configuratorAgent;
+    private SocialEmotionCalculator socialEmotionCalculator;
 
     public ConfiguratorGuiAgentBehaviour(ConfiguratorGuiAgent configuratorAgent, int maxCount) {
         super(configuratorAgent, maxCount);
         this.configuratorAgent = configuratorAgent;
         assistant = new OntologyAssistant(configuratorAgent, MasoesOntology.getInstance());
+        socialEmotionCalculator = new SocialEmotionCalculator();
     }
 
     @Override
@@ -34,12 +41,46 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
     }
 
     private void updateStates() {
+        socialEmotionCalculator.clear();
+
         configuratorAgent.getAgentTableModel().getAgents().forEach(agent -> {
             AgentAction agentAction = new GetEmotionalState();
             AID receiver = myAgent.getAID(agent.getName());
+
             AgentState agentState = (AgentState) assistant.sendRequestAction(receiver, agentAction);
+
             configuratorAgent.getAgentStateTableModel().addAgent(agentState);
+
+            socialEmotionCalculator.addEmotionalState(agentState.getEmotionState().toEmotionalState());
         });
+
+        setGuiSocialEmotion();
+    }
+
+    private void setGuiSocialEmotion() {
+        EmotionalDispersion emotionalDispersion = socialEmotionCalculator.getEmotionalDispersion();
+        CentralEmotion centralEmotionalState = socialEmotionCalculator.getCentralEmotionalState();
+        MaximumDistances maximumDistances = socialEmotionCalculator.getMaximumDistances();
+
+        configuratorAgent.getConfiguratorGui().getCollectiveCentralEmotionalStateLabel()
+                .setText(centralEmotionalState.toStringPoint());
+
+        configuratorAgent.getConfiguratorGui().getCollectiveCentralEmotionLabel()
+                .setText(
+                        translate(centralEmotionalState.getEmotion().getName()) +
+                                " - " +
+                                translate(centralEmotionalState.getEmotion().getType().toString())
+                );
+
+        configuratorAgent.getConfiguratorGui().getEmotionalDispersionValueLabel()
+                .setText(emotionalDispersion.toStringPoint());
+
+        configuratorAgent.getConfiguratorGui().getMaxDistanceEmotionValueLabel()
+                .setText(maximumDistances.toStringPoint());
+    }
+
+    private String translate(String key) {
+        return Translation.getInstance().get(key.toLowerCase());
     }
 
     private void setIteration(int i) {

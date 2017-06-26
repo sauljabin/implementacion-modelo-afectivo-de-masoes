@@ -24,6 +24,10 @@ public class StringFormatter {
         return decimalFormat.format(number);
     }
 
+    public static String toStringPoint(double x, double y) {
+        return String.format("(%s, %s)", toString(x), toString(y));
+    }
+
     public static String toCamelCase(String string) {
         StringBuilder stringBuilder = new StringBuilder();
 

@@ -15,6 +15,7 @@ import java.awt.*;
 public class ConfiguratorGui extends JFrame {
 
     private static final Font FONT_50 = new Font("Arial", Font.BOLD, 50);
+    private static final Font FONT_9 = new Font("Arial", Font.BOLD, 9);
 
     private static final String PRINCIPAL_PANELS_SIZE = "w 50%, h 100%";
     private static final String PANELS_SIZE = "w 100%, h 100%, wrap";
@@ -148,27 +149,33 @@ public class ConfiguratorGui extends JFrame {
         collectiveEmotionPanel.add(centralEmotionLabel);
 
         collectiveCentralEmotionalStateLabel = new JLabel("-");
-        collectiveCentralEmotionalStateLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        collectiveEmotionPanel.add(collectiveCentralEmotionalStateLabel, "wrap");
+        collectiveCentralEmotionalStateLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        collectiveEmotionPanel.add(collectiveCentralEmotionalStateLabel, "w 150");
 
         collectiveCentralEmotionLabel = new JLabel("-");
-        collectiveEmotionPanel.add(new JLabel());
-        collectiveCentralEmotionLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        collectiveEmotionPanel.add(collectiveCentralEmotionLabel, "wrap");
+        collectiveCentralEmotionLabel.setFont(FONT_9);
+        collectiveCentralEmotionLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        collectiveCentralEmotionLabel.setBackground(new Color(210, 210, 210));
+        collectiveCentralEmotionLabel.setOpaque(true);
+        collectiveCentralEmotionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        collectiveCentralEmotionLabel.setMinimumSize(new Dimension(0, 25));
+        collectiveEmotionPanel.add(collectiveCentralEmotionLabel, "w 280, wrap");
 
         JLabel maxDistanceEmotionLabel = new JLabel(translation.get("gui.maximum_distance"));
         collectiveEmotionPanel.add(maxDistanceEmotionLabel);
 
         maxDistanceEmotionValueLabel = new JLabel("-");
-        maxDistanceEmotionValueLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        collectiveEmotionPanel.add(maxDistanceEmotionValueLabel, "wrap");
+        maxDistanceEmotionValueLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        maxDistanceEmotionValueLabel.setMinimumSize(new Dimension(0, 25));
+        collectiveEmotionPanel.add(maxDistanceEmotionValueLabel, "w 150, wrap");
 
         JLabel emotionalDispersionLabel = new JLabel(translation.get("gui.emotional_dispersion"));
         collectiveEmotionPanel.add(emotionalDispersionLabel);
 
         emotionalDispersionValueLabel = new JLabel("-");
-        emotionalDispersionValueLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        collectiveEmotionPanel.add(emotionalDispersionValueLabel, "wrap");
+        emotionalDispersionValueLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        emotionalDispersionValueLabel.setMinimumSize(new Dimension(0, 25));
+        collectiveEmotionPanel.add(emotionalDispersionValueLabel, "w 150, wrap");
 
         return collectiveEmotionPanel;
     }

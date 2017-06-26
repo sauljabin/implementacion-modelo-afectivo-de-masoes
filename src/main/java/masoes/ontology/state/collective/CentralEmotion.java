@@ -7,7 +7,10 @@
 package masoes.ontology.state.collective;
 
 import jade.content.Concept;
+import masoes.component.behavioural.AffectiveModel;
+import masoes.component.behavioural.Emotion;
 import masoes.component.behavioural.EmotionalState;
+import util.StringFormatter;
 import util.ToStringBuilder;
 
 public class CentralEmotion implements Concept {
@@ -46,6 +49,14 @@ public class CentralEmotion implements Concept {
 
     public EmotionalState toEmotionalState() {
         return new EmotionalState(activation, satisfaction);
+    }
+
+    public Emotion getEmotion() {
+        return AffectiveModel.getInstance().searchEmotion(toEmotionalState());
+    }
+
+    public String toStringPoint() {
+        return StringFormatter.toStringPoint(activation, satisfaction);
     }
 
     @Override

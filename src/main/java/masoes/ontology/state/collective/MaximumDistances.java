@@ -8,6 +8,7 @@ package masoes.ontology.state.collective;
 
 import jade.content.Concept;
 import masoes.component.behavioural.EmotionalState;
+import util.StringFormatter;
 import util.ToStringBuilder;
 
 public class MaximumDistances implements Concept {
@@ -42,6 +43,10 @@ public class MaximumDistances implements Concept {
 
     public void setSatisfaction(double satisfaction) {
         this.satisfaction = satisfaction;
+    }
+
+    public String toStringPoint() {
+        return StringFormatter.toStringPoint(activation, satisfaction);
     }
 
     @Override
