@@ -155,14 +155,18 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     }
 
     private void pause() {
-        doWait();
         suspended = true;
+        configuratorGui.getPauseButton().setEnabled(false);
+        configuratorGui.getPlayButton().setEnabled(true);
+        doWait();
     }
 
     private void play() {
         if (suspended) {
-            doWake();
             suspended = false;
+            configuratorGui.getPauseButton().setEnabled(true);
+            configuratorGui.getPlayButton().setEnabled(false);
+            doWake();
         } else {
             agentTableModel.getAgents().forEach(agent -> {
                 String knowledge = agent.getStimuli()
