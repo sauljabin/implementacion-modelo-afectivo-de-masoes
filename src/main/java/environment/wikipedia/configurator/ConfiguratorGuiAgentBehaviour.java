@@ -12,6 +12,7 @@ import jade.content.AgentAction;
 import jade.core.AID;
 import masoes.MasoesSettings;
 import masoes.collective.SocialEmotionCalculator;
+import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
@@ -26,6 +27,7 @@ import util.RandomGenerator;
 
 public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
 
+    private static final String CENTRAL_EMOTION = Translation.getInstance().get("gui.central_emotion");
     private OntologyAssistant assistant;
     private ConfiguratorGuiAgent configuratorAgent;
     private SocialEmotionCalculator socialEmotionCalculator;
@@ -68,8 +70,14 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
 
             configuratorAgent.getAgentStateTableModel().addAgent(agentState);
 
-            socialEmotionCalculator.addEmotionalState(agentState.getEmotionState().toEmotionalState());
+            EmotionalState emotionalState = agentState.getEmotionState().toEmotionalState();
+
+            socialEmotionCalculator.addEmotionalState(emotionalState);
+
+            configuratorAgent.getCentralEmotionChart().addEmotionalState(agent.getName(), emotionalState);
         });
+
+        configuratorAgent.getCentralEmotionChart().addEmotionalState(CENTRAL_EMOTION, socialEmotionCalculator.getCentralEmotionalState().toEmotionalState());
 
         setGuiSocialEmotion();
     }

@@ -10,13 +10,16 @@ import gui.WindowsEventsAdapter;
 import jade.gui.GuiEvent;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.awt.event.WindowEvent;
 
 public class ConfiguratorGuiListener extends WindowsEventsAdapter {
 
+    private ConfiguratorGui view;
     private ConfiguratorGuiAgent controller;
 
     public ConfiguratorGuiListener(ConfiguratorGui view, ConfiguratorGuiAgent controller) {
+        this.view = view;
         this.controller = controller;
 
         view.addWindowListener(this);
@@ -50,6 +53,8 @@ public class ConfiguratorGuiListener extends WindowsEventsAdapter {
 
         view.getShowAgentStateButton().setActionCommand(ConfiguratorGuiEvent.SHOW_AGENT_STATE.toString());
         view.getShowAgentStateButton().addActionListener(this);
+
+        view.getCentralEmotionCheckBox().addItemListener(this);
     }
 
     @Override
@@ -64,4 +69,21 @@ public class ConfiguratorGuiListener extends WindowsEventsAdapter {
         controller.postGuiEvent(guiEvent);
     }
 
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        ConfiguratorGuiEvent event = null;
+
+        if (e.getSource().equals(view.getCentralEmotionCheckBox())) {
+            if (view.getCentralEmotionCheckBox().isSelected()) {
+                event = ConfiguratorGuiEvent.SHOW_CENTRAL_EMOTION_CHART;
+            } else {
+                event = ConfiguratorGuiEvent.HIDE_CENTRAL_EMOTION_CHART;
+            }
+        }
+
+        if (event != null) {
+            GuiEvent guiEvent = new GuiEvent(controller, event.getInt());
+            controller.postGuiEvent(guiEvent);
+        }
+    }
 }

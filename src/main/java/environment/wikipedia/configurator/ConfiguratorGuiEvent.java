@@ -21,7 +21,9 @@ public enum ConfiguratorGuiEvent {
     PLAY,
     PAUSE,
     REFRESH,
-    SHOW_AGENT_STATE;
+    SHOW_AGENT_STATE,
+    HIDE_CENTRAL_EMOTION_CHART,
+    SHOW_CENTRAL_EMOTION_CHART;
 
     private static List<ConfiguratorGuiEvent> events = Arrays.asList(ConfiguratorGuiEvent.values());
 

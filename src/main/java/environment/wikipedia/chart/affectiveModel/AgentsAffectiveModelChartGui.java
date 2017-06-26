@@ -6,6 +6,7 @@
 
 package environment.wikipedia.chart.affectiveModel;
 
+import gui.WindowsEventsAdapter;
 import masoes.component.behavioural.EmotionalState;
 import net.miginfocom.swing.MigLayout;
 import translate.Translation;
@@ -13,6 +14,7 @@ import translate.Translation;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -27,13 +29,20 @@ public class AgentsAffectiveModelChartGui extends JFrame {
     private JPanel agentsNamePanel;
     private Translation translation = Translation.getInstance();
     private List<EmotionalStateContainer> emotionalStateContainers = new LinkedList<>();
+    private AgentsAffectiveModelChartGuiCallback callback;
 
-    public AgentsAffectiveModelChartGui(String title) {
+    public AgentsAffectiveModelChartGui(AgentsAffectiveModelChartGuiCallback callback) {
+        this.callback = callback;
         setSize(560, 400);
-        setTitle(title);
+        setTitle(translation.get("gui.emotional_states"));
         setLayout(new BorderLayout());
 
-        addWindowListener(new AgentsAffectiveModelChartGuiListener(this));
+        addWindowListener(new WindowsEventsAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                hideGui();
+            }
+        });
 
         agentsAffectiveModelChart = new AgentsAffectiveModelChart(emotionalStateContainers);
         add(agentsAffectiveModelChart, BorderLayout.CENTER);
@@ -49,12 +58,18 @@ public class AgentsAffectiveModelChartGui extends JFrame {
         west.add(collaboratorNames, "w 150");
     }
 
-    public void start() {
+    public void showGui() {
         setVisible(true);
         agentsAffectiveModelChart.start();
     }
 
-    public void stop() {
+    public void hideGui() {
+        agentsAffectiveModelChart.stop();
+        callback.beforeHide();
+        setVisible(false);
+    }
+
+    public void disposeGui() {
         agentsAffectiveModelChart.stop();
         dispose();
     }
@@ -74,7 +89,7 @@ public class AgentsAffectiveModelChartGui extends JFrame {
         repaint();
     }
 
-    public Optional<EmotionalStateContainer> getEmotionalStateContainer(String agent) {
+    private Optional<EmotionalStateContainer> getEmotionalStateContainer(String agent) {
         return emotionalStateContainers.stream()
                 .filter(emotionalStateContainer -> emotionalStateContainer.sameName(agent))
                 .findFirst();

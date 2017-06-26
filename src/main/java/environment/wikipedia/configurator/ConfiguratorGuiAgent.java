@@ -9,6 +9,7 @@ package environment.wikipedia.configurator;
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import environment.dummy.DummyEmotionalAgentArgumentsBuilder;
+import environment.wikipedia.chart.affectiveModel.AgentsAffectiveModelChartGui;
 import environment.wikipedia.configurator.agent.AgentGuiListener;
 import environment.wikipedia.configurator.agent.table.AgentStateTableModel;
 import environment.wikipedia.configurator.agent.table.AgentTableModel;
@@ -20,6 +21,7 @@ import jade.core.AID;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import masoes.ontology.state.AgentState;
+import translate.Translation;
 import util.StringFormatter;
 
 import javax.swing.*;
@@ -29,6 +31,7 @@ import java.util.stream.Collectors;
 
 public class ConfiguratorGuiAgent extends GuiAgent {
 
+    private static final String CENTRAL_EMOTION = Translation.getInstance().get("gui.central_emotion");
     private AgentManagementAssistant assistant;
     private ConfiguratorGuiListener configuratorGuiListener;
     private ConfiguratorGui configuratorGui;
@@ -39,6 +42,9 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     private ConfiguratorGuiAgentBehaviour agentBehaviour;
     private AgentStateTableModel agentStateTableModel;
 
+    private AgentsAffectiveModelChartGui centralEmotionChart;
+    private boolean started;
+
     public ConfiguratorGuiAgent() {
         logger = new AgentLogger(this);
         assistant = new AgentManagementAssistant(this);
@@ -46,6 +52,10 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         configuratorGuiListener = new ConfiguratorGuiListener(configuratorGui, this);
         configView();
         configuratorGui.setVisible(true);
+
+        centralEmotionChart = new AgentsAffectiveModelChartGui(() ->
+                configuratorGui.getCentralEmotionCheckBox().setSelected(false)
+        );
     }
 
     private void configView() {
@@ -69,6 +79,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     @Override
     protected void takeDown() {
+        centralEmotionChart.disposeGui();
         configuratorGui.dispose();
     }
 
@@ -109,11 +120,27 @@ public class ConfiguratorGuiAgent extends GuiAgent {
                 case SHOW_AGENT_STATE:
                     showAgentState();
                     break;
+                case HIDE_CENTRAL_EMOTION_CHART:
+                    hideCentralEmotionChart();
+                    break;
+                case SHOW_CENTRAL_EMOTION_CHART:
+                    showCentralEmotionChart();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             showError(e.getMessage());
         }
+    }
+
+    private void showCentralEmotionChart() {
+        if (started) {
+            centralEmotionChart.showGui();
+        }
+    }
+
+    private void hideCentralEmotionChart() {
+        centralEmotionChart.hideGui();
     }
 
     private void showAgentState() {
@@ -151,7 +178,15 @@ public class ConfiguratorGuiAgent extends GuiAgent {
             }
         });
 
+        hideAllCharts();
+
+        started = false;
+
         initialGuiState();
+    }
+
+    private void hideAllCharts() {
+        hideCentralEmotionChart();
     }
 
     private void pause() {
@@ -168,6 +203,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
             configuratorGui.getPlayButton().setEnabled(false);
             doWake();
         } else {
+            started = true;
             agentTableModel.getAgents().forEach(agent -> {
                 String knowledge = agent.getStimuli()
                         .stream()
@@ -185,7 +221,11 @@ public class ConfiguratorGuiAgent extends GuiAgent {
                         agent.getAgentType().getAgentCLass(),
                         arguments
                 );
+
+                centralEmotionChart.addAgent(agent.getName());
             });
+
+            centralEmotionChart.addAgent(CENTRAL_EMOTION);
 
             agentBehaviour = new ConfiguratorGuiAgentBehaviour(
                     this,
@@ -195,6 +235,13 @@ public class ConfiguratorGuiAgent extends GuiAgent {
             addBehaviour(agentBehaviour);
 
             startedGuiState();
+            showChartsOnStart();
+        }
+    }
+
+    private void showChartsOnStart() {
+        if (configuratorGui.getCentralEmotionCheckBox().isSelected()) {
+            centralEmotionChart.showGui();
         }
     }
 
@@ -274,7 +321,12 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         configuratorGui.getRefreshButton().setEnabled(false);
         configuratorGui.getPauseButton().setEnabled(false);
         configuratorGui.getShowAgentStateButton().setEnabled(false);
-        configuratorGui.getPlayButton().setEnabled(false);
+
+        if (agentTableModel.getAgents().isEmpty()) {
+            configuratorGui.getPlayButton().setEnabled(false);
+        } else {
+            configuratorGui.getPlayButton().setEnabled(true);
+        }
 
         configuratorGui.getIterationsSpinner().setEnabled(true);
 
@@ -310,6 +362,10 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         configuratorGui.getAddStimulusButton().setEnabled(false);
         configuratorGui.getDeleteStimulusButton().setEnabled(false);
         configuratorGui.getEditStimulusButton().setEnabled(false);
+    }
+
+    public AgentsAffectiveModelChartGui getCentralEmotionChart() {
+        return centralEmotionChart;
     }
 
 }

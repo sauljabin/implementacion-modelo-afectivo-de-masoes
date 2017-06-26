@@ -15,6 +15,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
+import java.util.List;
 
 import static java.lang.Math.abs;
 
@@ -30,18 +31,16 @@ public class AgentsAffectiveModelChart extends Canvas implements Runnable {
     private final String ANGER = "anger";
     private final Color GRAY_COLOR = new Color(235, 235, 235);
 
-    private boolean stop;
-
     private Translation translation;
     private Font font;
     private Thread thread;
     private BufferedImage image;
     private Graphics2D graphics;
-    private java.util.List<EmotionalStateContainer> agents;
+    private List<EmotionalStateContainer> agents;
+    private boolean started;
 
-    public AgentsAffectiveModelChart(java.util.List<EmotionalStateContainer> agents) {
+    public AgentsAffectiveModelChart(List<EmotionalStateContainer> agents) {
         this.agents = agents;
-        thread = new Thread(this);
         font = new Font("Arial", Font.PLAIN, 10);
         translation = Translation.getInstance();
         addComponentListener(new ComponentAdapter() {
@@ -161,19 +160,22 @@ public class AgentsAffectiveModelChart extends Canvas implements Runnable {
     }
 
     public void start() {
-        if (!thread.isAlive()) {
+        if (!started) {
+            thread = new Thread(this);
             makeImage();
             thread.start();
-            stop = false;
+            started = true;
         }
     }
 
     public void stop() {
-        stop = true;
-        try {
-            thread.join(500);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (started) {
+            try {
+                thread.join(500);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            started = false;
         }
     }
 
@@ -187,7 +189,7 @@ public class AgentsAffectiveModelChart extends Canvas implements Runnable {
 
     @Override
     public void run() {
-        while (!stop) {
+        while (started) {
             render(getWidth(), getHeight(), graphics);
             drawImage();
             try {
