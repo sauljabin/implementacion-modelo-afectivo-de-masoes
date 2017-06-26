@@ -23,7 +23,6 @@ import masoes.ontology.state.AgentState;
 import util.StringFormatter;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,6 +60,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         agentTableModel = new AgentTableModel(configuratorGui.getAgentsTable());
 
         agentStateTableModel = new AgentStateTableModel(configuratorGui.getCurrentAgentStatesTable());
+        initialGuiState();
     }
 
     private StimulusModel createStimulus(String name, double activation, double satisfaction) {
@@ -150,6 +150,8 @@ public class ConfiguratorGuiAgent extends GuiAgent {
                 e.printStackTrace();
             }
         });
+
+        initialGuiState();
     }
 
     private void pause() {
@@ -162,7 +164,6 @@ public class ConfiguratorGuiAgent extends GuiAgent {
             doWake();
             suspended = false;
         } else {
-
             agentTableModel.getAgents().forEach(agent -> {
                 String knowledge = agent.getStimuli()
                         .stream()
@@ -188,6 +189,8 @@ public class ConfiguratorGuiAgent extends GuiAgent {
             );
 
             addBehaviour(agentBehaviour);
+
+            startedGuiState();
         }
     }
 
@@ -255,6 +258,48 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     public AgentStateTableModel getAgentStateTableModel() {
         return agentStateTableModel;
+    }
+
+    public void initialGuiState() {
+        configuratorGui.getRefreshButton().setEnabled(false);
+        configuratorGui.getPauseButton().setEnabled(false);
+        configuratorGui.getShowAgentStateButton().setEnabled(false);
+
+        configuratorGui.getPlayButton().setEnabled(true);
+        configuratorGui.getIterationsSpinner().setEnabled(true);
+
+        configuratorGui.getIterationLabel().setText("0");
+        configuratorGui.getCollectiveCentralEmotionalStateLabel().setText("-");
+        configuratorGui.getCollectiveCentralEmotionLabel().setText("-");
+        configuratorGui.getEmotionalDispersionValueLabel().setText("-");
+        configuratorGui.getMaxDistanceEmotionValueLabel().setText("-");
+
+        configuratorGui.getAddAgentButton().setEnabled(true);
+        configuratorGui.getDeleteAgentButton().setEnabled(true);
+        configuratorGui.getEditAgentButton().setEnabled(true);
+
+        configuratorGui.getAddStimulusButton().setEnabled(true);
+        configuratorGui.getDeleteStimulusButton().setEnabled(true);
+        configuratorGui.getEditStimulusButton().setEnabled(true);
+
+        agentStateTableModel.clear();
+    }
+
+    private void startedGuiState() {
+        configuratorGui.getRefreshButton().setEnabled(true);
+        configuratorGui.getPauseButton().setEnabled(true);
+        configuratorGui.getShowAgentStateButton().setEnabled(true);
+
+        configuratorGui.getPlayButton().setEnabled(false);
+        configuratorGui.getIterationsSpinner().setEnabled(false);
+
+        configuratorGui.getAddAgentButton().setEnabled(false);
+        configuratorGui.getDeleteAgentButton().setEnabled(false);
+        configuratorGui.getEditAgentButton().setEnabled(false);
+
+        configuratorGui.getAddStimulusButton().setEnabled(false);
+        configuratorGui.getDeleteStimulusButton().setEnabled(false);
+        configuratorGui.getEditStimulusButton().setEnabled(false);
     }
 
 }

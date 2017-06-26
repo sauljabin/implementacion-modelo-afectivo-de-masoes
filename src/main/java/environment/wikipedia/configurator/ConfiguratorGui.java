@@ -85,22 +85,22 @@ public class ConfiguratorGui extends JFrame {
         JPanel chartsButtonsPanel = new JPanel(new MigLayout(PANEL_INSETS));
         chartsButtonsPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.real_time_charts")));
 
-        emotionalStatesCheckBox = new JCheckBox(translation.get("gui.emotional_states"), true);
+        emotionalStatesCheckBox = new JCheckBox(translation.get("gui.emotional_states"), false);
         chartsButtonsPanel.add(emotionalStatesCheckBox);
 
-        emotionsCheckBox = new JCheckBox(translation.get("gui.emotions"), true);
+        emotionsCheckBox = new JCheckBox(translation.get("gui.emotions"), false);
         chartsButtonsPanel.add(emotionsCheckBox);
 
-        behavioursCheckBox = new JCheckBox(translation.get("gui.behaviours"), true);
+        behavioursCheckBox = new JCheckBox(translation.get("gui.behaviours"), false);
         chartsButtonsPanel.add(behavioursCheckBox, "wrap");
 
-        centralEmotionCheckBox = new JCheckBox(translation.get("gui.central_emotion"), true);
+        centralEmotionCheckBox = new JCheckBox(translation.get("gui.central_emotion"), false);
         chartsButtonsPanel.add(centralEmotionCheckBox);
 
-        maximumDistanceCheckBox = new JCheckBox(translation.get("gui.maximum_distance"), true);
+        maximumDistanceCheckBox = new JCheckBox(translation.get("gui.maximum_distance"), false);
         chartsButtonsPanel.add(maximumDistanceCheckBox);
 
-        emotionalDispersionCheckBox = new JCheckBox(translation.get("gui.emotional_dispersion"), true);
+        emotionalDispersionCheckBox = new JCheckBox(translation.get("gui.emotional_dispersion"), false);
         chartsButtonsPanel.add(emotionalDispersionCheckBox);
 
         return chartsButtonsPanel;

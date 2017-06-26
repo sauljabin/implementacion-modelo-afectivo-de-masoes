@@ -141,4 +141,9 @@ public class AgentStateTableModel extends AbstractTableModel {
         return table.getSelectedRows().length > 0;
     }
 
+    public void clear() {
+        agents.clear();
+        fireTableDataChanged();
+    }
+
 }

@@ -31,14 +31,14 @@ public class SocialEmotionCalculator {
     }
 
     public double getActivationMean() {
-        return emotionalStates.stream()
+        return emotionalStates.isEmpty() ? 0 : emotionalStates.stream()
                 .mapToDouble(EmotionalState::getActivation)
                 .average()
                 .getAsDouble();
     }
 
     public double getSatisfactionMean() {
-        return emotionalStates.stream()
+        return emotionalStates.isEmpty() ? 0 : emotionalStates.stream()
                 .mapToDouble(EmotionalState::getSatisfaction)
                 .average()
                 .getAsDouble();
@@ -54,21 +54,21 @@ public class SocialEmotionCalculator {
 
     public double getActivationVariance() {
         double mean = getActivationMean();
-        return emotionalStates.stream()
+        return emotionalStates.isEmpty() ? 0 : emotionalStates.stream()
                 .mapToDouble(value -> Math.pow(value.getActivation() - mean, 2))
                 .sum() / emotionalStates.size();
     }
 
     public double getSatisfactionVariance() {
         double mean = getSatisfactionMean();
-        return emotionalStates.stream()
+        return emotionalStates.isEmpty() ? 0 : emotionalStates.stream()
                 .mapToDouble(value -> Math.pow(value.getSatisfaction() - mean, 2))
                 .sum() / emotionalStates.size();
     }
 
     public double getActivationMaximumDistance() {
         double mean = getActivationMean();
-        return emotionalStates.stream()
+        return emotionalStates.isEmpty() ? 0 : emotionalStates.stream()
                 .mapToDouble(value -> Math.abs(value.getActivation() - mean))
                 .max()
                 .getAsDouble();
@@ -76,7 +76,7 @@ public class SocialEmotionCalculator {
 
     public double getSatisfactionMaximumDistance() {
         double mean = getSatisfactionMean();
-        return emotionalStates.stream()
+        return emotionalStates.isEmpty() ? 0 : emotionalStates.stream()
                 .mapToDouble(value -> Math.abs(value.getSatisfaction() - mean))
                 .max()
                 .getAsDouble();

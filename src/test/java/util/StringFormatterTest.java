@@ -58,5 +58,5 @@ public class StringFormatterTest {
     public void shouldShowStringPointFormat() {
         assertThat(StringFormatter.toStringPoint(.5, .6), is("(0.5, 0.6)"));
     }
-    
+
 }
