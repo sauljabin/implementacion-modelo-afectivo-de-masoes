@@ -4,10 +4,11 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.chart.affectiveModel;
+package environment.wikipedia.chart.centralEmotion;
 
 import gui.WindowsEventsAdapter;
 import masoes.component.behavioural.EmotionalState;
+import masoes.ontology.state.collective.CentralEmotion;
 import net.miginfocom.swing.MigLayout;
 import translate.Translation;
 
@@ -23,18 +24,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class AgentsAffectiveModelChartGui extends JFrame {
+public class CentralEmotionChartGui extends JFrame {
 
-    private AgentsAffectiveModelChart agentsAffectiveModelChart;
+    private final String title;
+    private CentralEmotionChart centralEmotionChart;
     private JPanel agentsNamePanel;
     private Translation translation = Translation.getInstance();
     private List<EmotionalStateContainer> emotionalStateContainers = new LinkedList<>();
-    private AgentsAffectiveModelChartGuiCallback callback;
+    private CentralEmotionChartGuiCallback callback;
 
-    public AgentsAffectiveModelChartGui(AgentsAffectiveModelChartGuiCallback callback) {
+    public CentralEmotionChartGui(CentralEmotionChartGuiCallback callback) {
         this.callback = callback;
         setSize(560, 400);
-        setTitle(translation.get("gui.emotional_states"));
+        title = translation.get("gui.central_emotion");
+        setTitle(title);
         setLayout(new BorderLayout());
 
         addWindowListener(new WindowsEventsAdapter() {
@@ -44,8 +47,8 @@ public class AgentsAffectiveModelChartGui extends JFrame {
             }
         });
 
-        agentsAffectiveModelChart = new AgentsAffectiveModelChart(emotionalStateContainers);
-        add(agentsAffectiveModelChart, BorderLayout.CENTER);
+        centralEmotionChart = new CentralEmotionChart(emotionalStateContainers);
+        add(centralEmotionChart, BorderLayout.CENTER);
 
         agentsNamePanel = new JPanel(new MigLayout("insets 3"));
 
@@ -54,23 +57,24 @@ public class AgentsAffectiveModelChartGui extends JFrame {
         add(west, BorderLayout.WEST);
 
         JScrollPane collaboratorNames = new JScrollPane(agentsNamePanel);
+        addAgent(title);
 
         west.add(collaboratorNames, "w 150");
     }
 
     public void showGui() {
         setVisible(true);
-        agentsAffectiveModelChart.start();
+        centralEmotionChart.start();
     }
 
     public void hideGui() {
-        agentsAffectiveModelChart.stop();
+        centralEmotionChart.stop();
         callback.beforeHide();
         setVisible(false);
     }
 
     public void disposeGui() {
-        agentsAffectiveModelChart.stop();
+        centralEmotionChart.stop();
         dispose();
     }
 
@@ -80,6 +84,7 @@ public class AgentsAffectiveModelChartGui extends JFrame {
         }
 
         EmotionalStateContainer emotionalStateContainer = new EmotionalStateContainer(agent, emotionalStateContainers.size());
+        emotionalStateContainer.setCentralEmotion(agent.equals(title));
 
         agentsNamePanel.add(emotionalStateContainer.getLabel(), "wrap");
 
@@ -87,6 +92,10 @@ public class AgentsAffectiveModelChartGui extends JFrame {
 
         revalidate();
         repaint();
+    }
+
+    public void addCentralEmotion(CentralEmotion centralEmotion) {
+        addEmotionalState(title, centralEmotion.toEmotionalState());
     }
 
     private Optional<EmotionalStateContainer> getEmotionalStateContainer(String agent) {
@@ -115,7 +124,7 @@ public class AgentsAffectiveModelChartGui extends JFrame {
         renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         graphicsAffectiveModel.setRenderingHints(renderingHints);
 
-        agentsAffectiveModelChart.render(height, height, graphicsAffectiveModel);
+        centralEmotionChart.render(height, height, graphicsAffectiveModel);
 
         double columnContentSize = 16;
         int columnWidth = 150;

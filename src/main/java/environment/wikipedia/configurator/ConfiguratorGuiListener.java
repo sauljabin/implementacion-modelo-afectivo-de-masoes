@@ -56,6 +56,7 @@ public class ConfiguratorGuiListener extends WindowsEventsAdapter {
 
         view.getCentralEmotionCheckBox().addItemListener(this);
         view.getMaximumDistanceCheckBox().addItemListener(this);
+        view.getEmotionalDispersionCheckBox().addItemListener(this);
     }
 
     @Override
@@ -85,6 +86,12 @@ public class ConfiguratorGuiListener extends WindowsEventsAdapter {
                 event = ConfiguratorGuiEvent.SHOW_MAXIMUM_DISTANCE_CHART;
             } else {
                 event = ConfiguratorGuiEvent.HIDE_MAXIMUM_DISTANCE_CHART;
+            }
+        } else if (e.getSource().equals(view.getEmotionalDispersionCheckBox())) {
+            if (view.getEmotionalDispersionCheckBox().isSelected()) {
+                event = ConfiguratorGuiEvent.SHOW_EMOTIONAL_DISPERSION_CHART;
+            } else {
+                event = ConfiguratorGuiEvent.HIDE_EMOTIONAL_DISPERSION_CHART;
             }
         }
 

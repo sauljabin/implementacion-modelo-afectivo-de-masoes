@@ -4,9 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.chart.affectiveModel;
+package environment.wikipedia.chart.emotionalDispersion;
 
-public interface AgentsAffectiveModelChartGuiCallback {
+public interface EmotionalDispersionChartGuiCallback {
 
     void beforeHide();
 

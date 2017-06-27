@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.chart.affectiveModel;
+package environment.wikipedia.chart.centralEmotion;
 
 import masoes.MasoesSettings;
 import masoes.component.behavioural.EmotionalState;
@@ -19,7 +19,7 @@ import java.util.List;
 
 import static java.lang.Math.abs;
 
-public class AgentsAffectiveModelChart extends Canvas implements Runnable {
+public class CentralEmotionChart extends Canvas implements Runnable {
 
     private final String HAPPINESS = "happiness";
     private final String JOY = "joy";
@@ -39,7 +39,7 @@ public class AgentsAffectiveModelChart extends Canvas implements Runnable {
     private List<EmotionalStateContainer> agents;
     private boolean started;
 
-    public AgentsAffectiveModelChart(List<EmotionalStateContainer> agents) {
+    public CentralEmotionChart(List<EmotionalStateContainer> agents) {
         this.agents = agents;
         font = new Font("Arial", Font.PLAIN, 10);
         translation = Translation.getInstance();
@@ -83,16 +83,17 @@ public class AgentsAffectiveModelChart extends Canvas implements Runnable {
                 continue;
             }
 
-            int x = xCanvas(emotionalState.getActivation(), width);
-            int y = yCanvas(emotionalState.getSatisfaction(), height);
+            int xCanvas = xCanvas(emotionalState.getActivation(), width);
+            int yCanvas = yCanvas(emotionalState.getSatisfaction(), height);
 
-            if (iteratorAgents.hasNext()) {
-                graphics.fillOval(x - 3, y - 3, 6, 6);
+            if (emotionalStateContainer.isCentralEmotion()) {
+                graphics.fillRect(xCanvas - 4, yCanvas - 4, 8, 8);
             } else {
-                graphics.fillRect(x - 4, y - 4, 8, 8);
+                graphics.fillOval(xCanvas - 3, yCanvas - 3, 6, 6);
             }
-
         }
+
+
     }
 
     private void renderTexts(int width, int height, Graphics2D graphics) {
@@ -171,7 +172,7 @@ public class AgentsAffectiveModelChart extends Canvas implements Runnable {
     public void stop() {
         if (started) {
             try {
-                thread.join(500);
+                thread.join(100);
             } catch (Exception e) {
                 e.printStackTrace();
             }

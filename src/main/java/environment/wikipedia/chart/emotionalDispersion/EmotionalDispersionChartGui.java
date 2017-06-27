@@ -4,9 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.chart.maximunDistance;
+package environment.wikipedia.chart.emotionalDispersion;
 
-import masoes.ontology.state.collective.MaximumDistance;
+import masoes.ontology.state.collective.EmotionalDispersion;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -27,7 +27,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class MaximumDistanceLineChartGui extends JFrame {
+public class EmotionalDispersionChartGui extends JFrame {
 
     private Translation translation = Translation.getInstance();
     private XYSeriesCollection collection;
@@ -35,12 +35,13 @@ public class MaximumDistanceLineChartGui extends JFrame {
     private XYSeries seriesSatisfaction;
     private XYSeries seriesActivation;
     private XYPlot xyPlot;
-    private MaximumDistanceLineChartGuiCallback callback;
+    private EmotionalDispersionChartGuiCallback callback;
 
-    public MaximumDistanceLineChartGui(MaximumDistanceLineChartGuiCallback callback) {
+    public EmotionalDispersionChartGui(EmotionalDispersionChartGuiCallback callback) {
         this.callback = callback;
+        String title = translation.get("gui.emotional_dispersion");
+
         setSize(560, 400);
-        String title = translation.get("gui.maximum_distance");
         setTitle(title);
         setLayout(new BorderLayout());
 
@@ -63,7 +64,7 @@ public class MaximumDistanceLineChartGui extends JFrame {
 
         xyPlot = chart.getXYPlot();
         ValueAxis rangeAxis = xyPlot.getRangeAxis();
-        rangeAxis.setRange(0, 2.1);
+        rangeAxis.setRange(0, 1.1);
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
@@ -78,9 +79,9 @@ public class MaximumDistanceLineChartGui extends JFrame {
         chart.getLegend().setFrame(BlockBorder.NONE);
     }
 
-    public void addMaximumDistance(int iteration, MaximumDistance maximumDistance) {
-        seriesSatisfaction.add(iteration, maximumDistance.getSatisfaction());
-        seriesActivation.add(iteration, maximumDistance.getActivation());
+    public void addDispersion(int iteration, EmotionalDispersion emotionalDispersion) {
+        seriesSatisfaction.add(iteration, emotionalDispersion.getSatisfaction());
+        seriesActivation.add(iteration, emotionalDispersion.getActivation());
     }
 
     public void showGui() {
@@ -103,8 +104,8 @@ public class MaximumDistanceLineChartGui extends JFrame {
     }
 
     public void clear() {
-        seriesSatisfaction.clear();
         seriesActivation.clear();
+        seriesSatisfaction.clear();
     }
 
 }

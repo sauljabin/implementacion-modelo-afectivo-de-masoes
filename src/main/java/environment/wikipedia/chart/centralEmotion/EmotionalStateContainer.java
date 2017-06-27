@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.chart.affectiveModel;
+package environment.wikipedia.chart.centralEmotion;
 
 import masoes.component.behavioural.EmotionalState;
 import util.Colors;
@@ -19,6 +19,7 @@ public class EmotionalStateContainer {
     private Color color;
     private EmotionalState emotionalState;
     private JLabel label;
+    private boolean isCentralEmotion;
 
     public EmotionalStateContainer(String agentName, int sequence) {
         this.agentName = agentName;
@@ -62,6 +63,14 @@ public class EmotionalStateContainer {
             label.setForeground(getColor());
         }
         return label;
+    }
+
+    public boolean isCentralEmotion() {
+        return isCentralEmotion;
+    }
+
+    public void setCentralEmotion(boolean centralEmotion) {
+        isCentralEmotion = centralEmotion;
     }
 
 }

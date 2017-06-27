@@ -4,9 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.wikipedia.chart.maximunDistance;
+package environment.wikipedia.chart.centralEmotion;
 
-public interface MaximumDistanceLineChartGuiCallback {
+public interface CentralEmotionChartGuiCallback {
 
     void beforeHide();
 

@@ -82,8 +82,9 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
     }
 
     private void updateChart(int i) {
-        configuratorAgent.getCentralEmotionChart().addEmotionalState(CENTRAL_EMOTION, socialEmotionCalculator.getCentralEmotionalState().toEmotionalState());
+        configuratorAgent.getCentralEmotionChart().addCentralEmotion(socialEmotionCalculator.getCentralEmotionalState());
         configuratorAgent.getMaximumDistanceChart().addMaximumDistance(i, socialEmotionCalculator.getMaximumDistance());
+        configuratorAgent.getEmotionalDispersion().addDispersion(i, socialEmotionCalculator.getEmotionalDispersion());
     }
 
     private void setGuiSocialEmotion() {
