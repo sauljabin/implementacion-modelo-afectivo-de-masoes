@@ -6,7 +6,7 @@
 
 package environment.wikipedia.chart.maximunDistance;
 
-import masoes.ontology.state.collective.MaximumDistances;
+import masoes.ontology.state.collective.MaximumDistance;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -22,10 +22,12 @@ import translate.Translation;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class MaximumDistancesLineChartGui extends JFrame {
+public class MaximumDistanceLineChartGui extends JFrame {
 
     private Translation translation = Translation.getInstance();
     private XYSeriesCollection collection;
@@ -33,13 +35,21 @@ public class MaximumDistancesLineChartGui extends JFrame {
     private XYSeries seriesSatisfaction;
     private XYSeries seriesActivation;
     private XYPlot xyPlot;
+    private MaximumDistanceLineChartGuiCallback callback;
 
-    public MaximumDistancesLineChartGui(String title) {
+    public MaximumDistanceLineChartGui(MaximumDistanceLineChartGuiCallback callback) {
+        this.callback = callback;
         setSize(560, 400);
+        String title = translation.get("gui.maximum_distance");
         setTitle(title);
         setLayout(new BorderLayout());
 
-        addWindowListener(new MaximumDistancesLineChartGuiListener(this));
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                hideGui();
+            }
+        });
 
         seriesActivation = new XYSeries(translation.get("gui.activation"));
         seriesSatisfaction = new XYSeries(translation.get("gui.satisfaction"));
@@ -48,7 +58,7 @@ public class MaximumDistancesLineChartGui extends JFrame {
         collection.addSeries(seriesActivation);
         collection.addSeries(seriesSatisfaction);
 
-        chart = ChartFactory.createXYLineChart(title, translation.get("gui.iteration"), translation.get("gui.distance"), collection, PlotOrientation.VERTICAL, true, true, false);
+        chart = ChartFactory.createXYLineChart(title, translation.get("gui.iteration"), title, collection, PlotOrientation.VERTICAL, true, true, false);
         add(new ChartPanel(chart), BorderLayout.CENTER);
 
         xyPlot = chart.getXYPlot();
@@ -68,16 +78,21 @@ public class MaximumDistancesLineChartGui extends JFrame {
         chart.getLegend().setFrame(BlockBorder.NONE);
     }
 
-    public void addMaximumDistances(int iteration, MaximumDistances maximumDistances) {
-        seriesSatisfaction.add(iteration, maximumDistances.getSatisfaction());
-        seriesActivation.add(iteration, maximumDistances.getActivation());
+    public void addMaximumDistance(int iteration, MaximumDistance maximumDistance) {
+        seriesSatisfaction.add(iteration, maximumDistance.getSatisfaction());
+        seriesActivation.add(iteration, maximumDistance.getActivation());
     }
 
-    public void start() {
+    public void showGui() {
         setVisible(true);
     }
 
-    public void stop() {
+    public void hideGui() {
+        callback.beforeHide();
+        setVisible(false);
+    }
+
+    public void disposeGui() {
         dispose();
     }
 
@@ -85,6 +100,11 @@ public class MaximumDistancesLineChartGui extends JFrame {
         String extension = "png";
         File file = new File(folder, getTitle() + "." + extension);
         ImageIO.write(chart.createBufferedImage(width, height), extension, file);
+    }
+
+    public void clear() {
+        seriesSatisfaction.clear();
+        seriesActivation.clear();
     }
 
 }

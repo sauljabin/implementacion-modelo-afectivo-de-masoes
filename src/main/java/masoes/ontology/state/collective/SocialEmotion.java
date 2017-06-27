@@ -13,15 +13,15 @@ public class SocialEmotion implements Predicate {
 
     private CentralEmotion centralEmotion;
     private EmotionalDispersion emotionalDispersion;
-    private MaximumDistances maximumDistances;
+    private MaximumDistance maximumDistance;
 
     public SocialEmotion() {
     }
 
-    public SocialEmotion(CentralEmotion centralEmotion, EmotionalDispersion emotionalDispersion, MaximumDistances maximumDistances) {
+    public SocialEmotion(CentralEmotion centralEmotion, EmotionalDispersion emotionalDispersion, MaximumDistance maximumDistance) {
         this.centralEmotion = centralEmotion;
         this.emotionalDispersion = emotionalDispersion;
-        this.maximumDistances = maximumDistances;
+        this.maximumDistance = maximumDistance;
     }
 
     public CentralEmotion getCentralEmotion() {
@@ -40,12 +40,12 @@ public class SocialEmotion implements Predicate {
         this.emotionalDispersion = emotionalDispersion;
     }
 
-    public MaximumDistances getMaximumDistances() {
-        return maximumDistances;
+    public MaximumDistance getMaximumDistance() {
+        return maximumDistance;
     }
 
-    public void setMaximumDistances(MaximumDistances maximumDistances) {
-        this.maximumDistances = maximumDistances;
+    public void setMaximumDistance(MaximumDistance maximumDistance) {
+        this.maximumDistance = maximumDistance;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class SocialEmotion implements Predicate {
         return new ToStringBuilder()
                 .append("centralEmotion", centralEmotion)
                 .append("emotionalDispersion", emotionalDispersion)
-                .append("maximumDistances", maximumDistances)
+                .append("maximumDistance", maximumDistance)
                 .toString();
     }
 

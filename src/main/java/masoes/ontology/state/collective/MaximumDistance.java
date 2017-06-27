@@ -11,20 +11,20 @@ import masoes.component.behavioural.EmotionalState;
 import util.StringFormatter;
 import util.ToStringBuilder;
 
-public class MaximumDistances implements Concept {
+public class MaximumDistance implements Concept {
 
     private double activation;
     private double satisfaction;
 
-    public MaximumDistances() {
+    public MaximumDistance() {
     }
 
-    public MaximumDistances(double activation, double satisfaction) {
+    public MaximumDistance(double activation, double satisfaction) {
         this.activation = activation;
         this.satisfaction = satisfaction;
     }
 
-    public MaximumDistances(EmotionalState emotionalState) {
+    public MaximumDistance(EmotionalState emotionalState) {
         this.activation = emotionalState.getActivation();
         this.satisfaction = emotionalState.getSatisfaction();
     }

@@ -61,7 +61,7 @@ public class SocialEmotionBehaviour extends OntologyResponderBehaviour {
         return new SocialEmotion(
                 socialEmotionCalculator.getCentralEmotionalState(),
                 socialEmotionCalculator.getEmotionalDispersion(),
-                socialEmotionCalculator.getMaximumDistances()
+                socialEmotionCalculator.getMaximumDistance()
         );
     }
 

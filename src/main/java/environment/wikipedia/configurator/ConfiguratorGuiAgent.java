@@ -10,6 +10,7 @@ import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import environment.dummy.DummyEmotionalAgentArgumentsBuilder;
 import environment.wikipedia.chart.affectiveModel.AgentsAffectiveModelChartGui;
+import environment.wikipedia.chart.maximunDistance.MaximumDistanceLineChartGui;
 import environment.wikipedia.configurator.agent.AgentGuiListener;
 import environment.wikipedia.configurator.agent.table.AgentStateTableModel;
 import environment.wikipedia.configurator.agent.table.AgentTableModel;
@@ -32,17 +33,20 @@ import java.util.stream.Collectors;
 public class ConfiguratorGuiAgent extends GuiAgent {
 
     private static final String CENTRAL_EMOTION = Translation.getInstance().get("gui.central_emotion");
+
     private AgentManagementAssistant assistant;
     private ConfiguratorGuiListener configuratorGuiListener;
     private ConfiguratorGui configuratorGui;
     private StimulusTableModel stimulusTableModel;
     private AgentLogger logger;
     private AgentTableModel agentTableModel;
-    private boolean suspended;
     private ConfiguratorGuiAgentBehaviour agentBehaviour;
     private AgentStateTableModel agentStateTableModel;
 
+    private MaximumDistanceLineChartGui maximumDistanceChart;
     private AgentsAffectiveModelChartGui centralEmotionChart;
+
+    private boolean suspended;
     private boolean started;
 
     public ConfiguratorGuiAgent() {
@@ -50,12 +54,17 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         assistant = new AgentManagementAssistant(this);
         configuratorGui = new ConfiguratorGui();
         configuratorGuiListener = new ConfiguratorGuiListener(configuratorGui, this);
-        configView();
-        configuratorGui.setVisible(true);
 
         centralEmotionChart = new AgentsAffectiveModelChartGui(() ->
                 configuratorGui.getCentralEmotionCheckBox().setSelected(false)
         );
+
+        maximumDistanceChart = new MaximumDistanceLineChartGui(() ->
+                configuratorGui.getMaximumDistanceCheckBox().setSelected(false)
+        );
+
+        configView();
+        configuratorGui.setVisible(true);
     }
 
     private void configView() {
@@ -80,6 +89,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     @Override
     protected void takeDown() {
         centralEmotionChart.disposeGui();
+        maximumDistanceChart.disposeGui();
         configuratorGui.dispose();
     }
 
@@ -126,10 +136,26 @@ public class ConfiguratorGuiAgent extends GuiAgent {
                 case SHOW_CENTRAL_EMOTION_CHART:
                     showCentralEmotionChart();
                     break;
+                case HIDE_MAXIMUM_DISTANCE_CHART:
+                    hideMaximumDistanceChart();
+                    break;
+                case SHOW_MAXIMUM_DISTANCE_CHART:
+                    showMaximumDistanceChart();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             showError(e.getMessage());
+        }
+    }
+
+    private void hideMaximumDistanceChart() {
+        maximumDistanceChart.hideGui();
+    }
+
+    private void showMaximumDistanceChart() {
+        if (started) {
+            maximumDistanceChart.showGui();
         }
     }
 
@@ -187,6 +213,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     private void hideAllCharts() {
         hideCentralEmotionChart();
+        hideMaximumDistanceChart();
     }
 
     private void pause() {
@@ -242,6 +269,10 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     private void showChartsOnStart() {
         if (configuratorGui.getCentralEmotionCheckBox().isSelected()) {
             centralEmotionChart.showGui();
+        }
+
+        if (configuratorGui.getMaximumDistanceCheckBox().isSelected()) {
+            maximumDistanceChart.showGui();
         }
     }
 
@@ -345,6 +376,8 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         configuratorGui.getEditStimulusButton().setEnabled(true);
 
         agentStateTableModel.clear();
+
+        maximumDistanceChart.clear();
     }
 
     private void startedGuiState() {
@@ -366,6 +399,10 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     public AgentsAffectiveModelChartGui getCentralEmotionChart() {
         return centralEmotionChart;
+    }
+
+    public MaximumDistanceLineChartGui getMaximumDistanceChart() {
+        return maximumDistanceChart;
     }
 
 }

@@ -70,8 +70,8 @@ public class SocialEmotionAgentFunctionalTest extends FunctionalTest {
         assertThat(socialEmotion.getEmotionalDispersion().getActivation(), is(socialEmotionCalculator.getEmotionalDispersion().getActivation()));
         assertThat(socialEmotion.getEmotionalDispersion().getSatisfaction(), is(socialEmotionCalculator.getEmotionalDispersion().getSatisfaction()));
 
-        assertThat(socialEmotion.getMaximumDistances().getActivation(), is(socialEmotionCalculator.getMaximumDistances().getActivation()));
-        assertThat(socialEmotion.getMaximumDistances().getSatisfaction(), is(socialEmotionCalculator.getMaximumDistances().getSatisfaction()));
+        assertThat(socialEmotion.getMaximumDistance().getActivation(), is(socialEmotionCalculator.getMaximumDistance().getActivation()));
+        assertThat(socialEmotion.getMaximumDistance().getSatisfaction(), is(socialEmotionCalculator.getMaximumDistance().getSatisfaction()));
     }
 
 }

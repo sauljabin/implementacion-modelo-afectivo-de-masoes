@@ -18,7 +18,7 @@ import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
 import masoes.ontology.state.collective.CentralEmotion;
 import masoes.ontology.state.collective.EmotionalDispersion;
-import masoes.ontology.state.collective.MaximumDistances;
+import masoes.ontology.state.collective.MaximumDistance;
 import masoes.ontology.stimulus.EvaluateStimulus;
 import masoes.ontology.stimulus.EventStimulus;
 import ontology.OntologyAssistant;
@@ -43,6 +43,7 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
     public void count(int i) {
         setIteration(i);
         updateStates();
+        updateChart(i);
         sleep();
     }
 
@@ -77,15 +78,18 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
             configuratorAgent.getCentralEmotionChart().addEmotionalState(agent.getName(), emotionalState);
         });
 
-        configuratorAgent.getCentralEmotionChart().addEmotionalState(CENTRAL_EMOTION, socialEmotionCalculator.getCentralEmotionalState().toEmotionalState());
-
         setGuiSocialEmotion();
+    }
+
+    private void updateChart(int i) {
+        configuratorAgent.getCentralEmotionChart().addEmotionalState(CENTRAL_EMOTION, socialEmotionCalculator.getCentralEmotionalState().toEmotionalState());
+        configuratorAgent.getMaximumDistanceChart().addMaximumDistance(i, socialEmotionCalculator.getMaximumDistance());
     }
 
     private void setGuiSocialEmotion() {
         EmotionalDispersion emotionalDispersion = socialEmotionCalculator.getEmotionalDispersion();
         CentralEmotion centralEmotionalState = socialEmotionCalculator.getCentralEmotionalState();
-        MaximumDistances maximumDistances = socialEmotionCalculator.getMaximumDistances();
+        MaximumDistance maximumDistance = socialEmotionCalculator.getMaximumDistance();
 
         configuratorAgent.getConfiguratorGui().getCollectiveCentralEmotionalStateLabel()
                 .setText(centralEmotionalState.toStringPoint());
@@ -101,7 +105,7 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
                 .setText(emotionalDispersion.toStringPoint());
 
         configuratorAgent.getConfiguratorGui().getMaxDistanceEmotionValueLabel()
-                .setText(maximumDistances.toStringPoint());
+                .setText(maximumDistance.toStringPoint());
     }
 
     private String translate(String key) {

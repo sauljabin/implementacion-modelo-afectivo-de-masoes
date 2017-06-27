@@ -96,8 +96,8 @@ public class SocialEmotionCalculatorTest {
                 .getAsDouble();
 
 
-        assertThat(socialEmotionCalculator.getMaximumDistances().getActivation(), is(maxActivation));
-        assertThat(socialEmotionCalculator.getMaximumDistances().getSatisfaction(), is(maxSatisfaction));
+        assertThat(socialEmotionCalculator.getMaximumDistance().getActivation(), is(maxActivation));
+        assertThat(socialEmotionCalculator.getMaximumDistance().getSatisfaction(), is(maxSatisfaction));
     }
 
     private List<EmotionalState> getRandomValues() {
