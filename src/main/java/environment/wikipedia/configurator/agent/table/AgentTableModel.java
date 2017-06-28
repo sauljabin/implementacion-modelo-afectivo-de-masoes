@@ -20,6 +20,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AgentTableModel extends AbstractTableModel {
 
@@ -127,7 +128,9 @@ public class AgentTableModel extends AbstractTableModel {
 
     public void deleteSelectedAgent() {
         Arrays.stream(table.getSelectedRows())
-                .forEach(i -> agents.remove(i));
+                .mapToObj(i -> agents.get(i))
+                .collect(Collectors.toList())
+                .forEach(agentModel -> agents.remove(agentModel));
         fireTableDataChanged();
     }
 

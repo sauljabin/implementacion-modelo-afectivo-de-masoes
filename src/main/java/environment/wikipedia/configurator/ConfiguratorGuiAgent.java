@@ -405,6 +405,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
         maximumDistanceChart.clear();
         emotionalDispersion.clear();
+        centralEmotionChart.clear();
     }
 
     private void startedGuiState() {

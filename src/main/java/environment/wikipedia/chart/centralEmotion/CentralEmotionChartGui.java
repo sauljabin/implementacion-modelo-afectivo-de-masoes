@@ -176,4 +176,13 @@ public class CentralEmotionChartGui extends JFrame {
         ImageIO.write(image, extension, file);
     }
 
+    public void clear() {
+        agentsNamePanel.removeAll();
+        revalidate();
+        repaint();
+
+        emotionalStateContainers.clear();
+        addAgent(title);
+    }
+
 }

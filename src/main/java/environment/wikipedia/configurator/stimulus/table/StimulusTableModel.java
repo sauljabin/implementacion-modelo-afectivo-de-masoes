@@ -17,6 +17,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StimulusTableModel extends AbstractTableModel {
 
@@ -115,7 +116,9 @@ public class StimulusTableModel extends AbstractTableModel {
 
     public void deleteSelectedStimuli() {
         Arrays.stream(table.getSelectedRows())
-                .forEach(i -> stimuli.remove(i));
+                .mapToObj(i -> stimuli.get(i))
+                .collect(Collectors.toList())
+                .forEach(stimulusModel -> stimuli.remove(stimulusModel));
         fireTableDataChanged();
     }
 

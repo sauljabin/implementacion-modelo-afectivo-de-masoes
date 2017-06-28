@@ -92,8 +92,6 @@ public class CentralEmotionChart extends Canvas implements Runnable {
                 graphics.fillOval(xCanvas - 3, yCanvas - 3, 6, 6);
             }
         }
-
-
     }
 
     private void renderTexts(int width, int height, Graphics2D graphics) {
