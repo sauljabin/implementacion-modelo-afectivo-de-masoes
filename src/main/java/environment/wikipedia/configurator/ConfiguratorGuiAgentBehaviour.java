@@ -78,6 +78,7 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
             configuratorAgent.getCentralEmotionChart().addEmotionalState(agent.getName(), emotionalState);
             configuratorAgent.getEmotionModificationChart().addEmotion(agent.getName(), i, agentState);
             configuratorAgent.getBehaviourModificationChart().addBehaviourType(agent.getName(), i, agentState);
+            configuratorAgent.getEmotionalStateChart().addEmotionalState(agent.getName(), i, emotionalState);
         });
 
         setGuiSocialEmotion();

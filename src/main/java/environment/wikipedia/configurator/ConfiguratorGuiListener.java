@@ -108,6 +108,12 @@ public class ConfiguratorGuiListener extends WindowsEventsAdapter {
             } else {
                 event = ConfiguratorGuiEvent.HIDE_EMOTION_MODIFICATION_CHART;
             }
+        } else if (e.getSource().equals(view.getEmotionalStatesCheckBox())) {
+            if (view.getEmotionalStatesCheckBox().isSelected()) {
+                event = ConfiguratorGuiEvent.SHOW_EMOTIONAL_STATE_CHART;
+            } else {
+                event = ConfiguratorGuiEvent.HIDE_EMOTIONAL_STATE_CHART;
+            }
         }
 
         if (event != null) {

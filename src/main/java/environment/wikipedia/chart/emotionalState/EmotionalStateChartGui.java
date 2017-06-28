@@ -8,17 +8,20 @@ package environment.wikipedia.chart.emotionalState;
 
 import masoes.component.behavioural.EmotionalState;
 import net.miginfocom.swing.MigLayout;
+import translate.Translation;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class AgentsEmotionalStateChartGui extends JFrame {
+public class EmotionalStateChartGui extends JFrame {
 
     private static final int COLUMN_SIZE = 4;
     private static final int CHART_W = 350;
@@ -27,27 +30,49 @@ public class AgentsEmotionalStateChartGui extends JFrame {
     private static final int PADDING = 20;
     private JPanel centerPanel;
     private List<ChartContainer> chartContainers = new LinkedList<>();
+    private EmotionalStateChartGuiCallback callback;
 
-    public AgentsEmotionalStateChartGui(String title) {
-        setTitle(title);
+    public EmotionalStateChartGui(EmotionalStateChartGuiCallback callback) {
+        this.callback = callback;
+        setTitle(Translation.getInstance().get("gui.emotional_states"));
         setLayout(new BorderLayout());
 
-        addWindowListener(new AgentsEmotionalStateChartGuiListener(this));
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                hideGui();
+            }
+        });
 
         centerPanel = new JPanel(new MigLayout());
 
         JScrollPane scrollPane = new JScrollPane(centerPanel,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
         add(scrollPane);
     }
 
-    public void start() {
+    public void showGui() {
         setVisible(true);
     }
 
-    public void stop() {
+    public void hideGui() {
+        callback.beforeHide();
+        setVisible(false);
+    }
+
+    public void disposeGui() {
         dispose();
+    }
+
+    public void clear() {
+        chartContainers.clear();
+        centerPanel.removeAll();
+
+        calculateNewWindowSize();
+        revalidate();
+        repaint();
     }
 
     public Optional<ChartContainer> getChartContainer(String agent) {
@@ -61,7 +86,7 @@ public class AgentsEmotionalStateChartGui extends JFrame {
             return;
         }
 
-        ChartContainer chartContainer = new ChartContainer(getTitle(), agentName);
+        ChartContainer chartContainer = new ChartContainer(Translation.getInstance().get("gui.emotional_state"), agentName);
 
         chartContainers.add(chartContainer);
 

@@ -31,7 +31,9 @@ public enum ConfiguratorGuiEvent {
     HIDE_BEHAVIOUR_MODIFICATION_CHART,
     SHOW_BEHAVIOUR_MODIFICATION_CHART,
     HIDE_EMOTION_MODIFICATION_CHART,
-    SHOW_EMOTION_MODIFICATION_CHART;
+    SHOW_EMOTION_MODIFICATION_CHART,
+    HIDE_EMOTIONAL_STATE_CHART,
+    SHOW_EMOTIONAL_STATE_CHART;
 
     private static List<ConfiguratorGuiEvent> events = Arrays.asList(ConfiguratorGuiEvent.values());
 
