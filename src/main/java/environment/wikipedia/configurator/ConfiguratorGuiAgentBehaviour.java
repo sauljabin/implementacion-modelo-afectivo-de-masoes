@@ -42,8 +42,8 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
     @Override
     public void count(int i) {
         setIteration(i);
-        updateStates();
-        updateChart(i);
+        updateStates(i);
+        updateSocialEmotionChart(i);
         sleep();
     }
 
@@ -53,7 +53,7 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
         return super.onEnd();
     }
 
-    private void updateStates() {
+    private void updateStates(int i) {
         socialEmotionCalculator.clear();
 
         configuratorAgent.getAgentTableModel().getAgents().forEach(agent -> {
@@ -76,15 +76,16 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
             socialEmotionCalculator.addEmotionalState(emotionalState);
 
             configuratorAgent.getCentralEmotionChart().addEmotionalState(agent.getName(), emotionalState);
+            configuratorAgent.getBehaviourModificationChart().addBehaviourType(agent.getName(), i, agentState);
         });
 
         setGuiSocialEmotion();
     }
 
-    private void updateChart(int i) {
+    private void updateSocialEmotionChart(int i) {
         configuratorAgent.getCentralEmotionChart().addCentralEmotion(socialEmotionCalculator.getCentralEmotionalState());
         configuratorAgent.getMaximumDistanceChart().addMaximumDistance(i, socialEmotionCalculator.getMaximumDistance());
-        configuratorAgent.getEmotionalDispersion().addDispersion(i, socialEmotionCalculator.getEmotionalDispersion());
+        configuratorAgent.getEmotionalDispersionChart().addDispersion(i, socialEmotionCalculator.getEmotionalDispersion());
     }
 
     private void setGuiSocialEmotion() {

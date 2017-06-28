@@ -24,6 +24,8 @@ import translate.Translation;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -32,7 +34,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class AgentsBehaviourModificationChartGui extends JFrame {
+public class BehaviourModificationChartGui extends JFrame {
 
     private final List<String> behaviourTypesList;
     private XYSeriesCollection collection;
@@ -41,17 +43,25 @@ public class AgentsBehaviourModificationChartGui extends JFrame {
     private String[] behavioursTypes;
     private Translation translation = Translation.getInstance();
     private List<SeriesBehaviourContainer> seriesBehaviourContainers = new LinkedList<>();
+    private BehaviourModificationChartCallback callback;
 
-    public AgentsBehaviourModificationChartGui(String title) {
+    public BehaviourModificationChartGui(BehaviourModificationChartCallback callback) {
+        this.callback = callback;
         setSize(560, 400);
+        String title = translation.get("gui.behaviour");
         setTitle(title);
         setLayout(new BorderLayout());
 
-        addWindowListener(new AgentsBehaviourModificationChartGuiListener(this));
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                hideGui();
+            }
+        });
 
         collection = new XYSeriesCollection();
 
-        chart = ChartFactory.createXYLineChart(title, translation.get("gui.iteration"), translation.get("gui.behaviour"), collection, PlotOrientation.VERTICAL, true, true, false);
+        chart = ChartFactory.createXYLineChart(title, translation.get("gui.iteration"), title, collection, PlotOrientation.VERTICAL, true, true, false);
         add(new ChartPanel(chart), BorderLayout.CENTER);
 
         xyPlot = chart.getXYPlot();
@@ -131,12 +141,22 @@ public class AgentsBehaviourModificationChartGui extends JFrame {
         return behaviourTypesList.indexOf(getBehaviourTypeName(agentState.getBehaviourState().getType()));
     }
 
-    public void start() {
+    public void showGui() {
         setVisible(true);
     }
 
-    public void stop() {
+    public void hideGui() {
+        callback.beforeHide();
+        setVisible(false);
+    }
+
+    public void disposeGui() {
         dispose();
+    }
+
+    public void clear() {
+        collection.removeAllSeries();
+        seriesBehaviourContainers.clear();
     }
 
     public void exportImage(File folder, int width, int height) throws IOException {

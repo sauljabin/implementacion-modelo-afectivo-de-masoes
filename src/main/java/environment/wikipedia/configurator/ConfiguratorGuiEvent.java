@@ -27,7 +27,9 @@ public enum ConfiguratorGuiEvent {
     HIDE_MAXIMUM_DISTANCE_CHART,
     SHOW_MAXIMUM_DISTANCE_CHART,
     HIDE_EMOTIONAL_DISPERSION_CHART,
-    SHOW_EMOTIONAL_DISPERSION_CHART;
+    SHOW_EMOTIONAL_DISPERSION_CHART,
+    HIDE_BEHAVIOUR_MODIFICATION_CHART,
+    SHOW_BEHAVIOUR_MODIFICATION_CHART;
 
     private static List<ConfiguratorGuiEvent> events = Arrays.asList(ConfiguratorGuiEvent.values());
 
