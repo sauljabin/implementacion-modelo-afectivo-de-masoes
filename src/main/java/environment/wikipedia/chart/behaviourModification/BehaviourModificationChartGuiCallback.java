@@ -6,7 +6,7 @@
 
 package environment.wikipedia.chart.behaviourModification;
 
-public interface BehaviourModificationChartCallback {
+public interface BehaviourModificationChartGuiCallback {
 
     void beforeHide();
 

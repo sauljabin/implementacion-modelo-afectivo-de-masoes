@@ -11,6 +11,7 @@ import agent.AgentManagementAssistant;
 import environment.dummy.DummyEmotionalAgentArgumentsBuilder;
 import environment.wikipedia.chart.behaviourModification.BehaviourModificationChartGui;
 import environment.wikipedia.chart.centralEmotion.CentralEmotionChartGui;
+import environment.wikipedia.chart.emotionModification.EmotionModificationChartGui;
 import environment.wikipedia.chart.emotionalDispersion.EmotionalDispersionChartGui;
 import environment.wikipedia.chart.maximunDistance.MaximumDistanceChartGui;
 import environment.wikipedia.configurator.agent.AgentGuiListener;
@@ -46,6 +47,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     private BehaviourModificationChartGui behaviourModificationChart;
     private CentralEmotionChartGui centralEmotionChart;
     private EmotionalDispersionChartGui emotionalDispersionChart;
+    private EmotionModificationChartGui emotionModificationChart;
 
     private boolean paused;
     private boolean started;
@@ -70,6 +72,10 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
         behaviourModificationChart = new BehaviourModificationChartGui(() ->
                 configuratorGui.getBehavioursCheckBox().setSelected(false)
+        );
+
+        emotionModificationChart = new EmotionModificationChartGui(() ->
+                configuratorGui.getEmotionsCheckBox().setSelected(false)
         );
 
         configView();
@@ -101,6 +107,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         maximumDistanceChart.disposeGui();
         emotionalDispersionChart.disposeGui();
         behaviourModificationChart.disposeGui();
+        emotionModificationChart.disposeGui();
         configuratorGui.dispose();
     }
 
@@ -165,11 +172,27 @@ public class ConfiguratorGuiAgent extends GuiAgent {
                 case SHOW_BEHAVIOUR_MODIFICATION_CHART:
                     showBehaviourModificationChart();
                     break;
+                case HIDE_EMOTION_MODIFICATION_CHART:
+                    hideEmotionModificationChart();
+                    break;
+                case SHOW_EMOTION_MODIFICATION_CHART:
+                    showEmotionModificationChart();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             showError(e.getMessage());
         }
+    }
+
+    private void showEmotionModificationChart() {
+        if (started) {
+            emotionModificationChart.showGui();
+        }
+    }
+
+    private void hideEmotionModificationChart() {
+        emotionModificationChart.hideGui();
     }
 
     private void showBehaviourModificationChart() {
@@ -260,6 +283,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         hideMaximumDistanceChart();
         hideEmotionalDispersionChart();
         hideBehaviourModificationChart();
+        hideEmotionModificationChart();
     }
 
     private void pause() {
@@ -297,6 +321,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
                 centralEmotionChart.addAgent(agent.getName());
                 behaviourModificationChart.addAgent(agent.getName());
+                emotionModificationChart.addAgent(agent.getName());
             });
 
             agentBehaviour = new ConfiguratorGuiAgentBehaviour(
@@ -326,6 +351,10 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
         if (configuratorGui.getBehavioursCheckBox().isSelected()) {
             behaviourModificationChart.showGui();
+        }
+
+        if (configuratorGui.getEmotionsCheckBox().isSelected()) {
+            emotionModificationChart.showGui();
         }
     }
 
@@ -434,6 +463,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         emotionalDispersionChart.clear();
         centralEmotionChart.clear();
         behaviourModificationChart.clear();
+        emotionModificationChart.clear();
     }
 
     private void startedGuiState() {
@@ -467,6 +497,10 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     public BehaviourModificationChartGui getBehaviourModificationChart() {
         return behaviourModificationChart;
+    }
+
+    public EmotionModificationChartGui getEmotionModificationChart() {
+        return emotionModificationChart;
     }
 
 }

@@ -43,9 +43,9 @@ public class BehaviourModificationChartGui extends JFrame {
     private String[] behavioursTypes;
     private Translation translation = Translation.getInstance();
     private List<SeriesBehaviourContainer> seriesBehaviourContainers = new LinkedList<>();
-    private BehaviourModificationChartCallback callback;
+    private BehaviourModificationChartGuiCallback callback;
 
-    public BehaviourModificationChartGui(BehaviourModificationChartCallback callback) {
+    public BehaviourModificationChartGui(BehaviourModificationChartGuiCallback callback) {
         this.callback = callback;
         setSize(560, 400);
         String title = translation.get("gui.behaviour");
