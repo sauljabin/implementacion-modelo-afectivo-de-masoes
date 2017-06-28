@@ -24,7 +24,6 @@ import jade.core.AID;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import masoes.ontology.state.AgentState;
-import translate.Translation;
 import util.StringFormatter;
 
 import javax.swing.*;
@@ -48,7 +47,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     private CentralEmotionChartGui centralEmotionChart;
     private EmotionalDispersionChartGui emotionalDispersionChart;
 
-    private boolean suspended;
+    private boolean paused;
     private boolean started;
 
     public ConfiguratorGuiAgent() {
@@ -251,6 +250,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         hideAllCharts();
 
         started = false;
+        paused = false;
 
         initialGuiState();
     }
@@ -263,15 +263,15 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     }
 
     private void pause() {
-        suspended = true;
+        paused = true;
         configuratorGui.getPauseButton().setEnabled(false);
         configuratorGui.getPlayButton().setEnabled(true);
         doWait();
     }
 
     private void play() {
-        if (suspended) {
-            suspended = false;
+        if (paused) {
+            paused = false;
             configuratorGui.getPauseButton().setEnabled(true);
             configuratorGui.getPlayButton().setEnabled(false);
             doWake();
