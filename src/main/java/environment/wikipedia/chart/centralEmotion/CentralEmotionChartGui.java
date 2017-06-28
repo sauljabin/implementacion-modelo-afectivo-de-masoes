@@ -53,7 +53,6 @@ public class CentralEmotionChartGui extends JFrame {
         agentsNamePanel = new JPanel(new MigLayout("insets 3"));
 
         JPanel west = new JPanel(new MigLayout("insets 5"));
-        west.add(new JLabel(translation.get("gui.agents")), "w 150, wrap 10");
         add(west, BorderLayout.WEST);
 
         JScrollPane collaboratorNames = new JScrollPane(agentsNamePanel);
