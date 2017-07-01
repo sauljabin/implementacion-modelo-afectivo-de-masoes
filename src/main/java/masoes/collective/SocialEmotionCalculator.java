@@ -82,7 +82,7 @@ public class SocialEmotionCalculator {
                 .getAsDouble();
     }
 
-    public CentralEmotion getCentralEmotionalState() {
+    public CentralEmotion getCentralEmotion() {
         return new CentralEmotion(getActivationMean(), getSatisfactionMean());
     }
 

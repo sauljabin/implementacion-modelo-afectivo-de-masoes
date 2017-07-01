@@ -119,7 +119,7 @@ public class ConfiguratorGuiAgentInitialBehaviour extends OneShotBehaviour {
 
         Emotion emotion = AffectiveModel.getInstance().searchEmotion(centralEmotionalState.toEmotionalState());
 
-        writer.append("%30s: %s, %s - %s",
+        writer.append("%30s: %s %s - %s",
                 translation.get("gui.central_emotion"),
                 StringFormatter.toStringPoint(centralEmotionalState.getActivation(),
                         centralEmotionalState.getSatisfaction()),

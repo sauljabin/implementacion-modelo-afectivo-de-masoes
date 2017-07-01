@@ -36,8 +36,8 @@ public class SocialEmotionCalculatorTest {
         double activationAverage = getActivationAverage();
         double satisfactionAverage = getSatisfactionAverage();
 
-        assertThat(socialEmotionCalculator.getCentralEmotionalState().getActivation(), is(activationAverage));
-        assertThat(socialEmotionCalculator.getCentralEmotionalState().getSatisfaction(), is(satisfactionAverage));
+        assertThat(socialEmotionCalculator.getCentralEmotion().getActivation(), is(activationAverage));
+        assertThat(socialEmotionCalculator.getCentralEmotion().getSatisfaction(), is(satisfactionAverage));
     }
 
     public double getSatisfactionAverage() {

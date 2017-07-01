@@ -64,8 +64,8 @@ public class SocialEmotionAgentFunctionalTest extends FunctionalTest {
         OntologyAssistant ontologyAssistant = createOntologyAssistant(MasoesOntology.getInstance());
         SocialEmotion socialEmotion = (SocialEmotion) ontologyAssistant.sendRequestAction(socialEmotionAgent, new GetSocialEmotion());
 
-        assertThat(socialEmotion.getCentralEmotion().getActivation(), is(socialEmotionCalculator.getCentralEmotionalState().getActivation()));
-        assertThat(socialEmotion.getCentralEmotion().getSatisfaction(), is(socialEmotionCalculator.getCentralEmotionalState().getSatisfaction()));
+        assertThat(socialEmotion.getCentralEmotion().getActivation(), is(socialEmotionCalculator.getCentralEmotion().getActivation()));
+        assertThat(socialEmotion.getCentralEmotion().getSatisfaction(), is(socialEmotionCalculator.getCentralEmotion().getSatisfaction()));
 
         assertThat(socialEmotion.getEmotionalDispersion().getActivation(), is(socialEmotionCalculator.getEmotionalDispersion().getActivation()));
         assertThat(socialEmotion.getEmotionalDispersion().getSatisfaction(), is(socialEmotionCalculator.getEmotionalDispersion().getSatisfaction()));

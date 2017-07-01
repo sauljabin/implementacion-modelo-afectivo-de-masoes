@@ -92,12 +92,12 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     private void configView() {
         stimulusTableModel = new StimulusTableModel(configuratorGui.getStimuliTable());
-        stimulusTableModel.addStimulus(createStimulus("Incremento de reputación alta", .3, .3));
-        stimulusTableModel.addStimulus(createStimulus("Incremento de reputación media", 0, .1));
-        stimulusTableModel.addStimulus(createStimulus("Incremento de reputación baja", -.05, .05));
-        stimulusTableModel.addStimulus(createStimulus("Decremento de reputación alta", -.3, -.3));
-        stimulusTableModel.addStimulus(createStimulus("Decremento de reputación media", 0, -.1));
-        stimulusTableModel.addStimulus(createStimulus("Decremento de reputación baja", -.05, -.05));
+        stimulusTableModel.addStimulus(createStimulus("Incremento de reputación alto", .3, .3));
+        stimulusTableModel.addStimulus(createStimulus("Incremento de reputación medio", 0, .1));
+        stimulusTableModel.addStimulus(createStimulus("Incremento de reputación bajo", -.05, .05));
+        stimulusTableModel.addStimulus(createStimulus("Decremento de reputación alto", -.3, -.3));
+        stimulusTableModel.addStimulus(createStimulus("Decremento de reputación medio", 0, -.1));
+        stimulusTableModel.addStimulus(createStimulus("Decremento de reputación bajo", -.05, -.05));
 
         agentTableModel = new AgentTableModel(configuratorGui.getAgentsTable());
 

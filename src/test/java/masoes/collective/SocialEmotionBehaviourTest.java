@@ -99,8 +99,8 @@ public class SocialEmotionBehaviourTest {
         assertThat(actualPredicate, is(instanceOf(SocialEmotion.class)));
 
         SocialEmotion socialEmotion = (SocialEmotion) actualPredicate;
-        assertThat(socialEmotion.getCentralEmotion().getActivation(), is(socialEmotionCalculator.getCentralEmotionalState().getActivation()));
-        assertThat(socialEmotion.getCentralEmotion().getSatisfaction(), is(socialEmotionCalculator.getCentralEmotionalState().getSatisfaction()));
+        assertThat(socialEmotion.getCentralEmotion().getActivation(), is(socialEmotionCalculator.getCentralEmotion().getActivation()));
+        assertThat(socialEmotion.getCentralEmotion().getSatisfaction(), is(socialEmotionCalculator.getCentralEmotion().getSatisfaction()));
 
         assertThat(socialEmotion.getEmotionalDispersion().getActivation(), is(socialEmotionCalculator.getEmotionalDispersion().getActivation()));
         assertThat(socialEmotion.getEmotionalDispersion().getSatisfaction(), is(socialEmotionCalculator.getEmotionalDispersion().getSatisfaction()));
