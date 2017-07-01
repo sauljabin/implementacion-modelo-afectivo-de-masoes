@@ -25,6 +25,8 @@ import ontology.OntologyAssistant;
 import translate.Translation;
 import util.RandomGenerator;
 
+import java.io.File;
+
 public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
 
     private static final String CENTRAL_EMOTION = Translation.getInstance().get("gui.central_emotion");
@@ -50,6 +52,23 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
     @Override
     public int onEnd() {
         configuratorAgent.getConfiguratorGui().getPauseButton().setEnabled(false);
+
+        int width = 600;
+        int height = 400;
+
+        try {
+            File folder = new File("output/wikipedia");
+            folder.mkdir();
+            configuratorAgent.getCentralEmotionChart().exportImage(folder, height);
+            configuratorAgent.getMaximumDistanceChart().exportImage(folder, width, height);
+            configuratorAgent.getEmotionalDispersionChart().exportImage(folder, width, height);
+            configuratorAgent.getEmotionModificationChart().exportImage(folder, width, height);
+            configuratorAgent.getBehaviourModificationChart().exportImage(folder, width, height);
+            configuratorAgent.getEmotionalStateChart().exportImage(folder, width, height);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return super.onEnd();
     }
 
