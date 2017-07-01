@@ -146,4 +146,8 @@ public class AgentStateTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
+    public List<AgentState> getAgents() {
+        return agents;
+    }
+
 }

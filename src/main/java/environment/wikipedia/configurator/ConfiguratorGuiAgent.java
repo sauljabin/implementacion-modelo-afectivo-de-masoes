@@ -23,6 +23,7 @@ import environment.wikipedia.configurator.stimulus.StimulusModel;
 import environment.wikipedia.configurator.stimulus.table.StimulusTableModel;
 import gui.state.AffectiveModelChartGuiAgent;
 import jade.core.AID;
+import jade.core.behaviours.SequentialBehaviour;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import masoes.ontology.state.AgentState;
@@ -53,6 +54,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     private boolean paused;
     private boolean started;
+    private SequentialBehaviour sequentialBehaviour;
 
     public ConfiguratorGuiAgent() {
         logger = new AgentLogger(this);
@@ -271,8 +273,9 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     }
 
     private void refresh() {
-        if (agentBehaviour != null) {
-            removeBehaviour(agentBehaviour);
+        if (agentBehaviour != null && sequentialBehaviour != null) {
+            sequentialBehaviour.removeSubBehaviour(agentBehaviour);
+            removeBehaviour(sequentialBehaviour);
         }
 
         List<AID> agents = assistant.agents();
@@ -354,7 +357,10 @@ public class ConfiguratorGuiAgent extends GuiAgent {
                     (Integer) configuratorGui.getIterationsSpinner().getValue()
             );
 
-            addBehaviour(agentBehaviour);
+            sequentialBehaviour = new SequentialBehaviour(this);
+            sequentialBehaviour.addSubBehaviour(new ConfiguratorGuiAgentInitialBehaviour(this));
+            sequentialBehaviour.addSubBehaviour(agentBehaviour);
+            addBehaviour(sequentialBehaviour);
 
             startedGuiState();
             showChartsOnStart();
