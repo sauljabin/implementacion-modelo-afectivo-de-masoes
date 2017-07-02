@@ -440,7 +440,10 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     private void addStimulus() {
         new StimulusGuiListener(
-                newStimulus -> stimulusTableModel.addStimulus(newStimulus)
+                newStimulus -> {
+                    stimulusTableModel.addStimulus(newStimulus);
+                    agentTableModel.getAgents().forEach(agent -> agent.getStimuli().add(newStimulus));
+                }
         );
     }
 
