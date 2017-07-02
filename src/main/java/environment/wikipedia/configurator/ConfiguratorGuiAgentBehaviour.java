@@ -26,6 +26,7 @@ import masoes.ontology.stimulus.EventStimulus;
 import ontology.OntologyAssistant;
 import translate.Translation;
 import util.RandomGenerator;
+import util.StopWatch;
 import util.StringFormatter;
 import util.TextFileWriter;
 
@@ -33,16 +34,26 @@ import java.io.File;
 
 public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
 
+    private final Object lock = new Object();
     private OntologyAssistant assistant;
     private ConfiguratorGuiAgent configuratorAgent;
     private SocialEmotionCalculator socialEmotionCalculator;
     private Translation translation = Translation.getInstance();
+    private StopWatch stopWatch;
+    private static final long WAIT = 1000 / Long.parseLong(MasoesSettings.getInstance().get(MasoesSettings.BEHAVIOUR_IPS));
+    private boolean paused;
 
     public ConfiguratorGuiAgentBehaviour(ConfiguratorGuiAgent configuratorAgent, int maxCount) {
         super(configuratorAgent, maxCount);
         this.configuratorAgent = configuratorAgent;
         assistant = new OntologyAssistant(configuratorAgent, MasoesOntology.getInstance());
         socialEmotionCalculator = new SocialEmotionCalculator();
+        stopWatch = new StopWatch();
+    }
+
+    @Override
+    public void onStart() {
+        paused = false;
     }
 
     @Override
@@ -51,6 +62,15 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
         updateStates(i);
         updateSocialEmotionChart(i);
         sleep();
+
+        if (paused) {
+            synchronized (lock) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                }
+            }
+        }
     }
 
     @Override
@@ -207,7 +227,23 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
     }
 
     private void sleep() {
-        myAgent.doWait(1000 / Long.parseLong(MasoesSettings.getInstance().get(MasoesSettings.BEHAVIOUR_IPS)));
+        stopWatch.start();
+        long time = stopWatch.getTime();
+        while (time < WAIT) {
+            time = stopWatch.getTime();
+        }
+        stopWatch.stop();
+    }
+
+    public void pause() {
+        paused = true;
+    }
+
+    public void play() {
+        paused = false;
+        synchronized (lock) {
+            lock.notifyAll();
+        }
     }
 
 }

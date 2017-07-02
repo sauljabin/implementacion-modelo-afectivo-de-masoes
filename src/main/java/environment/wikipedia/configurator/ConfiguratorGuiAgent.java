@@ -24,6 +24,7 @@ import environment.wikipedia.configurator.stimulus.table.StimulusTableModel;
 import gui.state.AffectiveModelChartGuiAgent;
 import jade.core.AID;
 import jade.core.behaviours.SequentialBehaviour;
+import jade.core.behaviours.ThreadedBehaviourFactory;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import masoes.ontology.state.AgentState;
@@ -55,6 +56,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     private boolean paused;
     private boolean started;
     private SequentialBehaviour sequentialBehaviour;
+    private ThreadedBehaviourFactory threadedBehaviourFactory;
 
     public ConfiguratorGuiAgent() {
         logger = new AgentLogger(this);
@@ -273,9 +275,8 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     }
 
     private void refresh() {
-        if (agentBehaviour != null && sequentialBehaviour != null) {
-            sequentialBehaviour.removeSubBehaviour(agentBehaviour);
-            removeBehaviour(sequentialBehaviour);
+        if (threadedBehaviourFactory != null) {
+            threadedBehaviourFactory.interrupt();
         }
 
         List<AID> agents = assistant.agents();
@@ -317,7 +318,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         paused = true;
         configuratorGui.getPauseButton().setEnabled(false);
         configuratorGui.getPlayButton().setEnabled(true);
-        doWait();
+        agentBehaviour.pause();
     }
 
     private void play() {
@@ -325,7 +326,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
             paused = false;
             configuratorGui.getPauseButton().setEnabled(true);
             configuratorGui.getPlayButton().setEnabled(false);
-            doWake();
+            agentBehaviour.play();
         } else {
             started = true;
             agentTableModel.getAgents().forEach(agent -> {
@@ -357,10 +358,11 @@ public class ConfiguratorGuiAgent extends GuiAgent {
                     (Integer) configuratorGui.getIterationsSpinner().getValue()
             );
 
+            threadedBehaviourFactory = new ThreadedBehaviourFactory();
             sequentialBehaviour = new SequentialBehaviour(this);
             sequentialBehaviour.addSubBehaviour(new ConfiguratorGuiAgentInitialBehaviour(this));
             sequentialBehaviour.addSubBehaviour(agentBehaviour);
-            addBehaviour(sequentialBehaviour);
+            addBehaviour(threadedBehaviourFactory.wrap(sequentialBehaviour));
 
             startedGuiState();
             showChartsOnStart();

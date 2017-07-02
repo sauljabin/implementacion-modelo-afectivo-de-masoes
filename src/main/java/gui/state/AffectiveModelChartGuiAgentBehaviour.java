@@ -12,15 +12,19 @@ import masoes.ontology.MasoesOntology;
 import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
 import ontology.OntologyAssistant;
+import util.StopWatch;
 
 public class AffectiveModelChartGuiAgentBehaviour extends CyclicBehaviour {
 
     private AffectiveModelChartGuiAgent affectiveModelChartGuiAgent;
     private OntologyAssistant masoesOntologyAssistant;
+    private StopWatch stopWatch;
+    private static final long WAIT = 1000 / Long.parseLong(MasoesSettings.getInstance().get(MasoesSettings.BEHAVIOUR_IPS));
 
     public AffectiveModelChartGuiAgentBehaviour(AffectiveModelChartGuiAgent affectiveModelChartGuiAgent) {
         this.affectiveModelChartGuiAgent = affectiveModelChartGuiAgent;
         masoesOntologyAssistant = new OntologyAssistant(affectiveModelChartGuiAgent, MasoesOntology.getInstance());
+        stopWatch = new StopWatch();
     }
 
     @Override
@@ -31,7 +35,11 @@ public class AffectiveModelChartGuiAgentBehaviour extends CyclicBehaviour {
     }
 
     private void sleep() {
-        myAgent.doWait(1000 / Long.parseLong(MasoesSettings.getInstance().get(MasoesSettings.BEHAVIOUR_IPS)));
+        stopWatch.start();
+        while (stopWatch.getTime() < WAIT) {
+            continue;
+        }
+        stopWatch.stop();
     }
 
 }
