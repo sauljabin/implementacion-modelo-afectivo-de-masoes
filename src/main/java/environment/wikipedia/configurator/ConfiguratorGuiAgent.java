@@ -434,6 +434,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     }
 
     private void deleteStimulus() {
+        agentTableModel.removeStimuli(stimulusTableModel.getSelectedStimuli());
         stimulusTableModel.deleteSelectedStimuli();
     }
 

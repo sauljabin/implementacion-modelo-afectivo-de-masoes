@@ -7,6 +7,7 @@
 package environment.wikipedia.configurator.agent.table;
 
 import environment.wikipedia.configurator.agent.AgentModel;
+import environment.wikipedia.configurator.stimulus.StimulusModel;
 import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
 import masoes.component.behavioural.EmotionalState;
@@ -127,11 +128,15 @@ public class AgentTableModel extends AbstractTableModel {
     }
 
     public void deleteSelectedAgent() {
-        Arrays.stream(table.getSelectedRows())
-                .mapToObj(i -> agents.get(i))
-                .collect(Collectors.toList())
+        getSelectedAgents()
                 .forEach(agentModel -> agents.remove(agentModel));
         fireTableDataChanged();
+    }
+
+    private List<AgentModel> getSelectedAgents() {
+        return Arrays.stream(table.getSelectedRows())
+                .mapToObj(i -> agents.get(i))
+                .collect(Collectors.toList());
     }
 
     public AgentModel getSelectedAgent() {
@@ -140,6 +145,10 @@ public class AgentTableModel extends AbstractTableModel {
 
     public boolean hasSelectedAgent() {
         return table.getSelectedRows().length > 0;
+    }
+
+    public void removeStimuli(List<StimulusModel> stimuli) {
+        agents.forEach(agent -> agent.getStimuli().removeAll(stimuli));
     }
 
 }

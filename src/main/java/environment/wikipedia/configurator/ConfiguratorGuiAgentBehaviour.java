@@ -34,13 +34,13 @@ import java.io.File;
 
 public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
 
+    private static final long WAIT = 1000 / Long.parseLong(MasoesSettings.getInstance().get(MasoesSettings.BEHAVIOUR_IPS));
     private final Object lock = new Object();
     private OntologyAssistant assistant;
     private ConfiguratorGuiAgent configuratorAgent;
     private SocialEmotionCalculator socialEmotionCalculator;
     private Translation translation = Translation.getInstance();
     private StopWatch stopWatch;
-    private static final long WAIT = 1000 / Long.parseLong(MasoesSettings.getInstance().get(MasoesSettings.BEHAVIOUR_IPS));
     private boolean paused;
 
     public ConfiguratorGuiAgentBehaviour(ConfiguratorGuiAgent configuratorAgent, int maxCount) {

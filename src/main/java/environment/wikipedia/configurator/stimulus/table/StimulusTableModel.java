@@ -115,9 +115,7 @@ public class StimulusTableModel extends AbstractTableModel {
     }
 
     public void deleteSelectedStimuli() {
-        Arrays.stream(table.getSelectedRows())
-                .mapToObj(i -> stimuli.get(i))
-                .collect(Collectors.toList())
+        getSelectedStimuli()
                 .forEach(stimulusModel -> stimuli.remove(stimulusModel));
         fireTableDataChanged();
     }
@@ -128,6 +126,12 @@ public class StimulusTableModel extends AbstractTableModel {
 
     public boolean hasSelectedStimulus() {
         return table.getSelectedRows().length > 0;
+    }
+
+    public List<StimulusModel> getSelectedStimuli() {
+        return Arrays.stream(table.getSelectedRows())
+                .mapToObj(i -> stimuli.get(i))
+                .collect(Collectors.toList());
     }
 
 }

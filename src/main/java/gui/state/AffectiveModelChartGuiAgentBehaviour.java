@@ -16,10 +16,10 @@ import util.StopWatch;
 
 public class AffectiveModelChartGuiAgentBehaviour extends CyclicBehaviour {
 
+    private static final long WAIT = 1000 / Long.parseLong(MasoesSettings.getInstance().get(MasoesSettings.BEHAVIOUR_IPS));
     private AffectiveModelChartGuiAgent affectiveModelChartGuiAgent;
     private OntologyAssistant masoesOntologyAssistant;
     private StopWatch stopWatch;
-    private static final long WAIT = 1000 / Long.parseLong(MasoesSettings.getInstance().get(MasoesSettings.BEHAVIOUR_IPS));
 
     public AffectiveModelChartGuiAgentBehaviour(AffectiveModelChartGuiAgent affectiveModelChartGuiAgent) {
         this.affectiveModelChartGuiAgent = affectiveModelChartGuiAgent;
