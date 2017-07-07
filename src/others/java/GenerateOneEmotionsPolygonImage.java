@@ -33,8 +33,8 @@ public class GenerateOneEmotionsPolygonImage {
     private static final String REJECTION = "rejection";
     private static final String ANGER = "anger";
 
-    private static final int SIZE = 400;
-    private static final int PADDING = 50;
+    private static final int SIZE = 600;
+    private static final int PADDING = 100;
     private static final int POINT_SIZE = 8;
     private static final int SIZE_PADDING = SIZE + PADDING * 2;
 
@@ -47,8 +47,8 @@ public class GenerateOneEmotionsPolygonImage {
     private static final Color WHITE_COLOR = Color.WHITE;
     private static final Color GRAY_COLOR = new Color(235, 235, 235);
 
+    private static final Font FONT_18 = new Font("Arial", Font.PLAIN, 18);
     private static final Font FONT_14 = new Font("Arial", Font.PLAIN, 14);
-    private static final Font FONT_12 = new Font("Arial", Font.PLAIN, 12);
     private static final BasicStroke STROKE = new BasicStroke(1.1f);
 
     private Translation translation = Translation.getInstance();
@@ -66,7 +66,7 @@ public class GenerateOneEmotionsPolygonImage {
     }
 
     private void drawPoints() {
-        setFont(FONT_14);
+        setFont(FONT_18);
         Set<Coordinate> coordinates = new TreeSet<>();
 
         AffectiveModel.getInstance().getEmotions()
@@ -81,7 +81,7 @@ public class GenerateOneEmotionsPolygonImage {
                             StringFormatter.toStringPoint(coordinate.x, coordinate.y)
                     );
 
-                    drawString(stringPoint, coordinate.x - .20, coordinate.y + .05);
+                    drawString(stringPoint, coordinate.x - .19, coordinate.y + .04);
 
                     setColor(DARK_RED_COLOR);
                     fillOval(coordinate.x, coordinate.y, POINT_SIZE);
@@ -215,7 +215,7 @@ public class GenerateOneEmotionsPolygonImage {
     }
 
     private void renderEmotionName(Emotion emotion) {
-        setFont(FONT_12);
+        setFont(FONT_14);
         setColor(BLACK_COLOR);
 
         switch (emotion.getName().toLowerCase().trim()) {
