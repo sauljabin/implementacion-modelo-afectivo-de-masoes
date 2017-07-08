@@ -50,6 +50,8 @@ import settings.ontology.GetSetting;
 import settings.ontology.SettingsOntology;
 import util.MessageBuilder;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -127,7 +129,15 @@ public class RequesterGuiAgent extends GuiAgent {
             sequence++;
         }
 
-        Files.write(Paths.get(file.getPath()), requesterGui.getMessagesLog().getBytes());
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(folder);
+        fileChooser.setSelectedFile(file);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileFilter(new FileNameExtensionFilter("LOG", "log"));
+        if (fileChooser.showSaveDialog(null) == 0) {
+            Files.write(Paths.get(fileChooser.getSelectedFile().getPath()), requesterGui.getMessagesLog().getBytes());
+        }
     }
 
     private void clearMessagesLog() {
