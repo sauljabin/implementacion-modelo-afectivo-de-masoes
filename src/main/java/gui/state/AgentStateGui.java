@@ -15,7 +15,7 @@ import util.StringFormatter;
 import javax.swing.*;
 import java.awt.*;
 
-public class AffectiveModelChartGui extends JFrame {
+public class AgentStateGui extends JFrame {
 
     private static final String INSETS_10 = "insets 10";
     private static final String FIELD_W = "grow, wrap 15";
@@ -28,7 +28,7 @@ public class AffectiveModelChartGui extends JFrame {
     private JLabel satisfactionValueLabel;
     private Translation translation;
 
-    public AffectiveModelChartGui() {
+    public AgentStateGui() {
         translation = Translation.getInstance();
         setSize(320, 550);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -39,8 +39,8 @@ public class AffectiveModelChartGui extends JFrame {
     }
 
     public static void main(String[] args) {
-        AffectiveModelChartGui affectiveModelChartGui = new AffectiveModelChartGui();
-        affectiveModelChartGui.showGui();
+        AgentStateGui agentStateGui = new AgentStateGui();
+        agentStateGui.showGui();
     }
 
     private void addComponents() {

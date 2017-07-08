@@ -14,28 +14,28 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-public class AffectiveModelChartGuiEventTest {
+public class AgentStateGuiEventTest {
 
     @Test
     public void shouldGetCorrectIntegerValue() {
-        AffectiveModelChartGuiEvent[] events = AffectiveModelChartGuiEvent.values();
+        AgentStateGuiEvent[] events = AgentStateGuiEvent.values();
         Arrays.stream(events).forEach(
-                event -> assertThat(event.getInt(), is(AffectiveModelChartGuiEvent.toInt(event)))
+                event -> assertThat(event.getInt(), is(AgentStateGuiEvent.toInt(event)))
         );
     }
 
     @Test
     public void shouldConvertFromIntegerValue() {
-        AffectiveModelChartGuiEvent[] events = AffectiveModelChartGuiEvent.values();
+        AgentStateGuiEvent[] events = AgentStateGuiEvent.values();
         for (int i = 0; i < events.length; i++) {
-            assertThat(AffectiveModelChartGuiEvent.fromInt(i), is(events[i]));
-            assertThat(AffectiveModelChartGuiEvent.toInt(events[i]), is(i));
+            assertThat(AgentStateGuiEvent.fromInt(i), is(events[i]));
+            assertThat(AgentStateGuiEvent.toInt(events[i]), is(i));
         }
     }
 
     @Test
     public void shouldReturnEvenEqualsWhenInvokeIntEqual() {
-        AffectiveModelChartGuiEvent[] events = AffectiveModelChartGuiEvent.values();
+        AgentStateGuiEvent[] events = AgentStateGuiEvent.values();
         for (int i = 0; i < events.length; i++) {
             assertTrue(events[i].equals(i));
         }

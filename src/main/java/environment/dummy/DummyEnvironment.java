@@ -9,7 +9,7 @@ package environment.dummy;
 import environment.AgentParameter;
 import environment.Environment;
 import gui.requester.RequesterGuiAgent;
-import gui.state.AffectiveModelChartGuiAgent;
+import gui.state.AgentStateGuiAgent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +24,7 @@ public class DummyEnvironment extends Environment {
     public List<AgentParameter> getAgentParameters() {
         return Arrays.asList(
                 new AgentParameter(DUMMY, DummyEmotionalAgent.class),
-                new AgentParameter(DUMMY_GUI, AffectiveModelChartGuiAgent.class, Arrays.asList(DUMMY)),
+                new AgentParameter(DUMMY_GUI, AgentStateGuiAgent.class, Arrays.asList(DUMMY)),
                 new AgentParameter(REQUESTER, RequesterGuiAgent.class)
         );
     }

@@ -19,36 +19,36 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
-public class AffectiveModelChartGuiListenerTest {
+public class AgentStateGuiListenerTest {
 
-    private AffectiveModelChartGuiListener affectiveModelChartGuiListener;
-    private AffectiveModelChartGui affectiveModelChartGuiMock;
+    private AgentStateGuiListener agentStateGuiListener;
+    private AgentStateGui agentStateGuiMock;
     private ArgumentCaptor<GuiEvent> guiEventArgumentCaptor;
-    private AffectiveModelChartGuiAgent affectiveModelChartGuiAgentMock;
+    private AgentStateGuiAgent agentStateGuiAgentMock;
 
     @Before
     public void setUp() {
         guiEventArgumentCaptor = ArgumentCaptor.forClass(GuiEvent.class);
-        affectiveModelChartGuiMock = mock(AffectiveModelChartGui.class);
-        affectiveModelChartGuiAgentMock = mock(AffectiveModelChartGuiAgent.class);
-        affectiveModelChartGuiListener = new AffectiveModelChartGuiListener(affectiveModelChartGuiAgentMock, affectiveModelChartGuiMock);
+        agentStateGuiMock = mock(AgentStateGui.class);
+        agentStateGuiAgentMock = mock(AgentStateGuiAgent.class);
+        agentStateGuiListener = new AgentStateGuiListener(agentStateGuiAgentMock, agentStateGuiMock);
     }
 
     @Test
     public void shouldSetUpWindowsListenerListener() {
-        verify(affectiveModelChartGuiMock).addWindowListener(affectiveModelChartGuiListener);
+        verify(agentStateGuiMock).addWindowListener(agentStateGuiListener);
     }
 
     @Test
     public void shouldInvokeOnGuiEvent() {
-        GuiEvent expectedGuiEvent = new GuiEvent(affectiveModelChartGuiMock, RequesterGuiEvent.CLOSE_WINDOW.getInt());
+        GuiEvent expectedGuiEvent = new GuiEvent(agentStateGuiMock, RequesterGuiEvent.CLOSE_WINDOW.getInt());
 
         WindowEvent windowEventMock = mock(WindowEvent.class);
-        doReturn(affectiveModelChartGuiMock).when(windowEventMock).getSource();
+        doReturn(agentStateGuiMock).when(windowEventMock).getSource();
 
-        affectiveModelChartGuiListener.windowClosing(windowEventMock);
+        agentStateGuiListener.windowClosing(windowEventMock);
 
-        verify(affectiveModelChartGuiAgentMock).postGuiEvent(guiEventArgumentCaptor.capture());
+        verify(agentStateGuiAgentMock).postGuiEvent(guiEventArgumentCaptor.capture());
         assertReflectionEquals(expectedGuiEvent, guiEventArgumentCaptor.getValue());
     }
 

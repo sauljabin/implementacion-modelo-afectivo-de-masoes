@@ -15,15 +15,15 @@ import jade.gui.GuiEvent;
 
 import javax.swing.*;
 
-public class AffectiveModelChartGuiAgent extends GuiAgent {
+public class AgentStateGuiAgent extends GuiAgent {
 
-    private AffectiveModelChartGui affectiveModelChartGui;
+    private AgentStateGui agentStateGui;
     private AgentLogger logger;
-    private AffectiveModelChartGuiListener affectiveModelChartGuiListener;
+    private AgentStateGuiListener agentStateGuiListener;
 
-    public AffectiveModelChartGuiAgent() {
-        affectiveModelChartGui = new AffectiveModelChartGui();
-        affectiveModelChartGuiListener = new AffectiveModelChartGuiListener(this, affectiveModelChartGui);
+    public AgentStateGuiAgent() {
+        agentStateGui = new AgentStateGui();
+        agentStateGuiListener = new AgentStateGuiListener(this, agentStateGui);
         logger = new AgentLogger(this);
     }
 
@@ -39,16 +39,16 @@ public class AffectiveModelChartGuiAgent extends GuiAgent {
             throw new AgentException(message);
         }
 
-        addBehaviour(new AffectiveModelChartGuiAgentBehaviour(this));
-        affectiveModelChartGui.showGui();
+        addBehaviour(new AgentStateGuiAgentBehaviour(this));
+        agentStateGui.showGui();
     }
 
     private boolean isGUIEnabled() {
         return Boolean.parseBoolean(JadeSettings.getInstance().get(JadeSettings.GUI));
     }
 
-    public AffectiveModelChartGui getAffectiveModelChartGui() {
-        return affectiveModelChartGui;
+    public AgentStateGui getAgentStateGui() {
+        return agentStateGui;
     }
 
     public String getEmotionalAgentName() {
@@ -65,13 +65,13 @@ public class AffectiveModelChartGuiAgent extends GuiAgent {
 
     @Override
     protected void takeDown() {
-        affectiveModelChartGui.closeGui();
+        agentStateGui.closeGui();
     }
 
     @Override
     protected void onGuiEvent(GuiEvent guiEvent) {
         try {
-            switch (AffectiveModelChartGuiEvent.fromInt(guiEvent.getType())) {
+            switch (AgentStateGuiEvent.fromInt(guiEvent.getType())) {
                 case CLOSE_WINDOW:
                     doDelete();
                     break;

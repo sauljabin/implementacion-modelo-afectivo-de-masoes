@@ -9,17 +9,17 @@ package gui.state;
 import java.util.Arrays;
 import java.util.List;
 
-public enum AffectiveModelChartGuiEvent {
+public enum AgentStateGuiEvent {
 
     CLOSE_WINDOW;
 
-    private static List<AffectiveModelChartGuiEvent> events = Arrays.asList(AffectiveModelChartGuiEvent.values());
+    private static List<AgentStateGuiEvent> events = Arrays.asList(AgentStateGuiEvent.values());
 
-    public static AffectiveModelChartGuiEvent fromInt(int i) {
+    public static AgentStateGuiEvent fromInt(int i) {
         return events.get(i);
     }
 
-    public static int toInt(AffectiveModelChartGuiEvent event) {
+    public static int toInt(AgentStateGuiEvent event) {
         return events.indexOf(event);
     }
 

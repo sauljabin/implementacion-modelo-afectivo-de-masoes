@@ -14,23 +14,23 @@ import masoes.ontology.state.GetEmotionalState;
 import ontology.OntologyAssistant;
 import util.StopWatch;
 
-public class AffectiveModelChartGuiAgentBehaviour extends CyclicBehaviour {
+public class AgentStateGuiAgentBehaviour extends CyclicBehaviour {
 
     private static final long WAIT = 1000 / Long.parseLong(MasoesSettings.getInstance().get(MasoesSettings.BEHAVIOUR_IPS));
-    private AffectiveModelChartGuiAgent affectiveModelChartGuiAgent;
+    private AgentStateGuiAgent agentStateGuiAgent;
     private OntologyAssistant masoesOntologyAssistant;
     private StopWatch stopWatch;
 
-    public AffectiveModelChartGuiAgentBehaviour(AffectiveModelChartGuiAgent affectiveModelChartGuiAgent) {
-        this.affectiveModelChartGuiAgent = affectiveModelChartGuiAgent;
-        masoesOntologyAssistant = new OntologyAssistant(affectiveModelChartGuiAgent, MasoesOntology.getInstance());
+    public AgentStateGuiAgentBehaviour(AgentStateGuiAgent agentStateGuiAgent) {
+        this.agentStateGuiAgent = agentStateGuiAgent;
+        masoesOntologyAssistant = new OntologyAssistant(agentStateGuiAgent, MasoesOntology.getInstance());
         stopWatch = new StopWatch();
     }
 
     @Override
     public void action() {
-        AgentState agentState = (AgentState) masoesOntologyAssistant.sendRequestAction(affectiveModelChartGuiAgent.getEmotionalAgentAID(), new GetEmotionalState());
-        affectiveModelChartGuiAgent.getAffectiveModelChartGui().setAgentState(agentState);
+        AgentState agentState = (AgentState) masoesOntologyAssistant.sendRequestAction(agentStateGuiAgent.getEmotionalAgentAID(), new GetEmotionalState());
+        agentStateGuiAgent.getAgentStateGui().setAgentState(agentState);
         sleep();
     }
 

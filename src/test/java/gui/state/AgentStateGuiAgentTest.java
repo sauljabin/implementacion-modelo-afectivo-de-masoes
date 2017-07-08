@@ -18,22 +18,22 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static test.ReflectionTestUtils.setFieldValue;
 
-public class AffectiveModelChartGuiAgentTest {
+public class AgentStateGuiAgentTest {
 
     private static final String AGENT_NAME = "agentName";
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
-    private AffectiveModelChartGui affectiveModelChartGuiMock;
-    private AffectiveModelChartGuiAgent affectiveModelChartGuiAgent;
+    private AgentStateGui agentStateGuiMock;
+    private AgentStateGuiAgent agentStateGuiAgent;
     private JadeSettings jadeSettings;
 
     @Before
     public void setUp() throws Exception {
-        affectiveModelChartGuiMock = mock(AffectiveModelChartGui.class);
+        agentStateGuiMock = mock(AgentStateGui.class);
 
-        affectiveModelChartGuiAgent = new AffectiveModelChartGuiAgent();
-        setFieldValue(affectiveModelChartGuiAgent, "affectiveModelChartGui", affectiveModelChartGuiMock);
-        setFieldValue(affectiveModelChartGuiAgent, "myName", AGENT_NAME);
+        agentStateGuiAgent = new AgentStateGuiAgent();
+        setFieldValue(agentStateGuiAgent, "agentStateGui", agentStateGuiMock);
+        setFieldValue(agentStateGuiAgent, "myName", AGENT_NAME);
         jadeSettings = JadeSettings.getInstance();
     }
 
@@ -44,8 +44,8 @@ public class AffectiveModelChartGuiAgentTest {
 
     @Test
     public void shouldInvokeCloseGuiWhenDeleteAgent() {
-        affectiveModelChartGuiAgent.takeDown();
-        verify(affectiveModelChartGuiMock).closeGui();
+        agentStateGuiAgent.takeDown();
+        verify(agentStateGuiMock).closeGui();
     }
 
     @Test
@@ -53,7 +53,7 @@ public class AffectiveModelChartGuiAgentTest {
         expectedException.expect(AgentException.class);
         expectedException.expectMessage(AGENT_NAME + ": gui option is disabled");
         jadeSettings.set(JadeSettings.GUI, Boolean.toString(false));
-        affectiveModelChartGuiAgent.setup();
+        agentStateGuiAgent.setup();
     }
 
 }

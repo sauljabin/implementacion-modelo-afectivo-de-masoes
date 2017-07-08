@@ -21,7 +21,7 @@ import environment.wikipedia.configurator.agent.table.AgentTableModel;
 import environment.wikipedia.configurator.stimulus.StimulusGuiListener;
 import environment.wikipedia.configurator.stimulus.StimulusModel;
 import environment.wikipedia.configurator.stimulus.table.StimulusTableModel;
-import gui.state.AffectiveModelChartGuiAgent;
+import gui.state.AgentStateGuiAgent;
 import jade.core.AID;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.core.behaviours.ThreadedBehaviourFactory;
@@ -268,7 +268,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
             assistant.createAgent(
                     agentState.getAgent().getLocalName() + "GUI",
-                    AffectiveModelChartGuiAgent.class,
+                    AgentStateGuiAgent.class,
                     Arrays.asList(agentState.getAgent().getLocalName())
             );
         }

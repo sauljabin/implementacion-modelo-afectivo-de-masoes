@@ -8,7 +8,7 @@ package environment.dummy;
 
 import environment.AgentParameter;
 import gui.requester.RequesterGuiAgent;
-import gui.state.AffectiveModelChartGuiAgent;
+import gui.state.AgentStateGuiAgent;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,7 +29,7 @@ public class DummyEnvironmentTest {
     public void setUp() {
         expectedAgentsInfo = new ArrayList<>();
         expectedAgentsInfo.add(new AgentParameter("dummy", DummyEmotionalAgent.class));
-        expectedAgentsInfo.add(new AgentParameter("dummyGUI", AffectiveModelChartGuiAgent.class, Arrays.asList("dummy")));
+        expectedAgentsInfo.add(new AgentParameter("dummyGUI", AgentStateGuiAgent.class, Arrays.asList("dummy")));
         expectedAgentsInfo.add(new AgentParameter("requester", RequesterGuiAgent.class));
         dummyEnvironment = new DummyEnvironment();
     }
