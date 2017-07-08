@@ -135,7 +135,7 @@ public class RequesterGuiAgent extends GuiAgent {
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileFilter(new FileNameExtensionFilter("LOG", "log"));
-        if (fileChooser.showSaveDialog(null) == 0) {
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             Files.write(Paths.get(fileChooser.getSelectedFile().getPath()), requesterGui.getMessagesLog().getBytes());
         }
     }
