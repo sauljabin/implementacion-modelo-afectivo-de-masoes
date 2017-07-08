@@ -8,7 +8,7 @@ package environment.wikipedia;
 
 import environment.AgentParameter;
 import environment.Environment;
-import environment.wikipedia.configurator.ConfiguratorGuiAgent;
+import gui.configurator.ConfiguratorGuiAgent;
 
 import java.util.Arrays;
 import java.util.List;
