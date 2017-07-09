@@ -7,8 +7,8 @@
 package environment.dummy;
 
 import environment.AgentParameter;
+import gui.agentstate.AgentStateGuiAgent;
 import gui.requester.RequesterGuiAgent;
-import gui.state.AgentStateGuiAgent;
 import org.junit.Before;
 import org.junit.Test;
 

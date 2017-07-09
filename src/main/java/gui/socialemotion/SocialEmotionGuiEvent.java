@@ -4,22 +4,22 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.state;
+package gui.socialemotion;
 
 import java.util.Arrays;
 import java.util.List;
 
-public enum AgentStateGuiEvent {
+public enum SocialEmotionGuiEvent {
 
     CLOSE_WINDOW;
 
-    private static List<AgentStateGuiEvent> events = Arrays.asList(AgentStateGuiEvent.values());
+    private static List<SocialEmotionGuiEvent> events = Arrays.asList(SocialEmotionGuiEvent.values());
 
-    public static AgentStateGuiEvent fromInt(int i) {
+    public static SocialEmotionGuiEvent fromInt(int i) {
         return events.get(i);
     }
 
-    public static int toInt(AgentStateGuiEvent event) {
+    public static int toInt(SocialEmotionGuiEvent event) {
         return events.indexOf(event);
     }
 

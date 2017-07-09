@@ -6,9 +6,9 @@
 
 package gui.configurator.agent;
 
+import gui.WindowsEventsAdapter;
 import gui.configurator.stimulus.StimulusModel;
 import gui.configurator.stimulus.table.SelectableStimulusTableModel;
-import gui.WindowsEventsAdapter;
 import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
 import masoes.component.behavioural.EmotionalState;

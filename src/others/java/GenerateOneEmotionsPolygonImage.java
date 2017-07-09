@@ -65,6 +65,10 @@ public class GenerateOneEmotionsPolygonImage {
         writeImage(new File(OUTPUT_OTHERS, "affectiveModel.png"), image);
     }
 
+    public static void main(String[] args) {
+        new GenerateOneEmotionsPolygonImage();
+    }
+
     private void drawPoints() {
         setFont(FONT_18);
         Set<Coordinate> coordinates = new TreeSet<>();
@@ -93,10 +97,6 @@ public class GenerateOneEmotionsPolygonImage {
 
         System.out.printf("%s", points);
         System.out.println();
-    }
-
-    public static void main(String[] args) {
-        new GenerateOneEmotionsPolygonImage();
     }
 
     private void drawEmotions() {

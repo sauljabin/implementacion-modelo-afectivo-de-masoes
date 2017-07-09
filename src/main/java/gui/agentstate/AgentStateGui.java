@@ -4,8 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.state;
+package gui.agentstate;
 
+import gui.chart.affectivemodel.AffectiveModelChart;
 import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.state.AgentState;
 import net.miginfocom.swing.MigLayout;
@@ -30,7 +31,7 @@ public class AgentStateGui extends JFrame {
 
     public AgentStateGui() {
         translation = Translation.getInstance();
-        setSize(320, 550);
+        setSize(320, 540);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
         setTitle(translation.get("gui.agent_state"));
@@ -93,11 +94,11 @@ public class AgentStateGui extends JFrame {
         JPanel legendPanel = new JPanel(new MigLayout("insets 0"));
         centerPanel.add(legendPanel, "span 2, wrap");
 
-        JLabel blueLabel = new JLabel();
-        blueLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        blueLabel.setBackground(Color.RED);
-        blueLabel.setOpaque(true);
-        legendPanel.add(blueLabel, "w 30, grow");
+        JLabel legend = new JLabel();
+        legend.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        legend.setBackground(Color.RED);
+        legend.setOpaque(true);
+        legendPanel.add(legend, "w 30, grow");
         JLabel legendActualEmotion = new JLabel(translation.get("gui.current_emotion"));
         legendPanel.add(legendActualEmotion);
     }
@@ -105,7 +106,7 @@ public class AgentStateGui extends JFrame {
     public void setAgentState(AgentState agentState) {
         agentNameLabel.setText(agentState.getAgent().getLocalName());
 
-        EmotionalState emotionalState = new EmotionalState(agentState.getEmotionState().getActivation(), agentState.getEmotionState().getSatisfaction());
+        EmotionalState emotionalState = agentState.getEmotionState().toEmotionalState();
         affectiveModelChart.setEmotionalState(emotionalState);
         satisfactionValueLabel.setText(StringFormatter.toString(emotionalState.getSatisfaction()));
         activationValueLabel.setText(StringFormatter.toString(emotionalState.getActivation()));

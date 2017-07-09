@@ -35,14 +35,14 @@ public abstract class Environment {
     private List<String> toJadeParameterList() {
         List<AgentParameter> agentParameters = new ArrayList<>();
 
-        if (getAgentParameters() != null) {
-            agentParameters.addAll(getAgentParameters());
-        }
-
         agentParameters.add(new AgentParameter(SETTINGS_AGENT, SettingsAgent.class));
         agentParameters.add(new AgentParameter(NOTIFIER_AGENT, NotifierAgent.class));
         agentParameters.add(new AgentParameter(KNOWLEDGE_AGENT, CollectiveKnowledgeBaseAgent.class));
         agentParameters.add(new AgentParameter(SOCIAL_EMOTION_AGENT, SocialEmotionAgent.class));
+
+        if (getAgentParameters() != null) {
+            agentParameters.addAll(getAgentParameters());
+        }
 
         return agentParameters.stream().map(
                 agentParameter -> agentParameter.toJadeParameter()

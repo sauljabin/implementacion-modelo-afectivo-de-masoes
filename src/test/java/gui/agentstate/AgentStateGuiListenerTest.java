@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.state;
+package gui.agentstate;
 
 import gui.requester.RequesterGuiEvent;
 import jade.gui.GuiEvent;

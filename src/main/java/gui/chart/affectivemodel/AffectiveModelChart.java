@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.state;
+package gui.chart.affectivemodel;
 
 import masoes.MasoesSettings;
 import masoes.component.behavioural.AffectiveModel;
@@ -253,6 +253,10 @@ public class AffectiveModelChart extends Canvas implements Runnable {
 
     private long getFPS() {
         return Long.parseLong(MasoesSettings.getInstance().get(MasoesSettings.GUI_FPS));
+    }
+
+    public void clear() {
+        emotionalState = null;
     }
 
 }
