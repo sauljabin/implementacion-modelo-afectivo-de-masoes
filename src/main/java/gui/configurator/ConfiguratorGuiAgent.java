@@ -6,6 +6,7 @@
 
 package gui.configurator;
 
+import agent.AgentException;
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import environment.dummy.DummyEmotionalAgentArgumentsBuilder;
@@ -22,6 +23,7 @@ import gui.configurator.agent.table.AgentTableModel;
 import gui.configurator.stimulus.StimulusGuiListener;
 import gui.configurator.stimulus.StimulusModel;
 import gui.configurator.stimulus.table.StimulusTableModel;
+import jade.JadeSettings;
 import jade.core.AID;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.core.behaviours.ThreadedBehaviourFactory;
@@ -89,7 +91,19 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         );
 
         configView();
+    }
+
+    @Override
+    protected void setup() {
+        if (!isGUIEnabled()) {
+            throw new AgentException(getLocalName() + ": gui option is disabled");
+        }
+
         configuratorGui.setVisible(true);
+    }
+
+    private boolean isGUIEnabled() {
+        return Boolean.parseBoolean(JadeSettings.getInstance().get(JadeSettings.GUI));
     }
 
     private void configView() {
