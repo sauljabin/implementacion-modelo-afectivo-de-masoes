@@ -9,6 +9,7 @@ package environment.dummy;
 import environment.AgentParameter;
 import gui.agentstate.AgentStateGuiAgent;
 import gui.requester.RequesterGuiAgent;
+import gui.socialemotion.SocialEmotionGuiAgent;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,6 +32,7 @@ public class DummyEnvironmentTest {
         expectedAgentsInfo.add(new AgentParameter("dummy", DummyEmotionalAgent.class));
         expectedAgentsInfo.add(new AgentParameter("dummyGUI", AgentStateGuiAgent.class, Arrays.asList("dummy")));
         expectedAgentsInfo.add(new AgentParameter("requester", RequesterGuiAgent.class));
+        expectedAgentsInfo.add(new AgentParameter("socialEmotionGUI", SocialEmotionGuiAgent.class));
         dummyEnvironment = new DummyEnvironment();
     }
 
