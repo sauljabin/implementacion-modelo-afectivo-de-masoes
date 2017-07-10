@@ -503,6 +503,9 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         behaviourModificationChart.clear();
         emotionModificationChart.clear();
         emotionalStateChart.clear();
+
+        configuratorGui.getEditMenu().setEnabled(true);
+        configuratorGui.getFileMenu().setEnabled(true);
     }
 
     private void startedGuiState() {
@@ -516,6 +519,9 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         configuratorGui.getAddAgentButton().setEnabled(false);
         configuratorGui.getDeleteAgentButton().setEnabled(false);
         configuratorGui.getEditAgentButton().setEnabled(false);
+
+        configuratorGui.getEditMenu().setEnabled(false);
+        configuratorGui.getFileMenu().setEnabled(false);
     }
 
     public CentralEmotionChartGui getCentralEmotionChart() {

@@ -333,4 +333,11 @@ public class ConfiguratorGui extends JFrame {
         return editStimuliDefinitionMenu;
     }
 
+    public JMenu getFileMenu() {
+        return fileMenu;
+    }
+
+    public JMenu getEditMenu() {
+        return editMenu;
+    }
 }
