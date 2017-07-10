@@ -17,13 +17,13 @@ public class StimulusGuiListener extends WindowsEventsAdapter {
 
     private StimulusModel stimulusModel;
     private StimulusGui stimulusGui;
-    private StimulusGuiListenerCallback callback;
+    private StimulusGuiCallback callback;
 
-    public StimulusGuiListener(StimulusGuiListenerCallback callback) {
+    public StimulusGuiListener(StimulusGuiCallback callback) {
         this(null, callback);
     }
 
-    public StimulusGuiListener(StimulusModel stimulusModel, StimulusGuiListenerCallback callback) {
+    public StimulusGuiListener(StimulusModel stimulusModel, StimulusGuiCallback callback) {
         this.stimulusModel = stimulusModel;
         this.stimulusGui = new StimulusGui();
         configView();

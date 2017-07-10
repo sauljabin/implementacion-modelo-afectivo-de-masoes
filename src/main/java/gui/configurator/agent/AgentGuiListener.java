@@ -29,15 +29,15 @@ public class AgentGuiListener extends WindowsEventsAdapter {
     private AgentGui agentGui;
     private AgentModel agentModel;
     private List<AgentModel> agents;
-    private AgentGuiListenerCallback callback;
+    private AgentGuiCallback callback;
     private SelectableStimulusTableModel stimulusTableModel;
     private List<StimulusModel> stimuli;
 
-    public AgentGuiListener(List<AgentModel> agents, List<StimulusModel> stimuli, AgentGuiListenerCallback callback) {
+    public AgentGuiListener(List<AgentModel> agents, List<StimulusModel> stimuli, AgentGuiCallback callback) {
         this(null, agents, stimuli, callback);
     }
 
-    public AgentGuiListener(AgentModel agentModel, List<AgentModel> agents, List<StimulusModel> stimuli, AgentGuiListenerCallback callback) {
+    public AgentGuiListener(AgentModel agentModel, List<AgentModel> agents, List<StimulusModel> stimuli, AgentGuiCallback callback) {
         this.agentModel = agentModel;
         this.agents = agents;
         this.callback = callback;

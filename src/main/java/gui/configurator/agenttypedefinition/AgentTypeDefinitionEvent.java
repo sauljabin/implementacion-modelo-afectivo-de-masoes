@@ -4,10 +4,11 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.agent;
 
-public interface AgentGuiListenerCallback {
+package gui.configurator.agenttypedefinition;
 
-    void afterSave(AgentModel agentModel);
-
+public enum AgentTypeDefinitionEvent {
+    SAVE,
+    SAVE_AND_NEW,
+    CANCEL
 }

@@ -4,10 +4,10 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.stimulus;
+package gui.configurator.agenttypedefinition;
 
-public interface StimulusGuiListenerCallback {
+public interface AgentTypeDefinitionGuiCallback {
 
-    void afterSave(StimulusModel stimulusModel);
+    void afterSave(AgentTypeDefinitionModel model);
 
 }
