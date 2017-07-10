@@ -56,7 +56,6 @@ public class AgentTypeDefinitionListener extends WindowsEventsAdapter {
             model.setAgentTypeClass(((EmotionalAgentClassWrapper) classes[0]).getAgentClass());
         }
 
-        gui.addWindowListener(this);
         gui.getAgentTypesCombo().setModel(new DefaultComboBoxModel(classes));
 
         gui.getAgentTypeName().setText(model.getAgentTypeName());
@@ -77,6 +76,7 @@ public class AgentTypeDefinitionListener extends WindowsEventsAdapter {
     }
 
     private void configView() {
+        gui.addWindowListener(this);
         gui.getSaveButton().setActionCommand(AgentTypeDefinitionEvent.SAVE.toString());
         gui.getSaveButton().addActionListener(this);
 

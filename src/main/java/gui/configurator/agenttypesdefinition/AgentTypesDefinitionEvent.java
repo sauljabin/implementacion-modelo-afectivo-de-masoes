@@ -4,10 +4,11 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.agenttypedefinition;
+package gui.configurator.agenttypesdefinition;
 
-public enum AgentTypeDefinitionEvent {
-    SAVE,
-    SAVE_AND_NEW,
-    CANCEL
+public enum AgentTypesDefinitionEvent {
+    CLOSE_WINDOW,
+    ADD_AGENT,
+    DELETE_AGENT,
+    EDIT_AGENT
 }
