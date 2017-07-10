@@ -6,7 +6,7 @@
 
 package gui.configurator.agenttypedefinition;
 
-public enum AgentTypeDefinitionEvent {
+public enum AgentTypeDefinitionGuiEvent {
     SAVE,
     SAVE_AND_NEW,
     CANCEL

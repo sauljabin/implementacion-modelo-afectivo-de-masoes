@@ -52,6 +52,7 @@ public class ConfiguratorGui extends JFrame {
     private JCheckBox behavioursCheckBox;
     private JCheckBox emotionsCheckBox;
     private JTable currentAgentStatesTable;
+    private JMenuItem editStimuliDefinitionMenu;
 
     public ConfiguratorGui() {
         setTitle(translation.get("gui.configurator"));
@@ -99,6 +100,9 @@ public class ConfiguratorGui extends JFrame {
 
         editAgentTypesDefinitionMenu = new JMenuItem(translation.get("gui.emotional_agent_types_definition"));
         editMenu.add(editAgentTypesDefinitionMenu);
+
+        editStimuliDefinitionMenu = new JMenuItem(translation.get("gui.stimuli_definition"));
+        editMenu.add(editStimuliDefinitionMenu);
     }
 
     private JPanel createSelectChartsPanel() {
@@ -368,6 +372,10 @@ public class ConfiguratorGui extends JFrame {
 
     public JMenuItem getEditAgentTypesDefinitionMenu() {
         return editAgentTypesDefinitionMenu;
+    }
+
+    public JMenuItem getEditStimuliDefinitionMenu() {
+        return editStimuliDefinitionMenu;
     }
 
 }

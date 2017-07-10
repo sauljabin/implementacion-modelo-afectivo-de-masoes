@@ -54,9 +54,12 @@ public class ConfiguratorGuiListener extends WindowsEventsAdapter {
         view.getShowAgentStateButton().setActionCommand(ConfiguratorGuiEvent.SHOW_AGENT_STATE.toString());
         view.getShowAgentStateButton().addActionListener(this);
 
-        view.getEditAgentTypesDefinitionMenu().setActionCommand(ConfiguratorGuiEvent.SHOW_AGENT_STATE_DEFINITION_GUI.toString());
+        view.getEditAgentTypesDefinitionMenu().setActionCommand(ConfiguratorGuiEvent.SHOW_AGENT_TYPE_DEFINITION_GUI.toString());
         view.getEditAgentTypesDefinitionMenu().addActionListener(this);
 
+        view.getEditStimuliDefinitionMenu().setActionCommand(ConfiguratorGuiEvent.SHOW_STIMULUS_DEFINITION_GUI.toString());
+        view.getEditStimuliDefinitionMenu().addActionListener(this);
+        
         view.getCentralEmotionCheckBox().addItemListener(this);
         view.getMaximumDistanceCheckBox().addItemListener(this);
         view.getEmotionalDispersionCheckBox().addItemListener(this);

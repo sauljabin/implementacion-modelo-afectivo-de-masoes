@@ -4,9 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.stimulus.table;
+package gui.configurator.stimulusdefinition.table;
 
-import gui.configurator.stimulus.StimulusModel;
+import gui.configurator.stimulusdefinition.StimulusDefinitionModel;
 import translate.Translation;
 
 import javax.swing.*;
@@ -19,13 +19,13 @@ public class SelectableStimulusTableModel extends AbstractTableModel {
 
     private static final int COLUMN_SELECTED = 0;
     private static final int COLUMN_STIMULUS = 1;
-    private List<StimulusModel> stimulusModels;
+    private List<StimulusDefinitionModel> stimulusDefinitionModels;
 
     private List<SelectableStimulusModel> selectableStimulusModels;
     private String[] columns;
 
-    public SelectableStimulusTableModel(JTable table, List<StimulusModel> stimulusModels) {
-        this.stimulusModels = stimulusModels;
+    public SelectableStimulusTableModel(JTable table, List<StimulusDefinitionModel> stimulusDefinitionModels) {
+        this.stimulusDefinitionModels = stimulusDefinitionModels;
         this.selectableStimulusModels = createSelectableStimuli();
 
         this.columns = new String[]{
@@ -40,7 +40,7 @@ public class SelectableStimulusTableModel extends AbstractTableModel {
     }
 
     private List<SelectableStimulusModel> createSelectableStimuli() {
-        return stimulusModels.stream()
+        return stimulusDefinitionModels.stream()
                 .map(SelectableStimulusModel::new)
                 .collect(Collectors.toList());
     }
@@ -113,7 +113,7 @@ public class SelectableStimulusTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    public void selectStimuli(List<StimulusModel> stimuli) {
+    public void selectStimuli(List<StimulusDefinitionModel> stimuli) {
         selectableStimulusModels.forEach(selectableStimulusModel -> {
             if (stimuli.contains(selectableStimulusModel.getModel())) {
                 selectableStimulusModel.setSelected(true);
@@ -124,7 +124,7 @@ public class SelectableStimulusTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    public List<StimulusModel> getSelectedStimuli() {
+    public List<StimulusDefinitionModel> getSelectedStimuli() {
         return selectableStimulusModels.stream()
                 .filter(SelectableStimulusModel::isSelected)
                 .map(SelectableStimulusModel::getModel)

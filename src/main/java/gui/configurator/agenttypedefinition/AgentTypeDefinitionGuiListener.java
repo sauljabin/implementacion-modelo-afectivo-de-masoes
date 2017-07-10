@@ -15,17 +15,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
 
-public class AgentTypeDefinitionListener extends WindowsEventsAdapter {
+public class AgentTypeDefinitionGuiListener extends WindowsEventsAdapter {
 
     private AgentTypeDefinitionGui gui;
     private AgentTypeDefinitionModel model;
     private AgentTypeDefinitionGuiCallback callback;
 
-    public AgentTypeDefinitionListener(AgentTypeDefinitionGuiCallback callback) {
+    public AgentTypeDefinitionGuiListener(AgentTypeDefinitionGuiCallback callback) {
         this(null, callback);
     }
 
-    public AgentTypeDefinitionListener(AgentTypeDefinitionModel model, AgentTypeDefinitionGuiCallback callback) {
+    public AgentTypeDefinitionGuiListener(AgentTypeDefinitionModel model, AgentTypeDefinitionGuiCallback callback) {
         this.model = model;
         this.callback = callback;
         gui = new AgentTypeDefinitionGui();
@@ -35,7 +35,7 @@ public class AgentTypeDefinitionListener extends WindowsEventsAdapter {
     }
 
     public static void main(String[] args) {
-        new AgentTypeDefinitionListener(model -> System.out.println(model));
+        new AgentTypeDefinitionGuiListener(model -> System.out.println(model));
     }
 
     @Override
@@ -77,13 +77,13 @@ public class AgentTypeDefinitionListener extends WindowsEventsAdapter {
 
     private void configView() {
         gui.addWindowListener(this);
-        gui.getSaveButton().setActionCommand(AgentTypeDefinitionEvent.SAVE.toString());
+        gui.getSaveButton().setActionCommand(AgentTypeDefinitionGuiEvent.SAVE.toString());
         gui.getSaveButton().addActionListener(this);
 
-        gui.getSaveAndNewButton().setActionCommand(AgentTypeDefinitionEvent.SAVE_AND_NEW.toString());
+        gui.getSaveAndNewButton().setActionCommand(AgentTypeDefinitionGuiEvent.SAVE_AND_NEW.toString());
         gui.getSaveAndNewButton().addActionListener(this);
 
-        gui.getCancelButton().setActionCommand(AgentTypeDefinitionEvent.CANCEL.toString());
+        gui.getCancelButton().setActionCommand(AgentTypeDefinitionGuiEvent.CANCEL.toString());
         gui.getCancelButton().addActionListener(this);
 
         if (model != null) {
@@ -91,7 +91,7 @@ public class AgentTypeDefinitionListener extends WindowsEventsAdapter {
         }
     }
 
-    private void eventHandler(AgentTypeDefinitionEvent event) {
+    private void eventHandler(AgentTypeDefinitionGuiEvent event) {
         switch (event) {
             case SAVE:
                 save();
@@ -106,7 +106,7 @@ public class AgentTypeDefinitionListener extends WindowsEventsAdapter {
     }
 
     public void actionPerformed(ActionEvent e) {
-        eventHandler(AgentTypeDefinitionEvent.valueOf(e.getActionCommand()));
+        eventHandler(AgentTypeDefinitionGuiEvent.valueOf(e.getActionCommand()));
     }
 
     private void saveAndNew() {

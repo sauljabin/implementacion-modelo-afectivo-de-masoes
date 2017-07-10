@@ -4,13 +4,13 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.stimulus;
+package gui.configurator.stimulusdefinition;
 
 import knowledge.KnowledgeClause;
 import util.StringFormatter;
 import util.ToStringBuilder;
 
-public class StimulusModel {
+public class StimulusDefinitionModel {
 
     private String name;
     private String value;
@@ -18,11 +18,11 @@ public class StimulusModel {
     private double satisfaction;
     private boolean self;
 
-    public StimulusModel() {
+    public StimulusDefinitionModel() {
         this("", "", 0, 0, true);
     }
 
-    public StimulusModel(String name, String value, double activation, double satisfaction, boolean self) {
+    public StimulusDefinitionModel(String name, String value, double activation, double satisfaction, boolean self) {
         this.name = name;
         this.value = value;
         this.activation = activation;

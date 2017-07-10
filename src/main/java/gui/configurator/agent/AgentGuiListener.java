@@ -7,8 +7,8 @@
 package gui.configurator.agent;
 
 import gui.WindowsEventsAdapter;
-import gui.configurator.stimulus.StimulusModel;
-import gui.configurator.stimulus.table.SelectableStimulusTableModel;
+import gui.configurator.stimulusdefinition.StimulusDefinitionModel;
+import gui.configurator.stimulusdefinition.table.SelectableStimulusTableModel;
 import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
 import masoes.component.behavioural.EmotionalState;
@@ -31,13 +31,13 @@ public class AgentGuiListener extends WindowsEventsAdapter {
     private List<AgentModel> agents;
     private AgentGuiCallback callback;
     private SelectableStimulusTableModel stimulusTableModel;
-    private List<StimulusModel> stimuli;
+    private List<StimulusDefinitionModel> stimuli;
 
-    public AgentGuiListener(List<AgentModel> agents, List<StimulusModel> stimuli, AgentGuiCallback callback) {
+    public AgentGuiListener(List<AgentModel> agents, List<StimulusDefinitionModel> stimuli, AgentGuiCallback callback) {
         this(null, agents, stimuli, callback);
     }
 
-    public AgentGuiListener(AgentModel agentModel, List<AgentModel> agents, List<StimulusModel> stimuli, AgentGuiCallback callback) {
+    public AgentGuiListener(AgentModel agentModel, List<AgentModel> agents, List<StimulusDefinitionModel> stimuli, AgentGuiCallback callback) {
         this.agentModel = agentModel;
         this.agents = agents;
         this.callback = callback;

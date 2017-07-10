@@ -4,9 +4,8 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.stimulus.table;
+package gui.configurator.stimulusdefinition;
 
-import gui.configurator.stimulus.StimulusModel;
 import translate.Translation;
 import util.StringFormatter;
 
@@ -14,12 +13,11 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class StimulusTableModel extends AbstractTableModel {
+public class StimulusDefinitionTableModel extends AbstractTableModel {
 
     private static final Font FONT_9 = new Font("Arial", Font.PLAIN, 9);
 
@@ -29,15 +27,15 @@ public class StimulusTableModel extends AbstractTableModel {
     private static final int COLUMN_SATISFACTION = 3;
     private static final int COLUMN_CONDITION = 4;
 
-    private List<StimulusModel> stimuli;
+    private List<StimulusDefinitionModel> elements;
 
     private Translation translation = Translation.getInstance();
     private String[] columns;
     private JTable table;
 
-    public StimulusTableModel(JTable table) {
+    public StimulusDefinitionTableModel(JTable table, List<StimulusDefinitionModel> elements) {
         this.table = table;
-        this.stimuli = new ArrayList<>();
+        this.elements = elements;
 
         columns = new String[]{
                 translation.get("gui.stimulus"),
@@ -68,7 +66,7 @@ public class StimulusTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return stimuli.size();
+        return elements.size();
     }
 
     @Override
@@ -83,54 +81,57 @@ public class StimulusTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        if (rowIndex >= stimuli.size()) {
+        if (rowIndex >= elements.size()) {
             return null;
         }
 
-        StimulusModel stimulusModel = stimuli.get(rowIndex);
+        StimulusDefinitionModel stimulusDefinitionModel = elements.get(rowIndex);
 
         switch (columnIndex) {
             case COLUMN_STIMULUS:
-                return stimulusModel.getName();
+                return stimulusDefinitionModel.getName();
             case COLUMN_VALUE:
-                return stimulusModel.getValue();
+                return stimulusDefinitionModel.getValue();
             case COLUMN_ACTIVATION:
-                return StringFormatter.toString(stimulusModel.getActivation());
+                return StringFormatter.toString(stimulusDefinitionModel.getActivation());
             case COLUMN_SATISFACTION:
-                return StringFormatter.toString(stimulusModel.getSatisfaction());
+                return StringFormatter.toString(stimulusDefinitionModel.getSatisfaction());
             case COLUMN_CONDITION:
-                return stimulusModel.isSelf() ? translation.get("gui.self") : translation.get("gui.others");
+                return stimulusDefinitionModel.isSelf() ? translation.get("gui.self") : translation.get("gui.others");
             default:
                 return null;
         }
     }
 
-    public void addStimulus(StimulusModel stimulus) {
-        this.stimuli.add(stimulus);
+    public void add(StimulusDefinitionModel model) {
+        elements.add(model);
         fireTableDataChanged();
     }
 
-    public List<StimulusModel> getStimuli() {
-        return stimuli;
+    public List<StimulusDefinitionModel> getElements() {
+        return elements;
     }
 
-    public void deleteSelectedStimuli() {
-        getSelectedStimuli()
-                .forEach(stimulusModel -> stimuli.remove(stimulusModel));
+    public void deleteSelectedElements() {
+        getSelectedElements()
+                .forEach(stimulusModel -> elements.remove(stimulusModel));
         fireTableDataChanged();
     }
 
-    public StimulusModel getSelectedStimulus() {
-        return stimuli.get(table.getSelectedRow());
+    public StimulusDefinitionModel getSelectedElement() {
+        if (hasSelectedStimulus()) {
+            return elements.get(table.getSelectedRow());
+        }
+        return null;
     }
 
     public boolean hasSelectedStimulus() {
         return table.getSelectedRows().length > 0;
     }
 
-    public List<StimulusModel> getSelectedStimuli() {
+    public List<StimulusDefinitionModel> getSelectedElements() {
         return Arrays.stream(table.getSelectedRows())
-                .mapToObj(i -> stimuli.get(i))
+                .mapToObj(i -> elements.get(i))
                 .collect(Collectors.toList());
     }
 

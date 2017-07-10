@@ -4,28 +4,25 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.agenttypesdefinition;
+package gui.configurator.agenttypedefinition;
 
 import environment.dummy.DummyEmotionalAgent;
 import gui.WindowsEventsAdapter;
-import gui.configurator.agenttypedefinition.AgentTypeDefinitionListener;
-import gui.configurator.agenttypedefinition.AgentTypeDefinitionModel;
-import gui.configurator.agenttypedefinition.table.AgentTypeDefinitionTableModel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AgentTypesDefinitionListener extends WindowsEventsAdapter {
+public class AgentTypeDefinitionCrudGuiListener extends WindowsEventsAdapter {
 
-    private AgentTypesDefinitionGui gui;
+    private AgentTypeDefinitionCrudGui gui;
     private List<AgentTypeDefinitionModel> elements;
     private AgentTypeDefinitionTableModel tableModel;
 
-    public AgentTypesDefinitionListener(List<AgentTypeDefinitionModel> elements) {
+    public AgentTypeDefinitionCrudGuiListener(List<AgentTypeDefinitionModel> elements) {
         this.elements = elements;
-        gui = new AgentTypesDefinitionGui();
+        gui = new AgentTypeDefinitionCrudGui();
         configView();
         initView();
         gui.setVisible(true);
@@ -34,7 +31,7 @@ public class AgentTypesDefinitionListener extends WindowsEventsAdapter {
     public static void main(String[] args) {
         ArrayList<AgentTypeDefinitionModel> elements = new ArrayList<>();
         elements.add(new AgentTypeDefinitionModel(DummyEmotionalAgent.class, "Dummy"));
-        new AgentTypesDefinitionListener(elements);
+        new AgentTypeDefinitionCrudGuiListener(elements);
     }
 
     @Override
@@ -52,30 +49,30 @@ public class AgentTypesDefinitionListener extends WindowsEventsAdapter {
 
     private void configView() {
         gui.addWindowListener(this);
-        gui.getAddAgentButton().setActionCommand(AgentTypesDefinitionEvent.ADD_AGENT.toString());
+        gui.getAddAgentButton().setActionCommand(AgentTypeDefinitionCrudGuiEvent.ADD_AGENT.toString());
         gui.getAddAgentButton().addActionListener(this);
 
-        gui.getDeleteAgentButton().setActionCommand(AgentTypesDefinitionEvent.DELETE_AGENT.toString());
+        gui.getDeleteAgentButton().setActionCommand(AgentTypeDefinitionCrudGuiEvent.DELETE_AGENT.toString());
         gui.getDeleteAgentButton().addActionListener(this);
 
-        gui.getEditAgentButton().setActionCommand(AgentTypesDefinitionEvent.EDIT_AGENT.toString());
+        gui.getEditAgentButton().setActionCommand(AgentTypeDefinitionCrudGuiEvent.EDIT_AGENT.toString());
         gui.getEditAgentButton().addActionListener(this);
 
-        gui.getCancelButton().setActionCommand(AgentTypesDefinitionEvent.CLOSE_WINDOW.toString());
+        gui.getCancelButton().setActionCommand(AgentTypeDefinitionCrudGuiEvent.CLOSE_WINDOW.toString());
         gui.getCancelButton().addActionListener(this);
     }
 
-    private void eventHandler(AgentTypesDefinitionEvent event) {
+    private void eventHandler(AgentTypeDefinitionCrudGuiEvent event) {
         switch (event) {
             case CLOSE_WINDOW:
                 close();
                 break;
             case ADD_AGENT:
-                new AgentTypeDefinitionListener(model -> tableModel.add(model));
+                new AgentTypeDefinitionGuiListener(model -> tableModel.add(model));
                 break;
             case EDIT_AGENT:
-                if (tableModel.getSelectedElement() != null) {
-                    new AgentTypeDefinitionListener(tableModel.getSelectedElement(), model -> tableModel.fireTableDataChanged());
+                if (tableModel.hasSelectedStimulus()) {
+                    new AgentTypeDefinitionGuiListener(tableModel.getSelectedElement(), model -> tableModel.fireTableDataChanged());
                 }
                 break;
             case DELETE_AGENT:
@@ -85,7 +82,7 @@ public class AgentTypesDefinitionListener extends WindowsEventsAdapter {
     }
 
     public void actionPerformed(ActionEvent e) {
-        eventHandler(AgentTypesDefinitionEvent.valueOf(e.getActionCommand()));
+        eventHandler(AgentTypeDefinitionCrudGuiEvent.valueOf(e.getActionCommand()));
     }
 
 }

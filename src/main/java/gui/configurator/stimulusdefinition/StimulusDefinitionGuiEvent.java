@@ -4,11 +4,11 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.agenttypesdefinition;
+package gui.configurator.stimulusdefinition;
 
-public enum AgentTypesDefinitionEvent {
-    CLOSE_WINDOW,
-    ADD_AGENT,
-    DELETE_AGENT,
-    EDIT_AGENT
+public enum StimulusDefinitionGuiEvent {
+    SAVE,
+    SAVE_AND_NEW,
+    CANCEL,
+    NAME_CHANGED;
 }

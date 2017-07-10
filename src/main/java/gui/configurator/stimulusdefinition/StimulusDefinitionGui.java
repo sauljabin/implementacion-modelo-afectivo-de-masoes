@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.stimulus;
+package gui.configurator.stimulusdefinition;
 
 import net.miginfocom.swing.MigLayout;
 import translate.Translation;
@@ -12,7 +12,7 @@ import translate.Translation;
 import javax.swing.*;
 import java.awt.*;
 
-public class StimulusGui extends JFrame {
+public class StimulusDefinitionGui extends JFrame {
 
     private static final String FIELDS_SIZE = "w 100%, h 30, wrap";
     private static final String PANELS_SIZE = "w 100%, wrap";
@@ -29,8 +29,8 @@ public class StimulusGui extends JFrame {
     private JRadioButton othersButton;
     private JButton saveAndNewButton;
 
-    public StimulusGui() {
-        setTitle(translation.get("gui.stimulus"));
+    public StimulusDefinitionGui() {
+        setTitle(translation.get("gui.stimulus_definition"));
         setSize(500, 230);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());

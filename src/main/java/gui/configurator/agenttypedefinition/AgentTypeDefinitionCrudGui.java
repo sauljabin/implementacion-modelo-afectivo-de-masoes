@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.agenttypesdefinition;
+package gui.configurator.agenttypedefinition;
 
 import net.miginfocom.swing.MigLayout;
 import translate.Translation;
@@ -12,7 +12,7 @@ import translate.Translation;
 import javax.swing.*;
 import java.awt.*;
 
-public class AgentTypesDefinitionGui extends JFrame {
+public class AgentTypeDefinitionCrudGui extends JFrame {
 
     private Translation translation = Translation.getInstance();
     private JButton addAgentButton;
@@ -21,7 +21,7 @@ public class AgentTypesDefinitionGui extends JFrame {
     private JButton cancelButton;
     private JTable agentTypesTable;
 
-    public AgentTypesDefinitionGui() {
+    public AgentTypeDefinitionCrudGui() {
         setTitle(translation.get("gui.emotional_agent_types_definition"));
         setSize(600, 350);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

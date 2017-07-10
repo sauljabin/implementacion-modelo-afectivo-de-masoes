@@ -4,17 +4,17 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.stimulus.table;
+package gui.configurator.stimulusdefinition.table;
 
-import gui.configurator.stimulus.StimulusModel;
+import gui.configurator.stimulusdefinition.StimulusDefinitionModel;
 import util.ToStringBuilder;
 
 public class SelectableStimulusModel {
 
     private boolean selected;
-    private StimulusModel model;
+    private StimulusDefinitionModel model;
 
-    public SelectableStimulusModel(StimulusModel model) {
+    public SelectableStimulusModel(StimulusDefinitionModel model) {
         this.model = model;
         this.selected = true;
     }
@@ -27,11 +27,11 @@ public class SelectableStimulusModel {
         this.selected = selected;
     }
 
-    public StimulusModel getModel() {
+    public StimulusDefinitionModel getModel() {
         return model;
     }
 
-    public void setModel(StimulusModel model) {
+    public void setModel(StimulusDefinitionModel model) {
         this.model = model;
     }
 

@@ -7,7 +7,7 @@
 package gui.configurator;
 
 import behaviour.CounterBehaviour;
-import gui.configurator.stimulus.StimulusModel;
+import gui.configurator.stimulusdefinition.StimulusDefinitionModel;
 import jade.content.AgentAction;
 import jade.core.AID;
 import masoes.MasoesSettings;
@@ -125,7 +125,7 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
             String stimulusName = "-";
 
             if (!agent.getStimuli().isEmpty()) {
-                StimulusModel randomItem = RandomGenerator.getRandomItem(agent.getStimuli());
+                StimulusDefinitionModel randomItem = RandomGenerator.getRandomItem(agent.getStimuli());
                 stimulusName = randomItem.getName();
                 EventStimulus stimulus = new EventStimulus(receiver, randomItem.getValue());
                 agentAction = new EvaluateStimulus(stimulus);

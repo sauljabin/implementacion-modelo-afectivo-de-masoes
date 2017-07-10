@@ -4,10 +4,10 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.stimulus;
+package gui.configurator.stimulusdefinition;
 
-public interface StimulusGuiCallback {
+public interface StimulusDefinitionGuiCallback {
 
-    void afterSave(StimulusModel model);
+    void afterSave(StimulusDefinitionModel model);
 
 }

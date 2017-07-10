@@ -4,9 +4,8 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.agenttypedefinition.table;
+package gui.configurator.agenttypedefinition;
 
-import gui.configurator.agenttypedefinition.AgentTypeDefinitionModel;
 import translate.Translation;
 
 import javax.swing.*;
@@ -98,10 +97,14 @@ public class AgentTypeDefinitionTableModel extends AbstractTableModel {
     }
 
     public AgentTypeDefinitionModel getSelectedElement() {
-        if (table.getSelectedRow() >= 0) {
+        if (hasSelectedStimulus()) {
             return elements.get(table.getSelectedRow());
         }
         return null;
+    }
+
+    public boolean hasSelectedStimulus() {
+        return table.getSelectedRows().length > 0;
     }
 
     public List<AgentTypeDefinitionModel> getSelectedElements() {

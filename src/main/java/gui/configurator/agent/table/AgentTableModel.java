@@ -7,7 +7,7 @@
 package gui.configurator.agent.table;
 
 import gui.configurator.agent.AgentModel;
-import gui.configurator.stimulus.StimulusModel;
+import gui.configurator.stimulusdefinition.StimulusDefinitionModel;
 import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
 import masoes.component.behavioural.EmotionalState;
@@ -147,7 +147,7 @@ public class AgentTableModel extends AbstractTableModel {
         return table.getSelectedRows().length > 0;
     }
 
-    public void removeStimuli(List<StimulusModel> stimuli) {
+    public void removeStimuli(List<StimulusDefinitionModel> stimuli) {
         agents.forEach(agent -> agent.getStimuli().removeAll(stimuli));
     }
 

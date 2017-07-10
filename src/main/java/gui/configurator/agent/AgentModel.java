@@ -6,7 +6,7 @@
 
 package gui.configurator.agent;
 
-import gui.configurator.stimulus.StimulusModel;
+import gui.configurator.stimulusdefinition.StimulusDefinitionModel;
 import util.ToStringBuilder;
 
 import java.util.ArrayList;
@@ -18,13 +18,13 @@ public class AgentModel {
     private String name;
     private double activation;
     private double satisfaction;
-    private List<StimulusModel> stimuli;
+    private List<StimulusDefinitionModel> stimuli;
 
     public AgentModel() {
         this(AgentType.CONTRIBUTOR, "", 0, 0, new ArrayList<>());
     }
 
-    public AgentModel(AgentType agentType, String name, double activation, double satisfaction, List<StimulusModel> stimuli) {
+    public AgentModel(AgentType agentType, String name, double activation, double satisfaction, List<StimulusDefinitionModel> stimuli) {
         this.agentType = agentType;
         this.name = name;
         this.activation = activation;
@@ -64,11 +64,11 @@ public class AgentModel {
         this.satisfaction = satisfaction;
     }
 
-    public List<StimulusModel> getStimuli() {
+    public List<StimulusDefinitionModel> getStimuli() {
         return stimuli;
     }
 
-    public void setStimuli(List<StimulusModel> stimuli) {
+    public void setStimuli(List<StimulusDefinitionModel> stimuli) {
         this.stimuli = stimuli;
     }
 
