@@ -17,9 +17,10 @@ import gui.chart.emotionaldispersion.EmotionalDispersionChartGui;
 import gui.chart.emotionalstate.EmotionalStateChartGui;
 import gui.chart.emotionmodification.EmotionModificationChartGui;
 import gui.chart.maximundistance.MaximumDistanceChartGui;
-import gui.configurator.agent.AgentGuiListener;
-import gui.configurator.agent.table.AgentStateTableModel;
-import gui.configurator.agent.table.AgentTableModel;
+import gui.configurator.agentconfiguration.AgentConfigurationGuiListener;
+import gui.configurator.agentconfiguration.AgentConfigurationModel;
+import gui.configurator.agentconfiguration.AgentConfigurationTableModel;
+import gui.configurator.agentstate.AgentStateTableModel;
 import gui.configurator.agenttypedefinition.AgentTypeDefinitionCrudGuiListener;
 import gui.configurator.agenttypedefinition.AgentTypeDefinitionModel;
 import gui.configurator.stimulusdefinition.StimulusDefinitionCrudGuiListener;
@@ -31,6 +32,7 @@ import jade.core.behaviours.ThreadedBehaviourFactory;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import masoes.ontology.state.AgentState;
+import translate.Translation;
 import util.StringFormatter;
 
 import javax.swing.*;
@@ -41,12 +43,15 @@ import java.util.stream.Collectors;
 
 public class ConfiguratorGuiAgent extends GuiAgent {
 
-    private final ArrayList<StimulusDefinitionModel> stimulusDefinitionModels;
+    private ArrayList<AgentConfigurationModel> agentConfigurationModels;
+    private ArrayList<StimulusDefinitionModel> stimulusDefinitionModels;
+    private ArrayList<AgentTypeDefinitionModel> agentTypeDefinitionModels;
+
     private AgentManagementAssistant assistant;
     private ConfiguratorGuiListener configuratorGuiListener;
     private ConfiguratorGui configuratorGui;
     private AgentLogger logger;
-    private AgentTableModel agentTableModel;
+    private AgentConfigurationTableModel agentConfigurationTableModel;
     private ConfiguratorGuiAgentBehaviour agentBehaviour;
     private AgentStateTableModel agentStateTableModel;
 
@@ -61,11 +66,11 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     private boolean started;
     private SequentialBehaviour sequentialBehaviour;
     private ThreadedBehaviourFactory threadedBehaviourFactory;
-    private ArrayList<AgentTypeDefinitionModel> agentTypeDefinitionModels;
 
     public ConfiguratorGuiAgent() {
         agentTypeDefinitionModels = new ArrayList<>();
         stimulusDefinitionModels = new ArrayList<>();
+        agentConfigurationModels = new ArrayList<>();
 
         logger = new AgentLogger(this);
         assistant = new AgentManagementAssistant(this);
@@ -113,7 +118,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     }
 
     private void configView() {
-        agentTableModel = new AgentTableModel(configuratorGui.getAgentsTable());
+        agentConfigurationTableModel = new AgentConfigurationTableModel(configuratorGui.getAgentsTable(), agentConfigurationModels);
 
         agentStateTableModel = new AgentStateTableModel(configuratorGui.getCurrentAgentStatesTable());
         initialGuiState();
@@ -280,8 +285,8 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     }
 
     private void showAgentState() {
-        if (agentStateTableModel.hasSelectedAgent()) {
-            AgentState agentState = agentStateTableModel.getSelectedAgent();
+        if (agentStateTableModel.hasSelected()) {
+            AgentState agentState = agentStateTableModel.getSelectedElement();
 
             assistant.createAgent(
                     agentState.getAgent().getLocalName() + "GUI",
@@ -298,7 +303,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
         List<AID> agents = assistant.agents();
 
-        agentTableModel.getAgents().forEach(agent -> {
+        agentConfigurationModels.forEach(agent -> {
             try {
                 AID gui = getAID(agent.getName() + "GUI");
                 if (agents.contains(gui)) {
@@ -346,7 +351,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
             agentBehaviour.play();
         } else {
             started = true;
-            agentTableModel.getAgents().forEach(agent -> {
+            agentConfigurationModels.forEach(agent -> {
                 String knowledge = agent.getStimuli()
                         .stream()
                         .map(StimulusDefinitionModel::toClause)
@@ -360,7 +365,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
                 assistant.createAgent(
                         agent.getName(),
-                        agent.getAgentType().getAgentCLass(),
+                        agent.getAgentType().getAgentTypeClass(),
                         arguments
                 );
 
@@ -413,32 +418,38 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     }
 
     private void editAgent() {
-        if (agentTableModel.hasSelectedAgent()) {
-            new AgentGuiListener(
-                    agentTableModel.getSelectedAgent(),
-                    agentTableModel.getAgents(),
+        if (agentConfigurationTableModel.hasSelected()) {
+            new AgentConfigurationGuiListener(
+                    agentConfigurationTableModel.getSelectedElement(),
+                    agentConfigurationModels,
+                    agentTypeDefinitionModels,
                     stimulusDefinitionModels,
-                    updatedAgent -> agentTableModel.fireTableDataChanged()
+                    updatedAgent -> agentConfigurationTableModel.fireTableDataChanged()
             );
         }
     }
 
     private void deleteAgent() {
-        agentTableModel.deleteSelectedAgent();
-        if (agentTableModel.getAgents().isEmpty()) {
+        agentConfigurationTableModel.deleteSelectedElements();
+        if (agentConfigurationModels.isEmpty()) {
             configuratorGui.getPlayButton().setEnabled(false);
         }
     }
 
     private void addAgent() {
-        new AgentGuiListener(
-                agentTableModel.getAgents(),
-                stimulusDefinitionModels,
-                newAgent -> {
-                    agentTableModel.addAgent(newAgent);
-                    configuratorGui.getPlayButton().setEnabled(true);
-                }
-        );
+        if (agentTypeDefinitionModels.isEmpty()) {
+            showError(Translation.getInstance().get("gui.message.agent_types_definition_not_found"));
+        } else {
+            new AgentConfigurationGuiListener(
+                    agentConfigurationModels,
+                    agentTypeDefinitionModels,
+                    stimulusDefinitionModels,
+                    newAgent -> {
+                        agentConfigurationTableModel.add(newAgent);
+                        configuratorGui.getPlayButton().setEnabled(true);
+                    }
+            );
+        }
     }
 
     private void closeWindow() {
@@ -453,8 +464,8 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         return configuratorGui;
     }
 
-    public AgentTableModel getAgentTableModel() {
-        return agentTableModel;
+    public AgentConfigurationTableModel getAgentConfigurationTableModel() {
+        return agentConfigurationTableModel;
     }
 
     public AgentStateTableModel getAgentStateTableModel() {
@@ -466,7 +477,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         configuratorGui.getPauseButton().setEnabled(false);
         configuratorGui.getShowAgentStateButton().setEnabled(false);
 
-        if (agentTableModel.getAgents().isEmpty()) {
+        if (agentConfigurationModels.isEmpty()) {
             configuratorGui.getPlayButton().setEnabled(false);
         } else {
             configuratorGui.getPlayButton().setEnabled(true);
@@ -537,6 +548,10 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     public ArrayList<AgentTypeDefinitionModel> getAgentTypeDefinitionModels() {
         return agentTypeDefinitionModels;
+    }
+
+    public ArrayList<AgentConfigurationModel> getAgentConfigurationModels() {
+        return agentConfigurationModels;
     }
 
 }

@@ -4,10 +4,10 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.agent;
+package gui.configurator.agentconfiguration;
 
-public interface AgentGuiCallback {
+public interface AgentConfigurationGuiCallback {
 
-    void afterSave(AgentModel model);
+    void afterSave(AgentConfigurationModel model);
 
 }

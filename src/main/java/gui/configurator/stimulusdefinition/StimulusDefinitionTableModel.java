@@ -108,10 +108,6 @@ public class StimulusDefinitionTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    public List<StimulusDefinitionModel> getElements() {
-        return elements;
-    }
-
     public void deleteSelectedElements() {
         getSelectedElements()
                 .forEach(stimulusModel -> elements.remove(stimulusModel));
@@ -119,13 +115,13 @@ public class StimulusDefinitionTableModel extends AbstractTableModel {
     }
 
     public StimulusDefinitionModel getSelectedElement() {
-        if (hasSelectedStimulus()) {
+        if (hasSelected()) {
             return elements.get(table.getSelectedRow());
         }
         return null;
     }
 
-    public boolean hasSelectedStimulus() {
+    public boolean hasSelected() {
         return table.getSelectedRows().length > 0;
     }
 

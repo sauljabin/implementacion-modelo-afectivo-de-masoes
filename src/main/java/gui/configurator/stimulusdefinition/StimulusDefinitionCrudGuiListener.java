@@ -68,7 +68,7 @@ public class StimulusDefinitionCrudGuiListener extends WindowsEventsAdapter {
                 new StimulusDefinitionGuiListener(model -> tableModel.add(model));
                 break;
             case EDIT_STIMULUS:
-                if (tableModel.hasSelectedStimulus()) {
+                if (tableModel.hasSelected()) {
                     new StimulusDefinitionGuiListener(tableModel.getSelectedElement(), model -> tableModel.fireTableDataChanged());
                 }
                 break;

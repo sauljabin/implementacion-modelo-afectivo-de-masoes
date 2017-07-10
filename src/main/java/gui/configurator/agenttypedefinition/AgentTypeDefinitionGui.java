@@ -19,7 +19,7 @@ public class AgentTypeDefinitionGui extends JFrame {
     private static final String PANELS_SIZE = "w 100%, wrap";
 
     private Translation translation = Translation.getInstance();
-    private JComboBox agentTypesCombo;
+    private JComboBox<EmotionalAgentClassWrapper> agentTypesCombo;
     private JButton saveAndNewButton;
     private JButton saveButton;
     private JButton cancelButton;
@@ -72,7 +72,7 @@ public class AgentTypeDefinitionGui extends JFrame {
         return buttonsPanel;
     }
 
-    public JComboBox getAgentTypesCombo() {
+    public JComboBox<EmotionalAgentClassWrapper> getAgentTypesCombo() {
         return agentTypesCombo;
     }
 

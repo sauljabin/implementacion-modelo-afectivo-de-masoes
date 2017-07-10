@@ -4,27 +4,28 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.agent;
+package gui.configurator.agentconfiguration;
 
+import gui.configurator.agenttypedefinition.AgentTypeDefinitionModel;
 import gui.configurator.stimulusdefinition.StimulusDefinitionModel;
 import util.ToStringBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AgentModel {
+public class AgentConfigurationModel {
 
-    private AgentType agentType;
+    private AgentTypeDefinitionModel agentType;
     private String name;
     private double activation;
     private double satisfaction;
     private List<StimulusDefinitionModel> stimuli;
 
-    public AgentModel() {
-        this(AgentType.CONTRIBUTOR, "", 0, 0, new ArrayList<>());
+    public AgentConfigurationModel() {
+        this(null, "", 0, 0, new ArrayList<>());
     }
 
-    public AgentModel(AgentType agentType, String name, double activation, double satisfaction, List<StimulusDefinitionModel> stimuli) {
+    public AgentConfigurationModel(AgentTypeDefinitionModel agentType, String name, double activation, double satisfaction, List<StimulusDefinitionModel> stimuli) {
         this.agentType = agentType;
         this.name = name;
         this.activation = activation;
@@ -32,11 +33,11 @@ public class AgentModel {
         this.stimuli = stimuli;
     }
 
-    public AgentType getAgentType() {
+    public AgentTypeDefinitionModel getAgentType() {
         return agentType;
     }
 
-    public void setAgentType(AgentType agentType) {
+    public void setAgentType(AgentTypeDefinitionModel agentType) {
         this.agentType = agentType;
     }
 

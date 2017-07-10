@@ -117,7 +117,7 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
                 translation.get("gui.behaviour")
         );
 
-        configuratorAgent.getAgentTableModel().getAgents().forEach(agent -> {
+        configuratorAgent.getAgentConfigurationModels().forEach(agent -> {
             AID receiver = myAgent.getAID(agent.getName());
 
             AgentAction agentAction = new GetEmotionalState();
@@ -133,7 +133,7 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
 
             AgentState agentState = (AgentState) assistant.sendRequestAction(receiver, agentAction);
 
-            configuratorAgent.getAgentStateTableModel().addAgent(agentState);
+            configuratorAgent.getAgentStateTableModel().add(agentState);
 
             EmotionalState emotionalState = agentState.getEmotionState().toEmotionalState();
 

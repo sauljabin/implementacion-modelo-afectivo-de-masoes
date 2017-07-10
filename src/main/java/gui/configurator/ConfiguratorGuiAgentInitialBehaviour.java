@@ -84,7 +84,7 @@ public class ConfiguratorGuiAgentInitialBehaviour extends OneShotBehaviour {
                 translation.get("gui.stimuli")
         );
 
-        configuratorAgent.getAgentTableModel().getAgents().forEach(agent -> {
+        configuratorAgent.getAgentConfigurationModels().forEach(agent -> {
             AID receiver = myAgent.getAID(agent.getName());
 
             AgentAction agentAction = new GetEmotionalState();

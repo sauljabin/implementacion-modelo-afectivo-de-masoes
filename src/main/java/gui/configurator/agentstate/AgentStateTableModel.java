@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.agent.table;
+package gui.configurator.agentstate;
 
 import masoes.ontology.state.AgentState;
 import translate.Translation;
@@ -32,12 +32,12 @@ public class AgentStateTableModel extends AbstractTableModel {
     private JTable table;
     private Translation translation = Translation.getInstance();
     private String[] columns;
-    private List<AgentState> agents;
+    private List<AgentState> elements;
 
     public AgentStateTableModel(JTable table) {
         this.table = table;
 
-        this.agents = new ArrayList<>();
+        this.elements = new ArrayList<>();
 
         columns = new String[]{
                 translation.get("gui.agent"),
@@ -69,7 +69,7 @@ public class AgentStateTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return agents.size();
+        return elements.size();
     }
 
     @Override
@@ -84,11 +84,11 @@ public class AgentStateTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        if (rowIndex >= agents.size()) {
+        if (rowIndex >= elements.size()) {
             return null;
         }
 
-        AgentState agentState = agents.get(rowIndex);
+        AgentState agentState = elements.get(rowIndex);
 
         switch (columnIndex) {
             case COLUMN_AGENT:
@@ -112,19 +112,19 @@ public class AgentStateTableModel extends AbstractTableModel {
         return translation.get(string.toLowerCase());
     }
 
-    public void addAgent(AgentState newAgent) {
+    public void add(AgentState newState) {
         int selectedRow = table.getSelectedRow();
 
-        Optional<AgentState> agentStateOptional = agents.stream()
-                .filter(agentState -> agentState.getAgent().equals(newAgent.getAgent()))
+        Optional<AgentState> agentStateOptional = elements.stream()
+                .filter(agentState -> agentState.getAgent().equals(newState.getAgent()))
                 .findFirst();
 
         if (agentStateOptional.isPresent()) {
-            int index = agents.indexOf(agentStateOptional.get());
-            agents.set(index, newAgent);
+            int index = elements.indexOf(agentStateOptional.get());
+            elements.set(index, newState);
             fireTableRowsUpdated(index, index);
         } else {
-            agents.add(newAgent);
+            elements.add(newState);
             fireTableDataChanged();
         }
 
@@ -133,21 +133,20 @@ public class AgentStateTableModel extends AbstractTableModel {
         }
     }
 
-    public AgentState getSelectedAgent() {
-        return agents.get(table.getSelectedRow());
+    public AgentState getSelectedElement() {
+        if (hasSelected()) {
+            return elements.get(table.getSelectedRow());
+        }
+        return null;
     }
 
-    public boolean hasSelectedAgent() {
+    public boolean hasSelected() {
         return table.getSelectedRows().length > 0;
     }
 
     public void clear() {
-        agents.clear();
+        elements.clear();
         fireTableDataChanged();
-    }
-
-    public List<AgentState> getAgents() {
-        return agents;
     }
 
 }

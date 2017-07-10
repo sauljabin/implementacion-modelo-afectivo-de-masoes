@@ -97,13 +97,13 @@ public class AgentTypeDefinitionTableModel extends AbstractTableModel {
     }
 
     public AgentTypeDefinitionModel getSelectedElement() {
-        if (hasSelectedStimulus()) {
+        if (hasSelected()) {
             return elements.get(table.getSelectedRow());
         }
         return null;
     }
 
-    public boolean hasSelectedStimulus() {
+    public boolean hasSelected() {
         return table.getSelectedRows().length > 0;
     }
 

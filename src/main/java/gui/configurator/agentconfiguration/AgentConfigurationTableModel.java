@@ -4,10 +4,8 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.agent.table;
+package gui.configurator.agentconfiguration;
 
-import gui.configurator.agent.AgentModel;
-import gui.configurator.stimulusdefinition.StimulusDefinitionModel;
 import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
 import masoes.component.behavioural.EmotionalState;
@@ -18,12 +16,11 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AgentTableModel extends AbstractTableModel {
+public class AgentConfigurationTableModel extends AbstractTableModel {
 
     private static final int COLUMN_AGENT = 0;
     private static final int COLUMN_EMOTION = 1;
@@ -36,12 +33,12 @@ public class AgentTableModel extends AbstractTableModel {
     private JTable table;
     private Translation translation = Translation.getInstance();
     private String[] columns;
-    private List<AgentModel> agents;
+    private List<AgentConfigurationModel> elements;
 
-    public AgentTableModel(JTable table) {
+    public AgentConfigurationTableModel(JTable table, List<AgentConfigurationModel> elements) {
         this.table = table;
 
-        this.agents = new ArrayList<>();
+        this.elements = elements;
 
         columns = new String[]{
                 translation.get("gui.agent"),
@@ -69,13 +66,9 @@ public class AgentTableModel extends AbstractTableModel {
         columnModel.getColumn(column).setMinWidth(size);
     }
 
-    public List<AgentModel> getAgents() {
-        return agents;
-    }
-
     @Override
     public int getRowCount() {
-        return agents.size();
+        return elements.size();
     }
 
     @Override
@@ -90,11 +83,11 @@ public class AgentTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        if (rowIndex >= agents.size()) {
+        if (rowIndex >= elements.size()) {
             return null;
         }
 
-        AgentModel agentState = agents.get(rowIndex);
+        AgentConfigurationModel agentState = elements.get(rowIndex);
         Emotion emotion = getEmotion(agentState);
 
         switch (columnIndex) {
@@ -117,38 +110,37 @@ public class AgentTableModel extends AbstractTableModel {
         return translation.get(string.toLowerCase());
     }
 
-    private Emotion getEmotion(AgentModel agentState) {
+    private Emotion getEmotion(AgentConfigurationModel agentState) {
         EmotionalState emotionalState = new EmotionalState(agentState.getActivation(), agentState.getSatisfaction());
         return AffectiveModel.getInstance().searchEmotion(emotionalState);
     }
 
-    public void addAgent(AgentModel agent) {
-        this.agents.add(agent);
+    public void add(AgentConfigurationModel agent) {
+        this.elements.add(agent);
         fireTableDataChanged();
     }
 
-    public void deleteSelectedAgent() {
-        getSelectedAgents()
-                .forEach(agentModel -> agents.remove(agentModel));
+    public void deleteSelectedElements() {
+        getSelectedElements()
+                .forEach(agentConfigurationModel -> elements.remove(agentConfigurationModel));
         fireTableDataChanged();
     }
 
-    private List<AgentModel> getSelectedAgents() {
+    private List<AgentConfigurationModel> getSelectedElements() {
         return Arrays.stream(table.getSelectedRows())
-                .mapToObj(i -> agents.get(i))
+                .mapToObj(i -> elements.get(i))
                 .collect(Collectors.toList());
     }
 
-    public AgentModel getSelectedAgent() {
-        return agents.get(table.getSelectedRow());
+    public AgentConfigurationModel getSelectedElement() {
+        if (hasSelected()) {
+            return elements.get(table.getSelectedRow());
+        }
+        return null;
     }
 
-    public boolean hasSelectedAgent() {
+    public boolean hasSelected() {
         return table.getSelectedRows().length > 0;
-    }
-
-    public void removeStimuli(List<StimulusDefinitionModel> stimuli) {
-        agents.forEach(agent -> agent.getStimuli().removeAll(stimuli));
     }
 
 }

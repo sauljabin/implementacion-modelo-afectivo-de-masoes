@@ -16,7 +16,7 @@ import java.awt.event.WindowEvent;
 public class StimulusDefinitionGuiListener extends WindowsEventsAdapter {
 
     private StimulusDefinitionModel stimulusDefinitionModel;
-    private StimulusDefinitionGui stimulusDefinitionGui;
+    private StimulusDefinitionGui gui;
     private StimulusDefinitionGuiCallback callback;
 
     public StimulusDefinitionGuiListener(StimulusDefinitionGuiCallback callback) {
@@ -24,12 +24,13 @@ public class StimulusDefinitionGuiListener extends WindowsEventsAdapter {
     }
 
     public StimulusDefinitionGuiListener(StimulusDefinitionModel stimulusDefinitionModel, StimulusDefinitionGuiCallback callback) {
+        this.callback = callback;
         this.stimulusDefinitionModel = stimulusDefinitionModel;
-        this.stimulusDefinitionGui = new StimulusDefinitionGui();
+        this.gui = new StimulusDefinitionGui();
         configView();
         initView();
-        this.stimulusDefinitionGui.setVisible(true);
-        this.callback = callback;
+        this.gui.setVisible(true);
+        gui.getNameField().requestFocus();
     }
 
     public static void main(String[] args) {
@@ -41,33 +42,34 @@ public class StimulusDefinitionGuiListener extends WindowsEventsAdapter {
             stimulusDefinitionModel = new StimulusDefinitionModel();
         }
 
-        stimulusDefinitionGui.getNameField().setText(stimulusDefinitionModel.getName());
-        stimulusDefinitionGui.getValueField().setText(stimulusDefinitionModel.getValue());
-        stimulusDefinitionGui.getActivationSpinner().setValue(stimulusDefinitionModel.getActivation());
-        stimulusDefinitionGui.getSatisfactionSpinner().setValue(stimulusDefinitionModel.getSatisfaction());
-        stimulusDefinitionGui.getSelfButton().setSelected(stimulusDefinitionModel.isSelf());
-        stimulusDefinitionGui.getOthersButton().setSelected(!stimulusDefinitionModel.isSelf());
+        gui.getNameField().setText(stimulusDefinitionModel.getName());
+        gui.getValueField().setText(stimulusDefinitionModel.getValue());
+        gui.getActivationSpinner().setValue(stimulusDefinitionModel.getActivation());
+        gui.getSatisfactionSpinner().setValue(stimulusDefinitionModel.getSatisfaction());
+        gui.getSelfButton().setSelected(stimulusDefinitionModel.isSelf());
+        gui.getOthersButton().setSelected(!stimulusDefinitionModel.isSelf());
+        gui.getNameField().requestFocus();
     }
 
     private void configView() {
-        stimulusDefinitionGui.addWindowListener(this);
+        gui.addWindowListener(this);
 
-        stimulusDefinitionGui.getSaveButton().setActionCommand(StimulusDefinitionGuiEvent.SAVE.toString());
-        stimulusDefinitionGui.getSaveButton().addActionListener(this);
+        gui.getSaveButton().setActionCommand(StimulusDefinitionGuiEvent.SAVE.toString());
+        gui.getSaveButton().addActionListener(this);
 
-        stimulusDefinitionGui.getSaveAndNewButton().setActionCommand(StimulusDefinitionGuiEvent.SAVE_AND_NEW.toString());
-        stimulusDefinitionGui.getSaveAndNewButton().addActionListener(this);
+        gui.getSaveAndNewButton().setActionCommand(StimulusDefinitionGuiEvent.SAVE_AND_NEW.toString());
+        gui.getSaveAndNewButton().addActionListener(this);
 
-        stimulusDefinitionGui.getCancelButton().setActionCommand(StimulusDefinitionGuiEvent.CANCEL.toString());
-        stimulusDefinitionGui.getCancelButton().addActionListener(this);
+        gui.getCancelButton().setActionCommand(StimulusDefinitionGuiEvent.CANCEL.toString());
+        gui.getCancelButton().addActionListener(this);
 
-        stimulusDefinitionGui.getNameField().addKeyListener(this);
+        gui.getNameField().addKeyListener(this);
 
         if (stimulusDefinitionModel != null) {
-            stimulusDefinitionGui.getSaveAndNewButton().setVisible(false);
+            gui.getSaveAndNewButton().setVisible(false);
         }
 
-        stimulusDefinitionGui.getValueField().setEditable(false);
+        gui.getValueField().setEditable(false);
     }
 
     @Override
@@ -98,7 +100,7 @@ public class StimulusDefinitionGuiListener extends WindowsEventsAdapter {
     }
 
     private void close() {
-        stimulusDefinitionGui.dispose();
+        gui.dispose();
     }
 
     private void saveAndNew() {
@@ -113,16 +115,16 @@ public class StimulusDefinitionGuiListener extends WindowsEventsAdapter {
     }
 
     private void changeValue() {
-        String name = stimulusDefinitionGui.getNameField().getText();
-        stimulusDefinitionGui.getValueField().setText(StringFormatter.toCamelCase(name));
+        String name = gui.getNameField().getText();
+        gui.getValueField().setText(StringFormatter.toCamelCase(name));
     }
 
     private void updateModel() {
-        stimulusDefinitionModel.setName(stimulusDefinitionGui.getNameField().getText());
-        stimulusDefinitionModel.setValue(stimulusDefinitionGui.getValueField().getText());
-        stimulusDefinitionModel.setActivation((Double) stimulusDefinitionGui.getActivationSpinner().getValue());
-        stimulusDefinitionModel.setSatisfaction((Double) stimulusDefinitionGui.getSatisfactionSpinner().getValue());
-        stimulusDefinitionModel.setSelf(stimulusDefinitionGui.getSelfButton().isSelected());
+        stimulusDefinitionModel.setName(gui.getNameField().getText());
+        stimulusDefinitionModel.setValue(gui.getValueField().getText());
+        stimulusDefinitionModel.setActivation((Double) gui.getActivationSpinner().getValue());
+        stimulusDefinitionModel.setSatisfaction((Double) gui.getSatisfactionSpinner().getValue());
+        stimulusDefinitionModel.setSelf(gui.getSelfButton().isSelected());
         if (callback != null) {
             callback.afterSave(stimulusDefinitionModel);
         }
@@ -130,7 +132,7 @@ public class StimulusDefinitionGuiListener extends WindowsEventsAdapter {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getSource().equals(stimulusDefinitionGui.getNameField())) {
+        if (e.getSource().equals(gui.getNameField())) {
             eventHandler(StimulusDefinitionGuiEvent.NAME_CHANGED);
         }
     }

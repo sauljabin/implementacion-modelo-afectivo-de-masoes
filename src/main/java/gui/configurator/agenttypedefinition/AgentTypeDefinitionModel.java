@@ -7,7 +7,6 @@
 package gui.configurator.agenttypedefinition;
 
 import masoes.agent.EmotionalAgent;
-import util.ToStringBuilder;
 
 public class AgentTypeDefinitionModel {
 
@@ -40,10 +39,7 @@ public class AgentTypeDefinitionModel {
 
     @Override
     public String toString() {
-        return new ToStringBuilder()
-                .append("agentTypeClass", agentTypeClass)
-                .append("agentTypeName", agentTypeName)
-                .toString();
+        return agentTypeName;
     }
 
 }

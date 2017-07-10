@@ -4,15 +4,16 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.agent;
+package gui.configurator.agentconfiguration;
 
+import gui.configurator.agenttypedefinition.AgentTypeDefinitionModel;
 import net.miginfocom.swing.MigLayout;
 import translate.Translation;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class AgentGui extends JFrame {
+public class AgentConfigurationGui extends JFrame {
 
     private static final String FIELDS_SIZE = "w 100%, h 30, wrap";
     private static final String EMOTION_FIELDS_SIZE = "w 100%, h 30";
@@ -20,7 +21,7 @@ public class AgentGui extends JFrame {
     private static final String TABLE_PANEL_SIZE = PANELS_SIZE + ", h 150";
 
     private Translation translation = Translation.getInstance();
-    private JComboBox<AgentType> agentTypesCombo;
+    private JComboBox<AgentTypeDefinitionModel> agentTypesCombo;
     private JTextField nameField;
     private JSpinner activationSpinner;
     private JLabel emotionLabel;
@@ -34,7 +35,7 @@ public class AgentGui extends JFrame {
     private JButton deselectAllButton;
     private JTable stimuliTable;
 
-    public AgentGui() {
+    public AgentConfigurationGui() {
         setTitle(translation.get("gui.agent"));
         setSize(500, 430);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -114,7 +115,7 @@ public class AgentGui extends JFrame {
         JLabel agentLabel = new JLabel(translation.get("gui.agent_type"));
         agentPanel.add(agentLabel);
 
-        agentTypesCombo = new JComboBox<>(AgentType.values());
+        agentTypesCombo = new JComboBox<>();
         agentPanel.add(agentTypesCombo, FIELDS_SIZE);
 
         JLabel nameLabel = new JLabel(translation.get("gui.name"));
@@ -141,7 +142,7 @@ public class AgentGui extends JFrame {
         return buttonsPanel;
     }
 
-    public JComboBox<AgentType> getAgentTypesCombo() {
+    public JComboBox<AgentTypeDefinitionModel> getAgentTypesCombo() {
         return agentTypesCombo;
     }
 

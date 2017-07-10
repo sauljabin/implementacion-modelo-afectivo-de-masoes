@@ -71,7 +71,7 @@ public class AgentTypeDefinitionCrudGuiListener extends WindowsEventsAdapter {
                 new AgentTypeDefinitionGuiListener(model -> tableModel.add(model));
                 break;
             case EDIT_AGENT:
-                if (tableModel.hasSelectedStimulus()) {
+                if (tableModel.hasSelected()) {
                     new AgentTypeDefinitionGuiListener(tableModel.getSelectedElement(), model -> tableModel.fireTableDataChanged());
                 }
                 break;

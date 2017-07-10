@@ -32,6 +32,7 @@ public class AgentTypeDefinitionGuiListener extends WindowsEventsAdapter {
         configView();
         initView();
         gui.setVisible(true);
+        gui.getAgentTypeName().requestFocus();
     }
 
     public static void main(String[] args) {
@@ -48,7 +49,7 @@ public class AgentTypeDefinitionGuiListener extends WindowsEventsAdapter {
     }
 
     private void initView() {
-        Object[] classes = getClasses();
+        EmotionalAgentClassWrapper[] classes = getClasses();
 
         if (model == null) {
             model = new AgentTypeDefinitionModel();
@@ -56,7 +57,7 @@ public class AgentTypeDefinitionGuiListener extends WindowsEventsAdapter {
             model.setAgentTypeClass(((EmotionalAgentClassWrapper) classes[0]).getAgentClass());
         }
 
-        gui.getAgentTypesCombo().setModel(new DefaultComboBoxModel(classes));
+        gui.getAgentTypesCombo().setModel(new DefaultComboBoxModel<>(classes));
 
         gui.getAgentTypeName().setText(model.getAgentTypeName());
         gui.getAgentTypesCombo().setSelectedItem(Arrays.stream(classes)
@@ -64,15 +65,17 @@ public class AgentTypeDefinitionGuiListener extends WindowsEventsAdapter {
                 .findFirst()
                 .get()
         );
+
+        gui.getAgentTypeName().requestFocus();
     }
 
-    private Object[] getClasses() {
+    private EmotionalAgentClassWrapper[] getClasses() {
         Reflections reflections = new Reflections("");
         return reflections.getSubTypesOf(EmotionalAgent.class)
                 .stream()
                 .map(aClass -> new EmotionalAgentClassWrapper(aClass))
                 .sorted()
-                .toArray();
+                .toArray(i -> new EmotionalAgentClassWrapper[i]);
     }
 
     private void configView() {

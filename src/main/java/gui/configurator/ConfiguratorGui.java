@@ -52,7 +52,7 @@ public class ConfiguratorGui extends JFrame {
 
     public ConfiguratorGui() {
         setTitle(translation.get("gui.configurator"));
-        setSize(1000, 780);
+        setSize(1200, 780);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
 

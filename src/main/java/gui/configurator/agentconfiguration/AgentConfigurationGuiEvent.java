@@ -4,9 +4,9 @@
  * Please see the LICENSE.txt file
  */
 
-package gui.configurator.agent;
+package gui.configurator.agentconfiguration;
 
-public enum AgentGuiEvent {
+public enum AgentConfigurationGuiEvent {
     SAVE,
     SAVE_AND_NEW,
     CANCEL,
