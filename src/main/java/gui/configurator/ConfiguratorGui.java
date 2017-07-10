@@ -21,6 +21,10 @@ public class ConfiguratorGui extends JFrame {
     private static final String PANELS_SIZE = "w 100%, h 100%, wrap";
     private static final String PANELS_SIZE_WITHOUT_H = "w 100%, wrap";
     private static final String PANEL_INSETS = "insets 5";
+    private JMenuBar menuBar;
+    private JMenu fileMenu;
+    private JMenu editMenu;
+    private JMenuItem editAgentTypesDefinitionMenu;
 
     private Translation translation = Translation.getInstance();
     private JButton addStimulusButton;
@@ -55,6 +59,8 @@ public class ConfiguratorGui extends JFrame {
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
 
+        configMenu();
+
         JPanel mainPanel = new JPanel(new MigLayout());
         add(mainPanel, BorderLayout.CENTER);
 
@@ -79,6 +85,20 @@ public class ConfiguratorGui extends JFrame {
     public static void main(String[] args) {
         ConfiguratorGui configuratorGui = new ConfiguratorGui();
         configuratorGui.setVisible(true);
+    }
+
+    private void configMenu() {
+        menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+
+        fileMenu = new JMenu(translation.get("gui.file"));
+        menuBar.add(fileMenu);
+
+        editMenu = new JMenu(translation.get("gui.edit"));
+        menuBar.add(editMenu);
+
+        editAgentTypesDefinitionMenu = new JMenuItem(translation.get("gui.emotional_agent_types_definition"));
+        editMenu.add(editAgentTypesDefinitionMenu);
     }
 
     private JPanel createSelectChartsPanel() {
@@ -344,6 +364,10 @@ public class ConfiguratorGui extends JFrame {
 
     public JTable getCurrentAgentStatesTable() {
         return currentAgentStatesTable;
+    }
+
+    public JMenuItem getEditAgentTypesDefinitionMenu() {
+        return editAgentTypesDefinitionMenu;
     }
 
 }

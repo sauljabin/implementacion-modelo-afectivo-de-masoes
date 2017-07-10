@@ -20,6 +20,8 @@ import gui.chart.maximundistance.MaximumDistanceChartGui;
 import gui.configurator.agent.AgentGuiListener;
 import gui.configurator.agent.table.AgentStateTableModel;
 import gui.configurator.agent.table.AgentTableModel;
+import gui.configurator.agenttypedefinition.AgentTypeDefinitionModel;
+import gui.configurator.agenttypesdefinition.AgentTypesDefinitionListener;
 import gui.configurator.stimulus.StimulusGuiListener;
 import gui.configurator.stimulus.StimulusModel;
 import gui.configurator.stimulus.table.StimulusTableModel;
@@ -33,6 +35,7 @@ import masoes.ontology.state.AgentState;
 import util.StringFormatter;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,8 +62,11 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     private boolean started;
     private SequentialBehaviour sequentialBehaviour;
     private ThreadedBehaviourFactory threadedBehaviourFactory;
+    private ArrayList<AgentTypeDefinitionModel> agentTypeDefinitionModels;
 
     public ConfiguratorGuiAgent() {
+        agentTypeDefinitionModels = new ArrayList<>();
+
         logger = new AgentLogger(this);
         assistant = new AgentManagementAssistant(this);
         configuratorGui = new ConfiguratorGui();
@@ -209,11 +215,18 @@ public class ConfiguratorGuiAgent extends GuiAgent {
                 case SHOW_EMOTIONAL_STATE_CHART:
                     showEmotionalStateChart();
                     break;
+                case SHOW_AGENT_STATE_DEFINITION_GUI:
+                    showAgentTypesDefinitionGUI();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             showError(e.getMessage());
         }
+    }
+
+    private AgentTypesDefinitionListener showAgentTypesDefinitionGUI() {
+        return new AgentTypesDefinitionListener(agentTypeDefinitionModels);
     }
 
     private void showEmotionalStateChart() {
