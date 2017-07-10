@@ -24,15 +24,6 @@ public class ConfiguratorGuiListener extends WindowsEventsAdapter {
 
         view.addWindowListener(this);
 
-        view.getAddStimulusButton().setActionCommand(ConfiguratorGuiEvent.ADD_STIMULUS.toString());
-        view.getAddStimulusButton().addActionListener(this);
-
-        view.getDeleteStimulusButton().setActionCommand(ConfiguratorGuiEvent.DELETE_STIMULUS.toString());
-        view.getDeleteStimulusButton().addActionListener(this);
-
-        view.getEditStimulusButton().setActionCommand(ConfiguratorGuiEvent.EDIT_STIMULUS.toString());
-        view.getEditStimulusButton().addActionListener(this);
-
         view.getAddAgentButton().setActionCommand(ConfiguratorGuiEvent.ADD_AGENT.toString());
         view.getAddAgentButton().addActionListener(this);
 
@@ -59,7 +50,7 @@ public class ConfiguratorGuiListener extends WindowsEventsAdapter {
 
         view.getEditStimuliDefinitionMenu().setActionCommand(ConfiguratorGuiEvent.SHOW_STIMULUS_DEFINITION_GUI.toString());
         view.getEditStimuliDefinitionMenu().addActionListener(this);
-        
+
         view.getCentralEmotionCheckBox().addItemListener(this);
         view.getMaximumDistanceCheckBox().addItemListener(this);
         view.getEmotionalDispersionCheckBox().addItemListener(this);

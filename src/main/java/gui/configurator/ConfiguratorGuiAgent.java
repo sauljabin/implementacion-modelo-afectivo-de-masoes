@@ -23,9 +23,7 @@ import gui.configurator.agent.table.AgentTableModel;
 import gui.configurator.agenttypedefinition.AgentTypeDefinitionCrudGuiListener;
 import gui.configurator.agenttypedefinition.AgentTypeDefinitionModel;
 import gui.configurator.stimulusdefinition.StimulusDefinitionCrudGuiListener;
-import gui.configurator.stimulusdefinition.StimulusDefinitionGuiListener;
 import gui.configurator.stimulusdefinition.StimulusDefinitionModel;
-import gui.configurator.stimulusdefinition.StimulusDefinitionTableModel;
 import jade.JadeSettings;
 import jade.core.AID;
 import jade.core.behaviours.SequentialBehaviour;
@@ -47,7 +45,6 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     private AgentManagementAssistant assistant;
     private ConfiguratorGuiListener configuratorGuiListener;
     private ConfiguratorGui configuratorGui;
-    private StimulusDefinitionTableModel stimulusDefinitionTableModel;
     private AgentLogger logger;
     private AgentTableModel agentTableModel;
     private ConfiguratorGuiAgentBehaviour agentBehaviour;
@@ -116,14 +113,6 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     }
 
     private void configView() {
-        stimulusDefinitionTableModel = new StimulusDefinitionTableModel(configuratorGui.getStimuliTable(), new ArrayList<>());
-        stimulusDefinitionTableModel.add(createStimulus("Incremento de reputación alto", .3, .3));
-        stimulusDefinitionTableModel.add(createStimulus("Incremento de reputación medio", 0, .1));
-        stimulusDefinitionTableModel.add(createStimulus("Incremento de reputación bajo", -.05, .05));
-        stimulusDefinitionTableModel.add(createStimulus("Decremento de reputación alto", -.3, -.3));
-        stimulusDefinitionTableModel.add(createStimulus("Decremento de reputación medio", 0, -.1));
-        stimulusDefinitionTableModel.add(createStimulus("Decremento de reputación bajo", -.05, -.05));
-
         agentTableModel = new AgentTableModel(configuratorGui.getAgentsTable());
 
         agentStateTableModel = new AgentStateTableModel(configuratorGui.getCurrentAgentStatesTable());
@@ -151,15 +140,6 @@ public class ConfiguratorGuiAgent extends GuiAgent {
             switch (ConfiguratorGuiEvent.fromInt(guiEvent.getType())) {
                 case CLOSE_WINDOW:
                     closeWindow();
-                    break;
-                case ADD_STIMULUS:
-                    addStimulus();
-                    break;
-                case DELETE_STIMULUS:
-                    deleteStimulus();
-                    break;
-                case EDIT_STIMULUS:
-                    editStimulus();
                     break;
                 case ADD_AGENT:
                     addAgent();
@@ -437,7 +417,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
             new AgentGuiListener(
                     agentTableModel.getSelectedAgent(),
                     agentTableModel.getAgents(),
-                    stimulusDefinitionTableModel.getElements(),
+                    stimulusDefinitionModels,
                     updatedAgent -> agentTableModel.fireTableDataChanged()
             );
         }
@@ -453,33 +433,10 @@ public class ConfiguratorGuiAgent extends GuiAgent {
     private void addAgent() {
         new AgentGuiListener(
                 agentTableModel.getAgents(),
-                stimulusDefinitionTableModel.getElements(),
+                stimulusDefinitionModels,
                 newAgent -> {
                     agentTableModel.addAgent(newAgent);
                     configuratorGui.getPlayButton().setEnabled(true);
-                }
-        );
-    }
-
-    private void editStimulus() {
-        if (stimulusDefinitionTableModel.hasSelectedStimulus()) {
-            new StimulusDefinitionGuiListener(
-                    stimulusDefinitionTableModel.getSelectedElement(),
-                    updatedStimulus -> stimulusDefinitionTableModel.fireTableDataChanged()
-            );
-        }
-    }
-
-    private void deleteStimulus() {
-        agentTableModel.removeStimuli(stimulusDefinitionTableModel.getSelectedElements());
-        stimulusDefinitionTableModel.deleteSelectedElements();
-    }
-
-    private void addStimulus() {
-        new StimulusDefinitionGuiListener(
-                newStimulus -> {
-                    stimulusDefinitionTableModel.add(newStimulus);
-                    agentTableModel.getAgents().forEach(agent -> agent.getStimuli().add(newStimulus));
                 }
         );
     }
@@ -494,10 +451,6 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     public ConfiguratorGui getConfiguratorGui() {
         return configuratorGui;
-    }
-
-    public StimulusDefinitionTableModel getStimulusDefinitionTableModel() {
-        return stimulusDefinitionTableModel;
     }
 
     public AgentTableModel getAgentTableModel() {
@@ -531,10 +484,6 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         configuratorGui.getDeleteAgentButton().setEnabled(true);
         configuratorGui.getEditAgentButton().setEnabled(true);
 
-        configuratorGui.getAddStimulusButton().setEnabled(true);
-        configuratorGui.getDeleteStimulusButton().setEnabled(true);
-        configuratorGui.getEditStimulusButton().setEnabled(true);
-
         agentStateTableModel.clear();
 
         maximumDistanceChart.clear();
@@ -556,10 +505,6 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         configuratorGui.getAddAgentButton().setEnabled(false);
         configuratorGui.getDeleteAgentButton().setEnabled(false);
         configuratorGui.getEditAgentButton().setEnabled(false);
-
-        configuratorGui.getAddStimulusButton().setEnabled(false);
-        configuratorGui.getDeleteStimulusButton().setEnabled(false);
-        configuratorGui.getEditStimulusButton().setEnabled(false);
     }
 
     public CentralEmotionChartGui getCentralEmotionChart() {
@@ -584,6 +529,14 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     public EmotionalStateChartGui getEmotionalStateChart() {
         return emotionalStateChart;
+    }
+
+    public ArrayList<StimulusDefinitionModel> getStimulusDefinitionModels() {
+        return stimulusDefinitionModels;
+    }
+
+    public ArrayList<AgentTypeDefinitionModel> getAgentTypeDefinitionModels() {
+        return agentTypeDefinitionModels;
     }
 
 }

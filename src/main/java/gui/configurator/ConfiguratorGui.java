@@ -17,9 +17,9 @@ public class ConfiguratorGui extends JFrame {
     private static final Font FONT_50 = new Font("Arial", Font.BOLD, 50);
     private static final Font FONT_9 = new Font("Arial", Font.BOLD, 9);
 
-    private static final String PRINCIPAL_PANELS_SIZE = "w 50%, h 100%";
+    private static final String PRINCIPAL_PANELS_SIZE = "w 100%, h 100%";
     private static final String PANELS_SIZE = "w 100%, h 100%, wrap";
-    private static final String PANELS_SIZE_WITHOUT_H = "w 100%, wrap";
+    private static final String PANELS_SIZE_WITHOUT_H = "w 400, wrap";
     private static final String PANEL_INSETS = "insets 5";
     private JMenuBar menuBar;
     private JMenu fileMenu;
@@ -27,14 +27,10 @@ public class ConfiguratorGui extends JFrame {
     private JMenuItem editAgentTypesDefinitionMenu;
 
     private Translation translation = Translation.getInstance();
-    private JButton addStimulusButton;
-    private JButton deleteStimulusButton;
-    private JButton editStimulusButton;
     private JButton addAgentButton;
     private JButton deleteAgentButton;
     private JButton editAgentButton;
     private JButton showAgentStateButton;
-    private JTable stimuliTable;
     private JTable agentsTable;
     private JLabel iterationLabel;
     private JLabel collectiveCentralEmotionalStateLabel;
@@ -56,7 +52,7 @@ public class ConfiguratorGui extends JFrame {
 
     public ConfiguratorGui() {
         setTitle(translation.get("gui.configurator"));
-        setSize(1400, 780);
+        setSize(1000, 780);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -68,17 +64,16 @@ public class ConfiguratorGui extends JFrame {
         JPanel leftPanel = new JPanel(new MigLayout("insets 10 10 10 0"));
         mainPanel.add(leftPanel, PRINCIPAL_PANELS_SIZE);
 
-        leftPanel.add(createStimulusPanel(), PANELS_SIZE);
         leftPanel.add(createAgentsPanel(), PANELS_SIZE);
+        leftPanel.add(createCurrentAgentStatePanel(), PANELS_SIZE);
 
         JPanel rightPanel = new JPanel(new MigLayout("insets 10"));
-        mainPanel.add(rightPanel, PRINCIPAL_PANELS_SIZE);
+        mainPanel.add(rightPanel, "h 100%");
 
         rightPanel.add(createControlPanel(), PANELS_SIZE_WITHOUT_H);
         rightPanel.add(createSelectChartsPanel(), PANELS_SIZE_WITHOUT_H);
         rightPanel.add(createIterationPanel(), PANELS_SIZE_WITHOUT_H);
         rightPanel.add(createCollectiveEmotionPanel(), PANELS_SIZE_WITHOUT_H);
-        rightPanel.add(createCurrentAgentStatePanel(), PANELS_SIZE);
 
         setLocationRelativeTo(this);
     }
@@ -113,13 +108,13 @@ public class ConfiguratorGui extends JFrame {
         chartsButtonsPanel.add(emotionalStatesCheckBox);
 
         emotionsCheckBox = new JCheckBox(translation.get("gui.emotions"), false);
-        chartsButtonsPanel.add(emotionsCheckBox);
+        chartsButtonsPanel.add(emotionsCheckBox, "wrap");
 
         behavioursCheckBox = new JCheckBox(translation.get("gui.behaviours"), false);
-        chartsButtonsPanel.add(behavioursCheckBox, "wrap");
+        chartsButtonsPanel.add(behavioursCheckBox);
 
         centralEmotionCheckBox = new JCheckBox(translation.get("gui.central_emotion"), false);
-        chartsButtonsPanel.add(centralEmotionCheckBox);
+        chartsButtonsPanel.add(centralEmotionCheckBox, "wrap");
 
         maximumDistanceCheckBox = new JCheckBox(translation.get("gui.maximum_distance"), false);
         chartsButtonsPanel.add(maximumDistanceCheckBox);
@@ -174,7 +169,7 @@ public class ConfiguratorGui extends JFrame {
 
         collectiveCentralEmotionalStateLabel = new JLabel("-");
         collectiveCentralEmotionalStateLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        collectiveEmotionPanel.add(collectiveCentralEmotionalStateLabel, "w 150");
+        collectiveEmotionPanel.add(collectiveCentralEmotionalStateLabel, "w 100%, wrap");
 
         collectiveCentralEmotionLabel = new JLabel("-");
         collectiveCentralEmotionLabel.setFont(FONT_9);
@@ -183,7 +178,7 @@ public class ConfiguratorGui extends JFrame {
         collectiveCentralEmotionLabel.setOpaque(true);
         collectiveCentralEmotionLabel.setHorizontalAlignment(SwingConstants.CENTER);
         collectiveCentralEmotionLabel.setMinimumSize(new Dimension(0, 25));
-        collectiveEmotionPanel.add(collectiveCentralEmotionLabel, "w 280, wrap");
+        collectiveEmotionPanel.add(collectiveCentralEmotionLabel, "w 100%, span 2, wrap");
 
         JLabel maxDistanceEmotionLabel = new JLabel(translation.get("gui.maximum_distance"));
         collectiveEmotionPanel.add(maxDistanceEmotionLabel);
@@ -191,7 +186,7 @@ public class ConfiguratorGui extends JFrame {
         maxDistanceEmotionValueLabel = new JLabel("-");
         maxDistanceEmotionValueLabel.setHorizontalAlignment(SwingConstants.CENTER);
         maxDistanceEmotionValueLabel.setMinimumSize(new Dimension(0, 25));
-        collectiveEmotionPanel.add(maxDistanceEmotionValueLabel, "w 150, wrap");
+        collectiveEmotionPanel.add(maxDistanceEmotionValueLabel, "w 100%, wrap");
 
         JLabel emotionalDispersionLabel = new JLabel(translation.get("gui.emotional_dispersion"));
         collectiveEmotionPanel.add(emotionalDispersionLabel);
@@ -199,7 +194,7 @@ public class ConfiguratorGui extends JFrame {
         emotionalDispersionValueLabel = new JLabel("-");
         emotionalDispersionValueLabel.setHorizontalAlignment(SwingConstants.CENTER);
         emotionalDispersionValueLabel.setMinimumSize(new Dimension(0, 25));
-        collectiveEmotionPanel.add(emotionalDispersionValueLabel, "w 150, wrap");
+        collectiveEmotionPanel.add(emotionalDispersionValueLabel, "w 100%, wrap");
 
         return collectiveEmotionPanel;
     }
@@ -228,30 +223,6 @@ public class ConfiguratorGui extends JFrame {
         return agentPanel;
     }
 
-    private JPanel createStimulusPanel() {
-        JPanel stimuliPanel = new JPanel(new MigLayout(PANEL_INSETS));
-        stimuliPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.stimuli_configuration")));
-
-        stimuliTable = new JTable();
-
-        JScrollPane scrollTable = new JScrollPane(stimuliTable);
-        stimuliPanel.add(scrollTable, "w 100%, h 100%");
-
-        JPanel buttonsPanel = new JPanel(new MigLayout("insets 0"));
-        stimuliPanel.add(buttonsPanel, "h 100%, wrap");
-
-        addStimulusButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/plus.png")));
-        buttonsPanel.add(addStimulusButton, "wrap");
-
-        deleteStimulusButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/minus.png")));
-        buttonsPanel.add(deleteStimulusButton, "wrap");
-
-        editStimulusButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/edit.png")));
-        buttonsPanel.add(editStimulusButton);
-
-        return stimuliPanel;
-    }
-
     private JPanel createCurrentAgentStatePanel() {
         JPanel stimuliPanel = new JPanel(new MigLayout(PANEL_INSETS));
         stimuliPanel.setBorder(BorderFactory.createTitledBorder(translation.get("gui.current_emotional_states")));
@@ -270,18 +241,6 @@ public class ConfiguratorGui extends JFrame {
         return stimuliPanel;
     }
 
-    public JButton getAddStimulusButton() {
-        return addStimulusButton;
-    }
-
-    public JButton getDeleteStimulusButton() {
-        return deleteStimulusButton;
-    }
-
-    public JButton getEditStimulusButton() {
-        return editStimulusButton;
-    }
-
     public JButton getAddAgentButton() {
         return addAgentButton;
     }
@@ -296,10 +255,6 @@ public class ConfiguratorGui extends JFrame {
 
     public JButton getShowAgentStateButton() {
         return showAgentStateButton;
-    }
-
-    public JTable getStimuliTable() {
-        return stimuliTable;
     }
 
     public JTable getAgentsTable() {

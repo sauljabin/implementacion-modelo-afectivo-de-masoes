@@ -59,7 +59,7 @@ public class ConfiguratorGuiAgentInitialBehaviour extends OneShotBehaviour {
                 translation.get("gui.condition")
         );
 
-        configuratorAgent.getStimulusDefinitionTableModel().getElements().forEach(stimulus ->
+        configuratorAgent.getStimulusDefinitionModels().forEach(stimulus ->
                 writer.append(stimuliHeaderFormat,
                         stimulus.getName(),
                         stimulus.getValue(),

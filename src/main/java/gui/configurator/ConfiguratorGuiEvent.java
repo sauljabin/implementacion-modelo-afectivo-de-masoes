@@ -12,9 +12,6 @@ import java.util.List;
 public enum ConfiguratorGuiEvent {
 
     CLOSE_WINDOW,
-    ADD_STIMULUS,
-    DELETE_STIMULUS,
-    EDIT_STIMULUS,
     ADD_AGENT,
     DELETE_AGENT,
     EDIT_AGENT,
