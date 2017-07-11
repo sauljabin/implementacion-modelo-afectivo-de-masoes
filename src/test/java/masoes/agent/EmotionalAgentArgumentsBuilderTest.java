@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.dummy;
+package masoes.agent;
 
 import org.junit.Test;
 
@@ -13,11 +13,11 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 
-public class DummyEmotionalAgentArgumentsBuilderTest {
+public class EmotionalAgentArgumentsBuilderTest {
 
     @Test
     public void shouldSetActivationArgument() {
-        List<String> arguments = new DummyEmotionalAgentArgumentsBuilder()
+        List<String> arguments = new EmotionalAgentArgumentsBuilder()
                 .activation(.2)
                 .build();
 
@@ -26,7 +26,7 @@ public class DummyEmotionalAgentArgumentsBuilderTest {
 
     @Test
     public void shouldSetSatisfactionArgument() {
-        List<String> arguments = new DummyEmotionalAgentArgumentsBuilder()
+        List<String> arguments = new EmotionalAgentArgumentsBuilder()
                 .satisfaction(.5)
                 .build();
 
@@ -37,7 +37,7 @@ public class DummyEmotionalAgentArgumentsBuilderTest {
     public void shouldSetKnowledgeArgument() {
         String expectedString = "expectedString";
 
-        List<String> arguments = new DummyEmotionalAgentArgumentsBuilder()
+        List<String> arguments = new EmotionalAgentArgumentsBuilder()
                 .knowledge(expectedString)
                 .build();
 
@@ -48,7 +48,7 @@ public class DummyEmotionalAgentArgumentsBuilderTest {
     public void shouldSetKnowledgePathArgument() {
         String expectedString = "expectedString";
 
-        List<String> arguments = new DummyEmotionalAgentArgumentsBuilder()
+        List<String> arguments = new EmotionalAgentArgumentsBuilder()
                 .knowledgePath(expectedString)
                 .build();
 

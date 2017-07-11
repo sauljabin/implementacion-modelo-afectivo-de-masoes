@@ -4,12 +4,12 @@
  * Please see the LICENSE.txt file
  */
 
-package environment.dummy;
+package masoes.agent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DummyEmotionalAgentArgumentsBuilder {
+public class EmotionalAgentArgumentsBuilder {
 
     private Double activation;
     private Double satisfaction;
@@ -42,22 +42,22 @@ public class DummyEmotionalAgentArgumentsBuilder {
         return arguments;
     }
 
-    public DummyEmotionalAgentArgumentsBuilder activation(double activation) {
+    public EmotionalAgentArgumentsBuilder activation(double activation) {
         this.activation = activation;
         return this;
     }
 
-    public DummyEmotionalAgentArgumentsBuilder satisfaction(double satisfaction) {
+    public EmotionalAgentArgumentsBuilder satisfaction(double satisfaction) {
         this.satisfaction = satisfaction;
         return this;
     }
 
-    public DummyEmotionalAgentArgumentsBuilder knowledgePath(String knowledgePath) {
+    public EmotionalAgentArgumentsBuilder knowledgePath(String knowledgePath) {
         this.knowledgePath = knowledgePath;
         return this;
     }
 
-    public DummyEmotionalAgentArgumentsBuilder knowledge(String knowledge) {
+    public EmotionalAgentArgumentsBuilder knowledge(String knowledge) {
         this.knowledge = knowledge;
         return this;
     }

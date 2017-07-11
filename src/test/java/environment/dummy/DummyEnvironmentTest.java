@@ -29,8 +29,9 @@ public class DummyEnvironmentTest {
     @Before
     public void setUp() {
         expectedAgentsInfo = new ArrayList<>();
-        expectedAgentsInfo.add(new AgentParameter("dummy", DummyEmotionalAgent.class));
-        expectedAgentsInfo.add(new AgentParameter("dummyGUI", AgentStateGuiAgent.class, Arrays.asList("dummy")));
+        expectedAgentsInfo.add(new AgentParameter("dummy", DummyAgent.class));
+        expectedAgentsInfo.add(new AgentParameter("dummyEmotionalAgent", DummyEmotionalAgent.class));
+        expectedAgentsInfo.add(new AgentParameter("dummyEmotionalAgentGUI", AgentStateGuiAgent.class, Arrays.asList("dummy")));
         expectedAgentsInfo.add(new AgentParameter("requester", RequesterGuiAgent.class));
         expectedAgentsInfo.add(new AgentParameter("socialEmotionGUI", SocialEmotionGuiAgent.class));
         dummyEnvironment = new DummyEnvironment();

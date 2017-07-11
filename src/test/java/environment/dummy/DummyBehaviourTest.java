@@ -4,7 +4,7 @@
  * Please see the LICENSE.txt file
  */
 
-package behaviour;
+package environment.dummy;
 
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;

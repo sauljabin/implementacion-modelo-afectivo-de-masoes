@@ -7,7 +7,7 @@
 package agent.configurable;
 
 import agent.configurable.ontology.ConfigurableOntology;
-import behaviour.DummyBehaviour;
+import environment.dummy.DummyBehaviour;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;

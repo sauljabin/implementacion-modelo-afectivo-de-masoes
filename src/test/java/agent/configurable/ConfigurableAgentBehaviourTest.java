@@ -9,7 +9,7 @@ package agent.configurable;
 import agent.configurable.ontology.AddBehaviour;
 import agent.configurable.ontology.ConfigurableOntology;
 import agent.configurable.ontology.RemoveBehaviour;
-import behaviour.DummyBehaviour;
+import environment.dummy.DummyBehaviour;
 import jade.content.AgentAction;
 import jade.content.Predicate;
 import jade.content.onto.basic.Action;

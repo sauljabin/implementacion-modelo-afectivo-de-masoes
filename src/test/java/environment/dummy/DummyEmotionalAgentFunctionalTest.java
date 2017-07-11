@@ -13,6 +13,7 @@ import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
+import masoes.agent.EmotionalAgentArgumentsBuilder;
 import masoes.ontology.MasoesOntology;
 import masoes.ontology.state.AgentState;
 import masoes.ontology.state.GetEmotionalState;
@@ -94,14 +95,14 @@ public class DummyEmotionalAgentFunctionalTest extends FunctionalTest {
     }
 
     private List<String> createArguments(double activation, double satisfaction) {
-        return new DummyEmotionalAgentArgumentsBuilder()
+        return new EmotionalAgentArgumentsBuilder()
                 .activation(activation)
                 .satisfaction(satisfaction)
                 .build();
     }
 
     private List<String> createArguments(double activation, double satisfaction, String knowledge) {
-        return new DummyEmotionalAgentArgumentsBuilder()
+        return new EmotionalAgentArgumentsBuilder()
                 .activation(activation)
                 .satisfaction(satisfaction)
                 .knowledge(knowledge)

@@ -9,7 +9,6 @@ package gui.simulator;
 import agent.AgentException;
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
-import environment.dummy.DummyEmotionalAgentArgumentsBuilder;
 import gui.GuiException;
 import gui.agentstate.AgentStateGuiAgent;
 import gui.chart.behaviourmodification.BehaviourModificationChartGui;
@@ -34,6 +33,7 @@ import jade.core.behaviours.SequentialBehaviour;
 import jade.core.behaviours.ThreadedBehaviourFactory;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
+import masoes.agent.EmotionalAgentArgumentsBuilder;
 import masoes.ontology.state.AgentState;
 import translate.Translation;
 import util.StringFormatter;
@@ -390,7 +390,7 @@ public class SimulatorGuiAgent extends GuiAgent {
                         .map(StimulusConfigurationModel::toClause)
                         .collect(Collectors.joining("\n"));
 
-                List<String> arguments = new DummyEmotionalAgentArgumentsBuilder()
+                List<String> arguments = new EmotionalAgentArgumentsBuilder()
                         .activation(agent.getActivation())
                         .satisfaction(agent.getSatisfaction())
                         .knowledge(knowledge)
