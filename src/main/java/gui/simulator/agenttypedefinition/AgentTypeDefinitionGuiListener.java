@@ -12,6 +12,7 @@ import org.reflections.Reflections;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
 
@@ -89,6 +90,8 @@ public class AgentTypeDefinitionGuiListener extends WindowsEventsAdapter {
         gui.getCancelButton().setActionCommand(AgentTypeDefinitionGuiEvent.CANCEL.toString());
         gui.getCancelButton().addActionListener(this);
 
+        gui.getAgentTypeName().addKeyListener(this);
+
         if (model != null) {
             gui.getSaveAndNewButton().setVisible(false);
         }
@@ -132,6 +135,13 @@ public class AgentTypeDefinitionGuiListener extends WindowsEventsAdapter {
     private void save() {
         updateModel();
         close();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if (!String.valueOf(e.getKeyChar()).matches("[a-zA-Z0-9]")) {
+            e.consume();
+        }
     }
 
 }
