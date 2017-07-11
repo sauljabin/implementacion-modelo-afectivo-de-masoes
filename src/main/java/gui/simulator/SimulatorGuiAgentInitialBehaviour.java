@@ -25,6 +25,7 @@ import ontology.OntologyAssistant;
 import translate.Translation;
 import util.StringFormatter;
 import util.TextFileWriter;
+import util.ToStringBuilder;
 
 import static java.util.stream.Collectors.joining;
 
@@ -101,7 +102,14 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
                     agent.getStimulusConfigurations()
                             .stream()
                             .filter(StimulusConfigurationModel::isSelected)
-                            .map(stimulusConfiguration -> stimulusConfiguration.getModel().getName())
+                            .map(stimulusConfiguration ->
+                                    new ToStringBuilder()
+                                            .append(translation.get("gui.stimulus"), stimulusConfiguration.getModel().getName())
+                                            .append(translation.get("gui.pa"), StringFormatter.toString(stimulusConfiguration.getActivation()))
+                                            .append(translation.get("gui.ps"), StringFormatter.toString(stimulusConfiguration.getSatisfaction()))
+                                            .append(translation.get("gui.condition"), stimulusConfiguration.isSelf() ? translation.get("gui.self") : translation.get("gui.others"))
+                                            .toString()
+                            )
                             .collect(joining(", "))
             );
 

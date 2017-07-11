@@ -8,11 +8,9 @@ package util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class ToStringBuilder {
 
@@ -20,7 +18,7 @@ public class ToStringBuilder {
     private Map<Object, Object> objects;
 
     public ToStringBuilder() {
-        objects = new HashMap<>();
+        objects = new LinkedHashMap<>();
     }
 
     public ToStringBuilder object(Object object) {
@@ -51,12 +49,10 @@ public class ToStringBuilder {
 
     private String mapToString(Map objects) {
         List<String> stringObjectList = new ArrayList<>();
-        Iterator iterator = objects.entrySet().iterator();
 
-        while (iterator.hasNext()) {
-            Entry entry = (Entry) iterator.next();
-            stringObjectList.add(String.format("%s=%s", objectToString(entry.getKey()), objectToString(entry.getValue())));
-        }
+        objects.forEach((key, value) ->
+                stringObjectList.add(String.format("%s=%s", objectToString(key), objectToString(value)))
+        );
 
         return listToString(stringObjectList);
     }
