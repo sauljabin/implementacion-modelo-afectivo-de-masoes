@@ -12,7 +12,7 @@ import translate.Translation;
 import javax.swing.*;
 import java.awt.*;
 
-public class AgentTypeDefinitionCrudGui extends JFrame {
+public class AgentTypeDefinitionCrudGui extends JDialog {
 
     private Translation translation = Translation.getInstance();
     private JButton addAgentButton;
@@ -22,6 +22,7 @@ public class AgentTypeDefinitionCrudGui extends JFrame {
     private JTable agentTypesTable;
 
     public AgentTypeDefinitionCrudGui() {
+        setModal(true);
         setTitle(translation.get("gui.emotional_agent_types_definition"));
         setSize(600, 350);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

@@ -12,7 +12,7 @@ import translate.Translation;
 import javax.swing.*;
 import java.awt.*;
 
-public class AgentTypeDefinitionGui extends JFrame {
+public class AgentTypeDefinitionGui extends JDialog {
 
     private static final Font FONT_11 = new Font("Arial", Font.BOLD, 11);
     private static final String FIELDS_SIZE = "w 100%, h 30, wrap";
@@ -26,6 +26,7 @@ public class AgentTypeDefinitionGui extends JFrame {
     private JTextField agentTypeName;
 
     public AgentTypeDefinitionGui() {
+        setModal(true);
         setTitle(translation.get("gui.emotional_agent_type_definition"));
         setSize(500, 130);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

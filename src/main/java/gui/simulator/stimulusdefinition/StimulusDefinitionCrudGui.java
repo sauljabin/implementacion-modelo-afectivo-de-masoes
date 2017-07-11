@@ -12,7 +12,7 @@ import translate.Translation;
 import javax.swing.*;
 import java.awt.*;
 
-public class StimulusDefinitionCrudGui extends JFrame {
+public class StimulusDefinitionCrudGui extends JDialog {
 
     private Translation translation = Translation.getInstance();
     private JTable stimuliTable;
@@ -22,6 +22,7 @@ public class StimulusDefinitionCrudGui extends JFrame {
     private JButton editStimulusButton;
 
     public StimulusDefinitionCrudGui() {
+        setModal(true);
         setTitle(translation.get("gui.stimuli_definition"));
         setSize(750, 350);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

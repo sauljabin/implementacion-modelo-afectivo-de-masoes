@@ -12,7 +12,7 @@ import translate.Translation;
 import javax.swing.*;
 import java.awt.*;
 
-public class StimulusConfigurationGui extends JFrame {
+public class StimulusConfigurationGui extends JDialog {
 
     private static final String FIELDS_SIZE = "w 100%, h 30, wrap";
     private static final String PANELS_SIZE = "w 100%, wrap";
@@ -29,6 +29,7 @@ public class StimulusConfigurationGui extends JFrame {
     private JRadioButton othersButton;
 
     public StimulusConfigurationGui() {
+        setModal(true);
         setTitle(translation.get("gui.stimulus_definition"));
         setSize(500, 230);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

@@ -131,7 +131,7 @@ Ayuda:
 
 Usage: masoes
  -b,--boot      Starts the application (Default option)
- -E <arg>       Sets the environment (dummy, wikipedia), example:
+ -E <arg>       Sets the environment, example:
                 -Edummy
  -h,--help      Shows the options
  -J <arg>       Sets JADE settings, example:
@@ -175,10 +175,10 @@ Ejecutar dummy:
 make dummy
 ```
 
-Ejecutar wikipedia:
+Ejecutar ambiente de simulación:
 
 ```
-make wikipedia
+make simulation
 ```
 
 Buscar archivos sin copyright:

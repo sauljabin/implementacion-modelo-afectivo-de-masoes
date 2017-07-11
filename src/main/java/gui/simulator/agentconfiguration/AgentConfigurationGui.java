@@ -13,7 +13,7 @@ import translate.Translation;
 import javax.swing.*;
 import java.awt.*;
 
-public class AgentConfigurationGui extends JFrame {
+public class AgentConfigurationGui extends JDialog {
 
     private static final String FIELDS_SIZE = "w 100%, h 30, wrap";
     private static final String EMOTION_FIELDS_SIZE = "w 100%, h 30";
@@ -37,6 +37,7 @@ public class AgentConfigurationGui extends JFrame {
     private JButton configStimulusButton;
 
     public AgentConfigurationGui() {
+        setModal(true);
         setTitle(translation.get("gui.agent"));
         setSize(600, 430);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
