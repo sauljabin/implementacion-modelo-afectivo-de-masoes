@@ -39,16 +39,16 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
     private static final long WAIT = 1000 / Long.parseLong(MasoesSettings.getInstance().get(MasoesSettings.BEHAVIOUR_IPS));
     private final Object lock = new Object();
     private OntologyAssistant assistant;
-    private SimulatorGuiAgent configuratorAgent;
+    private SimulatorGuiAgent simulatorGuiAgent;
     private SocialEmotionCalculator socialEmotionCalculator;
     private Translation translation = Translation.getInstance();
     private StopWatch stopWatch;
     private boolean paused;
 
-    public SimulatorGuiAgentBehaviour(SimulatorGuiAgent configuratorAgent, int maxCount) {
-        super(configuratorAgent, maxCount);
-        this.configuratorAgent = configuratorAgent;
-        assistant = new OntologyAssistant(configuratorAgent, MasoesOntology.getInstance());
+    public SimulatorGuiAgentBehaviour(SimulatorGuiAgent simulatorGuiAgent, int maxCount) {
+        super(simulatorGuiAgent, maxCount);
+        this.simulatorGuiAgent = simulatorGuiAgent;
+        assistant = new OntologyAssistant(simulatorGuiAgent, MasoesOntology.getInstance());
         socialEmotionCalculator = new SocialEmotionCalculator();
         stopWatch = new StopWatch();
     }
@@ -77,7 +77,7 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
 
     @Override
     public int onEnd() {
-        configuratorAgent.getSimulatorGui().getPauseButton().setEnabled(false);
+        simulatorGuiAgent.getSimulatorGui().getPauseButton().setEnabled(false);
 
         int width = 600;
         int height = 400;
@@ -85,12 +85,12 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
         try {
             File folder = new File("output/simulation");
             folder.mkdir();
-            configuratorAgent.getCentralEmotionChart().exportImage(folder, height);
-            configuratorAgent.getMaximumDistanceChart().exportImage(folder, width, height);
-            configuratorAgent.getEmotionalDispersionChart().exportImage(folder, width, height);
-            configuratorAgent.getEmotionModificationChart().exportImage(folder, width, height);
-            configuratorAgent.getBehaviourModificationChart().exportImage(folder, width, height);
-            configuratorAgent.getEmotionalStateChart().exportImage(folder, width, height);
+            simulatorGuiAgent.getCentralEmotionChart().exportImage(folder, height);
+            simulatorGuiAgent.getMaximumDistanceChart().exportImage(folder, width, height);
+            simulatorGuiAgent.getEmotionalDispersionChart().exportImage(folder, width, height);
+            simulatorGuiAgent.getEmotionModificationChart().exportImage(folder, width, height);
+            simulatorGuiAgent.getBehaviourModificationChart().exportImage(folder, width, height);
+            simulatorGuiAgent.getEmotionalStateChart().exportImage(folder, width, height);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -119,7 +119,7 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
                 translation.get("gui.behaviour")
         );
 
-        configuratorAgent.getAgentConfigurationModels().forEach(agent -> {
+        simulatorGuiAgent.getAgentConfigurationModels().forEach(agent -> {
             AID receiver = myAgent.getAID(agent.getName());
 
             AgentAction agentAction = new GetEmotionalState();
@@ -140,16 +140,16 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
 
             AgentState agentState = (AgentState) assistant.sendRequestAction(receiver, agentAction);
 
-            configuratorAgent.getAgentStateTableModel().add(agentState);
+            simulatorGuiAgent.getAgentStateTableModel().add(agentState);
 
             EmotionalState emotionalState = agentState.getEmotionState().toEmotionalState();
 
             socialEmotionCalculator.addEmotionalState(emotionalState);
 
-            configuratorAgent.getCentralEmotionChart().addEmotionalState(agent.getName(), emotionalState);
-            configuratorAgent.getEmotionModificationChart().addEmotion(agent.getName(), i, agentState);
-            configuratorAgent.getBehaviourModificationChart().addBehaviourType(agent.getName(), i, agentState);
-            configuratorAgent.getEmotionalStateChart().addEmotionalState(agent.getName(), i, emotionalState);
+            simulatorGuiAgent.getCentralEmotionChart().addEmotionalState(agent.getName(), emotionalState);
+            simulatorGuiAgent.getEmotionModificationChart().addEmotion(agent.getName(), i, agentState);
+            simulatorGuiAgent.getBehaviourModificationChart().addBehaviourType(agent.getName(), i, agentState);
+            simulatorGuiAgent.getEmotionalStateChart().addEmotionalState(agent.getName(), i, emotionalState);
 
             writer.append(agentsHeaderFormat,
                     stimulusName,
@@ -198,9 +198,9 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
     }
 
     private void updateSocialEmotionChart(int i) {
-        configuratorAgent.getCentralEmotionChart().addCentralEmotion(socialEmotionCalculator.getCentralEmotion());
-        configuratorAgent.getMaximumDistanceChart().addMaximumDistance(i, socialEmotionCalculator.getMaximumDistance());
-        configuratorAgent.getEmotionalDispersionChart().addDispersion(i, socialEmotionCalculator.getEmotionalDispersion());
+        simulatorGuiAgent.getCentralEmotionChart().addCentralEmotion(socialEmotionCalculator.getCentralEmotion());
+        simulatorGuiAgent.getMaximumDistanceChart().addMaximumDistance(i, socialEmotionCalculator.getMaximumDistance());
+        simulatorGuiAgent.getEmotionalDispersionChart().addDispersion(i, socialEmotionCalculator.getEmotionalDispersion());
     }
 
     private void setGuiSocialEmotion() {
@@ -208,20 +208,20 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
         CentralEmotion centralEmotionalState = socialEmotionCalculator.getCentralEmotion();
         MaximumDistance maximumDistance = socialEmotionCalculator.getMaximumDistance();
 
-        configuratorAgent.getSimulatorGui().getCollectiveCentralEmotionalStateLabel()
+        simulatorGuiAgent.getSimulatorGui().getCollectiveCentralEmotionalStateLabel()
                 .setText(centralEmotionalState.toStringPoint());
 
-        configuratorAgent.getSimulatorGui().getCollectiveCentralEmotionLabel()
+        simulatorGuiAgent.getSimulatorGui().getCollectiveCentralEmotionLabel()
                 .setText(
                         translate(centralEmotionalState.getEmotion().getName()) +
                                 " - " +
                                 translate(centralEmotionalState.getEmotion().getType().toString())
                 );
 
-        configuratorAgent.getSimulatorGui().getEmotionalDispersionValueLabel()
+        simulatorGuiAgent.getSimulatorGui().getEmotionalDispersionValueLabel()
                 .setText(emotionalDispersion.toStringPoint());
 
-        configuratorAgent.getSimulatorGui().getMaxDistanceEmotionValueLabel()
+        simulatorGuiAgent.getSimulatorGui().getMaxDistanceEmotionValueLabel()
                 .setText(maximumDistance.toStringPoint());
     }
 
@@ -230,7 +230,7 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
     }
 
     private void setIteration(int i) {
-        configuratorAgent.getSimulatorGui().getIterationLabel().setText(String.valueOf(i));
+        simulatorGuiAgent.getSimulatorGui().getIterationLabel().setText(String.valueOf(i));
     }
 
     private void sleep() {

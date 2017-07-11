@@ -31,19 +31,19 @@ import static java.util.stream.Collectors.joining;
 public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
 
     private Translation translation = Translation.getInstance();
-    private SimulatorGuiAgent configuratorAgent;
+    private SimulatorGuiAgent simulatorGuiAgent;
     private OntologyAssistant assistant;
 
-    public SimulatorGuiAgentInitialBehaviour(SimulatorGuiAgent configuratorAgent) {
-        this.configuratorAgent = configuratorAgent;
-        assistant = new OntologyAssistant(configuratorAgent, MasoesOntology.getInstance());
+    public SimulatorGuiAgentInitialBehaviour(SimulatorGuiAgent simulatorGuiAgent) {
+        this.simulatorGuiAgent = simulatorGuiAgent;
+        assistant = new OntologyAssistant(simulatorGuiAgent, MasoesOntology.getInstance());
     }
 
     @Override
     public void action() {
         TextFileWriter writer = new TextFileWriter("output/simulation", "initial.txt");
 
-        writer.append("%s: %s", translation.get("gui.iterations").toUpperCase(), configuratorAgent.getSimulatorGui().getIterationsSpinner().getValue());
+        writer.append("%s: %s", translation.get("gui.iterations").toUpperCase(), simulatorGuiAgent.getSimulatorGui().getIterationsSpinner().getValue());
 
         writer.newLine(2);
 
@@ -59,7 +59,7 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
                 translation.get("gui.condition")
         );
 
-        configuratorAgent.getStimulusDefinitionModels().forEach(stimulus ->
+        simulatorGuiAgent.getStimulusDefinitionModels().forEach(stimulus ->
                 writer.append(stimuliHeaderFormat,
                         stimulus.getName(),
                         stimulus.getValue(),
@@ -84,7 +84,7 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
                 translation.get("gui.stimuli")
         );
 
-        configuratorAgent.getAgentConfigurationModels().forEach(agent -> {
+        simulatorGuiAgent.getAgentConfigurationModels().forEach(agent -> {
             AID receiver = myAgent.getAID(agent.getName());
 
             AgentAction agentAction = new GetEmotionalState();

@@ -51,7 +51,7 @@ public class SimulatorGui extends JFrame {
     private JMenuItem editStimuliDefinitionMenu;
 
     public SimulatorGui() {
-        setTitle(translation.get("gui.configurator"));
+        setTitle(translation.get("gui.simulator"));
         setSize(1200, 780);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
