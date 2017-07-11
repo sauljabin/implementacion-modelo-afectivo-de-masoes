@@ -7,7 +7,7 @@
 package environment;
 
 import environment.dummy.DummyEnvironment;
-import environment.wikipedia.WikipediaEnvironment;
+import environment.simulation.SimulationEnvironment;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class EnvironmentFactoryTest {
 
     @Test
     public void shouldCreateWikipediaEnvironment() {
-        assertThat(environmentFactory.createEnvironment("wikipedia"), instanceOf(WikipediaEnvironment.class));
+        assertThat(environmentFactory.createEnvironment("simulation"), instanceOf(SimulationEnvironment.class));
     }
 
     @Test

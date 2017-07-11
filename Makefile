@@ -13,8 +13,8 @@ run: ; @ ./gradlew -q run -Pargs="$(args)"
 # target dummy:               Exec masoes with dummy env.
 dummy: ; @ ./gradlew -q run -Pargs="-Edummy"
 
-# target wikipedia:           Exec masoes with wikipedia env.
-wikipedia: ; @ ./gradlew -q run -Pargs="-Ewikipedia"
+# target simulation:          Exec masoes with simulation env.
+simulation: ; @ ./gradlew -q run -Pargs="-Esimulation"
 
 # target uncopyrighted:       Search files without copyright.
 uncopyrighted: ; @ grep --include *.java -Lr "Copyright (c) 2017 Saúl Piña <sauljabin@gmail.com>" .
