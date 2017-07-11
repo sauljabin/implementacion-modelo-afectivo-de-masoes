@@ -7,7 +7,7 @@
 package gui.configurator;
 
 import behaviour.CounterBehaviour;
-import gui.configurator.stimulusdefinition.StimulusDefinitionModel;
+import gui.configurator.stimulusconfiguration.StimulusConfigurationModel;
 import jade.content.AgentAction;
 import jade.core.AID;
 import masoes.MasoesSettings;
@@ -31,6 +31,8 @@ import util.StringFormatter;
 import util.TextFileWriter;
 
 import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
 
@@ -124,10 +126,15 @@ public class ConfiguratorGuiAgentBehaviour extends CounterBehaviour {
 
             String stimulusName = "-";
 
-            if (!agent.getStimuli().isEmpty()) {
-                StimulusDefinitionModel randomItem = RandomGenerator.getRandomItem(agent.getStimuli());
-                stimulusName = randomItem.getName();
-                EventStimulus stimulus = new EventStimulus(receiver, randomItem.getValue());
+            List<StimulusConfigurationModel> stimuli = agent.getStimulusConfigurations()
+                    .stream()
+                    .filter(StimulusConfigurationModel::isSelected)
+                    .collect(Collectors.toList());
+
+            if (!stimuli.isEmpty()) {
+                StimulusConfigurationModel randomItem = RandomGenerator.getRandomItem(stimuli);
+                stimulusName = randomItem.getModel().getName();
+                EventStimulus stimulus = new EventStimulus(randomItem.isSelf() ? receiver : myAgent.getAID(), randomItem.getModel().getValue());
                 agentAction = new EvaluateStimulus(stimulus);
             }
 

@@ -6,8 +6,6 @@
 
 package gui.configurator.stimulusdefinition;
 
-import knowledge.KnowledgeClause;
-import util.StringFormatter;
 import util.ToStringBuilder;
 
 public class StimulusDefinitionModel {
@@ -68,16 +66,6 @@ public class StimulusDefinitionModel {
 
     public void setSelf(boolean self) {
         this.self = self;
-    }
-
-    public String toClause() {
-        return new KnowledgeClause("stimulus")
-                .argument("AGENT")
-                .argument(value)
-                .argument(StringFormatter.toString(activation))
-                .argument(StringFormatter.toString(satisfaction))
-                .body(self ? "self(AGENT)" : "other(AGENT)")
-                .toString();
     }
 
     @Override

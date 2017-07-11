@@ -7,7 +7,7 @@
 package gui.configurator;
 
 import environment.Environment;
-import gui.configurator.stimulusdefinition.StimulusDefinitionModel;
+import gui.configurator.stimulusconfiguration.StimulusConfigurationModel;
 import jade.content.AgentAction;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
@@ -91,7 +91,6 @@ public class ConfiguratorGuiAgentInitialBehaviour extends OneShotBehaviour {
 
             AgentState agentState = (AgentState) assistant.sendRequestAction(receiver, agentAction);
 
-
             writer.append(agentsHeaderFormat,
                     agent.getName(),
                     translation.get(agentState.getEmotionState().getName().toLowerCase()),
@@ -99,7 +98,11 @@ public class ConfiguratorGuiAgentInitialBehaviour extends OneShotBehaviour {
                     StringFormatter.toString(agentState.getEmotionState().getActivation()),
                     StringFormatter.toString(agentState.getEmotionState().getSatisfaction()),
                     translation.get(agentState.getBehaviourState().getType().toLowerCase()),
-                    agent.getStimuli().stream().map(StimulusDefinitionModel::getName).collect(joining(", "))
+                    agent.getStimulusConfigurations()
+                            .stream()
+                            .filter(StimulusConfigurationModel::isSelected)
+                            .map(stimulusConfiguration -> stimulusConfiguration.getModel().getName())
+                            .collect(joining(", "))
             );
 
         });

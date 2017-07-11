@@ -34,10 +34,11 @@ public class AgentConfigurationGui extends JFrame {
     private JButton selectAllButton;
     private JButton deselectAllButton;
     private JTable stimuliTable;
+    private JButton configStimulusButton;
 
     public AgentConfigurationGui() {
         setTitle(translation.get("gui.agent"));
-        setSize(500, 430);
+        setSize(600, 430);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -69,7 +70,10 @@ public class AgentConfigurationGui extends JFrame {
         buttonsPanel.add(selectAllButton, "wrap");
 
         deselectAllButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/deselect-all.png")));
-        buttonsPanel.add(deselectAllButton);
+        buttonsPanel.add(deselectAllButton, "wrap 20");
+
+        configStimulusButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/config.png")));
+        buttonsPanel.add(configStimulusButton);
 
         return tablePanel;
     }
@@ -192,6 +196,10 @@ public class AgentConfigurationGui extends JFrame {
 
     public JTable getStimuliTable() {
         return stimuliTable;
+    }
+
+    public JButton getConfigStimulusButton() {
+        return configStimulusButton;
     }
 
 }

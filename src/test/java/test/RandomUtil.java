@@ -29,4 +29,9 @@ public final class RandomUtil {
         return random.nextDouble();
     }
 
+    public static boolean randomBoolean() {
+        Random random = new Random();
+        return random.nextBoolean();
+    }
+
 }

@@ -23,6 +23,7 @@ import gui.configurator.agentconfiguration.AgentConfigurationTableModel;
 import gui.configurator.agentstate.AgentStateTableModel;
 import gui.configurator.agenttypedefinition.AgentTypeDefinitionCrudGuiListener;
 import gui.configurator.agenttypedefinition.AgentTypeDefinitionModel;
+import gui.configurator.stimulusconfiguration.StimulusConfigurationModel;
 import gui.configurator.stimulusdefinition.StimulusDefinitionCrudGuiListener;
 import gui.configurator.stimulusdefinition.StimulusDefinitionModel;
 import jade.JadeSettings;
@@ -352,9 +353,9 @@ public class ConfiguratorGuiAgent extends GuiAgent {
         } else {
             started = true;
             agentConfigurationModels.forEach(agent -> {
-                String knowledge = agent.getStimuli()
+                String knowledge = agent.getStimulusConfigurations()
                         .stream()
-                        .map(StimulusDefinitionModel::toClause)
+                        .map(StimulusConfigurationModel::toClause)
                         .collect(Collectors.joining("\n"));
 
                 List<String> arguments = new DummyEmotionalAgentArgumentsBuilder()

@@ -8,8 +8,10 @@ package gui.configurator.agentconfiguration;
 
 import gui.WindowsEventsAdapter;
 import gui.configurator.agenttypedefinition.AgentTypeDefinitionModel;
+import gui.configurator.stimulusconfiguration.StimulusConfigurationGuiListener;
+import gui.configurator.stimulusconfiguration.StimulusConfigurationModel;
+import gui.configurator.stimulusconfiguration.StimulusConfigurationTableModel;
 import gui.configurator.stimulusdefinition.StimulusDefinitionModel;
-import gui.configurator.stimulusdefinition.table.SelectableStimulusTableModel;
 import masoes.component.behavioural.AffectiveModel;
 import masoes.component.behavioural.Emotion;
 import masoes.component.behavioural.EmotionalState;
@@ -33,7 +35,7 @@ public class AgentConfigurationGuiListener extends WindowsEventsAdapter {
     private List<AgentConfigurationModel> agents;
     private List<AgentTypeDefinitionModel> agentTypes;
     private AgentConfigurationGuiCallback callback;
-    private SelectableStimulusTableModel stimulusTableModel;
+    private StimulusConfigurationTableModel stimulusTableModel;
     private List<StimulusDefinitionModel> stimuli;
 
     public AgentConfigurationGuiListener(List<AgentConfigurationModel> agents, List<AgentTypeDefinitionModel> agentTypes, List<StimulusDefinitionModel> stimuli, AgentConfigurationGuiCallback callback) {
@@ -62,7 +64,7 @@ public class AgentConfigurationGuiListener extends WindowsEventsAdapter {
         if (agentConfigurationModel == null) {
             agentConfigurationModel = new AgentConfigurationModel();
             agentConfigurationModel.setName(generateAgentName());
-            agentConfigurationModel.setStimuli(stimuli);
+            agentConfigurationModel.setStimulusConfigurations(getStimulusConfigurations());
             if (!agentTypes.isEmpty()) {
                 agentConfigurationModel.setAgentType(agentTypes.get(0));
             }
@@ -73,10 +75,15 @@ public class AgentConfigurationGuiListener extends WindowsEventsAdapter {
         agentConfigurationGui.getSatisfactionSpinner().setValue(agentConfigurationModel.getSatisfaction());
         agentConfigurationGui.getAgentTypesCombo().setSelectedItem(agentConfigurationModel.getAgentType());
 
-        stimulusTableModel = new SelectableStimulusTableModel(agentConfigurationGui.getStimuliTable(), stimuli);
-        stimulusTableModel.selectStimuli(agentConfigurationModel.getStimuli());
+        stimulusTableModel = new StimulusConfigurationTableModel(agentConfigurationGui.getStimuliTable(), agentConfigurationModel.getStimulusConfigurations());
 
         updateEmotion();
+    }
+
+    private List<StimulusConfigurationModel> getStimulusConfigurations() {
+        return stimuli.stream()
+                .map(stimulusDefinitionModel -> new StimulusConfigurationModel(stimulusDefinitionModel))
+                .collect(Collectors.toList());
     }
 
     private String generateAgentName() {
@@ -137,6 +144,9 @@ public class AgentConfigurationGuiListener extends WindowsEventsAdapter {
 
         agentConfigurationGui.getAgentTypesCombo().addItemListener(this);
 
+        agentConfigurationGui.getConfigStimulusButton().setActionCommand(AgentConfigurationGuiEvent.SHOW_STIMULUS_CONFIGURATION_GUI.toString());
+        agentConfigurationGui.getConfigStimulusButton().addActionListener(this);
+
         if (agentConfigurationModel != null) {
             agentConfigurationGui.getSaveAndNewButton().setVisible(false);
         }
@@ -169,7 +179,6 @@ public class AgentConfigurationGuiListener extends WindowsEventsAdapter {
         agentConfigurationModel.setName(agentConfigurationGui.getNameField().getText());
         agentConfigurationModel.setActivation((Double) agentConfigurationGui.getActivationSpinner().getValue());
         agentConfigurationModel.setSatisfaction((Double) agentConfigurationGui.getSatisfactionSpinner().getValue());
-        agentConfigurationModel.setStimuli(stimulusTableModel.getSelectedStimuli());
         if (callback != null) {
             callback.afterSave(agentConfigurationModel);
         }
@@ -204,6 +213,15 @@ public class AgentConfigurationGuiListener extends WindowsEventsAdapter {
             case UPDATE_AGENT_TYPE:
                 updateAgentType();
                 break;
+            case SHOW_STIMULUS_CONFIGURATION_GUI:
+                showStimulusConfiguration();
+                break;
+        }
+    }
+
+    private void showStimulusConfiguration() {
+        if (stimulusTableModel.hasSelected()) {
+            new StimulusConfigurationGuiListener(stimulusTableModel.getSelectedElement(), model -> stimulusTableModel.fireTableDataChanged());
         }
     }
 
@@ -212,11 +230,11 @@ public class AgentConfigurationGuiListener extends WindowsEventsAdapter {
     }
 
     private void deselectAll() {
-        stimulusTableModel.deselectStimuli();
+        stimulusTableModel.deselectElements();
     }
 
     private void selectAll() {
-        stimulusTableModel.selectStimuli();
+        stimulusTableModel.selectElements();
     }
 
     private void close() {

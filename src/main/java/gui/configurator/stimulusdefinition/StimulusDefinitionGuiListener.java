@@ -26,10 +26,10 @@ public class StimulusDefinitionGuiListener extends WindowsEventsAdapter {
     public StimulusDefinitionGuiListener(StimulusDefinitionModel stimulusDefinitionModel, StimulusDefinitionGuiCallback callback) {
         this.callback = callback;
         this.stimulusDefinitionModel = stimulusDefinitionModel;
-        this.gui = new StimulusDefinitionGui();
+        gui = new StimulusDefinitionGui();
         configView();
         initView();
-        this.gui.setVisible(true);
+        gui.setVisible(true);
         gui.getNameField().requestFocus();
     }
 

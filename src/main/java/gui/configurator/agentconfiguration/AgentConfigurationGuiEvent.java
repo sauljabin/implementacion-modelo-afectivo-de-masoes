@@ -15,5 +15,6 @@ public enum AgentConfigurationGuiEvent {
     UPDATE_EMOTION,
     SELECT_ALL,
     DESELECT_ALL,
-    UPDATE_AGENT_TYPE;
+    UPDATE_AGENT_TYPE,
+    SHOW_STIMULUS_CONFIGURATION_GUI
 }
