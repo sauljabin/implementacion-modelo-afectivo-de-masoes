@@ -17,10 +17,12 @@ public class StimulusDefinitionCrudGuiListener extends WindowsEventsAdapter {
 
     private StimulusDefinitionCrudGui gui;
     private List<StimulusDefinitionModel> elements;
+    private StimulusDefinitionCrudGuiCallback callback;
     private StimulusDefinitionTableModel tableModel;
 
-    public StimulusDefinitionCrudGuiListener(List<StimulusDefinitionModel> elements) {
+    public StimulusDefinitionCrudGuiListener(List<StimulusDefinitionModel> elements, StimulusDefinitionCrudGuiCallback callback) {
         this.elements = elements;
+        this.callback = callback;
         gui = new StimulusDefinitionCrudGui();
         configView();
         initView();
@@ -28,7 +30,17 @@ public class StimulusDefinitionCrudGuiListener extends WindowsEventsAdapter {
     }
 
     public static void main(String[] args) {
-        new StimulusDefinitionCrudGuiListener(new ArrayList<>());
+        new StimulusDefinitionCrudGuiListener(new ArrayList<>(), new StimulusDefinitionCrudGuiCallback() {
+            @Override
+            public void afterDelete(List<StimulusDefinitionModel> models) {
+
+            }
+
+            @Override
+            public void afterSave(StimulusDefinitionModel model) {
+
+            }
+        });
     }
 
     @Override
@@ -65,15 +77,25 @@ public class StimulusDefinitionCrudGuiListener extends WindowsEventsAdapter {
                 close();
                 break;
             case ADD_STIMULUS:
-                new StimulusDefinitionGuiListener(model -> tableModel.add(model));
+                new StimulusDefinitionGuiListener(model -> {
+                    tableModel.add(model);
+                    if (callback != null) {
+                        callback.afterSave(model);
+                    }
+                });
                 break;
             case EDIT_STIMULUS:
                 if (tableModel.hasSelected()) {
-                    new StimulusDefinitionGuiListener(tableModel.getSelectedElement(), model -> tableModel.fireTableDataChanged());
+                    new StimulusDefinitionGuiListener(tableModel.getSelectedElement(), model ->
+                            tableModel.fireTableDataChanged());
                 }
                 break;
             case DELETE_STIMULUS:
+                List<StimulusDefinitionModel> selectedElements = tableModel.getSelectedElements();
                 tableModel.deleteSelectedElements();
+                if (callback != null) {
+                    callback.afterDelete(selectedElements);
+                }
                 break;
         }
     }

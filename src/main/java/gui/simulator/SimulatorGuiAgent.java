@@ -10,6 +10,7 @@ import agent.AgentException;
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
 import environment.dummy.DummyEmotionalAgentArgumentsBuilder;
+import gui.GuiException;
 import gui.agentstate.AgentStateGuiAgent;
 import gui.chart.behaviourmodification.BehaviourModificationChartGui;
 import gui.chart.centralemotion.CentralEmotionChartGui;
@@ -24,6 +25,7 @@ import gui.simulator.agentstate.AgentStateTableModel;
 import gui.simulator.agenttypedefinition.AgentTypeDefinitionCrudGuiListener;
 import gui.simulator.agenttypedefinition.AgentTypeDefinitionModel;
 import gui.simulator.stimulusconfiguration.StimulusConfigurationModel;
+import gui.simulator.stimulusdefinition.StimulusDefinitionCrudGuiCallback;
 import gui.simulator.stimulusdefinition.StimulusDefinitionCrudGuiListener;
 import gui.simulator.stimulusdefinition.StimulusDefinitionModel;
 import jade.JadeSettings;
@@ -218,11 +220,41 @@ public class SimulatorGuiAgent extends GuiAgent {
     }
 
     private void showStimuliDefinitionGUI() {
-        new StimulusDefinitionCrudGuiListener(stimulusDefinitionModels);
+        if (!agentConfigurationModels.isEmpty()) {
+            showWarning(Translation.getInstance().get("gui.message.configured_agents_exist"));
+        }
+        new StimulusDefinitionCrudGuiListener(stimulusDefinitionModels, new StimulusDefinitionCrudGuiCallback() {
+            @Override
+            public void afterDelete(List<StimulusDefinitionModel> models) {
+                agentConfigurationModels.forEach(agentModel -> {
+                    List<StimulusConfigurationModel> configurationsToDelete = agentModel.getStimulusConfigurations().stream()
+                            .filter(stimulusModel -> models.contains(stimulusModel.getModel()))
+                            .collect(Collectors.toList());
+
+                    agentModel.getStimulusConfigurations().removeAll(configurationsToDelete);
+                });
+            }
+
+            @Override
+            public void afterSave(StimulusDefinitionModel model) {
+                agentConfigurationModels.forEach(agentModel -> agentModel.getStimulusConfigurations()
+                        .add(new StimulusConfigurationModel(model)));
+            }
+        });
     }
 
     private void showAgentTypesDefinitionGUI() {
-        new AgentTypeDefinitionCrudGuiListener(agentTypeDefinitionModels);
+        if (!agentConfigurationModels.isEmpty()) {
+            showWarning(Translation.getInstance().get("gui.message.configured_agents_exist"));
+        }
+        new AgentTypeDefinitionCrudGuiListener(agentTypeDefinitionModels, models -> {
+            if (agentConfigurationModels.stream()
+                    .filter(agentConfigurationModel -> models.contains(agentConfigurationModel.getAgentType()))
+                    .findFirst()
+                    .isPresent()) {
+                throw new GuiException(Translation.getInstance().get("gui.message.can_not_delete_agent_type"));
+            }
+        });
     }
 
     private void showEmotionalStateChart() {
@@ -455,6 +487,10 @@ public class SimulatorGuiAgent extends GuiAgent {
 
     private void closeWindow() {
         doDelete();
+    }
+
+    public void showWarning(String message) {
+        JOptionPane.showMessageDialog(simulatorGui, message, Translation.getInstance().get("gui.warning"), JOptionPane.WARNING_MESSAGE);
     }
 
     public void showError(String message) {

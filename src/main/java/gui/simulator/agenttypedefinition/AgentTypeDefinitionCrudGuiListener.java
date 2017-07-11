@@ -9,6 +9,7 @@ package gui.simulator.agenttypedefinition;
 import environment.dummy.DummyEmotionalAgent;
 import gui.WindowsEventsAdapter;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -18,10 +19,12 @@ public class AgentTypeDefinitionCrudGuiListener extends WindowsEventsAdapter {
 
     private AgentTypeDefinitionCrudGui gui;
     private List<AgentTypeDefinitionModel> elements;
+    private AgentTypeDefinitionCrudGuiCallback callback;
     private AgentTypeDefinitionTableModel tableModel;
 
-    public AgentTypeDefinitionCrudGuiListener(List<AgentTypeDefinitionModel> elements) {
+    public AgentTypeDefinitionCrudGuiListener(List<AgentTypeDefinitionModel> elements, AgentTypeDefinitionCrudGuiCallback callback) {
         this.elements = elements;
+        this.callback = callback;
         gui = new AgentTypeDefinitionCrudGui();
         configView();
         initView();
@@ -31,7 +34,7 @@ public class AgentTypeDefinitionCrudGuiListener extends WindowsEventsAdapter {
     public static void main(String[] args) {
         ArrayList<AgentTypeDefinitionModel> elements = new ArrayList<>();
         elements.add(new AgentTypeDefinitionModel(DummyEmotionalAgent.class, "Dummy"));
-        new AgentTypeDefinitionCrudGuiListener(elements);
+        new AgentTypeDefinitionCrudGuiListener(elements, models -> System.out.println(models));
     }
 
     @Override
@@ -76,8 +79,19 @@ public class AgentTypeDefinitionCrudGuiListener extends WindowsEventsAdapter {
                 }
                 break;
             case DELETE_AGENT:
-                tableModel.deleteSelectedElements();
+                deleteAgentType();
                 break;
+        }
+    }
+
+    private void deleteAgentType() {
+        try {
+            if (callback != null) {
+                callback.beforeDelete(tableModel.getSelectedElements());
+            }
+            tableModel.deleteSelectedElements();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(gui, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
