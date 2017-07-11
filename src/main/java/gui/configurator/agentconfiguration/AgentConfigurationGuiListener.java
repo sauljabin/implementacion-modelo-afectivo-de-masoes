@@ -86,7 +86,7 @@ public class AgentConfigurationGuiListener extends WindowsEventsAdapter {
         }
 
         List<String> agentsName = agents.stream()
-                .map(agentConfigurationModel -> agentConfigurationModel.getName())
+                .map(model -> model.getName())
                 .collect(Collectors.toList());
 
         int sequence = 1;

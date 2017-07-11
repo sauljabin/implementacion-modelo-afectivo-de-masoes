@@ -438,7 +438,7 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     private void addAgent() {
         if (agentTypeDefinitionModels.isEmpty()) {
-            showError(Translation.getInstance().get("gui.message.agent_types_definition_not_found"));
+            showInfo(Translation.getInstance().get("gui.message.agent_types_definition_not_found"));
         } else {
             new AgentConfigurationGuiListener(
                     agentConfigurationModels,
@@ -458,6 +458,10 @@ public class ConfiguratorGuiAgent extends GuiAgent {
 
     public void showError(String message) {
         JOptionPane.showMessageDialog(configuratorGui, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showInfo(String message) {
+        JOptionPane.showMessageDialog(configuratorGui, message, Translation.getInstance().get("gui.information"), JOptionPane.INFORMATION_MESSAGE);
     }
 
     public ConfiguratorGui getConfiguratorGui() {
