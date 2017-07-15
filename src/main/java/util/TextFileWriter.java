@@ -37,7 +37,6 @@ public class TextFileWriter {
     public void append(String string) {
         try {
             output.write(string);
-            output.write("\n");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -45,6 +44,19 @@ public class TextFileWriter {
 
     public void append(String format, Object... args) {
         append(String.format(format, args));
+    }
+
+    public void appendln(String string) {
+        try {
+            output.write(string);
+            output.write("\n");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void appendln(String format, Object... args) {
+        appendln(String.format(format, args));
     }
 
     public void newLine() {
