@@ -31,6 +31,8 @@ import static java.util.stream.Collectors.joining;
 
 public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
 
+    public static final String FILE_RESULT_OUTPUT = "results.txt";
+    public static final String FOLDER_RESULT_OUTPUT = "output/simulation";
     private Translation translation = Translation.getInstance();
     private SimulatorGuiAgent simulatorGuiAgent;
     private OntologyAssistant assistant;
@@ -42,7 +44,7 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
 
     @Override
     public void action() {
-        TextFileWriter writer = new TextFileWriter("output/simulation", "initial.txt");
+        TextFileWriter writer = new TextFileWriter(FOLDER_RESULT_OUTPUT, FILE_RESULT_OUTPUT);
 
         writer.append("%s: %s", translation.get("gui.iterations").toUpperCase(), simulatorGuiAgent.getSimulatorGui().getIterationsSpinner().getValue());
 

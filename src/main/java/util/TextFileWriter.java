@@ -18,13 +18,17 @@ public class TextFileWriter {
     private BufferedWriter output;
 
     public TextFileWriter(String path, String fileName) {
+        this(path, fileName, false);
+    }
+
+    public TextFileWriter(String path, String fileName, boolean append) {
         folder = new File(path);
         folder.mkdirs();
 
         file = new File(folder, fileName);
 
         try {
-            output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+            output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, append), "UTF-8"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

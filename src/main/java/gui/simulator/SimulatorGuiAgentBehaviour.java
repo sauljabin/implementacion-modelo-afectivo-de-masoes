@@ -34,6 +34,9 @@ import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static gui.simulator.SimulatorGuiAgentInitialBehaviour.FILE_RESULT_OUTPUT;
+import static gui.simulator.SimulatorGuiAgentInitialBehaviour.FOLDER_RESULT_OUTPUT;
+
 public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
 
     private static final long WAIT = 1000 / Long.parseLong(MasoesSettings.getInstance().get(MasoesSettings.BEHAVIOUR_IPS));
@@ -44,6 +47,7 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
     private Translation translation = Translation.getInstance();
     private StopWatch stopWatch;
     private boolean paused;
+    private TextFileWriter writerResults;
 
     public SimulatorGuiAgentBehaviour(SimulatorGuiAgent simulatorGuiAgent, int maxCount) {
         super(simulatorGuiAgent, maxCount);
@@ -55,6 +59,7 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
 
     @Override
     public void onStart() {
+        writerResults = new TextFileWriter(FOLDER_RESULT_OUTPUT, FILE_RESULT_OUTPUT, true);
         paused = false;
     }
 
@@ -95,21 +100,22 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
             e.printStackTrace();
         }
 
+        writerResults.close();
         return super.onEnd();
     }
 
     private void updateStates(int i) {
         socialEmotionCalculator.clear();
 
-        TextFileWriter writer = new TextFileWriter("output/simulation", "iteration" + i + ".txt");
-        writer.append("%s: %s", translation.get("gui.iteration").toUpperCase(), i);
-        writer.newLine(2);
+        writerResults.newLine(2);
+        writerResults.append("====%s: %s====", translation.get("gui.iteration").toUpperCase(), i);
+        writerResults.newLine(2);
 
-        writer.append(translation.get("gui.current_emotional_states").toUpperCase());
+        writerResults.append(translation.get("gui.current_emotional_states").toUpperCase());
 
-        String agentsHeaderFormat = "%40s %15s %15s %25s %7s %7s %15s";
+        String agentsHeaderFormat = "%45s %25s %20s %25s %7s %7s %15s";
 
-        writer.append(agentsHeaderFormat,
+        writerResults.append(agentsHeaderFormat,
                 translation.get("gui.stimulus"),
                 translation.get("gui.agent"),
                 translation.get("gui.emotion"),
@@ -151,7 +157,7 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
             simulatorGuiAgent.getBehaviourModificationChart().addBehaviourType(agent.getName(), i, agentState);
             simulatorGuiAgent.getEmotionalStateChart().addEmotionalState(agent.getName(), i, emotionalState);
 
-            writer.append(agentsHeaderFormat,
+            writerResults.append(agentsHeaderFormat,
                     stimulusName,
                     agent.getName(),
                     translation.get(agentState.getEmotionState().getName().toLowerCase()),
@@ -162,9 +168,9 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
             );
         });
 
-        writer.newLine(2);
+        writerResults.newLine(2);
 
-        writer.append(translation.get("gui.social_emotion").toUpperCase());
+        writerResults.append(translation.get("gui.social_emotion").toUpperCase());
 
         EmotionalDispersion emotionalDispersion = socialEmotionCalculator.getEmotionalDispersion();
         CentralEmotion centralEmotionalState = socialEmotionCalculator.getCentralEmotion();
@@ -172,7 +178,7 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
 
         Emotion emotion = AffectiveModel.getInstance().searchEmotion(centralEmotionalState.toEmotionalState());
 
-        writer.append("%30s: %s %s - %s",
+        writerResults.append("%30s: %s %s - %s",
                 translation.get("gui.central_emotion"),
                 StringFormatter.toStringPoint(centralEmotionalState.getActivation(),
                         centralEmotionalState.getSatisfaction()),
@@ -180,19 +186,17 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
                 translation.get(emotion.getType().toString().toLowerCase())
         );
 
-        writer.append("%30s: %s",
+        writerResults.append("%30s: %s",
                 translation.get("gui.maximum_distance"),
                 StringFormatter.toStringPoint(maximumDistances.getActivation(),
                         maximumDistances.getSatisfaction())
         );
 
-        writer.append("%30s: %s",
+        writerResults.append("%30s: %s",
                 translation.get("gui.emotional_dispersion"),
                 StringFormatter.toStringPoint(emotionalDispersion.getActivation(),
                         emotionalDispersion.getSatisfaction())
         );
-
-        writer.close();
 
         setGuiSocialEmotion();
     }
