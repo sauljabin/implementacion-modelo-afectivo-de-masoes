@@ -262,6 +262,12 @@ public class SimulatorGuiAgent extends GuiAgent {
                     });
                 });
 
+                if (agentConfigurationModels.isEmpty()) {
+                    simulatorGui.getPlayButton().setEnabled(false);
+                } else {
+                    simulatorGui.getPlayButton().setEnabled(true);
+                }
+
             } catch (IOException e) {
                 showError(Translation.getInstance().get("gui.message.error_importing_configuration") + "\n" + e.getMessage());
             }

@@ -75,7 +75,7 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
 
         writer.append(translation.get("gui.initial_agent_configuration").toUpperCase());
 
-        String agentsHeaderFormat = "%15s %15s %25s %7s %7s %15s| %s";
+        String agentsHeaderFormat = "%25s %20s %25s %7s %7s %15s| %s";
 
         writer.append(agentsHeaderFormat,
                 translation.get("gui.agent"),
