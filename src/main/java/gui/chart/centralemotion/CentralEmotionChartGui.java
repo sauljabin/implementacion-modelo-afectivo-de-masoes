@@ -126,7 +126,7 @@ public class CentralEmotionChartGui extends JFrame {
         centralEmotionChart.render(height, height, graphicsAffectiveModel);
 
         double columnContentSize = 16;
-        int columnWidth = 150;
+        int columnWidth = 200;
         int widthAgents = (int) (columnWidth * Math.ceil((double) emotionalStateContainers.size() / columnContentSize));
 
         BufferedImage imageAgents = new BufferedImage(widthAgents, height, 1);
