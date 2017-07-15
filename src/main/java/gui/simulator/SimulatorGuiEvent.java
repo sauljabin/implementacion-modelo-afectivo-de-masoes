@@ -32,7 +32,9 @@ public enum SimulatorGuiEvent {
     HIDE_EMOTIONAL_STATE_CHART,
     SHOW_EMOTIONAL_STATE_CHART,
     SHOW_AGENT_TYPE_DEFINITION_GUI,
-    SHOW_STIMULUS_DEFINITION_GUI;
+    SHOW_STIMULUS_DEFINITION_GUI,
+    IMPORT_CONFIGURATION,
+    EXPORT_CONFIGURATION;
 
     private static List<SimulatorGuiEvent> events = Arrays.asList(SimulatorGuiEvent.values());
 

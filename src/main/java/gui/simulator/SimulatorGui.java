@@ -49,6 +49,8 @@ public class SimulatorGui extends JFrame {
     private JCheckBox emotionsCheckBox;
     private JTable currentAgentStatesTable;
     private JMenuItem editStimuliDefinitionMenu;
+    private JMenuItem importConfigurationMenu;
+    private JMenuItem exportConfigurationMenu;
 
     public SimulatorGui() {
         setTitle(translation.get("gui.simulator"));
@@ -89,6 +91,12 @@ public class SimulatorGui extends JFrame {
 
         fileMenu = new JMenu(translation.get("gui.file"));
         menuBar.add(fileMenu);
+
+        importConfigurationMenu = new JMenuItem(translation.get("gui.import_configuration"));
+        fileMenu.add(importConfigurationMenu);
+
+        exportConfigurationMenu = new JMenuItem(translation.get("gui.export_configuration"));
+        fileMenu.add(exportConfigurationMenu);
 
         editMenu = new JMenu(translation.get("gui.edit"));
         menuBar.add(editMenu);
@@ -340,4 +348,13 @@ public class SimulatorGui extends JFrame {
     public JMenu getEditMenu() {
         return editMenu;
     }
+
+    public JMenuItem getImportConfigurationMenu() {
+        return importConfigurationMenu;
+    }
+
+    public JMenuItem getExportConfigurationMenu() {
+        return exportConfigurationMenu;
+    }
+
 }

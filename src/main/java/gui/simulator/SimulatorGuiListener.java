@@ -51,6 +51,12 @@ public class SimulatorGuiListener extends WindowsEventsAdapter {
         view.getEditStimuliDefinitionMenu().setActionCommand(SimulatorGuiEvent.SHOW_STIMULUS_DEFINITION_GUI.toString());
         view.getEditStimuliDefinitionMenu().addActionListener(this);
 
+        view.getImportConfigurationMenu().setActionCommand(SimulatorGuiEvent.IMPORT_CONFIGURATION.toString());
+        view.getImportConfigurationMenu().addActionListener(this);
+
+        view.getExportConfigurationMenu().setActionCommand(SimulatorGuiEvent.EXPORT_CONFIGURATION.toString());
+        view.getExportConfigurationMenu().addActionListener(this);
+
         view.getCentralEmotionCheckBox().addItemListener(this);
         view.getMaximumDistanceCheckBox().addItemListener(this);
         view.getEmotionalDispersionCheckBox().addItemListener(this);

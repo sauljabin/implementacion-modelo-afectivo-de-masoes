@@ -9,6 +9,7 @@ package gui.simulator;
 import agent.AgentException;
 import agent.AgentLogger;
 import agent.AgentManagementAssistant;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gui.GuiException;
 import gui.agentstate.AgentStateGuiAgent;
 import gui.chart.behaviourmodification.BehaviourModificationChartGui;
@@ -36,9 +37,11 @@ import jade.gui.GuiEvent;
 import masoes.agent.EmotionalAgentArgumentsBuilder;
 import masoes.ontology.state.AgentState;
 import translate.Translation;
-import util.StringFormatter;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,6 +49,7 @@ import java.util.stream.Collectors;
 
 public class SimulatorGuiAgent extends GuiAgent {
 
+    private static final String OUTPUT = "output";
     private ArrayList<AgentConfigurationModel> agentConfigurationModels;
     private ArrayList<StimulusDefinitionModel> stimulusDefinitionModels;
     private ArrayList<AgentTypeDefinitionModel> agentTypeDefinitionModels;
@@ -125,10 +129,6 @@ public class SimulatorGuiAgent extends GuiAgent {
 
         agentStateTableModel = new AgentStateTableModel(simulatorGui.getCurrentAgentStatesTable());
         initialGuiState();
-    }
-
-    private StimulusDefinitionModel createStimulus(String name, double activation, double satisfaction) {
-        return new StimulusDefinitionModel(name, StringFormatter.toCamelCase(name), activation, satisfaction, true);
     }
 
     @Override
@@ -212,10 +212,52 @@ public class SimulatorGuiAgent extends GuiAgent {
                 case SHOW_STIMULUS_DEFINITION_GUI:
                     showStimuliDefinitionGUI();
                     break;
+                case EXPORT_CONFIGURATION:
+                    exportConfiguration();
+                    break;
+                case IMPORT_CONFIGURATION:
+                    importConfiguration();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             showError(e.getMessage());
+        }
+    }
+
+    private void importConfiguration() {
+
+    }
+
+    private void exportConfiguration() {
+        ObjectMapper mapper = new ObjectMapper();
+
+        GeneralConfiguration generalConfiguration = new GeneralConfiguration(agentTypeDefinitionModels, stimulusDefinitionModels);
+
+        String fileNameFormat = "output/masoes-configuration%s.json";
+        File file = new File(String.format(fileNameFormat, ""));
+
+        int sequence = 1;
+        while (file.exists()) {
+            file = new File(String.format(fileNameFormat, sequence));
+            sequence++;
+        }
+
+        File folder = new File(OUTPUT);
+        folder.mkdir();
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(folder);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
+        fileChooser.setSelectedFile(file);
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            try {
+                mapper.writeValue(fileChooser.getSelectedFile(), generalConfiguration);
+            } catch (IOException e) {
+                showError(Translation.getInstance().get("gui.message.error_saving_configuration") + "\n" + e.getMessage());
+            }
         }
     }
 
@@ -503,10 +545,6 @@ public class SimulatorGuiAgent extends GuiAgent {
 
     public SimulatorGui getSimulatorGui() {
         return simulatorGui;
-    }
-
-    public AgentConfigurationTableModel getAgentConfigurationTableModel() {
-        return agentConfigurationTableModel;
     }
 
     public AgentStateTableModel getAgentStateTableModel() {
