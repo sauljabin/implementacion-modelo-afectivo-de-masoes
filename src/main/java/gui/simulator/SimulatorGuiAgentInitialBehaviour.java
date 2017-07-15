@@ -33,6 +33,7 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
 
     public static final String FILE_RESULT_OUTPUT = "results.txt";
     public static final String FOLDER_RESULT_OUTPUT = "output/simulation";
+
     private Translation translation = Translation.getInstance();
     private SimulatorGuiAgent simulatorGuiAgent;
     private OntologyAssistant assistant;
@@ -44,17 +45,17 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
 
     @Override
     public void action() {
-        TextFileWriter writer = new TextFileWriter(FOLDER_RESULT_OUTPUT, FILE_RESULT_OUTPUT);
+        TextFileWriter writerResults = new TextFileWriter(FOLDER_RESULT_OUTPUT, FILE_RESULT_OUTPUT);
 
-        writer.append("%s: %s", translation.get("gui.iterations").toUpperCase(), simulatorGuiAgent.getSimulatorGui().getIterationsSpinner().getValue());
+        writerResults.append("%s: %s", translation.get("gui.iterations").toUpperCase(), simulatorGuiAgent.getSimulatorGui().getIterationsSpinner().getValue());
 
-        writer.newLine(2);
+        writerResults.newLine(2);
 
-        writer.append(translation.get("gui.stimuli_configuration").toUpperCase());
+        writerResults.append(translation.get("gui.stimuli_configuration").toUpperCase());
 
         String stimuliHeaderFormat = "%40s %40s %7s %7s %15s";
 
-        writer.append(stimuliHeaderFormat,
+        writerResults.append(stimuliHeaderFormat,
                 translation.get("gui.stimulus"),
                 translation.get("gui.value"),
                 translation.get("gui.pa"),
@@ -63,7 +64,7 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
         );
 
         simulatorGuiAgent.getStimulusDefinitionModels().forEach(stimulus ->
-                writer.append(stimuliHeaderFormat,
+                writerResults.append(stimuliHeaderFormat,
                         stimulus.getName(),
                         stimulus.getValue(),
                         StringFormatter.toString(stimulus.getActivation()),
@@ -71,13 +72,13 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
                         stimulus.isSelf() ? translation.get("gui.self") : translation.get("gui.others"))
         );
 
-        writer.newLine(2);
+        writerResults.newLine(2);
 
-        writer.append(translation.get("gui.initial_agent_configuration").toUpperCase());
+        writerResults.append(translation.get("gui.initial_agent_configuration").toUpperCase());
 
         String agentsHeaderFormat = "%25s %20s %25s %7s %7s %15s| %s";
 
-        writer.append(agentsHeaderFormat,
+        writerResults.append(agentsHeaderFormat,
                 translation.get("gui.agent"),
                 translation.get("gui.emotion"),
                 translation.get("gui.emotion_type"),
@@ -94,7 +95,7 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
 
             AgentState agentState = (AgentState) assistant.sendRequestAction(receiver, agentAction);
 
-            writer.append(agentsHeaderFormat,
+            writerResults.append(agentsHeaderFormat,
                     agent.getName(),
                     translation.get(agentState.getEmotionState().getName().toLowerCase()),
                     translation.get(agentState.getEmotionState().getType().toLowerCase()),
@@ -122,9 +123,9 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
                 new GetSocialEmotion()
         );
 
-        writer.newLine(2);
+        writerResults.newLine(2);
 
-        writer.append(translation.get("gui.social_emotion").toUpperCase());
+        writerResults.append(translation.get("gui.social_emotion").toUpperCase());
 
         EmotionalDispersion emotionalDispersion = socialEmotion.getEmotionalDispersion();
         CentralEmotion centralEmotionalState = socialEmotion.getCentralEmotion();
@@ -132,7 +133,7 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
 
         Emotion emotion = AffectiveModel.getInstance().searchEmotion(centralEmotionalState.toEmotionalState());
 
-        writer.append("%30s: %s %s - %s",
+        writerResults.append("%30s: %s %s - %s",
                 translation.get("gui.central_emotion"),
                 StringFormatter.toStringPoint(centralEmotionalState.getActivation(),
                         centralEmotionalState.getSatisfaction()),
@@ -140,19 +141,19 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
                 translation.get(emotion.getType().toString().toLowerCase())
         );
 
-        writer.append("%30s: %s",
+        writerResults.append("%30s: %s",
                 translation.get("gui.maximum_distance"),
                 StringFormatter.toStringPoint(maximumDistances.getActivation(),
                         maximumDistances.getSatisfaction())
         );
 
-        writer.append("%30s: %s",
+        writerResults.append("%30s: %s",
                 translation.get("gui.emotional_dispersion"),
                 StringFormatter.toStringPoint(emotionalDispersion.getActivation(),
                         emotionalDispersion.getSatisfaction())
         );
 
-        writer.close();
+        writerResults.close();
     }
 
 }
