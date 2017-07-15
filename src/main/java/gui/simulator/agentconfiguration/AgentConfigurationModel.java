@@ -8,6 +8,8 @@ package gui.simulator.agentconfiguration;
 
 import gui.simulator.agenttypedefinition.AgentTypeDefinitionModel;
 import gui.simulator.stimulusconfiguration.StimulusConfigurationModel;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import util.ToStringBuilder;
 
 import java.util.ArrayList;
@@ -82,6 +84,34 @@ public class AgentConfigurationModel {
                 .append("satisfaction", satisfaction)
                 .append("stimulusConfigurations", stimulusConfigurations)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AgentConfigurationModel that = (AgentConfigurationModel) o;
+
+        return new EqualsBuilder()
+                .append(activation, that.activation)
+                .append(satisfaction, that.satisfaction)
+                .append(agentType, that.agentType)
+                .append(name, that.name)
+                .append(stimulusConfigurations, that.stimulusConfigurations)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(agentType)
+                .append(name)
+                .append(activation)
+                .append(satisfaction)
+                .append(stimulusConfigurations)
+                .toHashCode();
     }
 
 }

@@ -104,7 +104,7 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
                             .filter(StimulusConfigurationModel::isSelected)
                             .map(stimulusConfiguration ->
                                     new ToStringBuilder()
-                                            .append(translation.get("gui.stimulus"), stimulusConfiguration.getModel().getName())
+                                            .append(translation.get("gui.stimulus"), stimulusConfiguration.getStimulusDefinition().getName())
                                             .append(translation.get("gui.pa"), StringFormatter.toString(stimulusConfiguration.getActivation()))
                                             .append(translation.get("gui.ps"), StringFormatter.toString(stimulusConfiguration.getSatisfaction()))
                                             .append(translation.get("gui.condition"), stimulusConfiguration.isSelf() ? translation.get("gui.self") : translation.get("gui.others"))

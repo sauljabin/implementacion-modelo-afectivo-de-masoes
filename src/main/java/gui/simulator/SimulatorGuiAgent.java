@@ -50,9 +50,9 @@ import java.util.stream.Collectors;
 public class SimulatorGuiAgent extends GuiAgent {
 
     private static final String OUTPUT = "output";
-    private ArrayList<AgentConfigurationModel> agentConfigurationModels;
-    private ArrayList<StimulusDefinitionModel> stimulusDefinitionModels;
-    private ArrayList<AgentTypeDefinitionModel> agentTypeDefinitionModels;
+    private List<AgentConfigurationModel> agentConfigurationModels;
+    private List<StimulusDefinitionModel> stimulusDefinitionModels;
+    private List<AgentTypeDefinitionModel> agentTypeDefinitionModels;
 
     private AgentManagementAssistant assistant;
     private SimulatorGuiListener simulatorGuiListener;
@@ -226,13 +226,52 @@ public class SimulatorGuiAgent extends GuiAgent {
     }
 
     private void importConfiguration() {
+        showWarning(Translation.getInstance().get("gui.message.import_configuration_warning"));
+        ObjectMapper mapper = new ObjectMapper();
 
+        File folder = new File(OUTPUT);
+        folder.mkdir();
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(folder);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            try {
+                GeneralConfiguration generalConfiguration = mapper.readValue(fileChooser.getSelectedFile(), GeneralConfiguration.class);
+
+                simulatorGui.getIterationsSpinner().setValue(generalConfiguration.getIterations());
+
+                stimulusDefinitionModels.clear();
+                agentTypeDefinitionModels.clear();
+                agentConfigurationModels.clear();
+
+                stimulusDefinitionModels.addAll(generalConfiguration.getStimulusDefinitions());
+                agentTypeDefinitionModels.addAll(generalConfiguration.getAgentTypeDefinitions());
+                agentConfigurationModels.addAll(generalConfiguration.getAgentConfigurations());
+
+                agentConfigurationTableModel.fireTableDataChanged();
+
+                agentConfigurationModels.forEach(agentConfigurationModel -> {
+                    agentTypeDefinitionModels.remove(agentConfigurationModel.getAgentType());
+                    agentTypeDefinitionModels.add(agentConfigurationModel.getAgentType());
+                    agentConfigurationModel.getStimulusConfigurations().forEach(stimulusConfigurationModel -> {
+                        stimulusDefinitionModels.remove(stimulusConfigurationModel.getStimulusDefinition());
+                        stimulusDefinitionModels.add(stimulusConfigurationModel.getStimulusDefinition());
+                    });
+                });
+
+            } catch (IOException e) {
+                showError(Translation.getInstance().get("gui.message.error_importing_configuration") + "\n" + e.getMessage());
+            }
+        }
     }
 
     private void exportConfiguration() {
         ObjectMapper mapper = new ObjectMapper();
 
-        GeneralConfiguration generalConfiguration = new GeneralConfiguration(agentTypeDefinitionModels, stimulusDefinitionModels);
+        GeneralConfiguration generalConfiguration = new GeneralConfiguration((Integer) simulatorGui.getIterationsSpinner().getValue(), agentTypeDefinitionModels, stimulusDefinitionModels, agentConfigurationModels);
 
         String fileNameFormat = "output/masoes-configuration%s.json";
         File file = new File(String.format(fileNameFormat, ""));
@@ -254,7 +293,7 @@ public class SimulatorGuiAgent extends GuiAgent {
         fileChooser.setSelectedFile(file);
         if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             try {
-                mapper.writeValue(fileChooser.getSelectedFile(), generalConfiguration);
+                mapper.writerWithDefaultPrettyPrinter().writeValue(fileChooser.getSelectedFile(), generalConfiguration);
             } catch (IOException e) {
                 showError(Translation.getInstance().get("gui.message.error_saving_configuration") + "\n" + e.getMessage());
             }
@@ -270,7 +309,7 @@ public class SimulatorGuiAgent extends GuiAgent {
             public void afterDelete(List<StimulusDefinitionModel> models) {
                 agentConfigurationModels.forEach(agentModel -> {
                     List<StimulusConfigurationModel> configurationsToDelete = agentModel.getStimulusConfigurations().stream()
-                            .filter(stimulusModel -> models.contains(stimulusModel.getModel()))
+                            .filter(stimulusModel -> models.contains(stimulusModel.getStimulusDefinition()))
                             .collect(Collectors.toList());
 
                     agentModel.getStimulusConfigurations().removeAll(configurationsToDelete);
@@ -627,15 +666,15 @@ public class SimulatorGuiAgent extends GuiAgent {
         return emotionalStateChart;
     }
 
-    public ArrayList<StimulusDefinitionModel> getStimulusDefinitionModels() {
+    public List<StimulusDefinitionModel> getStimulusDefinitionModels() {
         return stimulusDefinitionModels;
     }
 
-    public ArrayList<AgentTypeDefinitionModel> getAgentTypeDefinitionModels() {
+    public List<AgentTypeDefinitionModel> getAgentTypeDefinitionModels() {
         return agentTypeDefinitionModels;
     }
 
-    public ArrayList<AgentConfigurationModel> getAgentConfigurationModels() {
+    public List<AgentConfigurationModel> getAgentConfigurationModels() {
         return agentConfigurationModels;
     }
 

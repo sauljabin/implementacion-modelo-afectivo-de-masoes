@@ -33,8 +33,8 @@ public class StimulusConfigurationGuiListener extends WindowsEventsAdapter {
     }
 
     private void initView() {
-        gui.getNameField().setText(stimulusConfigurationModel.getModel().getName());
-        gui.getValueField().setText(stimulusConfigurationModel.getModel().getValue());
+        gui.getNameField().setText(stimulusConfigurationModel.getStimulusDefinition().getName());
+        gui.getValueField().setText(stimulusConfigurationModel.getStimulusDefinition().getValue());
         gui.getActivationSpinner().setValue(stimulusConfigurationModel.getActivation());
         gui.getSatisfactionSpinner().setValue(stimulusConfigurationModel.getSatisfaction());
         gui.getSelfButton().setSelected(stimulusConfigurationModel.isSelf());

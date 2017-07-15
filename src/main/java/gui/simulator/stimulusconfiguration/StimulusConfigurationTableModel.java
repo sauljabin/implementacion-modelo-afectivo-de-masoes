@@ -71,7 +71,7 @@ public class StimulusConfigurationTableModel extends AbstractTableModel {
             case COLUMN_SELECTED:
                 return model.isSelected();
             case COLUMN_STIMULUS:
-                return model.getModel().getName();
+                return model.getStimulusDefinition().getName();
             case COLUMN_ACTIVATION:
                 return StringFormatter.toString(model.getActivation());
             case COLUMN_SATISFACTION:

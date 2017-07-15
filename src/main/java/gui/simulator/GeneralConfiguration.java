@@ -6,6 +6,7 @@
 
 package gui.simulator;
 
+import gui.simulator.agentconfiguration.AgentConfigurationModel;
 import gui.simulator.agenttypedefinition.AgentTypeDefinitionModel;
 import gui.simulator.stimulusdefinition.StimulusDefinitionModel;
 
@@ -13,31 +14,51 @@ import java.util.List;
 
 public class GeneralConfiguration {
 
-    private List<AgentTypeDefinitionModel> agentTypeDefinitionModels;
-    private List<StimulusDefinitionModel> stimulusDefinitionModels;
+    private int iterations;
+    private List<AgentTypeDefinitionModel> agentTypeDefinitions;
+    private List<StimulusDefinitionModel> stimulusDefinitions;
+    private List<AgentConfigurationModel> agentConfigurations;
 
     public GeneralConfiguration() {
     }
 
-    public GeneralConfiguration(List<AgentTypeDefinitionModel> agentTypeDefinitionModels, List<StimulusDefinitionModel> stimulusDefinitionModels) {
-        this.agentTypeDefinitionModels = agentTypeDefinitionModels;
-        this.stimulusDefinitionModels = stimulusDefinitionModels;
+    public GeneralConfiguration(int iterations, List<AgentTypeDefinitionModel> agentTypeDefinitions, List<StimulusDefinitionModel> stimulusDefinitions, List<AgentConfigurationModel> agentConfigurations) {
+        this.iterations = iterations;
+        this.agentTypeDefinitions = agentTypeDefinitions;
+        this.stimulusDefinitions = stimulusDefinitions;
+        this.agentConfigurations = agentConfigurations;
     }
 
-    public List<AgentTypeDefinitionModel> getAgentTypeDefinitionModels() {
-        return agentTypeDefinitionModels;
+    public int getIterations() {
+        return iterations;
     }
 
-    public void setAgentTypeDefinitionModels(List<AgentTypeDefinitionModel> agentTypeDefinitionModels) {
-        this.agentTypeDefinitionModels = agentTypeDefinitionModels;
+    public void setIterations(int iterations) {
+        this.iterations = iterations;
     }
 
-    public List<StimulusDefinitionModel> getStimulusDefinitionModels() {
-        return stimulusDefinitionModels;
+    public List<AgentTypeDefinitionModel> getAgentTypeDefinitions() {
+        return agentTypeDefinitions;
     }
 
-    public void setStimulusDefinitionModels(List<StimulusDefinitionModel> stimulusDefinitionModels) {
-        this.stimulusDefinitionModels = stimulusDefinitionModels;
+    public void setAgentTypeDefinitions(List<AgentTypeDefinitionModel> agentTypeDefinitions) {
+        this.agentTypeDefinitions = agentTypeDefinitions;
+    }
+
+    public List<StimulusDefinitionModel> getStimulusDefinitions() {
+        return stimulusDefinitions;
+    }
+
+    public void setStimulusDefinitions(List<StimulusDefinitionModel> stimulusDefinitions) {
+        this.stimulusDefinitions = stimulusDefinitions;
+    }
+
+    public List<AgentConfigurationModel> getAgentConfigurations() {
+        return agentConfigurations;
+    }
+
+    public void setAgentConfigurations(List<AgentConfigurationModel> agentConfigurations) {
+        this.agentConfigurations = agentConfigurations;
     }
 
 }

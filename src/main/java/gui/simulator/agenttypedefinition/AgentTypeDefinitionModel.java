@@ -7,6 +7,8 @@
 package gui.simulator.agenttypedefinition;
 
 import masoes.agent.EmotionalAgent;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class AgentTypeDefinitionModel {
 
@@ -40,6 +42,28 @@ public class AgentTypeDefinitionModel {
     @Override
     public String toString() {
         return agentTypeName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AgentTypeDefinitionModel that = (AgentTypeDefinitionModel) o;
+
+        return new EqualsBuilder()
+                .append(agentTypeClass, that.agentTypeClass)
+                .append(agentTypeName, that.agentTypeName)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(agentTypeClass)
+                .append(agentTypeName)
+                .toHashCode();
     }
 
 }

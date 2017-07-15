@@ -133,8 +133,8 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
 
             if (!stimuli.isEmpty()) {
                 StimulusConfigurationModel randomItem = RandomGenerator.getRandomItem(stimuli);
-                stimulusName = randomItem.getModel().getName();
-                EventStimulus stimulus = new EventStimulus(randomItem.isSelf() ? receiver : myAgent.getAID(), randomItem.getModel().getValue());
+                stimulusName = randomItem.getStimulusDefinition().getName();
+                EventStimulus stimulus = new EventStimulus(randomItem.isSelf() ? receiver : myAgent.getAID(), randomItem.getStimulusDefinition().getValue());
                 agentAction = new EvaluateStimulus(stimulus);
             }
 

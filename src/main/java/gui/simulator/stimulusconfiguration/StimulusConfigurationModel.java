@@ -8,23 +8,28 @@ package gui.simulator.stimulusconfiguration;
 
 import gui.simulator.stimulusdefinition.StimulusDefinitionModel;
 import knowledge.KnowledgeClause;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import util.StringFormatter;
 import util.ToStringBuilder;
 
 public class StimulusConfigurationModel {
 
     private boolean selected;
-    private StimulusDefinitionModel model;
+    private StimulusDefinitionModel stimulusDefinition;
 
     private double activation;
     private double satisfaction;
     private boolean self;
 
-    public StimulusConfigurationModel(StimulusDefinitionModel model) {
-        this.model = model;
-        activation = model.getActivation();
-        satisfaction = model.getSatisfaction();
-        self = model.isSelf();
+    public StimulusConfigurationModel() {
+    }
+
+    public StimulusConfigurationModel(StimulusDefinitionModel stimulusDefinition) {
+        this.stimulusDefinition = stimulusDefinition;
+        activation = stimulusDefinition.getActivation();
+        satisfaction = stimulusDefinition.getSatisfaction();
+        self = stimulusDefinition.isSelf();
         selected = true;
     }
 
@@ -60,14 +65,18 @@ public class StimulusConfigurationModel {
         this.self = self;
     }
 
-    public StimulusDefinitionModel getModel() {
-        return model;
+    public StimulusDefinitionModel getStimulusDefinition() {
+        return stimulusDefinition;
+    }
+
+    public void setStimulusDefinition(StimulusDefinitionModel stimulusDefinition) {
+        this.stimulusDefinition = stimulusDefinition;
     }
 
     public String toClause() {
         return new KnowledgeClause("stimulus")
                 .argument("AGENT")
-                .argument(model.getValue())
+                .argument(stimulusDefinition.getValue())
                 .argument(StringFormatter.toString(activation))
                 .argument(StringFormatter.toString(satisfaction))
                 .body(self ? "self(AGENT)" : "other(AGENT)")
@@ -78,11 +87,39 @@ public class StimulusConfigurationModel {
     public String toString() {
         return new ToStringBuilder()
                 .append("selected", selected)
-                .append("model", model)
+                .append("stimulusDefinition", stimulusDefinition)
                 .append("activation", activation)
                 .append("satisfaction", satisfaction)
                 .append("self", self)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StimulusConfigurationModel that = (StimulusConfigurationModel) o;
+
+        return new EqualsBuilder()
+                .append(selected, that.selected)
+                .append(activation, that.activation)
+                .append(satisfaction, that.satisfaction)
+                .append(self, that.self)
+                .append(stimulusDefinition, that.stimulusDefinition)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(selected)
+                .append(stimulusDefinition)
+                .append(activation)
+                .append(satisfaction)
+                .append(self)
+                .toHashCode();
     }
 
 }

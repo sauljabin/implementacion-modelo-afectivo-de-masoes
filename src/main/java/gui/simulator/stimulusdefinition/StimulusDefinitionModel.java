@@ -6,6 +6,8 @@
 
 package gui.simulator.stimulusdefinition;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import util.ToStringBuilder;
 
 public class StimulusDefinitionModel {
@@ -79,4 +81,31 @@ public class StimulusDefinitionModel {
                 .toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StimulusDefinitionModel that = (StimulusDefinitionModel) o;
+
+        return new EqualsBuilder()
+                .append(activation, that.activation)
+                .append(satisfaction, that.satisfaction)
+                .append(self, that.self)
+                .append(name, that.name)
+                .append(value, that.value)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(name)
+                .append(value)
+                .append(activation)
+                .append(satisfaction)
+                .append(self)
+                .toHashCode();
+    }
 }
