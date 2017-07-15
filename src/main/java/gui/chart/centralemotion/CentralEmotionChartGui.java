@@ -148,10 +148,10 @@ public class CentralEmotionChartGui extends JFrame {
 
             graphicsAgents.setColor(emotionalStateContainer.getColor());
 
-            if (iteratorAgents.hasNext()) {
-                graphicsAgents.fillOval(x, y, 11, 11);
-            } else {
+            if (emotionalStateContainer.isCentralEmotion()) {
                 graphicsAgents.fillRect(x, y, 11, 11);
+            } else {
+                graphicsAgents.fillOval(x, y, 11, 11);
             }
 
             graphicsAgents.setColor(Color.BLACK);
