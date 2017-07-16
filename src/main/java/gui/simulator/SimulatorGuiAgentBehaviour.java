@@ -108,7 +108,7 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
 
         writerResults.close();
 
-        writerLatex.appendln("\\fuentecuadro{13}{\\yo}");
+        writerLatex.appendln("\\fuentecuadro{14}{\\yo}");
         writerLatex.appendln("\\end{tinycuadro}");
         writerLatex.close();
 
@@ -173,7 +173,7 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
         for (int x = 1; x < stateWrappers.size() - 1; x++) {
             AgentStateWrapper agentState = stateWrappers.get(x);
             writeAgentStateLatex(agentState);
-            writerLatex.appendln(StringUtils.repeat("& ", 7) + "\\\\ \\cline{2-6}");
+            writerLatex.appendln(StringUtils.repeat("& ", 7) + "\\\\ \\cline{2-7}");
         }
 
         if (stateWrappers.size() > 1) {
@@ -193,7 +193,7 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
 
         String socialEmotionRow = StringUtils.repeat("& \\multirow{" + agentCount + "}{*}{%s} ", 7);
 
-        writerLatex.appendln(socialEmotionRow + " \\\\" + (agentCount > 1 ? "\\cline{2-6}" : "\\midrule[1pt]"),
+        writerLatex.appendln(socialEmotionRow + " \\\\" + (agentCount > 1 ? "\\cline{2-7}" : "\\midrule[1pt]"),
                 StringFormatter.toString(centralEmotionalState.getActivation()),
                 StringFormatter.toString(centralEmotionalState.getSatisfaction()),
                 translation.get(emotion.getName().toLowerCase()),
@@ -205,12 +205,14 @@ public class SimulatorGuiAgentBehaviour extends CounterBehaviour {
     }
 
     private void writeAgentStateLatex(AgentStateWrapper agentState) {
-        writerLatex.append("& %s & %s & %s & %s & %s ",
+        writerLatex.append("& %s & %s & %s & %s & %s & %s ",
                 agentState.getAgentState().getAgent().getLocalName(),
                 agentState.getStimulusName(),
                 StringFormatter.toString(agentState.getAgentState().getEmotionState().getActivation()),
                 StringFormatter.toString(agentState.getAgentState().getEmotionState().getSatisfaction()),
-                translation.get(agentState.getAgentState().getEmotionState().getName().toLowerCase()));
+                translation.get(agentState.getAgentState().getEmotionState().getName().toLowerCase()),
+                translation.get(agentState.getAgentState().getBehaviourState().getType().toLowerCase())
+        );
     }
 
     private void writeSocialEmotion(EmotionalDispersion emotionalDispersion, CentralEmotion centralEmotionalState, MaximumDistance maximumDistances, Emotion emotion) {

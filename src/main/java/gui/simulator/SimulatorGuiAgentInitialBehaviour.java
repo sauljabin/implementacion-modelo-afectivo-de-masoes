@@ -108,7 +108,7 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
         for (int i = 1; i < agentStates.size() - 1; i++) {
             AgentState agentState = agentStates.get(i);
             writeAgentStateLatex(agentState);
-            writerLatex.appendln(StringUtils.repeat("& ", 7) + "\\\\ \\cline{2-6}");
+            writerLatex.appendln(StringUtils.repeat("& ", 7) + "\\\\ \\cline{2-7}");
         }
 
         if (agentStates.size() > 1) {
@@ -126,7 +126,7 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
 
         String socialEmotionRow = StringUtils.repeat("& \\multirow{" + agentCount + "}{*}{%s} ", 7);
 
-        writerLatex.appendln(socialEmotionRow + " \\\\" + (agentCount > 1 ? "\\cline{2-6}" : "\\midrule[1pt]"),
+        writerLatex.appendln(socialEmotionRow + " \\\\" + (agentCount > 1 ? "\\cline{2-7}" : "\\midrule[1pt]"),
                 StringFormatter.toString(centralEmotionalState.getActivation()),
                 StringFormatter.toString(centralEmotionalState.getSatisfaction()),
                 translation.get(emotion.getName().toLowerCase()),
@@ -138,18 +138,20 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
     }
 
     private void writeAgentStateLatex(AgentState agentState) {
-        writerLatex.append("& %s & & %s & %s & %s ",
+        writerLatex.append("& %s & & %s & %s & %s & %s ",
                 agentState.getAgent().getLocalName(),
                 StringFormatter.toString(agentState.getEmotionState().getActivation()),
                 StringFormatter.toString(agentState.getEmotionState().getSatisfaction()),
-                translation.get(agentState.getEmotionState().getName().toLowerCase()));
+                translation.get(agentState.getEmotionState().getName().toLowerCase()),
+                translation.get(agentState.getBehaviourState().getType().toLowerCase())
+        );
     }
 
     private void writeHeaderLatex() {
-        writerLatex.appendln("\\begin{tinycuadro}[etiqueta=, titulo={}]{c|l|l|c|c|l|c|c|l|c|c|c|c}");
+        writerLatex.appendln("\\begin{tinycuadro}[etiqueta=, titulo={}]{c|l|l|c|c|l|l|c|c|l|c|c|c|c}");
         writerLatex.appendln("\\toprule");
-        writerLatex.appendln("\\multirow{2}{*}{\\textbf{Iteración}} & \\multicolumn{5}{c|}{\\textbf{Agentes}} &  \\multicolumn{3}{c|}{\\textbf{$EC(Ag)$}} & \\multicolumn{2}{c|}{\\textbf{$m(Ag)$}} & \\multicolumn{2}{c}{\\textbf{$\\sigma(Ag)$}} \\\\ \\cline{2-13}");
-        writerLatex.appendln("& Nombre & Estímulo & A & S & Emoción & A & S & Emoción & A & S & A & S \\\\");
+        writerLatex.appendln("\\multirow{2}{*}{\\textbf{Iteración}} & \\multicolumn{6}{c|}{\\textbf{Agentes}} &  \\multicolumn{3}{c|}{\\textbf{$EC(Ag)$}} & \\multicolumn{2}{c|}{\\textbf{$m(Ag)$}} & \\multicolumn{2}{c}{\\textbf{$\\sigma(Ag)$}} \\\\ \\cline{2-14}");
+        writerLatex.appendln("& Nombre & Estímulo & A & S & Emoción & Comportamiento & A & S & Emoción & A & S & A & S \\\\");
         writerLatex.appendln("\\midrule[1pt]");
     }
 

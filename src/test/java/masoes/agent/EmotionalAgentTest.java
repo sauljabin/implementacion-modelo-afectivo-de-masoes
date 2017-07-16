@@ -49,6 +49,7 @@ public class EmotionalAgentTest extends PowerMockitoTest {
     private EmotionalAgentLogger loggerMock;
 
     private ArgumentCaptor<Knowledge> knowledgeArgumentCaptor;
+    private ArgumentCaptor<EmotionalState> emotionalStateArgumentCaptor;
 
     private BehaviouralComponent behaviouralComponentMock;
     private EmotionalState emotionalStateMock;
@@ -57,6 +58,7 @@ public class EmotionalAgentTest extends PowerMockitoTest {
     public void setUp() throws Exception {
         knowledgeArgumentCaptor = ArgumentCaptor.forClass(Knowledge.class);
         serviceDescriptionCaptor = ArgumentCaptor.forClass(ServiceDescription.class);
+        emotionalStateArgumentCaptor = ArgumentCaptor.forClass(EmotionalState.class);
 
         behaviouralComponentMock = mock(BehaviouralComponent.class);
         loggerMock = mock(EmotionalAgentLogger.class);
@@ -129,8 +131,10 @@ public class EmotionalAgentTest extends PowerMockitoTest {
         emotionalAgentSpy.setArguments(args);
         emotionalAgentSpy.setup();
 
-        verify(emotionalStateMock).setActivation(activation);
-        verify(emotionalStateMock).setSatisfaction(satisfaction);
+        verify(behaviouralComponentMock).setEmotionalState(emotionalStateArgumentCaptor.capture());
+
+        assertThat(emotionalStateArgumentCaptor.getValue().getActivation(), is(activation));
+        assertThat(emotionalStateArgumentCaptor.getValue().getSatisfaction(), is(satisfaction));
     }
 
     @Test

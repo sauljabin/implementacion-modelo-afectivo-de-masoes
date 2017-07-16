@@ -51,7 +51,7 @@ public class StringFormatterTest {
 
     @Test
     public void shouldShowThreeDecimalSize() {
-        assertThat(StringFormatter.toString(0.2359), is("0.235"));
+        assertThat(StringFormatter.toString(0.2359), is("0.236"));
     }
 
     @Test

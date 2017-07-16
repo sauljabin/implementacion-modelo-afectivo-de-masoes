@@ -12,6 +12,7 @@ import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import knowledge.Knowledge;
 import masoes.component.behavioural.BehaviouralComponent;
+import masoes.component.behavioural.EmotionalState;
 import masoes.ontology.MasoesOntology;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -72,16 +73,17 @@ public abstract class EmotionalAgent extends Agent {
             String[] args = getStringArguments();
             Options options = createOptions();
             CommandLineParser commandLineParser = new DefaultParser();
+            EmotionalState emotionalState = new EmotionalState();
 
             try {
                 CommandLine commandLine = commandLineParser.parse(options, args);
 
                 if (commandLine.hasOption(ACTIVATION_OPTION)) {
-                    getBehaviouralComponent().getCurrentEmotionalState().setActivation(Double.parseDouble(commandLine.getOptionValue(ACTIVATION_OPTION)));
+                    emotionalState.setActivation(Double.parseDouble(commandLine.getOptionValue(ACTIVATION_OPTION)));
                 }
 
                 if (commandLine.hasOption(SATISFACTION_OPTION)) {
-                    getBehaviouralComponent().getCurrentEmotionalState().setSatisfaction(Double.parseDouble(commandLine.getOptionValue(SATISFACTION_OPTION)));
+                    emotionalState.setSatisfaction(Double.parseDouble(commandLine.getOptionValue(SATISFACTION_OPTION)));
                 }
 
                 if (commandLine.hasOption(KNOWLEDGE_PATH_OPTION)) {
@@ -93,6 +95,8 @@ public abstract class EmotionalAgent extends Agent {
                     String knowledge = commandLine.getOptionValue(KNOWLEDGE_OPTION);
                     setKnowledge(knowledge);
                 }
+
+                getBehaviouralComponent().setEmotionalState(emotionalState);
             } catch (ParseException e) {
                 throw new AgentException(e);
             }
