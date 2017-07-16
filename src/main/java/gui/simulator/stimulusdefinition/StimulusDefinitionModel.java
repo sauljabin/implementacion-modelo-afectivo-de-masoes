@@ -8,6 +8,7 @@ package gui.simulator.stimulusdefinition;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import util.StringFormatter;
 import util.ToStringBuilder;
 
 public class StimulusDefinitionModel {
@@ -20,6 +21,14 @@ public class StimulusDefinitionModel {
 
     public StimulusDefinitionModel() {
         this("", "", 0, 0, true);
+    }
+
+    public StimulusDefinitionModel(String name, double activation, double satisfaction, boolean self) {
+        this.name = name;
+        this.activation = activation;
+        this.satisfaction = satisfaction;
+        this.self = self;
+        this.value = StringFormatter.toCamelCase(name);
     }
 
     public StimulusDefinitionModel(String name, String value, double activation, double satisfaction, boolean self) {
