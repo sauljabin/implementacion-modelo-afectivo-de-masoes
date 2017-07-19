@@ -30,6 +30,7 @@ import util.StringFormatter;
 import util.TextFileWriter;
 import util.ToStringBuilder;
 
+import java.io.File;
 import java.util.List;
 
 import static java.util.stream.Collectors.joining;
@@ -56,6 +57,13 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
 
     @Override
     public int onEnd() {
+        try {
+            File folder = new File("output/simulation");
+            folder.mkdir();
+            simulatorGuiAgent.getCentralEmotionChart().exportImage(folder, translation.get("gui.central_emotion") + "_initial", 400);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         writerResults.close();
         writerLatex.close();
         return super.onEnd();
@@ -84,6 +92,7 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
             AgentAction agentAction = new GetEmotionalState();
 
             AgentState agentState = (AgentState) assistant.sendRequestAction(receiver, agentAction);
+            simulatorGuiAgent.getCentralEmotionChart().addEmotionalState(agent.getName(), agentState.getEmotionState().toEmotionalState());
 
             writeAgentState(agent, agentState);
             return agentState;
@@ -99,6 +108,8 @@ public class SimulatorGuiAgentInitialBehaviour extends OneShotBehaviour {
         EmotionalDispersion emotionalDispersion = socialEmotion.getEmotionalDispersion();
         CentralEmotion centralEmotionalState = socialEmotion.getCentralEmotion();
         MaximumDistance maximumDistances = socialEmotion.getMaximumDistance();
+
+        simulatorGuiAgent.getCentralEmotionChart().addCentralEmotion(centralEmotionalState);
 
         Emotion emotion = AffectiveModel.getInstance().searchEmotion(centralEmotionalState.toEmotionalState());
 

@@ -114,8 +114,12 @@ public class CentralEmotionChartGui extends JFrame {
     }
 
     public void exportImage(File folder, int height) throws IOException {
+        exportImage(folder, getTitle(), height);
+    }
+
+    public void exportImage(File folder, String fileName, int height) throws IOException {
         String extension = "png";
-        File file = new File(folder, getTitle() + "." + extension);
+        File file = new File(folder, fileName + "." + extension);
 
         BufferedImage imageAffectiveModel = new BufferedImage(height, height, 1);
         Graphics2D graphicsAffectiveModel = (Graphics2D) imageAffectiveModel.getGraphics();

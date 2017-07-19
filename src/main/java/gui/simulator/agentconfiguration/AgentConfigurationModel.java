@@ -8,6 +8,7 @@ package gui.simulator.agentconfiguration;
 
 import gui.simulator.agenttypedefinition.AgentTypeDefinitionModel;
 import gui.simulator.stimulusconfiguration.StimulusConfigurationModel;
+import masoes.component.behavioural.EmotionalState;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import util.ToStringBuilder;
@@ -25,6 +26,14 @@ public class AgentConfigurationModel {
 
     public AgentConfigurationModel() {
         this(null, "", 0, 0, new ArrayList<>());
+    }
+
+    public AgentConfigurationModel(AgentTypeDefinitionModel agentType, String name, EmotionalState emotionalState, List<StimulusConfigurationModel> stimulusConfigurations) {
+        this.agentType = agentType;
+        this.name = name;
+        this.stimulusConfigurations = stimulusConfigurations;
+        this.activation = emotionalState.getActivation();
+        this.satisfaction = emotionalState.getSatisfaction();
     }
 
     public AgentConfigurationModel(AgentTypeDefinitionModel agentType, String name, double activation, double satisfaction, List<StimulusConfigurationModel> stimulusConfigurations) {
