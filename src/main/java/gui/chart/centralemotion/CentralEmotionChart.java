@@ -87,9 +87,9 @@ public class CentralEmotionChart extends Canvas implements Runnable {
             int yCanvas = yCanvas(emotionalState.getSatisfaction(), height);
 
             if (emotionalStateContainer.isCentralEmotion()) {
-                graphics.fillRect(xCanvas - 4, yCanvas - 4, 8, 8);
+                graphics.fillRect(xCanvas - 5, yCanvas - 5, 10, 10);
             } else {
-                graphics.fillOval(xCanvas - 3, yCanvas - 3, 6, 6);
+                graphics.fillOval(xCanvas - 4, yCanvas - 4, 8, 8);
             }
         }
     }
