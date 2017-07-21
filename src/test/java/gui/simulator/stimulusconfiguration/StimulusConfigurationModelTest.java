@@ -8,7 +8,7 @@ package gui.simulator.stimulusconfiguration;
 
 import gui.simulator.stimulusdefinition.StimulusDefinitionModel;
 import org.junit.Test;
-import test.RandomUtil;
+import test.RandomTestUtils;
 import util.StringFormatter;
 
 import static org.hamcrest.core.Is.is;
@@ -18,10 +18,10 @@ public class StimulusConfigurationModelTest {
 
     @Test
     public void shouldCreateCorrectPrologClause() {
-        String name = RandomUtil.randomString();
-        String value = RandomUtil.randomString();
-        double activation = RandomUtil.randomDouble();
-        double satisfaction = RandomUtil.randomDouble();
+        String name = RandomTestUtils.randomString();
+        String value = RandomTestUtils.randomString();
+        double activation = RandomTestUtils.randomDouble();
+        double satisfaction = RandomTestUtils.randomDouble();
         StimulusDefinitionModel model = new StimulusDefinitionModel(name, value, activation, satisfaction, true);
         StimulusConfigurationModel stimulusConfigurationModel = new StimulusConfigurationModel(model);
 

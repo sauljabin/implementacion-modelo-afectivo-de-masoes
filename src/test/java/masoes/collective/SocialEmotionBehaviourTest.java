@@ -24,7 +24,7 @@ import ontology.OntologyAssistant;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import test.RandomUtil;
+import test.RandomTestUtils;
 
 import java.util.ArrayList;
 
@@ -70,12 +70,12 @@ public class SocialEmotionBehaviourTest {
     public void shouldReceiveEmotionalState() throws FailureException {
         SocialEmotionCalculator socialEmotionCalculator = new SocialEmotionCalculator();
 
-        AID firstAID = new AID(RandomUtil.randomString(), AID.ISGUID);
+        AID firstAID = new AID(RandomTestUtils.randomString(), AID.ISGUID);
         AgentState firstAgentState = new AgentState();
         firstAgentState.setEmotionState(new EmotionState(null, null, null, new EmotionalState()));
         socialEmotionCalculator.addEmotionalState(firstAgentState.getEmotionState().toEmotionalState());
 
-        AID secondAID = new AID(RandomUtil.randomString(), AID.ISGUID);
+        AID secondAID = new AID(RandomTestUtils.randomString(), AID.ISGUID);
         AgentState secondAgentState = new AgentState();
         secondAgentState.setEmotionState(new EmotionState(null, null, null, new EmotionalState()));
         socialEmotionCalculator.addEmotionalState(secondAgentState.getEmotionState().toEmotionalState());

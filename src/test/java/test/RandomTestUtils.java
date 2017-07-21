@@ -6,13 +6,16 @@
 
 package test;
 
+import masoes.component.behavioural.AffectiveModel;
+import masoes.component.behavioural.Emotion;
+import util.RandomGenerator;
 import util.StringGenerator;
 
 import java.util.Random;
 
-public final class RandomUtil {
+public final class RandomTestUtils {
 
-    private RandomUtil() {
+    private RandomTestUtils() {
     }
 
     public static String randomString() {
@@ -32,6 +35,10 @@ public final class RandomUtil {
     public static boolean randomBoolean() {
         Random random = new Random();
         return random.nextBoolean();
+    }
+
+    public static Emotion randomEmotion() {
+        return RandomGenerator.getRandomItem(AffectiveModel.getInstance().getEmotions());
     }
 
 }

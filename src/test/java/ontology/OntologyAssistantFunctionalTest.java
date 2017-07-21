@@ -18,7 +18,7 @@ import settings.ontology.Setting;
 import settings.ontology.SettingsOntology;
 import settings.ontology.SystemSettings;
 import test.FunctionalTest;
-import test.RandomUtil;
+import test.RandomTestUtils;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -40,7 +40,7 @@ public class OntologyAssistantFunctionalTest extends FunctionalTest {
     @Test
     public void shouldReturnCustomSetting() {
         addBehaviour(agent, OntologyAssistantResponderBehaviour.class);
-        String randomString = RandomUtil.randomString();
+        String randomString = RandomTestUtils.randomString();
 
         OntologyAssistant ontologyAssistant = createOntologyAssistant(SettingsOntology.getInstance());
 

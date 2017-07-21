@@ -9,7 +9,7 @@ package masoes.collective;
 import masoes.component.behavioural.EmotionalState;
 import org.junit.Before;
 import org.junit.Test;
-import test.RandomUtil;
+import test.RandomTestUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -102,7 +102,7 @@ public class SocialEmotionCalculatorTest {
 
     private List<EmotionalState> getRandomValues() {
         return IntStream.range(0, 6)
-                .mapToObj(value -> new EmotionalState(RandomUtil.randomDouble(), RandomUtil.randomDouble()))
+                .mapToObj(value -> new EmotionalState(RandomTestUtils.randomDouble(), RandomTestUtils.randomDouble()))
                 .collect(Collectors.toList());
     }
 
