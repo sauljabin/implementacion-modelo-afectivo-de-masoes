@@ -636,6 +636,7 @@ public class SimulatorGuiAgent extends GuiAgent {
         simulatorGui.getMaxDistanceEmotionValueLabel().setText("-");
 
         simulatorGui.getAddAgentButton().setEnabled(true);
+        simulatorGui.getAddMultipleAgentsButton().setEnabled(true);
         simulatorGui.getDeleteAgentButton().setEnabled(true);
         simulatorGui.getEditAgentButton().setEnabled(true);
 
@@ -661,6 +662,7 @@ public class SimulatorGuiAgent extends GuiAgent {
         simulatorGui.getIterationsSpinner().setEnabled(false);
 
         simulatorGui.getAddAgentButton().setEnabled(false);
+        simulatorGui.getAddMultipleAgentsButton().setEnabled(false);
         simulatorGui.getDeleteAgentButton().setEnabled(false);
         simulatorGui.getEditAgentButton().setEnabled(false);
 
