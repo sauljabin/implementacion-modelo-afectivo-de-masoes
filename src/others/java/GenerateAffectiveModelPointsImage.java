@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.Math.abs;
 
-public class GenerateOneEmotionsPolygonImage {
+public class GenerateAffectiveModelPointsImage {
 
     private static final String HAPPINESS = "happiness";
     private static final String JOY = "joy";
@@ -56,7 +56,7 @@ public class GenerateOneEmotionsPolygonImage {
     private BufferedImage image;
     private Graphics2D graphics;
 
-    public GenerateOneEmotionsPolygonImage() {
+    public GenerateAffectiveModelPointsImage() {
         makeOutputFolder();
         makeImage();
         renderBackground();
@@ -66,7 +66,7 @@ public class GenerateOneEmotionsPolygonImage {
     }
 
     public static void main(String[] args) {
-        new GenerateOneEmotionsPolygonImage();
+        new GenerateAffectiveModelPointsImage();
     }
 
     private void drawPoints() {
