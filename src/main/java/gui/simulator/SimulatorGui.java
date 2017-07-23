@@ -51,6 +51,7 @@ public class SimulatorGui extends JFrame {
     private JMenuItem editStimuliDefinitionMenu;
     private JMenuItem importConfigurationMenu;
     private JMenuItem exportConfigurationMenu;
+    private JButton addMultipleAgentsButton;
 
     public SimulatorGui() {
         setTitle(translation.get("gui.simulator"));
@@ -222,6 +223,9 @@ public class SimulatorGui extends JFrame {
         addAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/plus.png")));
         buttonsPanel.add(addAgentButton, "wrap");
 
+        addMultipleAgentsButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/wand-plus.png")));
+        buttonsPanel.add(addMultipleAgentsButton, "wrap");
+
         deleteAgentButton = new JButton(new ImageIcon(ClassLoader.getSystemResource("images/minus.png")));
         buttonsPanel.add(deleteAgentButton, "wrap");
 
@@ -355,6 +359,10 @@ public class SimulatorGui extends JFrame {
 
     public JMenuItem getExportConfigurationMenu() {
         return exportConfigurationMenu;
+    }
+
+    public JButton getAddMultipleAgentsButton() {
+        return addMultipleAgentsButton;
     }
 
 }

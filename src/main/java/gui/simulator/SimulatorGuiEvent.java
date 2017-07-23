@@ -34,7 +34,8 @@ public enum SimulatorGuiEvent {
     SHOW_AGENT_TYPE_DEFINITION_GUI,
     SHOW_STIMULUS_DEFINITION_GUI,
     IMPORT_CONFIGURATION,
-    EXPORT_CONFIGURATION;
+    EXPORT_CONFIGURATION,
+    ADD_MULTIPLE_AGENTS;
 
     private static List<SimulatorGuiEvent> events = Arrays.asList(SimulatorGuiEvent.values());
 

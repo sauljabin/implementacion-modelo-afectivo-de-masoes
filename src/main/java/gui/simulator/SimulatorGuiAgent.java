@@ -24,6 +24,7 @@ import gui.simulator.agentconfiguration.AgentConfigurationTableModel;
 import gui.simulator.agentstate.AgentStateTableModel;
 import gui.simulator.agenttypedefinition.AgentTypeDefinitionCrudGuiListener;
 import gui.simulator.agenttypedefinition.AgentTypeDefinitionModel;
+import gui.simulator.multipleagentconfiguration.MultipleAgentConfigurationGuiListener;
 import gui.simulator.stimulusconfiguration.StimulusConfigurationModel;
 import gui.simulator.stimulusdefinition.StimulusDefinitionCrudGuiCallback;
 import gui.simulator.stimulusdefinition.StimulusDefinitionCrudGuiListener;
@@ -218,10 +219,29 @@ public class SimulatorGuiAgent extends GuiAgent {
                 case IMPORT_CONFIGURATION:
                     importConfiguration();
                     break;
+                case ADD_MULTIPLE_AGENTS:
+                    addMultipleAgents();
+                    break;
             }
         } catch (Exception e) {
             logger.exception(e);
             showError(e.getMessage());
+        }
+    }
+
+    private void addMultipleAgents() {
+        if (agentTypeDefinitionModels.isEmpty()) {
+            showInfo(Translation.getInstance().get("gui.message.agent_types_definition_not_found"));
+        } else {
+            new MultipleAgentConfigurationGuiListener(
+                    agentConfigurationModels,
+                    agentTypeDefinitionModels,
+                    stimulusDefinitionModels,
+                    () -> {
+                        agentConfigurationTableModel.fireTableDataChanged();
+                        simulatorGui.getPlayButton().setEnabled(true);
+                    }
+            );
         }
     }
 

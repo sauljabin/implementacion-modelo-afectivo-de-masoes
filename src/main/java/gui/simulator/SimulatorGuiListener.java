@@ -27,6 +27,9 @@ public class SimulatorGuiListener extends WindowsEventsAdapter {
         view.getAddAgentButton().setActionCommand(SimulatorGuiEvent.ADD_AGENT.toString());
         view.getAddAgentButton().addActionListener(this);
 
+        view.getAddMultipleAgentsButton().setActionCommand(SimulatorGuiEvent.ADD_MULTIPLE_AGENTS.toString());
+        view.getAddMultipleAgentsButton().addActionListener(this);
+
         view.getDeleteAgentButton().setActionCommand(SimulatorGuiEvent.DELETE_AGENT.toString());
         view.getDeleteAgentButton().addActionListener(this);
 

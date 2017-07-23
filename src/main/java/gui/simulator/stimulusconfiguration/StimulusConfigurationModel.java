@@ -25,6 +25,14 @@ public class StimulusConfigurationModel {
     public StimulusConfigurationModel() {
     }
 
+    public StimulusConfigurationModel(StimulusConfigurationModel stimulusConfigurationModel) {
+        stimulusDefinition = stimulusConfigurationModel.getStimulusDefinition();
+        activation = stimulusConfigurationModel.getActivation();
+        satisfaction = stimulusConfigurationModel.getSatisfaction();
+        self = stimulusConfigurationModel.isSelf();
+        selected = stimulusConfigurationModel.isSelected();
+    }
+
     public StimulusConfigurationModel(StimulusDefinitionModel stimulusDefinition) {
         this.stimulusDefinition = stimulusDefinition;
         activation = stimulusDefinition.getActivation();
