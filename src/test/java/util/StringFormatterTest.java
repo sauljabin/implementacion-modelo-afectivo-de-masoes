@@ -30,6 +30,11 @@ public class StringFormatterTest {
     }
 
     @Test
+    public void normalizeNAndU() {
+        assertThat(StringFormatter.toCamelCase("üñ"), is("un"));
+    }
+
+    @Test
     public void shouldShowZeroDecimalSize() {
         assertThat(StringFormatter.toString(0.0), is("0"));
     }
